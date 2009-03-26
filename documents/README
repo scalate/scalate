@@ -1,0 +1,81 @@
+
+SCALA SERVER PAGES
+==================
+
+Like JSPs, but for Scala.  (For info about Scala:  http://www.scala-lang.org)
+
+Supported syntax:
+
+	<%= ... %>
+
+	<% ... %>
+
+	<%@ include file="relativeURL" %>
+
+	${ ... }    <-- this simply HTML-escapes the result of the Scala expression "..."
+
+There is no support for tag libraries, EL, or anything like JSTL.
+
+Requires a Java 5 runtime and a servlet 2.5 container, or newer.
+
+
+
+HOW TO BUILD
+============
+
+1.  Set the paths in buildenv.properties appropriately for your system.
+
+2.  Run "ant", or "ant clean all" for a clean build.
+
+A built package appears in the "package" subdirectory.
+
+
+
+ADDING SSP SUPPORT TO YOUR APPLICATION
+======================================
+
+1.  Add something like the following to your web.xml file:
+
+        <servlet>
+          <servlet-name>SspServlet</servlet-name>
+          <servlet-class>com.mh.serverpages.scala_.ScalaServerPageServlet</servlet-class>
+          <load-on-startup>1</load-on-startup>
+
+          <init-param>
+            <param-name>compiler.classpath.prefix</param-name>
+            <param-value>/path/to/scala-library.jar:/path/to/servlet-api.jar</param-value>
+          </init-param>
+        </servlet>
+
+        <servlet-mapping>
+          <servlet-name>SspServlet</servlet-name>
+          <url-pattern>*.ssp</url-pattern>
+        </servlet-mapping>
+
+You'll need to use valid paths in the 'init-param' above.  The Scala compiler needs them.
+
+2.  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
+
+        scala-compiler.jar
+        serverpages.jar
+
+3.  Include scala-library.jar in your servlet container's server-wide configuration (e.g., Jetty's "lib" directory).  This is necessary because the SSP servlet is written in Scala, and so the container's classloader needs the Scala library available to load the SSP servlet class.
+
+
+
+POSSIBLE GOTCHAS
+================
+
+- Works with expanded WARs only.
+
+- Assumes SSP page source files are all UTF-8-encoded.
+
+- Assumes SSP pages' output is all UTF-8-encoded.
+
+- No support for precompilation (e.g., via a custom Ant task).
+
+- Yes, there really is an underscore in "com.mh.serverpages.scala_.ScalaServerPageServlet"; the Scala compiler issued errors without the underscore in the package name.
+
+- If you try the sample app, be sure to update the paths in its web.xml file and make scala-library.jar available, as described above.
+
+- I'm new to Scala and wrote this in haste.

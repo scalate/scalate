@@ -1,0 +1,32 @@
+<%
+  import com.mh.serverpages.sample._
+  import java.util.Date
+
+  val foo = request.getAttribute( "foo" ).asInstanceOf[Foo]
+  val timestamp = request.getAttribute( "timestamp" ).asInstanceOf[Date]
+%>
+
+<%-- This is a comment --%>
+
+<h1>Test Scala Server Page</h1>
+
+<p>
+  This test page displays data passed from a servlet.  Browsers can also <a href="scala/standalone.ssp">request SSPs directly</a>.
+</p>
+
+<p>
+  The current time is: ${timestamp}
+</p>
+
+<p>
+  Your HTTP request included the following headers:
+  <ul>
+    <% foo.requestHeaders.foreach { header => %>
+      <li>${header}</li>
+    <% } %>
+  </ul>
+</p>
+
+<p>
+  The pathinfo was: ${foo.pathInfo}
+</p>

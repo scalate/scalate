@@ -1,0 +1,7 @@
+<p>
+  Hello from standalone.ssp
+</p>
+
+<p>
+  1 + 2 = ${1+2}
+</p>
