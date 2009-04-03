@@ -19,29 +19,45 @@ template: ~
   <div id="navigation">
   	<div class="wrapper">
       {menu: {max_levels: 1, used_nodes: files}}
-
-  	  <a href="relocatable:/download.html">Download</a> | 
-      <a href="relocatable:/source.html">Source</a> | 
-      <a href="relocatable:/support.html">Support</a>
-      
   	</div>
   </div>
   
+<% if node.node_info[:page].blocks.has_key?('overview') %>
   <div id="overview">
     <div class="wrapper">
       <div class="logo">
         <img src="{relocatable:/images/project-logo.gif}"/>
       </div>
       <div class="message">
-        <h1>Foo</h1>
-        Bar
+        <webgen:block name='overview' />
       </div>
     </div>
   </div>
+<% end %>
 
-<%= @content %>
+<% if node.node_info[:page].blocks.has_key?('spot') %>
+  <div id='spot'>
+  	<div class='wrapper'>
+      <webgen:block name='spot' />
+  	</div>
+  </div>
+<% end %>
 
-<webgen:block name="content" />
-  
+<% if node.node_info[:page].blocks.has_key?('impact') %>
+  <div id='impact'>
+  	<div class='wrapper'>
+      <webgen:block name='impact' />
+  	</div>
+  </div>
+<% end %>
+
+<% if node.node_info[:page].blocks.has_key?('content') %>
+  <div id='content'>
+  	<div class='wrapper'>
+      <webgen:block name="content" />
+  	</div>
+  </div>
+<% end %>
+
 </body>
 </html>

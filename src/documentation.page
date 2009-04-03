@@ -1,0 +1,16 @@
+---
+title: Documentation
+in_menu: true
+blocks: { 1: {pipeline: textile,tags } }
+--- 
+
+<table>
+  <tr>
+    <td><a href="faq.html" title="FAQ" alt="FAQ"><img src="images/lightbulb.jpg"></a></td>
+    <td>Frequently Asked Questions</td>
+  </tr>
+  <tr>
+    <td><a href="support.html" title="Support" alt="Support"><img src="images/support.jpg"></a></td>
+    <td>How to get more support on  {project_name:}</td>
+  </tr>
+</table>

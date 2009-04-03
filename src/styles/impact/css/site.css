@@ -7,6 +7,9 @@ body, html, table, tr, td, tbody {
     margin:0;
     vertical-align: top;
 }
+body {
+    padding-top: 20px;
+}
 
 h1, h2, h3, h4, h5, h6 {
     overflow: visible;
@@ -24,9 +27,13 @@ img {border: none;}
 #navigation { width: 100%; float: left;
     font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif; 
     background: #0D4D82; text-align:center; padding: 8px;
-    color: white; font-size: 10pt; font-weight: bold; 
+    color: white; font-size: 10pt; font-weight: bold;
+    position: absolute;
+    top: 0px;
 }
 #navigation a { color: white; }
+#navigation ul { display: block; margin:0; padding:0; }
+#navigation li { list-style-type: none; display: inline; margin:0 5px 0 5px;}
 
 #overview { width: 100%; float: left; }
 #overview div.logo {float: left; padding-right: 20px; }
