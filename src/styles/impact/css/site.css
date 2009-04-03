@@ -74,18 +74,18 @@ img {border: none;}
   list-style: none;
 }
 
-#impact { width: 100%; float: left; }
-#impact .wrapper { min-width: 700px; width: 700px; margin: 0 auto; }
-#impact div.left {
+#content { width: 100%; float: left; }
+#content .wrapper { min-width: 700px; width: 700px; margin: 0 auto; }
+#content div.left {
   float:left;
   width:200px;
   text-align:right;
   font-size: 18pt;
 }
-#impact h1 {
+#content h1 {
   font-size: 18pt;
 }
-#impact div.right {
+#content div.right {
   float:right;
   width:450px;
   text-align:left;

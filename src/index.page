@@ -1,12 +1,22 @@
 ---
 title: Home
 in_menu: true
---- name:overview
-<h1>{project_name:}</h1>
+--- pipeline:haml,tags
+
+.left
+  %h1 Who's using {project_name:}?
+.right
+  %p
+    Please let me know.. BTW HAML syntax rocks
+    it's nice and compact eh?
+    
+--- name:overview pipeline:haml,tags
+
+%h1 {project_name:}
+
 {project_slogan:}
 
---- name:spot
-
+--- name:spot 
 <div class='title'>
   &nbsp;
 </div>
@@ -22,7 +32,7 @@ in_menu: true
     </td>
     <td>
 	    <h2>Get Started</h2>  
-	    <a href='ç /download.html}'>
+	    <a href='{relocatable: /download.html}'>
   	    <img src='{relocatable: /images/spot-download-releases.jpg}' />
   	    <br />
   	    Get the latest version here
@@ -44,13 +54,3 @@ in_menu: true
     </td>
   </tr></table>
 </div>
-
---- name:impact pipeline:haml,tags
-
-.left
-  %h1 Who's using {project_name:}?
-.right
-  %p
-    Please let me know.. BTW HAML syntax rocks
-    it's nice and compact eh?
-

@@ -43,14 +43,6 @@ template: ~
   </div>
 <% end %>
 
-<% if node.node_info[:page].blocks.has_key?('impact') %>
-  <div id='impact'>
-  	<div class='wrapper'>
-      <webgen:block name='impact' />
-  	</div>
-  </div>
-<% end %>
-
 <% if node.node_info[:page].blocks.has_key?('content') %>
   <div id='content'>
   	<div class='wrapper'>

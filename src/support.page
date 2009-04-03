@@ -15,3 +15,9 @@ h3. See Also
   * "FAQ":faq.html
   * "Issue Tracker":{project_issue_url:}
   * "Contact Us":http://fusesource.com/contact
+  
+--- name:overview pipeline:haml,tags
+
+%h1 {project_name:}
+
+{project_slogan:}

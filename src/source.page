@@ -30,3 +30,8 @@ h2. Building the code
 To then build the code see "Building":building.html
 
 
+--- name:overview pipeline:haml,tags
+
+%h1 {project_name:}
+
+{project_slogan:}
