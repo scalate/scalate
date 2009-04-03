@@ -2,14 +2,15 @@
 #
 # You cand define metainfo for mutliple pages in this file.
 #
-/**: # <-- That means the following attributes get applied to all pages
+
+**/*.page: # <-- That means the following attributes get applied to all pages
      # in the site.
 
   # -------------------------------------------------------------------
   # You can easily switch the site from one look to another here:
   # -------------------------------------------------------------------
-  #template: styles/default/default.template
-  template: styles/impact/main.template
+  #template: /styles/default/default.template
+  template: /styles/impact/main.template
   
   # -------------------------------------------------------------------
   # Define the project properties here, these can be accessed in the 
@@ -26,3 +27,7 @@
   project_maven_artifactId: myproject
   project_forums_url: 'http://fusesource.com/forge/forums'
   project_wiki_url: 'http://fusesource.com/forge/wiki'
+
+/blog/*:
+  output_path_style: [:parent, :year, /, :month, /, :cnbase, [., :lang], :ext]
+  template: /styles/impact/blog.template

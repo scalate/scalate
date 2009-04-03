@@ -51,5 +51,13 @@ template: ~
   </div>
 <% end %>
 
+<% if node.node_info[:page].blocks.has_key?('blog') %>
+  <div id='blog'>
+  	<div class='wrapper'>
+      <webgen:block name="blog" />
+  	</div>
+  </div>
+<% end %>
+
 </body>
 </html>
