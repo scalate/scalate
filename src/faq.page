@@ -1,0 +1,26 @@
+---
+title: FAQ
+blocks: { 1: {pipeline: textile,tags } }
+--- 
+
+{menu: {used_nodes: fragments}}
+
+h2(#general-questions). General Questions
+
+General questions on the *{project_name:}* project.
+
+h3. What is the license?
+
+The license is ...
+
+h2. Using {project_name:}
+
+h3. How do I get started?
+
+h2. Errors
+
+--- name:overview pipeline:textile,tags
+
+h1. Burning Questions?
+
+This page contains all the frequently asked questions about the *{project_name:}* project.
