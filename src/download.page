@@ -1,8 +1,8 @@
 ---
 title: Download
 in_menu: true
-blocks: { 1: {pipeline: textile,tags} }
----
+sort_info: 5
+--- pipeline:textile,tags
 
 You can download *{project_name:}* from the "FuseForge Maven Repository":http://repo.fusesource.com/maven2/ in the "{project_name:} area":http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/.
 

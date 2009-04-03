@@ -1,0 +1,5 @@
+maven/index.html:
+  url: maven/index.html
+  title: "Maven Report'
+  in_menu: true
+  sort_info: 60

@@ -1,6 +1,7 @@
 ---
 title: Home
 in_menu: true
+sort_info: 1
 --- pipeline:haml,tags
 
 .left

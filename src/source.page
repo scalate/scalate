@@ -1,8 +1,8 @@
 ---
 title: Source
 in_menu: true
-blocks: { 1: {pipeline: textile,tags } }
----
+sort_info: 40
+--- pipeline:textile,tags
 
 The source code for *{project_name:}* is here
 

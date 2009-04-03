@@ -1,8 +1,8 @@
 ---
 title: Documentation
 in_menu: true
-blocks: { 1: {pipeline: textile,tags } }
---- 
+sort_info: 10
+--- pipeline:textile,tags 
 
 <table>
   <tr>
