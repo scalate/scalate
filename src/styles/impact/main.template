@@ -1,0 +1,47 @@
+---
+template: ~
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="{lang:}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="description goes here" />
+    <meta name="keywords" content="keywords,goes,here" />
+    <meta name="author" content="Your Name" />
+
+    <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
+    
+    <title>{title:}</title>
+</script>
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      {menu: {max_levels: 1, used_nodes: files}}
+
+  	  <a href="relocatable:/download.html">Download</a> | 
+      <a href="relocatable:/source.html">Source</a> | 
+      <a href="relocatable:/support.html">Support</a>
+      
+  	</div>
+  </div>
+  
+  <div id="overview">
+    <div class="wrapper">
+      <div class="logo">
+        <img src="{relocatable:/images/project-logo.gif}"/>
+      </div>
+      <div class="message">
+        <h1>Foo</h1>
+        Bar
+      </div>
+    </div>
+  </div>
+
+<%= @content %>
+
+<webgen:block name="content" />
+  
+</body>
+</html>

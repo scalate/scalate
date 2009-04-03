@@ -1,0 +1,54 @@
+---
+title: Home
+in_menu: true
+---
+<div id="spot">
+	<div class="wrapper">
+    <div class="title">
+      &nbsp;
+    </div>
+    <div class="content">
+  	  <table><tr>
+  	    <td>
+    	    <h2>Learn More</h2>
+    	    <a href="/documentation.html">
+      	    <img src="/images/impact/spot-learn-more.jpg"/>
+      	    <br/>
+      	    Documentation
+    	    </a>
+  	    </td>
+  	    <td>
+    	    <h2>Get Started</h2>  
+    	    <a href="/download.html">
+      	    <img src="/images/impact/spot-download-releases.jpg"/>
+      	    <br/>
+      	    Get the latest version here
+    	    </a>
+  	    </td>
+  	    <td>
+  	    <h2>Get Involved</h2>  
+    	    <div class="spot-balloon">
+    	      <ul>
+    	      </ul>
+    	    </div>
+    	    <a href="">
+      	    Join the community!
+    	    </a>
+  	    </td>
+	    </tr></table>
+    </div>
+	</div>
+</div>
+
+<div id="impact">
+	<div class="wrapper">
+	  <div class="left">
+	    <h1>Who's using {project_name:} ?</h1>
+	  </div>
+	  <div class="right">
+  	  <p>
+  	  Please edit me!
+      </p>
+	  </div>
+	</div>
+</div>

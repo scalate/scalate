@@ -1,0 +1,17 @@
+---
+title: Support
+in_menu: true
+blocks: { 1: {pipeline: textile,tags } }
+--- 
+You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/enterprise-support/ from "FuseSource":http://fusesource.com/ - please do "get in touch":http://fusesource.com/contact we'd love to help!
+
+You may also find the "Frequently Asked Questions (FAQ)":faq.html useful.
+
+We love feedback of all kinds; whether its thoughts, ideas or if you hit some issue. To submit feedback please use the "{project_name:} Issue Tracker":{project_issue_url:}
+
+
+h3. See Also
+
+  * "FAQ":faq.html
+  * "Issue Tracker":{project_issue_url:}
+  * "Contact Us":http://fusesource.com/contact
