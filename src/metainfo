@@ -28,6 +28,6 @@
   project_forums_url: 'http://fusesource.com/forge/forums'
   project_wiki_url: 'http://fusesource.com/forge/wiki'
 
-/blog/*:
-  output_path_style: [:parent, :year, /, :month, /, :cnbase, [., :lang], :ext]
+blog/*/**/*:
   template: /styles/impact/blog.template
+  output_path_style: [:parent, :year, /, :month, /, :cnbase, [., :lang], :ext]

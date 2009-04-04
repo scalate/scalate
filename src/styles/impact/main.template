@@ -12,6 +12,11 @@ template: ~
     <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
     
     <title>{title:}</title>
+
+<% if node.node_info[:page].blocks.has_key?('head') %>
+    <webgen:block name='head' />
+<% end %>
+
 </script>
 </head>
 <body>
