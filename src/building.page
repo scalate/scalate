@@ -1,6 +1,11 @@
 ---
 title: Building
---- pipeline:textile,tags
+--- name:overview
+
+# How to Build {project_name:}
+The way most developers get started contributing to a project.
+
+--- name:content pipeline:textile,tags
 
 h2. Building 
 

@@ -2,15 +2,6 @@
 title: Home
 in_menu: true
 sort_info: 1
---- pipeline:haml,tags
-
-.left
-  %h1 Who's using {project_name:}?
-.right
-  %p
-    Please let me know.. BTW HAML syntax rocks
-    it's nice and compact eh?
-    
 --- name:overview pipeline:haml,tags
 
 %h1 {project_name:}
@@ -55,3 +46,12 @@ sort_info: 1
     </td>
   </tr></table>
 </div>
+--- name:content
+
+<div class="left" markdown="1">
+# Who's using {project_name:}?
+</div>
+<div class="right" markdown="1">
+Everyone.
+</div>
+    

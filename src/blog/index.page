@@ -23,16 +23,15 @@ nodes.sort.reverse.slice(0,max_posts_per_page).each do |path, n|
 %>
   	  <div class="post">
   	    <h2><%= dest_node.link_to(n) %></h2>
+        <div class="details">Posted by <%= n['author']%> on <%= n['created_at']%></div>
     	  <p>
     	  <webgen:block name="content" chain="<%= n.absolute_cn %>"/>
-    	  
+        </p>
     	  <% if n.node_info[:page].blocks.has_key?('full_story') %> 
       	  <div class="read-more">
       	    <%= dest_node.link_to(n, {:link_text=>"Read more..."}) %>
       	  </div>
         <% end %>
-        
-        <div class="details">Posted by <%= n['author']%> on <%= n['created_at']%></div>
   	  </div>
 <% end %>
 

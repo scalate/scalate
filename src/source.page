@@ -2,7 +2,12 @@
 title: Source
 in_menu: true
 sort_info: 40
---- 
+--- name:overview
+# {project_name:}
+
+{project_slogan:}
+
+--- name:content
 
 <div class="left" markdown="1">
 # Overview
@@ -35,7 +40,3 @@ See [this article](http://www-128.ibm.com/developerworks/library/os-ecl-subversi
 </div>
 
 
---- name:overview
-# {project_name:}
-
-{project_slogan:}

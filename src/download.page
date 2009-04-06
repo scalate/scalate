@@ -2,7 +2,13 @@
 title: Download
 in_menu: true
 sort_info: 5
---- 
+--- name:overview
+
+# {project_name:}
+Download it Today!
+
+--- name:content
+
 <div class="left" markdown="1">
 # Are you a Maven User?
 </div>
@@ -29,11 +35,4 @@ If you use Maven then you can add the following to your *pom.xml*
 <div class="right" markdown="1">
 If you prefer you can try building from [the source code](source.html) and [building it](building.html)
 </div>
-
---- name:overview pipeline:haml,tags
-
-%h1 {project_name:}
-
-{project_slogan:}
-
 

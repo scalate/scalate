@@ -99,17 +99,26 @@ img {border: none;}
 }
 #blog h2 {
   border-bottom: thin dashed #DDD;
-  padding-bottom: 5px;
   font-size: 16pt;
+  margin-bottom: 5px;
 }
 #blog div.post p {
   padding-left: 10px;
 }
 #blog div.post .details {
-  padding-top: 10px;
+  padding-top: 5px;
   color: #ccc;
   font-size: 10pt;
   font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif; 
 }
 
+#content .post h2 {
+  margin-bottom:5px;
+}
+#content .post .details {
+  color: #ccc;
+  font-size: 10pt;
+  font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif; 
+  margin-top:0px;
+}
 

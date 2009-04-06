@@ -2,7 +2,12 @@
 title: Support
 in_menu: true
 sort_info: 55
---- pipeline:textile,tags
+--- name:overview
+
+# Your Not Alone
+We can help.
+
+--- name:content pipeline:textile,tags
 You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/enterprise-support/ from "FuseSource":http://fusesource.com/ - please do "get in touch":http://fusesource.com/contact we'd love to help!
 
 You may also find the "Frequently Asked Questions (FAQ)":faq.html useful.
@@ -16,8 +21,4 @@ h3. See Also
   * "Issue Tracker":{project_issue_url
   * "Contact Us":http://fusesource.com/contact
   
---- name:overview pipeline:haml,tags
 
-%h1 {project_name:}
-
-{project_slogan:}
