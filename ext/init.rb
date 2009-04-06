@@ -7,4 +7,12 @@
 #
 # The +config+ variable below can be used to access the Webgen::Configuration object for the current
 # website.
+$LOAD_PATH << File.dirname(__FILE__)
+load 'fuse/asciidoc.rb'
+
 config = Webgen::WebsiteAccess.website.config
+config['contentprocessor.map']['asciidoc'] = 'Fuse::AsciiDoc'
+
+module Fuse 
+  autoload :AsciiDoc, 'fuse/asciidoc'
+end
