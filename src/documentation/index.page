@@ -1,0 +1,33 @@
+---
+title: Documentation
+in_menu: true
+sort_info: 10
+--- name:overview
+# Get Your Learn On
+
+All the information you need to be become and expert with {project_name:}
+
+--- name:spot 
+<div class='title'>
+  &nbsp;
+</div>
+<div class='content'>
+  <table><tr>
+    <td>
+	    <h2>F.A.Q.</h2>
+	    <a href='{relocatable: faq.html}'>
+  	    <img src='{relocatable: /images/lightbulb.jpg}'/>
+  	    <br />
+  	    Frequently Asked Questions
+	    </a>
+    </td>
+    <td>
+	    <h2>Get Started</h2>  
+	    <a href='{relocatable: support.html}'>
+  	    <img src='{relocatable: /images/support.jpg}' />
+  	    <br />
+  	    How to get more support on  {project_name:}
+	    </a>
+    </td>
+  </tr></table>
+</div>

@@ -25,7 +25,7 @@ sort_info: 1
   <table><tr>
     <td>
 	    <h2>Learn More</h2>
-	    <a href='{relocatable: /documentation.html}/'>
+	    <a href='{relocatable: /documentation}'>
   	    <img src='{relocatable: /images/spot-learn-more.jpg}'/>
   	    <br />
   	    Documentation
