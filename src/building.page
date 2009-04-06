@@ -1,7 +1,5 @@
 ---
 title: Building
-in_menu: true
-sort_info: 40
 --- pipeline:textile,tags
 
 h2. Building 

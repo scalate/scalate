@@ -2,36 +2,40 @@
 title: Source
 in_menu: true
 sort_info: 40
---- pipeline:textile,tags
+--- 
 
-The source code for *{project_name:}* is here
+<div class="left" markdown="1">
+# Overview
+</div>
+<div class="right" markdown="1">
+The *{project_name:}* project stores it's source code in a Subversion repository at: 
 
-"{project_svn_url:}/":{project_svn_url:}/
+  [{project_svn_url:}]({project_svn_url:})
+  
+Only project developers can commit to the Subversion repository.  We use the trunk for the next main release; then we use a branch for any bug fixes on the previous major release. You can look at a specific branch here:
 
-h2. Checking out from SVN
+  [{project_svn_branches_url:}]({project_svn_branches_url:})
+  
+To build the code see [Building]({relocatable: building.html})
+
+</div>
+
+<div class="left" markdown="1">
+# How To Check Out
+</div>
+<div class="right" markdown="1">
+
+#### Using [Subversion](http://subversion.tigris.org/)
 
     svn co {project_svn_url:} {project_id:}
 
-Only project developers can commit to the SVN tree via this method.  SSH must be installed on your client machine. Enter your site password when prompted.
+#### Using [Eclipse](http://www.eclipse.org/)
+See [this article](http://www-128.ibm.com/developerworks/library/os-ecl-subversion/index.html) for getting started guides. Basically you need [subclipse](http://subclipse.tigris.org)
+
+</div>
 
 
-h3. SVN and Eclipse
-
-See "this article":http://www-128.ibm.com/developerworks/library/os-ecl-subversion/index.html for getting started guides. Basically you need "subclipse":http://subclipse.tigris.org
-
-h3. Branches
-
-We use the trunk for the next main release; then we use a branch for any bug fixes on the previous major release. You can look at a specific branch here
-
-"{project_svn_branches_url:}":{project_svn_branches_url:}
-
-h2. Building the code
-
-To then build the code see "Building":building.html
-
-
---- name:overview pipeline:haml,tags
-
-%h1 {project_name:}
+--- name:overview
+# {project_name:}
 
 {project_slogan:}
