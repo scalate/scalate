@@ -2,24 +2,33 @@
 title: Download
 in_menu: true
 sort_info: 5
---- pipeline:textile,tags
-
-You can download *{project_name:}* from the "FuseForge Maven Repository":http://repo.fusesource.com/maven2/ in the "{project_name:} area":http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/.
+--- 
+<div class="left" markdown="1">
+# Are you a Maven User?
+</div>
+<div class="right" markdown="1">
+You can download *{project_name:}* from the [FuseForge Maven Repository](http://repo.fusesource.com/maven2) in the [{project_name:} area](http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/).
 
 If you use Maven then you can add the following to your *pom.xml*
+</div>
  
-{coderay:: xml}
-<dependency>
+<div class="right">
+{coderay:: xml}<dependency>
   <groupId>org.fusesource.{project_id:}</groupId>
   <artifactId>{project_id:}-core</artifactId>
-  <version>${{project_id:}-version}</version>  
+  <version>$\{{project_id:}-version\}</version>  
 </dependency>
 {coderay}
+</div>
 
 
-h2. Getting the source code
+<div class="left" markdown="1">
+# Building from Source
+</div>
 
-If you prefer you can try building from "the source code":source.html and "building it":building.html
+<div class="right" markdown="1">
+If you prefer you can try building from [the source code](source.html) and [building it](building.html)
+</div>
 
 --- name:overview pipeline:haml,tags
 
