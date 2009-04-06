@@ -60,7 +60,7 @@ img {border: none;}
 #spot a:hover {text-decoration: none; }
 
 #spot div.spot-balloon {
-  background:transparent url(../images/spot-get-involved.gif) no-repeat;
+  background:transparent url( ../../../images/spot-get-involved.gif ) no-repeat;
   background-position:center;
   height: 121px;
   text-align:left;
