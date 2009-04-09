@@ -20,6 +20,7 @@ project_id = "CHANGEME"
 
 task :default => :webgen
 task :upload => "sitecopy:upload"
+task :auto => :auto_webgen
 
 Webgen::WebgenTask.new do |website|
   website.clobber_outdir = true

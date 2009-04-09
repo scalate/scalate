@@ -10,20 +10,42 @@ Download it Today!
 --- name:content
 
 <div class="left" markdown="1">
-# Are you a Maven User?
+# Just need a distro?
 </div>
 <div class="right" markdown="1">
 You can download *{project_name:}* from the [FuseForge Maven Repository](http://repo.fusesource.com/maven2) in the [{project_name:} area](http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/).
-
-If you use Maven then you can add the following to your *pom.xml*
 </div>
- 
+
+<div class="left" markdown="1">
+# Are you a Maven User?
+</div>
+<div class="right" markdown="1">
+Just the following to your *pom.xml*
+</div> 
 <div class="right">
 {coderay:: xml}<dependency>
   <groupId>org.fusesource.{project_id:}</groupId>
   <artifactId>{project_id:}-core</artifactId>
-  <version>$\{{project_id:}-version\}</version>  
+  <version>${{project_id:}-version}</version>  
 </dependency>
+{coderay}
+</div>
+<div class="right" markdown="1">
+You you should ensure you have the FuseSource maven repository defined in your *pom.xml*</div> 
+<div class="right">
+{coderay:: xml}  <repositories>
+   <repository>
+     <id>fusesource.m2</id>
+     <name>FuseSource Community Release Repository</name>
+     <url>http://repo.fusesource.com/maven2</url>
+     <snapshots>
+       <enabled>false</enabled>
+     </snapshots>
+     <releases>
+       <enabled>true</enabled>
+     </releases>
+   </repository>
+ </repositories>
 {coderay}
 </div>
 
