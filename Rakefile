@@ -65,6 +65,9 @@ def get_username_pwd
   userpwd.strip
 end
 
+# lets not use safe mode due to timestamp wierdness
+#safe
+
 Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   server fusesource.com
   protocol http
@@ -72,7 +75,6 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   local out
   remote /forge/dav/#{project_id}/site
   
-  safe
   state checksum
   exclude /maven
   ignore /maven
