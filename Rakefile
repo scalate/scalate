@@ -9,9 +9,14 @@
 #
 
 require 'webgen/webgentask'
+require 'webgen/website'
 
 # TODO couldn't figure out how to use the autoload stuff! :)
 require 'ext/fuse/sitecopy_rake.rb'
+
+# TODO must change this to the actual project!
+# one day it would be nice to find this from the src/metainfo file
+project_id = "CHANGEME"
 
 task :default => :webgen
 
@@ -43,11 +48,34 @@ task :auto_webgen do
 end
 
 
-# username anonymous
-# password foo@bar.example
+# lets parse a file from ~/.fuseforge.rc
+#   username anonymous
+#   password foo@bar.example
+def get_username_pwd
+  userpwd = ""
+  userpwd_file_name = File.expand_path("~/.fuseforge.rc")
+  #puts "Looking for file #{userpwd_file_name}"
+  #userpwd_file_name = "/Users/jstrachan/.fuseforge.rc"
+  if File.file?(userpwd_file_name) 
+    userpwd = IO.readlines(userpwd_file_name).join("")
+    #puts "User file is #{userpwd}"
+  end
+  userpwd.strip
+end
 
-Fuse::SitecopyTask.new("site", <<-SITECOPYRC)
-  server cheese
+Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
+  server fusesource.com
+  protocol http
+  #{get_username_pwd}  
   local out
-  remote /html
+  remote /forge/dav/#{project_id}/site
+  
+  safe
+  state checksum
+  exclude /maven
+  ignore /maven
+  ignore /.htaccess
+  exclude /.htaccess
+    
 SITECOPYRC
+

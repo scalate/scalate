@@ -16,3 +16,11 @@ sudo gem install --source http://gems.github.com FooBarWidget-mizuho
 sudo gem install coderay
 sudo gem install feedtools
 sudo gem install haml
+
+To be able to deploy the site you will need
+
+sudo port install sitecopy  
+
+
+For details on how to deploy a site see...
+
