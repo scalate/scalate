@@ -8,3 +8,11 @@ description:
   For configuration purposes, use the config.rb or config.yaml files.
 ---
 note: This file can be deleted!
+
+Installing:
+
+sudo gem install webgen
+sudo gem install --source http://gems.github.com FooBarWidget-mizuho
+sudo gem install coderay
+sudo gem install feedtools
+sudo gem install haml

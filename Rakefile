@@ -10,6 +10,9 @@
 
 require 'webgen/webgentask'
 
+# TODO couldn't figure out how to use the autoload stuff! :)
+require 'ext/fuse/sitecopy_rake.rb'
+
 task :default => :webgen
 
 Webgen::WebgenTask.new do |website|
@@ -38,3 +41,13 @@ task :auto_webgen do
     sleep 2
   end
 end
+
+
+# username anonymous
+# password foo@bar.example
+
+Fuse::SitecopyTask.new("site", <<-SITECOPYRC)
+  server cheese
+  local out
+  remote /html
+SITECOPYRC
