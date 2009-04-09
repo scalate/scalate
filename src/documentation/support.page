@@ -4,8 +4,8 @@ in_menu: true
 sort_info: 55
 --- name:overview
 
-# Your Not Alone
-We can help.
+# You Are Not Alone
+We can help!
 
 --- name:content pipeline:textile,tags
 You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/enterprise-support/ from "FuseSource":http://fusesource.com/ - please do "get in touch":http()://fusesource.com/contact we'd love to help!
