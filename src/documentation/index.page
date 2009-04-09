@@ -14,12 +14,20 @@ All the information you need to be become and expert with {project_name:}
 <div class='content'>
   <table><tr>
     <td>
-	    <h2>F.A.Q.</h2>
-	    <a href='{relocatable: faq.html}'>
-  	    <img src='{relocatable: /images/lightbulb.jpg}'/>
-  	    <br />
-  	    Frequently Asked Questions
-	    </a>
+      <h2>F.A.Q.</h2>
+      <a href='{relocatable: faq.html}'>
+        <img src='{relocatable: /images/lightbulb.jpg}'/>
+        <br />
+        Frequently Asked Questions
+      </a>
+    </td>
+    <td>
+      <h2>Manual</h2>
+      <a href='{relocatable: manual/book.html}'>
+        <img src='{relocatable: /images/spot-manual.jpg}'/>
+        <br />
+        User Manual
+      </a>
     </td>
     <td>
 	    <h2>Support</h2>  

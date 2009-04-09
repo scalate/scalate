@@ -40,7 +40,7 @@ sort_info: 1
 	        <li><a href="{relocatable: /source.html}">Source Code</a></li>
 	      </ul>
 	    </div>
-	    <a href=''>
+	    <a href='{project_forums_url:}'>
   	    Join the community!
 	    </a>
     </td>
