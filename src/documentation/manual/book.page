@@ -1,6 +1,9 @@
 ---
 title: MyProject User Guide
---- pipeline:tags,asciidoc
+--- name:head pipeline:tags
+<link href="{relocatable: book.css}" rel="stylesheet" type="text/css" />
+
+--- name:content pipeline:tags,asciidoc
 
 {title:}
 ====================

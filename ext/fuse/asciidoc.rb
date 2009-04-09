@@ -15,12 +15,8 @@ module Fuse
       # This shells out to the asciidoc python tool so we have to pass the content via
       # temp files.
       #
-      temp_file = Tempfile.new('random')  
       ascii_doc_in = Dir::tmpdir + "/ascii_doc."+ $$.to_s() +".in"
       ascii_doc_out = Dir::tmpdir + "/ascii_doc."+ $$.to_s() +".out"
-      
-      puts ascii_doc_in;
-      puts ascii_doc_out;
       
       File.open(ascii_doc_in, 'w') do |f|
          f.write(context.content)
@@ -34,7 +30,7 @@ module Fuse
       parser = Mizuho::Parser.new(ascii_doc_out);
       File.unlink(ascii_doc_out);
       
-      context.content = parser.contents;
+      context.content = "<div class=\"asciidoc\">"+parser.contents+"</div>";
       context
     rescue Exception => e
       raise RuntimeError, "Error converting AsciiDoc markup to HTML in <#{context.ref_node.absolute_lcn}>: #{e.message}", e.backtrace

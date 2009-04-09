@@ -80,7 +80,7 @@ img {border: none;}
   width:200px;
   text-align:right;
   font-size: 18pt;
-  clear:right;
+  clear:both;
 }
 #content h1 {
   font-size: 18pt;
