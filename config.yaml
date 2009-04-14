@@ -15,3 +15,6 @@
 # The available configuration options can be listed using the `webgen config`
 # command, for example: `webgen config sourcehandler` will list all options starting
 # with sourcehandler.
+
+# lets turn off line numbers
+tag.coderay.line_numbers: false
