@@ -22,5 +22,6 @@ To be able to deploy the site you will need
 sudo port install sitecopy  
 
 
-For details on how to deploy a site see...
+To deploy the site run
 
+  rake upload
