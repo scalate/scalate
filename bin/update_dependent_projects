@@ -2,7 +2,7 @@
 #
 # updates all dependent projects with the latest webgenfuse source
 #
-# testing 1, 2, 3
+# testing 4
 
 projects = %w{ restmq }
 
