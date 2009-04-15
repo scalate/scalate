@@ -5,62 +5,54 @@ title: Building
 # How to Build {project_name:}
 The way most developers get started contributing to a project.
 
---- name:content pipeline:textile,tags
+--- name:content 
 
-h2. Building 
+## Building 
 
-{project_name:} uses "Maven":http://maven.apache.org/ as its build tool. If you don't fancy using Maven you can use your IDE directly or "Download":download.html a distribution or JAR.
+{project_name:} uses [Maven](http://maven.apache.org/) as its build tool. If you don't fancy using Maven you can use your IDE directly or "Download":download.html a distribution or JAR.
 
-h3. Prequisites
+### Prequisites
 
 *Required:*
 * Download and "install Maven":http://maven.apache.org/download.html
 * Get the latest "Source":source.html 
 * Java 1.5
 
-h3. Maven options
+### Maven options
 
 To build {project_name:} maven has to be configured to use more memory
 
-  set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m
+    set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m
 
-h3. A normal build
+### A normal build
 
-  mvn install
+    mvn install
 
-h3. Doing a Quick Build
+### Doing a Quick Build
 
 The following avoids running all the unit test cases, we just skip the test running phase and not the building part
 
-  mvn -Dtest=false clean install
+    mvn -Dtest=false clean install
 
-h3. Using an IDE
+### Using an IDE
 
 If you prefer to use an IDE then you can auto-generate the IDE's project files using maven plugins. e.g.
 
-  mvn eclipse:eclipse
+    mvn eclipse:eclipse
   
 or
 
-  mvn idea:idea
+    mvn idea:idea
 
-h4. Importing into Eclipse
+### Importing into Eclipse
 
-If you have not already done so, you will need to make Eclipse aware of the Maven repository so that it can build everything. In the preferences, go to Java->Build Path->Classpath and define a new Classpath Variable named M2_REPO that points to your local Maven repository (i.e., **~/.m2/repository** on Unix and **c:\Documents and Settings\<user>\.m2\repository** on Windows).
+If you have not already done so, you will need to make Eclipse aware of the Maven repository so that it can build everything. In the preferences, go to `Java -> Build Path -> Classpath` and define a new Classpath Variable named `M2_REPO` that points to your local Maven repository. i.e. `~/.m2/repository` on Unix and `c:\Documents and Settings\$username\.m2\repository` on Windows).
 
 You can also get Maven to do this for you:
 
-  mvn eclipse:add-maven-repo -Declipse.workspace=/path/to/the/workspace/ 
+    mvn eclipse:add-maven-repo -Declipse.workspace=/path/to/the/workspace/ 
 
 
-h3. Building in ActiveMQ
-
-If you want to build ActiveMQ with {project_name:} included, "check out the code":source.html
-
-  svn co {project_svn_url:}> {project_id:}
-  cd {project_id:}
-  mvn clean install
-
-h3. See Also
+### See Also
 
 * "Source":source.html
