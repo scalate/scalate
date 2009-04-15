@@ -25,6 +25,7 @@ projects.each { |repoName|
     exit $?
   end
   
+  puts "About to merge in directory #{repoDir}"
   result = `cd #{repoDir}; unset GIT_DIR; git pull -s subtree webgenfuse master; git commit -a -m "Merged latest webgenfuse"; git push`
 
   if $? != 0
