@@ -67,6 +67,7 @@ end
 
 # lets not use safe mode due to timestamp wierdness
 #safe
+#state checksum
 
 Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   server fusesource.com
@@ -75,7 +76,6 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   local out
   remote /forge/dav/#{project_id}/site
   
-  state checksum
   exclude /maven
   ignore /maven
   ignore /.htaccess
