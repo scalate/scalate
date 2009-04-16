@@ -30,7 +30,7 @@ projects.each { |repoName|
 
   if $? != 0
     puts "Failed to merge latest webgenfuse #{$?}"
-    exit $?
+    #exit $?
   end  
 }
 
