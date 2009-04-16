@@ -22,6 +22,7 @@ projects.each { |repoName|
 
   if $? != 0
     puts "Failed to update remote checkout with code #{$?}"
+# TODO lets email a failure instead??    
     exit $?
   end
   
@@ -30,6 +31,7 @@ projects.each { |repoName|
 
   if $? != 0
     puts "Failed to merge latest webgenfuse #{$?}"
+    # TODO lets email a failure instead??    
     #exit $?
   end  
 }

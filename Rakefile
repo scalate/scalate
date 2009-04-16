@@ -78,6 +78,8 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   state checksum
   exclude /maven
   exclude /repo
+  exclude /ignore
+  exclude /ignore
   ignore /maven
   ignore /repo
   ignore /.htaccess
