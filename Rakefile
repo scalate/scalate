@@ -73,11 +73,13 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   protocol http
   #{get_username_pwd}  
   local out
-  remote /forge/dav/#{project_id}/site
+  remote /forge/dav/#{project_id}
   
   state checksum
   exclude /maven
+  exclude /repo
   ignore /maven
+  ignore /repo
   ignore /.htaccess
   exclude /.htaccess
     
