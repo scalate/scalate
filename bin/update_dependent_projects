@@ -4,7 +4,7 @@
 #
 # testing 4
 
-projects = %w{ restmq }
+projects = %w{ depot restmix restmq }
 
 projects.each { |repoName|  
   puts "Updating project #{repoName}"
