@@ -33,7 +33,7 @@ module Fuse
       context.content = "<div class=\"asciidoc\">"+parser.contents+"</div>";
       context
     rescue Exception => e
-      raise RuntimeError, "Error converting AsciiDoc markup to HTML in <#{context.ref_node.absolute_lcn}>: #{e.message}", e.backtrace
+      raise RuntimeError, "Error converting AsciiDoc markup to HTML in <#{context.ref_node.absolute_lcn}>: #{e.message}\n#{e.backtrace.join("\n")}"
     end
   end
   
