@@ -15,7 +15,7 @@ All the information you need to be become and expert with {project_name:}
   <table><tr>
     <td>
       <h2>F.A.Q.</h2>
-      <a href='{relocatable: faq.html}'>
+      <a class='main' href='{relocatable: faq.html}'>
         <img src='{relocatable: /images/lightbulb.jpg}'/>
         <br />
         Frequently Asked Questions
@@ -23,7 +23,7 @@ All the information you need to be become and expert with {project_name:}
     </td>
     <td>
       <h2>Manual</h2>
-      <a href='{relocatable: manual/book.html}'>
+      <a class='main' href='{relocatable: manual/book.html}'>
         <img src='{relocatable: /images/spot-manual.jpg}'/>
         <br />
         User Manual
@@ -31,7 +31,7 @@ All the information you need to be become and expert with {project_name:}
     </td>
     <td>
 	    <h2>Support</h2>  
-	    <a href='{relocatable: support.html}'>
+	    <a class='main' href='{relocatable: support.html}'>
   	    <img src='{relocatable: /images/support.jpg}' />
   	    <br />
   	    How to get more support on  {project_name:}
