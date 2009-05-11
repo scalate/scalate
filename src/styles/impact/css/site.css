@@ -17,9 +17,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 p { margin-bottom:0px; }
 
-a {text-decoration: none;}
-a:hover { color: red; text-decoration: underline;}
+a { text-decoration: none; color:#0D4D82; }
+a:hover { color: #820000; text-decoration: underline;}
 img {border: none;}
+
+a.main { font-size: 12pt; }
 
 .wrapper { min-width: 762px; width: 762px; margin: 0 auto; }
 

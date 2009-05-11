@@ -16,7 +16,7 @@ sort_info: 1
   <table><tr>
     <td>
 	    <h2>Learn More</h2>
-	    <a href='{relocatable: /documentation}'>
+	    <a class='main' href='{relocatable: /documentation}'>
   	    <img src='{relocatable: /images/spot-learn-more.jpg}'/>
   	    <br />
   	    Documentation
@@ -24,7 +24,7 @@ sort_info: 1
     </td>
     <td>
 	    <h2>Get Started</h2>  
-	    <a href='{relocatable: /download.html}'>
+	    <a class='main' href='{relocatable: /download.html}'>
   	    <img src='{relocatable: /images/spot-download-releases.jpg}' />
   	    <br />
   	    Get the latest version here
@@ -40,7 +40,7 @@ sort_info: 1
 	        <li><a href="{relocatable: /source.html}">Source Code</a></li>
 	      </ul>
 	    </div>
-	    <a href='{project_forums_url:}'>
+	    <a class='main' href='{project_forums_url:}'>
   	    Join the community!
 	    </a>
     </td>
