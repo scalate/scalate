@@ -11,7 +11,7 @@ note: This file can be deleted!
 
 Installing:
 
-    sudo gem install webgen coderay feedtools haml
+    sudo gem install webgen coderay feedtools haml RedCloth
     sudo gem install --source http://gems.github.com FooBarWidget-mizuho
 
 To be able to deploy the site you will need
