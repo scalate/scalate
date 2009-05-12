@@ -11,16 +11,12 @@ note: This file can be deleted!
 
 Installing:
 
-    sudo gem install webgen
+    sudo gem install webgen coderay feedtools haml
     sudo gem install --source http://gems.github.com FooBarWidget-mizuho
-    sudo gem install coderay
-    sudo gem install feedtools
-    sudo gem install haml
 
 To be able to deploy the site you will need
 
     sudo port install sitecopy  
-
 
 To deploy the site run
 
