@@ -1,0 +1,66 @@
+---
+title: Building
+--- name:overview
+
+# {project_name:} Site 
+How the website works
+
+--- name:content
+
+<div class="left" markdown="1">
+# How it works
+</div>
+<div class="right" markdown="1">
+The *{project_name:}* documentation and site is created using [WebGen](http://webgen.rubyforge.org/) and is stored in git in the same [source control system as the code](source.html)
+</div>
+
+
+<div class="left" markdown="1">
+# Editing the source code
+</div>
+<div class="right" markdown="1">
+If you [grab the source code](source.html) you can get the site source in the *webgen* directory.
+If you have webgen installed (see below for instructions) then you can build the website from [the code](source.html) as follows
+
+    cd {project_id:}/webgen
+    webgen
+  
+If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use
+
+    webgen
+    
+You can now surf the site and see changes immediately.
+
+If you are on OS X then we highly recommend [TextMate](http://macromates.com/) as a great editor which supports Textile and Markdown
+</div>
+
+<div class="left" markdown="1">
+# Editing the site in your browser
+</div>
+<div class="right" markdown="1">
+The generated HTML has a link at the bottom of the page to <b>Edit This Page!</b> as well as supporting the [Universal Edit Button](http://universaleditbutton.org/) if your browser supports it. There is also a link to the page source if you are wondering where it is kept in subversion.
+
+If you use FireFox you might want to install the [Edit Page Plugin](https://addons.wikihow.com/univedit.xpi)
+
+This feature depends on having a restful resource which will accept posted changes to the page.
+</div>
+
+<div class="left" markdown="1">
+# Installing WebGen
+</div>
+<div class="right" markdown="1">
+Before running the webgen command above you need to install it by [following these instructions]()
+
+    sudo gem install webgen
+
+You also need to install the following gems
+
+    sudo gem install --source http://gems.github.com FooBarWidget-mizuho
+    sudo gem install coderay
+    sudo gem install feedtools
+    sudo gem install haml
+
+To be able to deploy the site you will need
+
+    sudo port install sitecopy
+</div>
