@@ -21,6 +21,7 @@ project_id = "CHANGEME"
 task :default => :webgen
 task :upload => ["sitecopy:upload"]
 task :reupload => ["sitecopy:clobber", "sitecopy:upload"]
+task :deploy => ["sitecopy:clobber", :webgen, "sitecopy:upload"]
 task :auto => :auto_webgen
 
 Webgen::WebgenTask.new do |website|

@@ -14,10 +14,39 @@ Installing:
     sudo gem install webgen coderay feedtools haml RedCloth
     sudo gem install --source http://gems.github.com FooBarWidget-mizuho
 
-To be able to deploy the site you will need
+Configuring:
+
+ * edit the src/metainfo file to change the variables to your project specific values
+   (such as the project name, source code locations & JIRA etc)
+   
+ * edit Rakefile to specify the project id (lower case) which is used for deploying the site
+
+Generating the site:
+
+    webgen
+    open out/index.html
+
+Auto mode:
+
+    rake auto
+    
+will run webgen in auto mode where it will auto-detect changes in the source files and 
+regenerate the site automatically for you.
+
+
+Cleaning up:
+
+    rake clobber
+    
+Deploying:
+    
+* to be able to deploy the site you will need to install sitecopy
 
     sudo port install sitecopy  
 
-To deploy the site run
+* to deploy the site run
 
     rake upload
+    
+
+
