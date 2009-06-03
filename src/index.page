@@ -48,10 +48,3 @@ sort_info: 1
 </div>
 --- name:content
 
-<div class="left" markdown="1">
-# Who's using {project_name:}?
-</div>
-<div class="right" markdown="1">
-Everyone.
-</div>
-    

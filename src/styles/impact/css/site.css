@@ -1,5 +1,5 @@
 body, html {
-    font-family:georgia;
+    font-family:Arial,Verdana,Helvetica,sans-serif;
     color: #666666;
 }
 body, html, table, tr, td, tbody {
@@ -13,30 +13,52 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     overflow: visible;
-    color: black;
+    color: #004b85;
 }
+
+/*
+h1 {
+	margin-top: 0em;
+    margin-bottom: 2em;
+}
+*/
+
 p { margin-bottom:0px; }
 
-a { text-decoration: none; color:#0D4D82; }
-a:hover { color: #820000; text-decoration: underline;}
-img {border: none;}
+a {
+	color: #004B85;
+	font-weight:bold;
+	text-decoration: none;
+}
 
-a.main { font-size: 12pt; }
+a:hover { 
+	color: #6699CC; 
+	text-decoration: underline;
+	}
+
+/*
+img {
+	border: none;
+	padding-right:2em}
+*/
 
 .wrapper { min-width: 762px; width: 762px; margin: 0 auto; }
 
 #navigation { width: 100%; float: left;
-    font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif; 
-    background: #0D4D82; text-align:center; padding: 8px;
-    color: white; font-size: 10pt; font-weight: bold;
-    position: absolute;
+    font-family: Helvetica,Verdana,Arial,sans-serif; 
+    background: #0D4D82; 
+	text-align:center; padding: 8px;
+    color: white; 
+	font-size: 10pt; 
+	font-weight: bold;
+  position: absolute;  
     top: 0px;
 }
 #navigation a { color: white; }
 #navigation ul { display: block; margin:0; padding:0; }
 #navigation li { list-style-type: none; display: inline; margin:0 5px 0 5px;}
 
-#overview { width: 100%; float: left; }
+#overview { width: 100%; float: left; margin-top:20px}
 #overview div.logo {float: left; padding-right: 20px; }
 #overview div.message { 
     font-size: 14pt; 
@@ -71,12 +93,23 @@ a.main { font-size: 12pt; }
 }
 
 #spot div.spot-balloon li {
-    
+/*
   list-style: none;
+*/
+  list-style: disc;
 }
 
+/*
+#spot div.spot-balloon {
+  height: 120px;
+  text-align:left;
+  padding-top: 20px;
+  padding-left: 15px;
+}
+*/
+
 #content { width: 100%; float: left; }
-#content .wrapper { min-width: 700px; width: 700px; margin: 0 auto; }
+#content .wrapper { min-width: 700px; width: 700px; margin: 0 auto; padding-top: 1em}
 #content div.left {
   float:left;
   width:200px;
