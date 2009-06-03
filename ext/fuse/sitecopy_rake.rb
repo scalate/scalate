@@ -100,6 +100,11 @@ module Fuse #:nodoc:
           list
         end
 
+        desc "Fetches the remote site"
+        task :fetch => [:prepare] do
+          fetch
+        end
+
         task "upload_#{@site}" => [:prepare] do
           upload
         end
