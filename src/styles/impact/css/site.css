@@ -36,11 +36,12 @@ a:hover {
 	text-decoration: underline;
 	}
 
-/*
 img {
 	border: none;
-	padding-right:2em}
+/*
+	padding-right:2em
 */
+}
 
 .wrapper { min-width: 762px; width: 762px; margin: 0 auto; }
 
