@@ -10,5 +10,4 @@ sort_info: 40
 --- name:content
 
 {include_file: {filename: src/svn.include, process_output: true}}
-{include_file: {filename: src/git.include, process_output: true}}
 
