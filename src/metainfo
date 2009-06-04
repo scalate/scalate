@@ -20,13 +20,18 @@
   project_slogan: 'a great open source project!'
   project_id: 'myproject'
   project_jira_key: 'MYPROJECT'
-  project_svn_url: 'http://fusesource.com/forge/svn/myproject/trunk'
-  project_svn_branches_url: 'http://fusesource.com/forge/svn/myproject/branches'
   project_issue_url: 'http://fusesource.com/issues/browse/MYPROJECT'
-  project_maven_groupId: 'org.fusesource.myproject'
-  project_maven_artifactId: myproject
   project_forums_url: 'http://fusesource.com/forge/forums'
   project_wiki_url: 'http://fusesource.com/forge/wiki'
+
+  # -------------------------------------------------------------------
+  # TODO it would be nice to define these in terms of the project_id variable!
+  # -------------------------------------------------------------------
+  project_svn_url: 'http://fusesource.com/forge/svn/myproject/trunk'
+  project_svn_branches_url: 'http://fusesource.com/forge/svn/myproject/branches'
+  project_svn_tags_url: 'http://fusesource.com/forge/svn/myproject/tags'
+  project_maven_groupId: 'org.fusesource.myproject'
+  project_maven_artifactId: myproject
 
 blog/*/**/*:
   template: /styles/impact/blog.template

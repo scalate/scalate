@@ -1,0 +1,41 @@
+# Source Repository
+
+The *{project_name:}* project stores it's source code in a Subversion repository at:
+
+* [{project_svn_url:}]({project_svn_url:})
+
+Only project developers can commit to the Subversion repository.  We use the trunk for the next main release; then we use a branch for any bug fixes on the previous major release. You can look at a specific branch here:
+
+* [{project_svn_branches_url:}]({project_svn_branches_url:})
+
+Each release is tagged in subversion in the tags directory
+
+* [{project_svn_tags_url:}]({project_svn_tags_url:})
+
+# How To Check Out
+
+#### Using the command line
+
+Using the [Subversion executable](http://subversion.tigris.org/) you can check out the project as follows
+
+
+    svn co {project_svn_url:} {project_id:}
+    cd {project_id:}
+
+You will get prompted for a user id and password. Use the user id and password you registered with at [fusesource.com](http://fusesource.com). If have not registered yet, [register now](http://fusesource.com/register?clicked=yes).
+
+
+#### Using [Eclipse](http://www.eclipse.org/)
+
+See [this article](http://www-128.ibm.com/developerworks/library/os-ecl-subversion/index.html) for getting started guides.
+
+Basically you need to install [subclipse](http://subclipse.tigris.org)
+
+# Next steps
+
+Once you have checked out the code try following the [instructions to build {project_name:}]({relocatable: building.html}) or try reading the [documentation]({relocatable: documentation/index.html})
+
+
+
+
+
