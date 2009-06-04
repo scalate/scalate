@@ -19,6 +19,7 @@ require 'ext/fuse/sitecopy_rake.rb'
 project_id = "CHANGEME"
 
 task :default => :webgen
+task :rebuild => [:clobber, :webgen]
 task :upload => ["sitecopy:upload"]
 task :reupload => ["sitecopy:clobber", "sitecopy:upload"]
 task :deploy => ["sitecopy:clobber", :webgen, "sitecopy:upload"]
