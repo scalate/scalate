@@ -1,10 +1,13 @@
 # Source Repository
 
-The *{project_name:}* project stores it's source code in a [Git](http://git-scm.com/) repository at:
+The *{project_name:}* project stores it's source code in a [Git](http://git-scm.com/) repository.
+If you are new to git you might like to try the [git guide for subversion users](http://git.or.cz/course/svn.html) or try reading the [git community book](http://book.git-scm.com/)
+
+The git repository is here:
 
 * [git://forge.fusesource.com/{project_id:}.git](git://forge.fusesource.com/{project_id:}.git)
 
-The git repo also supports [online browsing](http://fusesource.com/forge/gitweb?p={project_id:}.git)
+You can [browse the repository online](http://fusesource.com/forge/gitweb?p={project_id:}.git) if you prefer
 
 ## How to Checkout
 
