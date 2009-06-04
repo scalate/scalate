@@ -7,7 +7,7 @@ The git repository is here:
 
 * [git://forge.fusesource.com/{project_id:}.git](git://forge.fusesource.com/{project_id:}.git)
 
-You can [browse the repository online](http://fusesource.com/forge/gitweb?p={project_id:}.git) if you prefer
+You can [browse the repository online](http://fusesource.com/forge/gitweb?p={project_id:}.git;a=tree) if you prefer
 
 ## How to Checkout
 
