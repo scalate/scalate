@@ -2,8 +2,6 @@
 
 The *{project_name:}* project stores it's source code in a [Git](http://git-scm.com/) repository at:
 
-This project can be cloned anonymously using the following URL:
-
 * [git://forge.fusesource.com/{project_id:}.git](git://forge.fusesource.com/{project_id:}.git)
 
 The git repo also supports [online browsing](http://fusesource.com/forge/gitweb?p={project_id:}.git)
