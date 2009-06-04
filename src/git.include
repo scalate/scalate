@@ -6,10 +6,6 @@ This project can be cloned anonymously using the following URL:
 
 * [git://forge.fusesource.com/{project_id:}.git](git://forge.fusesource.com/{project_id:}.git)
 
-Project members who have configured a public SSH in their [user profile](http://fusesource.com/forge/users/edit_self) can push to the repository using the following URL:
-
-* [ssh://git@forge.fusesource.com/{project_id:}.git](ssh://git@forge.fusesource.com/{project_id:}.git)
-
 The git repo also supports [online browsing](http://fusesource.com/forge/gitweb?p={project_id:}.git)
 
 ## How to Checkout
@@ -17,6 +13,17 @@ The git repo also supports [online browsing](http://fusesource.com/forge/gitweb?
 You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
 
     git clone git://forge.fusesource.com/{project_id:}.git
+    cd {project_id:}
+
+## Committer access
+
+Project members who have configured a public SSH in their [user profile](http://fusesource.com/forge/users/edit_self) can push to the repository using the following URL:
+
+* [ssh://git@forge.fusesource.com/{project_id:}.git](ssh://git@forge.fusesource.com/{project_id:}.git)
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+
+    git clone ssh://forge.fusesource.com/{project_id:}.git
     cd {project_id:}
 
 # Next steps
