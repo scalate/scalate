@@ -112,7 +112,7 @@ task :linkcheck do
   warnings = match[1]
   errors = match[2]  
   
-  puts "##teamcity[publishArtifacts 'linkerrors.html']"
+  puts "##teamcity[publishArtifacts 'webgen/linkerrors.html']"
   
   if has_value(warnings)
     puts "##teamcity[errorDetails='Link check found #{warnings} warnings. See linkerrors.html' status='WARNING']"
