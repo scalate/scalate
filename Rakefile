@@ -100,19 +100,24 @@ task :linkcheck do
   puts htmlcmd
   system htmlcmd
 
+  puts "##teamcity[publishArtifacts 'webgen/linkerrors.html']"
+  
   puts ''
   puts 'Starting link checking'
   system "linkchecker #{params} > linkerrors.log"
 
 
-  pat = /.* (\d+) warnings found.* (\d+) errors found.*/
+  pat = /.* (\d+) warnings? found.* (\d+) errors? found.*/
   text = File.read("linkerrors.log")
   match = pat.match(text)
 
+  if match == nil
+    puts "##teamcity[buildStatus status='FAILURE' text='LinkChecker failed to find the number of warnings and errors in linkerrors.log. See build artifact: linkerrors.html']"
+    exit
+  end
+  
   warnings = match[1]
   errors = match[2]  
-  
-  puts "##teamcity[publishArtifacts 'webgen/linkerrors.html']"
   
   if has_value(warnings)
     puts "##teamcity[errorDetails='LinkChecker found some bad HTML links! #{warnings} warnings. See build artifact: linkerrors.html' status='WARNING']"
