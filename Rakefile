@@ -22,7 +22,7 @@ task :default => :webgen
 task :rebuild => [:clobber, :webgen]
 task :upload => ["sitecopy:upload"]
 task :reupload => ["sitecopy:clobber", "sitecopy:upload"]
-task :deploy => ["sitecopy:clobber", :webgen, "sitecopy:upload"]
+task :deploy => ["sitecopy:clobber", :webgen, "sitecopy:upload", :linkcheck]
 task :auto => :auto_webgen
 
 Webgen::WebgenTask.new do |website|
@@ -90,3 +90,15 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
     
 SITECOPYRC
 
+desc "checks the links on the deployed site"
+task :linkcheck do
+  puts 'Generating linkerrors.html file using the linkchecker executable from (http://linkchecker.sourceforge.net)'
+  
+  htmlcmd = "linkchecker -o html --ignore-url=^git --ignore-url=^ssh http://#{project_id}.fusesource.org/ > linkerrors.html"
+  puts htmlcmd
+  system htmlcmd
+
+  puts ''
+  puts 'Starting link checking'
+  sh "linkchecker --ignore-url=^git --ignore-url=^ssh http://#{project_id}.fusesource.org/"
+end
