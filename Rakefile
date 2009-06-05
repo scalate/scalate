@@ -115,13 +115,13 @@ task :linkcheck do
   puts "##teamcity[publishArtifacts 'webgen/linkerrors.html']"
   
   if has_value(warnings)
-    puts "##teamcity[errorDetails='Link check found #{warnings} warnings. See linkerrors.html' status='WARNING']"
+    puts "##teamcity[errorDetails='LinkChecker found some bad HTML links! #{warnings} warnings. See build artifact: linkerrors.html' status='WARNING']"
   end
   if has_value(errors)
-    puts "##teamcity[errorDetails='Link check found #{errors} errors. See linkerrors.html' status='FAILURE']"
+    puts "##teamcity[errorDetails='LinkChecker found some bad HTML links! #{errors} errors. See build artifact: linkerrors.html' status='FAILURE']"
   end
   if has_value(warnings) or has_value(errors) 
-    puts "##teamcity[buildStatus status='FAILURE' text='Link check found #{warnings} warnings and #{errors} errors. See linkerrors.html']"
+    puts "##teamcity[buildStatus status='FAILURE' text='LinkChecker found some bad HTML links! #{warnings} warnings and #{errors} errors. See build artifact: linkerrors.html']"
     exit 1
   end
 end
