@@ -21,8 +21,8 @@
   project_id: 'myproject'
   project_jira_key: 'MYPROJECT'
   project_issue_url: 'http://fusesource.com/issues/browse/MYPROJECT'
-  project_forums_url: 'http://fusesource.com/forge/forums'
-  project_wiki_url: 'http://fusesource.com/forge/wiki'
+  project_forums_url: 'http://fusesource.com/forums'
+  project_wiki_url: 'http://fusesource.com/wiki/display/MYPROJECT'
 
   # -------------------------------------------------------------------
   # TODO it would be nice to define these in terms of the project_id variable!
