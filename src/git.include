@@ -5,7 +5,7 @@ If you are new to git you might like to try the [git guide for subversion users]
 
 The git repository is here:
 
-* *git://forge.fusesource.com/{project_id:}.git*
+* <b>git://forge.fusesource.com/{project_id:}.git</b>
 
 You can [browse the repository online](http://fusesource.com/forge/gitweb?p={project_id:}.git;a=tree) if you prefer
 
@@ -20,7 +20,7 @@ You must first install a [Git client](http://git-scm.com/download). Then you clo
 
 Project members who have configured a public SSH in their [user profile](http://fusesource.com/forge/users/edit_self) can push to the repository using the following URL:
 
-* *ssh://git@forge.fusesource.com/{project_id:}.git*
+* <b>ssh://git@forge.fusesource.com/{project_id:}.git</b>
 
 You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
 
