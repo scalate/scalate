@@ -90,15 +90,42 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
     
 SITECOPYRC
 
+
 desc "checks the links on the deployed site"
 task :linkcheck do
   puts 'Generating linkerrors.html file using the linkchecker executable from (http://linkchecker.sourceforge.net)'
-  
-  htmlcmd = "linkchecker -o html --ignore-url=^git --ignore-url=^ssh http://#{project_id}.fusesource.org/ > linkerrors.html"
+
+  params = "--ignore-url=\"(http://localhost|^git|^ssh|^mailto)\" http://#{project_id}.fusesource.org/"
+  htmlcmd = "linkchecker -o html #{params} > linkerrors.html"
   puts htmlcmd
   system htmlcmd
 
   puts ''
   puts 'Starting link checking'
-  sh "linkchecker --ignore-url=^git --ignore-url=^ssh http://#{project_id}.fusesource.org/"
+  system "linkchecker #{params} > linkerrors.log"
+
+
+  pat = /.* (\d+) warnings found.* (\d+) errors found.*/
+  text = File.read("linkerrors.log")
+  match = pat.match(text)
+
+  warnings = match[1]
+  errors = match[2]  
+  
+  puts "##teamcity[publishArtifacts 'linkerrors.html']"
+  
+  if has_value(warnings)
+    puts "##teamcity[errorDetails='Link check found #{warnings} warnings. See linkerrors.html' status='WARNING']"
+  end
+  if has_value(errors)
+    puts "##teamcity[errorDetails='Link check found #{errors} errors. See linkerrors.html' status='FAILURE']"
+  end
+  if has_value(warnings) or has_value(errors) 
+    puts "##teamcity[buildStatus status='FAILURE' text='Link check found #{warnings} warnings and #{errors} errors. See linkerrors.html']"
+    exit 1
+  end
+end
+
+def has_value(text)
+  text != nil and text != "" and text != "0"
 end
