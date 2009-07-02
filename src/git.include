@@ -24,7 +24,7 @@ Project members who have configured a public SSH in their [user profile](http://
 
 You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
 
-    git clone ssh://forge.fusesource.com/{project_id:}.git
+    git clone ssh://git@forge.fusesource.com/{project_id:}.git
     cd {project_id:}
 
 # Next steps
