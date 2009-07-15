@@ -1,0 +1,58 @@
+---
+title: Contributing
+in_menu: false
+--- name:overview
+
+# How to contribute to {project_name:}
+We love contributions!
+
+--- name:content
+We really want you to get involved in the {project_name:} project, to [join the community](community.html) and help make it a better price of software - please do dive in and help!
+
+Try surf the [documentation](documentation/index.html) and website in general - if somethings confusing or not clear, [let us know](community.html) or raise a [support request](support.html).  
+
+[Download](download.html) the code and try it out and see what you think. Browse the [source code](source.html). Got an itch to scratch, want to tune some operation or add some feature?
+
+Want to do some hacking on the {project_name:} code? Try surfing the our <a href="{project_issue_url:}">Issue Tracker</a> for open issues or features that need to be implemented, take ownership of an issue and try fix it.
+
+## Improving the documentation
+
+Documentation is massively important to help users make the most of {project_name:} and its probably the area that needs the most help!
+
+So if you are interested in helping the documentation effort; whether its just to fix a page here or there, correct a link or even write a tutorial or improve what documentation is already there please do dive in and help\!
+
+All of the documentation is stored in a GIT repo, see [How the Site works](site.html)
+
+## If you find a bug or problem
+
+Please raise a new issue in our <a href="{project_issue_url:}">Issue Tracker</a>. If you can create a JUnit test case then your issue is more likely to be resolved quicker. Then we can add your issue to our [source control system](source.html) and then we'll know when its really fixed and we can ensure that the problem stays fixed in future releases.
+
+## Working on the code and creating patches
+
+We gladly accept patches if you can find ways to improve, tune or fix {project_name:} in some way.
+
+Grab the [source](source.html) and then [build it](building.html) - then start hacking on your patch.
+
+Most IDEs can create nice patches now very easily. e.g. in Eclipse just right click on a file/directory and select Team -> Create Patch. Then just save the patch as a file and then submit it. (You may have to click on Team \-> Share... first to enable the Subversion options). Incidentally if you are an Eclipse user you should install the [subclipse](http://subclipse.tigris.org/) plugin.
+
+If you're a command line person try the following to create the patch
+
+    diff -u Main.java.orig Main.java >> patchfile.txt
+
+or
+
+    svn diff Main.java >> patchfile.txt
+
+or
+
+    git diff Main.java >> patchfile.txt    
+    
+## Submitting patches
+
+The easiest way to submit a patch is to
+* [Create a new Issue in the Issue Tracker]({project_issue_url:}) (you will need to register but its quick and painless)
+* attach the patch or tarball as an attachment
+* *tick the Patch Attached* button on the issue
+* fire off an email to the [Community](community.html) linking to the issue
+
+When a ticket is created in JIRA it automatically sends an email to the [commit mailing list](community.html) but an email always helps alert folks (as lots of emails are generated from every change to every JIRA).
