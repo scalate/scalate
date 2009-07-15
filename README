@@ -48,5 +48,10 @@ Deploying:
 
     rake upload
     
+To see how to use Continuous Integration with this build see:
+http://fusesource.com/wiki/display/FUSEFORGE/Deploy+Webgen+Sites+using+Continuous+Integration
+
+
+
 
 
