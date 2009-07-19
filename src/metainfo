@@ -23,6 +23,7 @@
   project_issue_url: 'http://fusesource.com/issues/browse/MYPROJECT'
   project_forums_url: 'http://fusesource.com/forums'
   project_wiki_url: 'http://fusesource.com/wiki/display/MYPROJECT'
+  project_logo: "/images/project-logo.gif"
 
   # -------------------------------------------------------------------
   # TODO it would be nice to define these in terms of the project_id variable!

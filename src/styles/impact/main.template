@@ -30,9 +30,11 @@ template: ~
 <% if context.node.node_info[:page].blocks.has_key?('overview') %>
   <div id="overview">
     <div class="wrapper">
+      <% if context.node.node_info[:page].meta_info.has_key?('project_logo') %>
       <div class="logo">
-        <img src="{relocatable:/images/project-logo.gif}"/>
+        <img src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}"/>
       </div>
+      <% end %>
       <div class="message">
         <webgen:block name='overview' />
       </div>
