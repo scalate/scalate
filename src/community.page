@@ -47,3 +47,7 @@ The commit list is notified of all changes to the source code or changes to [iss
     <td><a href="mailto:{project_id:}-commits-unsubscribe@fusesource.org">{project_id:}-commits-unsubscribe@fusesource.org</a></td>
   </tr>
 </table>
+
+# Forums
+
+You can also join us on the <a href="{project_forums_url:}">Discussion Forums</a>

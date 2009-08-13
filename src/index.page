@@ -34,13 +34,13 @@ sort_info: 1
     <h2>Get Involved</h2>  
 	    <div class='spot-balloon'>
 	      <ul>
-	        <li><a href="{project_forums_url:}">Forums</a></li>
+	        <li><a href="{relocatable: /community.html}">Discussions</a></li>
 	        <li><a href="{project_issue_url:}">Issue Tracker</a></li>
 	        <li><a href="{project_wiki_url:}">Wiki</a></li>
 	        <li><a href="{relocatable: /source.html}">Source Code</a></li>
 	      </ul>
 	    </div>
-	    <a class='main' href='{project_forums_url:}'>
+	    <a class='main' href='{relocatable: /community.html}'>
   	    Join the community!
 	    </a>
     </td>
