@@ -20,7 +20,7 @@ You can download *{project_name:}* from the [FUSE Forge Maven Repository](http:/
 # Are you a Maven User?
 </div>
 <div class="right" markdown="1">
-Just the following to your *pom.xml*
+Just add the following to your *pom.xml*
 </div> 
 <div class="right">
 {coderay:: xml}<dependency>
@@ -31,7 +31,7 @@ Just the following to your *pom.xml*
 {coderay}
 </div>
 <div class="right" markdown="1">
-You you should ensure you have the fusesource.com Maven repository defined in your *pom.xml*</div> 
+You should ensure you have the fusesource.com Maven repository defined in your *pom.xml*</div> 
 <div class="right">
 {coderay:: xml}  <repositories>
    <repository>
