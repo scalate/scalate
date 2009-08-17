@@ -5,7 +5,7 @@ sort_info: 5
 --- name:overview
 
 # {project_name:}
-Download it Today!
+Download it today!
 
 --- name:content
 
@@ -13,7 +13,7 @@ Download it Today!
 # Just need a distro?
 </div>
 <div class="right" markdown="1">
-You can download *{project_name:}* from the [FuseForge Maven Repository](http://repo.fusesource.com/maven2) in the [{project_name:} area](http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/).
+You can download *{project_name:}* from the [FUSE Forge Maven Repository](http://repo.fusesource.com/maven2) in the [{project_name:} area](http://repo.fusesource.com/maven2/org/fusesource/{project_id:}/).
 </div>
 
 <div class="left" markdown="1">
@@ -31,7 +31,7 @@ Just the following to your *pom.xml*
 {coderay}
 </div>
 <div class="right" markdown="1">
-You you should ensure you have the FuseSource maven repository defined in your *pom.xml*</div> 
+You you should ensure you have the fusesource.com Maven repository defined in your *pom.xml*</div> 
 <div class="right">
 {coderay:: xml}  <repositories>
    <repository>

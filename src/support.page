@@ -8,11 +8,11 @@ sort_info: 55
 We can help!
 
 --- name:content pipeline:textile,tags
-You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/enterprise-support/ from "FuseSource":http://fusesource.com/ - please do <a href="http://fusesource.com/contact">get in touch</a> we'd love to help!
+You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/enterprise-support/ from "fusesource.com":http://fusesource.com/ - please do <a href="http://fusesource.com/contact">get in touch</a> we'd love to help!
 
 You may also find the "Frequently Asked Questions (FAQ)":documentation/faq.html useful.
 
-We love feedback of all kinds; whether its thoughts, ideas or if you hit some issue. To submit feedback please use the <a href="{project_issue_url:}">{project_name:} Issue Tracker</a>
+We love feedback of all kinds; whether it's thoughts, suggestions, or bug reports. To submit feedback please use the <a href="{project_issue_url:}">{project_name:} Issue Tracker</a>.
 
 
 h3. See Also
