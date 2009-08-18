@@ -1,4 +1,7 @@
-# -*- ruby -*-
+# NOTE - YOU MUST EDIT THE CHANGEME LINE BELOW!!!
+#
+#
+## -*- ruby -*-
 #
 # This is a sample Rakefile to which you can add tasks to manage your website. For example, users
 # may use this file for specifying an upload task for their website (copying the output to a server
@@ -11,11 +14,13 @@
 require 'webgen/webgentask'
 require 'webgen/website'
 
-# TODO couldn't figure out how to use the autoload stuff! :)
+# couldn't figure out how to use the autoload stuff! :)
 require 'ext/fuse/sitecopy_rake.rb'
 
 # TODO must change this to the actual project!
 # one day it would be nice to find this from the src/metainfo file
+#
+# NOTE this file is the lower case name used to find the WebDAV location!!
 project_id = "CHANGEME"
 
 task :default => :webgen
