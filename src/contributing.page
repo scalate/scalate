@@ -56,3 +56,13 @@ The easiest way to submit a patch is to
 * fire off an email to the [Community](community.html) linking to the issue
 
 When a ticket is created in JIRA it automatically sends an email to the [commit mailing list](community.html) but an email always helps alert folks (as lots of emails are generated from every change to every JIRA).
+
+## Becoming a committer
+
+Once you have made some good contributions you may be invited to become a committer by the project team. 
+
+Before you can become a committer you need to sign and submit the [Forge ICLA](http://fusesource.com/forge/icla_info) to ensure that the IP is clean on each project. This page will allow you to review the terms of the FUSE Forge Individual Contributor License Agreement. 
+
+Upon acceptance, please print, sign, and fax to <b>+1 781-998-2403</b>. You can also email the executed agreement to [fusecla@progress.com](mailto:fusecla@progress.com?subject=Here%20is%20my%20ICLA&amp;body=See%20attached%20file). 
+
+Once received your user id will be granted privileged access to the Forge allowing you to propose projects and be accepted as a committer on existing projects.
