@@ -20,3 +20,16 @@ module Fuse
 
 
 end
+
+#
+# Custom HAML filter which is like the plain filter, 
+# but which also does not indent the block.
+#
+require 'haml'
+module Haml::Filters::Raw
+  include Haml::Filters::Base
+  def render_with_options(text, options) 
+    options[:ugly]=true
+    text
+  end
+end
