@@ -151,5 +151,6 @@ Changes
 * added [Maven](http://maven.apache.org) build and experimental [sbt](http://code.google.com/p/simple-build-tool/) build
 * fixed issue where SSPs would not be recompiled if an error occurred compiling between application restarts
 * fixed so it works in jetty-run and other servlet contexts; so we can reuse the ClassLoader if its a URLClassLoader
-* added a PageContext so we can add helper methods like this to look up attributes in a typesafe way
+* added a PageContext so we can add helper methods like this to look up attributes or resources beans in a typesafe way
+* updated the name mangling so that when using SSP views for JAXRS resource beans there's no need to import the package of the resource bean (as the SSP is generated in a child package)
 

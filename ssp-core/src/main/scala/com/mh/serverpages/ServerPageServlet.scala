@@ -87,7 +87,9 @@ abstract class ServerPageServlet extends HttpServlet
           compiledPages += (uri -> newPage)
           newPage
         case 'LoadPrebuilt =>
-          val servlet = instantiateServlet(codeGenerator.buildClassName(uri), bytecodeDirectory)
+          val className = codeGenerator.buildClassName(uri)
+          println("Compling class name: " + className)
+          val servlet = instantiateServlet(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri //TODO: omits resources that 'uri' includes
           val newPage = new CompiledPage(servlet, timestamp, dependencies)
           compiledPages += (uri -> newPage)

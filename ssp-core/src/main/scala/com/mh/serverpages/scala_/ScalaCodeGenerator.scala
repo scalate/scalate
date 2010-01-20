@@ -127,8 +127,19 @@ class ScalaCodeGenerator extends CodeGenerator
     val matcher = ScalaCodeGenerator.SPLIT_ON_LAST_SLASH_REGEX.matcher( normalizedURI.toString )
     if( matcher.matches == false )  throw new ServerPageException( "Internal error: unparseable URI [" + uri + "]" )
 
+    // Construct package & class names e.g.,
+    //   /foo/public/123.ssp --> package "foo.public._serverpages" and classname "_123_ssp"
+    //
+    // if we have a real class name in the path (such as with JAXRS and implicit views then we munge like this
+    //  /foo/bar/SomeClass/index.ssp -> package "foo.bar._serverpages.SomeClass and class _index_ssp
+    //
+    val firstAttempt = matcher.group( 1 ).replaceAll( "[^A-Za-z0-9_/]", "_" ).replaceAll( "^/", "" ).replaceAll( "/", "." ).replaceFirst("\\.([A-Z])", "._serverpages.$1")
+    val packageName = if (firstAttempt.contains("._serverpages")) { firstAttempt } else { firstAttempt + "._serverpages"}
+
+    /** old way
     // Construct package & class names (e.g., /foo/public/123.ssp --> package "_foo._public" and classname "_123_ssp").
     val packageName = matcher.group( 1 ).replaceAll( "[^A-Za-z0-9_/]", "_" ).replaceAll( "^/", "_" ).replaceAll( "/", "._" )
+    */
     val className = "_" + matcher.group( 2 ).replace( '.', '_' )
 
     (packageName, className)

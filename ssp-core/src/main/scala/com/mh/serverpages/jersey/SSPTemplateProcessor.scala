@@ -51,16 +51,16 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
       return if (servletContext.getResource(path) == null) {
         val sspPath = path + ".ssp"
         if (servletContext.getResource(sspPath) == null) {
-          println("WARN: No template found for path '" + path + "' or '" + sspPath + "'")
+          //println("WARN: No template found for path '" + path + "' or '" + sspPath + "'")
           null
         }
         else {
-          println("Found template for path '" + sspPath + "'")
+          //println("Found template for path '" + sspPath + "'")
           sspPath
         }
       }
       else {
-        println("Found template for path '" + path + "'")
+        //println("Found template for path '" + path + "'")
         path
       }
     } catch {
@@ -74,8 +74,6 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
   def writeTo(resolvedPath: String, model: AnyRef, out: OutputStream): Unit = {
     out.flush();
 
-    println("Writing from dispatcher: " + resolvedPath)
-
     val dispatcher = servletContext.getRequestDispatcher(resolvedPath);
     if (dispatcher == null) {
       throw new ContainerException("No request dispatcher for: " + resolvedPath);
@@ -83,7 +81,6 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
 
     val wrapper = new RequestDispatcherWrapper(dispatcher, basePath, hc, model);
     try {
-      println("Have dispatcher: " + wrapper)
       wrapper.forward(request, response);
       //wrapper.forward(requestInvoker.get(), responseInvoker.get());
     } catch {

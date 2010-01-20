@@ -4,7 +4,7 @@
 
 <p>Hello from a FooResource!</p>
 
-<% val it = resource[com.mh.serverpages.sample.resources.FooResource] %>
+<% val it = resource[FooResource] %>
 
 <p>FooResource is ${it}</p>
 

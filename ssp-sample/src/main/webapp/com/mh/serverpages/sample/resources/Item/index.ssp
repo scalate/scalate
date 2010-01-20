@@ -4,7 +4,7 @@
 
 <p>Hello from a Item!</p>
 
-<% val it = resource[com.mh.serverpages.sample.resources.Item]; import it._ %>
+<% val it = resource[Item]; import it._ %>
 
 <p>The item id is <b>${id}</b></p>
 <p>The item name is <b>${name}</b></p>
