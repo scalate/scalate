@@ -26,6 +26,49 @@ There is no support for tag libraries, EL, or anything like JSTL.
 Requires a Java 5 runtime and a servlet 2.5 container, or newer.
 
 
+Variables
+---------
+
+The following variables are in scope inside your page
+
+<table>
+  <tr>
+    <th>Variable & Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>out : PrintWriter</td>
+    <td>the printer of the output</td>
+  </tr>
+  <tr>
+    <td>request: HttpServletRequest</td>
+    <td>the servlet request</td>
+  </tr>
+  <tr>
+    <td>response: HttpServletResponse</td>
+    <td>the servlet response</td>
+  </tr>
+</table>
+
+Working with attributes
+-----------------------
+
+You often want to bind to attributes registered in the servlet, controller, JAXRS Resource bean.
+Here's how you can do that in a typesafe way
+
+    val foo = attribute[Cheese]("blah") // throws exception if not available
+
+    val bar = attributeOrElse("bar", "someDefaultValueExpressionHere") // uses default if not present
+
+You can reuse all the power of scala in your expressions. So if you have a controller or attribute available
+you may wish to import its fields & methods so you can use them in your SSP file.
+
+    <% val controller = attribute[MyController]("someName"); import controller._ %>
+
+Or you could simplify that with
+
+    <% import attribute[MyController]("someName")._ %>
+
 Building
 --------
 
@@ -87,5 +130,3 @@ Changes
 * fixed so it works in jetty-run and other servlet contexts; so we can reuse the ClassLoader if its a URLClassLoader
 * added a PageContext so we can add helper methods like this to look up attributes in a typesafe way
 
-    val foo = attribute[Cheese]("whatnot")
-    val bar = attributeOrElse("blah", someDefaultValue)
