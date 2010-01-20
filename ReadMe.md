@@ -71,9 +71,26 @@ you may wish to import its fields & methods so you can use them in your SSP file
 
     <% val controller = attribute[MyController]("someName"); import controller._ %>
 
-Or you could simplify that with
 
-    <% import attribute[MyController]("someName")._ %>
+Working with JAX-RS
+-------------------
+
+When working with the [Jersey](https://jersey.dev.java.net/) implementation of JAX-RS you can use template engines as implicit views of your resources.
+
+To do this just add the @ImplicitProduces annotation to your resource bean, then create a SSP file called "index.ssp"
+in a directory named after the fully qualified resource class name.
+
+For example if your resource bean is called com.mh.serverpages.sample.resources.FooResource then create a file in your webapp called
+com/mh/serverpages/sample/resources/FooResource/index.ssp
+
+In your SSP you can refer to the resource bean as follows
+
+    <% val it = resource[FooResource] %>
+
+You often want to import all the methods and fields from the resource bean so you can do this
+
+    <% val it = resource[FooResource]; import it._ %>
+    
 
 Building
 --------

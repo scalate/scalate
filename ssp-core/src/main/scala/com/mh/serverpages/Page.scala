@@ -12,6 +12,8 @@ class NoSuchAttributeException(val attribute:String) extends ServletException("N
  */
 case class PageContext(out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse) {
 
+  private val resourceBeanAttribute = "it"
+
   /**
    * Returns the attribute of the given type or a {@link NoSuchAttributeException} exception is thrown
    */
@@ -26,7 +28,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Returns the attribute of the given name and type or the default value specified
+   * Returns the attribute of the given name and type or the default value if it is not available
    */
   def attributeOrElse[T](name: String, defaultValue: T): T = {
     val value = request.getAttribute(name)
@@ -36,6 +38,20 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
     else {
       defaultValue
     }
+  }
+
+  /**
+   * Returns the JAXRS resource bean of the given type or a {@link NoSuchAttributeException} exception is thrown
+   */
+  def resource[T]: T = {
+    attribute[T](resourceBeanAttribute)
+  }
+
+  /**
+   * Returns the JAXRS resource bean of the given type or the default value if it is not available
+   */
+  def resourceOrElse[T](defaultValue: T): T = {
+    attributeOrElse(resourceBeanAttribute, defaultValue)
   }
 }
 
