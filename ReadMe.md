@@ -104,7 +104,7 @@ To run the sample web application
     cd ssp-sample
     mvn jetty:run
 
-Then open [http://localhost:8080]
+Then open [the sample home page](http://localhost:8080)
 
 
 ADDING SSP SUPPORT TO YOUR APPLICATION
