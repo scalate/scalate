@@ -1,0 +1,33 @@
+<%
+import com.mh.serverpages.sample.Foo
+import java.util.Date
+
+val foo = attribute[Foo]("foo")
+val timestamp = attribute[Date]("timestamp")
+%>
+
+<%-- This is a comment --%>
+
+<h1>Test Scala Server Page</h1>
+
+<p>
+  This test page displays data passed from a servlet.
+</p>
+
+<p>
+  The foo is: ${foo}
+</p>
+
+<p>
+  The current time is: ${timestamp}
+</p>
+
+<p>
+  Your HTTP request included the following headers:
+</p>
+
+<ul>
+  <% foo.requestHeaders.foreach { header => %>
+  <li>${header}</li>
+  <% } %>
+</ul>

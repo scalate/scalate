@@ -1,8 +1,0 @@
-<html>
-<%
-  import com.mh.serverpages.sample.Snippets._
-%>
-<body>
-<%= cheese %>
-</body>
-</html>

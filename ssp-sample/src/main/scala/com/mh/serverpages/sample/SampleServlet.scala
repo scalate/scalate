@@ -26,20 +26,23 @@ import scala.compat.Platform
 
 class SampleServlet extends HttpServlet
 {
-
-  override def doGet( request: HttpServletRequest, response: HttpServletResponse ): Unit = {
+  override def doGet(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     // Perform the business logic
     var headerNames = Set.empty[String]
     val iterator = request.getHeaderNames
-    while( iterator.hasMoreElements )
+    while (iterator.hasMoreElements)
       headerNames += iterator.nextElement.toString
 
     // Attach a model representing the result to the request object
-    request.setAttribute( "foo", new Foo( request.getPathInfo, headerNames ) )
-    request.setAttribute( "timestamp", new Date( Platform.currentTime ) )
+    request.setAttribute("foo", new Foo(request.getPathInfo, headerNames))
+    request.setAttribute("timestamp", new Date(Platform.currentTime))
 
     // Delegate response rendering to the SSP
-    request.getRequestDispatcher( "/WEB-INF/ssp/foo.ssp" ).forward( request, response )
+
+    val ssp = "/WEB-INF/ssp/servlet.ssp"
+    println("Now forwarding to SSP: " + ssp)
+
+    request.getRequestDispatcher(ssp).forward(request, response)
   }
 
 }

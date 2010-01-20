@@ -8,17 +8,13 @@
 
 <p>FooResource is ${it}</p>
 
-<p>
-  Attributes
-  <ul>
-  <%
-      val e = request.getAttributeNames
-      while (e.hasMoreElements) {
-  %>
-    <li>${e.nextElement}</li>
-  <% } %>
-  </ul>
-</p>
+
+<h2>Items</h2>
+
+<% import Snippets._ %>
+
+${itemLink("abc", "ItemABC")}
+${itemLink("def", "ItemDEF")}
 
 </body>
 </html>

@@ -1,0 +1,43 @@
+<html>
+<body>
+
+<h1>Scala Server Pages</h1>
+
+<p>
+  Welcome to Scala Server Pages. Try surfing some of the examples below
+</p>
+
+<h2>SSP Samples</h2>
+
+<ul>
+  <li>
+    <a href="/scala/standalone.ssp">simple</a>
+  </li>
+  <li>
+    <a href="/scala/snippet.ssp">invoke a snippet implemented in scala code</a>
+  </li>
+  <li>
+    <a href="/sampleServlet">servlet sample</a>
+  </li>
+</ul>
+
+
+
+<h2>JAXRS Samples</h2>
+
+<ul>
+  <li>
+    <a href="/foo">FooResource</a>
+  </li>
+  <li>
+    <a href="/foo/abc">Item ABC</a> a child resource
+  </li>
+  <li>
+    <a href="/foo/def">Item DEF</a> a child resource
+  </li>
+</ul>
+
+</body>
+
+</html>
+

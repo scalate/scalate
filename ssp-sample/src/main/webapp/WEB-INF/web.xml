@@ -28,7 +28,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|.+\.ssp|(/(images|css|ssp)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.ssp|(/(images|css|ssp)/.*)</param-value>
     </init-param>
   </filter>
 
@@ -62,8 +62,11 @@
 
   <servlet-mapping>
     <servlet-name>SampleServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/sampleServlet</url-pattern>
   </servlet-mapping>
   <!-- END: Sample servlets -->
 
+  <welcome-file-list>
+    <welcome-file>index.ssp</welcome-file>
+  </welcome-file-list>
 </web-app>
