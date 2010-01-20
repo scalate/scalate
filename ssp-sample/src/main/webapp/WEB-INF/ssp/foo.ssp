@@ -34,3 +34,20 @@
 <p>
   The pathinfo was: ${foo.pathInfo}
 </p>
+
+
+<h2>JAXRS Samples</h2>
+
+<p>To see SSP being used with JAXRS try one of these</p>
+
+        <ul>
+<li>
+  <a href="/foo">FooResource</a>
+</li>
+<li>
+  <a href="/foo/abc">Item ABC</a> a child resource
+</li>
+<li>
+  <a href="/foo/def">Item DEF</a> a child resource
+</li>
+        </ul>

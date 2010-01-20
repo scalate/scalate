@@ -1,4 +1,4 @@
-package com.mh.serverpages.resources
+package com.mh.serverpages.sample.resources
 
 import com.sun.jersey.api.view.ImplicitProduces
 import javax.ws.rs.{Produces, GET, Path, PathParam}
