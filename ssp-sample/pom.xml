@@ -91,6 +91,17 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/src/main/webapp/WEB-INF/_serverpages</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      
 
       <plugin>
         <groupId>org.mortbay.jetty</groupId>

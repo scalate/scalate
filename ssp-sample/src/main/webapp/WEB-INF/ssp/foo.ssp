@@ -1,9 +1,9 @@
 <%
-  import com.mh.serverpages.sample._
+  import com.mh.serverpages.sample.Foo
   import java.util.Date
 
-  val foo = request.getAttribute( "foo" ).asInstanceOf[Foo]
-  val timestamp = request.getAttribute( "timestamp" ).asInstanceOf[Date]
+  val foo = attribute[Foo]("foo")
+  val timestamp = attribute[Date]("timestamp")
 %>
 
 <%-- This is a comment --%>
@@ -12,6 +12,10 @@
 
 <p>
   This test page displays data passed from a servlet.  Browsers can also <a href="scala/standalone.ssp">request SSPs directly</a>.
+</p>
+
+<p>
+  The foo is: ${foo}
 </p>
 
 <p>

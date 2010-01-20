@@ -18,4 +18,4 @@
 package com.mh.serverpages.sample
 
 
-class Foo( val pathInfo: String, val requestHeaders: Set[String] )
+case class Foo( val pathInfo: String, val requestHeaders: Set[String] )

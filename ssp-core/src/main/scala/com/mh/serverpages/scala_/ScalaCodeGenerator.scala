@@ -66,7 +66,9 @@ private object ScalaCodeGenerator
       "\n" +
       """class _CLASSNAME_ extends Page {""" + "\n" +
       """  override def service( request: HttpServletRequest, response: HttpServletResponse ): Unit = {""" + "\n" +
-      """    val out = new java.io.PrintWriter( new java.io.OutputStreamWriter( response.getOutputStream, "UTF-8" ) )""" + "\n"
+      """    val out = new java.io.PrintWriter( new java.io.OutputStreamWriter( response.getOutputStream, "UTF-8" ) )""" + "\n" +
+      """    val pageContext = createPageContext(out, request, response)""" + "\n" +
+      """    import pageContext._""" + "\n"
 
   val CODE_SUFFIX =
       "\n" +

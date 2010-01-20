@@ -58,30 +58,32 @@ class ScalaCompiler extends Compiler
 
   private def buildClassPath( servletConfig: ServletConfig ): String = {
     val classLoader = getClass.getClassLoader
-    println("class loader is " + classLoader + " of type " + classLoader.getClass)
-    classLoader match {
+
+    // lets use the files on the URLClassLoader if we have one
+    val classLoaderList = classLoader match {
       case u: URLClassLoader =>
-        u.getURLs.map{ _.getFile}.mkString(":")
+        List(u.getURLs.map{ _.getFile})
 
-      case _ =>
-        // Always include WEB-INF/classes and all the JARs in WEB-INF/lib
-        val classesDirectory = servletConfig.getServletContext.getRealPath( "/WEB-INF/classes" )
-        val libDirectory = servletConfig.getServletContext.getRealPath( "/WEB-INF/lib" )
-        val jars = findFiles( new File( libDirectory ) ).map { _.toString }
-
-        // Allow adding a classpath prefix & suffix via web.xml
-        val prefix = servletConfig.getInitParameter( "compiler.classpath.prefix" ) match {
-          case null => Nil
-          case path: String => List(path)
-        }
-        val suffix = servletConfig.getInitParameter( "compiler.classpath.suffix" ) match {
-          case null => Nil
-          case path: String => List(path)
-        }
-
-        // Put the pieces together
-        ( prefix ::: classesDirectory :: jars ::: suffix ::: Nil ).mkString( ":" )
+      case _ => Nil
     }
+
+    // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
+    val classesDirectory = servletConfig.getServletContext.getRealPath( "/WEB-INF/classes" )
+    val libDirectory = servletConfig.getServletContext.getRealPath( "/WEB-INF/lib" )
+    val jars = findFiles( new File( libDirectory ) ).map { _.toString }
+
+    // Allow adding a classpath prefix & suffix via web.xml
+    val prefix = servletConfig.getInitParameter( "compiler.classpath.prefix" ) match {
+      case null => Nil
+      case path: String => List(path)
+    }
+    val suffix = servletConfig.getInitParameter( "compiler.classpath.suffix" ) match {
+      case null => Nil
+      case path: String => List(path)
+    }
+
+    // Put the pieces together
+    ( prefix ::: classLoaderList ::: classesDirectory :: jars ::: suffix ::: Nil ).mkString( ":" )
   }
 
 
