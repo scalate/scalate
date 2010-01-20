@@ -4,5 +4,7 @@ package
 *~
 *.swp
 .idea
+.idea/*
+*.iml
 target
 lib_managed
