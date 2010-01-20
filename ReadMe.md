@@ -37,6 +37,10 @@ The following variables are in scope inside your page
     <th>Description</th>
   </tr>
   <tr>
+    <td>pageContext : PageContext</td>
+    <td>the page context which is imported to provide helper methods like attribute() as described belowt</td>
+  </tr>
+  <tr>
     <td>out : PrintWriter</td>
     <td>the printer of the output</td>
   </tr>
@@ -81,7 +85,7 @@ To run the sample web application
     cd ssp-sample
     mvn jetty:run
 
-Then open http://localhost:8080
+Then open [http://localhost:8080]
 
 
 ADDING SSP SUPPORT TO YOUR APPLICATION
