@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4"
-         xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
 
   <display-name>Sample</display-name>
 
@@ -10,34 +10,60 @@
     Server Pages - Sample
   </description>
 
+  <!-- START: JAX RS config -->
+  <filter>
+    <filter-name>Jersey Filter</filter-name>
+    <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.feature.Redirect</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.feature.ImplicitViewables</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.mh.serverpages.resources</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+      <param-value>/|.+\.ssp|(/(images|css|ssp)/.*)</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Jersey Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- END: JAX RS config -->
+
+
+  <!-- START: SSP config -->
+  <servlet>
+    <servlet-name>SspServlet</servlet-name>
+    <servlet-class>com.mh.serverpages.scala_.ScalaServerPageServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SspServlet</servlet-name>
+    <url-pattern>*.ssp</url-pattern>
+  </servlet-mapping>
+  <!-- END: SSP config -->
+
+
+  <!-- START: Sample servlets -->
   <servlet>
     <servlet-name>SampleServlet</servlet-name>
     <servlet-class>com.mh.serverpages.sample.SampleServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <servlet>
-    <servlet-name>SspServlet</servlet-name>
-    <servlet-class>com.mh.serverpages.scala_.ScalaServerPageServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-    <init-param>
-      <param-name>compiler.classpath.prefix</param-name>
-<!--
-      <param-value>lib/scala-compiler-2.8.0.Beta1-RC7.jar:lib/scala-library-2.8.0.Beta1-RC7.jar</param-value>
--->
-      <param-value>lib/scala-compiler.jar:lib/scala-library.jar</param-value>
-    </init-param>
-
-  </servlet>
-
   <servlet-mapping>
     <servlet-name>SampleServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>SspServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
-  </servlet-mapping>
+  <!-- END: Sample servlets -->
 
 </web-app>
