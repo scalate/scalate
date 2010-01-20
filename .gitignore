@@ -3,3 +3,6 @@ build
 package
 *~
 *.swp
+.idea
+target
+lib_managed

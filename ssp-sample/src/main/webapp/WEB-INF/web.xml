@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <display-name>Sample</display-name>
+
+  <description>
+    Server Pages - Sample
+  </description>
+
+  <servlet>
+    <servlet-name>SampleServlet</servlet-name>
+    <servlet-class>com.mh.serverpages.sample.SampleServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>SspServlet</servlet-name>
+    <servlet-class>com.mh.serverpages.scala_.ScalaServerPageServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    <init-param>
+      <param-name>compiler.classpath.prefix</param-name>
+<!--
+      <param-value>lib/scala-compiler-2.8.0.Beta1-RC7.jar:lib/scala-library-2.8.0.Beta1-RC7.jar</param-value>
+-->
+      <param-value>lib/scala-compiler.jar:lib/scala-library.jar</param-value>
+    </init-param>
+
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SampleServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SspServlet</servlet-name>
+    <url-pattern>*.ssp</url-pattern>
+  </servlet-mapping>
+
+</web-app>
