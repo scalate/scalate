@@ -48,7 +48,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
       // TODO this code actually results in looking up the resource twice
       // once here first then again Lift land
       // I wonder if there's a better way to do this just once?
-      if (servletContext.getResource(path) == null) {
+      return if (servletContext.getResource(path) == null) {
         val sspPath = path + ".ssp"
         if (servletContext.getResource(sspPath) == null) {
           println("WARN: No template found for path '" + path + "' or '" + sspPath + "'")

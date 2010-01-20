@@ -3,6 +3,8 @@ SCALA SERVER PAGES
 
 This library implements Scala Server Pages which are [Scala](http://www.scala-lang.org) versions of things like JSP, ASP, GSP.
 
+All expressions inside SSP are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages.
+
 The code is based on code by [Matt Hildebrand](http://github.com/matthild/serverpages)
 
 
