@@ -13,8 +13,10 @@
 
 <% import Snippets._ %>
 
-${itemLink("abc", "ItemABC")}
-${itemLink("def", "ItemDEF")}
+<ul>
+  <li>${itemLink("abc", "ItemABC")}</li>
+  <li>${itemLink("def", "ItemDEF")}</li>
+</ul>
 
 </body>
 </html>

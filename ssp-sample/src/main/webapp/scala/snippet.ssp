@@ -4,5 +4,10 @@
 %>
 <body>
 <%= cheese %>
+
+<h2>Another snippet</h2>
+
+${beer}
+
 </body>
 </html>

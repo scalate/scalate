@@ -71,13 +71,6 @@ private object ScalaCodeGenerator
   "\n" +
           """    out.close""" + "\n" +
           """  }""" + "\n" +
-          "\n" +
-          """  private def _safeToString( x: Any ): String = x match {""" + "\n" +
-          """    case r: AnyRef => if( r == null ) "null" else r.toString""" + "\n" +
-          """    case v: AnyVal => v.toString""" + "\n" +
-          """    case _ => "null" """ + "\n" +
-          """  }""" + "\n" +
-          """  """ + "\n" +
           """}"""
 
 }
@@ -156,8 +149,8 @@ class ScalaCodeGenerator extends CodeGenerator
             (
                     fragment match {
                       case EmptyFragment() => ""
-                      case EscapeFragment(code) => "out.write( XmlEscape.escape( _safeToString( " + code + " ) ) )"
-                      case ExpressionFragment(code) => "out.write( _safeToString( " + code + " ) )"
+                      case EscapeFragment(code) => "pageContext.writeXmlEscape( " + code + " )"
+                      case ExpressionFragment(code) => "pageContext.write( " + code + " )"
                       case ScriptletFragment(code) => code
                       case TextFragment(text) => "out.write( \"" + renderText(text) + "\" )"
                     }
