@@ -14,7 +14,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
 package org.fusesource.ssp.scala_
 
 import org.fusesource.ssp._
@@ -23,13 +22,68 @@ import java.io.File
 import java.net.URI
 import java.util.regex.Pattern
 
+import scala.util.parsing.combinator._
+import java.io.Reader
 
-private sealed abstract case class PageFragment()
-private case class EmptyFragment() extends PageFragment
-private case class EscapeFragment(code: String) extends PageFragment
-private case class ExpressionFragment(code: String) extends PageFragment
-private case class ScriptletFragment(code: String) extends PageFragment
-private case class TextFragment(text: String) extends PageFragment
+sealed abstract case class PageFragment()
+case class EmptyFragment() extends PageFragment
+case class EscapeFragment(code: String) extends PageFragment
+case class ExpressionFragment(code: String) extends PageFragment
+case class ScriptletFragment(code: String) extends PageFragment
+case class TextFragment(text: String) extends PageFragment
+
+
+class SspParser extends JavaTokenParsers {
+  def parse(in: Reader) = {
+    parseAll(lines, in)
+  }
+
+  def parse(in: CharSequence) = {
+    parseAll(lines, in)
+  }
+
+  def lines = rep(lessPercentExpressions | escapeFragment | textFragment) ^^ {
+    case lines  => lines
+  }
+
+  def escapeFragment = "${" ~> code <~ "}" ^^ {
+    case c => EscapeFragment(c.toString)
+  }
+
+  def textFragment = any ^^ {
+    case a => TextFragment(a.toString)
+  }
+  
+  def lessPercentExpressions = "<%" ~> (commentFragment | declarationFragment | expressionFragment | scriptletFragment) <~ "%>" ^^ {
+    case l => l
+  }
+
+  def commentFragment = "--" ~> any <~ "--" ^^ {
+    case a => EmptyFragment()
+  }
+  
+  def declarationFragment = "@" ~> code ^^ {
+    //case c => ExpressionFragment(c.toString)
+    case c => println("Got a declaration: " + c); EmptyFragment()
+  }
+  
+  def expressionFragment = "=" ~> code ^^ {
+    case c => ExpressionFragment(c.toString)
+  }
+
+  def scriptletFragment = code ^^ {
+    case c => ScriptletFragment(c.toString)
+  }
+
+  def code = """.+""".r
+
+  def any = """.+""".r
+
+  def token = """[a-zA-Z0-9\$_]+""".r
+
+  def lessThanPercent = """\<\%""".r
+  def percentGreaterThan = """\%\>""".r
+}
 
 
 private object ScalaCodeGenerator
@@ -39,7 +93,7 @@ private object ScalaCodeGenerator
   class TokenInfo(val startTokenRegex: String, val endTokenRegex: String, val payloadParser: (String) => PageFragment)
 
   val TOKEN_INFO =
-  Map("<%" -> new TokenInfo("<%", "%>", {ScriptletFragment(payload)}),
+  Map("<%" -> new TokenInfo("<%", "%>", {payload: String => ScriptletFragment(payload)}),
     "<%=" -> new TokenInfo("<%=", "%>", {payload: String => ExpressionFragment(payload)}),
     "<%--" -> new TokenInfo("<%--", "--%>", {payload: String => EmptyFragment()}),
     "${" -> new TokenInfo("${", "}", {payload: String => EscapeFragment(payload)}))
