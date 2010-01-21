@@ -1,0 +1,53 @@
+---
+title: Community
+in_menu: true
+sort_info: 50
+--- name:overview
+
+# Lets Talk
+The {project_name:} community is here to help you
+
+--- name:content
+We really want you to get involved in the {project_name:} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
+
+# Developer Mailing List
+
+The developer list is used for general discussions and ideas about the code and how to use it.
+
+<table cellspacing="10">
+  <tr>
+    <th align="left">To post an email:</th>
+    <td><a href="mailto:{project_id:}-dev@fusesource.org">{project_id:}-dev@fusesource.org</a></td>
+  </tr>
+  <tr>
+    <th align="left">To subscribe:</th>
+    <td><a href="mailto:{project_id:}-dev-subscribe@fusesource.org">{project_id:}-dev-subscribe@fusesource.org</a></td>
+  </tr>
+  <tr>
+    <th align="left">To unsubscribe:</th>
+    <td><a href="mailto:{project_id:}-dev-unsubscribe@fusesource.org">{project_id:}-dev-unsubscribe@fusesource.org</a></td>
+  </tr>
+</table>
+
+# Commit Mailing List
+
+The commit list is notified of all changes to the source code or changes to [issues](support.html) so you can use this list to watch development and support occur.
+
+<table cellspacing="10">
+  <tr>
+    <th align="left">To post an email:</th>
+    <td><a href="mailto:{project_id:}-commits@fusesource.org">{project_id:}-commits@fusesource.org</a></td>
+  </tr>
+  <tr>
+    <th align="left">To subscribe:</th>
+    <td><a href="mailto:{project_id:}-commits-subscribe@fusesource.org">{project_id:}-commits-subscribe@fusesource.org</a></td>
+  </tr>
+  <tr>
+    <th align="left">To unsubscribe:</th>
+    <td><a href="mailto:{project_id:}-commits-unsubscribe@fusesource.org">{project_id:}-commits-unsubscribe@fusesource.org</a></td>
+  </tr>
+</table>
+
+# Forums
+
+You can also join us on the <a href="{project_forums_url:}">Discussion Forums</a>

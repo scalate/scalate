@@ -1,0 +1,28 @@
+---
+title: MyProject User Guide
+--- name:head pipeline:tags
+<link href="{relocatable: book.css}" rel="stylesheet" type="text/css" />
+
+--- name:content pipeline:tags,asciidoc
+
+{title:}
+====================
+Hiram Chirino
+v1.0, Dec 2003
+
+Preface
+-------
+
+This user guide is currently under active development!
+
+Chapter 1
+---------
+
+TODO!
+
+Index
+-----
+////////////////////////////////////////////////////////////////
+Empty for now.
+////////////////////////////////////////////////////////////////
+

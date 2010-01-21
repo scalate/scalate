@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+#
+# updates all dependent projects with the latest webgenfuse source
+#
+# testing 4
+
+projects = %w{ depot restmix restmq }
+
+projects.each { |repoName|  
+  puts "Updating project #{repoName}"
+  
+  repoParentDir = "/var/git"
+  repoDir = repoParentDir + "/" + repoName
+
+  if File.directory? repoDir
+    puts "performing remote 'git pull' in #{repoDir}"
+    result = `cd #{repoDir}; unset GIT_DIR; git pull -q`
+  else
+    puts "performing remote 'git clone' in #{repoParentDir} for repo #{repoName}"
+    result =`cd #{repoParentDir}; unset GIT_DIR; git clone git@forge.fusesource.com:#{repoName}.git`
+  end
+
+  if $? != 0
+    puts "Failed to update remote checkout with code #{$?}"
+# TODO lets email a failure instead??    
+    exit $?
+  end
+  
+  puts "About to merge in directory #{repoDir}"
+  result = `cd #{repoDir}; unset GIT_DIR; git pull -s subtree webgenfuse master; git commit -a -m "Merged latest webgenfuse"; git push`
+
+  if $? != 0
+    puts "Failed to merge latest webgenfuse #{$?}"
+    # TODO lets email a failure instead??    
+    #exit $?
+  end  
+}
+
+

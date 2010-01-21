@@ -1,0 +1,50 @@
+---
+title: Home
+in_menu: true
+sort_info: 1
+--- name:overview pipeline:haml,tags
+
+%h1 {project_name:}
+
+{project_slogan:}
+
+--- name:spot 
+<div class='title'>
+  &nbsp;
+</div>
+<div class='content'>
+  <table><tr>
+    <td>
+	    <h2>Learn More</h2>
+	    <a class='main' href='{relocatable: /documentation}'>
+  	    <img src='{relocatable: /images/spot-learn-more.jpg}'/>
+  	    <br />
+  	    Documentation
+	    </a>
+    </td>
+    <td>
+	    <h2>Get Started</h2>  
+	    <a class='main' href='{relocatable: /download.html}'>
+  	    <img src='{relocatable: /images/spot-download-releases.jpg}' />
+  	    <br />
+  	    Get the latest version here
+	    </a>
+    </td>
+    <td>
+    <h2>Get Involved</h2>  
+	    <div class='spot-balloon'>
+	      <ul>
+	        <li><a href="{relocatable: /community.html}">Discussions</a></li>
+	        <li><a href="{project_issue_url:}">Issue Tracker</a></li>
+	        <li><a href="{project_wiki_url:}">Wiki</a></li>
+	        <li><a href="{relocatable: /source.html}">Source Code</a></li>
+	      </ul>
+	    </div>
+	    <a class='main' href='{relocatable: /community.html}'>
+  	    Join the community!
+	    </a>
+    </td>
+  </tr></table>
+</div>
+--- name:content
+

@@ -1,0 +1,20 @@
+# This is the YAML configuration file for webgen used to set configuration options.
+#
+# The general syntax is:
+#
+#   configuration.option.name: value
+#
+# For example, to set a different default language, you would do:
+#
+#   website.lang: de
+#
+# Have a look at the documentation of the individual configuration options to see
+# the allowed format of the values. Since this is a YAML file, you can easily set
+# configuration options to strings, integers, dates, arrays, hashes and more.
+#
+# The available configuration options can be listed using the `webgen config`
+# command, for example: `webgen config sourcehandler` will list all options starting
+# with sourcehandler.
+
+# lets turn off line numbers
+tag.coderay.line_numbers: false

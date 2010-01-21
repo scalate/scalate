@@ -1,0 +1,32 @@
+# Source Repository
+
+The *{project_name:}* project stores its source code in a [Git](http://git-scm.com/) repository.
+If you are new to Git you might like to try the [Git guide for subversion users](http://git.or.cz/course/svn.html) or have a look at the [Git community book](http://book.git-scm.com/).
+
+The Git repository is here:
+
+* **git://forge.fusesource.com/{project_id:}.git**
+
+You can [browse the repository online](http://fusesource.com/forge/gitweb?p={project_id:}.git;a=tree) if you prefer.
+
+## How to Checkout
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+
+    git clone git://forge.fusesource.com/{project_id:}.git
+    cd {project_id:}
+
+## Committer access
+
+Project members who have configured a public SSH key in their [user profile](http://fusesource.com/forge/users/edit_self) can push to the repository using the following URL:
+
+* **ssh://git@forge.fusesource.com/{project_id:}.git**
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+
+    git clone ssh://git@forge.fusesource.com/{project_id:}.git
+    cd {project_id:}
+
+# Next steps
+
+Once you have checked out the code try following the [instructions to build {project_name:}]({relocatable: building.html}) or read the [documentation]({relocatable: documentation/index.html}).

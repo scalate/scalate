@@ -1,0 +1,13 @@
+---
+title: Source
+in_menu: true
+sort_info: 40
+--- name:overview
+# {project_name:}
+
+Get the latest source code
+
+--- name:content
+
+{include_file: {filename: src/svn.include, process_output: true}}
+

@@ -1,0 +1,69 @@
+description:
+  This skeleton of a webgen website provides a set of default files for every
+  created webgen website.
+
+  When using the standard settings, the sources are in the directory `src` and
+  the generated output goes into `out`. Extensions can be placed under `ext`.
+
+  For configuration purposes, use the config.rb or config.yaml files.
+---
+note: This file can be deleted!
+
+Prerequisites:
+Webgen is known to work with: Ruby 1.8.6 and RubyGems 1.3.4
+If you have an older version of RubyGems (check by running 'gem --version'), you can 
+upgrade it by running:
+  
+    sudo gem install rubygems-update
+    sudo update_rubygems
+    
+You may also need to clear out your previously installed gems.  On OSX, you would run:
+
+    sudo rm -Rf ~/.gem /Library/Ruby/Gems/1.8/*
+
+Installing:
+
+    sudo gem install webgen coderay feedtools haml RedCloth
+    sudo gem install --source http://gems.github.com FooBarWidget-mizuho
+
+Configuring:
+
+ * edit the src/metainfo file to change the variables to your project specific values
+   (such as the project name, source code locations & JIRA etc)
+   
+ * edit Rakefile to specify the project id (lower case) which is used for deploying the site
+
+Generating the site:
+
+    webgen
+    open out/index.html
+
+Auto mode:
+
+    rake auto
+    
+will run webgen in auto mode where it will auto-detect changes in the source files and 
+regenerate the site automatically for you.
+
+
+Cleaning up:
+
+    rake clobber
+    
+Deploying:
+    
+* to be able to deploy the site you will need to install sitecopy
+
+    sudo port install sitecopy  
+
+* to deploy the site run
+
+    rake upload
+    
+To see how to use Continuous Integration with this build see:
+http://fusesource.com/wiki/display/FUSEFORGE/Deploy+Webgen+Sites+using+Continuous+Integration
+
+
+
+
+

@@ -1,0 +1,70 @@
+---
+template: ~
+---
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="{lang:}">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="description goes here" />
+    <meta name="keywords" content="keywords,goes,here" />
+    <meta name="author" content="Your Name" />
+
+    <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
+    
+    <title>{title:}</title>
+
+<% if context.node.node_info[:page].blocks.has_key?('head') %>
+    <webgen:block name='head' />
+<% end %>
+
+</script>
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      {menu: {max_levels: 1, used_nodes: files}}
+  	</div>
+  </div>
+  
+<% if context.node.node_info[:page].blocks.has_key?('overview') %>
+  <div id="overview">
+    <div class="wrapper">
+      <% if context.node.node_info[:page].meta_info.has_key?('project_logo') %>
+      <div class="logo">
+        <img src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}"/>
+      </div>
+      <% end %>
+      <div class="message">
+        <webgen:block name='overview' />
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if context.node.node_info[:page].blocks.has_key?('spot') %>
+  <div id='spot'>
+  	<div class='wrapper'>
+      <webgen:block name='spot' />
+  	</div>
+  </div>
+<% end %>
+
+<% if context.node.node_info[:page].blocks.has_key?('content') %>
+  <div id='content'>
+  	<div class='wrapper'>
+      <webgen:block name="content" />
+  	</div>
+  </div>
+<% end %>
+
+<% if context.node.node_info[:page].blocks.has_key?('blog') %>
+  <div id='blog'>
+  	<div class='wrapper'>
+      <webgen:block name="blog" />
+  	</div>
+  </div>
+<% end %>
+
+</body>
+</html>

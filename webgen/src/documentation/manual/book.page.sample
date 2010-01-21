@@ -1,0 +1,40 @@
+---
+title: MyProject User Guide
+--- name:head pipeline:tags
+<link href="{relocatable: book.css}" rel="stylesheet" type="text/css" />
+
+--- name:content pipeline:tags,asciidoc
+
+{title:}
+====================
+Hiram Chirino
+v1.0, Dec 2003
+
+Preface
+-------
+
+Proin gravida luctus est. Ut sit amet nisl. Curabitur sit amet enim ac massa hendrerit aliquam. Nam non orci vitae quam lobortis sagittis. In nec turpis. Sed elementum accumsan metus. Vivamus porta odio sit amet libero. Nulla pulvinar rutrum nisi. Sed molestie sagittis risus. Nullam felis. Sed at odio. Quisque tincidunt elit non est. Morbi imperdiet felis vel enim. Maecenas condimentum ligula id mi.
+
+Chapter 1
+---------
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quis lorem et dui porttitor iaculis. Mauris vehicula rhoncus lorem. Morbi metus risus, scelerisque sed, vulputate faucibus, cursus nec, magna. Pellentesque at lorem quis dui aliquam posuere. Curabitur laoreet, urna id ultrices gravida, nisi metus auctor diam, sed posuere tortor velit ac felis. Duis vitae felis. Aliquam eget lacus. Vestibulum sagittis, urna non varius sodales, nulla mi tempus ipsum, at semper elit metus at ligula. Donec ultricies volutpat eros. Aliquam erat volutpat. Vivamus ultricies. In metus urna, commodo at, interdum a, eleifend nec, velit. Phasellus in eros. Aliquam in eros.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed in dui. Curabitur nisl justo, faucibus imperdiet, blandit eu, mattis ac, mauris. Mauris sapien. Sed nisi turpis, ornare id, auctor eu, rutrum in, quam. Nam tristique massa sit amet sapien. Quisque pretium mattis eros. Phasellus lacus quam, placerat at, eleifend eget, luctus non, lorem. Nunc facilisis, ante at adipiscing iaculis, arcu ligula dapibus mi, vitae volutpat enim mi non magna. Curabitur dui tellus, malesuada ac, molestie nec, hendrerit non, lorem. Quisque tristique. Proin hendrerit quam sit amet odio. Fusce bibendum consectetur tellus. Etiam dictum laoreet diam.
+
+Chapter 2
+---------
+
+Donec quis neque. Phasellus tempus, dui id congue varius, risus sapien aliquam quam, nec scelerisque justo nibh a dolor. In nisl. In hac habitasse platea dictumst. Nam convallis, urna ac egestas convallis, odio turpis rutrum dui, facilisis mollis massa augue vel elit. Ut massa nunc, suscipit nec, porttitor aliquam, molestie pellentesque, arcu. Suspendisse diam. Curabitur turpis magna, venenatis ut, venenatis id, adipiscing nec, quam. In ut quam. Aenean quis nulla. Phasellus non dolor non enim ornare porttitor. Nulla fermentum condimentum nibh. Nulla neque. Aliquam erat volutpat. Nunc et odio. Ut tortor tortor, pulvinar sit amet, convallis vitae, luctus aliquam, metus. Phasellus feugiat arcu id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque suscipit, velit at dictum pretium, nunc mauris fermentum diam, sed consequat tortor nibh eu lacus. Vestibulum pretium consectetur erat.
+
+Proin gravida luctus est. Ut sit amet nisl. Curabitur sit amet enim ac massa hendrerit aliquam. Nam non orci vitae quam lobortis sagittis. In nec turpis. Sed elementum accumsan metus. Vivamus porta odio sit amet libero. Nulla pulvinar rutrum nisi. Sed molestie sagittis risus. Nullam felis. Sed at odio. Quisque tincidunt elit non est. Morbi imperdiet felis vel enim. Maecenas condimentum ligula id mi. Praesent tellus. Aliquam ac nunc sed felis volutpat semper. Fusce ultricies dolor in ante. Nunc condimentum mi non orci.
+
+Morbi urna nulla, rutrum sit amet, pellentesque a, iaculis non, sem. Proin volutpat. Aenean in nisi. Fusce sit amet odio. Sed pharetra lacus ultricies dui aliquam faucibus. Nulla ullamcorper posuere ligula. Suspendisse vitae augue. Ut tincidunt blandit risus. Vestibulum in leo. Quisque eget libero a sapien feugiat vehicula. 
+
+
+Index
+-----
+////////////////////////////////////////////////////////////////
+Empty for now.
+////////////////////////////////////////////////////////////////
+

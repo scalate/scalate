@@ -1,0 +1,5 @@
+---
+entries: [*/**/*.html]
+site_url: http://exmaple.org/blog
+author: MyProject
+title: The MyProject Blog
