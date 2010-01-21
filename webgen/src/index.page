@@ -16,7 +16,7 @@ Scala Server Pages
 This library implements Scala Server Pages which are like [Scala](http://www.scala-lang.org) versions of things like JSP, ASP, GSP.
 
 Compared to JSP, SSP misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff.
-In its place, SSP just reuses the [Scala](http://www.scala-lang.org)  language.
+In its place, SSP just reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. You can also invoke methods in regular Scala code which can use Scala's XML support to return page fragments.
 
 All expressions inside SSP are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. Also since SSP is based on Scala it generates fast statically typed method dispatch bytecode rather than dynamic dispatch or reflection.
 
