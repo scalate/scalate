@@ -1,0 +1,25 @@
+<html>
+<body>
+
+<p>
+  Hello from locale.ssp
+</p>
+
+<p>
+  22.0 / 7 = ${22.0 / 7}
+</p>
+
+<p>
+  1000L * 2000 * 3500 = ${1000L * 2000 * 3500}
+</p>
+
+<p>
+ 12.5 percent = ${percent(12.5 / 100)}
+</p>
+
+<p>
+  now = ${new java.util.Date()}
+</p>
+
+</body>
+</html>

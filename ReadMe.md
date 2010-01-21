@@ -153,4 +153,5 @@ Changes
 * fixed so it works in jetty-run and other servlet contexts; so we can reuse the ClassLoader if its a URLClassLoader
 * added a PageContext so we can add helper methods like this to look up attributes or resources beans in a typesafe way
 * updated the name mangling so that when using SSP views for JAXRS resource beans there's no need to import the package of the resource bean (as the SSP is generated in a child package)
-
+* markup using Scala's Nodes are not XML encoded so they can be used to create markup
+* numbers and dates use the request's locale by default to format themselves

@@ -14,6 +14,9 @@
     <a href="/scala/standalone.ssp">simple</a>
   </li>
   <li>
+    <a href="/scala/locale.ssp">shows use of locales and auto-formatting of numbers and dates</a>
+  </li>
+  <li>
     <a href="/scala/snippet.ssp">invoke a snippet implemented in scala code</a>
   </li>
   <li>
