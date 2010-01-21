@@ -9,5 +9,5 @@ Get the latest source code
 
 --- name:content
 
-{include_file: {filename: src/svn.include, process_output: true}}
+{include_file: {filename: src/git.include, process_output: true}}
 
