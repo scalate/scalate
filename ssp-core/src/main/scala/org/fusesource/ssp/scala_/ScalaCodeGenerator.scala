@@ -39,7 +39,7 @@ private object ScalaCodeGenerator
   class TokenInfo(val startTokenRegex: String, val endTokenRegex: String, val payloadParser: (String) => PageFragment)
 
   val TOKEN_INFO =
-  Map("<%" -> new TokenInfo("<%", "%>", {payload: String => ScriptletFragment(payload)}),
+  Map("<%" -> new TokenInfo("<%", "%>", {ScriptletFragment(payload)}),
     "<%=" -> new TokenInfo("<%=", "%>", {payload: String => ExpressionFragment(payload)}),
     "<%--" -> new TokenInfo("<%--", "--%>", {payload: String => EmptyFragment()}),
     "${" -> new TokenInfo("${", "}", {payload: String => EscapeFragment(payload)}))
@@ -57,14 +57,11 @@ private object ScalaCodeGenerator
   """package _PACKAGENAME_""" + "\n\n"
 
   val CODE_PREFIX =
-  """import org.fusesource.ssp.Page""" + "\n" +
-          """import org.fusesource.ssp.util.XmlEscape""" + "\n" +
+  """import org.fusesource.ssp.{Page, PageContext}""" + "\n" +
           """import javax.servlet.http._""" + "\n" +
           "\n" +
           """class _CLASSNAME_ extends Page {""" + "\n" +
-          """  override def service( request: HttpServletRequest, response: HttpServletResponse ): Unit = {""" + "\n" +
-          """    val out = new java.io.PrintWriter( new java.io.OutputStreamWriter( response.getOutputStream, "UTF-8" ) )""" + "\n" +
-          """    val pageContext = createPageContext(out, request, response)""" + "\n" +
+          """  def render(pageContext: PageContext): Unit = {""" + "\n" +
           """    import pageContext._""" + "\n"
 
   val CODE_SUFFIX =
@@ -159,8 +156,10 @@ class ScalaCodeGenerator extends CodeGenerator
   }
 
 
+  // TODO we should really recreate this parser using the Scala parser combinators!
   private def parse(pageContent: CharSequence, fragments: List[PageFragment]): List[PageFragment] = {
     if (pageContent.length > 0) {
+
       val matcher = ScalaCodeGenerator.FIND_START_TOKEN_REGEX.matcher(pageContent)
       if (matcher.matches) {
         // Determine which start token we've just found, and the text that precedes it.

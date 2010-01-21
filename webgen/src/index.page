@@ -1,5 +1,5 @@
 ---
-title: SSP (Scala Server Pages)
+title: SSP
 in_menu: true
 sort_info: 1
 --- name:overview pipeline:haml,tags
@@ -10,8 +10,8 @@ sort_info: 1
 
 --- name:content pipeline:markdown,tags 
 
-Scala Server Pages
-==================
+SSP: Scala Server Pages
+=======================
 
 This library implements Scala Server Pages which are like [Scala](http://www.scala-lang.org) versions of things like JSP, ASP, GSP.
 

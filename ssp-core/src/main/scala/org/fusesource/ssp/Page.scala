@@ -25,7 +25,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
 
 
   /**
-   * Returns the attribute of the given type or a      { @link NoSuchAttributeException } exception is thrown
+   * Returns the attribute of the given type or a       { @link NoSuchAttributeException } exception is thrown
    */
   def attribute[T](name: String): T = {
     val value = request.getAttribute(name)
@@ -51,7 +51,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Returns the JAXRS resource bean of the given type or a      { @link NoSuchAttributeException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a       { @link NoSuchAttributeException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)
@@ -66,7 +66,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
 
 
   /**
-   * Converts the value to a string so it can be output on the screen, which uses the      { @link # nullString } value
+   * Converts the value to a string so it can be output on the screen, which uses the       { @link # nullString } value
    * for nulls
    */
   def toString(value: Any): String = {
@@ -78,7 +78,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Converts the value to a string so it can be output on the screen, which uses the      { @link # nullString } value
+   * Converts the value to a string so it can be output on the screen, which uses the       { @link # nullString } value
    * for nulls
    */
   def write(value: Any): Unit = {
@@ -90,8 +90,8 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Converts the value to an XML escaped string; a      { @link Seq[Node] } or      { @link Node } is passed through as is.
-   * A null value uses the      { @link # nullString } value to display nulls
+   * Converts the value to an XML escaped string; a       { @link Seq[Node] } or       { @link Node } is passed through as is.
+   * A null value uses the       { @link # nullString } value to display nulls
    */
   def writeXmlEscape(value: Any): Unit = {
     value match {
@@ -143,8 +143,17 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
  *
  * @version $Revision : 1.1 $
  */
-class Page extends HttpServlet {
+abstract class Page extends HttpServlet {
   def createPageContext(out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse) = {
     PageContext(out, request, response)
   }
+
+  override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    val out = response.getWriter
+    val pageContext = createPageContext(out, request, response)
+    render(pageContext)
+  }
+
+  def render(pageContext: PageContext): Unit
+
 }
