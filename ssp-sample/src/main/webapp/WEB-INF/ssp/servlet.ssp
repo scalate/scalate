@@ -1,5 +1,7 @@
+<html>
+<body>
 <%
-import com.mh.serverpages.sample.Foo
+import org.fusesource.ssp.sample.Foo
 import java.util.Date
 
 val foo = attribute[Foo]("foo")
@@ -31,3 +33,5 @@ val timestamp = attribute[Date]("timestamp")
   <li>${header}</li>
   <% } %>
 </ul>
+</body>
+</html>

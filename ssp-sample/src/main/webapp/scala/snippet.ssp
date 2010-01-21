@@ -1,6 +1,6 @@
 <html>
 <%
-  import com.mh.serverpages.sample.resources.Snippets._
+  import org.fusesource.ssp.sample.resources.Snippets._
 %>
 <body>
 <%= cheese %>

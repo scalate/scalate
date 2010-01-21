@@ -1,2 +1,2 @@
-com.mh.serverpages.jersey.NodeWriter
-com.mh.serverpages.jersey.SSPTemplateProcessor
+org.fusesource.ssp.jersey.NodeWriter
+org.fusesource.ssp.jersey.SSPTemplateProcessor

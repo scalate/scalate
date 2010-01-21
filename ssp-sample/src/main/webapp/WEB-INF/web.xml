@@ -24,7 +24,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>com.mh.serverpages.sample.resources</param-value>
+      <param-value>org.fusesource.ssp.sample.resources</param-value>
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
@@ -42,7 +42,7 @@
   <!-- START: SSP config -->
   <servlet>
     <servlet-name>SspServlet</servlet-name>
-    <servlet-class>com.mh.serverpages.scala_.ScalaServerPageServlet</servlet-class>
+    <servlet-class>org.fusesource.ssp.scala_.ScalaServerPageServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
@@ -56,7 +56,7 @@
   <!-- START: Sample servlets -->
   <servlet>
     <servlet-name>SampleServlet</servlet-name>
-    <servlet-class>com.mh.serverpages.sample.SampleServlet</servlet-class>
+    <servlet-class>org.fusesource.ssp.sample.SampleServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
