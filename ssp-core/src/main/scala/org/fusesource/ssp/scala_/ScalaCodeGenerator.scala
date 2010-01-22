@@ -77,6 +77,8 @@ class SspParser extends JavaTokenParsers {
     //val filler = """(.|\n|\r)+"""
     val filler = """.+"""
     val regex = (regexEscape(prefix) + filler + regexEscape(postfix)).r
+    
+    //prefix ~> rep(not(postfix)) <~ prefix ^^ {
     regex ^^ {
       case r => val text = r.toString
       val remaining = text.substring(prefix.length, text.length - postfix.length)
@@ -186,7 +188,7 @@ class """ + className + """ extends Page {
   def render(pageContext: PageContext""" + generateParameterList(params) + """): Unit = {
     import pageContext._
 
-""" + generateCode(fragments) + """
+""" + importParameters(params) + generateCode(fragments) + """
 
     pageContext.completed
   }
@@ -198,6 +200,16 @@ class """ + className + """ extends Page {
     IOUtil.writeBinaryFile(new File(outputDirectory, className + ".scala").toString, sourceCode.getBytes("UTF-8"))
 
     sourceCode
+  }
+
+  private def importParameters(params: List[AttributeFragment]) = {
+    if (params.isEmpty) {
+      ""
+    } else {
+      """    import """ + params.head.name + """._
+
+"""
+    }
   }
 
   private def generateParameterList(params: List[AttributeFragment]) = {

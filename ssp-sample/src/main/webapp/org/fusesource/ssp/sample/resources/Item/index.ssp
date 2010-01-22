@@ -1,5 +1,4 @@
 <%@ attribute it: Item %>
-<% import it._ %>
 <html>
 <body>
 <h1>Item!</h1>
