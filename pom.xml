@@ -32,10 +32,13 @@
     <junit-version>4.5</junit-version>
 
     <!--
-    <scalaVersion>2.8.0.Beta1-RC7</scalaVersion>
-    -->
     <scalaVersion>2.7.7</scalaVersion>
+    <scalaTest-version>1.0</scalaTest-version>
+    -->
+    <scalaVersion>2.8.0.Beta1-RC7</scalaVersion>
 
+    <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SNAPSHOT</scalaTest-version>
+    
     <scala-plugin-version>2.9.1</scala-plugin-version>
     <slf4j-version>1.5.6</slf4j-version>
 
@@ -251,10 +254,7 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest</artifactId>
-      <version>1.0</version>
-      <!--
-      <version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SNAPSHOT</version>
-      -->
+      <version>${scalaTest-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

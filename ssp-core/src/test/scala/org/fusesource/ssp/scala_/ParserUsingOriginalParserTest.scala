@@ -133,7 +133,7 @@ class ParserUsingOriginalParserTest extends FunSuite {
     for (line <- lines) {
       log(line)
     }
-    log()
+    log("")
     lines
   }
 

@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 import scala.util.parsing.combinator._
 import java.io.Reader
 
-sealed abstract case class PageFragment()
+sealed abstract class PageFragment()
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
 case class ExpressionFragment(code: String) extends PageFragment
@@ -281,19 +281,24 @@ class """ + className + """ extends Page {
     // if we have a real class name in the path (such as with JAXRS and implicit views then we munge like this
     //  /foo/bar/SomeClass/index.ssp -> package "foo.bar._serverpages.SomeClass and class _index_ssp
     //
-    val firstAttempt = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("\\.([A-Z])", "._serverpages.$1").replaceFirst("^\\.", "")
+
+    /*
+    val firstAttempt = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("\\.([A-Z])", "._serverpages$1").replaceFirst("^\\.", "")
     val packageName = if (firstAttempt.contains("._serverpages")) {
       firstAttempt
     } else {
       val prefix = if (firstAttempt.length == 0) {""} else {"."}
       firstAttempt + prefix + "_serverpages"
     }
+    */
+
+    val packageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
 
     /**old way
     // Construct package & class names (e.g., /foo/public/123.ssp --> package "_foo._public" and classname "_123_ssp").
     val packageName = matcher.group( 1 ).replaceAll( "[^A-Za-z0-9_/]", "_" ).replaceAll( "^/", "_" ).replaceAll( "/", "._" )
      */
-    val className = "_" + matcher.group(2).replace('.', '_')
+    val className = "_ssp_" + matcher.group(2).replace('.', '_')
 
     (packageName, className)
   }

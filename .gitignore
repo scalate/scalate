@@ -6,6 +6,9 @@ package
 .idea
 .idea/*
 *.iml
+*.ipr
+*.iws
 target
 lib_managed
 _serverpages
+project/boot

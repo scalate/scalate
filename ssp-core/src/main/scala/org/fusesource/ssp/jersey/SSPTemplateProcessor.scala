@@ -49,7 +49,15 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
       // once here first then again Lift land
       // I wonder if there's a better way to do this just once?
       return if (servletContext.getResource(path) == null) {
-        val sspPath = path + ".ssp"
+        // lets avoid directories named the same as the resource bean!
+        // as this leads to a package with the same name as the resource bean which breaks imports
+        val idx = path.lastIndexOf('/')
+        val sspPath = if (idx > 0) {
+          path.substring(0, idx) + "." + path.substring(idx + 1) + ".ssp"
+        }
+        else {
+          path + ".ssp"
+        }
         if (servletContext.getResource(sspPath) == null) {
           //println("WARN: No template found for path '" + path + "' or '" + sspPath + "'")
           null
@@ -68,7 +76,6 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
       // TODO log
     }
     null
-    // println("No template found for " + path)
   }
 
   def writeTo(resolvedPath: String, model: AnyRef, out: OutputStream): Unit = {

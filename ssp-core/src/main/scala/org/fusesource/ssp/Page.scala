@@ -21,7 +21,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
 
   private var _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
   private var _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
-  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.MEDIUM, locale))
+  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
 
 
   /**
