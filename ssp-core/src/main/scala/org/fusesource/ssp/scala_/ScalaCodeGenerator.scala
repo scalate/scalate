@@ -26,11 +26,12 @@ import scala.util.parsing.combinator._
 import java.io.Reader
 
 sealed abstract case class PageFragment()
-case class EmptyFragment() extends PageFragment
-case class EscapeFragment(code: String) extends PageFragment
+case class CommentFragment(comment: String) extends PageFragment
+case class DollarExpressionFragment(code: String) extends PageFragment
 case class ExpressionFragment(code: String) extends PageFragment
 case class ScriptletFragment(code: String) extends PageFragment
 case class TextFragment(text: String) extends PageFragment
+case class ParameterFragment(name: String, className: String, defaultValue: Option[String]) extends PageFragment
 
 
 class SspParser extends JavaTokenParsers {
@@ -42,46 +43,52 @@ class SspParser extends JavaTokenParsers {
     parseAll(lines, in)
   }
 
-  def lines = rep(lessPercentExpressions | escapeFragment | textFragment) ^^ {
-    case lines  => lines
+  def lines = rep(commentFragment | declarationFragment | expressionFragment | scriptletFragment | dollarExpressionFragment | textFragment) ^^ {
+    case lines => lines
   }
 
-  def escapeFragment = "${" ~> code <~ "}" ^^ {
-    case c => EscapeFragment(c.toString)
-  }
-
-  def textFragment = any ^^ {
+  def textFragment = upToSpecialCharacter ^^ {
     case a => TextFragment(a.toString)
   }
-  
-  def lessPercentExpressions = "<%" ~> (commentFragment | declarationFragment | expressionFragment | scriptletFragment) <~ "%>" ^^ {
-    case l => l
+
+  def dollarExpressionFragment = parser("${", "}", {DollarExpressionFragment(_)})
+
+  def commentFragment = parser("<%--", "--%>", {CommentFragment(_)})
+
+  def declarationFragment = parser("<%@", "%>", {CommentFragment(_)})
+
+  def expressionFragment = parser("<%=", "%>", {ExpressionFragment(_)})
+
+  def scriptletFragment = parser("<%", "%>", {ScriptletFragment(_)})
+
+  def parser(prefix: String, postfix: String, transform: String => PageFragment) = {
+    //val filler = """(.|\n|\r)+"""
+    val filler = """.+"""
+    val regex = (regexEscape(prefix) + filler + regexEscape(postfix)).r
+    regex ^^ {
+      case r => val text = r.toString
+      val remaining = text.substring(prefix.length, text.length - postfix.length)
+      transform(remaining)
+    }
   }
 
-  def commentFragment = "--" ~> any <~ "--" ^^ {
-    case a => EmptyFragment()
-  }
-  
-  def declarationFragment = "@" ~> code ^^ {
-    //case c => ExpressionFragment(c.toString)
-    case c => println("Got a declaration: " + c); EmptyFragment()
-  }
-  
-  def expressionFragment = "=" ~> code ^^ {
-    case c => ExpressionFragment(c.toString)
-  }
 
-  def scriptletFragment = code ^^ {
-    case c => ScriptletFragment(c.toString)
-  }
+  def regexEscape(text: String) = text.mkString("\\", "\\", "")
 
-  def code = """.+""".r
 
-  def any = """.+""".r
+  def code = chunkOfText
+
+  def any = chunkOfText
+
+  //def chunkOfText = """.[^\<\$\%\-\}]*""".r
+  def upToSpecialCharacter = """.[^\<\$\%\-\}]*""".r
+
+  def chunkOfText = """.+""".r
 
   def token = """[a-zA-Z0-9\$_]+""".r
 
   def lessThanPercent = """\<\%""".r
+
   def percentGreaterThan = """\%\>""".r
 }
 
@@ -95,8 +102,9 @@ private object ScalaCodeGenerator
   val TOKEN_INFO =
   Map("<%" -> new TokenInfo("<%", "%>", {payload: String => ScriptletFragment(payload)}),
     "<%=" -> new TokenInfo("<%=", "%>", {payload: String => ExpressionFragment(payload)}),
-    "<%--" -> new TokenInfo("<%--", "--%>", {payload: String => EmptyFragment()}),
-    "${" -> new TokenInfo("${", "}", {payload: String => EscapeFragment(payload)}))
+    "<%--" -> new TokenInfo("<%--", "--%>", {payload: String => CommentFragment(payload)}),
+    "<%@" -> new TokenInfo("<%@", "%>", {payload: String => parseDeclaration(payload)}),
+    "${" -> new TokenInfo("${", "}", {payload: String => DollarExpressionFragment(payload)}))
 
   val FIND_END_TOKEN_REGEX_MAP =
   TOKEN_INFO.transform {(k, v) => Pattern.compile("^(.*?)(" + Pattern.quote(v.endTokenRegex) + ").*$", PATTERN_FLAGS)}
@@ -124,6 +132,33 @@ private object ScalaCodeGenerator
           """  }""" + "\n" +
           """}"""
 
+
+  def parseDeclaration(payload: String): PageFragment = {
+    val parser = new DeclarationParser()
+    parser.parse(payload) match {
+      case parser.Success(fragment: PageFragment, _) =>
+        fragment
+
+      case e =>
+        throw new ServerPageException("Could not parse declaration: " + e)
+    }
+  }
+
+  class DeclarationParser extends JavaTokenParsers {
+    def parse(in: CharSequence) = {
+      parseAll(param, in)
+    }
+
+    def param = ("param" ~> identifier) ~ (":" ~> typeName) ~ (opt("=" ~> any)) ^^ {
+      case i ~ t ~ a => ParameterFragment(i.toString, t.toString, a)
+    }
+
+    def identifier = """[a-zA-Z0-9\$_]+""".r
+
+    def typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
+    
+    def any = """.+""".r
+  }
 }
 
 
@@ -134,7 +169,7 @@ class ScalaCodeGenerator extends CodeGenerator
     val (packageName, className) = buildPackageAndClassNames(uri)
 
     // Parse the translation unit
-    val fragments = parse(translationUnit, List()).reverse
+    val fragments = parseFragments(translationUnit)
 
     // Convert the parsed representation to Scala source code
     val sourceCode = (if (packageName != "") ScalaCodeGenerator.PACKAGE.replaceAll("_PACKAGENAME_", packageName) else "") +
@@ -148,6 +183,7 @@ class ScalaCodeGenerator extends CodeGenerator
     sourceCode
   }
 
+  def parseFragments(translationUnit: String) = parse(translationUnit, List()).reverse
 
   def buildClassName(uri: String): String = {
     // Determine the package and class name to use for the generated class
@@ -199,11 +235,12 @@ class ScalaCodeGenerator extends CodeGenerator
     "\n    " +
             (
                     fragment match {
-                      case EmptyFragment() => ""
-                      case EscapeFragment(code) => "pageContext.writeXmlEscape( " + code + " )"
+                      case CommentFragment(code) => ""
+                      case DollarExpressionFragment(code) => "pageContext.writeXmlEscape( " + code + " )"
                       case ExpressionFragment(code) => "pageContext.write( " + code + " )"
                       case ScriptletFragment(code) => code
                       case TextFragment(text) => "out.write( \"" + renderText(text) + "\" )"
+                      case ParameterFragment(name, className, expression) => ""
                     }
                     ) +
             "\n"
@@ -267,7 +304,7 @@ class ScalaCodeGenerator extends CodeGenerator
 
 
   private def parseTextFragment(content: String): PageFragment = content match {
-    case "" => EmptyFragment()
+  //case "" => CommentFragment("")
     case s: String => TextFragment(s)
   }
 
