@@ -1,9 +1,0 @@
-<html>
-<%@ param name : String %>
-<body>
-<h2>parameter passing</h2>
-
-<p>This page has been passed a parameter called name = <b></b></p>
-
-</body>
-</html>

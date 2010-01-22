@@ -20,7 +20,13 @@
     <a href="/scala/snippet.ssp">invoke a snippet implemented in scala code</a>
   </li>
   <li>
-    <a href="/sampleServlet">servlet sample</a>
+    <a href="/sampleServlet">servlet invoking a SSP with arguments</a>
+  </li>
+  <li>
+    <a href="/scala/defaultAttribute.ssp">an SSP with an attribute using a default value</a>
+  </li>
+  <li>
+    <a href="/scala/missingAttribute.ssp">try an SSP with missing attributes</a>
   </li>
 </ul>
 

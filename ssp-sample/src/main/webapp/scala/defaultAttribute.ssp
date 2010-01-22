@@ -1,0 +1,11 @@
+<html>
+<%@ attribute name : String = "James" %>
+<body>
+<h2>Attribute Passing Example</h2>
+
+<p>This page uses an attribute which has a sensible default value so the page should always work</p>
+
+<p>This page has been passed an attribute called 'name' = <b>${name}</b></p>
+
+</body>
+</html>

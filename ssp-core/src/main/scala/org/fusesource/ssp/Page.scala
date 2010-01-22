@@ -8,7 +8,7 @@ import org.fusesource.ssp.util.{Lazy, XmlEscape}
 import java.text.{DateFormat, NumberFormat}
 import java.util.{Date, Locale}
 
-class NoSuchAttributeException(val attribute: String) extends ServletException("No such attribute '" + attribute + "'") {
+class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Page") {
 }
 
 /**
@@ -25,7 +25,14 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
 
 
   /**
-   * Returns the attribute of the given type or a       { @link NoSuchAttributeException } exception is thrown
+   * Called after each page completes
+   */
+  def completed = {
+    out.flush
+  }
+
+  /**
+   * Returns the attribute of the given type or a        { @link NoSuchAttributeException } exception is thrown
    */
   def attribute[T](name: String): T = {
     val value = request.getAttribute(name)
@@ -33,7 +40,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
       value.asInstanceOf[T]
     }
     else {
-      throw new NoSuchElementException(name)
+      throw new NoSuchAttributeException(name)
     }
   }
 

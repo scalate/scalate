@@ -1,14 +1,9 @@
+<%-- demonstrates the use of an SSP file with attributes --%>
+
+<%@ attribute foo: org.fusesource.ssp.sample.Foo %>
+<%@ attribute timestamp: java.util.Date %>
 <html>
 <body>
-<%
-import org.fusesource.ssp.sample.Foo
-import java.util.Date
-
-val foo = attribute[Foo]("foo")
-val timestamp = attribute[Date]("timestamp")
-%>
-
-<%-- This is a comment --%>
 
 <h1>Test Scala Server Page</h1>
 

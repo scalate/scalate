@@ -39,7 +39,7 @@ class SampleServlet extends HttpServlet
 
     // Delegate response rendering to the SSP
 
-    val ssp = "/WEB-INF/ssp/servlet.ssp"
+    val ssp = "/WEB-INF/ssp/attributes.ssp"
     println("Now forwarding to SSP: " + ssp)
 
     request.getRequestDispatcher(ssp).forward(request, response)

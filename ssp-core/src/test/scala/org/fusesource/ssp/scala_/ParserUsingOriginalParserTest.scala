@@ -12,8 +12,8 @@ import org.scalatest.FunSuite
 class ParserUsingOriginalParserTest extends FunSuite {
   val logging = false
 
-  test("parse parameter declaration") {
-    val lines = assertValid("""<%@ param name: String %>
+  test("parse attribute declaration") {
+    val lines = assertValid("""<%@ attribute name: String %>
 <html>
   <%-- comment --%>
   <body>
@@ -23,11 +23,11 @@ class ParserUsingOriginalParserTest extends FunSuite {
 </html>
 """)
 
-    assertParameter(lines, ParameterFragment("name", "String", None))
+    assertAttribute(lines, AttributeFragment("name", "String", None))
   }
 
-  test("parse valid SSP file with param with default value") {
-    val lines = assertValid("""<%@ param name : String = "Hello"%>
+  test("parse valid SSP file with attribute with default value") {
+    val lines = assertValid("""<%@ attribute name : String = "Hello"%>
 <html>
   <body>
     <h1>Hello ${user}</h1>
@@ -36,7 +36,7 @@ class ParserUsingOriginalParserTest extends FunSuite {
 </html>
 """)
 
-    assertParameter(lines, ParameterFragment("name", "String", Some("\"Hello\"")))
+    assertAttribute(lines, AttributeFragment("name", "String", Some("\"Hello\"")))
   }
 
 
@@ -114,12 +114,12 @@ class ParserUsingOriginalParserTest extends FunSuite {
   }
 
 
-  def assertParameter(lines: List[PageFragment], expectedParam: ParameterFragment) = {
-    val param = lines.find {
-      case d: ParameterFragment => true
+  def assertAttribute(lines: List[PageFragment], expectedParam: AttributeFragment) = {
+    val attribute = lines.find {
+      case d: AttributeFragment => true
       case _ => false
     }
-    expect(Some(expectedParam)) {param}
+    expect(Some(expectedParam)) {attribute}
 
     lines
   }
