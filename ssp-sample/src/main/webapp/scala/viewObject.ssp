@@ -1,0 +1,18 @@
+<html>
+<body>
+<h2>View Objects</h2>
+
+<p>This page creates 2 People objects, then renders them using the default template for the type</p>
+
+<%
+  import org.fusesource.ssp.sample.Person
+
+  val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
+
+  for (person <- people ) {
+    view(person)
+  }
+%>
+
+</body>
+</html>

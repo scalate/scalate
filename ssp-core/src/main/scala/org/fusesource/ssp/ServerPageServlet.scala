@@ -175,7 +175,7 @@ abstract class ServerPageServlet extends HttpServlet
 
     // Instantiate the servlet object
     val servlet: HttpServlet = clazz.asInstanceOf[Class[HttpServlet]].newInstance
-    //servlet.init( getServletConfig )
+    servlet.init( getServletConfig )
     servlet
   }
 

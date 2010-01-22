@@ -33,7 +33,7 @@ case class ScriptletFragment(code: String) extends PageFragment
 case class TextFragment(text: String) extends PageFragment
 
 case class AttributeFragment(name: String, className: String, defaultValue: Option[String]) extends PageFragment {
-  def isScala28 = false
+  def isScala28 = true
 
   def methodArgumentCode = name + ": " + className + (if (isScala28) {
     if (defaultValue.isEmpty) {""} else {" = " + defaultValue.get}

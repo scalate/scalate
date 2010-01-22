@@ -14,47 +14,21 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
 package org.fusesource.ssp.sample
 
-import java.util.Date
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import scala.compat.Platform
 import org.fusesource.ssp.PageContext
 
-
-class SampleServlet extends HttpServlet
+class ServletRendersView extends HttpServlet
 {
   override def doGet(request: HttpServletRequest, response: HttpServletResponse): Unit = {
-    // Perform the business logic
-    var headerNames = Set.empty[String]
-    val iterator = request.getHeaderNames
-    while (iterator.hasMoreElements)
-      headerNames += iterator.nextElement.toString
+    val model = new Person("Bob", "Mcwhatnot")
 
-    // Attach a model representing the result to the request object
-    request.setAttribute("foo", new Foo(request.getPathInfo, headerNames))
-    request.setAttribute("timestamp", new Date(Platform.currentTime))
 
-    // Delegate response rendering to the SSP
-
-    val ssp = "/WEB-INF/ssp/attributes.ssp"
-    println("Now forwarding to SSP: " + ssp)
-
-    request.getRequestDispatcher(ssp).forward(request, response)
+    val pageContext = new PageContext(response.getWriter, request, response, getServletContext)
+    pageContext.view(model)
   }
-
-  /*
-    val out = response.getWriter
-    out.println("===== about to include....")
-    val pageContext = new PageContext(out, request, response, getServletContext)
-    pageContext.view(new Person("Bob", "Mcwhatnot"))
-    out.println("===== done!...")
-    out.flush()
-*/
-
-
 
 }
