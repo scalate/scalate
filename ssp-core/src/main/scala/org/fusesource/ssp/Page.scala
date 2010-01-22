@@ -8,7 +8,7 @@ import java.util.{Date, Locale}
 import java.io._
 import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
 import java.lang.String
-import collection.mutable.HashMap
+import collection.mutable.{ListBuffer, HashMap}
 
 class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Page") {
 }
@@ -16,6 +16,7 @@ class NoSuchAttributeException(val attribute: String) extends ServletException("
 
 class NoSuchTemplateException(val model: AnyRef, val view: String) extends ServletException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
 }
+
 /**
  * The PageContext provides helper methods for interacting with the request, response, attributes and parameters
  */
@@ -41,7 +42,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Returns the attribute of the given type or a            { @link NoSuchAttributeException } exception is thrown
+   * Returns the attribute of the given type or a              { @link NoSuchAttributeException } exception is thrown
    */
   def attribute[T](name: String): T = {
     val value = request.getAttribute(name)
@@ -67,7 +68,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Returns the JAXRS resource bean of the given type or a           { @link NoSuchAttributeException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a             { @link NoSuchAttributeException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)
@@ -115,11 +116,11 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
       "GET";
     }
 
-    val _attributes = new HashMap[String,Object]
+    val _attributes = new HashMap[String, Object]
 
     override def setAttribute(name: String, value: Object) = _attributes(name) = value
 
-    override def getAttribute(name: String) =  _attributes.get(name).getOrElse(super.getAttribute(name))
+    override def getAttribute(name: String) = _attributes.get(name).getOrElse(super.getAttribute(name))
   }
 
   class ResponseWrapper(response: HttpServletResponse, charEncoding: String = null) extends HttpServletResponseWrapper(response) {
@@ -190,24 +191,54 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
       resolveViewForType(model, view, aClass) match {
         case Some(dispatcher) =>
           flag = false
-          out.flush
-
-          val wrappedRequest = new RequestWrapper(request)
-          val wrappedResponse = new ResponseWrapper(response)
-          wrappedRequest.setAttribute("it", model)
-          
-          dispatcher.forward(wrappedRequest, wrappedResponse)
-          val text = wrappedResponse.getString
-          out.write(text)
+          doInclude(dispatcher, model)
 
         case _ => aClass = aClass.getSuperclass
       }
     }
 
     if (flag) {
+      aClass = model.getClass
+      val interfaceList = new ListBuffer[Class[_]]()
+      while (aClass != null && aClass != classOf[Object]) {
+        for (i <- aClass.getInterfaces) {
+          if (!interfaceList.contains(i)) {
+            interfaceList.append(i)
+          }
+        }
+        aClass = aClass.getSuperclass
+      }
+
+      flag = true
+      for (i <- interfaceList; if (flag)) {
+        resolveViewForType(model, view, i) match {
+          case Some(dispatcher) =>
+            flag = false
+            doInclude(dispatcher, model)
+
+          case _ =>
+        }
+      }
+    }
+
+    if (flag) {
       throw new NoSuchTemplateException(model, view)
     }
-    // TODO now lets walk the interfaces...
+  }
+
+
+  private def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
+    out.flush
+
+    val wrappedRequest = new RequestWrapper(request)
+    val wrappedResponse = new ResponseWrapper(response)
+    if (model != null) {
+      wrappedRequest.setAttribute("it", model)
+    }
+
+    dispatcher.forward(wrappedRequest, wrappedResponse)
+    val text = wrappedResponse.getString
+    out.write(text)
   }
 
   private def resolveViewForType(model: AnyRef, view: String, aClass: Class[_]): Option[RequestDispatcher] = {
@@ -229,7 +260,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
 
 
   /**
-   * Converts the value to a string so it can be output on the screen, which uses the           { @link # nullString } value
+   * Converts the value to a string so it can be output on the screen, which uses the             { @link # nullString } value
    * for nulls
    */
   def toString(value: Any): String = {
@@ -241,7 +272,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Converts the value to a string so it can be output on the screen, which uses the           { @link # nullString } value
+   * Converts the value to a string so it can be output on the screen, which uses the             { @link # nullString } value
    * for nulls
    */
   def write(value: Any): Unit = {
@@ -253,8 +284,8 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   /**
-   * Converts the value to an XML escaped string; a           { @link Seq[Node] } or           { @link Node } is passed through as is.
-   * A null value uses the           { @link # nullString } value to display nulls
+   * Converts the value to an XML escaped string; a             { @link Seq[Node] } or             { @link Node } is passed through as is.
+   * A null value uses the             { @link # nullString } value to display nulls
    */
   def writeXmlEscape(value: Any): Unit = {
     value match {

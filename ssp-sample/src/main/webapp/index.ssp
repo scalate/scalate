@@ -31,6 +31,9 @@
   <li>
     <a href="/scala/viewObject.ssp">render an object using its default template</a>
   </li>
+  <li>
+    <a href="/scala/viewCaseClass.ssp">render an object using the default Product template</a> which renders any case class
+  </li>
 </ul>
 
 

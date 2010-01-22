@@ -1,0 +1,20 @@
+<%@ attribute it : Product %>
+<% println("Called Product template with: " + it) %>
+<h3>${it.productPrefix}</h3>
+
+<table>
+  <tr>
+<%
+  import org.fusesource.ssp.util.CaseClassToMap._
+
+  val map = toMap(it)
+
+  println("Map is: " + map)
+  
+  for ((key, value) <- map) {
+%>
+    <td>${key}:</td>
+    <td><b>${value}</b></td>
+<% } %>
+  </tr>
+</table>
