@@ -31,6 +31,8 @@
     <log4j-version>1.2.14</log4j-version>
     <junit-version>4.5</junit-version>
 
+    <sitemesh-version>2.3</sitemesh-version>
+
     <!--
     <scalaVersion>2.7.7</scalaVersion>
     <scalaTest-version>1.0</scalaTest-version>
@@ -38,7 +40,7 @@
     <scalaVersion>2.8.0.Beta1-RC7</scalaVersion>
 
     <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SNAPSHOT</scalaTest-version>
-    
+
     <scala-plugin-version>2.9.1</scala-plugin-version>
     <slf4j-version>1.5.6</slf4j-version>
 
@@ -73,7 +75,7 @@
       <post>ssp-commits@fusesource.org</post>
     </mailingList>
   </mailingLists>
-  
+
   <issueManagement>
     <system>jira</system>
     <url>http://fusesource.com/issues/browse/SSP</url>
@@ -126,7 +128,7 @@
         <enabled>false</enabled>
       </releases>
     </repository>
-    
+
     <repository>
       <id>java.net.m2</id>
       <name>java.net Maven 2 Repo</name>
@@ -154,7 +156,7 @@
       <name>Scala Tools Maven2 Snapshot Repository</name>
       <url>http://scala-tools.org/repo-snapshots</url>
     </repository>
-    
+
     <repository>
       <id>scala</id>
       <name>Scala Tools</name>
@@ -212,7 +214,6 @@
   </modules>
 
 
-
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -264,7 +265,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <scm>
     <connection>scm:git:git://forge.fusesource.com/ssp.git</connection>
     <developerConnection>scm:git:ssh://git@forge.fusesource.com/ssp.git</developerConnection>
@@ -282,6 +283,11 @@
         <groupId>com.sun.jersey</groupId>
         <artifactId>jersey-server</artifactId>
         <version>${jersey-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>opensymphony</groupId>
+        <artifactId>sitemesh</artifactId>
+        <version>${sitemesh-version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -386,20 +392,20 @@
           <version>${jetty-version}</version>
         </plugin>
 
-<!--
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <configuration>
-            <tagBase>https://svn.apache.org/repos/asf/activemq/camel/tags</tagBase>
-            <useReleaseProfile>false</useReleaseProfile>
-            <preparationGoals>clean install</preparationGoals>
-            <goals>deploy</goals>
-            <arguments>-Prelease,deploy</arguments>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-          </configuration>
-        </plugin>
--->
+        <!--
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-release-plugin</artifactId>
+                  <configuration>
+                    <tagBase>https://svn.apache.org/repos/asf/activemq/camel/tags</tagBase>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <preparationGoals>clean install</preparationGoals>
+                    <goals>deploy</goals>
+                    <arguments>-Prelease,deploy</arguments>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                  </configuration>
+                </plugin>
+        -->
       </plugins>
     </pluginManagement>
 
