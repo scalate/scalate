@@ -26,13 +26,16 @@
     <a href="/scala/defaultAttribute.ssp">an SSP with an attribute using a default value</a>
   </li>
   <li>
-    <a href="/scala/missingAttribute.ssp">try an SSP with missing attributes</a>
+    <a href="/scala/missingAttribute.ssp">try an SSP with missing attributes</a> (which should generate an error)
   </li>
   <li>
-    <a href="/scala/viewObject.ssp">render an object using its default template</a>
+    <a href="/scala/renderObject.ssp">render an object using its default template</a>
   </li>
   <li>
-    <a href="/scala/viewCaseClass.ssp">render an object using the default Product template</a> which renders any case class
+    <a href="/scala/renderCollection.ssp">render a collection of objects using their default template</a>
+  </li>
+  <li>
+    <a href="/scala/renderCaseClass.ssp">render an object using the default Product template</a> which renders any case class
   </li>
   <li>
     <a href="/scala/sampleTag.ssp">custom tag</a> process a block of text using a simple scala function

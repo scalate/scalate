@@ -111,8 +111,6 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
   }
 
   class RequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
-    //println("Creating requestWrapper: " + this + " with child request: " + request)
-
     override def getMethod() = {
       "GET";
     }
@@ -181,7 +179,7 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
    * Renders the view of the given model object, looking for the view in
    * packageName/className.viewName.ssp
    */
-  def view(model: AnyRef, view: String = "index") {
+  def render(model: AnyRef, view: String = "index"): Unit= {
     if (model == null) {
       throw new NullPointerException("No model object given!")
     }
@@ -227,6 +225,23 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
     }
   }
 
+  /**
+   * Renders a collection of model objects with an optional separator
+   */
+  def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: ()=> String = {() => ""}): Unit= {
+    var first = true
+    for (model <- objects) {
+      if (first) {
+        first = false
+        val text = separator()
+      }
+      else {
+        write(text)
+      }
+      render(model, view)
+    }
+  }
+
 
   private def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
     out.flush
@@ -240,6 +255,7 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
     dispatcher.forward(wrappedRequest, wrappedResponse)
     val text = wrappedResponse.getString
     out.write(text)
+    out.flush()
   }
 
   private def resolveViewForType(model: AnyRef, view: String, aClass: Class[_]): Option[RequestDispatcher] = {
@@ -407,9 +423,9 @@ abstract class Page extends HttpServlet {
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val out = response.getWriter
     val pageContext = createPageContext(out, request, response)
-    render(pageContext)
+    renderPage(pageContext)
   }
 
-  def render(pageContext: PageContext): Unit
+  def renderPage(pageContext: PageContext): Unit
 
 }

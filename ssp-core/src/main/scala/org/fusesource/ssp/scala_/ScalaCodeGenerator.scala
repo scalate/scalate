@@ -185,7 +185,7 @@ import javax.servlet.http._
 
 class """ + className + """ extends Page {
 
-  def render(pageContext: PageContext""" + generateParameterList(params) + """): Unit = {
+  def renderPage(pageContext: PageContext""" + generateParameterList(params) + """): Unit = {
     import pageContext._
 
 """ + importParameters(params) + generateCode(fragments) + """
@@ -225,11 +225,11 @@ class """ + className + """ extends Page {
       ""
     } else {
       """
-  def render(pageContext: PageContext): Unit = {
+  def renderPage(pageContext: PageContext): Unit = {
     import pageContext._
     """ + params.map {_.valueCode}.mkString("\n    ") + """
 
-    render(pageContext, """ + params.map {_.name}.mkString(", ") + """)
+    renderPage(pageContext, """ + params.map {_.name}.mkString(", ") + """)
   }
 """
     }

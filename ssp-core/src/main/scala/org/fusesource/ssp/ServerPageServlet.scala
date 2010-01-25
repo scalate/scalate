@@ -25,13 +25,14 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
+import util.Logging
 
 
 private class CompiledPage(val servlet: HttpServlet, val timestamp: Long, val dependencies: Set[String])
 
 
-abstract class ServerPageServlet extends HttpServlet
-{
+abstract class ServerPageServlet extends HttpServlet with Logging {
+
   val pageFileEncoding = "UTF-8"
   val allowReload = true
 
@@ -88,7 +89,7 @@ abstract class ServerPageServlet extends HttpServlet
           newPage
         case 'LoadPrebuilt =>
           val className = codeGenerator.buildClassName(uri)
-          println("Compling class name: " + className)
+          finer("Compling class name: " + className)
           val servlet = instantiateServlet(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri //TODO: omits resources that 'uri' includes
           val newPage = new CompiledPage(servlet, timestamp, dependencies)
@@ -170,7 +171,7 @@ abstract class ServerPageServlet extends HttpServlet
   private def instantiateServlet(className: String, bytecodeDirectory: File): HttpServlet = {
     // Load the compiled class
     val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
-    println("Attempting to load class: '" + className + "'")
+    fine("Attempting to load class: '" + className + "'")
     val clazz = classLoader.loadClass(className)
 
     // Instantiate the servlet object

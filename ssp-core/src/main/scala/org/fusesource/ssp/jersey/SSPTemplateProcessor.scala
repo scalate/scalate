@@ -6,6 +6,7 @@ import javax.servlet.{ServletContext}
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
+import org.fusesource.ssp.util.Logging
 //import org.apache.log4j.Logger
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.spi.template.TemplateProcessor
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Context
 /**
  * @version $Revision : 1.1 $
  */
-class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends TemplateProcessor {
+class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends TemplateProcessor with Logging {
   @Context
   var servletContext: ServletContext = _
   @Context
@@ -38,7 +39,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
-      println("No servlet context")
+      log.warning("No servlet context")
       return null
     }
 
