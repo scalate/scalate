@@ -1,0 +1,2 @@
+<% import java.util.Date %>
+<p>included from /includes/something.jsp at: ${new Date()}</p>

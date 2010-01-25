@@ -89,7 +89,8 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
    * Includes the given page inside this page
    */
   def include(page: String): Unit = {
-    getRequestDispatcher(page).include(request, response)
+    val dispatcher = getRequestDispatcher(page)
+    doInclude(dispatcher)
   }
 
   /**
@@ -98,7 +99,6 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
   def forward(page: String): Unit = {
     getRequestDispatcher(page).forward(request, response)
   }
-
 
   private def getRequestDispatcher(path: String) = {
     val dispatcher = request.getRequestDispatcher(path)
@@ -233,9 +233,9 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
     for (model <- objects) {
       if (first) {
         first = false
-        val text = separator()
       }
       else {
+        val text = separator()
         write(text)
       }
       render(model, view)
@@ -243,7 +243,7 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
   }
 
 
-  private def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
+  protected def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
     out.flush
 
     val wrappedRequest = new RequestWrapper(request)

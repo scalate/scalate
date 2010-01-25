@@ -17,6 +17,9 @@
     <a href="/scala/locale.ssp">shows use of locales and auto-formatting of numbers and dates</a>
   </li>
   <li>
+    <a href="/scala/exampleIncludes.ssp">includes example</a> shows how to include other templates or fragments
+  </li>
+  <li>
     <a href="/scala/snippet.ssp">invoke a snippet implemented in scala code</a>
   </li>
   <li>

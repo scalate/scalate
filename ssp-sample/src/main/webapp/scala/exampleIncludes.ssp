@@ -1,0 +1,21 @@
+<html>
+<body>
+<h1>Includes Example</h1>
+
+<p>this example shows how to include other pages and templates</p>
+
+<h3>Relative includes</h3>
+
+<% include("../includes/something.ssp") %>
+<% include("child/foo.ssp") %>
+
+<h3>Absolute include</h3>
+
+<% include("/includes/something.ssp") %>
+
+<p>
+  Finished including!
+</b>
+
+</body>
+</html>

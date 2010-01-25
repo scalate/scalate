@@ -1,0 +1,2 @@
+<% import java.util.Date %>
+<p>included from /scala/child.jsp at: ${new Date()}</p>
