@@ -28,7 +28,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|/sampleServlet|.+\.ssp|(/(images|css|ssp)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.ssp||.+\.haml|(/(images|css|ssp)/.*)</param-value>
     </init-param>
   </filter>
 
@@ -37,7 +37,6 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <!-- END: JAX RS config -->
-
 
   <!-- START: SSP config -->
   <servlet>
@@ -52,6 +51,18 @@
   </servlet-mapping>
   <!-- END: SSP config -->
 
+  <!-- START: HAML config -->
+  <servlet>
+    <servlet-name>HamlServlet</servlet-name>
+    <servlet-class>org.fusesource.ssp.haml.HamlServerPageServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>HamlServlet</servlet-name>
+    <url-pattern>*.haml</url-pattern>
+  </servlet-mapping>
+  <!-- END: HAML config -->
 
   <!-- START: Sample servlets -->
   <servlet>

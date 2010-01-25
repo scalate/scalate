@@ -88,7 +88,7 @@ object HamlParser extends IndentedParser() {
   val some_space                   = """[ \t]*""".r
 
   val ident                   = """[a-zA-Z_]\w*""".r
-  val string_literal          = ("\""+"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*"""+"\"").r
+  val string_literal          = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
   val whole_number            = """-?\d+""".r
   val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
   val floating_point_number   = """-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r
@@ -97,13 +97,13 @@ object HamlParser extends IndentedParser() {
   // either accept the same to allow easy migration of existing haml pages, or accept a
   // valid scala Map expression.
   //
-  def hash_style_attributes = "{" ~ some_space ~> repsep(hash_attribute_entry,"""[ \t]*,\s*""".r) <~ some_space ~ "}"
-  def hash_attribute_entry: Parser[(Any, Any)] = expression ~ "=>" ~ expression ^^ { case key~"=>"~value => (key, value) }
+  def hash_style_attributes = prefixed("{" ~ some_space, repsep(hash_attribute_entry,"""[ \t]*,\s*""".r)) <~ some_space ~ "}"
+  def hash_attribute_entry: Parser[(Any, Any)] = (expression <~ some_space) ~ ("=>" ~ some_space ~> expression) ^^ { case key~value => (key, value) }
   def expression: Parser[Any] = string_literal | symbol | whole_number | decimal_number | floating_point_number | ident | attributes
-  def symbol = ":"~ident
+  def symbol = ":"~>ident 
 
-  def html_attribute_entry: Parser[(Any, Any)] = ident ~ "=" ~ string_literal ^^ { case key~"="~value => (key, value) }
-  def html_style_attributes = "("~some_space ~> repsep(html_attribute_entry,"""\s+""".r) <~ some_space~")"
+  def html_attribute_entry: Parser[(Any, Any)] = (ident <~ some_space) ~ ("=" ~some_space ~> string_literal) ^^ { case key~value => (key, value) }
+  def html_style_attributes = prefixed("("~some_space, repsep(html_attribute_entry,"""\s+""".r)) <~ some_space~")"
 
   def class_entry:Parser[(Any, Any)] = "." ~> word ^^ { case x=> ("class", x) }
   def id_entry:Parser[(Any, Any)] = "#" ~> word ^^ { case x=> ("id", x) }
@@ -161,20 +161,17 @@ object HamlParser extends IndentedParser() {
 
   def parser = rep( statement )
 
+  def parse(in:String) = {
+    val x = phrase[List[Statement]](parser)(new CharSequenceReader(in))
+    x match {
+      case Success(result, _) => result
+      case _ => throw new IllegalArgumentException(x.toString);
+    }
+  }
+
   def main(args: Array[String]) = {
-     val in = """
-=Test
-\%Escaped Plain Text
-%h1.hello= foo
-  %h2{:key=>"value"}(test="attribute")
-    Hello
-       World
-.hello
-  %h2
-    Test
-%h1</        
+     val in = """%a{:href => "/scala/standalone.ssp"}
 """
-     val x = phrase[Any](parser)(new CharSequenceReader(in))
-     println(x)
+     println(parse(in))
    }
 }
