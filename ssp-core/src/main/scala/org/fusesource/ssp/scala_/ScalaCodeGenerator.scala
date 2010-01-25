@@ -77,7 +77,7 @@ class SspParser extends JavaTokenParsers {
     //val filler = """(.|\n|\r)+"""
     val filler = """.+"""
     val regex = (regexEscape(prefix) + filler + regexEscape(postfix)).r
-    
+
     //prefix ~> rep(not(postfix)) <~ prefix ^^ {
     regex ^^ {
       case r => val text = r.toString
@@ -235,23 +235,9 @@ class """ + className + """ extends Page {
     }
   }
 
-  private def generateCode(fragments: Seq[PageFragment]): StringBuffer =
-    fragments.foldLeft(new StringBuffer)((buffer, fragment) => buffer.append(generateCode(fragment)))
-
-
-  private def generateCode(fragment: PageFragment): String = {
-    "\n    " +
-            (
-                    fragment match {
-                      case CommentFragment(code) => ""
-                      case DollarExpressionFragment(code) => "pageContext.writeXmlEscape( " + code + " )"
-                      case ExpressionFragment(code) => "pageContext.write( " + code + " )"
-                      case ScriptletFragment(code) => code
-                      case TextFragment(text) => "out.write( \"" + renderText(text) + "\" )"
-                      case AttributeFragment(name, className, expression) => ""
-                    }
-                    ) +
-            "\n"
+  private def generateCode(fragments: Seq[PageFragment]): StringBuffer = {
+    val helper = new CodeHelper()
+    fragments.foldLeft(new StringBuffer)((buffer, fragment) => buffer.append(helper.generateCode(fragment)))
   }
 
 
@@ -367,9 +353,29 @@ class """ + className + """ extends Page {
   }
 
 
+
+}
+
+class CodeHelper {
+
+  def generateCode(fragment: PageFragment): String = {
+    "\n    " +
+            (
+                    fragment match {
+                      case CommentFragment(code) => ""
+                      case ScriptletFragment(code) => code
+                      case TextFragment(text) => "out.write( \"" + renderText(text) + "\" )"
+                      case AttributeFragment(name, className, expression) => ""
+
+                      case DollarExpressionFragment(code) => "pageContext <<< " + code
+                      case ExpressionFragment(code) => "pageContext << " + code
+                    }
+                    ) +
+            "\n"
+  }
+
   private def renderText(text: String): StringBuffer =
     text.foldLeft(new StringBuffer)((buffer, c) => {renderChar(buffer, c); buffer})
-
 
   private def renderChar(buffer: StringBuffer, c: Char): Unit = {
     if ((c >= '#' && c <= '~') || c == ' ' || c == '!')
@@ -382,11 +388,12 @@ class """ + className + """ extends Page {
     }
   }
 
+ 
 
   private def leftPad(s: String): String =
     if (s.length < 4)
       leftPad("0" + s)
     else
       s
-
 }
+

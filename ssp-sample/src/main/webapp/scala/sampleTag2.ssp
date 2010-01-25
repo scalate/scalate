@@ -1,0 +1,19 @@
+<html>
+<body>
+
+<h1>Sample Tag</h1>
+
+<p>
+  This page demonstrates a kinda pseudo custom tag in SSP
+  using an explicit PageContext parameter and a function which can be invoked
+  by the someLayoutUsingPageContext() to process the body (writing the output as a side effect).
+</p>
+
+<% import org.fusesource.ssp.sample.MyTags._ %>
+
+<% someLayoutUsingPageContext(pageContext) { %>
+this is the body!
+<% } %>
+
+</body>
+</html>

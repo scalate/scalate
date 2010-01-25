@@ -34,6 +34,12 @@
   <li>
     <a href="/scala/viewCaseClass.ssp">render an object using the default Product template</a> which renders any case class
   </li>
+  <li>
+    <a href="/scala/sampleTag.ssp">custom tag</a> process a block of text using a simple scala function
+  </li>
+  <li>
+    <a href="/scala/sampleTag2.ssp">custom tag</a> using an explicit PageContext
+  </li>
 </ul>
 
 

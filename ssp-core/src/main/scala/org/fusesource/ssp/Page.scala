@@ -8,7 +8,7 @@ import java.util.{Date, Locale}
 import java.io._
 import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
 import java.lang.String
-import collection.mutable.{ListBuffer, HashMap}
+import collection.mutable.{Stack, ListBuffer, HashMap}
 
 class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Page") {
 }
@@ -20,8 +20,9 @@ class NoSuchTemplateException(val model: AnyRef, val view: String) extends Servl
 /**
  * The PageContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-case class PageContext(out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
+case class PageContext(var out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
   private val resourceBeanAttribute = "it"
+  private val outStack = new Stack[PrintWriter]
 
   var nullString = ""
   var viewPrefixes = List("WEB-INF", "")
@@ -330,6 +331,67 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
       locale
     }
   }
+
+
+  // tag related stuff such as capturing blocks of output
+
+  /**
+   * Evaluates the body capturing any output written to this page context during the body evaluation
+   */
+  def evaluate(body: => Unit) : String = {
+    val buffer = new StringWriter();
+    val printWriter = new PrintWriter(buffer)
+    pushOut(printWriter)
+    try {
+      body
+      printWriter.close()
+      buffer.toString
+    } finally {
+      popOut
+    }
+  }
+
+  def pushOut(newOut: PrintWriter) {
+    outStack.push(out)
+    out = newOut
+  }
+
+  def popOut() = {
+    out = outStack.pop
+  }
+
+  
+  implicit def body(body: => Unit) : () => String = {
+    () => {
+      evaluate(body)
+    }
+  }
+
+
+  /**
+   * Allow the right hand side to be written to the stream which makes it easy to code
+   * generate expressions using blocks in the SSP code
+   */
+  def <<(value: Any) : Unit = {
+    write(value)
+  }
+
+  /**
+   * Like << but XML escapes the right hand side
+   */
+  def <<<(value: Any) : Unit = {
+    writeXmlEscape(value)
+  }
+
+/*
+  def textWrite_=(value: Any) : Unit = {
+    write(value)
+  }
+
+  def xmlEscapedWrite_=(value: Any) : Unit = {
+    writeXmlEscape(value)
+  }
+*/
 }
 
 /**
