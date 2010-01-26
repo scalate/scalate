@@ -8,7 +8,7 @@ import java.util.{Date, Locale}
 import java.io._
 import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
 import java.lang.String
-import collection.mutable.{ListBuffer, HashMap}
+import collection.mutable.{Stack, ListBuffer, HashMap}
 
 class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Page") {
 }
@@ -20,8 +20,9 @@ class NoSuchTemplateException(val model: AnyRef, val view: String) extends Servl
 /**
  * The PageContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-case class PageContext(out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
+case class PageContext(var out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
   private val resourceBeanAttribute = "it"
+  private val outStack = new Stack[PrintWriter]
 
   var nullString = ""
   var viewPrefixes = List("WEB-INF", "")
@@ -88,7 +89,8 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
    * Includes the given page inside this page
    */
   def include(page: String): Unit = {
-    getRequestDispatcher(page).include(request, response)
+    val dispatcher = getRequestDispatcher(page)
+    doInclude(dispatcher)
   }
 
   /**
@@ -97,7 +99,6 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   def forward(page: String): Unit = {
     getRequestDispatcher(page).forward(request, response)
   }
-
 
   private def getRequestDispatcher(path: String) = {
     val dispatcher = request.getRequestDispatcher(path)
@@ -110,8 +111,6 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
   }
 
   class RequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
-    //println("Creating requestWrapper: " + this + " with child request: " + request)
-
     override def getMethod() = {
       "GET";
     }
@@ -180,7 +179,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
    * Renders the view of the given model object, looking for the view in
    * packageName/className.viewName.ssp
    */
-  def view(model: AnyRef, view: String = "index") {
+  def render(model: AnyRef, view: String = "index"): Unit= {
     if (model == null) {
       throw new NullPointerException("No model object given!")
     }
@@ -226,8 +225,25 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
     }
   }
 
+  /**
+   * Renders a collection of model objects with an optional separator
+   */
+  def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: ()=> String = {() => ""}): Unit= {
+    var first = true
+    for (model <- objects) {
+      if (first) {
+        first = false
+      }
+      else {
+        val text = separator()
+        write(text)
+      }
+      render(model, view)
+    }
+  }
 
-  private def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
+
+  protected def doInclude(dispatcher: RequestDispatcher, model: AnyRef = null): Unit = {
     out.flush
 
     val wrappedRequest = new RequestWrapper(request)
@@ -239,6 +255,7 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
     dispatcher.forward(wrappedRequest, wrappedResponse)
     val text = wrappedResponse.getString
     out.write(text)
+    out.flush()
   }
 
   private def resolveViewForType(model: AnyRef, view: String, aClass: Class[_]): Option[RequestDispatcher] = {
@@ -330,6 +347,67 @@ case class PageContext(out: PrintWriter, request: HttpServletRequest, response: 
       locale
     }
   }
+
+
+  // tag related stuff such as capturing blocks of output
+
+  /**
+   * Evaluates the body capturing any output written to this page context during the body evaluation
+   */
+  def evaluate(body: => Unit) : String = {
+    val buffer = new StringWriter();
+    val printWriter = new PrintWriter(buffer)
+    pushOut(printWriter)
+    try {
+      body
+      printWriter.close()
+      buffer.toString
+    } finally {
+      popOut
+    }
+  }
+
+  def pushOut(newOut: PrintWriter) {
+    outStack.push(out)
+    out = newOut
+  }
+
+  def popOut() = {
+    out = outStack.pop
+  }
+
+  
+  implicit def body(body: => Unit) : () => String = {
+    () => {
+      evaluate(body)
+    }
+  }
+
+
+  /**
+   * Allow the right hand side to be written to the stream which makes it easy to code
+   * generate expressions using blocks in the SSP code
+   */
+  def <<(value: Any) : Unit = {
+    write(value)
+  }
+
+  /**
+   * Like << but XML escapes the right hand side
+   */
+  def <<<(value: Any) : Unit = {
+    writeXmlEscape(value)
+  }
+
+/*
+  def textWrite_=(value: Any) : Unit = {
+    write(value)
+  }
+
+  def xmlEscapedWrite_=(value: Any) : Unit = {
+    writeXmlEscape(value)
+  }
+*/
 }
 
 /**
@@ -345,9 +423,9 @@ abstract class Page extends HttpServlet {
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val out = response.getWriter
     val pageContext = createPageContext(out, request, response)
-    render(pageContext)
+    renderPage(pageContext)
   }
 
-  def render(pageContext: PageContext): Unit
+  def renderPage(pageContext: PageContext): Unit
 
 }

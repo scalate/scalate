@@ -27,10 +27,11 @@ import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
 import java.net.URLClassLoader
 import javax.servlet.http.HttpServlet
+import util.Logging
 
 
-class ScalaCompiler extends Compiler
-{
+class ScalaCompiler extends Compiler with Logging { 
+
   override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, servletConfig: ServletConfig): Unit = {
     // Prepare an object for collecting error messages from the compiler
     val messageCollector = new StringWriter
@@ -83,14 +84,14 @@ class ScalaCompiler extends Compiler
   private def classLoaderList[T](aClass: Class[T]): List[String] = {
     aClass.getClassLoader match {
       case u: URLClassLoader =>
-        List.fromArray(u.getURLs).map {_.getFile}
+        u.getURLs.toList.map {_.getFile}
 
       case _ => Nil
     }
   }
 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
-    println("using classpath: " + classpath)
+    fine("using classpath: " + classpath)
 
     val settings = new Settings(error)
     settings.classpath.value = classpath

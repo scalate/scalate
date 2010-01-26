@@ -17,6 +17,9 @@
     <a href="/scala/locale.ssp">shows use of locales and auto-formatting of numbers and dates</a>
   </li>
   <li>
+    <a href="/scala/exampleIncludes.ssp">includes example</a> shows how to include other templates or fragments
+  </li>
+  <li>
     <a href="/scala/snippet.ssp">invoke a snippet implemented in scala code</a>
   </li>
   <li>
@@ -26,13 +29,22 @@
     <a href="/scala/defaultAttribute.ssp">an SSP with an attribute using a default value</a>
   </li>
   <li>
-    <a href="/scala/missingAttribute.ssp">try an SSP with missing attributes</a>
+    <a href="/scala/missingAttribute.ssp">try an SSP with missing attributes</a> (which should generate an error)
   </li>
   <li>
-    <a href="/scala/viewObject.ssp">render an object using its default template</a>
+    <a href="/scala/renderObject.ssp">render an object using its default template</a>
   </li>
   <li>
-    <a href="/scala/viewCaseClass.ssp">render an object using the default Product template</a> which renders any case class
+    <a href="/scala/renderCollection.ssp">render a collection of objects using their default template</a>
+  </li>
+  <li>
+    <a href="/scala/renderCaseClass.ssp">render an object using the default Product template</a> which renders any case class
+  </li>
+  <li>
+    <a href="/scala/sampleTag.ssp">custom tag</a> process a block of text using a simple scala function
+  </li>
+  <li>
+    <a href="/scala/sampleTag2.ssp">custom tag</a> using an explicit PageContext
   </li>
 </ul>
 

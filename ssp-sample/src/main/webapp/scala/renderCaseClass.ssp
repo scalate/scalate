@@ -1,0 +1,16 @@
+<html>
+<body>
+<h2>View Any Case Class</h2>
+
+<p>This page creates 2 case class objects which don't have their own template, then renders them using the default template for scala Products (i.e. to render all case classes)</p>
+
+<%
+  import org.fusesource.ssp.sample.AnyCaseClass
+
+  val people = List(AnyCaseClass("James", "Strachan"), AnyCaseClass("Hiram", "Chirino"))
+
+  renderCollection(people, separator = {() => "<hr/>"})
+%>
+
+</body>
+</html>

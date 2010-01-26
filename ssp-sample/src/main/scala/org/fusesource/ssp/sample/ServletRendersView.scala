@@ -28,7 +28,7 @@ class ServletRendersView extends HttpServlet
 
 
     val pageContext = new PageContext(response.getWriter, request, response, getServletContext)
-    pageContext.view(model)
+    pageContext.render(model)
   }
 
 }

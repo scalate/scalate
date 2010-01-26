@@ -2,7 +2,7 @@
 <body>
 <h2>View Objects</h2>
 
-<p>This page creates 2 People objects, then renders them using the default template for the type</p>
+<p>This page renders a model object using its default template</p>
 
 <%
   import org.fusesource.ssp.sample.Person
@@ -10,7 +10,7 @@
   val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
 
   for (person <- people ) {
-    view(person)
+    render(person)
   }
 %>
 

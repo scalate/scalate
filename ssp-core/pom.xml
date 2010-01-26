@@ -22,6 +22,14 @@
       <artifactId>jersey-server</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>opensymphony</groupId>
+      <artifactId>sitemesh</artifactId>
+      <!-- TODO is it really optional??? -->
+<!--
+      <optional>true</optional>
+-->
+    </dependency>
   </dependencies>
 
   <build>
