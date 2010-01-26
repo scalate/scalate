@@ -64,6 +64,15 @@
   </li>
 </ul>
 
+<h2>HAML Samples</h2>
+
+SSP also supports <a href="http://haml-lang.com/">haml</a> markup
+<ul>
+  <li>
+    <a href="test.haml">simple sample</a>
+  </li>
+</ul>
+
 </body>
 
 </html>

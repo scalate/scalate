@@ -74,7 +74,7 @@ class HamlCodeGenerator extends CodeGenerator
       p("class " + className + " extends Page {");
       i{
         p
-        p("def render($_context_$: PageContext"+parameters(params)+"): Unit = {");
+        p("def renderPage($_context_$: PageContext"+parameters(params)+"): Unit = {");
         i{
           if (!params.isEmpty) {
             params.foreach(param=>{
@@ -88,13 +88,13 @@ class HamlCodeGenerator extends CodeGenerator
         p
         if (!params.isEmpty) {
 
-          p("def render(pageContext: PageContext): Unit = {")
+          p("def renderPage(pageContext: PageContext): Unit = {")
           i{
             p("import pageContext._")
             params.foreach(param=>{
               p(param.valueCode)
             })
-            p("render(pageContext, " + params.map {_.name}.mkString(", ") + ")")
+            p("renderPage(pageContext, " + params.map {_.name}.mkString(", ") + ")")
           }
           p("}")
 
