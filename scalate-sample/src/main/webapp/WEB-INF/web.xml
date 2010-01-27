@@ -41,7 +41,7 @@
   <!-- START: SSP config -->
   <servlet>
     <servlet-name>SspServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.scala_.ScalaServerPageServlet</servlet-class>
+    <servlet-class>org.fusesource.scalate.ssp.ScalaServerPageServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 

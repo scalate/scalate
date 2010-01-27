@@ -15,7 +15,7 @@
  */
 
 
-package org.fusesource.scalate.scala_
+package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
 import java.io.File

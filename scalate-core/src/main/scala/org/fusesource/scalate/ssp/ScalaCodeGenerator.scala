@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package org.fusesource.scalate.scala_
+package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
 import org.fusesource.scalate.util._

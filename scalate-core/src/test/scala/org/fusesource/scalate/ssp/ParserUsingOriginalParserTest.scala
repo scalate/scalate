@@ -1,4 +1,4 @@
-package org.fusesource.scalate.scala_
+package org.fusesource.scalate.ssp
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith

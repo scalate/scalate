@@ -124,7 +124,7 @@ ADDING SSP SUPPORT TO YOUR APPLICATION
 
         <servlet>
           <servlet-name>SspServlet</servlet-name>
-          <servlet-class>org.fusesource.scalate.scala_.ScalaServerPageServlet</servlet-class>
+          <servlet-class>org.fusesource.scalate.ssp.ScalaServerPageServlet</servlet-class>
           <load-on-startup>1</load-on-startup>
         </servlet>
 
@@ -152,8 +152,6 @@ Possible Gotchas
 - Assumes SSP pages' output is all UTF-8-encoded.
 
 - No support for precompilation (e.g., via a custom Ant task).
-
-- Yes, there really is an underscore in "org.fusesource.scalate.scala_.ScalaServerPageServlet"; the Scala compiler issued errors without the underscore in the package name.
 
 
 Changes

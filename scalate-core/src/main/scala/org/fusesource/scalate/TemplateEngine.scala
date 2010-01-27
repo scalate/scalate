@@ -20,7 +20,7 @@ import java.io.File
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
-import scala_.ScalaCompiler
+import ssp.ScalaCompiler
 import util.IOUtil
 
 class TemplateEngine {
