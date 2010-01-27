@@ -30,15 +30,15 @@ import javax.servlet.http.HttpServlet
 import util.Logging
 
 
-class ScalaCompiler extends Compiler with Logging { 
+class ScalaCompiler() extends Compiler with Logging { 
 
-  override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, servletConfig: ServletConfig): Unit = {
+  override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, classpath: String): Unit = {
     // Prepare an object for collecting error messages from the compiler
     val messageCollector = new StringWriter
     val messageCollectorWrapper = new PrintWriter(messageCollector)
 
     // Initialize the compiler
-    val settings = generateSettings(bytecodeDirectory, buildClassPath(servletConfig))
+    val settings = generateSettings(bytecodeDirectory, classpath)
     val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper)
     val compiler = new Global(settings, reporter)
 
@@ -55,40 +55,6 @@ class ScalaCompiler extends Compiler with Logging {
 
 
   private def error(message: String): Unit = throw new ServerPageException("Compilation failed:\n" + message)
-
-
-  private def buildClassPath(servletConfig: ServletConfig): String = {
-    val containerList = classLoaderList(getClass) ::: classLoaderList(classOf[HttpServlet])
-
-    // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
-    val classesDirectory = servletConfig.getServletContext.getRealPath("/WEB-INF/classes")
-    val libDirectory = servletConfig.getServletContext.getRealPath("/WEB-INF/lib")
-    val jars = findFiles(new File(libDirectory)).map {_.toString}
-
-    // Allow adding a classpath prefix & suffix via web.xml
-    val prefix = servletConfig.getInitParameter("compiler.classpath.prefix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-    val suffix = servletConfig.getInitParameter("compiler.classpath.suffix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-
-    // Put the pieces together
-
-    // TODO we should probably be smart enough to filter out duplicates here...
-    (prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(":")
-  }
-
-  private def classLoaderList[T](aClass: Class[T]): List[String] = {
-    aClass.getClassLoader match {
-      case u: URLClassLoader =>
-        u.getURLs.toList.map {_.getFile}
-
-      case _ => Nil
-    }
-  }
 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
     fine("using classpath: " + classpath)

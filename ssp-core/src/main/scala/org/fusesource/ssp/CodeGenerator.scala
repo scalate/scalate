@@ -20,11 +20,12 @@ package org.fusesource.ssp
 import java.io.File
 
 
-trait CodeGenerator
-{
+trait CodeGenerator {
 
-  def generateCode( translationUnit: String, outputDirectory: File, uri: String ): String
+  case class Code(className:String, source:String, dependencies:Set[String])
 
-  def buildClassName( uri: String ): String
+  def generate(engine:TemplateEngine, uri:String): Code
+
+  def className(uri:String): String
 
 }

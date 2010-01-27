@@ -17,14 +17,13 @@
 
 package org.fusesource.ssp.scala_
 
-import org.fusesource.ssp._
+import org.fusesource.ssp.servlet.ServerPageServlet
 
 
 class ScalaServerPageServlet extends ServerPageServlet
 {
 
-  val translationUnitLoader = new ScalaTranslationUnitLoader
-  val codeGenerator = new ScalaCodeGenerator
-  val compiler = new ScalaCompiler
+  templateEngine.codeGenerator = new ScalaCodeGenerator
+  templateEngine.compiler = new ScalaCompiler
 
 }

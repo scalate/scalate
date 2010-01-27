@@ -166,8 +166,15 @@ class ScalaCodeGenerator extends CodeGenerator
 {
   var useTemplateNameToDiscoverModel = true
   var autoImportFirstParam = true
+  var translationUnitLoader = new ScalaTranslationUnitLoader
+  
+  override def generate(engine:TemplateEngine, uri:String): Code = {
+/*  override def generate(translationUnit: String, outputDirectory: File, uri: String): String = {*/
+    
+        // Load the translation unit
+    val tu = translationUnitLoader.loadTranslationUnit(engine, uri)
+    val translationUnit = tu.content
 
-  override def generateCode(translationUnit: String, outputDirectory: File, uri: String): String = {
     // Determine the package and class name to use for the generated class
     val (packageName, className) = buildPackageAndClassNames(uri)
 
@@ -195,11 +202,7 @@ class """ + className + """ extends Page {
 """ + generateRenderMethodWithNoParams(params) + """
 }
 """
-
-    // Dump the generated source code to the working directory if requested to do so
-    IOUtil.writeBinaryFile(new File(outputDirectory, className + ".scala").toString, sourceCode.getBytes("UTF-8"))
-
-    sourceCode
+    Code(className, sourceCode, tu.dependencies)
   }
 
   private def importParameters(params: List[AttributeFragment]) = {
@@ -255,7 +258,7 @@ class """ + className + """ extends Page {
       // TODO need access to the classloader!!
 
       classNameInUriRegex.findFirstMatchIn(uri) match {
-        case Some(m: Regex.Match) => val className = m.group(1)
+        case Some(m: Regex.Match) => val cn = m.group(1)
         Nil
         case _ => Nil
       }
@@ -265,15 +268,15 @@ class """ + className + """ extends Page {
     }
   }
 
-  def buildClassName(uri: String): String = {
+  def className(uri: String): String = {
     // Determine the package and class name to use for the generated class
-    val (packageName, className) = buildPackageAndClassNames(uri)
+    val (packageName, cn) = buildPackageAndClassNames(uri)
 
     // Build the complete class name (including the package name, if any)
     if (packageName == null || packageName.length == 0)
-      className
+      cn
     else
-      packageName + "." + className
+      packageName + "." + cn
   }
 
 

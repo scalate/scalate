@@ -15,8 +15,6 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
-
 package org.fusesource.ssp.haml
 
 import org.fusesource.ssp._
@@ -199,26 +197,27 @@ class HamlCodeGenerator extends CodeGenerator
   }
 
 
-  override def generateCode(translationUnit: String, outputDirectory: File, uri: String): String = {
-    // Determine the package and class name to use for the generated class
+  override def generate(engine:TemplateEngine, uri:String): Code = {
+
+    val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
-    val statements = HamlParser.parse(translationUnit)
+    val statements = HamlParser.parse(hamlSource)
     val builder = new SourceBuilder()
     builder.generate(packageName, className, statements)
-    IOUtil.writeBinaryFile(new File(outputDirectory, className + ".scala").toString, builder.code.getBytes("UTF-8"))
-    builder.code
+
+    Code(className, builder.code, Set())
 
   }
 
-  override def buildClassName(uri: String): String = {
+  override def className(uri: String): String = {
     // Determine the package and class name to use for the generated class
-    val (packageName, className) = extractPackageAndClassNames(uri)
+    val (packageName, cn) = extractPackageAndClassNames(uri)
 
     // Build the complete class name (including the package name, if any)
     if (packageName == null || packageName.length == 0)
-      className
+      cn
     else
-      packageName + "." + className
+      packageName + "." + cn
   }
 
   private def extractPackageAndClassNames(uri: String): (String, String) = {
@@ -228,8 +227,8 @@ class HamlCodeGenerator extends CodeGenerator
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new ServerPageException("Internal error: unparseable URI [" + uri + "]")
     val packageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
-    val className = "_ssp_" + matcher.group(2).replace('.', '_')
-    (packageName, className)
+    val cn = "_ssp_" + matcher.group(2).replace('.', '_')
+    (packageName, cn)
   }
 
 

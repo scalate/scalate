@@ -22,38 +22,36 @@ import org.fusesource.ssp.util._
 import java.io.File
 import java.io.InputStreamReader
 import java.io.StringWriter
-import java.net.URI
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import javax.servlet.ServletContext
 import scala.collection.mutable.HashSet
 
 
 private object ScalaTranslationUnitLoader
 {
-
   val INCLUDE_REGEX = Pattern.compile( "<%@ +include +file *= *\"([^\"]+)\" *%>", Pattern.MULTILINE | Pattern.DOTALL )
-
 }
 
 
-class ScalaTranslationUnitLoader extends TranslationUnitLoader
+class ScalaTranslationUnitLoader
 {
 
+  class TranslationUnit( val content: String, val dependencies: Set[String] )
+  
   val pageFileEncoding = "UTF-8"
 
 
-  override def loadTranslationUnit( uri: String, context: ServletContext ): TranslationUnit = {
+  def loadTranslationUnit(engine:TemplateEngine, uri: String): TranslationUnit = {
     val buffer = new StringBuffer
     val dependencies = new HashSet[String]
 
-    load( uri, context, buffer, dependencies, Set.empty[String] )
+    load( engine, uri, buffer, dependencies, Set.empty[String] )
 
     new TranslationUnit( buffer.toString, Set.empty[String] ++ dependencies )
   }
 
 
-  private def load( uri: String, context: ServletContext, buffer: StringBuffer, dependencies: HashSet[String],
+  private def load( engine:TemplateEngine, uri: String, buffer: StringBuffer, dependencies: HashSet[String],
                     currentlyProcessing: Set[String] ): Unit =
   {
     // Check for cyclical inclusion
@@ -64,7 +62,7 @@ class ScalaTranslationUnitLoader extends TranslationUnitLoader
     dependencies += uri
 
     // Load the contents of the referenced file
-    val content = loadResource( uri, context )
+    val content = engine.resourceLoader.load(uri)
 
     // Process the file's contents, including any include directives
     val matcher = ScalaTranslationUnitLoader.INCLUDE_REGEX.matcher( content )
@@ -79,40 +77,14 @@ class ScalaTranslationUnitLoader extends TranslationUnitLoader
       buffer.append( prefix )
 
       // Load the referenced file (plus anything it includes, recursively)
-      val resolvedIncludePath = resolvePath( includePath, uri )
-      load( resolvedIncludePath, context, buffer, dependencies, currentlyProcessing + uri )
+      val resolvedIncludePath = engine.resourceLoader.resolve(uri, includePath)
+      load( engine, resolvedIncludePath, buffer, dependencies, currentlyProcessing + uri )
 
       firstUnmatchedCharIndex = matcher.end()
     }
 
     // Append whatever comes after the last include directive, up to the end of the file
     buffer.append( content.substring( firstUnmatchedCharIndex ) )
-  }
-
-
-  private def loadResource( uri: String, context: ServletContext ): String = {
-    val stream = context.getResourceAsStream( uri )
-    if( stream == null )
-      throw new ServerPageException( "Cannot find [" + uri + "]; are you sure it's within [" +
-                                     context.getRealPath( "/" ) + "]?" )
-
-    val reader = new InputStreamReader( stream, pageFileEncoding )
-    val writer = new StringWriter( stream.available )
-
-    try {
-      IOUtil.copy( reader, writer )
-      writer.toString
-    } finally {
-      reader.close
-    }
-  }
-
-
-  private def resolvePath( path: String, relativeToPath: String ): String = {
-    if( path.startsWith( "/" ) )
-      path
-    else
-      new URI( relativeToPath ).resolve( path ).toString
   }
 
 }

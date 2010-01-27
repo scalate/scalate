@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+ * Copyright (C) 2009, Progress Software Corporation and/or its
+ * subsidiaries or affiliates.  All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,9 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
-
 package org.fusesource.ssp
 
-
-class ServerPageException( val message: String ) extends Exception( message )
+/**
+ * The base class for exceptions thrown by the template engine.
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
+class ServerPageException( val message: String ) extends RuntimeException( message )

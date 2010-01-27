@@ -21,9 +21,8 @@ import java.io.File
 import javax.servlet.ServletConfig
 
 
-trait Compiler
-{
+trait Compiler {
 
-  def compile( code: String, sourceDirectory: File, bytecodeDirectory: File, servletConfig: ServletConfig ): Unit
+  def compile( code: String, sourceDirectory: File, bytecodeDirectory: File, classpath: String): Unit
 
 }

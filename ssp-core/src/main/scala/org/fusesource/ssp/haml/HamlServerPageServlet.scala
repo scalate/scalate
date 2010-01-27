@@ -17,8 +17,8 @@
 
 package org.fusesource.ssp.haml
 
-import org.fusesource.ssp._
-import scala_.{ScalaCompiler, ScalaCodeGenerator, ScalaTranslationUnitLoader}
+import org.fusesource.ssp.servlet.ServerPageServlet
+import org.fusesource.ssp.scala_.{ScalaCompiler, ScalaTranslationUnitLoader}
 
 class HamlServerPageServlet extends ServerPageServlet
 {
