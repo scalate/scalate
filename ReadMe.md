@@ -1,17 +1,27 @@
-SCALA SERVER PAGES
-==================
+ScalaTE (Scala Template Engine)
+===============================
 
-This library implements Scala Server Pages which are [Scala](http://www.scala-lang.org) versions of things like JSP, ASP, GSP.
+This library implements ScalaTE which are [Scala](http://www.scala-lang.org) versions of things like JSP and HAML.
 
-All expressions inside SSP are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages.
+All expressions inside ScalaTE are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages.
+
+Two template languages are supported:
+  * SSP: Provides a JSP, ASP, ERB style template language
+  * HAML: Provides Haml style template lanaguage
 
 The code is based on code by [Matt Hildebrand](http://github.com/matthild/serverpages)
 
+Requirements
+------------
 
-Syntax
-------
+* Java 5 runtime or newer.
+* Scala 2.8
+* Servlet 2.5 container or newer.
 
-Expressions:
+SSP Syntax
+----------
+
+SSP Expressions:
 
 	<%= ... %>
 	${ ... }    <-- this simply HTML-escapes the result of the Scala expression "..."
@@ -22,11 +32,7 @@ Declarations:
 Imports:
 	<%@ include file="relativeURL" %>
 
-
 There is no support for tag libraries, EL, or anything like JSTL.
-
-Requires a Java 5 runtime and a servlet 2.5 container, or newer.
-
 
 Variables
 ---------
@@ -91,6 +97,10 @@ You often want to import all the methods and fields from the resource bean so yo
 
     <% val it = resource[FooResource]; import it._ %>
     
+Haml Syntax
+-----------
+
+* TODO
 
 Building
 --------
@@ -101,7 +111,7 @@ Install [maven](http://maven.apache.org) version 2.0.9 or later. Then type
 
 To run the sample web application
 
-    cd ssp-sample
+    cd scalate-sample
     mvn jetty:run
 
 Then open [the sample home page](http://localhost:8080)
@@ -127,7 +137,7 @@ ADDING SSP SUPPORT TO YOUR APPLICATION
 
         scala-compiler.jar
         scala-library.jar
-        ssp-core.jar
+        scalate-core.jar
 
 You could add one or more of the above to your servlet container's server-wide configuration if you prefer
 

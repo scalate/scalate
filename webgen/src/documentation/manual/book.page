@@ -152,7 +152,7 @@ mvn
 To run the sample web application
 
 ----
-cd ssp-sample
+cd scalate-sample
 mvn jetty:run
 ----
 

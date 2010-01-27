@@ -220,13 +220,12 @@ class HamlCodeGenerator extends CodeGenerator
   }
 
   private def extractPackageAndClassNames(uri: String): (String, String) = {
-    // Normalize the URI (e.g., convert /a/b/../c/foo.ssp to /a/c/foo.ssp)
     val normalizedURI = new URI(uri).normalize
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new ServerPageException("Internal error: unparseable URI [" + uri + "]")
     val packageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
-    val cn = "_ssp_" + matcher.group(2).replace('.', '_')
+    val cn = "_haml_" + matcher.group(2).replace('.', '_')
     (packageName, cn)
   }
 
