@@ -28,7 +28,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|/sampleServlet|.+\.ssp||.+\.haml|(/(images|css|ssp)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.(ssp|haml)|(/(images|css|ssp)/.*)</param-value>
     </init-param>
   </filter>
 

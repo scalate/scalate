@@ -1,5 +1,5 @@
 ---
-title: SSP
+title: Scalate
 in_menu: true
 sort_info: 1
 --- name:overview pipeline:haml,tags
@@ -10,184 +10,22 @@ sort_info: 1
 
 --- name:content pipeline:markdown,tags 
 
-SSP: Scala Server Pages
-=======================
+Scalate: Scala Template Engine
+==============================
 
-This library implements Scala Server Pages which are like [Scala](http://www.scala-lang.org) versions of things like JSP, ASP, GSP.
+Scalate is a [Scala](http://www.scala-lang.org) based template engine. Scalate can be used stand alone or as a servlet or renderer when using JAXRS with [Jersey](http://jersey.dev.java.net/).
 
-Compared to JSP, SSP misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff.
-In its place, SSP just reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. You can also invoke methods in regular Scala code which can use Scala's XML support to return page fragments.
+Scalate supports SSP pages which are like JSP/ASP pages as well as [Haml](http://haml-lang.com/)
 
-All expressions inside SSP are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. Also since SSP is based on Scala it generates fast statically typed method dispatch bytecode rather than dynamic dispatch or reflection.
+Compared to JSP, SSP misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, scalate reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. You can also invoke methods in regular Scala code which can use Scala's XML support to return page fragments.
 
-The code is based on code by [Matt Hildebrand](http://github.com/matthild/serverpages)
+All expressions inside SSP are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. Also since SSP is based on Scala it generates fast statically typed method dispatch bytecode rather than using dynamic dispatch or reflection.
 
-Syntax
-------
-
-Expressions:
-
-	<%= ... %>
-	${ ... }    <-- this simply HTML-escapes the result of the Scala expression "..."
-
-Declarations:
-	<% ... %>
-
-Imports:
-	<%@ include file="relativeURL" %>
+The code is based on [serverpages](http://github.com/matthild/serverpages) by Matt Hildebrand
 
 
-There is no support for tag libraries, EL, or anything like JSTL.
+Getting started
+---------------
 
-Requires a Java 5 runtime and a servlet 2.5 container, or newer.
-
-
-Variables
----------
-
-The following variables are in scope inside your page
-
-<style type="text/css">
-table {
-  margin: 1em 0px !important;
-}
-th {
-  border-bottom: 1px solid rgb(187, 187, 187) !important;
-  text-align: left;
-} 
-td, th {
-  padding: 0.2em 1em !important;
-}
-</style>
-<table>
-  <tr>
-    <th>Variable</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>pageContext</td>
-    <td>PageContext</td>
-    <td>the page context which is imported to provide helper methods like attribute() as described belowt</td>
-  </tr>
-  <tr>
-    <td>out</td>
-    <td>PrintWriter</td>
-    <td>the printer of the output</td>
-  </tr>
-  <tr>
-    <td>request</td>
-    <td>HttpServletRequest</td>
-    <td>the servlet request</td>
-  </tr>
-  <tr>
-    <td>response</td>
-    <td>HttpServletResponse</td>
-    <td>the servlet response</td>
-  </tr>
-</table>
-
-Working with attributes
------------------------
-
-You often want to bind to attributes registered in the servlet, controller, JAXRS Resource bean.
-Here's how you can do that in a typesafe way
-
-    val foo = attribute[Cheese]("blah") // throws exception if not available
-
-    val bar = attributeOrElse("bar", "someDefaultValueExpressionHere") // uses default if not present
-
-You can reuse all the power of scala in your expressions. So if you have a controller or attribute available
-you may wish to import its fields & methods so you can use them in your SSP file.
-
-    <% val controller = attribute[MyController]("someName"); import controller._ %>
-
-
-Working with JAX-RS
--------------------
-
-When working with the [Jersey](https://jersey.dev.java.net/) implementation of JAX-RS you can use template engines as implicit views of your resources.
-
-To do this just add the @ImplicitProduces annotation to your resource bean, then create a SSP file called "index.ssp"
-in a directory named after the fully qualified resource class name.
-
-For example if your resource bean is called org.fusesource.ssp.sample.resources.FooResource then create a file in your webapp called
-com/mh/serverpages/sample/resources/FooResource/index.ssp
-
-In your SSP you can refer to the resource bean as follows
-
-    <% val it = resource[FooResource] %>
-
-You often want to import all the methods and fields from the resource bean so you can do this
-
-    <% val it = resource[FooResource]; import it._ %>
-    
-
-Building
---------
-
-Install [maven](http://maven.apache.org) version 2.0.9 or later. Then type
-
-    mvn
-
-To run the sample web application
-
-    cd ssp-sample
-    mvn jetty:run
-
-Then open [the sample home page](http://localhost:8080)
-
-
-ADDING SSP SUPPORT TO YOUR APPLICATION
-======================================
-
-1.  Add something like the following to your web.xml file:
-
-{coderay::xml}
-<servlet>
-  <servlet-name>SspServlet</servlet-name>
-  <servlet-class>org.fusesource.ssp.scala_.ScalaServerPageServlet</servlet-class>
-  <load-on-startup>1</load-on-startup>
-</servlet>
-{coderay}
-
-{coderay::xml}
-<servlet-mapping>
-  <servlet-name>SspServlet</servlet-name>
-  <url-pattern>*.ssp</url-pattern>
-</servlet-mapping>
-{coderay}
-
-2.  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
-
-* scala-compiler.jar
-* scala-library.jar
-* ssp-core.jar
-
-You could add one or more of the above to your servlet container's server-wide configuration if you prefer
-
-
-Possible Gotchas
-----------------
-
-- Works with expanded WARs - or servlet containers who's ClassLoader implements URLClassLoader
-
-- Assumes SSP page source files are all UTF-8-encoded.
-
-- Assumes SSP pages' output is all UTF-8-encoded.
-
-- No support for precompilation (e.g., via a custom Ant task).
-
-- Yes, there really is an underscore in "org.fusesource.ssp.scala\_.ScalaServerPageServlet"; the Scala compiler issued errors without the underscore in the package name.
-
-
-Changes
--------
-* added [Maven](http://maven.apache.org) build and experimental [sbt](http://code.google.com/p/simple-build-tool/) build
-* fixed issue where SSPs would not be recompiled if an error occurred compiling between application restarts
-* fixed so it works in jetty-run and other servlet contexts; so we can reuse the ClassLoader if its a URLClassLoader
-* added a PageContext so we can add helper methods like this to look up attributes or resources beans in a typesafe way
-* updated the name mangling so that when using SSP views for JAXRS resource beans there's no need to import the package of the resource bean (as the SSP is generated in a child package)
-* markup using Scala's Nodes are not XML encoded so they can be used to create markup
-* numbers and dates use the request's locale by default to format themselves
+Try checkout the [user guide](documentation/manual/book.html)
 
