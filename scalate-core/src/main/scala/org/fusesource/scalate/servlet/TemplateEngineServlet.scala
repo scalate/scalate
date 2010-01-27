@@ -20,12 +20,12 @@ import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-  import java.net.URLClassLoader
+import java.net.URLClassLoader
 import org.fusesource.scalate.{TemplateContext, TemplateEngine}
 import org.fusesource.scalate.util.Logging
 
 
-abstract class ServerPageServlet extends HttpServlet with Logging {
+class TemplateEngineServlet extends HttpServlet with Logging {
 
   val templateEngine = new TemplateEngine
 

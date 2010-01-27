@@ -123,14 +123,18 @@ ADDING SSP SUPPORT TO YOUR APPLICATION
 1.  Add something like the following to your web.xml file:
 
         <servlet>
-          <servlet-name>SspServlet</servlet-name>
-          <servlet-class>org.fusesource.scalate.ssp.ScalaServerPageServlet</servlet-class>
+          <servlet-name>TemplateEngineServlet</servlet-name>
+          <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
           <load-on-startup>1</load-on-startup>
         </servlet>
 
         <servlet-mapping>
-          <servlet-name>SspServlet</servlet-name>
+          <servlet-name>TemplateEngineServlet</servlet-name>
           <url-pattern>*.ssp</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+          <servlet-name>TemplateEngineServlet</servlet-name>
+          <url-pattern>*.haml</url-pattern>
         </servlet-mapping>
 
 2.  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):

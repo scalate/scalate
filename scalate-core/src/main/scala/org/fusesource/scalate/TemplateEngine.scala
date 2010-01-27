@@ -16,11 +16,12 @@
 package org.fusesource.scalate
 
 
+import haml.HamlCodeGenerator
 import java.io.File
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
-import ssp.ScalaCompiler
+import ssp.{ScalaCodeGenerator, ScalaCompiler}
 import util.IOUtil
 
 
@@ -32,7 +33,7 @@ class TemplateEngine {
   var allowReload = true
 
   var resourceLoader: ResourceLoader = null
-  var codeGenerator: CodeGenerator = null
+  var codeGenerators: Map[String,CodeGenerator] = Map( "ssp"-> new ScalaCodeGenerator, "haml"-> new HamlCodeGenerator )
   var compiler: Compiler = new ScalaCompiler
   
   var classpath: String = null
@@ -76,13 +77,27 @@ class TemplateEngine {
           templateCache += (key -> newCacheEntry)
           newCacheEntry
         case 'LoadPrebuilt =>
-          val className = codeGenerator.className(uri, argsList)
+          val className = codeGenerator(uri).className(uri, argsList)
           val template = createTemplate(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri
           val newCacheEntry = new CacheEntry(template, timestamp, dependencies)
           templateCache += (key -> newCacheEntry)
           newCacheEntry
       }).template
+    }
+  }
+
+  def codeGenerator(uri:String):CodeGenerator = {
+    val t = uri.split("\\.")
+    if( t.length < 2 ) {
+      throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
+    } else {
+      var extension = t.last
+      val rc = codeGenerators.get(extension).get
+      if( rc==null ) {
+        throw new TemplateException("Not a template file extension ("+codeGenerators.keys.mkString("|")+"), you requested: "+uri);
+      }
+      rc;
     }
   }
 
@@ -114,7 +129,7 @@ class TemplateEngine {
   private def preparePage(timestamp: Long, uri: String, args:List[TemplateArg]): CacheEntry = {
 
     // Convert the translation unit into executable code
-    val code = codeGenerator.generate(this, uri, args)
+    val code = codeGenerator(uri).generate(this, uri, args)
 
     // Prepare the working directory tree
     val workingDirectory = new File(workingDirectoryRoot, uri)

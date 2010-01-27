@@ -38,31 +38,22 @@
   </filter-mapping>
   <!-- END: JAX RS config -->
 
-  <!-- START: SSP config -->
+  <!-- START: SSP and HAML config -->
   <servlet>
-    <servlet-name>SspServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.ssp.ScalaServerPageServlet</servlet-class>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>SspServlet</servlet-name>
+    <servlet-name>TemplateEngineServlet</servlet-name>
     <url-pattern>*.ssp</url-pattern>
   </servlet-mapping>
-  <!-- END: SSP config -->
-
-  <!-- START: HAML config -->
-  <servlet>
-    <servlet-name>HamlServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.haml.HamlServerPageServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
   <servlet-mapping>
-    <servlet-name>HamlServlet</servlet-name>
+    <servlet-name>TemplateEngineServlet</servlet-name>
     <url-pattern>*.haml</url-pattern>
   </servlet-mapping>
-  <!-- END: HAML config -->
+  <!-- END: SSP and HAML config -->
 
   <!-- START: Sample servlets -->
   <servlet>
