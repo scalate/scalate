@@ -80,7 +80,7 @@ When working with the [Jersey](https://jersey.dev.java.net/) implementation of J
 To do this just add the @ImplicitProduces annotation to your resource bean, then create a SSP file called "index.ssp"
 in a directory named after the fully qualified resource class name.
 
-For example if your resource bean is called org.fusesource.ssp.sample.resources.FooResource then create a file in your webapp called
+For example if your resource bean is called org.fusesource.scalate.sample.resources.FooResource then create a file in your webapp called
 com/mh/serverpages/sample/resources/FooResource/index.ssp
 
 In your SSP you can refer to the resource bean as follows
@@ -114,7 +114,7 @@ ADDING SSP SUPPORT TO YOUR APPLICATION
 
         <servlet>
           <servlet-name>SspServlet</servlet-name>
-          <servlet-class>org.fusesource.ssp.scala_.ScalaServerPageServlet</servlet-class>
+          <servlet-class>org.fusesource.scalate.scala_.ScalaServerPageServlet</servlet-class>
           <load-on-startup>1</load-on-startup>
         </servlet>
 
@@ -143,7 +143,7 @@ Possible Gotchas
 
 - No support for precompilation (e.g., via a custom Ant task).
 
-- Yes, there really is an underscore in "org.fusesource.ssp.scala_.ScalaServerPageServlet"; the Scala compiler issued errors without the underscore in the package name.
+- Yes, there really is an underscore in "org.fusesource.scalate.scala_.ScalaServerPageServlet"; the Scala compiler issued errors without the underscore in the package name.
 
 
 Changes

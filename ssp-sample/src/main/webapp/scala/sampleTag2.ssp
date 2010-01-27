@@ -9,7 +9,7 @@
   by the someLayoutUsingPageContext() to process the body (writing the output as a side effect).
 </p>
 
-<% import org.fusesource.ssp.sample.MyTags._ %>
+<% import org.fusesource.scalate.sample.MyTags._ %>
 
 <% someLayoutUsingPageContext(pageContext) { %>
 this is the body!

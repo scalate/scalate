@@ -5,7 +5,7 @@
 <p>This page renders a model object using its default template</p>
 
 <%
-  import org.fusesource.ssp.sample.Person
+  import org.fusesource.scalate.sample.Person
 
   val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
 

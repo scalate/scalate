@@ -5,12 +5,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.fusesource.ssp</groupId>
-  <artifactId>ssp-project</artifactId>
+  <groupId>org.fusesource.scalate</groupId>
+  <artifactId>scalate-project</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>SSP Project</name>
-  <description>SSP Project POM</description>
+  <name>ScalaTE Project</name>
+  <description>ScalaTE Project POM</description>
 
   <prerequisites>
     <maven>2.0.9</maven>
@@ -46,7 +46,7 @@
 
   </properties>
 
-  <url>http://ssp.fusesource.org</url>
+  <url>http://scalate.fusesource.org</url>
 
   <organization>
     <name>FuseSource</name>
@@ -64,15 +64,15 @@
   <mailingLists>
     <mailingList>
       <name>Development List</name>
-      <subscribe>ssp-dev-subscribe@fusesource.org</subscribe>
-      <unsubscribe>ssp-dev-unsubscribe@fusesource.org</unsubscribe>
-      <post>ssp-dev@fusesource.org</post>
+      <subscribe>scalate-dev-subscribe@fusesource.org</subscribe>
+      <unsubscribe>scalate-dev-unsubscribe@fusesource.org</unsubscribe>
+      <post>scalate-dev@fusesource.org</post>
     </mailingList>
     <mailingList>
       <name>Commits List</name>
-      <subscribe>ssp-commits-subscribe@fusesource.org</subscribe>
-      <unsubscribe>ssp-commits-unsubscribe@fusesource.org</unsubscribe>
-      <post>ssp-commits@fusesource.org</post>
+      <subscribe>scalate-commits-subscribe@fusesource.org</subscribe>
+      <unsubscribe>scalate-commits-unsubscribe@fusesource.org</unsubscribe>
+      <post>scalate-commits@fusesource.org</post>
     </mailingList>
   </mailingLists>
 
@@ -85,18 +85,18 @@
     <repository>
       <id>release.fusesource.org</id>
       <name>SSP Release Repository</name>
-      <url>dav:http://fusesource.com/forge/dav/ssp/repo/release</url>
+      <url>dav:http://fusesource.com/forge/dav/scalate/repo/release</url>
     </repository>
     <snapshotRepository>
       <uniqueVersion>false</uniqueVersion>
       <id>snapshot.fusesource.org</id>
       <name>SSP Snapshot Repository</name>
-      <url>dav:http://fusesource.com/forge/dav/ssp/repo/snapshot</url>
+      <url>dav:http://fusesource.com/forge/dav/scalate/repo/snapshot</url>
     </snapshotRepository>
     <site>
       <id>website.fusesource.org</id>
       <name>website</name>
-      <url>dav:http://fusesource.com/forge/dav/ssp/maven/${project.version}</url>
+      <url>dav:http://fusesource.com/forge/dav/scalate/maven/${project.version}</url>
     </site>
   </distributionManagement>
 
@@ -267,9 +267,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:git:git://forge.fusesource.com/ssp.git</connection>
-    <developerConnection>scm:git:ssh://git@forge.fusesource.com/ssp.git</developerConnection>
-    <url>http://fusesource.com/forge/gitweb?p=ssp.git;a=tree</url>
+    <connection>scm:git:git://forge.fusesource.com/scalate.git</connection>
+    <developerConnection>scm:git:ssh://git@forge.fusesource.com/scalate.git</developerConnection>
+    <url>http://fusesource.com/forge/gitweb?p=scalate.git;a=tree</url>
   </scm>
 
   <dependencyManagement>
@@ -344,12 +344,12 @@
               <!--
                             <regexes>
                               <regex>
-                                <pattern>org.fusesource.ssp.impl.*</pattern>
+                                <pattern>org.fusesource.scalatelate.impl.*</pattern>
                                 <branchRate>90</branchRate>
                                 <lineRate>80</lineRate>
                               </regex>
                               <regex>
-                                <pattern>org.fusesource.ssp.builder.*</pattern>
+                                <pattern>org.fusesource.scalatelate.builder.*</pattern>
                                 <branchRate>40</branchRate>
                                 <lineRate>30</lineRate>
                               </regex>
@@ -442,14 +442,14 @@
             <version>${felix-version}</version>
             <extensions>true</extensions>
             <configuration>
-                    <excludeDependencies>${ssp.osgi.exclude.dependencies}</excludeDependencies>
+                    <excludeDependencies>${scalate.osgi.exclude.dependencies}</excludeDependencies>
               <instructions>
                 <Bundle-Name>${artifactId}</Bundle-Name>
-                <Bundle-SymbolicName>${ssp.osgi.symbolic.name}</Bundle-SymbolicName>
-                      <Bundle-Activator>${ssp.osgi.activator}</Bundle-Activator>
-                <Export-Package>${ssp.osgi.export}</Export-Package>
-                <Import-Package>${ssp.osgi.import}</Import-Package>
-                <Private-Package>${ssp.osgi.private.pkg}</Private-Package>
+                <Bundle-SymbolicName>${scalate.osgi.symbolic.name}</Bundle-SymbolicName>
+                      <Bundle-Activator>${scalate.osgi.activator}</Bundle-Activator>
+                <Export-Package>${scalate.osgi.export}</Export-Package>
+                <Import-Package>${scalate.osgi.import}</Import-Package>
+                <Private-Package>${scalate.osgi.private.pkg}</Private-Package>
                 <Implementation-Title>restmix Camel</Implementation-Title>
                 <Implementation-Version>${project.version}</Implementation-Version>
               </instructions>

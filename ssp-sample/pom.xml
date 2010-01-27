@@ -2,15 +2,15 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <groupId>org.fusesource.ssp</groupId>
-    <artifactId>ssp-project</artifactId>
+    <groupId>org.fusesource.scalate</groupId>
+    <artifactId>scalate-project</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ssp-sample</artifactId>
+  <artifactId>scalate-sample</artifactId>
 
-  <name>SSP :: Sample</name>
-  <description>SSP Sample Web Application</description>
+  <name>ScalaTE :: Sample</name>
+  <description>ScalaTE Sample Web Application</description>
   <packaging>war</packaging>
 
   <properties>
@@ -23,8 +23,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.ssp</groupId>
-      <artifactId>ssp-core</artifactId>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

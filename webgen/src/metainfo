@@ -16,23 +16,23 @@
   # Define the project properties here, these can be accessed in the 
   # pages using the {var:} syntax.
   # -------------------------------------------------------------------
-  project_name: "SSP"
-  project_slogan: 'Scala Server Pages: like JSP without all the crap but with added Scala coolness'
-  project_id: 'ssp'
-  project_jira_key: 'SSP'
-  project_issue_url: 'http://fusesource.com/issues/browse/SSP'
+  project_name: "ScalaTE"
+  project_slogan: 'Scala Template Engine: like JSP without all the crap but with added Scala coolness'
+  project_id: 'scalate'
+  project_jira_key: 'SCALATE'
+  project_issue_url: 'http://fusesource.com/issues/browse/SCALATE'
   project_forums_url: 'http://fusesource.com/forums'
-  project_wiki_url: 'http://fusesource.com/wiki/display/SSP'
+  project_wiki_url: 'http://fusesource.com/wiki/display/SCALATE'
   project_logo: "/images/project-logo.gif"
 
   # -------------------------------------------------------------------
   # TODO it would be nice to define these in terms of the project_id variable!
   # -------------------------------------------------------------------
-  project_svn_url: 'http://fusesource.com/forge/svn/ssp/trunk'
-  project_svn_branches_url: 'http://fusesource.com/forge/svn/ssp/branches'
-  project_svn_tags_url: 'http://fusesource.com/forge/svn/ssp/tags'
-  project_maven_groupId: 'org.fusesource.ssp'
-  project_maven_artifactId: ssp
+  project_svn_url: 'http://fusesource.com/forge/svn/scalate/trunk'
+  project_svn_branches_url: 'http://fusesource.com/forge/svn/scalate/branches'
+  project_svn_tags_url: 'http://fusesource.com/forge/svn/scalate/tags'
+  project_maven_groupId: 'org.fusesource.scalate'
+  project_maven_artifactId: scalate-core
 
 blog/*/**/*:
   template: /styles/impact/blog.template

@@ -2,20 +2,21 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
   <parent>
-    <groupId>org.fusesource.ssp</groupId>
-    <artifactId>ssp-project</artifactId>
+    <groupId>org.fusesource.scalate</groupId>
+    <artifactId>scalate-project</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>ssp-core</artifactId>
+  <artifactId>scalate-core</artifactId>
 
-  <name>SSP :: Core</name>
-  <description>SSP Core</description>
+  <name>ScalaTE :: Core</name>
+  <description>ScalaTE Core</description>
 
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
@@ -25,10 +26,7 @@
     <dependency>
       <groupId>opensymphony</groupId>
       <artifactId>sitemesh</artifactId>
-      <!-- TODO is it really optional??? -->
-<!--
       <optional>true</optional>
--->
     </dependency>
   </dependencies>
 

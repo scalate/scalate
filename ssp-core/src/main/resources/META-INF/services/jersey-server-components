@@ -1,2 +1,2 @@
-org.fusesource.ssp.jersey.NodeWriter
-org.fusesource.ssp.jersey.SSPTemplateProcessor
+org.fusesource.scalate.jersey.NodeWriter
+org.fusesource.scalate.jersey.SSPTemplateProcessor

@@ -10,7 +10,7 @@
   calling the body as many times as you like.
 </p>
 
-<% import org.fusesource.ssp.sample.MyTags._ %>
+<% import org.fusesource.scalate.sample.MyTags._ %>
 
 <%= someLayout { %>
 this is some body!

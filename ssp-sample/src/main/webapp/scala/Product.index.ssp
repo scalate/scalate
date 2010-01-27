@@ -5,7 +5,7 @@
 <table>
   <tr>
 <%
-  import org.fusesource.ssp.util.CaseClassToMap._
+  import org.fusesource.scalate.util.CaseClassToMap._
 
   val map = toMap(it)
 
