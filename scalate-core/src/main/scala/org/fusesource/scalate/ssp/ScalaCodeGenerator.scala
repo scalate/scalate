@@ -168,7 +168,7 @@ class ScalaCodeGenerator extends CodeGenerator
   var autoImportFirstParam = true
   var translationUnitLoader = new ScalaTranslationUnitLoader
   
-  override def generate(engine:TemplateEngine, uri:String): Code = {
+  override def generate(engine:TemplateEngine, uri:String, args:List[TemplateArg]): Code = {
 /*  override def generate(translationUnit: String, outputDirectory: File, uri: String): String = {*/
     
         // Load the translation unit
@@ -192,17 +192,18 @@ import javax.servlet.http._
 
 class """ + className + """ extends Template {
 
-  def renderPage(context: TemplateContext""" + generateParameterList(params) + """): Unit = {
-    import context._
+  def renderTemplateImpl(context: TemplateContext""" + generateParameterList(params) + """): Unit = {
+    {
+      import context._;
 
 """ + importParameters(params) + generateCode(fragments) + """
-
+    }
     context.completed
   }
 """ + generateRenderMethodWithNoParams(params) + """
 }
 """
-    Code(this.className(uri), sourceCode, tu.dependencies)
+    Code(this.className(uri, args), sourceCode, tu.dependencies)
   }
 
   private def importParameters(params: List[AttributeFragment]) = {
@@ -224,18 +225,19 @@ class """ + className + """ extends Template {
   }
 
   private def generateRenderMethodWithNoParams(params: List[AttributeFragment]) = {
-    if (params.isEmpty) {
-      ""
-    } else {
-      """
-  def renderPage(context: TemplateContext): Unit = {
-    import context._
-    """ + params.map {_.valueCode}.mkString("\n    ") + """
+      var  rc = """
+  def renderTemplate(context: TemplateContext, args:Any*): Unit = {
+    """ + params.map {_.valueCode}.mkString("\n    ")
 
-    renderPage(context, """ + params.map {_.name}.mkString(", ") + """)
+    if( params.isEmpty ) {
+      rc += "renderTemplateImpl(context)"
+    } else {
+      rc += "renderTemplateImpl(context, " + (params.map {_.name}.mkString(", ")) + ")"
+    }
+    rc += """
   }
 """
-    }
+    rc
   }
 
   private def generateCode(fragments: Seq[PageFragment]): StringBuffer = {
@@ -268,7 +270,7 @@ class """ + className + """ extends Template {
     }
   }
 
-  def className(uri: String): String = {
+  def className(uri: String, args:List[TemplateArg]): String = {
     // Determine the package and class name to use for the generated class
     val (packageName, cn) = buildPackageAndClassNames(uri)
 

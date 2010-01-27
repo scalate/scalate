@@ -23,6 +23,7 @@ import scala.compat.Platform
 import ssp.ScalaCompiler
 import util.IOUtil
 
+
 class TemplateEngine {
 
   private class CacheEntry(val template: Template, val timestamp: Long, val dependencies: Set[String])
@@ -37,20 +38,24 @@ class TemplateEngine {
   var classpath: String = null
   var workingDirectoryRoot: File = null
 
-  private val templateCache = new HashMap[String, CacheEntry]
+  private val templateCache = new HashMap[(String,List[TemplateArg]), CacheEntry]
 
 
-  def load(uri: String) = {
+  def load(uri: String, args:TemplateArg*) = {
 
+    val argsList = args.toList;
+    val key = (uri, args.toList)
     val timestamp = Platform.currentTime
+
+    // TODO: mangle the params and include in the workingDirectory path
     val workingDirectory = new File(workingDirectoryRoot, uri)
     val bytecodeDirectory = new File(workingDirectory, "bytecode")
 
     // Obtain the template object that should service this request (creating it on the fly if needed)
     templateCache.synchronized {
-      // Determine whether to build/rebuild the template, load existing .class files from the filesystem,
+      // Determine whether to build/rebuild the template, load existing .class files from the file system,
       // or reuse an existing template that we've already loaded
-      val cacheEntry = templateCache.get(uri)
+      val cacheEntry = templateCache.get(key)
       ((cacheEntry match {
         case None =>
           val ch = listFiles(bytecodeDirectory)
@@ -67,15 +72,15 @@ class TemplateEngine {
         case 'AlreadyLoaded =>
           cacheEntry.get
         case 'Build =>
-          val newCacheEntry = preparePage(uri, timestamp)
-          templateCache += (uri -> newCacheEntry)
+          val newCacheEntry = preparePage(timestamp, uri, argsList)
+          templateCache += (key -> newCacheEntry)
           newCacheEntry
         case 'LoadPrebuilt =>
-          val className = codeGenerator.className(uri)
+          val className = codeGenerator.className(uri, argsList)
           val template = createTemplate(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri
           val newCacheEntry = new CacheEntry(template, timestamp, dependencies)
-          templateCache += (uri -> newCacheEntry)
+          templateCache += (key -> newCacheEntry)
           newCacheEntry
       }).template
     }
@@ -106,7 +111,10 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
-  private def preparePage(uri: String, timestamp: Long): CacheEntry = {
+  private def preparePage(timestamp: Long, uri: String, args:List[TemplateArg]): CacheEntry = {
+
+    // Convert the translation unit into executable code
+    val code = codeGenerator.generate(this, uri, args)
 
     // Prepare the working directory tree
     val workingDirectory = new File(workingDirectoryRoot, uri)
@@ -117,9 +125,6 @@ class TemplateEngine {
     sourceDirectory.mkdirs
     bytecodeDirectory.mkdirs
 
-    // Convert the translation unit into executable code
-    val code = codeGenerator.generate(this, uri)
-    
     // Dump the generated source code to the working directory
     IOUtil.writeBinaryFile(new File(sourceDirectory, code.className + ".scala").toString, code.source.getBytes("UTF-8"))
 

@@ -43,7 +43,7 @@ abstract class ServerPageServlet extends HttpServlet with Logging {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
     val template = templateEngine.load(uri)
-    template.renderPage(TemplateContext(response.getWriter, request, response, getServletContext))
+    template.renderTemplate(TemplateContext(response.getWriter, request, response, getServletContext))
   }
 
 

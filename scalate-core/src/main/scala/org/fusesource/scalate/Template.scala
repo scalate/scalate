@@ -433,5 +433,5 @@ case class TemplateContext(var out: PrintWriter, request: HttpServletRequest, re
  * @version $Revision : 1.1 $
  */
 trait Template {
-  def renderPage(context: TemplateContext): Unit
+  def renderTemplate(context: TemplateContext, args:Any*): Unit
 }
