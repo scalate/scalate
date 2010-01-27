@@ -205,7 +205,7 @@ class HamlCodeGenerator extends CodeGenerator
     val builder = new SourceBuilder()
     builder.generate(packageName, className, statements)
 
-    Code(className, builder.code, Set())
+    Code(packageName+"."+className, builder.code, Set())
 
   }
 

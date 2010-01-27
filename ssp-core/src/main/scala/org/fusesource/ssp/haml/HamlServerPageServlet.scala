@@ -23,7 +23,6 @@ import org.fusesource.ssp.scala_.{ScalaCompiler, ScalaTranslationUnitLoader}
 class HamlServerPageServlet extends ServerPageServlet
 {
 
-  val translationUnitLoader = new ScalaTranslationUnitLoader
   val codeGenerator = new HamlCodeGenerator
   val compiler = new ScalaCompiler
 

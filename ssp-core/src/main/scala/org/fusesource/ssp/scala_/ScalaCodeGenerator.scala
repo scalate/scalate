@@ -202,7 +202,7 @@ class """ + className + """ extends Page {
 """ + generateRenderMethodWithNoParams(params) + """
 }
 """
-    Code(className, sourceCode, tu.dependencies)
+    Code(packageName+"."+className, sourceCode, tu.dependencies)
   }
 
   private def importParameters(params: List[AttributeFragment]) = {
