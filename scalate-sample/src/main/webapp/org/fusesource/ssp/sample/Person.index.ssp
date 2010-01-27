@@ -1,4 +1,0 @@
-<%@ attribute it : Person %>
-<% println("Called Person template with: " + it) %>        
-<h3>Person</h3>
-<p>first: <b>${first}</b> last: <b>${last}</b></p>
