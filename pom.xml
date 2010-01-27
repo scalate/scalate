@@ -209,8 +209,8 @@
   </pluginRepositories>
 
   <modules>
-    <module>ssp-core</module>
-    <module>ssp-sample</module>
+    <module>scalate-core</module>
+    <module>scalate-sample</module>
   </modules>
 
 
