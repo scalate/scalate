@@ -1,6 +1,6 @@
 package org.fusesource.scalate.sample
 
-import org.fusesource.scalate.PageContext
+import org.fusesource.scalate.TemplateContext
 
 /**
  * @version $Revision : 1.1 $
@@ -19,12 +19,12 @@ object MyTags {
 
 
   /**
-   * Explicit version where you interact with the pageContext parameter
+   * Explicit version where you interact with the context parameter
    */
-  def someLayoutUsingPageContext(pageContext: PageContext)(body: => Unit) = {
-    val text = pageContext.evaluate(body)
+  def someLayoutUsingTemplateContext(context: TemplateContext)(body: => Unit) = {
+    val text = context.evaluate(body)
     println("Evaluated text: " + text)
-    pageContext.write("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
+    context.write("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
   }
 
 

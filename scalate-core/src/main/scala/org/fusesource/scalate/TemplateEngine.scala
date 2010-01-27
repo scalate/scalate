@@ -25,7 +25,7 @@ import util.IOUtil
 
 class TemplateEngine {
 
-  private class CacheEntry(val template: Page, val timestamp: Long, val dependencies: Set[String])
+  private class CacheEntry(val template: Template, val timestamp: Long, val dependencies: Set[String])
 
   var pageFileEncoding = "UTF-8"
   var allowReload = true
@@ -146,11 +146,11 @@ class TemplateEngine {
   }
 
 
-  private def createTemplate(className: String, bytecodeDirectory: File): Page = {
+  private def createTemplate(className: String, bytecodeDirectory: File): Template = {
     // Load the compiled class
     val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
     val clazz = classLoader.loadClass(className)
-    clazz.asInstanceOf[Class[Page]].newInstance
+    clazz.asInstanceOf[Class[Template]].newInstance
   }
 
 }

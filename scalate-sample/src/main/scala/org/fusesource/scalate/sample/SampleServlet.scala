@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import scala.compat.Platform
-import org.fusesource.scalate.PageContext
+import org.fusesource.scalate.TemplateContext
 
 
 class SampleServlet extends HttpServlet
@@ -49,7 +49,7 @@ class SampleServlet extends HttpServlet
   /*
     val out = response.getWriter
     out.println("===== about to include....")
-    val pageContext = new PageContext(out, request, response, getServletContext)
+    val context = new TemplateContext(out, request, response, getServletContext)
     pageContext.view(new Person("Bob", "Mcwhatnot"))
     out.println("===== done!...")
     out.flush()

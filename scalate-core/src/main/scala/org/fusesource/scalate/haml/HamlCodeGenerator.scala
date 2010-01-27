@@ -47,7 +47,7 @@ class HamlCodeGenerator extends CodeGenerator
     def i[T](op: => T):T = { indent_level += 1; val rc=op; indent_level-=1; rc }
 
     def out(line:String) {
-      p("$_context_$.out.write(\"\"\""+line+"\"\"\"+\"\\n\");");
+      p("context.out.write(\"\"\""+line+"\"\"\"+\"\\n\");");
     }
 
     def generate(packageName:String, className:String, statements:List[Statement]):Unit = {
@@ -62,13 +62,13 @@ class HamlCodeGenerator extends CodeGenerator
         p("package "+packageName)
       }
       p
-      p("import org.fusesource.scalate.{Page, PageContext}");
+      p("import org.fusesource.scalate.{Template, TemplateContext}");
       p("import javax.servlet.http._");
       p
-      p("class " + className + " extends Page {");
+      p("class " + className + " extends Template {");
       i{
         p
-        p("def renderPage($_context_$: PageContext"+parameters(params)+"): Unit = {");
+        p("def renderPage(context: TemplateContext"+parameters(params)+"): Unit = {");
         i{
           if (!params.isEmpty) {
 //            params.foreach(param=>{
@@ -76,19 +76,19 @@ class HamlCodeGenerator extends CodeGenerator
 //            })
           }
           generate(statements)
-          p("$_context_$.completed");
+          p("context.completed");
         }
         p("}");
         p
         if (!params.isEmpty) {
 
-//          p("def renderPage(pageContext: PageContext): Unit = {")
+//          p("def renderPage(context: TemplateContext): Unit = {")
 //          i{
-//            p("import pageContext._")
+//            p("import context._")
 //            params.foreach(param=>{
 //              p(param.valueCode)
 //            })
-//            p("renderPage(pageContext, " + params.map {_.name}.mkString(", ") + ")")
+//            p("renderPage(context, " + params.map {_.name}.mkString(", ") + ")")
 //          }
 //          p("}")
 

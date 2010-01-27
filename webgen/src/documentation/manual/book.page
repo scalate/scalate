@@ -78,7 +78,7 @@ The following variables are in scope inside your page
 [options="header"]
 |===========================
 |Variable | Type | Description
-|pageContext | PageContext | the page context which is imported to provide helper methods like attribute() as described below
+|context | TemplateContext | the page context which is imported to provide helper methods like attribute() as described below
 |out | PrintWriter | the printer of the output
 |request | HttpServletRequest | the servlet request
 |response | HttpServletResponse | the servlet response

@@ -6,12 +6,12 @@
 <p>
   This page demonstrates a kinda pseudo custom tag in SSP
   using an explicit PageContext parameter and a function which can be invoked
-  by the someLayoutUsingPageContext() to process the body (writing the output as a side effect).
+  by the someLayoutUsingTemplateContext() to process the body (writing the output as a side effect).
 </p>
 
 <% import org.fusesource.scalate.sample.MyTags._ %>
 
-<% someLayoutUsingPageContext(pageContext) { %>
+<% someLayoutUsingTemplateContext(context) { %>
 this is the body!
 <% } %>
 

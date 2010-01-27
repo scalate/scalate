@@ -27,7 +27,7 @@ import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, Se
 import java.lang.String
 import collection.mutable.{Stack, ListBuffer, HashMap}
 
-class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Page") {
+class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Template") {
 }
 
 
@@ -35,9 +35,9 @@ class NoSuchTemplateException(val model: AnyRef, val view: String) extends Servl
 }
 
 /**
- * The PageContext provides helper methods for interacting with the request, response, attributes and parameters
+ * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-case class PageContext(var out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
+case class TemplateContext(var out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) {
   private val resourceBeanAttribute = "it"
   private val outStack = new Stack[PrintWriter]
 
@@ -432,6 +432,6 @@ case class PageContext(var out: PrintWriter, request: HttpServletRequest, respon
  *
  * @version $Revision : 1.1 $
  */
-trait Page {
-  def renderPage(pageContext: PageContext): Unit
+trait Template {
+  def renderPage(context: TemplateContext): Unit
 }

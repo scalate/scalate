@@ -45,8 +45,8 @@ The following variables are in scope inside your page
     <th>Description</th>
   </tr>
   <tr>
-    <td>pageContext : PageContext</td>
-    <td>the page context which is imported to provide helper methods like attribute() as described belowt</td>
+    <td>context : TemplateContext</td>
+    <td>the page context which is imported to provide helper methods like attribute() as described below</td>
   </tr>
   <tr>
     <td>out : PrintWriter</td>
@@ -159,7 +159,7 @@ Changes
 * added [Maven](http://maven.apache.org) build and experimental [sbt](http://code.google.com/p/simple-build-tool/) build
 * fixed issue where SSPs would not be recompiled if an error occurred compiling between application restarts
 * fixed so it works in jetty-run and other servlet contexts; so we can reuse the ClassLoader if its a URLClassLoader
-* added a PageContext so we can add helper methods like this to look up attributes or resources beans in a typesafe way
+* added a TemplateContext so we can add helper methods like this to look up attributes or resources beans in a typesafe way
 * updated the name mangling so that when using SSP views for JAXRS resource beans there's no need to import the package of the resource bean (as the SSP is generated in a child package)
 * markup using Scala's Nodes are not XML encoded so they can be used to create markup
 * numbers and dates use the request's locale by default to format themselves
