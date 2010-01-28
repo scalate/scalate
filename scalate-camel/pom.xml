@@ -16,6 +16,20 @@
     <camelVersion>2.2-SNAPSHOT</camelVersion>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Development Snapshot Repository</name>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
@@ -44,5 +58,7 @@
 -->
     
   </dependencies>
+
+
 
 </project>
