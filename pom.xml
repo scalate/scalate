@@ -210,11 +210,13 @@
 
   <modules>
     <module>scalate-core</module>
+    <module>scalate-camel</module>
     <module>scalate-sample</module>
   </modules>
 
 
   <dependencies>
+<!--
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -232,12 +234,8 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.5.2</version>
     </dependency>
+    -->
 
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
-    </dependency>
 
     <dependency>
       <groupId>org.scala-lang</groupId>
@@ -266,12 +264,6 @@
     </dependency>
   </dependencies>
 
-  <scm>
-    <connection>scm:git:git://forge.fusesource.com/scalate.git</connection>
-    <developerConnection>scm:git:ssh://git@forge.fusesource.com/scalate.git</developerConnection>
-    <url>http://fusesource.com/forge/gitweb?p=scalate.git;a=tree</url>
-  </scm>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -289,9 +281,21 @@
         <artifactId>sitemesh</artifactId>
         <version>${sitemesh-version}</version>
       </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.14</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
+
+  
+  <scm>
+    <connection>scm:git:git://forge.fusesource.com/scalate.git</connection>
+    <developerConnection>scm:git:ssh://git@forge.fusesource.com/scalate.git</developerConnection>
+    <url>http://fusesource.com/forge/gitweb?p=scalate.git;a=tree</url>
+  </scm>
 
   <build>
     <defaultGoal>install</defaultGoal>
