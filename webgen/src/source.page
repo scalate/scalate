@@ -9,5 +9,35 @@ Get the latest source code
 
 --- name:content
 
-{include_file: {filename: src/git.include, process_output: true}}
+# Source Repository
+
+The *{project_name:}* project stores its source code in a [Git](http://git-scm.com/) repository hosted on [github](http://github.com) at this location:
+
+* [http://github.com/scalate/scalate](http://github.com/scalate/scalate)
+
+If you are new to Git you might like to try the [Git guide for subversion users](http://git.or.cz/course/svn.html) or have a look at the [Git community book](http://book.git-scm.com/).
+
+You can [browse the repository online](http://github.com/scalate/scalate) if you prefer.
+
+## How to Checkout
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+
+    git clone git@github.com:scalate/scalate.git
+    cd {project_id:}
+
+## Committer access
+
+Project members can push to the repository using the following URL:
+
+* **ssh://git@forge.fusesource.com/{project_id:}.git**
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+
+    git clone git@github.com:scalate/scalate.git
+    cd {project_id:}
+
+# Next steps
+
+Once you have checked out the code try following the [instructions to build {project_name:}]({relocatable: building.html}) or read the [documentation]({relocatable: documentation/index.html}).
 
