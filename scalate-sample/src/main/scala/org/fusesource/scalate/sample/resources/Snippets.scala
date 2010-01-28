@@ -11,5 +11,5 @@ object Snippets {
 
   def beer = <h3>mmm I like beer</h3>
 
-  def itemLink(id: String, name: String) = <a href={"/foo/" + id} title={"Go to " + name}>{name}</a>
+  def itemLink(id: String, name: String) = <a href={"foo/" + id} title={"Go to " + name}>{name}</a>
 }

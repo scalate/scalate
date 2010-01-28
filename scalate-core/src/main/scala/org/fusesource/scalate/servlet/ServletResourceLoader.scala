@@ -16,33 +16,21 @@
 package org.fusesource.scalate.servlet
 
 import javax.servlet.ServletContext
-import org.fusesource.scalate.{ResourceLoader, TemplateException}
 import java.io.{File, InputStreamReader, StringWriter}
 import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, TemplateException}
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletResourceLoader(context: ServletContext) extends ResourceLoader {
-  val pageFileEncoding = "UTF-8"
+class ServletResourceLoader(context: ServletContext) extends FileResourceLoader {
 
-  override def load(uri: String): String = {
-    val stream = context.getResourceAsStream(uri)
-    if (stream == null) {
+  override protected def toFile(uri:String):File = {
+    val file = new File(context.getRealPath(uri))
+    if (!file.canRead) {
       throw new TemplateException("Cannot find [" + uri + "]; are you sure it's within [" + context.getRealPath("/") + "]?")
     }
-
-    val reader = new InputStreamReader(stream, pageFileEncoding)
-    val writer = new StringWriter(stream.available)
-    try {
-      IOUtil.copy(reader, writer)
-      writer.toString
-    } finally {
-      reader.close
-    }
+    file
   }
-
-  override def lastModified(uri:String) = new File(context.getRealPath(uri)).lastModified
-
 
 }

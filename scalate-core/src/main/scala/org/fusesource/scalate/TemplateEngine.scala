@@ -16,12 +16,14 @@
 package org.fusesource.scalate
 
 
+import haml.HamlCodeGenerator
 import java.io.File
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
-import ssp.ScalaCompiler
+import ssp.{ScalaCodeGenerator, ScalaCompiler}
 import util.IOUtil
+
 
 class TemplateEngine {
 
@@ -30,27 +32,31 @@ class TemplateEngine {
   var pageFileEncoding = "UTF-8"
   var allowReload = true
 
-  var resourceLoader: ResourceLoader = null
-  var codeGenerator: CodeGenerator = null
+  var resourceLoader: ResourceLoader = new FileResourceLoader
+  var codeGenerators: Map[String,CodeGenerator] = Map( "ssp"-> new ScalaCodeGenerator, "haml"-> new HamlCodeGenerator )
   var compiler: Compiler = new ScalaCompiler
   
   var classpath: String = null
   var workingDirectoryRoot: File = null
 
-  private val templateCache = new HashMap[String, CacheEntry]
+  private val templateCache = new HashMap[(String,List[TemplateArg]), CacheEntry]
 
 
-  def load(uri: String) = {
+  def load(uri: String, args:TemplateArg*) = {
 
+    val argsList = args.toList;
+    val key = (uri, args.toList)
     val timestamp = Platform.currentTime
+
+    // TODO: mangle the params and include in the workingDirectory path
     val workingDirectory = new File(workingDirectoryRoot, uri)
     val bytecodeDirectory = new File(workingDirectory, "bytecode")
 
     // Obtain the template object that should service this request (creating it on the fly if needed)
     templateCache.synchronized {
-      // Determine whether to build/rebuild the template, load existing .class files from the filesystem,
+      // Determine whether to build/rebuild the template, load existing .class files from the file system,
       // or reuse an existing template that we've already loaded
-      val cacheEntry = templateCache.get(uri)
+      val cacheEntry = templateCache.get(key)
       ((cacheEntry match {
         case None =>
           val ch = listFiles(bytecodeDirectory)
@@ -67,17 +73,31 @@ class TemplateEngine {
         case 'AlreadyLoaded =>
           cacheEntry.get
         case 'Build =>
-          val newCacheEntry = preparePage(uri, timestamp)
-          templateCache += (uri -> newCacheEntry)
+          val newCacheEntry = preparePage(timestamp, uri, argsList)
+          templateCache += (key -> newCacheEntry)
           newCacheEntry
         case 'LoadPrebuilt =>
-          val className = codeGenerator.className(uri)
+          val className = codeGenerator(uri).className(uri, argsList)
           val template = createTemplate(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri
           val newCacheEntry = new CacheEntry(template, timestamp, dependencies)
-          templateCache += (uri -> newCacheEntry)
+          templateCache += (key -> newCacheEntry)
           newCacheEntry
       }).template
+    }
+  }
+
+  def codeGenerator(uri:String):CodeGenerator = {
+    val t = uri.split("\\.")
+    if( t.length < 2 ) {
+      throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
+    } else {
+      var extension = t.last
+      val rc = codeGenerators.get(extension).get
+      if( rc==null ) {
+        throw new TemplateException("Not a template file extension ("+codeGenerators.keysIterator.mkString("|")+"), you requested: "+uri);
+      }
+      rc;
     }
   }
 
@@ -106,7 +126,10 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
-  private def preparePage(uri: String, timestamp: Long): CacheEntry = {
+  private def preparePage(timestamp: Long, uri: String, args:List[TemplateArg]): CacheEntry = {
+
+    // Convert the translation unit into executable code
+    val code = codeGenerator(uri).generate(this, uri, args)
 
     // Prepare the working directory tree
     val workingDirectory = new File(workingDirectoryRoot, uri)
@@ -117,9 +140,6 @@ class TemplateEngine {
     sourceDirectory.mkdirs
     bytecodeDirectory.mkdirs
 
-    // Convert the translation unit into executable code
-    val code = codeGenerator.generate(this, uri)
-    
     // Dump the generated source code to the working directory
     IOUtil.writeBinaryFile(new File(sourceDirectory, code.className + ".scala").toString, code.source.getBytes("UTF-8"))
 

@@ -16,3 +16,4 @@ Documentation
 
 * [Web Site](http://scalate.fusesource.org/)
 * [User Guide](http://scalate.fusesource.org/documentation/manual/book.html)
+

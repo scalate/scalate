@@ -14,6 +14,7 @@
   <packaging>war</packaging>
 
   <properties>
+    <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
   </properties>
 
   <dependencies>
@@ -84,7 +85,7 @@
           </filesets>
         </configuration>
       </plugin>
-      
+
 
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -119,3 +120,4 @@
     </plugins>
   </build>
 </project>
+

@@ -24,8 +24,8 @@ trait CodeGenerator {
 
   case class Code(className:String, source:String, dependencies:Set[String])
 
-  def generate(engine:TemplateEngine, uri:String): Code
+  def generate(engine:TemplateEngine, uri:String, args:List[TemplateArg]): Code
 
-  def className(uri:String): String
+  def className(uri:String, args:List[TemplateArg]): String
 
 }

@@ -3,19 +3,20 @@ package org.fusesource.scalate.jersey
 import java.io.{OutputStream}
 import java.net.MalformedURLException
 import javax.servlet.{ServletContext}
+import com.sun.jersey.api.view.Viewable
+import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import org.fusesource.scalate.util.Logging
 //import org.apache.log4j.Logger
 import com.sun.jersey.api.container.ContainerException
-import com.sun.jersey.spi.template.TemplateProcessor
 import javax.ws.rs.core.Context
 
 /**
  * @version $Revision : 1.1 $
  */
-class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends TemplateProcessor with Logging {
+class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
   @Context
   var servletContext: ServletContext = _
   @Context
@@ -79,7 +80,8 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
     null
   }
 
-  def writeTo(resolvedPath: String, model: AnyRef, out: OutputStream): Unit = {
+  def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+    // Ensure headers are committed
     out.flush();
 
     val dispatcher = servletContext.getRequestDispatcher(resolvedPath);
@@ -87,7 +89,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends Temp
       throw new ContainerException("No request dispatcher for: " + resolvedPath);
     }
 
-    val wrapper = new RequestDispatcherWrapper(dispatcher, basePath, hc, model);
+    val wrapper = new RequestDispatcherWrapper(dispatcher, basePath, hc, viewable);
     try {
       wrapper.forward(request, response);
       //wrapper.forward(requestInvoker.get(), responseInvoker.get());
