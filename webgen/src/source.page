@@ -21,7 +21,11 @@ You can [browse the repository online](http://github.com/scalate/scalate) if you
 
 ## How to Checkout
 
-You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
+Read only access to the repository is available at the following URL:
+
+* **git://github.com/scalate/scalate.git**
+
+You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the following:
 
     git clone git://github.com/scalate/scalate.git
     cd {project_id:}
@@ -30,7 +34,7 @@ You must first install a [Git client](http://git-scm.com/download). Then you clo
 
 Project members can push to the repository using the following URL:
 
-* **ssh://git@forge.fusesource.com/{project_id:}.git**
+* **git@github.com:scalate/scalate.git**
 
 You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
 
