@@ -23,7 +23,7 @@ You can [browse the repository online](http://github.com/scalate/scalate) if you
 
 You must first install a [Git client](http://git-scm.com/download). Then you clone the repository using the Git URL:
 
-    git clone git@github.com:scalate/scalate.git
+    git clone git://github.com/scalate/scalate.git
     cd {project_id:}
 
 ## Committer access
@@ -36,6 +36,12 @@ You must first install a [Git client](http://git-scm.com/download). Then you clo
 
     git clone git@github.com:scalate/scalate.git
     cd {project_id:}
+
+## Contributing patches
+
+If you are not yet a committer but want to contribute some patch (we love [contributions!]({relocatable: contributing.html})) here's how you can submit patches
+
+{include_file: {filename: src/creating_patches.include, process_output: true}}
 
 # Next steps
 

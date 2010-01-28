@@ -17,7 +17,7 @@
   # pages using the {var:} syntax.
   # -------------------------------------------------------------------
   project_name: "scalate"
-  project_slogan: 'Scala Template Engine: like JSP without all the crap but with added Scala coolness'
+  project_slogan: 'Scala Template Engine: like JSP without the crap but with added Scala coolness'
   project_id: 'scalate'
   project_jira_key: 'SCALATE'
   project_issue_url: 'http://fusesource.com/issues/browse/SCALATE'

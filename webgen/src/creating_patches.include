@@ -1,0 +1,9 @@
+
+* go to the [scalate github page](http://github.com/scalate/scalate) and click on the fork button to clone your own copy of the scalate repository
+* hack your copy as much as you like, pushing your local changes back to your git repo on github
+* click on the pull request button the [scalate github page](http://github.com/scalate/scalate) to let us know you've a patch you'd like to contribute
+* you may want to [create a new Issue in the Issue Tracker]({project_issue_url:}) (you will need to register but its quick and painless)
+* fire off an email to the [Community](community.html) linking to the issue
+
+When a ticket is created in JIRA it automatically sends an email to the [commit mailing list](community.html) but an email always helps alert folks (as lots of emails are generated from every change to every JIRA).
+

@@ -31,38 +31,8 @@ Please raise a new issue in our <a href="{project_issue_url:}">Issue Tracker</a>
 
 We gladly accept patches if you can find ways to improve, tune or fix {project_name:} in some way.
 
-Grab the [source](source.html) and then [build it](building.html) - then start hacking on your patch.
-
-Most IDEs can create nice patches now very easily. e.g. in Eclipse just right click on a file/directory and select Team -> Create Patch. Then just save the patch as a file and then submit it. (You may have to click on Team \-> Share... first to enable the Subversion options). Incidentally if you are an Eclipse user you should install the [subclipse](http://subclipse.tigris.org/) plugin.
-
-If you're a command line person try the following to create the patch
-
-    diff -u Main.java.orig Main.java >> patchfile.txt
-
-or
-
-    svn diff Main.java >> patchfile.txt
-
-or
-
-    git diff Main.java >> patchfile.txt    
-    
-## Submitting patches
-
-The easiest way to submit a patch is to
-* [Create a new Issue in the Issue Tracker]({project_issue_url:}) (you will need to register but its quick and painless)
-* attach the patch or tarball as an attachment
-* *tick the Patch Attached* button on the issue
-* fire off an email to the [Community](community.html) linking to the issue
-
-When a ticket is created in JIRA it automatically sends an email to the [commit mailing list](community.html) but an email always helps alert folks (as lots of emails are generated from every change to every JIRA).
+{include_file: {filename: src/creating_patches.include, process_output: true}}
 
 ## Becoming a committer
 
-Once you have made some good contributions you may be invited to become a committer by the project team. 
-
-Before you can become a committer you need to sign and submit the [Forge ICLA](http://fusesource.com/forge/icla_info) to ensure that the IP is clean on each project. This page will allow you to review the terms of the FUSE Forge Individual Contributor License Agreement. 
-
-Upon acceptance, please print, sign, and fax to <b>+1 781-998-2403</b>. You can also email the executed agreement to [fusecla@progress.com](mailto:fusecla@progress.com?subject=Here%20is%20my%20ICLA&amp;body=See%20attached%20file). 
-
-Once received your user id will be granted privileged access to the Forge allowing you to propose projects and be accepted as a committer on existing projects.
+Once you have made some good contributions you may be invited to become a committer by the project team. We'll chat to you offline about it; we'll just need to know your github ID.
