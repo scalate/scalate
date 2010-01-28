@@ -1,0 +1,20 @@
+<%@ attribute it: FooResource %>
+<% import Snippets._ %>
+<html>
+<body>
+<h1>FooResource!</h1>
+
+<p>Hello from a FooResource!</p>
+
+<p>FooResource is ${it}</p>
+
+
+<h2>Items</h2>
+
+<ul>
+  <li>${itemLink("abc", "ItemABC")}</li>
+  <li>${itemLink("def", "ItemDEF")}</li>
+</ul>
+
+</body>
+</html>
