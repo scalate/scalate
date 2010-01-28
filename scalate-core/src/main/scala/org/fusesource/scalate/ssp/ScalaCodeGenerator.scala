@@ -39,9 +39,9 @@ case class AttributeFragment(name: String, className: String, defaultValue: Opti
     if (defaultValue.isEmpty) {""} else {" = " + defaultValue.get}
   } else {""})
 
-  def valueCode = "val " + name + " = " + (defaultValue match {
-    case Some(expression) => "attributeOrElse[" + className + "](\"" + name + "\", " + expression + ")"
-    case None => "attribute[" + className + "](\"" + name + "\")"
+  def valueCode(context : String) = "val " + name + " = " + (defaultValue match {
+    case Some(expression) => context + ".attributeOrElse[" + className + "](\"" + name + "\", " + expression + ")"
+    case None => context + ".attribute[" + className + "](\"" + name + "\")"
   })
 }
 
@@ -227,12 +227,13 @@ class """ + className + """ extends Template {
   private def generateRenderMethodWithNoParams(params: List[AttributeFragment]) = {
       var  rc = """
   def renderTemplate(context: TemplateContext, args:Any*): Unit = {
-    """ + params.map {_.valueCode}.mkString("\n    ")
+    """
 
     if( params.isEmpty ) {
       rc += "renderTemplateImpl(context)"
     } else {
-      rc += "renderTemplateImpl(context, " + (params.map {_.name}.mkString(", ")) + ")"
+      rc +=  params.map {_.valueCode("context")}.mkString("\n    ")
+      rc += "\n    renderTemplateImpl(context, " + (params.map {_.name}.mkString(", ")) + ")"
     }
     rc += """
   }

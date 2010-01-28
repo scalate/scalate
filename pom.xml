@@ -23,7 +23,7 @@
     <commons-logging-version>1.1.1</commons-logging-version>
     <commons-logging-api-version>1.1</commons-logging-api-version>
 
-    <jersey-version>1.1.4.1</jersey-version>
+    <jersey-version>1.1.5</jersey-version>
 
     <jetty-port>8080</jetty-port>
     <jetty-version>6.1.19</jetty-version>
@@ -37,7 +37,7 @@
     <scalaVersion>2.7.7</scalaVersion>
     <scalaTest-version>1.0</scalaTest-version>
     -->
-    <scalaVersion>2.8.0.Beta1-RC7</scalaVersion>
+    <scalaVersion>2.8.0.Beta1</scalaVersion>
 
     <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SNAPSHOT</scalaTest-version>
 
