@@ -32,7 +32,7 @@ class TemplateEngine {
   var pageFileEncoding = "UTF-8"
   var allowReload = true
 
-  var resourceLoader: ResourceLoader = null
+  var resourceLoader: ResourceLoader = new FileResourceLoader
   var codeGenerators: Map[String,CodeGenerator] = Map( "ssp"-> new ScalaCodeGenerator, "haml"-> new HamlCodeGenerator )
   var compiler: Compiler = new ScalaCompiler
   
@@ -95,7 +95,7 @@ class TemplateEngine {
       var extension = t.last
       val rc = codeGenerators.get(extension).get
       if( rc==null ) {
-        throw new TemplateException("Not a template file extension ("+codeGenerators.keys.mkString("|")+"), you requested: "+uri);
+        throw new TemplateException("Not a template file extension ("+codeGenerators.keysIterator.mkString("|")+"), you requested: "+uri);
       }
       rc;
     }

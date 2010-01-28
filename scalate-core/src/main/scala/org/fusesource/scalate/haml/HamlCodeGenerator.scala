@@ -20,7 +20,7 @@ package org.fusesource.scalate.haml
 import org.fusesoruce.scalate.haml._
 import java.util.regex.Pattern
 import java.net.URI
-import org.fusesource.scalate.{TemplateArg, ServerPageException, TemplateEngine, CodeGenerator}
+import org.fusesource.scalate._
 
 /**
  * Generates a scala class given a HAML document
@@ -234,7 +234,7 @@ class HamlCodeGenerator extends CodeGenerator
     val normalizedURI = new URI(uri).normalize
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
-    if (matcher.matches == false) throw new ServerPageException("Internal error: unparseable URI [" + uri + "]")
+    if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
     val packageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
     val cn = "_haml_" + matcher.group(2).replace('.', '_')
     (packageName, cn)

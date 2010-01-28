@@ -17,6 +17,8 @@
 package org.fusesource.scalate
 
 import java.net.URI
+import java.io.{File, FileInputStream, StringWriter, InputStreamReader}
+import util.IOUtil
 
 /**
  * Used by the template engine to load the content of templates.
@@ -25,15 +27,45 @@ import java.net.URI
  */
 trait ResourceLoader {
 
+  val pageFileEncoding = "UTF-8"
+
   def load( uri: String ): String
   
   def lastModified(uri:String): Long
   
-  def resolve( base: String, path: String ): String = {
+  def resolve( base: String, path: String ): String
+  
+}
+
+class FileResourceLoader extends ResourceLoader {
+
+  override def load(uri: String): String = {
+    val file = toFile(uri);
+    val reader = new InputStreamReader(new FileInputStream(file), pageFileEncoding)
+    val writer = new StringWriter(file.length.asInstanceOf[Int]);
+    try {
+      IOUtil.copy(reader, writer)
+      writer.toString
+    } finally {
+      reader.close
+    }
+  }
+
+  override def lastModified(uri:String) = toFile(uri).lastModified
+
+  override def resolve( base: String, path: String ): String = {
     if( path.startsWith( "/" ) )
       path
     else
       new URI( base ).resolve( path ).toString
   }
 
+  protected def toFile(uri:String):File = {
+    val file = new File(uri)
+    if (!file.canRead) {
+      throw new TemplateException("Cannot read file: " + file)
+    }
+    file
+  }
 }
+

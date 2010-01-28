@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+ * Copyright (C) 2009, Progress Software Corporation and/or its
+ * subsidiaries or affiliates.  All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,22 +17,17 @@
  */
 package org.fusesource.scalate.servlet
 
-import javax.servlet.ServletContext
-import java.io.{File, InputStreamReader, StringWriter}
-import org.fusesource.scalate.util.IOUtil
-import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, TemplateException}
+import scala.xml.Node
+import javax.servlet.http._
+import org.fusesource.scalate.util.{Lazy, XmlEscape}
+import java.text.{DateFormat, NumberFormat}
+import java.util.{Date, Locale}
+import java.io._
+import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
+import java.lang.String
+import collection.mutable.{Stack, ListBuffer, HashMap}
 
 /**
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-class ServletResourceLoader(context: ServletContext) extends FileResourceLoader {
-
-  override protected def toFile(uri:String):File = {
-    val file = new File(context.getRealPath(uri))
-    if (!file.canRead) {
-      throw new TemplateException("Cannot find [" + uri + "]; are you sure it's within [" + context.getRealPath("/") + "]?")
-    }
-    file
-  }
-
-}
+class HttpTemplateContext
