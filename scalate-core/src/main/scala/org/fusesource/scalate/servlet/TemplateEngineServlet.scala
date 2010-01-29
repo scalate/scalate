@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import java.net.URLClassLoader
-import org.fusesource.scalate.{TemplateContext, TemplateEngine}
 import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.TemplateEngine
 
 
 class TemplateEngineServlet extends HttpServlet with Logging {
@@ -43,7 +43,7 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
     val template = templateEngine.load(uri)
-    template.renderTemplate(TemplateContext(response.getWriter, request, response, getServletContext))
+    template.renderTemplate(ServletTemplateContext(response.getWriter, request, response, getServletContext))
   }
 
 

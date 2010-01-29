@@ -17,32 +17,31 @@ package org.fusesource.scalate
 
 
 import haml.HamlCodeGenerator
-import java.io.File
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
 import ssp.{ScalaCodeGenerator, ScalaCompiler}
 import util.IOUtil
+import java.io.{File}
 
 
 class TemplateEngine {
-
   private class CacheEntry(val template: Template, val timestamp: Long, val dependencies: Set[String])
 
   var pageFileEncoding = "UTF-8"
   var allowReload = true
 
   var resourceLoader: ResourceLoader = new FileResourceLoader
-  var codeGenerators: Map[String,CodeGenerator] = Map( "ssp"-> new ScalaCodeGenerator, "haml"-> new HamlCodeGenerator )
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new ScalaCodeGenerator, "haml" -> new HamlCodeGenerator)
   var compiler: Compiler = new ScalaCompiler
-  
+
   var classpath: String = null
   var workingDirectoryRoot: File = null
 
-  private val templateCache = new HashMap[(String,List[TemplateArg]), CacheEntry]
+  private val templateCache = new HashMap[(String, List[TemplateArg]), CacheEntry]
 
 
-  def load(uri: String, args:TemplateArg*) = {
+  def load(uri: String, args: TemplateArg*) = {
 
     val argsList = args.toList;
     val key = (uri, args.toList)
@@ -87,18 +86,34 @@ class TemplateEngine {
     }
   }
 
-  def codeGenerator(uri:String):CodeGenerator = {
+  /**
+   * Does no caching; useful for temporary templates or temapltes created dynamically such as from the contents of a message
+   */
+  def loadTemporary(uri: String, args: TemplateArg*) = {
+
+    val argsList = args.toList;
+    val timestamp = Platform.currentTime
+
+    val newCacheEntry = preparePage(timestamp, uri, argsList)
+    newCacheEntry.template
+  }
+
+  def codeGenerator(uri: String): CodeGenerator = {
     val t = uri.split("\\.")
-    if( t.length < 2 ) {
+    if (t.length < 2) {
       throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
     } else {
-      var extension = t.last
-      val rc = codeGenerators.get(extension).get
-      if( rc==null ) {
-        throw new TemplateException("Not a template file extension ("+codeGenerators.keysIterator.mkString("|")+"), you requested: "+uri);
-      }
-      rc;
+      val extension = t.last
+      codeGeneratorForExtension(extension)
     }
+  }
+
+  def codeGeneratorForExtension(extension: String): CodeGenerator = {
+    val rc = codeGenerators.get(extension).get
+    if (rc == null) {
+      throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
+    }
+    rc;
   }
 
   private def listFiles(bytecodeDirectory: File) = bytecodeDirectory.listFiles match {
@@ -126,7 +141,7 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
-  private def preparePage(timestamp: Long, uri: String, args:List[TemplateArg]): CacheEntry = {
+  private def preparePage(timestamp: Long, uri: String, args: List[TemplateArg]): CacheEntry = {
 
     // Convert the translation unit into executable code
     val code = codeGenerator(uri).generate(this, uri, args)

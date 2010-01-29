@@ -4,15 +4,15 @@ import org.apache.camel.component.ResourceBasedEndpoint
 import org.apache.camel._
 import java.io._
 import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
-import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.util.{IOUtil, Logging}
+import org.fusesource.scalate.{DefaultTemplateContext, TemplateContext, TemplateEngine}
 
 /**
  * @version $Revision : 1.1 $
  */
 
 class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: String,
-                      templateEngine: TemplateEngine = new TemplateEngine(), encoding: String = null)
+                      templateEngine: TemplateEngine = new TemplateEngine(), defaultTemplateExtension: String = "ssp")
         extends ResourceBasedEndpoint(uri, component, templateUri, null) {
   val RESOURCE_URI = "CamelScalateResourceUri"
   val TEMPLATE = "CamelScalateTemplate"
@@ -47,38 +47,46 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
     else {
 
       val content = exchange.getIn().getHeader(TEMPLATE, classOf[String])
-      val reader = if (content != null) {
-        debug("Velocity content read from header " + TEMPLATE + " for endpoint " + getEndpointUri())
+      val template = if (content != null) {
+        // use content from header
+        debug("Scalate content read from header " + TEMPLATE + " for endpoint " + getEndpointUri())
 
         // remove the header to avoid it being propagated in the routing
         exchange.getIn().removeHeader(TEMPLATE)
 
-        // use content from header
-        new StringReader(content)
+        // lets create a new temporary file for now as the API does not yet support a reader...
+        val tempFile = File.createTempFile("scalate_", "." + defaultTemplateExtension)
+        IOUtil.copy(new StringReader(content), new FileWriter(tempFile))
+
+        val template = templateEngine.loadTemporary(uri)
+        tempFile.delete
+        template
+
       } else {
         // use resource from endpoint configuration
         val resource = getResource()
         ObjectHelper.notNull(resource, "resource")
         debug("Velocity content read from resource " + resource + " with resourceUri: " + path + " for endpoint " + getEndpointUri())
 
-        if (encoding != null) {
-          new InputStreamReader(getResourceAsInputStream(), encoding)
-        } else {new InputStreamReader(getResourceAsInputStream())}
+        val uri = resource.getURL.toExternalForm
+        templateEngine.load(uri)
       }
 
+
       // getResourceAsInputStream also considers the content cache
-      val buffer = new StringWriter()
       val logTag = getClass().getName()
       val variableMap = ExchangeHelper.createVariableMap(exchange)
 
+      val buffer = new StringWriter()
+      val templateContext = new DefaultTemplateContext(new PrintWriter(buffer))
+      template.renderTemplate(templateContext)
 
-      templateEngine.load(path)
+      val out = exchange.getOut()
+      out.setBody(buffer.toString())
 
       /*
 
       // now lets output the results to the exchange
-      Message out = exchange.getOut()
-      out.setBody(buffer.toString())
 
       Map<String, Object> headers = (Map<String, Object>) variables.get("headers")
       for (String key : headers.keySet()) {
