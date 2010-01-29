@@ -27,6 +27,12 @@ If you know JSP or ASP then hopefully the syntax is familiar; only using Scala a
 
 === Syntax
 
+Comments:
+
+----
+<%-- this is a comment --%>
+----
+
 Declarations:
 
 ----
