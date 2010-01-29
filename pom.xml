@@ -43,6 +43,8 @@
     <scala-plugin-version>2.9.1</scala-plugin-version>
     <slf4j-version>1.5.6</slf4j-version>
 
+    <!-- vscaladoc settings -->
+    <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
@@ -109,6 +111,31 @@
       <url>dav:http://fusesource.com/forge/dav/scalate/maven/${project.version}</url>
     </site>
   </distributionManagement>
+
+  <developers>
+    <developer>
+      <id>chirino</id>
+      <name>Hiram Chirino</name>
+      <organization>FuseSource</organization>
+      <organizationUrl>http://fusesource.com/</organizationUrl>
+    </developer>
+    <developer>
+      <id>jstrachan</id>
+      <name>James Strachan</name>
+      <organization>FuseSource</organization>
+      <organizationUrl>http://fusesource.com/</organizationUrl>
+    </developer>
+    <developer>
+      <id>matthild</id>
+      <name>Matt Hildebrand</name>
+    </developer>
+    <developer>
+      <id>PaulSandoz</id>
+      <name>Paul Sandoz</name>
+      <organization>Oracle</organization>
+      <organizationUrl>http://oracle.com/</organizationUrl>
+    </developer>
+  </developers>
 
   <repositories>
     <repository>
@@ -315,54 +342,10 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.0.2</version>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-            <maxmem>256M</maxmem>
-            <fork>${compiler.fork}</fork>
-          </configuration>
-        </plugin>
-
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-idea-plugin</artifactId>
           <configuration>
             <downloadSources>true</downloadSources>
             <downloadJavadocs>true</downloadJavadocs>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>cobertura-maven-plugin</artifactId>
-          <version>2.2</version>
-          <configuration>
-            <check>
-              <branchRate>85</branchRate>
-              <lineRate>85</lineRate>
-              <haltOnFailure>false</haltOnFailure>
-              <totalBranchRate>85</totalBranchRate>
-              <totalLineRate>85</totalLineRate>
-              <packageLineRate>85</packageLineRate>
-              <packageBranchRate>85</packageBranchRate>
-              <!--
-                            <regexes>
-                              <regex>
-                                <pattern>org.fusesource.scalatelate.impl.*</pattern>
-                                <branchRate>90</branchRate>
-                                <lineRate>80</lineRate>
-                              </regex>
-                              <regex>
-                                <pattern>org.fusesource.scalatelate.builder.*</pattern>
-                                <branchRate>40</branchRate>
-                                <lineRate>30</lineRate>
-                              </regex>
-                            </regexes>
-              -->
-            </check>
           </configuration>
         </plugin>
 
@@ -448,11 +431,6 @@
         <version>2.3</version>
         <configuration>
           <filteringChanges>true</filteringChanges>
-          <!--
-                    <issueLinkTemplatePerSystem>
-                      <github>%URL%/%ISSUE%/find</github>
-                    </issueLinkTemplatePerSystem>
-          -->
         </configuration>
       </plugin>
 
@@ -478,6 +456,7 @@
             </configuration>
             </plugin>
       -->
+
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -500,6 +479,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -554,7 +534,7 @@
           </reportSet>
         </reportSets>
         <configuration>
-          <onlyCurrentVersion>true</onlyCurrentVersion>
+          <filteringChanges>true</filteringChanges>
         </configuration>
       </plugin>
 
@@ -572,11 +552,11 @@
               <report>license</report>
               <report>mailing-list</report>
               <report>project-team</report>
-<!--
-               Doesn't seem to grok git modules etc
-               
-              <report>scm</report>
--->
+              <!--
+                             Doesn't seem to grok git modules etc
+
+                            <report>scm</report>
+              -->
               <report>summary</report>
             </reports>
           </reportSet>
@@ -588,60 +568,52 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.5</version>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <generateSitemap>true</generateSitemap>
+        </configuration>
       </plugin>
-
-      <!--
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jxr-plugin</artifactId>
-            </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
-      -->
-
-      <!--
-                    <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                  <generateSitemap>true</generateSitemap>
-                </configuration>
-              </plugin>
-      -->
 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
       </plugin>
-      <!--
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>2.4</version>
-              <configuration>
-                <links>
-                  <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-                  <link>http://java.sun.com/javaee/5/docs/api/</link>
-                  <link>http://static.springframework.org/spring/docs/2.5.x/api/</link>
-                </links>
-                <linksource>true</linksource>
-                <maxmemory>500m</maxmemory>
-                <source>1.5</source>
-              </configuration>
-            </plugin>
-      -->
 
-      <!--
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>findbugs-maven-plugin</artifactId>
-            </plugin>
-      -->
+<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.6.1</version>
+        <configuration>
+          <detectLinks>true</detectLinks>
+          <linksource>true</linksource>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+              &lt;!&ndash;<report>aggregate</report>&ndash;&gt;
+              <report>test-javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.5</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report-only</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
     </plugins>
   </reporting>
 

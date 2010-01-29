@@ -49,5 +49,10 @@ If you are not yet a committer but want to contribute some patch (we love [contr
 
 # Next steps
 
-Once you have checked out the code try following the [instructions to build {project_name:}]({relocatable: building.html}) or read the [documentation]({relocatable: documentation/index.html}).
+Once you have checked out the code try following 
+
+* [instructions to build {project_name:}]({relocatable: building.html}) 
+* read the [documentation]({relocatable: documentation/index.html})
+* browse the [maven reports](maven.html)
+
 
