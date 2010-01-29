@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scalate-camel</artifactId>
 
-  <name>ScalaTE :: Camel</name>
+  <name>Scalate :: Camel</name>
   <description>Camel component for scalate</description>
 
   <properties>

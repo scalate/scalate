@@ -9,8 +9,8 @@
   <artifactId>scalate-project</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>ScalaTE Project</name>
-  <description>ScalaTE Project POM</description>
+  <name>Scalate Project</name>
+  <description>Scalate Project POM</description>
 
   <prerequisites>
     <maven>2.0.9</maven>
@@ -34,7 +34,6 @@
     <sitemesh-version>2.3</sitemesh-version>
 
     <!--
-    <scalaVersion>2.7.7</scalaVersion>
     <scalaTest-version>1.0</scalaTest-version>
     -->
     <scalaVersion>2.8.0.Beta1</scalaVersion>
@@ -46,7 +45,7 @@
 
   </properties>
 
-  <url>http://scalate.fusesource.org</url>
+  <url>http://scalate.fusesource.org/</url>
 
   <organization>
     <name>FuseSource</name>
@@ -55,8 +54,8 @@
 
   <licenses>
     <license>
-      <name>GNU AFFERO GENERAL PUBLIC LICENSE (AGPL) Version 3.0</name>
-      <url>http://www.fsf.org/licensing/licenses/agpl.html</url>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -76,10 +75,21 @@
     </mailingList>
   </mailingLists>
 
+  <scm>
+    <connection>scm:git:git://github.com/scalate/scalate.git</connection>
+    <developerConnection>scm:git:git@github.com:scalate/scalate.git</developerConnection>
+    <url>http://github.com/scalate/scalate</url>
+  </scm>
+
   <issueManagement>
     <system>jira</system>
-    <url>http://fusesource.com/issues/browse/SSP</url>
+    <url>http://fusesource.com/issues/browse/SCALATE</url>
   </issueManagement>
+
+  <ciManagement>
+    <system>teamcity</system>
+    <url>http://ci.fusesource.com/teamcity/project.html?projectId=project33</url>
+  </ciManagement>
 
   <distributionManagement>
     <repository>
@@ -216,7 +226,7 @@
 
 
   <dependencies>
-<!--
+    <!--
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -289,13 +299,6 @@
     </dependencies>
   </dependencyManagement>
 
-
-  
-  <scm>
-    <connection>scm:git:git://forge.fusesource.com/scalate.git</connection>
-    <developerConnection>scm:git:ssh://git@forge.fusesource.com/scalate.git</developerConnection>
-    <url>http://fusesource.com/forge/gitweb?p=scalate.git;a=tree</url>
-  </scm>
 
   <build>
     <defaultGoal>install</defaultGoal>
@@ -417,7 +420,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
-        <version>2.10.1</version>
+        <version>2.13.1</version>
         <executions>
           <execution>
             <goals>
@@ -438,6 +441,21 @@
           <scalaVersion>${scala.version}</scalaVersion>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <filteringChanges>true</filteringChanges>
+          <!--
+                    <issueLinkTemplatePerSystem>
+                      <github>%URL%/%ISSUE%/find</github>
+                    </issueLinkTemplatePerSystem>
+          -->
+        </configuration>
+      </plugin>
+
 
       <!--
           <plugin>
@@ -499,9 +517,79 @@
 
   <reporting>
     <plugins>
+      <!--
+            <plugin>
+              <groupId>org.scala-tools</groupId>
+              <artifactId>maven-scala-plugin</artifactId>
+              <version>2.13.1</version>
+            </plugin>
+      -->
+      <!--
+              <configuration>
+                <scaladocClassName>org.scala_tools.vscaladoc.Main</scaladocClassName>
+                <scalaJars>
+                  <scalaJar>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>vscaladoc</artifactId>
+                    <version>1.1</version>
+                  </scalaJar>
+                </scalaJars>
+              </configuration>
+      -->
+      <!--
+      <configuration>
+        <vscalaVersion>1.1</vscalaVersion>
+      </configuration>
+      -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.3</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jira-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <onlyCurrentVersion>true</onlyCurrentVersion>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>dependencies</report>
+              <report>dependency-convergence</report>
+              <report>dependency-management</report>
+              <report>index</report>
+              <report>license</report>
+              <report>mailing-list</report>
+              <report>project-team</report>
+<!--
+               Doesn't seem to grok git modules etc
+               
+              <report>scm</report>
+-->
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <webAccessUrl>http://github.com/scalate/scalate</webAccessUrl>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.5</version>
       </plugin>
 
       <!--
@@ -515,35 +603,45 @@
             </plugin>
       -->
 
+      <!--
+                    <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                  <generateSitemap>true</generateSitemap>
+                </configuration>
+              </plugin>
+      -->
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-            <link>http://java.sun.com/javaee/5/docs/api/</link>
-            <link>http://static.springframework.org/spring/docs/2.5.x/api/</link>
-          </links>
-          <!--
-                    <stylesheetfile>${basedir}/../../etc/css/stylesheet.css</stylesheetfile>
-          -->
-          <linksource>true</linksource>
-          <maxmemory>500m</maxmemory>
-          <source>1.5</source>
+      <!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.4</version>
+              <configuration>
+                <links>
+                  <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
+                  <link>http://java.sun.com/javaee/5/docs/api/</link>
+                  <link>http://static.springframework.org/spring/docs/2.5.x/api/</link>
+                </links>
+                <linksource>true</linksource>
+                <maxmemory>500m</maxmemory>
+                <source>1.5</source>
+              </configuration>
+            </plugin>
+      -->
 
-          <!-- TODO we can't aggregate as it won't find the CSS file :( -->
-          <!--<aggregate>true</aggregate>-->
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-      </plugin>
+      <!--
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+      -->
     </plugins>
   </reporting>
 

@@ -9,8 +9,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scalate-sample</artifactId>
 
-  <name>ScalaTE :: Sample</name>
-  <description>ScalaTE Sample Web Application</description>
+  <name>Scalate :: Sample</name>
+  <description>Scalate Sample Web Application</description>
   <packaging>war</packaging>
 
   <properties>

@@ -9,8 +9,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scalate-core</artifactId>
 
-  <name>ScalaTE :: Core</name>
-  <description>ScalaTE Core</description>
+  <name>Scalate :: Core</name>
+  <description>Scalate Core</description>
 
   <dependencies>
     <dependency>
