@@ -19,7 +19,7 @@ package org.fusesource.scalate.sample
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.fusesource.scalate.TemplateContext
+import org.fusesource.scalate.servlet.ServletTemplateContext
 
 class ServletRendersView extends HttpServlet
 {
@@ -27,7 +27,7 @@ class ServletRendersView extends HttpServlet
     val model = new Person("Bob", "Mcwhatnot")
 
 
-    val context = new TemplateContext(response.getWriter, request, response, getServletContext)
+    val context = new ServletTemplateContext(response.getWriter, request, response, getServletContext)
     context.render(model)
   }
 
