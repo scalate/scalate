@@ -129,7 +129,7 @@ class ParserUsingOriginalParserTest extends FunSuite {
     log(text)
     log("")
 
-    val lines = new ScalaCodeGenerator().parseFragments(text)
+    val lines = SspOriginalParser.parseFragments(text)
     for (line <- lines) {
       log(line)
     }

@@ -27,13 +27,13 @@ import java.util.regex.Pattern
 import scala.collection.mutable.HashSet
 
 
-private object ScalaTranslationUnitLoader
+private object SspLoader
 {
   val INCLUDE_REGEX = Pattern.compile( "<%@ +include +file *= *\"([^\"]+)\" *%>", Pattern.MULTILINE | Pattern.DOTALL )
 }
 
 
-class ScalaTranslationUnitLoader
+class SspLoader
 {
 
   class TranslationUnit( val content: String, val dependencies: Set[String] )
@@ -65,7 +65,7 @@ class ScalaTranslationUnitLoader
     val content = engine.resourceLoader.load(uri)
 
     // Process the file's contents, including any include directives
-    val matcher = ScalaTranslationUnitLoader.INCLUDE_REGEX.matcher( content )
+    val matcher = SspLoader.INCLUDE_REGEX.matcher( content )
     var firstUnmatchedCharIndex = 0
     while( matcher.find ) {
       // Record the include directive and whatever came before it
