@@ -329,6 +329,8 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
 
     <extensions>
       <extension>
