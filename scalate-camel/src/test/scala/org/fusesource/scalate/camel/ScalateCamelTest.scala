@@ -24,10 +24,7 @@ class ScalateCamelTest extends CamelTestSupport {
 
   override def createRouteBuilder() = new RouteBuilder() {
     def configure(): Unit = {
-      errorHandler(defaultErrorHandler.logStackTrace(true))
-      
       from("direct:a").
-              errorHandler(defaultErrorHandler.logStackTrace(true)).
               to("scalate:org/fusesource/scalate/camel/example.ssp")
     }
   }
