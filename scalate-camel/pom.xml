@@ -65,5 +65,20 @@
   </dependencies>
 
 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- we must turn off the use of system class loader so our tests can find stuff -->
+          <useSystemClassLoader>false</useSystemClassLoader>
+<!--
+          <useManifestOnlyJar>false</useManifestOnlyJar>
+-->
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
 
 </project>

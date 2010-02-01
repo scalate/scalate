@@ -21,17 +21,15 @@ import org.fusesource.scalate._
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import javax.servlet.ServletConfig
+import java.net.URLClassLoader
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
-import java.net.URLClassLoader
-import javax.servlet.http.HttpServlet
-import util.Logging
+import org.fusesource.scalate.util.ClassLoaders._
+import org.fusesource.scalate.util.Logging
 
 
-class ScalaCompiler() extends Compiler with Logging { 
-
+class ScalaCompiler() extends Compiler with Logging {
   override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, classpath: String): Unit = {
     // Prepare an object for collecting error messages from the compiler
     val messageCollector = new StringWriter
@@ -57,10 +55,17 @@ class ScalaCompiler() extends Compiler with Logging {
   private def error(message: String): Unit = throw new ServerPageException("Compilation failed:\n" + message)
 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
-    fine("using classpath: " + classpath)
+
+    def useCP = if (classpath != null) {
+      classpath
+    } else {
+      (classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ).mkString(":")
+    }
+
+    fine("using classpath: " + useCP)
 
     val settings = new Settings(error)
-    settings.classpath.value = classpath
+    settings.classpath.value = useCP
     settings.outdir.value = bytecodeDirectory.toString
     settings.deprecation.value = true
     settings.unchecked.value = true

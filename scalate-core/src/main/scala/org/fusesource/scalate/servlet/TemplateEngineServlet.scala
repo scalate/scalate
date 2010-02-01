@@ -20,8 +20,8 @@ import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import java.net.URLClassLoader
 import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.ClassLoaders._
 import org.fusesource.scalate.TemplateEngine
 
 
@@ -72,15 +72,6 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     (prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(":")
   }
 
-
-  private def classLoaderList[T](aClass: Class[T]): List[String] = {
-    aClass.getClassLoader match {
-      case u: URLClassLoader =>
-        u.getURLs.toList.map {_.getFile}
-
-      case _ => Nil
-    }
-  }
 
   private def findFiles(root: File): List[File] = {
     if (root.isFile)

@@ -49,7 +49,7 @@ class SspCodeGenerator extends CodeGenerator
       }
       this <<;
       this << "import org.fusesource.scalate.{Template, TemplateContext}"
-      this << "import javax.servlet.http._"
+      this <<;
       this << "class " + className + " extends Template {"
       indent {
 
