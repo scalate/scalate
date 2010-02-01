@@ -1,1 +1,2 @@
-<hello>James</hello>
+<%@ attribute exchange: org.apache.camel.Exchange %>
+<hello>${exchange.getIn.getBody}</hello>

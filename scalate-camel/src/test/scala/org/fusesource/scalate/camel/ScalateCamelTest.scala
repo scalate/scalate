@@ -25,7 +25,7 @@ class ScalateCamelTest extends CamelTestSupport {
   override def createRouteBuilder() = new RouteBuilder() {
     def configure(): Unit = {
       from("direct:a").
-              to("scalate:org/fusesource/scalate/camel/example.ssp")
+              to("scalate:org/fusesource/scalate/camel/constant.ssp")
     }
   }
 
@@ -36,6 +36,8 @@ class ScalateCamelTest extends CamelTestSupport {
           val in = exchange.getIn
           in.setBody("answer")
           in.setHeader("cheese", value)
+
+          println("sending body: " + exchange.getIn.getBody)
         }
       })
     }

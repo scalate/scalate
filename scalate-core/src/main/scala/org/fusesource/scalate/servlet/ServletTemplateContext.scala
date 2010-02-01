@@ -44,6 +44,14 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
     }
   }
 
+  /**
+   * Updates the named attribute with the given value
+   */
+  def setAttribute[T](name: String, value: T): Unit = {
+    request.setAttribute(name, value)
+  }
+
+
   override def locale: Locale = {
     var locale = request.getLocale
     if (locale == null) {
