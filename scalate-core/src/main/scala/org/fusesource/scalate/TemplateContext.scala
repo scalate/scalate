@@ -66,6 +66,11 @@ abstract class TemplateContext extends RenderCollector {
   def attributeOrElse[T](name: String, defaultValue: T): T
 
   /**
+   * Updates the named attribute with the given value
+   */
+  def setAttribute[T](name: String, value: T): Unit
+
+  /**
    * Returns the JAXRS resource bean of the given type or a                { @link NoSuchAttributeException } exception is thrown
    */
   def resource[T]: T = {
@@ -272,6 +277,10 @@ case class DefaultTemplateContext(var out: PrintWriter) extends TemplateContext(
     else {
       defaultValue
     }
+  }
+
+  def setAttribute[T](name: String, value: T): Unit = {
+    attributes(name) = value
   }
 
   def render(model: AnyRef, view: String = "index"): Unit = throw new UnsupportedOperationException()

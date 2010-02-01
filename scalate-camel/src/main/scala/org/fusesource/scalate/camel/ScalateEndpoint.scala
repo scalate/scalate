@@ -6,6 +6,7 @@ import java.io._
 import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
 import org.fusesource.scalate.util.{IOUtil, Logging}
 import org.fusesource.scalate.{DefaultTemplateContext, TemplateContext, TemplateEngine}
+import scala.collection.JavaConversions._
 
 /**
  * @version $Revision : 1.1 $
@@ -72,14 +73,17 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
         templateEngine.load(uri)
       }
 
-
-      // getResourceAsInputStream also considers the content cache
-      val logTag = getClass().getName()
-      val variableMap = ExchangeHelper.createVariableMap(exchange)
-
+      //val logTag = getClass().getName()
       val buffer = new StringWriter()
-      val templateContext = new DefaultTemplateContext(new PrintWriter(buffer))
-      template.renderTemplate(templateContext)
+      val context = new DefaultTemplateContext(new PrintWriter(buffer))
+
+      val variableMap = ExchangeHelper.createVariableMap(exchange)
+      for ((key, value) <- variableMap) {
+        context.setAttribute(key, value)
+      }
+
+      val bindings = Map("context"->context)
+      template.renderTemplate(context, bindings)
 
       val out = exchange.getOut()
       val response = buffer.toString()
