@@ -10,7 +10,9 @@ import org.apache.camel.Endpoint
  * @version $Revision : 1.1 $
  */
 
-class ScalateComponent(templateEngine: TemplateEngine = new TemplateEngine()) extends DefaultComponent {
+class ScalateComponent() extends DefaultComponent {
+  var templateEngine: TemplateEngine = new TemplateEngine()
+
   def createEndpoint(uri: String, remaining: String, parameters: Map[String, Object]): Endpoint = {
     new ScalateEndpoint(uri, this, remaining, templateEngine)
   }
