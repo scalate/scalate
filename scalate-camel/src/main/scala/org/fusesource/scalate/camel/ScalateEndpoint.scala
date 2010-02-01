@@ -31,7 +31,7 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
   }
 
 
-  override def onExchange(exchange: Exchange) = {
+  override def onExchange(exchange: Exchange):Unit = {
     val path = getResourceUri()
     ObjectHelper.notNull(path, "resourceUri")
 
@@ -66,9 +66,9 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
         // use resource from endpoint configuration
         val resource = getResource()
         ObjectHelper.notNull(resource, "resource")
-        debug("Velocity content read from resource " + resource + " with resourceUri: " + path + " for endpoint " + getEndpointUri())
+        debug("Scalate content read from resource " + resource + " with resourceUri: " + path + " for endpoint " + getEndpointUri())
 
-        val uri = resource.getURL.toExternalForm
+        val uri = resource.getFile.getCanonicalPath
         templateEngine.load(uri)
       }
 
@@ -82,7 +82,11 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
       template.renderTemplate(templateContext)
 
       val out = exchange.getOut()
-      out.setBody(buffer.toString())
+      val response = buffer.toString()
+
+      println("Eval of " + this + " = " + response)
+      out.setBody(response)
+
 
       /*
 

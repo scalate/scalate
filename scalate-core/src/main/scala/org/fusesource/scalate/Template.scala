@@ -27,11 +27,13 @@ import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, Se
 import java.lang.String
 import collection.mutable.{Stack, ListBuffer, HashMap}
 
-class NoSuchAttributeException(val attribute: String) extends ServletException("No attribute called '" + attribute + "' was available in this SSP Template") {
+class TemplateServerException(val message: String) extends Exception(message) // was ServletException(message)
+
+class NoSuchAttributeException(val attribute: String) extends TemplateServerException("No attribute called '" + attribute + "' was available in this SSP Template") {
 }
 
 
-class NoSuchTemplateException(val model: AnyRef, val view: String) extends ServletException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
+class NoSuchTemplateException(val model: AnyRef, val view: String) extends TemplateServerException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
 }
 
 /**
