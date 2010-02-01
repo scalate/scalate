@@ -29,7 +29,8 @@ import collection.mutable.{Stack, ListBuffer, HashMap}
 /**
  * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-abstract class TemplateContext() {
+abstract class TemplateContext extends RenderCollector {
+  
   private val resourceBeanAttribute = "it"
   private val outStack = new Stack[PrintWriter]
 

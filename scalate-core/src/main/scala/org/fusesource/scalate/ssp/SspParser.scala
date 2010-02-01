@@ -20,26 +20,15 @@ package org.fusesource.scalate.ssp
 
 import scala.util.parsing.combinator._
 import util.parsing.input.CharSequenceReader
+
 sealed abstract class PageFragment()
+
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
 case class ExpressionFragment(code: String) extends PageFragment
 case class ScriptletFragment(code: String) extends PageFragment
 case class TextFragment(text: String) extends PageFragment
-
-case class AttributeFragment(name: String, className: String, defaultValue: Option[String]) extends PageFragment {
-  def isScala28 = true
-
-  def methodArgumentCode = name + ": " + className + (if (isScala28) {
-    if (defaultValue.isEmpty) {""} else {" = "+defaultValue.get}
-  } else {""})
-
-  def valueCode(context : String) = "val " + name + " = " + (defaultValue match {
-    case Some(expression) => context + ".attributeOrElse[" + className + "](\"" + name + "\", " + expression + ")"
-    case None => context + ".attribute[" + className + "](\"" + name + "\")"
-  })
-}
-
+case class AttributeFragment(name: String, className: String, defaultValue: Option[String]) extends PageFragment
 
 class SspParser extends RegexParsers {
 
