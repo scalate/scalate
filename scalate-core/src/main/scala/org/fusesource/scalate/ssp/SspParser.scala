@@ -20,6 +20,7 @@ package org.fusesource.scalate.ssp
 
 import scala.util.parsing.combinator._
 import util.parsing.input.CharSequenceReader
+
 sealed abstract class PageFragment()
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
