@@ -31,6 +31,40 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
   private class SourceBuilder extends AbstractSourceBuilder[Statement] {
 
+    val text_buffer = new StringBuffer
+    var element_level = 0
+    var pending_newline = false
+    var in_html_comment = false
+
+    def write_indent() = {
+      if( pending_newline ) {
+        text_buffer.append("\n")
+        pending_newline=false;
+      }
+      for( i <- 0 until element_level ) {
+        text_buffer.append("  ")
+      }
+    }
+
+    def write_text(value:String) = {
+      text_buffer.append(value)
+    }
+
+    def write_nl() = {
+      pending_newline=true
+    }
+
+    def flush_text() = {
+      if( pending_newline ) {
+        text_buffer.append("\n")
+        pending_newline=false;
+      }
+      if( text_buffer.length > 0 ) {
+        this << "$_scalate_$_out << ( "+asString(text_buffer.toString)+" );"
+        text_buffer.setLength(0)
+      }
+    }
+
     def generate(statements:List[Statement]):Unit = {
       statements.foreach(statement=>{
         generate(statement)
@@ -40,16 +74,14 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement:Statement):Unit = {
       statement match {
         case s:HamlComment=> {
-          this << "// "+s.text.getOrElse("")
+        }
+        case s:TextExpression=> {
+          write_indent
+          generate(s)
+          write_nl
         }
         case s:HtmlComment=> {
-          this << "$_scalate_$_out << ( "+asString("<!--"+s.text.getOrElse("")+"-->")+" );"
-        }
-        case s:LiteralText=> {
-          this << "$_scalate_$_out << ( "+asString(s.text)+" );"
-        }
-        case s:EvaluatedText=> {
-          this << "$_scalate_$_out << ( "+s.code+");"
+          generate(s)
         }
         case s:Element=> {
           generate(s)
@@ -63,7 +95,105 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
+    def generate(statement:TextExpression):Unit = {
+      statement match {
+        case s:LiteralText=> {
+          write_text(s.text)
+        }
+        case s:EvaluatedText=> {
+          flush_text
+          this << "$_scalate_$_out << ("+s.code+" );"
+        }
+      }
+    }
+
+    def generate(statement:HtmlComment):Unit = {
+      //  case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
+      var prefix = "<!--"
+      var suffix = "-->"
+      if( statement.conditional.isDefined ) {
+        prefix = "<!--["+statement.conditional.get+"]>"
+        suffix = "<![endif]-->"
+      }
+
+      // To support comment within comment blocks.
+      if( in_html_comment ) {
+        prefix = "" 
+        suffix = ""
+      } else {
+        in_html_comment = true
+      }
+
+
+      statement match {
+        case HtmlComment(_, text, List()) => {
+          write_indent
+          write_text(prefix)
+          write_text(text.getOrElse(""))
+          write_text(suffix)
+          write_nl
+        }
+        case HtmlComment(_, None, list) => {
+          write_indent
+          write_text(prefix)
+          write_nl
+
+          element_level += 1
+          generate(list)
+          element_level -= 1
+
+          write_indent
+          write_text(suffix)
+          write_nl
+        }
+        case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html comment and nested within it.");
+      }
+
+      if( prefix.length!= 0 ) {
+        in_html_comment = false
+      }
+    }
+    
+    def generate(statement:Element):Unit = {
+      var tag = statement.tag.getOrElse("div");
+      var prefix = "<"+tag+attributes(statement.attributes)+">"
+      var suffix = "</"+tag+">"
+
+      if( statement.close ) {
+        if( statement.text.isDefined || !statement.body.isEmpty ) {
+          throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.");
+        }
+        var prefix = "<"+tag+attributes(statement.attributes)+"/>"
+        var suffix = ""
+      }
+
+      statement match {
+        case Element(_,_,text,List(),_,_) => {
+          write_indent
+          write_text(prefix)
+          generate(text.getOrElse(LiteralText("", Some(false))))
+          write_text(suffix)
+          write_nl
+        }
+        case Element(_,_,None,list,_,_) => {
+          write_indent
+          write_text(prefix)
+          write_nl
+
+          element_level += 1
+          generate(list)
+          element_level -= 1
+
+          write_indent
+          write_text(suffix)
+          write_nl
+        }
+        case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html element and nested within it.");
+      }
+    }
+
     def generate(statement:Executed):Unit = {
+      flush_text
       statement match {
         case Executed(Some(code), List()) => {
           this << code
@@ -77,22 +207,6 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case Executed(None,List())=> {}
       }
-    }
-
-    def generate(statement:Element):Unit = {
-      val tag = statement.tag.getOrElse("div");
-      this << "$_scalate_$_out << ( "+asString("<"+tag+attributes(statement.attributes)+">")+" );"
-      statement match {
-        case Element(_,_,None, List(), _, _) => {}
-        case Element(_,_,Some(text), List(), _, _) => {
-          generate(text)
-        }
-        case Element(_,_,None, list, _, _) => {
-          generate(list)
-        }
-        case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html element and nested within it.");
-      }
-      this << "$_scalate_$_out << ( "+asString("</"+tag+">")+" );"
     }
 
     def attributes(entries: List[(Any,Any)]) = {
