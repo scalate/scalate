@@ -15,7 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.fusesource.scalate.haml
+package org.fusesource.scalate.shaml
 
 import org.fusesoruce.scalate.haml._
 import java.util.regex.Pattern
