@@ -73,7 +73,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
             this << "}"
           })
         }
-        this <<"}"
+        this << "}"
       }
       this <<"}"
       this <<;

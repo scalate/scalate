@@ -69,6 +69,7 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statements.foreach(statement=>{
         generate(statement)
       })
+      flush_text
     }
 
     def generate(statement:Statement):Unit = {
