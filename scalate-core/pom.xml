@@ -37,8 +37,7 @@
         <configuration>
           <forkMode>pertest</forkMode>
           <excludes>
-            <!-- TODO FIXME ASAP -->
-            <exclude>**/ParserUsingNewCombinatorialVersionTest.*</exclude>
+            <!-- <exclude>**/ParserUsingNewCombinatorialVersionTest.*</exclude> -->
           </excludes>
         </configuration>
       </plugin>

@@ -19,7 +19,7 @@
 package org.fusesource.scalate.ssp
 
 import scala.util.parsing.combinator._
-import java.io.Reader
+import util.parsing.input.CharSequenceReader
 sealed abstract class PageFragment()
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
@@ -41,62 +41,65 @@ case class AttributeFragment(name: String, className: String, defaultValue: Opti
 }
 
 
-class SspParser extends JavaTokenParsers {
-  def parse(in: Reader) = {
-    parseAll(lines, in)
+class SspParser extends RegexParsers {
+
+  var skipWhitespaceOn = false
+  override def skipWhitespace = skipWhitespaceOn
+
+  val identifier = """[a-zA-Z0-9\$_]+""".r
+  val typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
+  val any = """.+""".r
+  val attribute = ("attribute" ~> identifier) ~ (":" ~> typeName) ~ (opt("=" ~> any)) ^^ {
+    case i ~ t ~ a => AttributeFragment(i.toString, t.toString, a)
   }
 
-  def parse(in: CharSequence) = {
-    parseAll(lines, in)
-  }
-
-  def lines = rep(commentFragment | declarationFragment | expressionFragment | scriptletFragment | dollarExpressionFragment | textFragment) ^^ {
-    case lines => lines
-  }
-
-  def textFragment = upToSpecialCharacter ^^ {
-    case a => TextFragment(a.toString)
-  }
-
-  def dollarExpressionFragment = parser("${", "}", {DollarExpressionFragment(_)})
-
-  def commentFragment = parser("<%--", "--%>", {CommentFragment(_)})
-
-  def declarationFragment = parser("<%@", "%>", {CommentFragment(_)})
-
-  def expressionFragment = parser("<%=", "%>", {ExpressionFragment(_)})
-
-  def scriptletFragment = parser("<%", "%>", {ScriptletFragment(_)})
-
-  def parser(prefix: String, postfix: String, transform: String => PageFragment) = {
-    //val filler = """(.|\n|\r)+"""
-    val filler = """.+"""
-    val regex = (regexEscape(prefix) + filler + regexEscape(postfix)).r
-
-    //prefix ~> rep(not(postfix)) <~ prefix ^^ {
-    regex ^^ {
-      case r => val text = r.toString
-      val remaining = text.substring(prefix.length, text.length - postfix.length)
-      transform(remaining)
+  def parseAttribute(in: String):AttributeFragment = {
+    try {
+      skipWhitespaceOn = true
+      phraseOrFail(attribute, in)
+    } finally {
+      skipWhitespaceOn=false
     }
   }
 
 
-  def regexEscape(text: String) = text.mkString("\\", "\\", "")
+  /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
+  def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
+  /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
+  def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
+
+  def upto[T]( p1:Parser[T]):Parser[String] = {
+    rep1( not( p1 ) ~> ".|\r|\n".r ) ^^ { _.mkString("") }
+  }
+
+  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[String] = {
+    prefixed( prefix, upto(postfix) <~ postfix )
+  }
 
 
-  def code = chunkOfText
+  val comment_fragment            = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
+  val dollar_expression_fragment  = wrapped("${",   "}")    ^^ { DollarExpressionFragment(_) }
+  val expression_fragment         = wrapped("<%=",  "%>")   ^^ { ExpressionFragment(_) }
+  val attribute_fragement         = wrapped("<%@",  "%>")   ^^ { s=> parseAttribute(s) }
+  val scriptlet_fragment          = wrapped("<%",   "%>")   ^^ { ScriptletFragment(_) }
+  val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
 
-  def any = chunkOfText
+  val page_fragment:Parser[PageFragment] = comment_fragment | dollar_expression_fragment |
+    attribute_fragement | expression_fragment | scriptlet_fragment |
+    text_fragment
 
-  //def chunkOfText = """.[^\<\$\%\-\}]*""".r
-  def upToSpecialCharacter = """.[^\<\$\%\-\}]*""".r
+  val page_fragments = rep( page_fragment )
 
-  def chunkOfText = """.+""".r
+  def phraseOrFail[T](p:Parser[T], in:String): T = {
+    var x = phrase(p)(new CharSequenceReader(in))
+    x match {
+      case Success(result, _) => result
+      case _ => throw new IllegalArgumentException(x.toString);
+    }
+  }
 
-  def token = """[a-zA-Z0-9\$_]+""".r
+  def getPageFragments(in:String): List[PageFragment] = {
+    phraseOrFail(page_fragments, in)
+  }
 
-  def lessThanPercent = """\<\%""".r
-
-  def percentGreaterThan = """\%\>""".r
 }

@@ -12,22 +12,15 @@ import collection.mutable.HashMap
 class ParserUsingNewCombinatorialVersionTest extends ParserUsingOriginalParserTest {
 
   override def assertValid(text: String): List[PageFragment] = {
-    println("Parsing...")
-    println(text)
-    println
+    log("Parsing...")
+    log(text)
+    log("")
 
-    val parser = new SspParser()
-    parser.parse(text) match {
-      case parser.Success(lines : List[PageFragment], _) =>
-        for (line <- lines) {
-          println(line)
-        }
-        println
-        lines
-
-      case e =>
-        fail("Failed to parse! " + e)
-        Nil
+    val lines = (new SspParser).getPageFragments(text)
+    for (line <- lines) {
+      log(line)
     }
+    log("")
+    lines
   }
 }
