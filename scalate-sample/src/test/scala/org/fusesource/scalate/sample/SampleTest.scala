@@ -15,12 +15,23 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("Scalate")
   }
 
-  testPage("ssp/missingAttribute.ssp") {
-    pageContains("No attribute called 'name' was available")
-  }
+  testPageContains("sampleServlet", "The foo is: Foo(")
 
-  testPage("ssp/exampleIncludes.ssp") {
-    pageContains("included from /includes/something.jsp")
-    pageContains("included from /ssp/child/foo.ssp")
-  }
+  testPageContains("ssp/defaultAttribute.ssp", "James")
+  testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp", "included from /ssp/child/foo.ssp")
+  testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
+  testPageContains("ssp/missingAttribute.ssp", "No attribute called 'name' was available")
+  testPageContains("ssp/standalone.ssp", "1 + 2 = 3")
+  testPageContains("ssp/snippet.ssp", "mmm I like beer")
+  testPageContains("ssp/renderObject.ssp", "Strachan")
+  testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
+  testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
+  testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")
+  testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "this is the body!", "End of wrapped body")
+
+  testPageContains("foo", "Hello from a FooResource!")
+  testPageContains("foo/abc", "The item id is", "abc")
+  testPageContains("foo/def", "The item id is", "def")
+
+  testPageContains("shaml/simple.shaml", "SHAML is a Scala version of", "HAML")
 }
