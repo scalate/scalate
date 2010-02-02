@@ -3,9 +3,10 @@ package org.fusesource.scalate.sample
 import org.scalatest.{Suite, BeforeAndAfterAll}
 
 /**
+ * A trait which boots up a JettyServer and uses it for all the test cases in this class
+ * 
  * @version $Revision: 1.1 $
  */
-
 trait WebServerMixin extends BeforeAndAfterAll {
   this: Suite =>
 
