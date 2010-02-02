@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse
 import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.{TemplateArg, TemplateEngine}
 import org.fusesource.scalate.util.ClassLoaders._
+import collection.mutable.HashMap
 
 class TemplateEngineServlet extends HttpServlet with Logging {
 
@@ -42,7 +43,14 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
     val context = ServletTemplateContext(response.getWriter, request, response, getServletContext)
-    val bindings = Map("context"->context)
+
+    val bindings = new HashMap[String, Any]()
+    val names = request.getAttributeNames
+    while ( names.hasMoreElements ) {
+      val name = names.nextElement.asInstanceOf[String]
+      bindings += name -> request.getAttribute(name)
+    }
+    bindings += "context"->context
 
     val template = templateEngine.load(uri, TemplateArg("context", classOf[ServletTemplateContext].getName, true))
     template.renderTemplate(context, bindings)

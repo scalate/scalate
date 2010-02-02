@@ -347,12 +347,10 @@ plain text
   }
 
 
-
-
+  var engine = new TemplateEngine
+  engine.workingDirectoryRoot = new File("target/test-data/"+(this.getClass.getName))
 
   def render(content:String): String = {
-    var engine = new TemplateEngine
-    engine.workingDirectoryRoot = new File("target/test-data/"+(this.getClass.getName))
 
     engine.resourceLoader = new FileResourceLoader {
       override def load( uri: String ): String = content

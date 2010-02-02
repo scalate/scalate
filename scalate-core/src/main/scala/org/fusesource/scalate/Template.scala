@@ -42,5 +42,5 @@ class NoSuchTemplateException(val model: AnyRef, val view: String) extends Templ
  * @version $Revision : 1.1 $
  */
 trait Template {
-  def renderTemplate(out: RenderCollector, bindings:Map[String, Any]): Unit
+  def renderTemplate(out: RenderCollector, bindings:collection.Map[String, Any]): Unit
 }
