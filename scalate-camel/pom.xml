@@ -41,6 +41,11 @@
       <artifactId>camel-spring</artifactId>
       <version>${camelVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-scala</artifactId>
+      <version>${camelVersion}</version>
+    </dependency>
 
     <!-- testing -->
     <dependency>

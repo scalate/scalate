@@ -18,7 +18,7 @@ class CamelScalateEndpointTest extends FunSuite {
   val uriPrefix = "scalate:org/fusesource/scalate/camel/"
 
   scenario(uriPrefix + "constant.ssp", "James", "<hello>James</hello>")
-  //scenario(uriPrefix + "example.ssp", "James", "<hello>James</hello>")
+  scenario(uriPrefix + "example.ssp", "James", "<hello>James</hello>")
 
   /**
    * Processes the route builder using the given callback function which processes a producer template on the constructed
@@ -65,7 +65,7 @@ class CamelScalateEndpointTest extends FunSuite {
           assume(out != null, "out was null when sending to uri: " + uri + " body: " + body)
 
           expect(expectedResult) {
-            out.getBody(classOf[String])
+            out.getBody(classOf[String]).trim()
           }
       }
     }

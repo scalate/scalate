@@ -1,0 +1,2 @@
+<%@ attribute exchange: org.apache.camel.scala.RichExchange %>
+<hello>${exchange.in}</hello>

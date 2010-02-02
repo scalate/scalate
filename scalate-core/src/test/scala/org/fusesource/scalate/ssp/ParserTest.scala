@@ -9,7 +9,7 @@ import org.scalatest.FunSuite
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class ParserUsingOriginalParserTest extends FunSuite {
+class ParserTest extends FunSuite {
   val logging = false
 
   test("parse attribute declaration") {
@@ -129,13 +129,14 @@ class ParserUsingOriginalParserTest extends FunSuite {
     log(text)
     log("")
 
-    val lines = SspOriginalParser.parseFragments(text)
+    val lines = (new SspParser).getPageFragments(text)
     for (line <- lines) {
       log(line)
     }
     log("")
     lines
   }
+
 
   def log(value: AnyRef) {
     if (logging) {
