@@ -53,7 +53,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
         this << "package "+packageName
       }
 
-      this <<;
+      this << ""
+      this << "import org.fusesource.scalate.NoSuchAttributeException"
+      this << ""
       this << "object " + className + "{"
       indent {
         // We prefix the function an variables with $_scalate_$ to avoid namespace pollution which could
@@ -92,6 +94,12 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
 
     def generateBinding(arg:TemplateArg):Unit = {
       this << "val "+arg.name+":"+arg.className+" = $_scalate_$_bindings.getOrElse(" + asString(arg.name) + ", " + arg.defaultValue.getOrElse("null")+ ").asInstanceOf["+arg.className+"];"
+
+      // if the argument has no default value expression, then lets throw an exception if its null
+      // if we really want to allow null for a value, just pass in null as a default argument value
+      if (arg.defaultValue.isEmpty) {
+        this << "if (" + arg.name + " == null) { throw new NoSuchAttributeException(" + asString(arg.name) + ") }"
+      }
       if( arg.importMembers ) {
         this << "import "+arg.name+"._";
       }

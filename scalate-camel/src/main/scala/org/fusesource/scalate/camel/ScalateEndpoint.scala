@@ -6,7 +6,7 @@ import java.io._
 import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
 import org.fusesource.scalate.util.{IOUtil, Logging}
 import org.fusesource.scalate.{DefaultTemplateContext, TemplateContext, TemplateEngine}
-import scala.collection.JavaConversions._
+import collection.JavaConversions._
 
 /**
  * @version $Revision : 1.1 $
@@ -79,10 +79,13 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
 
       val variableMap = ExchangeHelper.createVariableMap(exchange)
       for ((key, value) <- variableMap) {
+        println("setting " + key + " = " + value)
         context.setAttribute(key, value)
       }
 
-      val bindings = Map("context"->context)
+      variableMap.put("context", context)
+      val bindings = variableMap.toMap
+      //val bindings = Map("context"->context)
       template.renderTemplate(context, bindings)
 
       val out = exchange.getOut()
