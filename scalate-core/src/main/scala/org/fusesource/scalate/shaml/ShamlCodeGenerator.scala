@@ -34,6 +34,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     val text_buffer = new StringBuffer
     var element_level = 0
     var pending_newline = false
+    var suppress_indent = false
     var in_html_comment = false
 
     def write_indent() = {
@@ -41,9 +42,18 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         text_buffer.append("\n")
         pending_newline=false;
       }
-      for( i <- 0 until element_level ) {
-        text_buffer.append("  ")
+      if( suppress_indent ) {
+        suppress_indent=false
+      } else {
+        for( i <- 0 until element_level ) {
+          text_buffer.append("  ")
+        }
       }
+    }
+
+    def trim_whitespace() = {
+      pending_newline=false
+      suppress_indent=true
     }
 
     def write_text(value:String) = {
@@ -66,10 +76,14 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statements:List[Statement]):Unit = {
+      generate_no_flush(statements)
+      flush_text
+    }
+
+    def generate_no_flush(statements:List[Statement]):Unit = {
       statements.foreach(statement=>{
         generate(statement)
       })
-      flush_text
     }
 
     def generate(statement:Statement):Unit = {
@@ -140,7 +154,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_nl
 
           element_level += 1
-          generate(list)
+          generate_no_flush(list)
           element_level -= 1
 
           write_indent
@@ -164,30 +178,56 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         if( statement.text.isDefined || !statement.body.isEmpty ) {
           throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.");
         }
-        var prefix = "<"+tag+attributes(statement.attributes)+"/>"
-        var suffix = ""
+        prefix = "<"+tag+attributes(statement.attributes)+"/>"
+        suffix = ""
       }
 
+      statement.trim match {
+        case Some(Trim.Outer)=>{
+        }
+        case Some(Trim.Inner)=>{}
+        case Some(Trim.Both)=>{}
+        case _ => {}
+      }
+
+      def outer_trim = statement.trim match {
+        case Some(Trim.Outer)=>{ trim_whitespace}
+        case Some(Trim.Both)=>{ trim_whitespace}
+        case _ => {}
+      }
+
+      def inner_trim = statement.trim match {
+        case Some(Trim.Inner)=>{ trim_whitespace}
+        case Some(Trim.Both)=>{ trim_whitespace}
+        case _ => {}
+      }
+      
       statement match {
         case Element(_,_,text,List(),_,_) => {
+          outer_trim
           write_indent
           write_text(prefix)
           generate(text.getOrElse(LiteralText("", Some(false))))
           write_text(suffix)
           write_nl
+          outer_trim
         }
         case Element(_,_,None,list,_,_) => {
+          outer_trim
           write_indent
           write_text(prefix)
           write_nl
 
+          inner_trim
           element_level += 1
-          generate(list)
+          generate_no_flush(list)
           element_level -= 1
+          inner_trim
 
           write_indent
           write_text(suffix)
           write_nl
+          outer_trim
         }
         case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html element and nested within it.");
       }
@@ -235,7 +275,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
-    val statements = ShamlParser.parse(hamlSource)
+    val statements = (new ShamlParser).parse(hamlSource)
     val builder = new SourceBuilder()
     builder.generate(packageName, className, args, statements)
     Code(this.className(uri, args), builder.code, Set())

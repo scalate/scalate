@@ -73,19 +73,23 @@ case class Filter(filter:String, body:List[String]) extends Statement
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object ShamlParser extends IndentedParser() {
+class ShamlParser extends IndentedParser() {
 
   /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
   /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
   def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
 
+  def upto[T]( p1:Parser[T]):Parser[String] = {
+    rep1( not( p1 ) ~> ".".r ) ^^ { _.mkString("") }
+  }
+
   val any                     = """.*""".r
-  val nl                      = """\r?\n""".r
+  val nl                     = """\r?\n""".r
   val word                    = """[a-zA-Z_0-9]+""".r
   val text                    = """.+""".r
   val space                   = """[ \t]+""".r
-  val some_space                   = """[ \t]*""".r
+  val some_space              = """[ \t]*""".r
 
   val ident                   = """[a-zA-Z_]\w*""".r
   val string_literal          = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
@@ -114,12 +118,13 @@ object ShamlParser extends IndentedParser() {
           { case l1~l2 => l1:::l2 }
 
   def trim: Parser[Trim.Value] =
-      ">" ^^{ s=> Trim.Outer } |
-      "<" ^^{ s=> Trim.Inner } |
-      ( ( "<>" | "><" ) ^^ { s=> Trim.Both } )
+      "><" ^^{ s=> Trim.Both }  |
+      "<>" ^^{ s=> Trim.Both }  |
+      ">"  ^^{ s=> Trim.Outer } |
+      "<"  ^^{ s=> Trim.Inner } 
 
-  def element_text = prefixed("=", text)  ^^ { EvaluatedText(_, false, None) } |
-                     some_space ~> text ^^  { LiteralText(_,None) }
+  def element_text = prefixed("=", upto(nl))  ^^ { EvaluatedText(_, false, None) } |
+                     space ~> upto(nl) ^^  { LiteralText(_,None) }
 
   def full_element_statement:Parser[Element] =
     opt("%"~>word) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
@@ -131,13 +136,13 @@ object ShamlParser extends IndentedParser() {
 
   def element_statement:Parser[Element] = guarded("%"|"."|"#", full_element_statement)
 
-  def haml_comment_statement = prefixed("-#", opt(any<~nl)) ~ rep(indent(any<~nl)) ^^ { case text~body=> ShamlComment(text,body) }
-  def html_comment_statement = prefixed("/", opt("["~> any <~"]")) ~ opt(any<~nl) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
+  def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ShamlComment(text,body) }
+  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
   def text_statement = (
-          prefixed("""\""", any) ^^ { LiteralText(_, None) } |
-          prefixed("&==", any )  ^^ { LiteralText(_, Some(true)) } |
-          prefixed("&==", any )  ^^ { LiteralText(_, Some(false)) } |
+          prefixed("""\""", upto(nl)) ^^ { LiteralText(_, None) } |
+          prefixed("&==", upto(nl) )  ^^ { LiteralText(_, Some(true)) } |
+          prefixed("&==", upto(nl) )  ^^ { LiteralText(_, Some(false)) } |
           any                    ^^ { LiteralText(_, None) }
         ) <~ nl
 
@@ -148,7 +153,13 @@ object ShamlParser extends IndentedParser() {
           prefixed("&=", any )  ^^ { EvaluatedText(_, false, Some(false)) } 
         ) <~ nl
 
-  def executed_statement = prefixed("-", opt(text) <~ nl) ~ rep(indent(statement)) ^^ { case code~body=> Executed(code,body) }
+  def executed_statement =
+    prefixed("-",
+      opt(text) <~ nl) ~
+            rep(indent(statement)) ^^
+            {
+              case code~body=> Executed(code,body)
+            }
   def filter_statement = prefixed(":", text <~ nl) ~ rep(indent(any<~nl)) ^^ { case code~body=> Filter(code,body) }
 
   def statement:Parser[Statement] =
@@ -162,16 +173,26 @@ object ShamlParser extends IndentedParser() {
   def parser = rep( statement )
 
   def parse(in:String) = {
-    val x = phrase[List[Statement]](parser)(new CharSequenceReader(in))
+    var content = in;
+    if( !in.endsWith("\n") ) {
+      content = in + "\n"
+    }
+    val x = phrase[List[Statement]](parser)(new CharSequenceReader(content))
     x match {
       case Success(result, _) => result
       case _ => throw new IllegalArgumentException(x.toString);
     }
   }
 
+}
+
+object ShamlParser {
   def main(args: Array[String]) = {
-     val in = """%a{:href => "/scala/standalone.html"}
+     val in = """
+%body<>
+  test
 """
-     println(parse(in))
+     println((new ShamlParser).parse(in))
    }
+
 }

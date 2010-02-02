@@ -27,7 +27,7 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ShamlTemplateTest extends FunSuite {
 
-  test("'%tag' renders a tag") {
+  test("'%tag' renders a start and end tag") {
     expect(
 """
 <html></html>
@@ -35,6 +35,18 @@ class ShamlTemplateTest extends FunSuite {
     ) {render(
 """
 %html
+"""
+    )}
+  }
+
+  test("'%tag/' renders a closed tag") {
+    expect(
+"""
+<html/>
+"""
+    ) {render(
+"""
+%html/
 """
     )}
   }
@@ -98,44 +110,31 @@ class ShamlTemplateTest extends FunSuite {
 """
     )}
   }
-  
-  ignore("'%tag/' renders a closed tag") {
-    expect(
-"""
-<html/>
-"""
-    ) {render(
-"""
-%html/
-"""
-    )}
-  }
 
-  ignore("'%tag{:name -> \"value\"}' tag attributes can be specified using a ruby hash syntax") {
+  test("'%tag{:name => \"value\"}' tag attributes can be specified using a ruby hash syntax") {
     expect(
 """
 <html k1="v1" k2="v2"></html>
 """
     ) {render(
 """
-%html{:k1->"v1", "k2"->"v2"}
+%html{:k1=>"v1", "k2"=>"v2"}
 """
     )}
   }
 
-  ignore("'%tag{:name -> \"value\"}' tag attributes using hash syntax can span multiple lines after the comma") {
+  test("The '%tag{:name => \"value\"}' attribute syntax can span multiple lines after the comma") {
     expect(
 """
 <html>
   <body k1="v1" k2="v2"></body>
 </html>
-
 """
     ) {render(
 """
 %html
-  %body{:k1->"v1",
-"k2"->"v2"}
+  %body{:k1=>"v1",
+"k2"=>"v2"}
 """
     )}
   }
@@ -148,6 +147,22 @@ class ShamlTemplateTest extends FunSuite {
     ) {render(
 """
 %html(k1="v1" k2="v2")
+"""
+    )}
+  }
+
+  test("The '%tag(name=\"value\")' attribute syntax can span multiple lines") {
+    expect(
+"""
+<html>
+  <body k1="v1" k2="v2"></body>
+</html>
+"""
+    ) {render(
+"""
+%html
+  %body(k1="v1"
+k2="v2")
 """
     )}
   }
@@ -208,6 +223,66 @@ plain text
 """
 %html
   %body
+    test
+"""
+    )}
+  }
+
+  test("'%tag>' trims the whitespace surrounding the tag'") {
+    expect(
+"""
+<html><body>
+    test
+  </body></html>
+"""
+    ) {render(
+"""
+%html
+  %body>
+    test
+"""
+    )}
+  }
+
+  test("'%tag<' trims the whitespace wrapping nested content'") {
+    expect(
+"""
+<html>
+  <body>test</body>
+</html>
+"""
+    ) {render(
+"""
+%html
+  %body<
+    test
+"""
+    )}
+  }
+
+  test("'%tag><' trims the whitespace surrounding the tag and wrapping nested content'") {
+    expect(
+"""
+<html><body>test</body></html>
+"""
+    ) {render(
+"""
+%html
+  %body><
+    test
+"""
+    )}
+  }
+
+  test("'%tag<>' trims the whitespace surrounding the tag and wrapping nested content'") {
+    expect(
+"""
+<html><body>test</body></html>
+"""
+    ) {render(
+"""
+%html
+  %body<>
     test
 """
     )}
@@ -301,7 +376,7 @@ plain text
     )}
   }
 
-  ignore("'/' can html comment a whole block of shaml") {
+  test("'/' can html comment a whole block of shaml") {
     expect(
 """
 <html>
@@ -322,7 +397,7 @@ plain text
     )}
   }
 
-  ignore("'/[condition]' creates a conditional comment") {
+  test("'/[condition]' creates a conditional comment") {
     expect(
 """
 <html>
