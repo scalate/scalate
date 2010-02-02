@@ -2,10 +2,7 @@ package org.fusesource.scalate.sample
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
-import java.lang.String
-import collection.immutable.Map
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
+import org.scalatest.{FunSuite}
 
 /**
  * @version $Revision: 1.1 $
@@ -18,14 +15,11 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("Scalate")
   }
 
-
   testPage("ssp/missingAttribute.ssp") {
-    println("Testing missing attributes!")
     pageContains("No attribute called 'name' was available")
   }
 
   testPage("ssp/exampleIncludes.ssp") {
-    println("Testing if include contains stuff!!!")
     pageContains("included from /includes/something.jsp")
     pageContains("included from /ssp/child/foo.ssp")
   }
