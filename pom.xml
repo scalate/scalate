@@ -462,6 +462,10 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
+          <useSystemClassLoader>false</useSystemClassLoader>
+
+
           <!--forkMode>pertest</forkMode-->
           <childDelegation>false</childDelegation>
           <useFile>true</useFile>

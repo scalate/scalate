@@ -49,13 +49,6 @@
       <version>${camelVersion}</version>
       <scope>test</scope>
     </dependency>
-<!--
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <scope>test</scope>
-    </dependency>
--->
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -64,21 +57,5 @@
 
   </dependencies>
 
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <!-- we must turn off the use of system class loader so our tests can find stuff -->
-          <useSystemClassLoader>false</useSystemClassLoader>
-<!--
-          <useManifestOnlyJar>false</useManifestOnlyJar>
--->
-        </configuration>
-      </plugin>
-      
-    </plugins>
-  </build>
 
 </project>
