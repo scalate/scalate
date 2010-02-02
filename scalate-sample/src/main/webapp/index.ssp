@@ -1,10 +1,10 @@
 <html>
 <body>
 
-<h1>Scala Server Pages</h1>
+<h1>Scalate</h1>
 
 <p>
-  Welcome to Scala Server Pages. Try surfing some of the examples below
+  Welcome to Scalate: the Scala Template Engine. Try surfing some of the examples below
 </p>
 
 <h2>SSP Samples</h2>
