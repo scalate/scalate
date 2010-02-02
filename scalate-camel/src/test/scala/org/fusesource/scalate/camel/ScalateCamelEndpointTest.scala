@@ -1,9 +1,9 @@
 package org.fusesource.scalate.camel
 
 
-import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.FunSuite
 import java.io.File
 import org.fusesource.scalate._
 import org.apache.camel.builder.RouteBuilder
