@@ -18,12 +18,9 @@ package org.fusesource.scalate.shaml
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import collection.mutable.HashMap
 import org.scalatest.FunSuite
 import org.fusesource.scalate._
 import java.io.{StringWriter, PrintWriter, File}
-import util.XmlEscape
-
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

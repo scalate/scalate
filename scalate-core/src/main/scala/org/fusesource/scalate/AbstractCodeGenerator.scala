@@ -98,8 +98,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
           this << "case Some(null) => { throw new org.fusesource.scalate.NoValueSetException("+asString(arg.name)+") }"
           this << "case Some(value) => { value.asInstanceOf["+arg.className+"] }"
         } else {
-          this << "case None => { "+arg.defaultValue+" }"
-          this << "case Some(null) => { "+arg.defaultValue+" }"
+          this << "case None => { "+arg.defaultValue.get+" }"
+          this << "case Some(null) => { "+arg.defaultValue.get+" }"
           this << "case Some(value) => { value.asInstanceOf["+arg.className+"] }"
         }
       }

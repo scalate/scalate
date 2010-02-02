@@ -17,21 +17,13 @@
 
 package org.fusesource.scalate.util
 
-import java.io.ByteArrayOutputStream
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
-import java.io.Reader
-import java.io.Writer
-
+import java.io._
 
 object IOUtil
 {
 
-  def loadBinaryFile( path: String ): Array[Byte] = {
+  def loadBinaryFile( path: File ): Array[Byte] = {
     val baos = new ByteArrayOutputStream
-
     val in = new FileInputStream( path )
     try {
       copy( in, baos )
@@ -43,7 +35,7 @@ object IOUtil
   }
 
 
-  def writeBinaryFile( path: String, contents: Array[Byte] ): Unit = {
+  def writeBinaryFile( path: File, contents: Array[Byte] ): Unit = {
     val out = new FileOutputStream( path )
     try {
       out.write( contents )

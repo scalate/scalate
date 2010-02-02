@@ -21,7 +21,6 @@ import org.fusesource.scalate._
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.net.URLClassLoader
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
@@ -29,33 +28,35 @@ import org.fusesource.scalate.util.ClassLoaders._
 import org.fusesource.scalate.util.Logging
 
 
-class ScalaCompiler() extends Compiler with Logging {
+class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging {
 
-  override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, classpath: String): Unit = {
-    // Prepare an object for collecting error messages from the compiler
-    val messageCollector = new StringWriter
-    val messageCollectorWrapper = new PrintWriter(messageCollector)
+  val settings = generateSettings(bytecodeDirectory, classpath)
+  val compiler = new Global(settings, null)
 
-    // Initialize the compiler
-    val settings = generateSettings(bytecodeDirectory, classpath)
-    val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper)
-    val compiler = new Global(settings, reporter)
+  def compile(file:File): Unit = {
+    
+    synchronized {
+      val messageCollector = new StringWriter
+      val messageCollectorWrapper = new PrintWriter(messageCollector)
+      val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper)
+      compiler.reporter = reporter
 
-    // Attempt compilation
-    (new compiler.Run).compile(findFiles(sourceDirectory).map(_.toString))
+      // Attempt compilation
+      (new compiler.Run).compile(List(file.getCanonicalPath))
 
-    // Bail out if compilation failed
-    if (reporter.hasErrors) {
-      reporter.printSummary
-      messageCollectorWrapper.close
-      throw new ServerPageException("Compilation failed:\n" + messageCollector.toString)
+      // Bail out if compilation failed
+      if (reporter.hasErrors) {
+        reporter.printSummary
+        messageCollectorWrapper.close
+        throw new TemplateException("Compilation failed:\n" +messageCollector)
+      }
     }
   }
 
-
-  private def error(message: String): Unit = throw new ServerPageException("Compilation failed:\n" + message)
+  private def error(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
+    bytecodeDirectory.mkdirs
 
     def useCP = if (classpath != null) {
       classpath
@@ -71,22 +72,6 @@ class ScalaCompiler() extends Compiler with Logging {
     settings.deprecation.value = true
     settings.unchecked.value = true
     settings
-  }
-
-
-  private def findFiles(root: File): List[File] = {
-    if (root.isFile)
-      List(root)
-    else
-      makeList(root.listFiles).flatMap {f => findFiles(f)}
-  }
-
-
-  private def makeList(a: Array[File]): List[File] = {
-    if (a == null)
-      Nil
-    else
-      a.toList
   }
 
 }

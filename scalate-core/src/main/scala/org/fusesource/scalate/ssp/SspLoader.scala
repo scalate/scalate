@@ -56,7 +56,7 @@ class SspLoader
   {
     // Check for cyclical inclusion
     if( currentlyProcessing.contains( uri ) )
-      throw new ServerPageException( "Cyclical inclusion of [" + uri + "]" )
+      throw new TemplateException( "Cyclical inclusion of [" + uri + "]" )
 
     // Record the dependency on this URI
     dependencies += uri

@@ -33,7 +33,11 @@ class TemplateEngine {
 
   var resourceLoader: ResourceLoader = new FileResourceLoader
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "shaml" -> new HamlCodeGenerator)
-  var compiler: Compiler = new ScalaCompiler
+
+  lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
+
+  def sourceDirectory = new File(workingDirectoryRoot, "source")
+  def bytecodeDirectory = new File(workingDirectoryRoot, "bytecode")
 
   var classpath: String = null
   var workingDirectoryRoot: File = null
@@ -141,25 +145,19 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
+
   private def preparePage(timestamp: Long, uri: String, args: List[TemplateArg]): CacheEntry = {
 
-    // Convert the translation unit into executable code
+    // Generate the scala source code from the template
     val code = codeGenerator(uri).generate(this, uri, args)
 
-    // Prepare the working directory tree
-    val workingDirectory = new File(workingDirectoryRoot, uri)
-    deleteSubtree(workingDirectory)
-    workingDirectory.mkdirs
-    val sourceDirectory = new File(workingDirectory, "source")
-    val bytecodeDirectory = new File(workingDirectory, "bytecode")
-    sourceDirectory.mkdirs
-    bytecodeDirectory.mkdirs
+    // Write the source code to file..
+    val sourceFile = new File(sourceDirectory, uri+".scala")
+    sourceFile.getParentFile.mkdirs
+    IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
-    // Dump the generated source code to the working directory
-    IOUtil.writeBinaryFile(new File(sourceDirectory, code.className + ".scala").toString, code.source.getBytes("UTF-8"))
-
-    // Compile the generated code
-    compiler.compile(code.source, sourceDirectory, bytecodeDirectory, classpath)
+    // Compile the generated scala code
+    compiler.compile(sourceFile)
 
     // Load the compiled class and instantiate the template object
     val template = createTemplate(code.className, bytecodeDirectory)
@@ -167,18 +165,6 @@ class TemplateEngine {
     new CacheEntry(template, timestamp, code.dependencies)
   }
 
-
-  private def deleteSubtree(f: File): Unit = {
-    if (f.isDirectory) {
-      val children = f.listFiles match {
-        case null => Array[File]()
-        case x: Array[File] => x
-      }
-      children.foreach(deleteSubtree _)
-    }
-
-    f.delete
-  }
 
 
   private def createTemplate(className: String, bytecodeDirectory: File): Template = {
