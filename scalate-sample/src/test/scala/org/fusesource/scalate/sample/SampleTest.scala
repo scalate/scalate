@@ -20,7 +20,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/defaultAttribute.ssp", "James")
   testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp", "included from /ssp/child/foo.ssp")
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
-  testPageContains("ssp/missingAttribute.ssp", "No attribute called 'name' was available")
+  testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
   testPageContains("ssp/standalone.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
   testPageContains("ssp/renderObject.ssp", "Strachan")
