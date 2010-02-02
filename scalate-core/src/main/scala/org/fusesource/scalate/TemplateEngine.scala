@@ -16,7 +16,7 @@
 package org.fusesource.scalate
 
 
-import shaml.HamlCodeGenerator
+import shaml.ShamlCodeGenerator
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
 import scala.compat.Platform
@@ -32,7 +32,7 @@ class TemplateEngine {
   var allowReload = true
 
   var resourceLoader: ResourceLoader = new FileResourceLoader
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "shaml" -> new HamlCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "shaml" -> new ShamlCodeGenerator)
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 

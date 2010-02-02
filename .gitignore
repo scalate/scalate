@@ -10,5 +10,5 @@ package
 *.iws
 target
 lib_managed
-_serverpages
+_scalate
 project/boot

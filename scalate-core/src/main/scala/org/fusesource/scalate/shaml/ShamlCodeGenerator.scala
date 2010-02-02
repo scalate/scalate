@@ -27,7 +27,7 @@ import org.fusesource.scalate._
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
+class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
   private class SourceBuilder extends AbstractSourceBuilder[Statement] {
 
@@ -74,7 +74,7 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Statement):Unit = {
       statement match {
-        case s:HamlComment=> {
+        case s:ShamlComment=> {
         }
         case s:TextExpression=> {
           write_indent
@@ -235,7 +235,7 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
-    val statements = HamlParser.parse(hamlSource)
+    val statements = ShamlParser.parse(hamlSource)
     val builder = new SourceBuilder()
     builder.generate(packageName, className, args, statements)
     Code(this.className(uri, args), builder.code, Set())

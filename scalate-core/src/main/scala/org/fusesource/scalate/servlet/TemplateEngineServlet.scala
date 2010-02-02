@@ -32,7 +32,7 @@ class TemplateEngineServlet extends HttpServlet with Logging {
   override def init(config: ServletConfig) = {
     super.init(config)
     // Initialize the working directory, within which we'll write generated source code and .class files
-    templateEngine.workingDirectoryRoot = new File(getServletContext.getRealPath("WEB-INF/_serverpages/"))
+    templateEngine.workingDirectoryRoot = new File(getServletContext.getRealPath("WEB-INF/_scalate/"))
     templateEngine.workingDirectoryRoot.mkdirs
     templateEngine.classpath = buildClassPath
     templateEngine.resourceLoader = new ServletResourceLoader(getServletContext)

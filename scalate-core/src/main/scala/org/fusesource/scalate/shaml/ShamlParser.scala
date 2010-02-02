@@ -62,7 +62,7 @@ trait TextExpression extends Statement
 case class EvaluatedText(code:String, preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
 case class LiteralText(text:String, sanitise:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
-case class HamlComment(text:Option[String], body:List[String]) extends Statement
+case class ShamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
 case class Filter(filter:String, body:List[String]) extends Statement
@@ -73,7 +73,7 @@ case class Filter(filter:String, body:List[String]) extends Statement
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object HamlParser extends IndentedParser() {
+object ShamlParser extends IndentedParser() {
 
   /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
@@ -131,7 +131,7 @@ object HamlParser extends IndentedParser() {
 
   def element_statement:Parser[Element] = guarded("%"|"."|"#", full_element_statement)
 
-  def haml_comment_statement = prefixed("-#", opt(any<~nl)) ~ rep(indent(any<~nl)) ^^ { case text~body=> HamlComment(text,body) }
+  def haml_comment_statement = prefixed("-#", opt(any<~nl)) ~ rep(indent(any<~nl)) ^^ { case text~body=> ShamlComment(text,body) }
   def html_comment_statement = prefixed("/", opt("["~> any <~"]")) ~ opt(any<~nl) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
   def text_statement = (
