@@ -4,12 +4,12 @@ import scala.xml.Node
 import javax.servlet.http._
 import org.fusesource.scalate.util.{Lazy, XmlEscape}
 import java.text.{DateFormat, NumberFormat}
-import java.util.{Date, Locale}
 import java.io._
 import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
 import java.lang.String
 import collection.mutable.{Stack, ListBuffer, HashMap}
 import org.fusesource.scalate.{NoSuchTemplateException, TemplateContext, NoSuchAttributeException}
+import java.util.{Properties, Date, Locale}
 
 /**
  * A template context for use in servlets
@@ -177,6 +177,19 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
     }
 
     val _attributes = new HashMap[String, Object]
+
+    override def getAttributeNames:java.util.Enumeration[Object] = {
+      val rc = new Properties
+      val names = super.getAttributeNames
+      while ( names.hasMoreElements ) {
+        val name = names.nextElement.asInstanceOf[String]
+        rc.put(name, "");
+      }
+      _attributes.foreach(e=>{
+        rc.put(e._1, "");
+      })
+      rc.keys.asInstanceOf[java.util.Enumeration[Object]]
+    }
 
     override def setAttribute(name: String, value: Object) = _attributes(name) = value
 

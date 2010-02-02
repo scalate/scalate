@@ -20,5 +20,5 @@ trait RenderCollector {
    * Like << but sanitizes / XML escapes the right hand side
    */
   def <<<(value: Any): Unit;
-  
+
 }

@@ -44,10 +44,10 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
         case AttributeFragment(name, className, expression) => {
         }
         case DollarExpressionFragment(code) => {
-          this << "$_scalate_$_out <<< ( "+code+" );"
+          this << "$_scalate_$_out <<< "+code+""
         }
         case ExpressionFragment(code) => {
-          this << "$_scalate_$_out << ( "+code+" );"
+          this << "$_scalate_$_out << "+code+""
         }
       }
     }
@@ -84,8 +84,13 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
   private val classNameInUriRegex = """(\w+([\\|\.]\w+)*)\.\w+\.\w+""".r
 
   private def findParams(uri: String, fragments: List[PageFragment]): List[TemplateArg] = {
+
+
+    var first=true
+    def autoImport = if( first && autoImportFirstParam ) { first=false; true} else { false}
+
     val answer = fragments.flatMap {
-      case p: AttributeFragment => List(TemplateArg(p.name, p.className, false, p.defaultValue))
+      case p: AttributeFragment => List(TemplateArg(p.name, p.className, autoImport, p.defaultValue))
       case _ => Nil
     }
     

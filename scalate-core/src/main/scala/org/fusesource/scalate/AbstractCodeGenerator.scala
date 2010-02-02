@@ -54,13 +54,11 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       }
 
       this << ""
-      this << "import org.fusesource.scalate.NoSuchAttributeException"
-      this << ""
       this << "object " + className + "{"
       indent {
         // We prefix the function an variables with $_scalate_$ to avoid namespace pollution which could
         // conflict with definitions declared in the template
-        this << "def $_scalate_$render($_scalate_$_out:org.fusesource.scalate.RenderCollector, $_scalate_$_bindings:Map[String, Any]): Unit = {"
+        this << "def $_scalate_$render($_scalate_$_out:org.fusesource.scalate.RenderCollector, $_scalate_$_bindings:collection.Map[String, Any]): Unit = {"
         indent {
           params.foreach(arg=>{
             generateBinding(arg)
@@ -84,7 +82,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       this <<;
       this << "class " + className + " extends org.fusesource.scalate.Template {"
       indent {
-        this << "def renderTemplate(out:org.fusesource.scalate.RenderCollector,bindings:Map[String, Any]): Unit = "+className+".$_scalate_$render(out, bindings);"
+        this << "def renderTemplate(out:org.fusesource.scalate.RenderCollector,bindings:collection.Map[String, Any]): Unit = "+className+".$_scalate_$render(out, bindings);"
       }
       this <<"}"
 
@@ -98,7 +96,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       // if the argument has no default value expression, then lets throw an exception if its null
       // if we really want to allow null for a value, just pass in null as a default argument value
       if (arg.defaultValue.isEmpty) {
-        this << "if (" + arg.name + " == null) { throw new NoSuchAttributeException(" + asString(arg.name) + ") }"
+        this << "if (" + arg.name + " == null) { throw new org.fusesource.scalate.NoSuchAttributeException(" + asString(arg.name) + ") }"
       }
       if( arg.importMembers ) {
         this << "import "+arg.name+"._";

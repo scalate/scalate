@@ -30,6 +30,7 @@ import org.fusesource.scalate.util.Logging
 
 
 class ScalaCompiler() extends Compiler with Logging {
+
   override def compile(code: String, sourceDirectory: File, bytecodeDirectory: File, classpath: String): Unit = {
     // Prepare an object for collecting error messages from the compiler
     val messageCollector = new StringWriter
