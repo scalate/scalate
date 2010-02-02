@@ -29,17 +29,4 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("included from /includes/something.jsp")
     pageContains("included from /ssp/child/foo.ssp")
   }
-
-  def testPage(uri: String)(func: => Unit) {
-    test("page: " + uri) {
-      val fullUri = if (uri.startsWith("http")) { uri} else { rootUrl + uri}
-      
-      println("Loading page: " + fullUri)
-      webDriver.get(fullUri)
-
-      println("About to run test for: " + fullUri)
-      func
-      println("Completed test for: " + fullUri)
-    }
-  }
 }
