@@ -1,6 +1,6 @@
 package org.fusesource.scalate.sample
 
-import org.fusesource.scalate.TemplateContext
+import org.fusesource.scalate.{RenderContext}
 
 /**
  * @version $Revision : 1.1 $
@@ -21,10 +21,10 @@ object MyTags {
   /**
    * Explicit version where you interact with the context parameter
    */
-  def someLayoutUsingTemplateContext(context: TemplateContext)(body: => Unit) = {
-    val text = context.evaluate(body)
+  def someLayoutUsingTemplateContext(context: RenderContext)(body: => Unit) = {
+    val text = context.capture(body)
     println("Evaluated text: " + text)
-    context.write("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
+    context << ("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
   }
 
 

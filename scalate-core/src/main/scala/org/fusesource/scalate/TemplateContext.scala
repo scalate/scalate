@@ -29,105 +29,24 @@ import collection.mutable.{Stack, ListBuffer, HashMap}
 /**
  * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-abstract class TemplateContext extends RenderCollector {
+class DefaultRenderContext(var out: PrintWriter) extends RenderContext {
   
-  private val resourceBeanAttribute = "it"
-  private val outStack = new Stack[PrintWriter]
+  /////////////////////////////////////////////////////////////////////
+  //
+  // RenderContext implementation
+  //
+  /////////////////////////////////////////////////////////////////////
 
-  var nullString = ""
-  var viewPrefixes = List("WEB-INF", "")
-  var viewPostfixes = List(".ssp")
-  val defaultCharacterEncoding = "ISO-8859-1";
-
-
-  private var _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
-  private var _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
-  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
-
-
-  def out: PrintWriter
-  def out_=(out:PrintWriter): Unit
-
-  /**
-   * Called after each page completes
-   */
-  def completed = {
-    out.flush
+  def <<(value: Any): Unit = {
+    write(value)
   }
 
-  /**
-   * Returns the attribute of the given type or a    { @link NoSuchAttributeException } exception is thrown
-   */
-  def attribute[T](name: String): T
-
-  /**
-   * Returns the attribute of the given name and type or the default value if it is not available
-   */
-  def attributeOrElse[T](name: String, defaultValue: T): T
-
-  /**
-   * Updates the named attribute with the given value
-   */
-  def setAttribute[T](name: String, value: T): Unit
-
-  /**
-   * Returns the JAXRS resource bean of the given type or a                { @link NoSuchAttributeException } exception is thrown
-   */
-  def resource[T]: T = {
-    attribute[T](resourceBeanAttribute)
+  def <<<(value: Any): Unit = {
+    writeXmlEscape(value)
   }
 
-  /**
-   * Returns the JAXRS resource bean of the given type or the default value if it is not available
-   */
-  def resourceOrElse[T](defaultValue: T): T = {
-    attributeOrElse(resourceBeanAttribute, defaultValue)
-  }
-
-
-  // Rendering methods
-
-  /**
-   * Includes the given template inside this template
-   */
-  def include(page: String): Unit
-
-  /**
-   * Forwards this request to the given page
-   */
-  def forward(page: String): Unit
-
-
-  /**
-   * Renders a collection of model objects with an optional separator
-   */
-  def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): Unit = {
-    var first = true
-    for (model <- objects) {
-      if (first) {
-        first = false
-      }
-      else {
-        val text = separator()
-        write(text)
-      }
-      render(model, view)
-    }
-  }
-
-  def render(model: AnyRef, view: String = "index"): Unit
-
-
-  /**
-   * Converts the value to a string so it can be output on the screen, which uses the                { @link # nullString } value
-   * for nulls
-   */
-  def toString(value: Any): String = {
-    value match {
-      case d: Date => dateFormat.format(d)
-      case n: Number => numberFormat.format(n)
-      case a => if (a == null) {nullString} else {a.toString}
-    }
+  def binding(name: String) = {
+    attributes.get(name)
   }
 
   /**
@@ -154,6 +73,109 @@ abstract class TemplateContext extends RenderCollector {
     }
   }
 
+  private val outStack = new Stack[PrintWriter]
+
+  /**
+   * Evaluates the body capturing any output written to this page context during the body evaluation
+   */
+  def capture(body: => Unit): String = {
+    val buffer = new StringWriter();
+    outStack.push(out)
+    out = new PrintWriter(buffer)
+    try {
+      body
+      out.close()
+      buffer.toString
+    } finally {
+      out = outStack.pop
+    }
+  }
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // attribute helpers/accessors
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  val attributes = new HashMap[String, Any]()
+  
+  /**
+   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
+   */
+  def attribute[T](name: String): T = {
+    val value = attributes.get(name)
+    if (value.isDefined) {
+      value.get.asInstanceOf[T]
+    }
+    else {
+      throw new NoValueSetException(name)
+    }
+  }
+
+  /**
+   * Returns the attribute of the given name and type or the default value if it is not available
+   */
+  def attributeOrElse[T](name: String, defaultValue: T): T = {
+    val value = attributes.get(name)
+    if (value.isDefined) {
+      value.get.asInstanceOf[T]
+    }
+    else {
+      defaultValue
+    }
+  }
+
+  def setAttribute[T](name: String, value: T): Unit = {
+    attributes(name) = value
+  }
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // resource helpers/accessors
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  private val resourceBeanAttribute = "it"
+
+  /**
+   * Returns the JAXRS resource bean of the given type or a                { @link NoValueSetException } exception is thrown
+   */
+  def resource[T]: T = {
+    attribute[T](resourceBeanAttribute)
+  }
+
+  /**
+   * Returns the JAXRS resource bean of the given type or the default value if it is not available
+   */
+  def resourceOrElse[T](defaultValue: T): T = {
+    attributeOrElse(resourceBeanAttribute, defaultValue)
+  }
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // custom object rendering
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  var nullString = ""
+  private var _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
+  private var _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
+  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
+
+  /**
+   * Converts the value to a string so it can be output on the screen, which uses the                { @link # nullString } value
+   * for nulls
+   */
+  def toString(value: Any): String = {
+    value match {
+      case d: Date => dateFormat.format(d)
+      case n: Number => numberFormat.format(n)
+      case a => if (a == null) {nullString} else {a.toString}
+    }
+  }
 
   /**
    * Returns the formatted string using the locale of the users request or the default locale if not available
@@ -184,108 +206,4 @@ abstract class TemplateContext extends RenderCollector {
     Locale.getDefault
   }
 
-
-  // tag related stuff such as capturing blocks of output
-
-  /**
-   * Evaluates the body capturing any output written to this page context during the body evaluation
-   */
-  def evaluate(body: => Unit): String = {
-    val buffer = new StringWriter();
-    val printWriter = new PrintWriter(buffer)
-    pushOut(printWriter)
-    try {
-      body
-      printWriter.close()
-      buffer.toString
-    } finally {
-      popOut
-    }
-  }
-
-  def pushOut(newOut: PrintWriter) {
-    outStack.push(out)
-    out = newOut
-  }
-
-  def popOut() = {
-    out = outStack.pop
-  }
-
-
-  implicit def body(body: => Unit): () => String = {
-    () => {
-      evaluate(body)
-    }
-  }
-
-
-  /**
-   * Allow the right hand side to be written to the stream which makes it easy to code
-   * generate expressions using blocks in the SSP code
-   */
-  def <<(value: Any): Unit = {
-    write(value)
-  }
-
-  /**
-   * Like << but XML escapes the right hand side
-   */
-  def <<<(value: Any): Unit = {
-    writeXmlEscape(value)
-  }
-
-  /*
-    def textWrite_=(value: Any) : Unit = {
-      write(value)
-    }
-
-    def xmlEscapedWrite_=(value: Any) : Unit = {
-      writeXmlEscape(value)
-    }
-  */
-}
-
-
-/**
- * A default template context for use outside of servlet environments
- */
-case class DefaultTemplateContext(var out: PrintWriter) extends TemplateContext() {
-  val attributes = new HashMap[String, Any]()
-
-  /**
-   * Returns the attribute of the given type or a    { @link NoSuchAttributeException } exception is thrown
-   */
-  def attribute[T](name: String): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      throw new NoSuchAttributeException(name)
-    }
-  }
-
-  /**
-   * Returns the attribute of the given name and type or the default value if it is not available
-   */
-  def attributeOrElse[T](name: String, defaultValue: T): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      defaultValue
-    }
-  }
-
-  def setAttribute[T](name: String, value: T): Unit = {
-    attributes(name) = value
-  }
-
-  def render(model: AnyRef, view: String = "index"): Unit = throw new UnsupportedOperationException()
-
-  def include(page: String) = throw new UnsupportedOperationException()
-
-  def forward(page: String) = throw new UnsupportedOperationException()
 }

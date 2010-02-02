@@ -17,30 +17,11 @@
  */
 package org.fusesource.scalate
 
-import scala.xml.Node
-import javax.servlet.http._
-import org.fusesource.scalate.util.{Lazy, XmlEscape}
-import java.text.{DateFormat, NumberFormat}
-import java.util.{Date, Locale}
-import java.io._
-import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
-import java.lang.String
-import collection.mutable.{Stack, ListBuffer, HashMap}
-
-class TemplateServerException(val message: String) extends Exception(message) // was ServletException(message)
-
-class NoSuchAttributeException(val attribute: String) extends TemplateServerException("No attribute called '" + attribute + "' was available in this SSP Template") {
-}
-
-
-class NoSuchTemplateException(val model: AnyRef, val view: String) extends TemplateServerException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
-}
-
 /**
  * Defines a bunch of helper methods available to SSP pages
  *
  * @version $Revision : 1.1 $
  */
 trait Template {
-  def renderTemplate(out: RenderCollector, bindings:collection.Map[String, Any]): Unit
+  def render(context: RenderContext): Unit
 }

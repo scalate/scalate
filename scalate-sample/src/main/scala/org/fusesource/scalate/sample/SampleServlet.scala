@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import scala.compat.Platform
-import org.fusesource.scalate.TemplateContext
-
 
 class SampleServlet extends HttpServlet
 {
@@ -45,16 +43,6 @@ class SampleServlet extends HttpServlet
 
     request.getRequestDispatcher(ssp).forward(request, response)
   }
-
-  /*
-    val out = response.getWriter
-    out.println("===== about to include....")
-    val context = new TemplateContext(out, request, response, getServletContext)
-    pageContext.view(new Person("Bob", "Mcwhatnot"))
-    out.println("===== done!...")
-    out.flush()
-*/
-
 
 
 }

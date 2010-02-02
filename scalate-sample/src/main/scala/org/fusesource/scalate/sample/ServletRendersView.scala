@@ -27,7 +27,7 @@ class ServletRendersView extends HttpServlet
     val model = new Person("Bob", "Mcwhatnot")
 
 
-    val context = new ServletTemplateContext(response.getWriter, request, response, getServletContext)
+    val context = new ServletTemplateContext(request, response, getServletContext)
     context.render(model)
   }
 
