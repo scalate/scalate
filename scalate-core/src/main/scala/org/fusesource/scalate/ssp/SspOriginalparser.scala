@@ -41,7 +41,7 @@ object SspOriginalParser
   TOKEN_INFO.transform {(k, v) => Pattern.compile("^(.*?)(" + Pattern.quote(v.endTokenRegex) + ").*$", PATTERN_FLAGS)}
 
   val FIND_START_TOKEN_REGEX =
-  Pattern.compile("^(.*?)(" + (TOKEN_INFO.values.map {info => "(" + Pattern.quote(info.startTokenRegex) + ")"}).mkString("|") + "){1}+.*$",
+  Pattern.compile("^(.*?)(" + (TOKEN_INFO.valuesIterator.map {info => "(" + Pattern.quote(info.startTokenRegex) + ")"}).mkString("|") + "){1}+.*$",
     PATTERN_FLAGS)
 
   val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
@@ -114,7 +114,7 @@ object SspOriginalParser
 
 
   private def findLongestTokenStartingHere(pageContent: String, startIndex: Int): String = {
-    TOKEN_INFO.keys.foldLeft("")((acc, token) => {
+    TOKEN_INFO.keysIterator.foldLeft("")((acc, token) => {
       if (token.length > acc.length && pageContent.indexOf(token, startIndex) == startIndex)
         token
       else

@@ -1,0 +1,6 @@
+%html
+  %body
+    %p Hello from standalone.shaml
+    %p
+      1 + 2 =
+      = 1+2

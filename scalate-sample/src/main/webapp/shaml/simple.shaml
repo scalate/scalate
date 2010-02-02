@@ -1,0 +1,8 @@
+%html
+  %body
+    %h1
+      Example SHAML Page
+    %p
+      SHAML is a Scala version of 
+      %a{ :href => "http://haml-lang.com/" }
+        HAML
