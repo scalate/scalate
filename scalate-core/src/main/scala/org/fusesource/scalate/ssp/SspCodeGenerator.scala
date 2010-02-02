@@ -39,15 +39,15 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
           this << code
         }
         case TextFragment(text) => {
-          this << "$_scalate_$_out << ( " + asString(text) + " );"
+          this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
         case AttributeFragment(name, className, expression) => {
         }
         case DollarExpressionFragment(code) => {
-          this << "$_scalate_$_out <<< "+code+""
+          this << "$_scalate_$_context <<< "+code+""
         }
         case ExpressionFragment(code) => {
-          this << "$_scalate_$_out << "+code+""
+          this << "$_scalate_$_context << "+code+""
         }
       }
     }
@@ -71,9 +71,7 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
     val fragments = (new SspParser).getPageFragments(translationUnit)
 
     // Convert the parsed representation to Scala source code
-    println("incoming args: "+args);
     val params = args ::: findParams(uri, fragments)
-    println("args + template args: "+params);
 
     val sb = new SourceBuilder
     sb.generate(packageName, className, params, fragments)

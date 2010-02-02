@@ -58,7 +58,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       indent {
         // We prefix the function an variables with $_scalate_$ to avoid namespace pollution which could
         // conflict with definitions declared in the template
-        this << "def $_scalate_$render($_scalate_$_out:org.fusesource.scalate.RenderCollector, $_scalate_$_bindings:collection.Map[String, Any]): Unit = {"
+        this << "def $_scalate_$render($_scalate_$_context:org.fusesource.scalate.RenderContext): Unit = {"
         indent {
           params.foreach(arg=>{
             generateBinding(arg)
@@ -82,7 +82,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       this <<;
       this << "class " + className + " extends org.fusesource.scalate.Template {"
       indent {
-        this << "def renderTemplate(out:org.fusesource.scalate.RenderCollector,bindings:collection.Map[String, Any]): Unit = "+className+".$_scalate_$render(out, bindings);"
+        this << "def render(context:org.fusesource.scalate.RenderContext): Unit = "+className+".$_scalate_$render(context);"
       }
       this <<"}"
 
@@ -91,15 +91,21 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     def generate(statements:List[T]):Unit
 
     def generateBinding(arg:TemplateArg):Unit = {
-      this << "val "+arg.name+":"+arg.className+" = $_scalate_$_bindings.getOrElse(" + asString(arg.name) + ", " + arg.defaultValue.getOrElse("null")+ ").asInstanceOf["+arg.className+"];"
-
-      // if the argument has no default value expression, then lets throw an exception if its null
-      // if we really want to allow null for a value, just pass in null as a default argument value
-      if (arg.defaultValue.isEmpty) {
-        this << "if (" + arg.name + " == null) { throw new org.fusesource.scalate.NoSuchAttributeException(" + asString(arg.name) + ") }"
+      this << "val "+arg.name+":"+arg.className+" = ($_scalate_$_context.binding(" + asString(arg.name) + ") match {"
+      indent {
+        if (arg.defaultValue.isEmpty) {
+          this << "case None => { throw new org.fusesource.scalate.NoValueSetException("+asString(arg.name)+") }"
+          this << "case Some(null) => { throw new org.fusesource.scalate.NoValueSetException("+asString(arg.name)+") }"
+          this << "case Some(value) => { value.asInstanceOf["+arg.className+"] }"
+        } else {
+          this << "case None => { "+arg.defaultValue+" }"
+          this << "case Some(null) => { "+arg.defaultValue+" }"
+          this << "case Some(value) => { value.asInstanceOf["+arg.className+"] }"
+        }
       }
+      this << "});" 
       if( arg.importMembers ) {
-        this << "import "+arg.name+"._";
+        this << "import "+arg.name+"._;";
       }
     }
 

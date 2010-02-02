@@ -357,27 +357,18 @@ plain text
       override def lastModified(uri:String): Long = 0
     }
 
-    val context = new Context()
+    val buffer = new StringWriter()
+    val out = new PrintWriter(buffer)
+    val context = new DefaultRenderContext(out) {
+      val name = "Hiram"
+    }
+
+    context.attributes += "context"-> context
+    
     val template = engine.loadTemporary("/test.shaml", TemplateArg("context", context.getClass.getName, true))
-    template.renderTemplate(context, Map("context"->context))
-    context.buffer.toString
-  }
-
-}
-
-case class Context() extends RenderCollector() {
-
-  val buffer = new StringWriter()
-  val out = new PrintWriter(buffer)
-
-  val name = "Hiram"
-
-  def <<(value: Any): Unit = {
-    out.print(value.toString)
-  }
-
-  def <<<(value: Any): Unit = {
-    out.print(XmlEscape.escape(value.toString))
+    template.render(context)
+    out.close
+    buffer.toString
   }
 
 }

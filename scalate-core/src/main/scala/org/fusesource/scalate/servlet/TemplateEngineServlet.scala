@@ -42,18 +42,9 @@ class TemplateEngineServlet extends HttpServlet with Logging {
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
-    val context = ServletTemplateContext(response.getWriter, request, response, getServletContext)
-
-    val bindings = new HashMap[String, Any]()
-    val names = request.getAttributeNames
-    while ( names.hasMoreElements ) {
-      val name = names.nextElement.asInstanceOf[String]
-      bindings += name -> request.getAttribute(name)
-    }
-    bindings += "context"->context
-
+    val context = new ServletTemplateContext(request, response, getServletContext)
     val template = templateEngine.load(uri, TemplateArg("context", classOf[ServletTemplateContext].getName, true))
-    template.renderTemplate(context, bindings)
+    template.render(context)
   }
 
 

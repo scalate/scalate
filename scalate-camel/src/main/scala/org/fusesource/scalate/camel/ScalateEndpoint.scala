@@ -4,8 +4,8 @@ import org.apache.camel.component.ResourceBasedEndpoint
 import org.apache.camel._
 import java.io._
 import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
-import org.fusesource.scalate.util.{IOUtil, Logging}
-import org.fusesource.scalate.{DefaultTemplateContext, TemplateContext, TemplateEngine}
+import org.fusesource.scalate.util.{IOUtil}
+import org.fusesource.scalate.{DefaultRenderContext, TemplateEngine}
 import collection.JavaConversions._
 
 /**
@@ -75,18 +75,15 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
 
       //val logTag = getClass().getName()
       val buffer = new StringWriter()
-      val context = new DefaultTemplateContext(new PrintWriter(buffer))
+      val context = new DefaultRenderContext(new PrintWriter(buffer))
 
       val variableMap = ExchangeHelper.createVariableMap(exchange)
       for ((key, value) <- variableMap) {
         println("setting " + key + " = " + value)
         context.setAttribute(key, value)
       }
-
-      variableMap.put("context", context)
-      val bindings = variableMap.toMap
-      //val bindings = Map("context"->context)
-      template.renderTemplate(context, bindings)
+      context.setAttribute("context", context)
+      template.render(context)
 
       val out = exchange.getOut()
       val response = buffer.toString()

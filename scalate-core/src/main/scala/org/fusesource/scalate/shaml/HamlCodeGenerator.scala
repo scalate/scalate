@@ -60,7 +60,7 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         pending_newline=false;
       }
       if( text_buffer.length > 0 ) {
-        this << "$_scalate_$_out << ( "+asString(text_buffer.toString)+" );"
+        this << "$_scalate_$_context << ( "+asString(text_buffer.toString)+" );"
         text_buffer.setLength(0)
       }
     }
@@ -103,7 +103,7 @@ class HamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case s:EvaluatedText=> {
           flush_text
-          this << "$_scalate_$_out << ("+s.code+" );"
+          this << "$_scalate_$_context << ("+s.code+" );"
         }
       }
     }

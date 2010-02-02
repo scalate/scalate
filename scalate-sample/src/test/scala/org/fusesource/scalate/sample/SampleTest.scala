@@ -18,10 +18,15 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("Scalate")
   }
 
+  testPage("ssp/renderCaseClass.ssp") {
+    println("Testing if models get rendered")
+    pageContains("Hiram")
+    pageContains("James")
+  }
 
   testPage("ssp/missingAttribute.ssp") {
     println("Testing missing attributes!")
-    pageContains("No attribute called 'name' was available")
+    pageContains("The value for 'name' was not set")
   }
 
   testPage("ssp/exampleIncludes.ssp") {

@@ -8,33 +8,49 @@ import java.io._
 import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
 import java.lang.String
 import collection.mutable.{Stack, ListBuffer, HashMap}
-import org.fusesource.scalate.{NoSuchTemplateException, TemplateContext, NoSuchAttributeException}
 import java.util.{Properties, Date, Locale}
+import org.fusesource.scalate.{DefaultRenderContext, NoSuchViewException, NoValueSetException}
 
 /**
  * A template context for use in servlets
  *
  * @version $Revision: 1.1 $
  */
-case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) extends TemplateContext() {
+class ServletTemplateContext(val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(response.getWriter) {
+
+  var viewPrefixes = List("WEB-INF", "")
+  var viewPostfixes = List(".ssp")
 
   /**
-   * Returns the attribute of the given type or a   { @link NoSuchAttributeException } exception is thrown
+   * Returns the attribute of the given type or a   { @link NoValueSetException } exception is thrown
    */
-  def attribute[T](name: String): T = {
+  override def binding(name: String) = {
+    if( "context" == name ) {
+      Some(this)
+    } else {
+      val value = request.getAttribute(name)
+      if ( value == null ) {
+        None
+      } else {
+        Some(value)
+      }
+    }
+  }
+
+  override def attribute[T](name: String): T = {
     val value = request.getAttribute(name)
     if (value != null) {
       value.asInstanceOf[T]
     }
     else {
-      throw new NoSuchAttributeException(name)
+      throw new NoValueSetException(name)
     }
   }
 
   /**
    * Returns the attribute of the given name and type or the default value if it is not available
    */
-  def attributeOrElse[T](name: String, defaultValue: T): T = {
+  override def attributeOrElse[T](name: String, defaultValue: T): T = {
     val value = request.getAttribute(name)
     if (value != null) {
       value.asInstanceOf[T]
@@ -47,7 +63,7 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
   /**
    * Updates the named attribute with the given value
    */
-  def setAttribute[T](name: String, value: T): Unit = {
+  override def setAttribute[T](name: String, value: T): Unit = {
     request.setAttribute(name, value)
   }
 
@@ -63,7 +79,23 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
   }
 
 
-
+  /**
+   * Renders a collection of model objects with an optional separator
+   */
+  def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): Unit = {
+    var first = true
+    for (model <- objects) {
+      if (first) {
+        first = false
+      }
+      else {
+        val text = separator()
+        write(text)
+      }
+      render(model, view)
+    }
+  }
+  
   /**
    * Renders the view of the given model object, looking for the view in
    * packageName/className.viewName.ssp
@@ -110,7 +142,7 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
     }
 
     if (flag) {
-      throw new NoSuchTemplateException(model, view)
+      throw new NoSuchViewException(model, view)
     }
   }
 
@@ -171,80 +203,68 @@ case class ServletTemplateContext(var out: PrintWriter, request: HttpServletRequ
     }
   }
 
-  class RequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
-    override def getMethod() = {
-      "GET";
-    }
+}
 
-    val _attributes = new HashMap[String, Object]
+class RequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
 
-    override def getAttributeNames:java.util.Enumeration[Object] = {
-      val rc = new Properties
-      val names = super.getAttributeNames
-      while ( names.hasMoreElements ) {
-        val name = names.nextElement.asInstanceOf[String]
-        rc.put(name, "");
-      }
-      _attributes.foreach(e=>{
-        rc.put(e._1, "");
-      })
-      rc.keys.asInstanceOf[java.util.Enumeration[Object]]
-    }
+  override def getMethod():String = "GET"
 
-    override def setAttribute(name: String, value: Object) = _attributes(name) = value
+  val _attributes = new HashMap[String, Object]
 
-    override def getAttribute(name: String) = _attributes.get(name).getOrElse(super.getAttribute(name))
-  }
+  override def setAttribute(name: String, value: Object) = _attributes(name) = value
 
-  class ResponseWrapper(response: HttpServletResponse, charEncoding: String = null) extends HttpServletResponseWrapper(response) {
-    val sw = new StringWriter()
-    val bos = new ByteArrayOutputStream()
-    val sos = new ServletOutputStream() {
-      def write(b: Int): Unit = {
-        bos.write(b)
-      }
-    }
-    var isWriterUsed = false
-    var isStreamUsed = false
-    var _status = 200
+  override def getAttribute(name: String): Object = _attributes.get(name).getOrElse(super.getAttribute(name))
 
+}
 
-    override def getWriter(): PrintWriter = {
-      if (isStreamUsed)
-        throw new IllegalStateException("Attempt to import illegal Writer")
-      isWriterUsed = true
-      new PrintWriter(sw)
-    }
+class ResponseWrapper(response: HttpServletResponse, charEncoding: String = "ISO-8859-1") extends HttpServletResponseWrapper(response) {
 
-    override def getOutputStream(): ServletOutputStream = {
-      if (isWriterUsed)
-        throw new IllegalStateException("Attempt to import illegal OutputStream")
-      isStreamUsed = true
-      sos
-    }
-
-    override def reset = {}
-
-    override def resetBuffer = {}
-
-    override def setContentType(x: String) = {} // ignore
-
-    override def setLocale(x: Locale) = {} // ignore
-
-    override def setStatus(status: Int): Unit = _status = status
-
-    def getStatus() = _status
-
-    def getString() = {
-      if (isWriterUsed)
-        sw.toString()
-      else if (isStreamUsed) {
-        if (charEncoding != null && !charEncoding.equals(""))
-          bos.toString(charEncoding)
-        else
-          bos.toString(defaultCharacterEncoding)
-      } else
-        "" // target didn't write anything
+  val sw = new StringWriter()
+  val bos = new ByteArrayOutputStream()
+  val sos = new ServletOutputStream() {
+    def write(b: Int): Unit = {
+      bos.write(b)
     }
   }
+  var isWriterUsed = false
+  var isStreamUsed = false
+  var _status = 200
+
+
+  override def getWriter(): PrintWriter = {
+    if (isStreamUsed)
+      throw new IllegalStateException("Attempt to import illegal Writer")
+    isWriterUsed = true
+    new PrintWriter(sw)
+  }
+
+  override def getOutputStream(): ServletOutputStream = {
+    if (isWriterUsed)
+      throw new IllegalStateException("Attempt to import illegal OutputStream")
+    isStreamUsed = true
+    sos
+  }
+
+  override def reset = {}
+
+  override def resetBuffer = {}
+
+  override def setContentType(x: String) = {} // ignore
+
+  override def setLocale(x: Locale) = {} // ignore
+
+  override def setStatus(status: Int): Unit = _status = status
+
+  def getStatus() = _status
+
+  def getString() = {
+    if (isWriterUsed) {
+      sw.toString()
+    } else if (isStreamUsed) {
+      bos.toString(charEncoding)
+    } else {
+      "" // target didn't write anything
+    }
+  }
+  
 }
