@@ -16,14 +16,14 @@ Scalate is a template engine based on the Scala language.
 
 Scalate supports SSP pages which are like JSP/ASP pages in syntax but using Scala code for expressions instead of Java or EL like in JSP.
 
-Scalate also supports the http://haml-lang.com/[Haml] syntax
+Scalate also supports Shaml pages using the http://haml-lang.com/[Haml] syntax, but again with Scala as the expression language.
 
 Scalate currently requires a Java 5 runtime and a servlet 2.5 container, or newer.
 
 
-== Chapter 1
+== SSP (Scala Server Pages)
 
-If you know JSP or ASP then hopefully the syntax is familiar; only using Scala as the language of expressions and method invocations.
+If you know JSP or ASP then hopefully the syntax of SSP is familiar; only using Scala as the language of expressions and method invocations.
 
 === Syntax
 
@@ -168,20 +168,22 @@ Then open http://localhost:8080/[the sample home page]
 == Adding Scalate to your application
 
 
-1.  Add something like the following to your web.xml file:
+1.  Add something like the following to your web.xml file to support SSP and HAML pages:
 
 ----
 <servlet>
-  <servlet-name>SspServlet</servlet-name>
-  <servlet-class>org.fusesource.scalate.ssp.ScalaServerPageServlet</servlet-class>
+  <servlet-name>TemplateEngineServlet</servlet-name>
+  <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
   <load-on-startup>1</load-on-startup>
 </servlet>
-----
 
-----
 <servlet-mapping>
-  <servlet-name>SspServlet</servlet-name>
+  <servlet-name>TemplateEngineServlet</servlet-name>
   <url-pattern>*.ssp</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+  <servlet-name>TemplateEngineServlet</servlet-name>
+  <url-pattern>*.haml</url-pattern>
 </servlet-mapping>
 ----
 
