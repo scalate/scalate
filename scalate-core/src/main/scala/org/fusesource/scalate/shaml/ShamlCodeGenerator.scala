@@ -283,7 +283,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case Executed(code, list) => {
           this << code.getOrElse("") + "{"
           indent {
-            generate_no_flush(list)
+            generate(list)
           }
           this << "}"
         }
