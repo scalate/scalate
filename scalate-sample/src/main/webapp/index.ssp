@@ -48,6 +48,42 @@
   </li>
 </ul>
 
+<h2>Scaml Samples</h2>
+
+Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup called Scaml
+
+<ul>
+  <li>
+    <a href="scaml/standalone.scaml">simple</a>
+  </li>
+  <li>
+    <a href="scaml/locale.scaml">shows use of locales and auto-formatting of numbers and dates</a>
+  </li>
+  <li>
+    <a href="scaml/snippet.scaml">invoke a snippet implemented in scala code</a>
+  </li>
+  <li>
+    <a href="scaml/defaultAttribute.scaml">an Scaml with an attribute using a default value</a>
+  </li>
+  <li>
+    <a href="scaml/missingAttribute.scaml">try an Scaml with missing attributes</a> (which should generate an error)
+  </li>
+  <li>
+    <a href="scaml/renderObject.scaml">render an object using its default template</a>
+  </li>
+  <li>
+    <a href="scaml/renderCollection.scaml">render a collection of objects using their default template</a>
+  </li>
+  <li>
+    <a href="scaml/renderCaseClass.scaml">render an object using the default Product template</a> which renders any case class
+  </li>
+  <li>
+    <a href="scaml/sampleTag.scaml">custom tag</a> process a block of text using a simple scala function
+  </li>
+  <li>
+    <a href="scaml/sampleTag2.scaml">custom tag</a> using an explicit TemplateContext
+  </li>
+</ul>
 
 
 <h2>JAXRS Samples</h2>
@@ -64,14 +100,6 @@
   </li>
 </ul>
 
-<h2>SCAML Samples</h2>
-
-Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup called SCAML
-<ul>
-  <li>
-    <a href="scaml/simple.scaml">simple sample</a>
-  </li>
-</ul>
 
 </body>
 
