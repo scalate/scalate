@@ -12,3 +12,4 @@ target
 lib_managed
 _scalate
 project/boot
+.DS_Store

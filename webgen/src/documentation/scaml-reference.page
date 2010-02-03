@@ -1,0 +1,9 @@
+---
+title: Scaml Reference
+in_menu: true
+sort_info: 10
+--- name:overview
+# Markup Haiku
+
+--- name:content pipeline:tags,markdown
+{include_file: {filename: src/documentation/scaml-reference.md, process_output: false}}

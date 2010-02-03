@@ -35,5 +35,5 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("foo/abc", "The item id is", "abc")
   testPageContains("foo/def", "The item id is", "def")
 
-  testPageContains("shaml/simple.shaml", "SHAML is a Scala version of", "HAML")
+  testPageContains("scaml/simple.scaml", "SCAML is a Scala version of", "HAML")
 }

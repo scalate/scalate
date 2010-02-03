@@ -64,12 +64,12 @@
   </li>
 </ul>
 
-<h2>HAML Samples</h2>
+<h2>SCAML Samples</h2>
 
-SSP also supports <a href="http://haml-lang.com/">haml</a> markup
+Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup called SCAML
 <ul>
   <li>
-    <a href="shaml/simple.shaml">simple sample</a>
+    <a href="scaml/simple.scaml">simple sample</a>
   </li>
 </ul>
 

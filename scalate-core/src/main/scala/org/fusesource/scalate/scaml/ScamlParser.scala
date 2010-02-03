@@ -70,7 +70,7 @@ trait TextExpression extends Statement
 case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
 case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
-case class ShamlComment(text:Option[String], body:List[String]) extends Statement
+case class ScamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
 case class Filter(filter:String, body:List[String]) extends Statement
@@ -81,7 +81,7 @@ case class Attribute(name: String, className: String, defaultValue: Option[Strin
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ShamlParser extends IndentedParser() {
+class ScamlParser extends IndentedParser() {
 
   /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
@@ -153,7 +153,7 @@ class ShamlParser extends IndentedParser() {
 
   def element_statement:Parser[Element] = guarded("%"|"."|"#", full_element_statement)
 
-  def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ShamlComment(text,body) }
+  def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
   def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
   def evaluated_fragment:Parser[List[String]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
@@ -222,13 +222,13 @@ class ShamlParser extends IndentedParser() {
 
 }
 
-object ShamlParser {
+object ScamlParser {
   def main(args: Array[String]) = {
      val in = """
 = someLayout 
   this is some body!
 """
-     println((new ShamlParser).parse(in))
+     println((new ScamlParser).parse(in))
    }
 
 }
