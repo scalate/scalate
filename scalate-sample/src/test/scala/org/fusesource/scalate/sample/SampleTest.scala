@@ -35,5 +35,16 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("foo/abc", "The item id is", "abc")
   testPageContains("foo/def", "The item id is", "def")
 
-  testPageContains("scaml/simple.scaml", "SCAML is a Scala version of", "HAML")
+  testPageContains("scaml/simple.scaml", "Scaml is a Scala version of", "Haml")
+  testPageContains("scaml/defaultAttribute.scaml", "James")
+  testPageContains("scaml/locale.scaml", "22.0 / 7 = 3.143")
+  testPageContains("scaml/missingAttribute.scaml", "The value for 'name' was not set")
+  testPageContains("scaml/standalone.scaml", "1 + 2 = 3")
+  testPageContains("scaml/snippet.scaml", "mmm I like beer")
+  testPageContains("scaml/renderObject.scaml", "Strachan")
+  testPageContains("scaml/renderCaseClass.scaml", "Strachan", "<hr/>", "Chirino")
+  testPageContains("scaml/renderCollection.scaml", "Strachan", "<hr/>", "Chirino")
+  testPageContains("scaml/sampleTag.scaml", "Wrapped body", "this is some body!", "End of wrapped body")
+  testPageContains("scaml/sampleTag2.scaml", "Wrapped body", "this is the body!", "End of wrapped body")
+
 }
