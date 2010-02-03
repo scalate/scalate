@@ -519,6 +519,35 @@ I feel <strong>!
 I feel <strong>!
 """)
 
+  testRender(
+"'-@ attribute' makes an attribute accessibe as variable",
+"""
+-@ attribute bean:Bean
+The bean is #{bean.color}
+""",
+"""
+The bean is red
+""")
+
+  testRender(
+"'-@ import attribute' makes an attribute's members accessibe as variables",
+"""
+-@ import attribute bean:Bean
+The bean is #{color}
+""",
+"""
+The bean is red
+""")
+
+  testRender(
+"'-@ attribute name:type = expression' can specify a default value if the named attribute is not set",
+"""
+-@ attribute doesnotexist:Bean = Bean("blue", 5)
+The bean is #{doesnotexist.color}
+""",
+"""
+The bean is blue
+""")
 
   def testRender(description:String, template:String, result:String) = {
     test(description) {
@@ -549,11 +578,14 @@ I feel <strong>!
     }
 
     context.attributes += "context"-> context
-    
-    val template = engine.loadTemporary("/test.shaml", TemplateArg("context", context.getClass.getName, true))
+    context.attributes += "bean"-> Bean("red", 10)
+
+    val template = engine.loadTemporary("/org/fusesource/scalate/shaml/test.shaml", TemplateArg("context", context.getClass.getName, true))
     template.render(context)
     out.close
     buffer.toString
   }
 
 }
+
+case class Bean(color:String, size:Int)

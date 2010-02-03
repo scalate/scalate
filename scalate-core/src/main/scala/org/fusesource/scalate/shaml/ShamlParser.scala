@@ -27,8 +27,15 @@ import util.parsing.input.{Positional, CharSequenceReader}
  */
 class IndentedParser extends RegexParsers() {
 
-  override def skipWhitespace = false
+  var skipWhitespaceOn = false
+  override def skipWhitespace = skipWhitespaceOn
 
+  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] { in =>
+    skipWhitespaceOn = true
+    val result = p(in)
+    skipWhitespaceOn = false
+    result
+  }
 
   var indent_unit:Parser[Any] = null
   var indent_level:Int = 1
@@ -66,7 +73,7 @@ case class ShamlComment(text:Option[String], body:List[String]) extends Statemen
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
 case class Filter(filter:String, body:List[String]) extends Statement
-
+case class Attribute(name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
 
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/
@@ -96,6 +103,7 @@ class ShamlParser extends IndentedParser() {
   val some_space              = """[ \t]*""".r
 
   val ident                   = """[a-zA-Z_]\w*""".r
+  val qualified_type          = """[a-zA-Z0-9\$_\[\]\.]+""".r
   val string_literal          = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
   val whole_number            = """-?\d+""".r
   val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
@@ -172,13 +180,17 @@ class ShamlParser extends IndentedParser() {
           prefixed("!=", upto(nl) )  ^^ { EvaluatedText(_, false, Some(false)) }
         ) <~ nl
 
-  def executed_statement =
-    prefixed("-",
-      opt(text) <~ nl) ~
-            rep(indent(statement)) ^^
-            {
-              case code~body=> Executed(code,body)
-            }
+
+  val attribute = skip_whitespace( opt("import") ~ ("attribute" ~> ident) ~ (":" ~> qualified_type) ~ (opt("=" ~> text ))) ^^ {
+    case p_import~p_name~p_type~p_default => Attribute(p_name, p_type, p_default, p_import.isDefined)
+  }
+
+  def attribute_statement = prefixed("-@", attribute <~ nl) 
+
+  def executed_statement = prefixed("-", opt(text) <~ nl) ~ rep(indent(statement)) ^^ {
+    case code~body=> Executed(code,body)
+  }
+
   def filter_statement = prefixed(":", text <~ nl) ~ rep(indent(any<~nl)) ^^ { case code~body=> Filter(code,body) }
 
   def statement:Parser[Statement] =
@@ -186,6 +198,7 @@ class ShamlParser extends IndentedParser() {
       positioned(html_comment_statement) |
       positioned(element_statement) |
       positioned(evaluated_statement) |
+      positioned(attribute_statement) |
       positioned(executed_statement) |
       positioned(text_statement)
 
@@ -207,7 +220,8 @@ class ShamlParser extends IndentedParser() {
 
 object ShamlParser {
   def main(args: Array[String]) = {
-     val in = """& a #{1} b
+     val in = """
+-@ attribute test:String = "default"     
 """
      println((new ShamlParser).parse(in))
    }

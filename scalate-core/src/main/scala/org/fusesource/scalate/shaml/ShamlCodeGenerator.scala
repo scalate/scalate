@@ -88,6 +88,8 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Statement):Unit = {
       statement match {
+        case s:Attribute=> {
+        }
         case s:ShamlComment=> {
         }
         case s:TextExpression=> {
@@ -297,8 +299,14 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new ShamlParser).parse(hamlSource)
+
+    val template_args = statements.flatMap {
+      case attribute: Attribute => List(TemplateArg(attribute.name, attribute.className, attribute.autoImport, attribute.defaultValue))
+      case _ => Nil
+    }
+
     val builder = new SourceBuilder()
-    builder.generate(packageName, className, args, statements)
+    builder.generate(packageName, className, args:::template_args, statements)
     Code(this.className(uri, args), builder.code, Set())
 
   }
