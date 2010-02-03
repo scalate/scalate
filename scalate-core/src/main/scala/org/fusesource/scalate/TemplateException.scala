@@ -25,9 +25,11 @@ class TemplateException(message:String, cause:Throwable) extends RuntimeExceptio
   }
 }
 
-class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set") {
+class InvalidSyntaxException(message: String) extends TemplateException(message) {
 }
 
+class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set") {
+}
 
 class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
 }

@@ -1,4 +1,4 @@
-<%@ attribute it : Product %>
+<%@ val it : Product %>
 <% println("Called Product template with: " + it) %>
 <h3>${it.productPrefix}</h3>
 

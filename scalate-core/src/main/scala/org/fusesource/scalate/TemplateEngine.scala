@@ -145,8 +145,39 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
-
   private def preparePage(timestamp: Long, uri: String, args: List[TemplateArg]): CacheEntry = {
+    try {
+      generate_compile_and_load(timestamp, uri, args)
+    } catch {
+      case e:InstantiationException=>{
+        try {
+          println("First try resulted in a InstantiationException.. let try one more time..");
+          generate_compile_and_load(timestamp, uri, args)
+        } catch {
+          case e:Throwable=>{
+            e.printStackTrace
+            val cause = e.getCause
+            if (cause != null && cause != e) {
+              print("Caused by: ")
+              cause.printStackTrace
+            }
+            throw new TemplateException("Could not load template: "+e, e);
+          }
+        }
+      }
+      case e:Throwable=>{
+        e.printStackTrace
+        val cause = e.getCause
+        if (cause != null && cause != e) {
+          print("Caused by: ")
+          cause.printStackTrace
+        }
+        throw new TemplateException("Could not load template: "+e, e);
+      }
+    }
+  }
+
+  private def generate_compile_and_load(timestamp: Long, uri: String, args: List[TemplateArg]): CacheEntry = {
 
     // Generate the scala source code from the template
     val code = codeGenerator(uri).generate(this, uri, args)
@@ -169,21 +200,9 @@ class TemplateEngine {
 
   private def createTemplate(className: String, bytecodeDirectory: File): Template = {
     // Load the compiled class
-    try {
-      val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
-      val clazz = classLoader.loadClass(className)
-      clazz.asInstanceOf[Class[Template]].newInstance
-    } catch {
-      case e:Throwable=>{
-        e.printStackTrace
-        val cause = e.getCause
-        if (cause != null && cause != e) {
-          print("Caused by: ")
-          cause.printStackTrace
-        }
-        throw new TemplateException("Could not load template: "+e, e);
-      }
-    }
+    val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
+    val clazz = classLoader.loadClass(className)
+    clazz.asInstanceOf[Class[Template]].newInstance
   }
 
 }

@@ -20,6 +20,7 @@ package org.fusesource.scalate.ssp
 
 import scala.util.parsing.combinator._
 import util.parsing.input.CharSequenceReader
+import org.fusesource.scalate.InvalidSyntaxException
 
 sealed abstract class PageFragment()
 
@@ -28,29 +29,28 @@ case class DollarExpressionFragment(code: String) extends PageFragment
 case class ExpressionFragment(code: String) extends PageFragment
 case class ScriptletFragment(code: String) extends PageFragment
 case class TextFragment(text: String) extends PageFragment
-case class AttributeFragment(name: String, className: String, defaultValue: Option[String]) extends PageFragment
+case class AttributeFragment(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends PageFragment
 
 class SspParser extends RegexParsers {
 
   var skipWhitespaceOn = false
   override def skipWhitespace = skipWhitespaceOn
 
-  val identifier = """[a-zA-Z0-9\$_]+""".r
-  val typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val any = """.+""".r
-  val attribute = ("attribute" ~> identifier) ~ (":" ~> typeName) ~ (opt("=" ~> any)) ^^ {
-    case i ~ t ~ a => AttributeFragment(i.toString, t.toString, a)
+  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] { in =>
+    skipWhitespaceOn = true
+    val result = p(in)
+    skipWhitespaceOn = false
+    result
   }
 
-  def parseAttribute(in: String):AttributeFragment = {
-    try {
-      skipWhitespaceOn = true
-      phraseOrFail(attribute, in)
-    } finally {
-      skipWhitespaceOn=false
-    }
-  }
+  val any_space   = """[ \t]*""".r
+  val identifier  = """[a-zA-Z0-9\$_]+""".r
+  val typeName    = """[a-zA-Z0-9\$_\[\]\.]+""".r
+  val some_text         = """.+""".r
 
+  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ identifier ~ (":" ~> typeName) ~ (opt("=" ~> upto("%>")  ))) ^^ {
+    case p_import~p_kind~p_name~p_type~p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
+  }
 
   /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
@@ -69,7 +69,7 @@ class SspParser extends RegexParsers {
   val comment_fragment            = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
   val dollar_expression_fragment  = wrapped("${",   "}")    ^^ { DollarExpressionFragment(_) }
   val expression_fragment         = wrapped("<%=",  "%>")   ^^ { ExpressionFragment(_) }
-  val attribute_fragement         = wrapped("<%@",  "%>")   ^^ { s=> parseAttribute(s) }
+  val attribute_fragement         = prefixed("<%@", attribute <~ any_space ~ "%>" ) 
   val scriptlet_fragment          = wrapped("<%",   "%>")   ^^ { ScriptletFragment(_) }
   val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
 
@@ -79,11 +79,11 @@ class SspParser extends RegexParsers {
 
   val page_fragments = rep( page_fragment )
 
-  def phraseOrFail[T](p:Parser[T], in:String): T = {
+  private def phraseOrFail[T](p:Parser[T], in:String): T = {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case _ => throw new IllegalArgumentException(x.toString);
+      case _ => throw new InvalidSyntaxException(x.toString);
     }
   }
 

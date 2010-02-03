@@ -1,5 +1,5 @@
 <html>
-<%@ attribute name : String %>
+<%@ val name : String %>
 <body>
 <h2>Attribute Passing Example</h2>
 

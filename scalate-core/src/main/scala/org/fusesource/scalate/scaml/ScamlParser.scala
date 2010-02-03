@@ -19,6 +19,7 @@ package org.fusesoruce.scalate.haml
 import scala.util.parsing.combinator._
 import util.parsing.input.{Positional, CharSequenceReader}
 import scala.None
+import org.fusesource.scalate.InvalidSyntaxException
 
 /**
  * Base class for parsers which use indentation to define
@@ -74,7 +75,7 @@ case class ScamlComment(text:Option[String], body:List[String]) extends Statemen
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
 case class Filter(filter:String, body:List[String]) extends Statement
-case class Attribute(name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
+case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
 
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/
@@ -185,8 +186,8 @@ class ScamlParser extends IndentedParser() {
     prefixed("!=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
 
-  val attribute = skip_whitespace( opt("import") ~ ("attribute" ~> ident) ~ (":" ~> qualified_type) ~ (opt("=" ~> text ))) ^^ {
-    case p_import~p_name~p_type~p_default => Attribute(p_name, p_type, p_default, p_import.isDefined)
+  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ ident ~ (":" ~> qualified_type) ~ (opt("=" ~> text ))) ^^ {
+    case p_import~p_kind~p_name~p_type~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 
@@ -216,7 +217,7 @@ class ScamlParser extends IndentedParser() {
     val x = phrase[List[Statement]](parser)(new CharSequenceReader(content))
     x match {
       case Success(result, _) => result
-      case _ => throw new IllegalArgumentException(x.toString);
+      case _ => throw new InvalidSyntaxException(x.toString);
     }
   }
 

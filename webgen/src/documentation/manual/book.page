@@ -36,7 +36,7 @@ Comments:
 Declarations:
 
 ----
-<%@ attribute someName: String = "someDefaultValue" %>
+<%@ val someName: String = "someDefaultValue" %>
 ----
 
 Code blocks:
@@ -98,13 +98,13 @@ Its a common requirement to parameterise your template such as to pass in some m
 To define an attribute in your template use the following declaration
 
 ----
-<%@ attribute foo: MyType %>
+<%@ val foo: MyType %>
 ----
 
 We use a syntax similar to defining arguments in a method; so you can take advantage of default argument values.
 
 ----
-<%@ attribute bar: String = "this is the default value" %>
+<%@ val bar: String = "this is the default value" %>
 ----
 
 The attribute is now available for use as an expression. 
@@ -114,8 +114,8 @@ Its very common to have a template based on a single model object such that the 
 For example
 
 ----
-<%@ attribute it: Person %>
-<%@ attribute errorMessage: String = "" %>
+<%@ val it: Person %>
+<%@ val errorMessage: String = "" %>
 
 Hello ${name}, what is the weather like in your ${city}
 
@@ -142,7 +142,7 @@ For example if your resource bean is called org.fusesource.scalate.sample.resour
 Then you refer to the resource bean by declaring an attribute
 
 ----
-<%@ attribute it: FooResource %>
+<%@ val it: FooResource %>
 ----
 
 You can now refer to the resource bean directly and invoke any methods on it; all the attributes and methods on the object are imported so you don't have to use _it.method_ you can just use _method_ to invoke a method 

@@ -1,4 +1,4 @@
-<%@ attribute it: Item %>
+<%@ import val it: Item %>
 <html>
 <body>
 <h1>Item!</h1>

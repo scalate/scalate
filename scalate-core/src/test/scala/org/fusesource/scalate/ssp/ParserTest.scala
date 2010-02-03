@@ -13,7 +13,7 @@ class ParserTest extends FunSuite {
   val logging = false
 
   test("parse attribute declaration") {
-    val lines = assertValid("""<%@ attribute name: String %>
+    val lines = assertValid("""<%@ val name: String %>
 <html>
   <%-- comment --%>
   <body>
@@ -23,11 +23,11 @@ class ParserTest extends FunSuite {
 </html>
 """)
 
-    assertAttribute(lines, AttributeFragment("name", "String", None))
+    assertAttribute(lines, AttributeFragment("val", "name", "String", None, false))
   }
 
   test("parse valid SSP file with attribute with default value") {
-    val lines = assertValid("""<%@ attribute name : String = "Hello"%>
+    val lines = assertValid("""<%@ val name : String = "Hello"%>
 <html>
   <body>
     <h1>Hello ${user}</h1>
@@ -36,7 +36,7 @@ class ParserTest extends FunSuite {
 </html>
 """)
 
-    assertAttribute(lines, AttributeFragment("name", "String", Some("\"Hello\"")))
+    assertAttribute(lines, AttributeFragment("val", "name", "String", Some("\"Hello\""), false))
   }
 
 

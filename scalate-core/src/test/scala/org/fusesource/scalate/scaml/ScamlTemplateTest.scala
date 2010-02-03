@@ -376,25 +376,25 @@ I feel <strong>!
 I feel <strong>!
 """)
 
-  testRender("'-@ attribute' makes an attribute accessibe as variable",
+  testRender("'-@ val' makes an attribute accessibe as variable",
 """
--@ attribute bean:Bean
+-@ val bean:Bean
 The bean is #{bean.color}
 ""","""
 The bean is red
 """)
 
-  testRender("'-@ import attribute' makes an attribute's members accessibe as variables",
+  testRender("'-@ import val' makes an attribute's members accessibe as variables",
 """
--@ import attribute bean:Bean
+-@ import val bean:Bean
 The bean is #{color}
 ""","""
 The bean is red
 """)
 
-  testRender("'-@ attribute name:type = expression' can specify a default value if the named attribute is not set",
+  testRender("'-@ val name:type = expression' can specify a default value if the named attribute is not set",
 """
--@ attribute doesnotexist:Bean = Bean("blue", 5)
+-@ val doesnotexist:Bean = Bean("blue", 5)
 The bean is #{doesnotexist.color}
 ""","""
 The bean is blue

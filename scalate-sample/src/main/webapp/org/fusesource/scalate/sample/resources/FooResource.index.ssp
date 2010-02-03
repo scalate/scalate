@@ -1,4 +1,4 @@
-<%@ attribute it: FooResource %>
+<%@ val it: FooResource %>
 <% import Snippets._ %>
 <html>
 <body>

@@ -41,7 +41,7 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
         case TextFragment(text) => {
           this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
-        case AttributeFragment(name, className, expression) => {
+        case af:AttributeFragment => {
         }
         case DollarExpressionFragment(code) => {
           this << "$_scalate_$_context <<< "+code+""
@@ -55,7 +55,6 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
   }
 
   var useTemplateNameToDiscoverModel = true
-  var autoImportFirstParam = true
   var translationUnitLoader = new SspLoader
   
   override def generate(engine:TemplateEngine, uri:String, args:List[TemplateArg]): Code = {
@@ -83,12 +82,8 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
 
   private def findParams(uri: String, fragments: List[PageFragment]): List[TemplateArg] = {
 
-
-    var first=true
-    def autoImport = if( first && autoImportFirstParam ) { first=false; true} else { false}
-
     val answer = fragments.flatMap {
-      case p: AttributeFragment => List(TemplateArg(p.name, p.className, autoImport, p.defaultValue))
+      case p: AttributeFragment => List(TemplateArg(p.name, p.className, p.autoImport, p.defaultValue))
       case _ => Nil
     }
     
