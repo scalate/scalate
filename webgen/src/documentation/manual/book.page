@@ -164,6 +164,30 @@ mvn jetty:run
 
 Then open http://localhost:8080/[the sample home page]
 
+=== Using SBT
+
+You can also use http://code.google.com/p/simple-build-tool/[sbt] (simple build tool) to build Scalate.
+
+To setup your sbt environment and import the dependencies from the maven pom files type
+
+----
+./sbt
+update
+----
+
+Then to build the code type
+
+----
+compile
+----
+
+to run the tests 
+
+----
+test
+----
+
+For more information see the http://scalate.fusesource.org/sbt.html[sbt building instructions]
 
 == Adding Scalate to your application
 
