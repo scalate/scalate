@@ -6,4 +6,4 @@ sort_info: 10
 # Markup Haiku
 
 --- name:content pipeline:tags,markdown
-{include_file: {filename: src/documentation/scaml-reference.md, process_output: false}}
+{include_file: {filename: src/documentation/scaml-reference.md, process_output: false, escape_html: false}}
