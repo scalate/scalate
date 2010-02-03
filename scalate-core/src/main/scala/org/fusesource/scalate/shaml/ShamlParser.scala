@@ -67,7 +67,7 @@ object Trim extends Enumeration {
 trait Statement extends Positional
 trait TextExpression extends Statement
 
-case class EvaluatedText(code:String, preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
+case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
 case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ShamlComment(text:Option[String], body:List[String]) extends Statement
@@ -138,7 +138,7 @@ class ShamlParser extends IndentedParser() {
       "<"  ^^{ s=> Trim.Inner } 
 
   def element_text:Parser[Option[TextExpression]] = 
-    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, false, None)) } |
+    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None)) } |
     space ~ nl ^^ { x=>None } |
     nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
@@ -178,12 +178,11 @@ class ShamlParser extends IndentedParser() {
           literal_text(None)
         ) <~ any_space_then_nl
 
-  def evaluated_statement = (
-          prefixed("=", upto(nl) )   ^^ { EvaluatedText(_, false, None) }       |
-          prefixed("~", upto(nl) )   ^^ { EvaluatedText(_, true,  None) }       |
-          prefixed("&=", upto(nl) )  ^^ { EvaluatedText(_, false, Some(true)) } |
-          prefixed("!=", upto(nl) )  ^^ { EvaluatedText(_, false, Some(false)) }
-        ) <~ nl
+  def evaluated_statement =
+    prefixed("=",  upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, None) }       |
+    prefixed("~",  upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, true,  None) }       |
+    prefixed("&=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
+    prefixed("!=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
 
   val attribute = skip_whitespace( opt("import") ~ ("attribute" ~> ident) ~ (":" ~> qualified_type) ~ (opt("=" ~> text ))) ^^ {
@@ -226,13 +225,8 @@ class ShamlParser extends IndentedParser() {
 object ShamlParser {
   def main(args: Array[String]) = {
      val in = """
-%html
-  %body
-    %h1
-      Example SHAML Page
-    %p
-      SHAML is a Scala version of
-      %a{ :href => "http://haml-lang.com/" } HAML
+= someLayout 
+  this is some body!
 """
      println((new ShamlParser).parse(in))
    }

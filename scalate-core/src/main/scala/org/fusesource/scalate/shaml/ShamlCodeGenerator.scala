@@ -141,8 +141,30 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             case Some(true) => { "$_scalate_$_context <<< ( " }
             case Some(false) => { "$_scalate_$_context << ( " }
           }
-          this << method+s.code+" );"
+
+          if( s.body.isEmpty ) {
+            this << method+s.code+" );"
+          } else {
+            this << method+s.code+"{"
+            indent {
+              generate(s.body)
+            }
+            this << "});"
+          }
         }
+      }
+    }
+
+    def generate(statement:Executed):Unit = {
+      flush_text
+      if( statement.body.isEmpty ) {
+        this << statement.code.getOrElse("")
+      } else {
+        this << statement.code.getOrElse("") + "{"
+        indent {
+          generate(statement.body)
+        }
+        this << "}"
       }
     }
 
@@ -271,22 +293,6 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           outer_trim
         }
         case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html element and nested within it.");
-      }
-    }
-
-    def generate(statement:Executed):Unit = {
-      flush_text
-      statement match {
-        case Executed(code, List()) => {
-          this << code.getOrElse("")
-        }
-        case Executed(code, list) => {
-          this << code.getOrElse("") + "{"
-          indent {
-            generate(list)
-          }
-          this << "}"
-        }
       }
     }
 
