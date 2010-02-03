@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.shaml
+package org.fusesource.scalate.scaml
 
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
@@ -25,7 +25,7 @@ import java.io.{StringWriter, PrintWriter, File}
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @RunWith(classOf[JUnitRunner])
-class ShamlTemplateTest extends FunSuite {
+class ScamlTemplateTest extends FunSuite {
 
   testRender("a '%tag' can have trailing spaces and nested content",
 """
@@ -277,7 +277,7 @@ plain text
 </html>
 """)
 
-  testRender("'/' can html comment a whole block of shaml",
+  testRender("'/' can html comment a whole block of scaml",
 """
 %html
   /
@@ -309,7 +309,7 @@ plain text
 </html>
 """)
 
-  testRender("'-#' shaml comments ",
+  testRender("'-#' scaml comments ",
 """
 %html
   -# this is a test
@@ -431,7 +431,7 @@ The bean is blue
     context.attributes += "context"-> context
     context.attributes += "bean"-> Bean("red", 10)
 
-    val template = engine.loadTemporary("/org/fusesource/scalate/shaml/test.shaml", TemplateArg("context", context.getClass.getName, true))
+    val template = engine.loadTemporary("/org/fusesource/scalate/scaml/test.scaml", TemplateArg("context", context.getClass.getName, true))
     template.render(context)
     out.close
     buffer.toString

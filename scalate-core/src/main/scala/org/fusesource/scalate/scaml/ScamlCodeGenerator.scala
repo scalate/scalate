@@ -15,7 +15,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.fusesource.scalate.shaml
+package org.fusesource.scalate.scaml
 
 import org.fusesoruce.scalate.haml._
 import java.util.regex.Pattern
@@ -27,7 +27,7 @@ import org.fusesource.scalate._
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
+class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
   private class SourceBuilder extends AbstractSourceBuilder[Statement] {
 
@@ -90,7 +90,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statement match {
         case s:Attribute=> {
         }
-        case s:ShamlComment=> {
+        case s:ScamlComment=> {
           generate(s)
         }
         case s:TextExpression=> {
@@ -125,7 +125,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             } else {
               flush_text
               val method = s.sanitise match {
-                case None => { "org.fusesource.scalate.shaml.ShamlOptions.write( $_scalate_$_context, " }
+                case None => { "org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
                 case Some(true) => { "$_scalate_$_context <<< ( " }
                 case Some(false) => { "$_scalate_$_context << ( " }
               }
@@ -137,7 +137,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:EvaluatedText=> {
           flush_text
           val method = s.sanitise match {
-            case None => { "org.fusesource.scalate.shaml.ShamlOptions.write( $_scalate_$_context, " }
+            case None => { "org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
             case Some(true) => { "$_scalate_$_context <<< ( " }
             case Some(false) => { "$_scalate_$_context << ( " }
           }
@@ -216,13 +216,13 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
 
-    def generate(statement:ShamlComment):Unit = {
+    def generate(statement:ScamlComment):Unit = {
       flush_text
       statement match {
-        case ShamlComment(text, List()) => {
+        case ScamlComment(text, List()) => {
           this << "//" + text.getOrElse("")
         }
-        case ShamlComment(text, list) => {
+        case ScamlComment(text, list) => {
           this << "/*" + text.getOrElse("")
           list.foreach(x=>{
             this << " * " + x
@@ -321,7 +321,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
-    val statements = (new ShamlParser).parse(hamlSource)
+    val statements = (new ScamlParser).parse(hamlSource)
 
     val template_args = statements.flatMap {
       case attribute: Attribute => List(TemplateArg(attribute.name, attribute.className, attribute.autoImport, attribute.defaultValue))

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.shaml
+package org.fusesource.scalate.scaml
 
 import org.fusesource.scalate.RenderContext
 
@@ -22,7 +22,7 @@ import org.fusesource.scalate.RenderContext
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object ShamlOptions {
+object ScamlOptions {
 
   var escape_html = false;
 
