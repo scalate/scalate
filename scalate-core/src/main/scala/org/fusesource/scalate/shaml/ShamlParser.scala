@@ -97,7 +97,8 @@ class ShamlParser extends IndentedParser() {
   }
 
   val any                     = """.*""".r
-  val nl                     = """\r?\n""".r
+  val nl                      = """\r?\n""".r
+  val any_space_then_nl      ="""[ \t]*\r?\n""".r
   val word                    = """[a-zA-Z_0-9]+""".r
   val text                    = """.+""".r
   val space                   = """[ \t]+""".r
@@ -140,7 +141,7 @@ class ShamlParser extends IndentedParser() {
     prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, false, None)) } |
     space ~ nl ^^ { x=>None } |
     nl ^^ { x=>None } |
-    space ~> literal_text(None) <~ nl ^^ { x=>Some(x) }
+    space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
   def full_element_statement:Parser[Element] =
     opt("%"~>word) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
@@ -159,7 +160,7 @@ class ShamlParser extends IndentedParser() {
     case code~Some(text)=>{ code :: text }
     case code~None=>{ code :: Nil }
   }
-  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|"""[ \t]*\r?\n""".r)) ~ opt(evaluated_fragment) ^^ {
+  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|any_space_then_nl)) ~ opt(evaluated_fragment) ^^ {
     case None~Some(code)=>{ "" :: code }
     case None~None=>{ "" :: Nil }
     case Some(text)~Some(code)=>{ text :: code }
@@ -175,7 +176,7 @@ class ShamlParser extends IndentedParser() {
           prefixed("&"~space, literal_text(Some(true)) )  |
           prefixed("!"~space, literal_text(Some(false)) ) |
           literal_text(None)
-        ) <~ nl
+        ) <~ any_space_then_nl
 
   def evaluated_statement = (
           prefixed("=", upto(nl) )   ^^ { EvaluatedText(_, false, None) }       |
@@ -225,7 +226,13 @@ class ShamlParser extends IndentedParser() {
 object ShamlParser {
   def main(args: Array[String]) = {
      val in = """
--@ attribute test:String = "default"     
+%html
+  %body
+    %h1
+      Example SHAML Page
+    %p
+      SHAML is a Scala version of
+      %a{ :href => "http://haml-lang.com/" } HAML
 """
      println((new ShamlParser).parse(in))
    }
