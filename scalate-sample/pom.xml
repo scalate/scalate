@@ -100,7 +100,7 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory>${basedir}/src/main/webapp/WEB-INF/_serverpages</directory>
+              <directory>${basedir}/src/main/webapp/WEB-INF/_scalate</directory>
             </fileset>
           </filesets>
         </configuration>

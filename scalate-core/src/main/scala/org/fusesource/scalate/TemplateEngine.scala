@@ -176,6 +176,11 @@ class TemplateEngine {
     } catch {
       case e:Throwable=>{
         e.printStackTrace
+        val cause = e.getCause
+        if (cause != null && cause != e) {
+          print("Caused by: ")
+          cause.printStackTrace
+        }
         throw new TemplateException("Could not load template: "+e, e);
       }
     }
