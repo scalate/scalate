@@ -1,0 +1,51 @@
+---
+title: build with SBT
+--- name:overview
+
+# How to build {project_name:} using SBT 
+Using SBT (Simple Build Tool) to build fast
+
+--- name:content 
+
+## Building with SBT
+
+You can use [sbt](http://code.google.com/p/simple-build-tool/) as a build tool - its particularly well suited to rapid edit-compile-test cycles.
+
+### Setting up SBT
+
+The first time you run *sbt* you need to tell it to update its dependencies from the maven pom.xml files. So type
+
+    ./sbt
+    update
+    
+You should now have the project loaded and the dependencies updated from the maven poms. 
+
+### A normal build
+
+If you have not done so already, start a sbt shell
+
+    ./sbt
+    
+To build things type
+    
+    compile
+
+To run the test cases
+
+    test
+ 
+### Incremental builds
+   
+To sit in incremental mode, re-running all the test cases as you edit code
+
+    ~ test
+    
+Or to just re-run failed test cases interactively
+
+    ~ test-quick
+    
+### See Also
+
+* [Source](source.html)
+* [Building](building.html)
+* [Maven Reports](maven.html)

@@ -11,6 +11,8 @@ The way most developers get started contributing to a project.
 
 {project_name:} uses [Maven](http://maven.apache.org/) as its build tool. If you don't fancy using Maven you can use your IDE directly or [Download](download.html) a distribution or JAR.
 
+Alternatively you can try using [sbt](sbt.html) which is particularly good for rapid edit-compile-test cycles
+
 ### Prequisites
 
 *Required:*
