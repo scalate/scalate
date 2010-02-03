@@ -10,10 +10,14 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
 
   // Projects
   lazy val core = project("scalate-core", "Scalate Core", new Core(_))
+  lazy val camel = project("scalate-camel", "Scalate Camel", new Camel(_), core)
   lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core)
 
 
   class Core(info: ProjectInfo) extends DefaultProject(info) {
+  }
+
+  class Camel(info: ProjectInfo) extends DefaultProject(info) {
   }
 
   class Sample(info: ProjectInfo) extends DefaultWebProject(info) {
