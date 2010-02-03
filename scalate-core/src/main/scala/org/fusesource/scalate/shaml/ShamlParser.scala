@@ -18,6 +18,7 @@ package org.fusesoruce.scalate.haml
 
 import scala.util.parsing.combinator._
 import util.parsing.input.{Positional, CharSequenceReader}
+import scala.None
 
 /**
  * Base class for parsers which use indentation to define
@@ -135,14 +136,17 @@ class ShamlParser extends IndentedParser() {
       ">"  ^^{ s=> Trim.Outer } |
       "<"  ^^{ s=> Trim.Inner } 
 
-  def element_text = prefixed("=", upto(nl))     ^^ { EvaluatedText(_, false, None) } |
-                     space ~> literal_text(None)
+  def element_text:Parser[Option[TextExpression]] = 
+    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, false, None)) } |
+    space ~ nl ^^ { x=>None } |
+    nl ^^ { x=>None } |
+    space ~> literal_text(None) <~ nl ^^ { x=>Some(x) }
 
   def full_element_statement:Parser[Element] =
     opt("%"~>word) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
       case (tag~attributes~wsc) => Element(tag, attributes, None, List(), wsc, true)
     } |
-    opt("%"~>word) ~ attributes ~ opt(trim) ~ ( opt(element_text) <~ some_space ~ nl ) ~ rep(indent(statement)) ^^ {
+    opt("%"~>word) ~ attributes ~ opt(trim) ~ element_text ~ rep(indent(statement)) ^^ {
         case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
     }
 
@@ -155,7 +159,7 @@ class ShamlParser extends IndentedParser() {
     case code~Some(text)=>{ code :: text }
     case code~None=>{ code :: Nil }
   }
-  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|nl)) ~ opt(evaluated_fragment) ^^ {
+  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|"""[ \t]*\r?\n""".r)) ~ opt(evaluated_fragment) ^^ {
     case None~Some(code)=>{ "" :: code }
     case None~None=>{ "" :: Nil }
     case Some(text)~Some(code)=>{ text :: code }
@@ -166,10 +170,10 @@ class ShamlParser extends IndentedParser() {
 
   def text_statement = (
           prefixed("""\""", literal_text(None))      |
-          prefixed("&==", literal_text(Some(true)) )  |
-          prefixed("!==", literal_text(Some(false)) ) |
-          prefixed("&", literal_text(Some(true)) )  |
-          prefixed("!", literal_text(Some(false)) ) |
+          prefixed("&=="~some_space, literal_text(Some(true)) )  |
+          prefixed("!=="~some_space, literal_text(Some(false)) ) |
+          prefixed("&"~space, literal_text(Some(true)) )  |
+          prefixed("!"~space, literal_text(Some(false)) ) |
           literal_text(None)
         ) <~ nl
 

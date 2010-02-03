@@ -4,5 +4,4 @@
       Example SHAML Page
     %p
       SHAML is a Scala version of 
-      %a{ :href => "http://haml-lang.com/" }
-        HAML
+      %a{ :href => "http://haml-lang.com/" } HAML

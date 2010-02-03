@@ -27,375 +27,263 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ShamlTemplateTest extends FunSuite {
 
-  test("'%tag' renders a start and end tag") {
-    expect(
+  testRender("a '%tag' can have trailing spaces and nested content",
 """
-<html></html>
-"""
-    ) {render(
+%html  
+  %body
+""","""
+<html>
+  <body></body>
+</html>
+""")
+
+  testRender("'%tag' renders a start and end tag",
 """
 %html
-"""
-    )}
-  }
+""","""
+<html></html>
+""")
 
-  test("'%tag/' renders a closed tag") {
-    expect(
-"""
-<html/>
-"""
-    ) {render(
+  testRender("'%tag/' renders a closed tag",
 """
 %html/
-"""
-    )}
-  }
+""","""
+<html/>
+""")
 
-  test("'%tag#i1' renders a tag with an id") {
-    expect(
-"""
-<html id="i1"></html>
-"""
-    ) {render(
+  testRender("'%tag#i1' renders a tag with an id",
 """
 %html#i1
-"""
-    )}
-  }
+""","""
+<html id="i1"></html>
+""")
 
-  test("'%tag#i1#i2' last id specified wins") {
-    expect(
-"""
-<html id="i2"></html>
-"""
-    ) {render(
+  testRender("'%tag#i1#i2' last id specified wins",
 """
 %html#i1#i2
-"""
-    )}
-  }
+""","""
+<html id="i2"></html>
+""")
 
-  test("'%tag.c1' renders a tag with a class") {
-    expect(
-"""
-<html class="c1"></html>
-"""
-    ) {render(
+  testRender("'%tag.c1' renders a tag with a class",
 """
 %html.c1
-"""
-    )}
-  }
+""","""
+<html class="c1"></html>
+""")
 
-  test("'%tag.c1.c2' renders a tag with multiple classes") {
-    expect(
-"""
-<html class="c1 c2"></html>
-"""
-    ) {render(
+  testRender("'%tag.c1.c2' renders a tag with multiple classes",
 """
 %html.c1.c2
-"""
-    )}
-  }
+""","""
+<html class="c1 c2"></html>
+""")
 
-  test("'.c1' if tag name is omitted, it defaults to div") {
-    expect(
-"""
-<div class="c1"></div>
-"""
-    ) {render(
+  testRender("'.c1' if tag name is omitted, it defaults to div",
 """
 .c1
-"""
-    )}
-  }
+""","""
+<div class="c1"></div>
+""")
 
-  test("'%tag{:name => \"value\"}' tag attributes can be specified using a ruby hash syntax") {
-    expect(
-"""
-<html k1="v1" k2="v2"></html>
-"""
-    ) {render(
+  testRender("'%tag{:name => \"value\"}' tag attributes can be specified using a ruby hash syntax",
 """
 %html{:k1=>"v1", "k2"=>"v2"}
-"""
-    )}
-  }
+""","""
+<html k1="v1" k2="v2"></html>
+""")
 
-  test("The '%tag{:name => \"value\"}' attribute syntax can span multiple lines after the comma") {
-    expect(
-"""
-<html>
-  <body k1="v1" k2="v2"></body>
-</html>
-"""
-    ) {render(
+  testRender("The '%tag{:name => \"value\"}' attribute syntax can span multiple lines after the comma",
 """
 %html
   %body{:k1=>"v1",
 "k2"=>"v2"}
-"""
-    )}
-  }
-
-  test("'%tag(name=\"value\")' tag attributes can be specified html attribute syntax") {
-    expect(
-"""
-<html k1="v1" k2="v2"></html>
-"""
-    ) {render(
-"""
-%html(k1="v1" k2="v2")
-"""
-    )}
-  }
-
-  test("The '%tag(name=\"value\")' attribute syntax can span multiple lines") {
-    expect(
-"""
+""","""
 <html>
   <body k1="v1" k2="v2"></body>
 </html>
+""")
+
+  testRender("'%tag(name=\"value\")' tag attributes can be specified html attribute syntax",
 """
-    ) {render(
+%html(k1="v1" k2="v2")
+""","""
+<html k1="v1" k2="v2"></html>
+""")
+
+  testRender("The '%tag(name=\"value\")' attribute syntax can span multiple lines",
 """
 %html
   %body(k1="v1"
 k2="v2")
-"""
-    )}
-  }
-
-  test("Plain text is rendered as plain text") {
-    expect(
-"""
-this is
-plain text
-"""
-    ) {render(
-"""
-this is
-plain text
-"""
-    )}
-  }
-
-  test("Plain text can be nested in a tag") {
-    expect(
-"""
+""","""
 <html>
-  this is
-  plain text
+  <body k1="v1" k2="v2"></body>
 </html>
+""")
+
+  testRender("Plain text is rendered as plain text",
 """
-    ) {render(
+this is
+plain text
+""","""
+this is
+plain text
+""")
+
+  testRender("Plain text can be nested in a tag",
 """
 %html
   this is
   plain text
-"""
-    )}
-  }
-
-  test("Prefix a line with '\\' to force the line to be plain text") {
-    expect(
-"""
+""","""
 <html>
-  %body is
+  this is
   plain text
 </html>
-"""
-    ) {render(
+""")
+
+  testRender("Prefix a line with '\\' to force the line to be plain text",
 """
 %html
   \%body is
   plain text
-"""
-    )}
-  }
+""","""
+<html>
+  %body is
+  plain text
+</html>
+""")
 
-  test("'%tag text' render start tag, text, and end tag on same line") {
-    expect(
-"""
-<html>test</html>
-"""
-    ) {render(
+  testRender("'%tag text' render start tag, text, and end tag on same line",
 """
 %html test
-"""
-    )}
-  }
+""","""
+<html>test</html>
+""")
 
-  test("nested tags are rendered indented") {
-    expect(
+  testRender("nested tags are rendered indented",
 """
+%html
+  %body
+    test
+""","""
 <html>
   <body>
     test
   </body>
 </html>
-"""
-    ) {render(
-"""
-%html
-  %body
-    test
-"""
-    )}
-  }
+""")
 
-  test("'%tag>' trims the whitespace surrounding the tag'") {
-    expect(
-"""
-<html><body>
-    test
-  </body></html>
-"""
-    ) {render(
+  testRender("'%tag>' trims the whitespace surrounding the tag'",
 """
 %html
   %body>
     test
-"""
-    )}
-  }
+""","""
+<html><body>
+    test
+  </body></html>
+""")
 
-  test("'%tag<' trims the whitespace wrapping nested content'") {
-    expect(
-"""
-<html>
-  <body>test</body>
-</html>
-"""
-    ) {render(
+  testRender("'%tag<' trims the whitespace wrapping nested content'",
 """
 %html
   %body<
     test
-"""
-    )}
-  }
+""","""
+<html>
+  <body>test</body>
+</html>
+""")
 
-  test("'%tag><' trims the whitespace surrounding the tag and wrapping nested content'") {
-    expect(
-"""
-<html><body>test</body></html>
-"""
-    ) {render(
+  testRender("'%tag><' trims the whitespace surrounding the tag and wrapping nested content'",
 """
 %html
   %body><
     test
-"""
-    )}
-  }
-
-  test("'%tag<>' trims the whitespace surrounding the tag and wrapping nested content'") {
-    expect(
-"""
+""","""
 <html><body>test</body></html>
-"""
-    ) {render(
+""")
+
+  testRender("'%tag<>' trims the whitespace surrounding the tag and wrapping nested content'",
 """
 %html
   %body<>
     test
-"""
-    )}
-  }
+""","""
+<html><body>test</body></html>
+""")
 
-  test("'= expression' renders a dynamic expression") {
-    expect(
+  testRender("'= expression' renders a dynamic expression",
 """
+%html
+  %body
+    = 5 + 5
+""","""
 <html>
   <body>
     10
   </body>
 </html>
-"""
-    ) {render(
-"""
-%html
-  %body
-    = 5 + 5
-"""
-    )}
-  }
+""")
 
-  test("'= var' expressions can acess implicitly bound variables") {
-    expect(
-"""
-<html>
-  <body>
-    Hiram
-  </body>
-</html>
-"""
-    ) {render(
+  testRender("'= var' expressions can acess implicitly bound variables",
 """
 %html
   %body
     = context.name
-"""
-    )}
-  }
-
-  test("'= var' expressions can access imported variables") {
-    expect(
-"""
+""","""
 <html>
   <body>
     Hiram
   </body>
 </html>
-"""
-    ) {render(
+""")
+
+  testRender("'= var' expressions can access imported variables",
 """
 %html
   %body
     = name
-"""
-    )}
-  }
-
-  test("'%tag= expression' render start tag, exression result, and end tag on same line") {
-    expect(
-"""
+""","""
 <html>
-  <body>Hiram</body>
+  <body>
+    Hiram
+  </body>
 </html>
-"""
-    ) {render(
+""")
+
+  testRender("'%tag= expression' render start tag, exression result, and end tag on same line",
 """
 %html
   %body= name
-"""
-    )}
-  }
+""","""
+<html>
+  <body>Hiram</body>
+</html>
+""")
 
-
-  test("'/ text' renders an html comment") {
-    expect(
+  testRender("'/ text' renders an html comment",
 """
+%html
+  %body
+    /Test
+""","""
 <html>
   <body>
     <!--Test-->
   </body>
 </html>
-"""
-    ) {render(
+""")
+
+  testRender("'/' can html comment a whole block of shaml",
 """
 %html
-  %body
-    /Test
-"""
-    )}
-  }
-
-  test("'/' can html comment a whole block of shaml") {
-    expect(
-"""
+  /
+    %body
+      Test
+""","""
 <html>
   <!--
     <body>
@@ -403,20 +291,15 @@ plain text
     </body>
   -->
 </html>
-"""
-    ) {render(
+""")
+
+  testRender("'/[condition]' creates a conditional comment",
 """
 %html
-  /
+  /[if IE]
     %body
       Test
-"""
-    )}
-  }
-
-  test("'/[condition]' creates a conditional comment") {
-    expect(
-"""
+""","""
 <html>
   <!--[if IE]>
     <body>
@@ -424,19 +307,9 @@ plain text
     </body>
   <![endif]-->
 </html>
-"""
-    ) {render(
-"""
-%html
-  /[if IE]
-    %body
-      Test
-"""
-    )}
-  }
+""")
 
-  testRender(
-"'-#' shaml comments ",
+  testRender("'-#' shaml comments ",
 """
 %html
   -# this is a test
@@ -444,25 +317,13 @@ plain text
     %body
     will be hidden
   Test
-""",
-"""
+""","""
 <html>
   Test
 </html>
 """)
 
-  test("loop constructs don't need {} ") {
-    expect(
-"""
-<ol>
-  <li>start</li>
-  <li>Hi 1</li>
-  <li>Hi 2</li>
-  <li>Hi 3</li>
-  <li>end</li>
-</ol>
-"""
-    ) {render(
+  testRender("loop constructs don't need {} ",
 """
 %ol
   %li start
@@ -470,82 +331,72 @@ plain text
     - val message = "Hi "+i
     %li= message
   %li end
-"""
-    )}
-  }
+""","""
+<ol>
+  <li>start</li>
+  <li>Hi 1</li>
+  <li>Hi 2</li>
+  <li>Hi 3</li>
+  <li>end</li>
+</ol>
+""")
 
-  testRender(
-"'= expression' is not sanitized by default",
+  testRender("'= expression' is not sanitized by default",
 """
 = "I feel <strong>!"
-""",
-"""
+""","""
 I feel <strong>!
 """)
 
-  testRender(
-"'&= expression' sanitizes the rendered expression",
+  testRender("'&= expression' sanitizes the rendered expression",
 """
 &= "I like cheese & crackers"
-""",
-"""
+""","""
 I like cheese &amp; crackers
 """)
 
-  testRender(
-"'& text' santizes interpolated expressions",
+  testRender("'& text' santizes interpolated expressions",
 """
-&I like #{"cheese & crackers"}
-""",
-"""
+& I like #{"cheese & crackers"}
+""","""
 I like cheese &amp; crackers
 """)
 
-  testRender(
-"'!= expression' does not santize the rendered expression",
+  testRender("'!= expression' does not santize the rendered expression",
 """
 != "I feel <strong>!"
-""",
-"""
+""","""
 I feel <strong>!
 """)
 
-  testRender(
-"'! text' does not santize interpolated expressions",
+  testRender("'! text' does not santize interpolated expressions",
 """
-!I feel #{"<strong>"}!
-""",
-"""
+! I feel #{"<strong>"}!
+""","""
 I feel <strong>!
 """)
 
-  testRender(
-"'-@ attribute' makes an attribute accessibe as variable",
+  testRender("'-@ attribute' makes an attribute accessibe as variable",
 """
 -@ attribute bean:Bean
 The bean is #{bean.color}
-""",
-"""
+""","""
 The bean is red
 """)
 
-  testRender(
-"'-@ import attribute' makes an attribute's members accessibe as variables",
+  testRender("'-@ import attribute' makes an attribute's members accessibe as variables",
 """
 -@ import attribute bean:Bean
 The bean is #{color}
-""",
-"""
+""","""
 The bean is red
 """)
 
-  testRender(
-"'-@ attribute name:type = expression' can specify a default value if the named attribute is not set",
+  testRender("'-@ attribute name:type = expression' can specify a default value if the named attribute is not set",
 """
 -@ attribute doesnotexist:Bean = Bean("blue", 5)
 The bean is #{doesnotexist.color}
-""",
-"""
+""","""
 The bean is blue
 """)
 
@@ -584,8 +435,7 @@ The bean is blue
     template.render(context)
     out.close
     buffer.toString
-  }
-
+  }  
 }
 
 case class Bean(color:String, size:Int)
