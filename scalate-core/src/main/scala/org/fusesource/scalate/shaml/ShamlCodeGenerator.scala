@@ -91,6 +91,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:Attribute=> {
         }
         case s:ShamlComment=> {
+          generate(s)
         }
         case s:TextExpression=> {
           write_indent
@@ -191,6 +192,23 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         in_html_comment = false
       }
     }
+
+
+    def generate(statement:ShamlComment):Unit = {
+      flush_text
+      statement match {
+        case ShamlComment(text, List()) => {
+          this << "//" + text.getOrElse("")
+        }
+        case ShamlComment(text, list) => {
+          this << "/*" + text.getOrElse("")
+          list.foreach(x=>{
+            this << " * " + x
+          })
+          this << " */"
+        }
+      }
+    }
     
     def generate(statement:Element):Unit = {
       var tag = statement.tag.getOrElse("div");
@@ -259,17 +277,16 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement:Executed):Unit = {
       flush_text
       statement match {
-        case Executed(Some(code), List()) => {
-          this << code
+        case Executed(code, List()) => {
+          this << code.getOrElse("")
         }
-        case Executed(Some(code), list) => {
-          this << code + " {"
+        case Executed(code, list) => {
+          this << code.getOrElse("") + "{"
           indent {
-            generate(list)
+            generate_no_flush(list)
           }
           this << "}"
         }
-        case Executed(None,List())=> {}
       }
     }
 
