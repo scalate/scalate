@@ -169,9 +169,16 @@ class TemplateEngine {
 
   private def createTemplate(className: String, bytecodeDirectory: File): Template = {
     // Load the compiled class
-    val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
-    val clazz = classLoader.loadClass(className)
-    clazz.asInstanceOf[Class[Template]].newInstance
+    try {
+      val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
+      val clazz = classLoader.loadClass(className)
+      clazz.asInstanceOf[Class[Template]].newInstance
+    } catch {
+      case e:Throwable=>{
+        e.printStackTrace
+        throw new TemplateException("Could not load template: "+e, e);
+      }
+    }
   }
 
 }

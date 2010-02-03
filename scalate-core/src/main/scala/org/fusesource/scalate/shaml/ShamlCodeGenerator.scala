@@ -113,11 +113,32 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement:TextExpression):Unit = {
       statement match {
         case s:LiteralText=> {
-          write_text(s.text)
+          var literal=true;
+          for( part <- s.text ) {
+            // alternate between rendering literal and interpolated text
+            if( literal ) {
+              write_text(part)
+              literal=false
+            } else {
+              flush_text
+              val method = s.sanitise match {
+                case None => { "org.fusesource.scalate.shaml.ShamlOptions.write( $_scalate_$_context, " }
+                case Some(true) => { "$_scalate_$_context <<< ( " }
+                case Some(false) => { "$_scalate_$_context << ( " }
+              }
+              this << method+part+");"
+              literal=true
+            }
+          }
         }
         case s:EvaluatedText=> {
           flush_text
-          this << "$_scalate_$_context << ("+s.code+" );"
+          val method = s.sanitise match {
+            case None => { "org.fusesource.scalate.shaml.ShamlOptions.write( $_scalate_$_context, " }
+            case Some(true) => { "$_scalate_$_context <<< ( " }
+            case Some(false) => { "$_scalate_$_context << ( " }
+          }
+          this << method+s.code+" );"
         }
       }
     }
@@ -207,7 +228,7 @@ class ShamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           outer_trim
           write_indent
           write_text(prefix)
-          generate(text.getOrElse(LiteralText("", Some(false))))
+          generate(text.getOrElse(LiteralText(List(""), Some(false))))
           write_text(suffix)
           write_nl
           outer_trim

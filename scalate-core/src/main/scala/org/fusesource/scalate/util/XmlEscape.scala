@@ -32,8 +32,15 @@ object XmlEscape
         ( ch == 0x3D )                ||
         ( ch >= 0x3F && ch <= 0x7E ) ) {
       buffer.append( ch )
-    } else
-      buffer.append( "&#x" + ch.toInt.toHexString + ";" )
+    } else {
+      buffer.append( ch match {
+        case '"' => { "&quot;" }
+        case '&' => { "&amp;" }
+        case '<' => { "&lt;" }
+        case '>' => { "&gt;" }
+        case _   => {  "&#x" + ch.toInt.toHexString + ";" }
+      })
+    }
   }
 
 }

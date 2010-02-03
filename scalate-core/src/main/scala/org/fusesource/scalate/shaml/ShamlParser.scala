@@ -60,7 +60,7 @@ trait Statement extends Positional
 trait TextExpression extends Statement
 
 case class EvaluatedText(code:String, preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
-case class LiteralText(text:String, sanitise:Option[Boolean]) extends TextExpression
+case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ShamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
@@ -82,6 +82,10 @@ class ShamlParser extends IndentedParser() {
 
   def upto[T]( p1:Parser[T]):Parser[String] = {
     rep1( not( p1 ) ~> ".".r ) ^^ { _.mkString("") }
+  }
+
+  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[String] = {
+    prefixed( prefix, upto(postfix) <~ postfix )
   }
 
   val any                     = """.*""".r
@@ -123,8 +127,8 @@ class ShamlParser extends IndentedParser() {
       ">"  ^^{ s=> Trim.Outer } |
       "<"  ^^{ s=> Trim.Inner } 
 
-  def element_text = prefixed("=", upto(nl))  ^^ { EvaluatedText(_, false, None) } |
-                     space ~> upto(nl) ^^  { LiteralText(_,None) }
+  def element_text = prefixed("=", upto(nl))     ^^ { EvaluatedText(_, false, None) } |
+                     space ~> literal_text(None)
 
   def full_element_statement:Parser[Element] =
     opt("%"~>word) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
@@ -139,18 +143,33 @@ class ShamlParser extends IndentedParser() {
   def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ShamlComment(text,body) }
   def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
+  def evaluated_fragment:Parser[List[String]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
+    case code~Some(text)=>{ code :: text }
+    case code~None=>{ code :: Nil }
+  }
+  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|nl)) ~ opt(evaluated_fragment) ^^ {
+    case None~Some(code)=>{ "" :: code }
+    case None~None=>{ "" :: Nil }
+    case Some(text)~Some(code)=>{ text :: code }
+    case Some(text)~None=>{ text :: Nil }
+  }
+
+  def literal_text(sanitize:Option[Boolean]) = litteral_fragment ^^ { LiteralText(_, sanitize) }
+
   def text_statement = (
-          prefixed("""\""", upto(nl)) ^^ { LiteralText(_, None) } |
-          prefixed("&==", upto(nl) )  ^^ { LiteralText(_, Some(true)) } |
-          prefixed("&==", upto(nl) )  ^^ { LiteralText(_, Some(false)) } |
-          any                    ^^ { LiteralText(_, None) }
+          prefixed("""\""", literal_text(None))      |
+          prefixed("&==", literal_text(Some(true)) )  |
+          prefixed("!==", literal_text(Some(false)) ) |
+          prefixed("&", literal_text(Some(true)) )  |
+          prefixed("!", literal_text(Some(false)) ) |
+          literal_text(None)
         ) <~ nl
 
   def evaluated_statement = (
-          prefixed("=", any )   ^^ { EvaluatedText(_, false, None) } |
-          prefixed("~", any )   ^^ { EvaluatedText(_, true, None) } |
-          prefixed("&=", any )  ^^ { EvaluatedText(_, false, Some(true)) } |
-          prefixed("&=", any )  ^^ { EvaluatedText(_, false, Some(false)) } 
+          prefixed("=", upto(nl) )   ^^ { EvaluatedText(_, false, None) }       |
+          prefixed("~", upto(nl) )   ^^ { EvaluatedText(_, true,  None) }       |
+          prefixed("&=", upto(nl) )  ^^ { EvaluatedText(_, false, Some(true)) } |
+          prefixed("!=", upto(nl) )  ^^ { EvaluatedText(_, false, Some(false)) }
         ) <~ nl
 
   def executed_statement =
@@ -188,9 +207,7 @@ class ShamlParser extends IndentedParser() {
 
 object ShamlParser {
   def main(args: Array[String]) = {
-     val in = """
-%body<>
-  test
+     val in = """& a #{1} b
 """
      println((new ShamlParser).parse(in))
    }

@@ -198,6 +198,23 @@ plain text
     )}
   }
 
+  test("Prefix a line with '\\' to force the line to be plain text") {
+    expect(
+"""
+<html>
+  %body is
+  plain text
+</html>
+"""
+    ) {render(
+"""
+%html
+  \%body is
+  plain text
+"""
+    )}
+  }
+
   test("'%tag text' render start tag, text, and end tag on same line") {
     expect(
 """
@@ -418,6 +435,102 @@ plain text
     )}
   }
 
+  testRender(
+"'-#' shaml comments ",
+"""
+%html
+  -# this is a test
+  -# more stuff
+    %body
+    will be hidden
+  Test
+""",
+"""
+<html>
+  Test
+</html>
+""")
+
+  test("loop constructs don't need {} ") {
+    expect(
+"""
+<ol>
+  <li>start</li>
+  <li>Hi 1</li>
+  <li>Hi 2</li>
+  <li>Hi 3</li>
+  <li>end</li>
+</ol>
+"""
+    ) {render(
+"""
+%ol
+  %li start
+  - for( i <- 1 to 3 )
+    - val message = "Hi "+i
+    %li= message
+  %li end
+"""
+    )}
+  }
+
+  testRender(
+"'= expression' is not sanitized by default",
+"""
+= "I feel <strong>!"
+""",
+"""
+I feel <strong>!
+""")
+
+  testRender(
+"'&= expression' sanitizes the rendered expression",
+"""
+&= "I like cheese & crackers"
+""",
+"""
+I like cheese &amp; crackers
+""")
+
+  testRender(
+"'& text' santizes interpolated expressions",
+"""
+&I like #{"cheese & crackers"}
+""",
+"""
+I like cheese &amp; crackers
+""")
+
+  testRender(
+"'!= expression' does not santize the rendered expression",
+"""
+!= "I feel <strong>!"
+""",
+"""
+I feel <strong>!
+""")
+
+  testRender(
+"'! text' does not santize interpolated expressions",
+"""
+!I feel #{"<strong>"}!
+""",
+"""
+I feel <strong>!
+""")
+
+
+  def testRender(description:String, template:String, result:String) = {
+    test(description) {
+      expect(result) { render(template) }
+    }
+  }
+
+  def ignoreRender(description:String, template:String, result:String) = {
+    ignore(description) {
+      expect(result) { render(template) }
+    }
+  }
 
   var engine = new TemplateEngine
   engine.workingDirectoryRoot = new File("target/test-data/"+(this.getClass.getName))
