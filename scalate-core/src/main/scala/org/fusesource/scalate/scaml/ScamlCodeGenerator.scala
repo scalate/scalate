@@ -83,7 +83,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate_no_flush(statements:List[Statement]):Unit = {
 
       val bindings = statements.flatMap {
-        case attribute: Attribute => List(TemplateArg(attribute.name, attribute.className, attribute.autoImport, attribute.defaultValue))
+        case attribute: Attribute => List(Binding(attribute.name, attribute.className, attribute.autoImport, attribute.defaultValue))
         case _ => Nil
       }
 
@@ -325,15 +325,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
   }
 
 
-  override def generate(engine:TemplateEngine, uri:String, args:List[TemplateArg]): Code = {
+  override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new ScamlParser).parse(hamlSource)
 
     val builder = new SourceBuilder()
-    builder.generate(packageName, className, args, statements)
-    Code(this.className(uri, args), builder.code, Set())
+    builder.generate(packageName, className, bindings, statements)
+    Code(this.className(uri, bindings), builder.code, Set())
 
   }
 
