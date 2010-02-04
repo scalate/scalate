@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+ * Copyright (C) 2009, Progress Software Corporation and/or its
+ * subsidiaries or affiliates.  All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,19 +14,11 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-
-
 package org.fusesource.scalate
 
-import java.io.File
-
-
-trait CodeGenerator {
-
-  case class Code(className:String, source:String, dependencies:Set[String])
-
-  def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code
-
-  def className(uri:String, bindings:List[Binding]): String
-
-}
+/**
+ * Describes a variable binding that a Scalate template defines.
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
+case class Binding(name:String, className:String="Any", importMembers:Boolean=false, defaultValue:Option[String]=None, kind:String="val")

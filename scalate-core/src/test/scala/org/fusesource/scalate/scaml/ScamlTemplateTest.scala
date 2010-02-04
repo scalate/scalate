@@ -376,29 +376,43 @@ I feel <strong>!
 I feel <strong>!
 """)
 
-  testRender("'-@ attribute' makes an attribute accessibe as variable",
+  testRender("'-@ val' makes an attribute accessibe as variable",
 """
--@ attribute bean:Bean
+-@ val bean:Bean
 The bean is #{bean.color}
 ""","""
 The bean is red
 """)
 
-  testRender("'-@ import attribute' makes an attribute's members accessibe as variables",
+  testRender("'-@ import val' makes an attribute's members accessibe as variables",
 """
--@ import attribute bean:Bean
+-@ import val bean:Bean
 The bean is #{color}
 ""","""
 The bean is red
 """)
 
-  testRender("'-@ attribute name:type = expression' can specify a default value if the named attribute is not set",
+  testRender("'-@ val name:type = expression' can specify a default value if the named attribute is not set",
 """
--@ attribute doesnotexist:Bean = Bean("blue", 5)
+-@ val doesnotexist:Bean = Bean("blue", 5)
 The bean is #{doesnotexist.color}
 ""","""
 The bean is blue
 """)
+
+  testRender("'-@ val' can be used in nested tags",
+"""
+%html
+  test
+  -@ val bean:Bean
+  The bean is #{bean.color}
+""","""
+<html>
+  test
+  The bean is red
+</html>
+""")
+
 
   def testRender(description:String, template:String, result:String) = {
     test(description) {
@@ -431,7 +445,7 @@ The bean is blue
     context.attributes += "context"-> context
     context.attributes += "bean"-> Bean("red", 10)
 
-    val template = engine.loadTemporary("/org/fusesource/scalate/scaml/test.scaml", TemplateArg("context", context.getClass.getName, true))
+    val template = engine.loadTemporary("/org/fusesource/scalate/scaml/test.scaml", Binding("context", context.getClass.getName, true))
     template.render(context)
     out.close
     buffer.toString

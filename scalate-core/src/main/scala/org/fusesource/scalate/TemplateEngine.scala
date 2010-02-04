@@ -42,13 +42,13 @@ class TemplateEngine {
   var classpath: String = null
   var workingDirectoryRoot: File = null
 
-  private val templateCache = new HashMap[(String, List[TemplateArg]), CacheEntry]
+  private val templateCache = new HashMap[(String, List[Binding]), CacheEntry]
 
 
-  def load(uri: String, args: TemplateArg*) = {
+  def load(uri: String, bindings: Binding*) = {
 
-    val argsList = args.toList;
-    val key = (uri, args.toList)
+    val bindingsList = bindings.toList;
+    val key = (uri, bindings.toList)
     val timestamp = Platform.currentTime
 
     // TODO: mangle the params and include in the workingDirectory path
@@ -76,11 +76,11 @@ class TemplateEngine {
         case 'AlreadyLoaded =>
           cacheEntry.get
         case 'Build =>
-          val newCacheEntry = preparePage(timestamp, uri, argsList)
+          val newCacheEntry = preparePage(timestamp, uri, bindingsList)
           templateCache += (key -> newCacheEntry)
           newCacheEntry
         case 'LoadPrebuilt =>
-          val className = codeGenerator(uri).className(uri, argsList)
+          val className = codeGenerator(uri).className(uri, bindingsList)
           val template = createTemplate(className, bytecodeDirectory)
           val dependencies = Set.empty[String] + uri
           val newCacheEntry = new CacheEntry(template, timestamp, dependencies)
@@ -93,9 +93,9 @@ class TemplateEngine {
   /**
    * Does no caching; useful for temporary templates or temapltes created dynamically such as from the contents of a message
    */
-  def loadTemporary(uri: String, args: TemplateArg*) = {
+  def loadTemporary(uri: String, bindings: Binding*) = {
 
-    val argsList = args.toList;
+    val argsList = bindings.toList;
     val timestamp = Platform.currentTime
 
     val newCacheEntry = preparePage(timestamp, uri, argsList)
@@ -145,11 +145,42 @@ class TemplateEngine {
     resourceLoader.lastModified(uri)
 
 
+  private def preparePage(timestamp: Long, uri: String, bindings: List[Binding]): CacheEntry = {
+    try {
+      generate_compile_and_load(timestamp, uri, bindings)
+    } catch {
+      case e:InstantiationException=>{
+        try {
+          println("First try resulted in a InstantiationException.. let try one more time..");
+          generate_compile_and_load(timestamp, uri, bindings)
+        } catch {
+          case e:Throwable=>{
+            e.printStackTrace
+            val cause = e.getCause
+            if (cause != null && cause != e) {
+              print("Caused by: ")
+              cause.printStackTrace
+            }
+            throw new TemplateException("Could not load template: "+e, e);
+          }
+        }
+      }
+      case e:Throwable=>{
+        e.printStackTrace
+        val cause = e.getCause
+        if (cause != null && cause != e) {
+          print("Caused by: ")
+          cause.printStackTrace
+        }
+        throw new TemplateException("Could not load template: "+e, e);
+      }
+    }
+  }
 
-  private def preparePage(timestamp: Long, uri: String, args: List[TemplateArg]): CacheEntry = {
+  private def generate_compile_and_load(timestamp: Long, uri: String, bindings: List[Binding]): CacheEntry = {
 
     // Generate the scala source code from the template
-    val code = codeGenerator(uri).generate(this, uri, args)
+    val code = codeGenerator(uri).generate(this, uri, bindings)
 
     // Write the source code to file..
     val sourceFile = new File(sourceDirectory, uri+".scala")
@@ -169,21 +200,9 @@ class TemplateEngine {
 
   private def createTemplate(className: String, bytecodeDirectory: File): Template = {
     // Load the compiled class
-    try {
-      val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
-      val clazz = classLoader.loadClass(className)
-      clazz.asInstanceOf[Class[Template]].newInstance
-    } catch {
-      case e:Throwable=>{
-        e.printStackTrace
-        val cause = e.getCause
-        if (cause != null && cause != e) {
-          print("Caused by: ")
-          cause.printStackTrace
-        }
-        throw new TemplateException("Could not load template: "+e, e);
-      }
-    }
+    val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
+    val clazz = classLoader.loadClass(className)
+    clazz.asInstanceOf[Class[Template]].newInstance
   }
 
 }

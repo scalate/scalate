@@ -1,7 +1,7 @@
 <%-- demonstrates the use of an SSP file with attributes --%>
 
-<%@ attribute foo: org.fusesource.scalate.sample.Foo %>
-<%@ attribute timestamp: java.util.Date %>
+<%@ val foo: org.fusesource.scalate.sample.Foo %>
+<%@ val timestamp: java.util.Date %>
 <html>
 <body>
 
