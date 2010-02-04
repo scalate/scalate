@@ -400,6 +400,20 @@ The bean is #{doesnotexist.color}
 The bean is blue
 """)
 
+  testRender("'-@ val' can be used in nested tags",
+"""
+%html
+  test
+  -@ val bean:Bean
+  The bean is #{bean.color}
+""","""
+<html>
+  test
+  The bean is red
+</html>
+""")
+
+
   def testRender(description:String, template:String, result:String) = {
     test(description) {
       expect(result) { render(template) }

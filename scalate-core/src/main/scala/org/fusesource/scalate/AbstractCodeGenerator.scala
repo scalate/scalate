@@ -60,18 +60,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
         // conflict with definitions declared in the template
         this << "def $_scalate_$render($_scalate_$_context:org.fusesource.scalate.RenderContext): Unit = {"
         indent {
-          params.foreach(arg=>{
-            generateBinding(arg)
-            this << "{"
-            indent_level+=1
-          })
-
-          generate(statements)
-
-          params.foreach(arg=>{
-            indent_level-=1
-            this << "}"
-          })
+          generateBindings(params) {
+            generate(statements)
+          }
         }
         this << "}"
       }
@@ -89,6 +80,22 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     }
 
     def generate(statements:List[T]):Unit
+
+
+    def generateBindings(params:List[TemplateArg])(body: => Unit):Unit = {
+      params.foreach(arg=>{
+        generateBinding(arg)
+        this << "{"
+        indent_level+=1
+      })
+
+      body
+
+      params.foreach(arg=>{
+        indent_level-=1
+        this << "}"
+      })
+    }
 
     def generateBinding(arg:TemplateArg):Unit = {
       this << "val "+arg.name+":"+arg.className+" = ($_scalate_$_context.binding(" + asString(arg.name) + ") match {"

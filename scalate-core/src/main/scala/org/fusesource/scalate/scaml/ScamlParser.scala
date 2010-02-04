@@ -19,7 +19,7 @@ package org.fusesoruce.scalate.haml
 import scala.util.parsing.combinator._
 import util.parsing.input.{Positional, CharSequenceReader}
 import scala.None
-import org.fusesource.scalate.InvalidSyntaxException
+import org.fusesource.scalate.{TemplateException}
 
 /**
  * Base class for parsers which use indentation to define
@@ -217,7 +217,7 @@ class ScamlParser extends IndentedParser() {
     val x = phrase[List[Statement]](parser)(new CharSequenceReader(content))
     x match {
       case Success(result, _) => result
-      case _ => throw new InvalidSyntaxException(x.toString);
+      case _ => throw new TemplateException(x.toString);
     }
   }
 
