@@ -8,4 +8,4 @@ package org.fusesource.scalate
  * To change this template use File | Settings | File Templates.
  */
 
-case class TemplateArg(name:String, className:String="Any", importMembers:Boolean=false, defaultValue:Option[String]=None) 
+case class TemplateArg(name:String, className:String="Any", importMembers:Boolean=false, defaultValue:Option[String]=None, kind:String="val") 

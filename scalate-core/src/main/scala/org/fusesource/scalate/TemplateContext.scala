@@ -56,7 +56,7 @@ class DefaultRenderContext(var out: PrintWriter) extends RenderContext {
   def write(value: Any): Unit = {
     value match {
       case n: Node => out.print(n)
-      case s: Seq[Node] => for (n <- s) {out.print(n)}
+      case s: Seq[_] => for (n <- s) {out.print(n)}
       case a => out.print(toString(a))
     }
   }
@@ -68,7 +68,7 @@ class DefaultRenderContext(var out: PrintWriter) extends RenderContext {
   def writeXmlEscape(value: Any): Unit = {
     value match {
       case n: Node => out.print(n)
-      case s: Seq[Node] => for (n <- s) {out.print(n)}
+      case s: Seq[_] => for (n <- s) {out.print(n)}
       case a => write(XmlEscape.escape(toString(a)))
     }
   }

@@ -98,7 +98,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     }
 
     def generateBinding(arg:TemplateArg):Unit = {
-      this << "val "+arg.name+":"+arg.className+" = ($_scalate_$_context.binding(" + asString(arg.name) + ") match {"
+      this << arg.kind+" "+arg.name+":"+arg.className+" = ($_scalate_$_context.binding(" + asString(arg.name) + ") match {"
       indent {
         if (arg.defaultValue.isEmpty) {
           this << "case None => { throw new org.fusesource.scalate.NoValueSetException("+asString(arg.name)+") }"
