@@ -14,16 +14,16 @@ v1.0, January 2010
 
 Scalate is a template engine based on the Scala language.
 
-Scalate supports SSP pages which are like JSP/ASP pages in syntax but using Scala code for expressions instead of Java or EL like in JSP.
+Scalate supports Ssp pages which are like JSP/ASP pages in syntax but using Scala code for expressions instead of Java or EL like in JSP.
 
-Scalate also supports Shaml pages using the http://haml-lang.com/[Haml] syntax, but again with Scala as the expression language.
+Scalate also supports Scaml pages using the http://haml-lang.com/[Haml] syntax, but again with Scala as the expression language.
 
 Scalate currently requires a Java 5 runtime and a servlet 2.5 container, or newer.
 
 
-== SSP (Scala Server Pages)
+== Ssp (Scala Server Pages)
 
-If you know JSP or ASP then hopefully the syntax of SSP is familiar; only using Scala as the language of expressions and method invocations.
+If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
 === Syntax
 
@@ -109,7 +109,7 @@ We use a syntax similar to defining arguments in a method; so you can take advan
 
 The attribute is now available for use as an expression. 
 
-Its very common to have a template based on a single model object such that the template takes a single attribute; so the default behaviour is to import the first defined attribute in your page.
+Its very common to have a template based on a single model object who's members will be frequently accessed.  In these cases, it's convenient to import it's members by adding the import keyword to the attribute declaration.
 
 For example
 
@@ -130,11 +130,109 @@ In the above scalate is basically including the following code to import all the
 
 so that we can use expressions such as *name* instead of *it.name* for brevity
 
+== Scaml (Scala Markup Language)
+
+If you know http://haml-lang.com/[Haml] then hopefully the syntax of Scaml is familiar; only using Scala as the language of expressions and method invocations.
+
+=== Syntax
+
+Comments:
+
+----
+-# this is a comment 
+----
+
+Declarations:
+
+----
+-@ val someName: String = "someDefaultValue"
+----
+
+Code blocks:
+
+----
+- import com.acme.MySnipets._
+----
+
+Expressions:
+
+----
+= someExpression
+#{someExpression}  
+----
+
+=== Custom tags
+
+In JSP there is a concept of custom tags which can process a block of the template such as for looping or transforming content.
+
+For example if you want to XML escape a block of a template you can just invoke the *xmlEscape* method.
+
+----
+= xmlEscape
+  this will be escaped... 
+  hello #{user.name} 
+----
+
+
+=== Variables
+
+The following variables are in scope inside your page
+
+[grid="rows"]
+[options="header"]
+|===========================
+|Variable | Type | Description
+|context | TemplateContext | the page context which is imported to provide helper methods like attribute() as described below
+|out | PrintWriter | the printer of the output
+|request | HttpServletRequest | the servlet request
+|response | HttpServletResponse | the servlet response
+|===========================
+
+
+=== Working with attributes
+
+Its a common requirement to parameterise your template such as to pass in some model object from a servlet/controller or to pass in the resource bean in JAXRS.
+
+To define an attribute in your template use the following declaration
+
+----
+-@ val foo: MyType 
+----
+
+We use a syntax similar to defining arguments in a method; so you can take advantage of default argument values.
+
+----
+-@ val bar: String = "this is the default value
+----
+
+The attribute is now available for use as an expression. 
+
+Its very common to have a template based on a single model object who's members will be frequently accessed.  In these cases, it's convenient to import it's members by adding the import keyword to the attribute declaration.
+
+For example
+
+----
+-@ import val it: Person
+-@ val errorMessage: String = ""
+
+Hello #{name}, what is the weather like in your #{city}
+\#{errorMessage}
+----
+
+In the above scalate is basically including the following code to import all the attributes and methods of the local variable _it_
+
+----
+<% import it._ %>
+----
+
+so that we can use expressions such as *name* instead of *it.name* for brevity
+
+
 == JAX-RS
 
 When working with the https://jersey.dev.java.net/[Jersey] implementation of JAX-RS you can use template engines as implicit views of your resources.
 
-To do this just add the *@ImplicitProduces* annotation to your resource bean, then create a SSP file called *className.index.ssp"
+To do this just add the *@ImplicitProduces* annotation to your resource bean, then create a Ssp file called *className.index.ssp"
 in a directory named after the package name of your class.
 
 For example if your resource bean is called org.fusesource.scalate.sample.resources.FooResource then create a file in your webapp called *org/fusesource/scalate/samples/resources/FooResource.index.ssp*
@@ -192,7 +290,7 @@ For more information see the http://scalate.fusesource.org/sbt.html[sbt building
 == Adding Scalate to your application
 
 
-1.  Add something like the following to your web.xml file to support SSP and HAML pages:
+1.  Add something like the following to your web.xml file to support Ssp and Scaml pages:
 
 ----
 <servlet>
@@ -207,7 +305,7 @@ For more information see the http://scalate.fusesource.org/sbt.html[sbt building
 </servlet-mapping>
 <servlet-mapping>
   <servlet-name>TemplateEngineServlet</servlet-name>
-  <url-pattern>*.haml</url-pattern>
+  <url-pattern>*.scaml</url-pattern>
 </servlet-mapping>
 ----
 
@@ -224,9 +322,9 @@ You could add one or more of the above to your servlet container's server-wide c
 
 - Works with expanded WARs - or servlet containers who's ClassLoader implements URLClassLoader
 
-- Assumes SSP page source files are all UTF-8-encoded.
+- Assumes Ssp page source files are all UTF-8-encoded.
 
-- Assumes SSP pages' output is all UTF-8-encoded.
+- Assumes Ssp pages' output is all UTF-8-encoded.
 
 - No support for precompilation (e.g., via a custom Ant task).
 
