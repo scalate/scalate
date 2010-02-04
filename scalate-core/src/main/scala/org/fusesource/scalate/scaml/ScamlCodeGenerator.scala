@@ -21,6 +21,7 @@ import org.fusesoruce.scalate.haml._
 import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
+import collection.mutable.LinkedHashMap
 
 /**
  * Generates a scala class given a HAML document
@@ -197,9 +198,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statement match {
         case HtmlComment(_, text, List()) => {
           write_indent
-          write_text(prefix)
+          write_text(prefix+" ")
           write_text(text.getOrElse(""))
-          write_text(suffix)
+          write_text(" "+suffix)
           write_nl
         }
         case HtmlComment(_, None, list) => {
@@ -262,15 +263,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       def outer_trim = statement.trim match {
-        case Some(Trim.Outer)=>{ trim_whitespace}
-        case Some(Trim.Both)=>{ trim_whitespace}
-        case _ => {}
+        case Some(Trim.Outer)=>{ trim_whitespace; true}
+        case Some(Trim.Both)=>{ trim_whitespace; true}
+        case _ => { false}
       }
 
       def inner_trim = statement.trim match {
-        case Some(Trim.Inner)=>{ trim_whitespace}
-        case Some(Trim.Both)=>{ trim_whitespace}
-        case _ => {}
+        case Some(Trim.Inner)=>{ trim_whitespace; true}
+        case Some(Trim.Both)=>{ trim_whitespace; true}
+        case _ => { false }
       }
       
       statement match {
@@ -289,11 +290,13 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_text(prefix)
           write_nl
 
-          inner_trim
-          element_level += 1
+          if( !inner_trim ) {
+            element_level += 1
+          }
           generate_no_flush(list)
-          element_level -= 1
-          inner_trim
+          if( !inner_trim ) {
+            element_level -= 1
+          }
 
           write_indent
           write_text(suffix)
@@ -305,14 +308,22 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def attributes(entries: List[(Any,Any)]) = {
-      val (entries_class, entries_rest) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
-      var map = Map( entries_rest: _* )
+      val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
+      val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
+      var map = LinkedHashMap[Any,Any]( )
+
+      if( !entries_id.isEmpty ) {
+        map += "id" -> entries_id.last._2
+      }
 
       if( !entries_class.isEmpty ) {
         val value = entries_class.map(x=>x._2).mkString(" ")
         map += "class"->value
       }
-      map.foldLeft(""){ case (r,e)=>r+" "+eval(e._1)+"=\""+eval(e._2)+"\""}
+
+      entries_rest.foreach{ me => map += me._1 -> me._2 }
+
+      map.foldLeft(""){ case (r,e)=>r+" "+eval(e._1)+"='"+eval(e._2)+"'"}
     }
 
     def eval(expression:Any) = {

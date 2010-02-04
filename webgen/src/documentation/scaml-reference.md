@@ -102,9 +102,12 @@ Scaml will automatically generate opening and closing tags for any element.
 
 ### Attributes: `{}` or `()` {#attributes}
 
-Brackets represent a Scala hash
+TODO: only simple expressions are supported in the following section.. need to expand to
+support complex scala expressions too.
+
+Brackets represent a Scala Map
 that is used for specifying the attributes of an element.
-Scala hash syntax is used instead of Scala syntax to 
+Ruby hash syntax is used instead of Scala syntax to 
 preserve a higher level of compatibility with the original
 Haml implementation.
 It is translated and evaluated as a Scala Map,
@@ -126,11 +129,12 @@ However, newlines may only be placed immediately after commas.
 For example:
 
     %script{:type => "text/javascript",
-            :src  => "javascripts/script_#{2 + 7}"}
+            :src  => "javascripts/script"}
 
 is compiled to:
 
-    <script src='javascripts/script_9' type='text/javascript'></script>
+    <script type='text/javascript' src='javascripts/script'></script>
+    
 
 #### HTML-style Attributes: `()`
 
@@ -140,8 +144,8 @@ These are used with parentheses instead of brackets, like so:
 
     %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 
+<!-->
 Scala variables can be used by omitting the quotes.
-Local variables or instance variables can be used.
 For example:
 
     %a(title=title href=href) Stuff
@@ -153,21 +157,26 @@ This is the same as:
 Because there are no commas separating attributes, though,
 more complicated expressions aren't allowed.
 For those you'll have to use the `{}` syntax.
-You can, however, use both syntaxes together:
+-->
 
-    %a(title=title){:href => link.href} Stuff
+You can use both syntaxes together:
 
+    %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
+
+<!-- TODO:
 You can also use `#{}` interpolation to insert complicated expressions
 in a HTML-style attribute:
 
     %span(class="widget_#{widget.number}")
+-->
 
 HTML-style attributes can be stretched across multiple lines
 just like hash-style attributes:
 
     %script(type="text/javascript"
-            src="javascripts/script_#{2 + 7}")
+            src="javascripts/script")
 
+<!-- TODO
 #### Attribute Methods
 
 A Scala method call that returns a hash
@@ -213,7 +222,9 @@ Note that the Scaml attributes list has the same syntax as a Scala method call.
 This means that any attribute methods must come before the hash literal.
 
 Attribute methods aren't supported for HTML-style attributes.
+-->
 
+<!-- TODO
 #### Boolean Attributes
 
 Some attributes, such as "checked" for `input` tags or "selected" for `option` tags,
@@ -249,6 +260,7 @@ HTML-style boolean attributes can be written just like HTML:
 or using `true` and `false`:
 
     %input(selected=true)
+-->
 
 ### Class and ID: `.` and `#`
 
@@ -270,7 +282,7 @@ is compiled to:
     <div id='things'>
       <span id='rice'>Chicken Fried</span>
       <p class='beans' food='true'>The magical fruit</p>
-      <h1 class='class otherclass' id='id'>La La La</h1>
+      <h1 id='id' class='class otherclass'>La La La</h1>
     </div>
 
 And,
@@ -333,6 +345,7 @@ is compiled to:
     <br />
     <meta http-equiv='Content-Type' content='text/html' />
 
+<!-- TODO 
 Some tags are automatically closed, as long as they have no content.
 `meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.
 This list can be customized by setting the [`:autoclose`](#autoclose-option) option.
@@ -345,6 +358,7 @@ is also compiled to:
 
     <br />
     <meta http-equiv='Content-Type' content='text/html' />
+-->
 
 ### Whitespace Removal: `>` and `<`
 
@@ -400,7 +414,8 @@ is compiled to:
 
     <img /><pre>foo
     bar</pre><img />
-
+    
+<!-- TODO
 ### Object Reference: `[]`
 
 Square brackets follow a tag definition and contain a Scala object
@@ -454,8 +469,8 @@ is compiled to:
     <div class='a_crazy_user' id='a_crazy_user_15'>
       Hello!
     </div>
-
-
+-->
+<!-- TODO
 ## Doctype: `!!!`
 
 When describing HTML documents with Scaml,
@@ -546,6 +561,7 @@ For example:
 is compiled to:
 
     <?xml version='1.0' encoding='iso-8859-1' ?>
+-->
 
 ## Comments
 
@@ -639,6 +655,48 @@ is compiled to:
 
 ## Scala Evaluation
 
+### Binding Variables `-@`
+
+When a Scalate template is rendered, the caller can pass an attribute map
+which the template in charge of rendering. To bind the attribute to a Scala
+variable, a Scaml template uses the hyphen character followed by a ampersand 
+character and then a scala variable declaration statement.
+
+For example To define an attribute use the following declaration
+
+    -@ val foo: MyType 
+
+If the attribute map does not contain a "foo" entry, then a 
+NoValueSetException is thrown when the the template is rendered.
+
+To avoid this exception, a default value can be configured.  For
+example:
+
+    -@ val bar: String = "this is the default value"
+
+The attribute is now available for use as an expression. 
+
+Its very common to have a template based on a single object who's members are f
+frequently accessed.  In this cases, it's convenient to import all the object's 
+members.  This can be done by adding the import keyword to the attribute declaration.
+
+For example:
+
+    -@ import val model: Person
+    %p Hello #{name}, what is the weather like in your #{city}
+
+is the same as:
+
+    -@ val model: Person
+    - import model._
+    %p Hello #{name}, what is the weather like in your #{city}
+
+Which is the same as:
+
+    -@ val model: Person
+    %p Hello #{model.name}, what is the weather like in your #{model.city}
+
+
 ### Inserting Scala: `=`
 
 The equals character is followed by Scala code.
@@ -659,7 +717,7 @@ is compiled to:
 If the [`ScamlOptions.escape_html`](#escape_html-option) option is set, `=` will sanitize any
 HTML-sensitive characters generated by the script. For example:
 
-    = '<script>alert("I\'m evil!");</script>'
+    = """<script>alert("I'm evil!");</script>"""
 
 would be compiled to
 
@@ -673,8 +731,6 @@ For example:
 would be compiled to
 
     <p>hello</p>
-
-Note that it's illegal to nest code within a tag that ends with `=`.
 
 ### Running Scala: `-`
 
@@ -694,21 +750,23 @@ For example:
 
 is compiled to:
 
-    <p>
-      hello there you!
-    </p>
+    <p>hello there you!</p>
 
 #### Scala Blocks
 
 Scala blocks, like XHTML tags, don't need to be explicitly closed in Scaml.
 Rather, they're automatically closed, based on indentation.
 A block begins whenever the indentation is increased
-after a Scala evaluation command.
-It ends when the indentation decreases
+after a Scala insertion or evaluation command.
+It ends when the indentation decreases.
+
+<!-- TODO
 (as long as it's not an `else` clause or something similar).
+-->
+
 For example:
 
-    - for(i <- 42 to 47)
+    - for(i <- 42 to 46)
       %p= i
     %p See, I can count!
 
@@ -726,18 +784,38 @@ Another example:
     %p
       - 2 match
         - case 1 =>
-          = "1!"
+          = "one"
         - case 2 =>
-          = "2?"
+          = "two"
         - case 3 =>
-          = "3."
+          = "three"
 
 is compiled to:
 
     <p>
-      2?
+      two
     </p>
+    
+When inserting evaluated statements, it can also take advantage of Scala blocks. It can be handy
+for passing partial functions.  For example:
 
+    %p
+      = List(1,2,3).foldLeft("result: ")
+        - (a,x)=>
+          - a+x 
+          
+Is the same as:
+
+    %p
+      = List(1,2,3).foldLeft("result: ") { (a,x)=> { a+x } }
+
+would be compiled to
+
+    <p>
+      result: 123
+    </p>
+    
+<!-- TODO
 ### Whitespace Preservation: `~` {#tilde}
 
 `~` works just like `=`, except that it runs {Scaml::Helpers#find\_and\_preserve} on its input.
@@ -755,23 +833,24 @@ and is compiled to:
     <pre>Bar&#x000A;Baz</pre>
 
 See also [Whitespace Preservation](#whitespace_preservation).
+-->
 
 ### Scala Interpolation: `#{}`
 
-Scala code can also be interpolated within plain text using `#{}`,
-similarly to Scala string interpolation.
-For example,
+Scala code can be interpolated within plain text using `#{}`.
+For example:
 
-    %p This is #{h quality} cake!
+    %p This is #{quality} cake!
 
 is the same as
 
-    %p= "This is the #{h quality} cake!"
+    %p= "This is the "+(quality)+" cake!"
 
 and might compile to
 
     <p>This is scrumptious cake!</p>
-
+    
+<!-- TODO
 Backslashes can be used to escape `#{` strings,
 but they don't act as escapes anywhere else in the string.
 For example:
@@ -804,6 +883,7 @@ might compile to
         });
       //]]>
     </script>
+-->
 
 ### Escaping HTML: `&=` {#escaping_html}
 
@@ -857,7 +937,7 @@ For example,
 compiles to
 
     I feel <strong>!
-
+<!-- TODO
 ## Whitespace Preservation
 
 Sometimes you don't want Scaml to indent all your text.
@@ -874,3 +954,4 @@ and so should be passed through {Scaml::Helpers#find\_and\_preserve} or the [`~`
 which has the same effect.
 
 Blocks of literal text can be preserved using the [`:preserve` filter](#preserve-filter).
+-->
