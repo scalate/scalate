@@ -134,7 +134,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             } else {
               flush_text
               val method = s.sanitise match {
-                case None => { "org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
+                case None => { "_root_.org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
                 case Some(true) => { "$_scalate_$_context <<< ( " }
                 case Some(false) => { "$_scalate_$_context << ( " }
               }
@@ -146,7 +146,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:EvaluatedText=> {
           flush_text
           val method = s.sanitise match {
-            case None => { "org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
+            case None => { "_root_.org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
             case Some(true) => { "$_scalate_$_context <<< ( " }
             case Some(false) => { "$_scalate_$_context << ( " }
           }

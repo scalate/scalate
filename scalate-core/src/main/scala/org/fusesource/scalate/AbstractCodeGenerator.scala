@@ -58,7 +58,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       indent {
         // We prefix the function an variables with $_scalate_$ to avoid namespace pollution which could
         // conflict with definitions declared in the template
-        this << "def $_scalate_$render($_scalate_$_context:org.fusesource.scalate.RenderContext): Unit = {"
+        this << "def $_scalate_$render($_scalate_$_context:_root_.org.fusesource.scalate.RenderContext): Unit = {"
         indent {
           generateBindings(bindings) {
             generate(statements)
@@ -71,9 +71,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
 
 
       this <<;
-      this << "class " + className + " extends org.fusesource.scalate.Template {"
+      this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
       indent {
-        this << "def render(context:org.fusesource.scalate.RenderContext): Unit = "+className+".$_scalate_$render(context);"
+        this << "def render(context:_root_.org.fusesource.scalate.RenderContext): Unit = "+className+".$_scalate_$render(context);"
       }
       this <<"}"
 
@@ -101,8 +101,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       this << binding.kind+" "+binding.name+":"+binding.className+" = ($_scalate_$_context.binding(" + asString(binding.name) + ") match {"
       indent {
         if (binding.defaultValue.isEmpty) {
-          this << "case None => { throw new org.fusesource.scalate.NoValueSetException("+asString(binding.name)+") }"
-          this << "case Some(null) => { throw new org.fusesource.scalate.NoValueSetException("+asString(binding.name)+") }"
+          this << "case None => { throw new _root_.org.fusesource.scalate.NoValueSetException("+asString(binding.name)+") }"
+          this << "case Some(null) => { throw new _root_.org.fusesource.scalate.NoValueSetException("+asString(binding.name)+") }"
           this << "case Some(value) => { value.asInstanceOf["+binding.className+"] }"
         } else {
           this << "case None => { "+binding.defaultValue.get+" }"
