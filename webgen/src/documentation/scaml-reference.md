@@ -5,7 +5,8 @@
 
 Scaml is a markup language
 that's used to cleanly and simply describe the XHTML of any web document,
-without the use of inline code.
+without the use of inline code.  It is Scala version of
+[Haml](http://haml-lang.com/).
 Scaml functions as a replacement
 for inline page templating systems such as PHP, ERB, and ASP.
 However, Scaml avoids the need for explicitly coding XHTML into the template,
@@ -33,7 +34,7 @@ For example:
       %whiz
         Wow this is cool!
 
-is compiled to:
+is rendered to:
 
     <gee>
       <whiz>
@@ -50,7 +51,7 @@ For example:
     %p
       <div id="blah">Blah!</div>
 
-is compiled to:
+is rendered to:
 
     <p>
       <div id="blah">Blah!</div>
@@ -66,7 +67,7 @@ For example:
       = title
       \= title
 
-is compiled to:
+is rendered to:
 
     <title>
       MyPage
@@ -89,7 +90,7 @@ For example:
       %two
         %three Hey there
 
-is compiled to:
+is renderd to:
 
     <one>
       <two>
@@ -119,7 +120,7 @@ For example:
 
     %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
 
-is compiled to:
+is renderd to:
 
     <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'></html>
 
@@ -131,7 +132,7 @@ For example:
     %script{:type => "text/javascript",
             :src  => "javascripts/script"}
 
-is compiled to:
+is rendered to:
 
     <script type='text/javascript' src='javascripts/script'></script>
     
@@ -191,7 +192,7 @@ This can then be used in Scaml, like so:
 
     %html{html_attrs('fr-fr')}
 
-This is compiled to:
+This is rendered to:
 
     <html lang='fr-fr' xml:lang='fr-fr' xmlns='http://www.w3.org/1999/xhtml'>
     </html>
@@ -214,7 +215,7 @@ then
 
     %sandwich{hash1, hash2, :delicious => true}/
 
-would compile to:
+would render to:
 
     <sandwich bread='whole wheat' delicious='true' filling='peanut butter and jelly' />
 
@@ -277,7 +278,7 @@ For example:
       %p.beans{ :food => 'true' } The magical fruit
       %h1.class.otherclass#id La La La
 
-is compiled to:
+is renderd to:
 
     <div id='things'>
       <span id='rice'>Chicken Fried</span>
@@ -294,7 +295,7 @@ And,
         .article.entry
           Neil Patrick Harris would like to dispel any rumors that he is straight
 
-is compiled to:
+is rendered to:
 
     <div id='content'>
       <div class='articles'>
@@ -323,7 +324,7 @@ is the same as:
       %div.item
         %div.description What a cool item!
 
-and is compiled to:
+and is rendered to:
 
     <div id='collection'>
       <div class='item'>
@@ -340,7 +341,7 @@ For example:
     %br/
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html'}/
 
-is compiled to:
+is rendered to:
 
     <br />
     <meta http-equiv='Content-Type' content='text/html' />
@@ -354,7 +355,7 @@ For example:
     %br
     %meta{'http-equiv' => 'Content-Type', :content => 'text/html'}
 
-is also compiled to:
+is also rendered to:
 
     <br />
     <meta http-equiv='Content-Type' content='text/html' />
@@ -377,7 +378,7 @@ For example:
       %div
         Foo!
 
-is compiled to:
+is rendered to:
 
     <blockquote><div>
       Foo!
@@ -389,7 +390,7 @@ And:
     %img>
     %img
 
-is compiled to:
+is rendered to:
 
     <img /><img /><img />
 
@@ -397,7 +398,7 @@ And:
 
     %p<= "Foo\nBar"
 
-is compiled to:
+is rendered to:
 
     <p>Foo
     Bar</p>
@@ -410,7 +411,7 @@ And finally:
       bar
     %img
 
-is compiled to:
+is rendered to:
 
     <img /><pre>foo
     bar</pre><img />
@@ -441,7 +442,7 @@ For example:
       %bar[290]/
       Hello!
 
-is compiled to:
+is rendered to:
 
     <div class='greeting_crazy_user' id='greeting_crazy_user_15'>
       <bar class='fixnum' id='fixnum_581' />
@@ -464,7 +465,7 @@ object's class, you can implement the `haml_object_ref` method on the object.
     %div[user]
       Hello!
 
-is compiled to:
+is rendered to:
 
     <div class='a_crazy_user' id='a_crazy_user_15'>
       Hello!
@@ -487,7 +488,7 @@ For example:
         %h1 I am the international space station
         %p Sign my guestbook
 
-is compiled to:
+is rendered to:
 
     <?xml version='1.0' encoding='utf-8' ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -558,7 +559,7 @@ For example:
 
     !!! XML iso-8859-1
 
-is compiled to:
+is rendered to:
 
     <?xml version='1.0' encoding='iso-8859-1' ?>
 -->
@@ -683,18 +684,18 @@ members.  This can be done by adding the import keyword to the attribute declara
 For example:
 
     -@ import val model: Person
-    %p Hello #{name}, what is the weather like in your #{city}
+    %p Hello #{name}, what is the weather like in #{city}
 
 is the same as:
 
     -@ val model: Person
     - import model._
-    %p Hello #{name}, what is the weather like in your #{city}
+    %p Hello #{name}, what is the weather like in #{city}
 
 Which is the same as:
 
     -@ val model: Person
-    %p Hello #{model.name}, what is the weather like in your #{model.city}
+    %p Hello #{model.name}, what is the weather like in #{model.city}
 
 
 ### Inserting Scala: `=`
@@ -894,7 +895,7 @@ For example:
 
     &= "I like cheese & crackers"
 
-compiles to
+renders to
 
     I like cheese &amp; crackers
 
@@ -906,7 +907,7 @@ For example,
 
     & I like #{"cheese & crackers"}
 
-compiles to
+renders to
 
     I like cheese &amp; crackers
 
@@ -924,7 +925,7 @@ For example, if `:escape_html` is set:
     = "I feel <strong>!"
     != "I feel <strong>!"
 
-compiles to
+renders to
 
     I feel &lt;strong&gt;!
     I feel <strong>!
@@ -934,7 +935,7 @@ For example,
 
     ! I feel #{"<strong>"}!
 
-compiles to
+renders to
 
     I feel <strong>!
 <!-- TODO

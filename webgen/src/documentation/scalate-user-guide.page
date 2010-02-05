@@ -1,0 +1,10 @@
+---
+title: Scalate User Guide
+in_menu: true
+sort_info: 10
+--- name:overview
+# Scalate User Guide
+Scala Template Engine: like HAML or JSP without the crap but with added Scala coolness
+
+--- name:content pipeline:tags,markdown
+{include_file: {filename: src/documentation/scalate-user-guide.md, process_output: false, escape_html: false}}
