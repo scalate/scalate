@@ -100,6 +100,7 @@ class ScamlParser extends IndentedParser() {
   val any                     = """.*""".r
   val nl                      = """\r?\n""".r
   val any_space_then_nl      ="""[ \t]*\r?\n""".r
+  val tag_ident              = """[a-zA-Z_0-9][\:a-zA-Z_0-9]*""".r
   val word                    = """[a-zA-Z_0-9]+""".r
   val text                    = """.+""".r
   val space                   = """[ \t]+""".r
@@ -107,7 +108,10 @@ class ScamlParser extends IndentedParser() {
 
   val ident                   = """[a-zA-Z_]\w*""".r
   val qualified_type          = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val string_literal          = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
+  val scala_string_literal    = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
+  val ruby_string_literal     = "'"~>"""([^'\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"'"
+  val string_literal          = scala_string_literal | ruby_string_literal
+
   val whole_number            = """-?\d+""".r
   val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
   val floating_point_number   = """-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r
@@ -118,10 +122,10 @@ class ScamlParser extends IndentedParser() {
   //
   def hash_style_attributes = prefixed("{" ~ some_space, repsep(hash_attribute_entry,"""[ \t]*,\s*""".r)) <~ some_space ~ "}"
   def hash_attribute_entry: Parser[(Any, Any)] = (expression <~ some_space) ~ ("=>" ~ some_space ~> expression) ^^ { case key~value => (key, value) }
-  def expression: Parser[Any] = string_literal | symbol | whole_number | decimal_number | floating_point_number | ident | attributes
+  def expression: Parser[Any] = string_literal | whole_number | decimal_number | floating_point_number | symbol | tag_ident | attributes
   def symbol = ":"~>ident 
 
-  def html_attribute_entry: Parser[(Any, Any)] = (ident <~ some_space) ~ ("=" ~some_space ~> string_literal) ^^ { case key~value => (key, value) }
+  def html_attribute_entry: Parser[(Any, Any)] = (tag_ident <~ some_space) ~ ("=" ~some_space ~> string_literal) ^^ { case key~value => (key, value) }
   def html_style_attributes = prefixed("("~some_space, repsep(html_attribute_entry,"""\s+""".r)) <~ some_space~")"
 
   def class_entry:Parser[(Any, Any)] = "." ~> word ^^ { case x=> ("class", x) }
@@ -145,10 +149,10 @@ class ScamlParser extends IndentedParser() {
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
   def full_element_statement:Parser[Element] =
-    opt("%"~>word) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
+    opt("%"~>tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
       case (tag~attributes~wsc) => Element(tag, attributes, None, List(), wsc, true)
     } |
-    opt("%"~>word) ~ attributes ~ opt(trim) ~ element_text ~ rep(indent(statement)) ^^ {
+    opt("%"~>tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ rep(indent(statement)) ^^ {
         case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
     }
 
@@ -226,10 +230,13 @@ class ScamlParser extends IndentedParser() {
 object ScamlParser {
   def main(args: Array[String]) = {
      val in = """
-= someLayout 
-  this is some body!
+%div#things
+  %span#rice Chicken Fried
+  %p.beans{ :food => 'true' } The magical fruit
+  %h1.class.otherclass#id La La La
 """
-     println((new ScamlParser).parse(in))
-   }
+    val p = new ScamlParser
+    println(p.phrase(p.parser)(new CharSequenceReader(in)))
+  }
 
 }

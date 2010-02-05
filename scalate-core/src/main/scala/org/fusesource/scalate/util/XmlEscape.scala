@@ -30,6 +30,7 @@ object XmlEscape
         ( ch >= 0x23 && ch <= 0x25 )  ||
         ( ch >= 0x28 && ch <= 0x3B )  ||
         ( ch == 0x3D )                ||
+        ( ch == '\'' )                ||
         ( ch >= 0x3F && ch <= 0x7E ) ) {
       buffer.append( ch )
     } else {
