@@ -59,13 +59,13 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
         val tempFile = File.createTempFile("scalate_", "." + defaultTemplateExtension)
         IOUtil.copy(new StringReader(content), new FileWriter(tempFile))
 
-        val template = templateEngine.loadTemporary(uri)
+        val template = templateEngine.compile(uri)
         tempFile.delete
         template
 
       } else {
         // use resource from endpoint configuration
-        val resource = getResource()
+        val resource = getResource()            
         ObjectHelper.notNull(resource, "resource")
         debug("Scalate content read from resource " + resource + " with resourceUri: " + path + " for endpoint " + getEndpointUri())
 

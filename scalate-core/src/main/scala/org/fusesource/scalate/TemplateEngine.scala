@@ -15,7 +15,6 @@
  */
 package org.fusesource.scalate
 
-
 import scaml.ScamlCodeGenerator
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
@@ -24,13 +23,36 @@ import ssp.{SspCodeGenerator, ScalaCompiler}
 import util.IOUtil
 import java.io.{File}
 
-
+/**
+ * A TemplateEngine is used to compile and load Scalate templates.
+ * The TemplateEngine takes care of setting up the Scala compiler
+ * and caching compiled templates for quicker subseqent loads
+ * of a requested template.
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
 class TemplateEngine {
-  private class CacheEntry(val template: Template, val timestamp: Long, val dependencies: Set[String])
 
-  var pageFileEncoding = "UTF-8"
+  private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
+    def isStale() = dependencies.exists {
+      resourceLoader.lastModified(_) > timestamp
+    }
+  }
+
+  /**
+   * Set to false if you don't want the template engine to ever cache any of the compiled templates.
+   */
+  var allowCaching = true
+
+  /**
+   * Set to false if you don't want the template engine to see if a previously compiled template needs
+   * to be reloaded due to it being updated.
+   */
   var allowReload = true
 
+  /**
+   *
+   */
   var resourceLoader: ResourceLoader = new FileResourceLoader
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator)
 
@@ -41,168 +63,135 @@ class TemplateEngine {
 
   var classpath: String = null
   var workingDirectoryRoot: File = null
+  var classLoader = this.getClass.getClassLoader
 
-  private val templateCache = new HashMap[(String, List[Binding]), CacheEntry]
+  private val templateCache = new HashMap[String, CacheEntry]
 
-
-  def load(uri: String, bindings: Binding*) = {
-
-    val bindingsList = bindings.toList;
-    val key = (uri, bindings.toList)
-    val timestamp = Platform.currentTime
-
-    // TODO: mangle the params and include in the workingDirectory path
-    val workingDirectory = new File(workingDirectoryRoot, uri)
-    val bytecodeDirectory = new File(workingDirectory, "bytecode")
-
-    // Obtain the template object that should service this request (creating it on the fly if needed)
-    templateCache.synchronized {
-      // Determine whether to build/rebuild the template, load existing .class files from the file system,
-      // or reuse an existing template that we've already loaded
-      val cacheEntry = templateCache.get(key)
-      ((cacheEntry match {
-        case None =>
-          val ch = listFiles(bytecodeDirectory)
-          if (bytecodeDirectory.exists && ch.length > 0 && findNewestTimestamp(ch, bytecodeDirectory.lastModified) >= lastModified(uri))
-            'LoadPrebuilt
-          else
-            'Build
-        case Some(entry) =>
-          if (allowReload && entry.dependencies.exists {lastModified(_) > entry.timestamp})
-            'Build
-          else
-            'AlreadyLoaded
-      }) match {
-        case 'AlreadyLoaded =>
-          cacheEntry.get
-        case 'Build =>
-          val newCacheEntry = preparePage(timestamp, uri, bindingsList)
-          templateCache += (key -> newCacheEntry)
-          newCacheEntry
-        case 'LoadPrebuilt =>
-          val className = codeGenerator(uri).className(uri, bindingsList)
-          val template = createTemplate(className, bytecodeDirectory)
-          val dependencies = Set.empty[String] + uri
-          val newCacheEntry = new CacheEntry(template, timestamp, dependencies)
-          templateCache += (key -> newCacheEntry)
-          newCacheEntry
-      }).template
-    }
+  /**
+   * Compiles a template without placing it in the template cache. Useful for temporary
+   * templates or dynamically created templates.
+   */
+  def compile(uri: String, bindings: Binding*):Template = {
+    compile_and_load(uri, bindings.toList, 0)._1
   }
 
   /**
-   * Does no caching; useful for temporary templates or temapltes created dynamically such as from the contents of a message
+   * Generates the Scala code for a template.  Useful for generating scala code that
+   * will then be compiled into the application as part of a build process.
    */
-  def loadTemporary(uri: String, bindings: Binding*) = {
-
-    val argsList = bindings.toList;
-    val timestamp = Platform.currentTime
-
-    val newCacheEntry = preparePage(timestamp, uri, argsList)
-    newCacheEntry.template
+  def generateScala(uri: String, bindings: List[Binding]) = {
+    generator(uri).generate(this, uri, bindings)
   }
 
-  def codeGenerator(uri: String): CodeGenerator = {
-    val t = uri.split("\\.")
-    if (t.length < 2) {
-      throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
-    } else {
-      val extension = t.last
-      codeGeneratorForExtension(extension)
-    }
-  }
+  /**
+   * Compiles and then caches the specified template.  If the template
+   * was previously cached, the previously compiled template instance
+   * is returned.  The cache entry in invalidated and then template
+   * is re-compiled if the template file has been updated since
+   * it was last compiled.
+   */
+  def load(uri: String, bindings: Binding*): Template = {
+    templateCache.synchronized {
 
-  def codeGeneratorForExtension(extension: String): CodeGenerator = {
-    val rc = codeGenerators.get(extension).get
-    if (rc == null) {
-      throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
-    }
-    rc;
-  }
+      // Determine whether to build/rebuild the template, load existing .class files from the file system,
+      // or reuse an existing template that we've already loaded
+      templateCache.get(uri) match {
 
-  private def listFiles(bytecodeDirectory: File) = bytecodeDirectory.listFiles match {
-    case null => Array[File]()
-    case x: Array[File] => x
-  }
-
-  private def findNewestTimestamp(path: File): Long = {
-    val c = listFiles(path)
-    findNewestTimestamp(c, path.lastModified)
-  }
-
-  private def findNewestTimestamp(children: Array[File], defaultValue: Long): Long = {
-    if (children.length == 0)
-      defaultValue
-    else
-      children.foldLeft(defaultValue)((newestSoFar, file) => {
-        val newestInSubtree = findNewestTimestamp(file)
-        if (newestSoFar > newestInSubtree) newestSoFar else newestInSubtree
-      })
-  }
-
-
-  private def lastModified(uri: String): Long =
-    resourceLoader.lastModified(uri)
-
-
-  private def preparePage(timestamp: Long, uri: String, bindings: List[Binding]): CacheEntry = {
-    try {
-      generate_compile_and_load(timestamp, uri, bindings)
-    } catch {
-      case e:InstantiationException=>{
-        try {
-          println("First try resulted in a InstantiationException.. let try one more time..");
-          generate_compile_and_load(timestamp, uri, bindings)
-        } catch {
-          case e:Throwable=>{
-            e.printStackTrace
-            val cause = e.getCause
-            if (cause != null && cause != e) {
-              print("Caused by: ")
-              cause.printStackTrace
+        // Not in the cache..
+        case None =>
+          val className = generator(uri).className(uri, bindings.toList)
+          try {
+            // Try to load a pre-compiled template from the classpath
+            cache(uri, load_compiled_entry(className))
+          } catch {
+            case e:Throwable => {
+              // It was not pre-compiled... compile and load it.
+              cache(uri, compile_and_load_entry(uri, bindings.toList))
             }
-            throw new TemplateException("Could not load template: "+e, e);
           }
+
+        // It was in the cache..
+        case Some(entry) =>
+          // check for staleness
+          if (allowReload && entry.isStale)
+            // re-compile it
+            cache(uri, compile_and_load_entry(uri, bindings.toList))
+          else
+            // Cache entry is valid
+            entry.template
+
+      }
+    }
+  }
+
+  private def load_compiled_entry(className:String) = {
+    val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
+    val clazz = cl.loadClass(className)
+    val template = clazz.asInstanceOf[Class[Template]].newInstance
+    CacheEntry(template, Set(), Platform.currentTime)
+  }
+
+  private def compile_and_load_entry(uri:String, bindings: List[Binding]) = {
+    val (template, dependencies) = compile_and_load(uri, bindings, 0)
+    CacheEntry(template, dependencies, Platform.currentTime)
+  }
+
+  private def cache(uri:String, ce:CacheEntry) :Template = {
+    if( allowCaching ) {
+      templateCache += (uri -> ce)
+    }
+    ce.template
+  }
+
+  private def compile_and_load(uri: String, bindings: List[Binding], attempt:Int): (Template, Set[String]) = {
+    try {
+
+      // Generate the scala source code from the template
+      val code = generateScala(uri, bindings)
+
+      // Write the source code to file..
+      val sourceFile = new File(sourceDirectory, uri+".scala")
+      sourceFile.getParentFile.mkdirs
+      IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
+
+      // Compile the generated scala code
+      compiler.compile(sourceFile)
+
+      // Load the compiled class and instantiate the template object
+      val template = load_compiled_entry(code.className).template
+
+      (template, code.dependencies)
+    } catch {
+      // TODO: figure out why we sometimes get these InstantiationException errors that
+      // go away if you redo
+      case e:InstantiationException=>{
+        if( attempt ==0 ) {
+          compile_and_load(uri, bindings, 1)
+        } else {
+          throw new TemplateException("Could not load template: "+e, e);
         }
       }
       case e:Throwable=>{
-        e.printStackTrace
-        val cause = e.getCause
-        if (cause != null && cause != e) {
-          print("Caused by: ")
-          cause.printStackTrace
-        }
         throw new TemplateException("Could not load template: "+e, e);
       }
     }
   }
 
-  private def generate_compile_and_load(timestamp: Long, uri: String, bindings: List[Binding]): CacheEntry = {
-
-    // Generate the scala source code from the template
-    val code = codeGenerator(uri).generate(this, uri, bindings)
-
-    // Write the source code to file..
-    val sourceFile = new File(sourceDirectory, uri+".scala")
-    sourceFile.getParentFile.mkdirs
-    IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
-
-    // Compile the generated scala code
-    compiler.compile(sourceFile)
-
-    // Load the compiled class and instantiate the template object
-    val template = createTemplate(code.className, bytecodeDirectory)
-
-    new CacheEntry(template, timestamp, code.dependencies)
-  }
-
-
-
-  private def createTemplate(className: String, bytecodeDirectory: File): Template = {
-    // Load the compiled class
-    val classLoader = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), this.getClass.getClassLoader)
-    val clazz = classLoader.loadClass(className)
-    clazz.asInstanceOf[Class[Template]].newInstance
+  /**
+   * Gets the code generator to use for the give uri string by looking up the uri's extension
+   * in the the codeGenerators map.
+   */
+  private def generator(uri: String): CodeGenerator = {
+    val t = uri.split("\\.")
+    if (t.length < 2) {
+      throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
+    } else {
+      val extension = t.last
+      codeGenerators.get(extension) match {
+        case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
+        case Some(generator) => generator
+      }
+    }
   }
 
 }

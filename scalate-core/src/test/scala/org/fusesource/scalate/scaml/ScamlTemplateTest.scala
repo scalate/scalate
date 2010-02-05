@@ -694,7 +694,7 @@ The bean is blue
     context.attributes += "context"-> context
     context.attributes += "bean"-> Bean("red", 10)
 
-    val template = engine.loadTemporary("/org/fusesource/scalate/scaml/test.scaml", Binding("context", context.getClass.getName, true))
+    val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml", Binding("context", context.getClass.getName, true))
     template.render(context)
     out.close
     buffer.toString
