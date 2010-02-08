@@ -241,12 +241,17 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
     
+    def isAutoClosed(statement:Element) = {
+      statement.text == None && statement.body.isEmpty &&
+      statement.tag.isDefined && ScamlOptions.autoclose.contains(statement.tag.get)
+    }
+
     def generate(statement:Element):Unit = {
       var tag = statement.tag.getOrElse("div");
       var prefix = "<"+tag+attributes(statement.attributes)+">"
       var suffix = "</"+tag+">"
 
-      if( statement.close ) {
+      if( statement.close || isAutoClosed(statement) ) {
         if( statement.text.isDefined || !statement.body.isEmpty ) {
           throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.");
         }

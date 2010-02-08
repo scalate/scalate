@@ -25,6 +25,14 @@ import org.fusesource.scalate.RenderContext
 object ScamlOptions {
 
   var escape_html = false;
+  
+  var autoclose = List(
+    "meta",
+    "img",
+    "link",
+    "script",
+    "br",
+    "hr")
 
   def write(context:RenderContext, value:Any):Unit = {
     if( escape_html ) {

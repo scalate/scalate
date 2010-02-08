@@ -133,7 +133,7 @@ class ScamlTemplateTest extends FunSuite {
 %script{:type => "text/javascript",
             :src  => "javascripts/script"}
 ""","""
-<script type='text/javascript' src='javascripts/script'></script>
+<script type='text/javascript' src='javascripts/script'/>
 """)
 
 
@@ -165,7 +165,7 @@ class ScamlTemplateTest extends FunSuite {
 %script(type="text/javascript"
      src="javascripts/script")
 ""","""
-<script type='text/javascript' src='javascripts/script'></script>
+<script type='text/javascript' src='javascripts/script'/>
 """)
 
 
@@ -269,6 +269,17 @@ class ScamlTemplateTest extends FunSuite {
 <br/>
 <meta http-equiv='Content-Type' content='text/html'/>
 """)
+
+  testRender("`meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.",
+"""
+%br/
+%meta{'http-equiv' => 'Content-Type', :content => 'text/html'}/
+""","""
+<br/>
+<meta http-equiv='Content-Type' content='text/html'/>
+""")
+  
+
 
   /////////////////////////////////////////////////////////////////////
   //

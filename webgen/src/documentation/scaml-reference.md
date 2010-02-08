@@ -134,7 +134,7 @@ For example:
 
 is rendered to:
 
-    <script type='text/javascript' src='javascripts/script'></script>
+    <script type='text/javascript' src='javascripts/script'/>
     
 
 #### HTML-style Attributes: `()`
@@ -346,10 +346,9 @@ is rendered to:
     <br />
     <meta http-equiv='Content-Type' content='text/html' />
 
-<!-- TODO 
 Some tags are automatically closed, as long as they have no content.
 `meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.
-This list can be customized by setting the [`:autoclose`](#autoclose-option) option.
+This list can be customized by setting the [`ScamlOptions.autoclose`](#autoclose-option) option.
 For example:
 
     %br
@@ -357,9 +356,8 @@ For example:
 
 is also rendered to:
 
-    <br />
-    <meta http-equiv='Content-Type' content='text/html' />
--->
+    <br/>
+    <meta http-equiv='Content-Type' content='text/html'/>
 
 ### Whitespace Removal: `>` and `<`
 
