@@ -12,7 +12,8 @@ You can get "Enterprise Support, Mentoring and Training":http://fusesource.com/e
 
 You may also find the "Frequently Asked Questions (FAQ)":documentation/faq.html useful.
 
-We love feedback of all kinds; whether it's thoughts, suggestions, or bug reports. To submit feedback please use the <a href="{project_issue_url:}">{project_name:} Issue Tracker</a>.
+We love feedback of all kinds; whether it's thoughts, suggestions, or bug reports. To submit feedback please use the 
+<a href="{project_issue_url:}">{project_name:} Issue Tracker</a>.
 
 
 h3. See Also
@@ -20,5 +21,3 @@ h3. See Also
   * "FAQ":documentation/faq.html
   * <a href="{project_issue_url:}">Issue Tracker</a>
   * <a href="http://fusesource.com/contact">Contact Us</a>
-  
-
