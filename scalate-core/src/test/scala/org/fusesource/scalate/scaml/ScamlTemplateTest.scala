@@ -28,6 +28,7 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends FunSuite {
 
+
   /////////////////////////////////////////////////////////////////////
   //
   // Plain Text
@@ -607,6 +608,18 @@ bar</pre><img/>
 %p This is #{quality} cake!
 ""","""
 <p>This is scrumptious cake!</p>
+""")
+
+  testRender("Backslashes can be used to escape `#{` strings, but they don't act as escapes anywhere else in the string.",
+"""
+%p
+  A slash make a difference here: \#{name} is set to: \\#{name}
+  But is ignored for: \# or \\
+""","""
+<p>
+  A slash make a difference here: #{name} is set to: \Hiram
+  But is ignored for: \# or \\
+</p>
 """)
 
 

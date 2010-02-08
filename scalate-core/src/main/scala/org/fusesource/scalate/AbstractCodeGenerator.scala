@@ -120,10 +120,10 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       val buffer = new StringBuffer
       buffer.append("\"")
       text.foreach(c=>{
-        if ((c >= '#' && c <= '~') || c == ' ' || c == '!')
-          buffer.append(c)
-        else if (c == '"')
+        if (c == '"')
           buffer.append("\\\"")
+        else if (c == '\\')
+          buffer.append("\\\\")
         else if (c == '\n')
           buffer.append("\\n")
         else if (c == '\r')
@@ -132,6 +132,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
           buffer.append("\\b")
         else if (c == '\t')
           buffer.append("\\t")
+        else if ((c >= '#' && c <= '~') || c == ' ' || c == '!')
+          buffer.append(c)
         else {
           buffer.append("\\u")
           buffer.append(format("%04x", c.asInstanceOf[Int]))

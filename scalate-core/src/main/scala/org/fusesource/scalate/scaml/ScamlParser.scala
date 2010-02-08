@@ -166,7 +166,18 @@ class ScamlParser extends IndentedParser() {
     case code~Some(text)=>{ code :: text }
     case code~None=>{ code :: Nil }
   }
-  val litteral_fragment:Parser[List[String]] = opt(upto("#{"|any_space_then_nl)) ~ opt(evaluated_fragment) ^^ {
+
+  val litteral_part:Parser[String] =
+    upto("#{" | """\#{""" | """\\#{"""|any_space_then_nl) ~
+      opt(
+        """\#{""" ~ litteral_part ^^ { case x~y=> "#{"+y }  |
+        """\\""" ^^ { s=>"""\""" }
+      ) ^^ {
+        case x~Some(y) => x+y
+        case x~None => x
+      }
+
+  val litteral_fragment:Parser[List[String]] = opt(litteral_part) ~ opt(evaluated_fragment) ^^ {
     case None~Some(code)=>{ "" :: code }
     case None~None=>{ "" :: Nil }
     case Some(text)~Some(code)=>{ text :: code }
@@ -233,9 +244,11 @@ class ScamlParser extends IndentedParser() {
 
 object ScamlParser {
   def main(args: Array[String]) = {
-     val in = """!!! XML
-!!! 
-%div#things
+     val in = """
+v:#{t}
+v:\#{t}
+v:\\#{t}
+v:\\\#{t}
 """
     val p = new ScamlParser
     println(p.phrase(p.parser)(new CharSequenceReader(in)))

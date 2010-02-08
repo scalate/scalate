@@ -792,22 +792,22 @@ and might compile to
 
     <p>This is scrumptious cake!</p>
     
-<!-- TODO
 Backslashes can be used to escape `#{` strings,
 but they don't act as escapes anywhere else in the string.
 For example:
 
     %p
-      Look at \\#{h word} lack of backslash: \#{foo}
-      And yon presence thereof: \{foo}
+      A slash make a difference here: \#{name} is set to: \\#{name}
+      But is ignored for: \# or \\
 
 might compile to
 
     <p>
-      Look at \yon lack of backslash: #{foo}
-      And yon presence thereof: \{foo}
+      A slash make a difference here: #{name} is set to: \Hiram
+      But is ignored for: \# or \\
     </p>
-
+    
+<!--
 Interpolation can also be used within [filters](#filters).
 For example:
 
