@@ -47,9 +47,9 @@ img {
 
 #navigation { width: 100%; float: left;
     font-family: Helvetica,Verdana,Arial,sans-serif; 
-    background: #993333; 
+    background: black; 
 	text-align:center; padding: 8px;
-    color: white; 
+    color: #b55; 
 	font-size: 10pt; 
 	font-weight: bold;
   position: absolute;  
@@ -59,12 +59,15 @@ img {
 #navigation ul { display: block; margin:0; padding:0; }
 #navigation li { list-style-type: none; display: inline; margin:0 5px 0 5px;}
 
-#overview { width: 100%; float: left; margin-top:20px}
-#overview div.logo {float: left; padding-right: 20px; }
+#overview { width: 100%; padding-top:20px}
 #overview div.message { 
-    font-size: 14pt; 
+    font-size: 11pt; 
+    margin-top: -20px;
+    padding-left: 120px;
+    width: 350px;
 }
-#overview div.message h1{ margin-bottom: 5px; }
+#overview div.message h1{ margin-bottom: 5px; display:none; }
+#overview div.message p{ margin-top: 0px; padding-bottom:14px; }
 
 #spot { width: 100%; float: left; 
     margin-top: 15px;
