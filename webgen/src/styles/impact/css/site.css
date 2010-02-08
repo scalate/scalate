@@ -13,7 +13,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     overflow: visible;
-    color: #004b85;
+    color: #993333;
 }
 
 /*
@@ -26,13 +26,13 @@ h1 {
 p { margin-bottom:0px; }
 
 a {
-	color: #004B85;
+	color: #990000;
 	font-weight:bold;
 	text-decoration: none;
 }
 
 a:hover { 
-	color: #6699CC; 
+	color: #ff3333; 
 	text-decoration: underline;
 	}
 
@@ -47,7 +47,7 @@ img {
 
 #navigation { width: 100%; float: left;
     font-family: Helvetica,Verdana,Arial,sans-serif; 
-    background: #0D4D82; 
+    background: #993333; 
 	text-align:center; padding: 8px;
     color: white; 
 	font-size: 10pt; 
@@ -131,7 +131,7 @@ img {
 #blog .wrapper { min-width: 600px; width: 600px; margin: 0 auto; }
 #blog h1 {
   font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif; 
-  font-size: 18pt; color: #0D4D82;
+  font-size: 18pt; color: #993333;
 }
 #blog h2 {
   border-bottom: thin dashed #DDD;
