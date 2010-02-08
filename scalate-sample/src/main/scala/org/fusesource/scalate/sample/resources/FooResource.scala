@@ -1,5 +1,6 @@
 package org.fusesource.scalate.sample.resources
 
+import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.api.view.ImplicitProduces
 import javax.ws.rs.{Produces, GET, Path, PathParam}
 
@@ -18,6 +19,13 @@ class FooResource {
   @GET
   @Produces(Array("application/xml", "text/xml"))
   def get = <hello>this is a foo!</hello>
+
+  @GET
+  @Path("sub")
+  @Produces(Array("text/html;qs=5"))
+  def scaml() = {
+    new Viewable("sub", this);
+  }
 
   @Path("{itemid}/")
   def findITem(@PathParam("itemid") id: String) = {
