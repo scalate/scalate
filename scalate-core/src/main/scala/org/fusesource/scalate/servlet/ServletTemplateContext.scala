@@ -19,7 +19,7 @@ import org.fusesource.scalate.{DefaultRenderContext, NoSuchViewException, NoValu
 class ServletTemplateContext(val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(response.getWriter) {
 
   var viewPrefixes = List("WEB-INF", "")
-  var viewPostfixes = List(".ssp")
+  var viewPostfixes = List(".ssp", ".scaml")
 
   /**
    * Returns the attribute of the given type or a   { @link NoValueSetException } exception is thrown
