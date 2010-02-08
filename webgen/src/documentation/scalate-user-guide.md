@@ -116,25 +116,25 @@ For more information see the [sbt building instructions](http://scalate.fusesour
 ## Using Scalate in your Web Application
 
 
-1.  Add something like the following to your web.xml file to support Ssp and Scaml pages:
+* Add something like the following to your web.xml file to support Ssp and Scaml pages:
 
-        <servlet>
-          <servlet-name>TemplateEngineServlet</servlet-name>
-          <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-          <load-on-startup>1</load-on-startup>
-        </servlet>
+{coderay:: xml}<servlet>
+  <servlet-name>TemplateEngineServlet</servlet-name>
+  <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
 
-        <servlet-mapping>
-          <servlet-name>TemplateEngineServlet</servlet-name>
-          <url-pattern>*.ssp</url-pattern>
-        </servlet-mapping>
-        <servlet-mapping>
-          <servlet-name>TemplateEngineServlet</servlet-name>
-          <url-pattern>*.scaml</url-pattern>
-        </servlet-mapping>
+<servlet-mapping>
+  <servlet-name>TemplateEngineServlet</servlet-name>
+  <url-pattern>*.ssp</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+  <servlet-name>TemplateEngineServlet</servlet-name>
+  <url-pattern>*.scaml</url-pattern>
+</servlet-mapping>
+{coderay}
 
-2.  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
-
+*  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
     * scala-compiler.jar
     * scala-library.jar
     * scalate-core.jar
