@@ -118,20 +118,20 @@ For more information see the [sbt building instructions](http://scalate.fusesour
 
 1.  Add something like the following to your web.xml file to support Ssp and Scaml pages:
 
-    <servlet>
-      <servlet-name>TemplateEngineServlet</servlet-name>
-      <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-      <load-on-startup>1</load-on-startup>
-    </servlet>
+        <servlet>
+          <servlet-name>TemplateEngineServlet</servlet-name>
+          <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
+          <load-on-startup>1</load-on-startup>
+        </servlet>
 
-    <servlet-mapping>
-      <servlet-name>TemplateEngineServlet</servlet-name>
-      <url-pattern>*.ssp</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-      <servlet-name>TemplateEngineServlet</servlet-name>
-      <url-pattern>*.scaml</url-pattern>
-    </servlet-mapping>
+        <servlet-mapping>
+          <servlet-name>TemplateEngineServlet</servlet-name>
+          <url-pattern>*.ssp</url-pattern>
+        </servlet-mapping>
+        <servlet-mapping>
+          <servlet-name>TemplateEngineServlet</servlet-name>
+          <url-pattern>*.scaml</url-pattern>
+        </servlet-mapping>
 
 2.  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
 
