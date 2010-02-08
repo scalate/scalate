@@ -76,6 +76,7 @@ case class HtmlComment(conditional:Option[String], text:Option[String], body:Lis
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
 case class Filter(filter:String, body:List[String]) extends Statement
 case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
+case class Doctype(line:List[String]) extends Statement
 
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/
@@ -202,6 +203,8 @@ class ScamlParser extends IndentedParser() {
 
   def filter_statement = prefixed(":", text <~ nl) ~ rep(indent(any<~nl)) ^^ { case code~body=> Filter(code,body) }
 
+  def doctype_statement = prefixed("!!!", rep(some_space ~> """[^ \t \r \n]+""".r) <~ some_space ~ nl) ^^ { Doctype(_) }
+
   def statement:Parser[Statement] =
       positioned(haml_comment_statement) |
       positioned(html_comment_statement) |
@@ -209,6 +212,7 @@ class ScamlParser extends IndentedParser() {
       positioned(evaluated_statement) |
       positioned(attribute_statement) |
       positioned(executed_statement) |
+      positioned(doctype_statement) |
       positioned(text_statement)
 
   def parser = rep( statement )
@@ -229,11 +233,9 @@ class ScamlParser extends IndentedParser() {
 
 object ScamlParser {
   def main(args: Array[String]) = {
-     val in = """
+     val in = """!!! XML
+!!! 
 %div#things
-  %span#rice Chicken Fried
-  %p.beans{ :food => 'true' } The magical fruit
-  %h1.class.otherclass#id La La La
 """
     val p = new ScamlParser
     println(p.phrase(p.parser)(new CharSequenceReader(in)))

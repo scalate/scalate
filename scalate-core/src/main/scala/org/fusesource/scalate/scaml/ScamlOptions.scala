@@ -25,7 +25,14 @@ import org.fusesource.scalate.RenderContext
 object ScamlOptions {
 
   var escape_html = false;
-  
+
+
+  object Format extends Enumeration {
+    val xhtml, html4, html5 = Value
+  }
+
+  var format = Format.xhtml
+
   var autoclose = List(
     "meta",
     "img",

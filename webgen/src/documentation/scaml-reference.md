@@ -414,62 +414,6 @@ is rendered to:
     <img /><pre>foo
     bar</pre><img />
     
-<!-- TODO
-### Object Reference: `[]`
-
-Square brackets follow a tag definition and contain a Scala object
-that is used to set the class and id of that tag.
-The class is set to the object's class
-(transformed to use underlines rather than camel case)
-and the id is set to the object's class, followed by its id.
-Because the id of an object is normally an obscure implementation detail,
-this is most useful for elements that represent instances of Models.
-Additionally, the second argument (if present) will be used as a prefix for
-both the id and class attributes.
-For example:
-
-    # file: app/controllers/users_controller.rb
-
-    def show
-      user = CrazyUser.find(15)
-    end
-
-    -# file: app/views/users/show.haml
-
-    %div[user, :greeting]
-      %bar[290]/
-      Hello!
-
-is rendered to:
-
-    <div class='greeting_crazy_user' id='greeting_crazy_user_15'>
-      <bar class='fixnum' id='fixnum_581' />
-      Hello!
-    </div>
-
-If you require that the class be something other than the underscored
-object's class, you can implement the `haml_object_ref` method on the object.
-
-    # file: app/models/crazy_user.rb
-
-    class CrazyUser < ActiveRecord::Base
-      def haml_object_ref
-        "a_crazy_user"
-      end
-    end
-
-    -# file: app/views/users/show.haml
-
-    %div[user]
-      Hello!
-
-is rendered to:
-
-    <div class='a_crazy_user' id='a_crazy_user_15'>
-      Hello!
-    </div>
--->
-<!-- TODO
 ## Doctype: `!!!`
 
 When describing HTML documents with Scaml,
@@ -560,7 +504,6 @@ For example:
 is rendered to:
 
     <?xml version='1.0' encoding='iso-8859-1' ?>
--->
 
 ## Comments
 

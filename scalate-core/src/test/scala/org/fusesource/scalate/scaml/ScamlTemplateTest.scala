@@ -343,6 +343,35 @@ bar</pre><img/>
 
   /////////////////////////////////////////////////////////////////////
   //
+  // Doctype: !!!
+  //
+  /////////////////////////////////////////////////////////////////////
+  testRender("you can have a document type or XML prolog generated automatically by including the characters !!!",
+"""
+!!! XML
+!!!
+%html
+  %head
+    %title Myspace
+  %body
+    %h1 I am the international space station
+    %p Sign my guestbook
+""","""
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Myspace</title>
+  </head>
+  <body>
+    <h1>I am the international space station</h1>
+    <p>Sign my guestbook</p>
+  </body>
+</html>
+""")
+
+  /////////////////////////////////////////////////////////////////////
+  //
   // Comments
   //
   /////////////////////////////////////////////////////////////////////

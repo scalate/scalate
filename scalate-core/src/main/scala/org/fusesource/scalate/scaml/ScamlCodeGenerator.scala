@@ -119,7 +119,53 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:Filter=> {
           throw new UnsupportedOperationException("filters not yet implemented.");
         }
+        case s:Doctype=>{
+          generate(s)
+        }
       }
+    }
+
+    def generate(statement:Doctype):Unit = {
+      write_indent
+      statement.line match {
+        case List("XML")=>
+          write_text("<?xml version='1.0' encoding='utf-8' ?>")
+        case List("XML", encoding)=>
+          write_text("<?xml version='1.0' encoding='"+encoding+"' ?>")
+        case _=>
+          ScamlOptions.format match {
+            case ScamlOptions.Format.xhtml=>
+              statement.line match {
+                case List("Strict")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">""")
+                case List("Frameset")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">""")
+                case List("5")=>
+                  write_text("""<!DOCTYPE html>""")
+                case List("1.1")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">""")
+                case List("Basic")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> """)
+                case List("Mobile")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">""")
+                case _=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">""")
+              }
+            case ScamlOptions.Format.html4=>
+              statement.line match {
+                case List("Strict")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">""")
+                case List("Frameset")=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">""")
+                case _=>
+                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">""")
+              }
+            case ScamlOptions.Format.html5=>
+              write_text("""<!DOCTYPE html>""")
+            
+          }
+      }
+      write_nl
     }
 
     def generate(statement:TextExpression):Unit = {
