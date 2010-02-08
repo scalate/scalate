@@ -112,7 +112,7 @@ img {
 }
 */
 
-#content { width: 100%; float: left; }
+#content { width: 100%; float: left; padding-bottom: 20px; }
 #content .wrapper { min-width: 700px; width: 700px; margin: 0 auto; padding-top: 1em}
 #content div.left {
   float:left;

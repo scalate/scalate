@@ -945,7 +945,7 @@ Sometimes you don't want Scaml to indent all your text.
 For example, tags like `pre` and `textarea` are whitespace-sensitive;
 indenting the text makes them render wrong.
 
-Scaml deals with this by "preserving" newlines before they're put into the document --
+Scaml deals with this by "preserving" newlines before they're put into the document
 converting them to the XHTML whitespace escape code, `&#x000A;`.
 Then Scaml won't try to re-format the indentation.
 
