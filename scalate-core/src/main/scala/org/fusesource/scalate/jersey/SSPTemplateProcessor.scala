@@ -47,31 +47,11 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     try {
       val path = if (basePath.length > 0) {basePath + requestPath} else {requestPath}
 
-      // TODO this code actually results in looking up the resource twice
-      // once here first then again Lift land
-      // I wonder if there's a better way to do this just once?
-      return if (servletContext.getResource(path) == null) {
-        // lets avoid directories named the same as the resource bean!
-        // as this leads to a package with the same name as the resource bean which breaks imports
-        val idx = path.lastIndexOf('/')
-        val sspPath = if (idx > 0) {
-          path.substring(0, idx) + "." + path.substring(idx + 1) + ".ssp"
-        }
-        else {
-          path + ".ssp"
-        }
-        if (servletContext.getResource(sspPath) == null) {
-          //println("WARN: No template found for path '" + path + "' or '" + sspPath + "'")
-          null
-        }
-        else {
-          //println("Found template for path '" + sspPath + "'")
-          sspPath
-        }
-      }
-      else {
-        //println("Found template for path '" + path + "'")
-        path
+      for (suffix <- Array("", ".ssp", ".scaml")) {
+        val fullPath = path + suffix;
+        
+        if (servletContext.getResource(fullPath) != null)
+          return fullPath;
       }
     } catch {
       case e: MalformedURLException =>
