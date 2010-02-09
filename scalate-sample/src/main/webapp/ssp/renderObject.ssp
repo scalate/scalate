@@ -10,7 +10,7 @@
   val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
 
   for (person <- people ) {
-    render(person)
+    includeView(person)
   }
 %>
 

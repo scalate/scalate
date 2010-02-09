@@ -19,15 +19,23 @@ package org.fusesource.scalate.sample
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.fusesource.scalate.servlet.ServletTemplateContext
+import javax.servlet.ServletConfig
+import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletTemplateContext}
+import org.fusesource.scalate.TemplateEngine
 
 class ServletRendersView extends HttpServlet
 {
+
+  var templateEngine:TemplateEngine = null
+
+  override def init(config: ServletConfig) = {
+    super.init(config)
+    templateEngine = new ServletTemplateEngine(config)
+  }
+
   override def doGet(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val model = new Person("Bob", "Mcwhatnot")
-
-
-    val context = new ServletTemplateContext(request, response, getServletContext)
+    val context = new ServletTemplateContext(templateEngine, request, response, getServletContext)
     context.render(model)
   }
 

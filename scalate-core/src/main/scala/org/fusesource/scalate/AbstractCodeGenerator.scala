@@ -144,7 +144,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     }
   }
 
-  override def className(uri: String, bindings:List[Binding]): String = {
+  override def className(uri: String): String = {
     // Determine the package and class name to use for the generated class
     val (packageName, cn) = extractPackageAndClassNames(uri)
 

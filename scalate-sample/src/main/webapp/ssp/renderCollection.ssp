@@ -6,11 +6,10 @@
 
 <%
   import org.fusesource.scalate.sample.Person
-
   val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
-
-  renderCollection(people, separator = {() => "<hr/>"})
+  includeCollection(people, separator = {() => "<hr/>"}) 
 %>
+
 
 </body>
 </html>

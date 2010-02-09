@@ -65,22 +65,24 @@ class TemplateEngine {
   var workingDirectoryRoot: File = null
   var classLoader = this.getClass.getClassLoader
 
+  var bindings = List[Binding]()
+
   private val templateCache = new HashMap[String, CacheEntry]
 
   /**
    * Compiles a template without placing it in the template cache. Useful for temporary
    * templates or dynamically created templates.
    */
-  def compile(uri: String, bindings: Binding*):Template = {
-    compile_and_load(uri, bindings.toList, 0)._1
+  def compile(uri: String):Template = {
+    compile_and_load(uri, 0)._1
   }
 
   /**
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(uri: String, bindings: List[Binding]) = {
-    generator(uri).generate(this, uri, bindings)
+  def generateScala(uri: String) = {
+    generator(uri).generate(this, uri)
   }
 
   /**
@@ -90,7 +92,7 @@ class TemplateEngine {
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(uri: String, bindings: Binding*): Template = {
+  def load(uri: String): Template = {
     templateCache.synchronized {
 
       // Determine whether to build/rebuild the template, load existing .class files from the file system,
@@ -99,14 +101,14 @@ class TemplateEngine {
 
         // Not in the cache..
         case None =>
-          val className = generator(uri).className(uri, bindings.toList)
+          val className = generator(uri).className(uri)
           try {
             // Try to load a pre-compiled template from the classpath
             cache(uri, load_compiled_entry(className))
           } catch {
             case e:Throwable => {
               // It was not pre-compiled... compile and load it.
-              cache(uri, compile_and_load_entry(uri, bindings.toList))
+              cache(uri, compile_and_load_entry(uri))
             }
           }
 
@@ -115,7 +117,7 @@ class TemplateEngine {
           // check for staleness
           if (allowReload && entry.isStale)
             // re-compile it
-            cache(uri, compile_and_load_entry(uri, bindings.toList))
+            cache(uri, compile_and_load_entry(uri))
           else
             // Cache entry is valid
             entry.template
@@ -131,8 +133,8 @@ class TemplateEngine {
     CacheEntry(template, Set(), Platform.currentTime)
   }
 
-  private def compile_and_load_entry(uri:String, bindings: List[Binding]) = {
-    val (template, dependencies) = compile_and_load(uri, bindings, 0)
+  private def compile_and_load_entry(uri:String) = {
+    val (template, dependencies) = compile_and_load(uri, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
 
@@ -143,11 +145,11 @@ class TemplateEngine {
     ce.template
   }
 
-  private def compile_and_load(uri: String, bindings: List[Binding], attempt:Int): (Template, Set[String]) = {
+  private def compile_and_load(uri: String, attempt:Int): (Template, Set[String]) = {
     try {
 
       // Generate the scala source code from the template
-      val code = generateScala(uri, bindings)
+      val code = generateScala(uri)
 
       // Write the source code to file..
       val sourceFile = new File(sourceDirectory, uri+".scala")
@@ -166,7 +168,7 @@ class TemplateEngine {
       // go away if you redo
       case e:InstantiationException=>{
         if( attempt ==0 ) {
-          compile_and_load(uri, bindings, 1)
+          compile_and_load(uri, 1)
         } else {
           throw new TemplateException("Could not load template: "+e, e);
         }

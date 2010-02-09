@@ -7,7 +7,7 @@
 
 <h2>Another snippet</h2>
 
-${beer}
+<%= beer %>
 
 </body>
 </html>

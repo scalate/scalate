@@ -26,7 +26,6 @@ object ScamlOptions {
 
   var escape_html = false;
 
-
   object Format extends Enumeration {
     val xhtml, html4, html5 = Value
   }
@@ -40,13 +39,5 @@ object ScamlOptions {
     "script",
     "br",
     "hr")
-
-  def write(context:RenderContext, value:Any):Unit = {
-    if( escape_html ) {
-      context <<< value;
-    } else {
-      context << value;
-    }
-  }
 
 }

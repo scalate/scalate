@@ -737,17 +737,19 @@ The bean is blue
 
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(out) {
+    val context = new DefaultRenderContext(engine, out) {
       val name = "Hiram"
       val title = "MyPage"
       val href = "http://scalate.fusesource.org"
       val quality = "scrumptious"
     }
 
+    engine.bindings = List(Binding("context", context.getClass.getName, true))
+
     context.attributes += "context"-> context
     context.attributes += "bean"-> Bean("red", 10)
 
-    val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml", Binding("context", context.getClass.getName, true))
+    val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml")
     template.render(context)
     out.close
     buffer.toString

@@ -12,7 +12,7 @@
 </p>
 
 <p>
-  The foo is: ${foo}
+  The foo is: <%= foo %>
 </p>
 
 <p>

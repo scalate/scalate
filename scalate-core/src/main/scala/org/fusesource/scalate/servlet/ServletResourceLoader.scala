@@ -26,11 +26,16 @@ import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, TemplateExcep
 class ServletResourceLoader(context: ServletContext) extends FileResourceLoader {
 
   override protected def toFile(uri:String):File = {
-    val file = new File(context.getRealPath(uri))
-    if (!file.canRead) {
+    new File(context.getRealPath(uri))
+  }
+
+  override protected def toFileOrFail(uri:String):File = {
+    val path = context.getRealPath(uri);
+    if (path==null) {
       throw new TemplateException("Cannot find [" + uri + "]; are you sure it's within [" + context.getRealPath("/") + "]?")
     }
-    file
+    new File(path)
   }
+
 
 }

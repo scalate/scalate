@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+  * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,14 +18,41 @@
 package org.fusesource.scalate.util
 
 
-object XmlEscape
+object RenderHelper
 {
 
-  def escape( text: String ): String =
-    text.foldLeft( new StringBuffer )( (acc, ch) => escape( ch, acc ) ).toString
+  /**
+   * Pads the text following newlines with the specified
+   * indent amount so that the text is indented.
+   */
+  def indent( amount:String, text: String ): String =
+    text.replaceAll("\n", "\n"+amount )
+
+  def indentAmount( level:Int, kind:String ): String = {
+    val rc = new StringBuilder
+    var i=0;
+    while(i < level) {
+      rc.append(kind)
+      i+=1;
+    }
+    rc.toString
+  }
+
+  /**
+   * Converts newlines into the XML entity: &#x000A;
+   * so that multiple lines encode to a sinle long HTML source line
+   * but still render in browser as multiple lines.
+   */
+  def preserve( text: String ): String = text.replaceAll("\n", "&#x000A;");
+
+  /**
+   *  Escapes any XML special characters.
+   */
+  def sanitize( text: String ): String =
+    text.foldLeft( new StringBuffer )( (acc, ch) => sanitize( ch, acc ) ).toString
 
 
-  private def escape( ch: Char, buffer: StringBuffer ): StringBuffer = {
+  private def sanitize( ch: Char, buffer: StringBuffer ): StringBuffer = {
     if( ( ch >= 0x20 && ch <= 0x21 )  || 
         ( ch >= 0x23 && ch <= 0x25 )  ||
         ( ch >= 0x28 && ch <= 0x3B )  ||

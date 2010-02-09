@@ -14,7 +14,7 @@
   for ((key, value) <- map) {
 %>
     <td>${key}:</td>
-    <td><b>${value}</b></td>
+    <td><b><%= value %></b></td>
 <% } %>
   </tr>
 </table>

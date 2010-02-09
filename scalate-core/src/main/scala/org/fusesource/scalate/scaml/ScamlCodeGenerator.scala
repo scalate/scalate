@@ -46,10 +46,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       if( suppress_indent ) {
         suppress_indent=false
       } else {
-        for( i <- 0 until element_level ) {
-          text_buffer.append("  ")
-        }
+        text_buffer.append(indent_string)
       }
+    }
+
+    def indent_string() = {
+      val rc = new StringBuilder
+      for( i <- 0 until element_level ) {
+        rc.append("  ")
+      }
+      rc.toString
     }
 
     def trim_whitespace() = {
@@ -77,6 +83,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statements:List[Statement]):Unit = {
+      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent}"
       generate_no_flush(statements)
       flush_text
     }
@@ -169,6 +176,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:TextExpression):Unit = {
+
+
       statement match {
         case s:LiteralText=> {
           var literal=true;
@@ -179,10 +188,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               literal=false
             } else {
               flush_text
-              val method = s.sanitise match {
-                case None => { "_root_.org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
-                case Some(true) => { "$_scalate_$_context <<< ( " }
-                case Some(false) => { "$_scalate_$_context << ( " }
+              val method = if(s.sanitise.getOrElse(ScamlOptions.escape_html)) {
+                "$_scalate_$_context <<< ( "
+              } else {
+                "$_scalate_$_context << ( "
               }
               this << method+part+");"
               literal=true
@@ -191,20 +200,31 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case s:EvaluatedText=> {
           flush_text
-          val method = s.sanitise match {
-            case None => { "_root_.org.fusesource.scalate.scaml.ScamlOptions.write( $_scalate_$_context, " }
-            case Some(true) => { "$_scalate_$_context <<< ( " }
-            case Some(false) => { "$_scalate_$_context << ( " }
+
+          var prefix = if(s.sanitise.getOrElse(ScamlOptions.escape_html)) {
+            "$_scalate_$_context <<< ( "
+          } else {
+            "$_scalate_$_context << ( "
+          }
+
+          var suffix = " );"
+
+          if( s.preserve ) {
+            prefix += "$_scalate_$_preserve ( $_scalate_$_context.render ( "
+            suffix = " ) ) " + suffix;
+          } else {
+            prefix += "$_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.render ( "
+            suffix = " ) ) " + suffix;
           }
 
           if( s.body.isEmpty ) {
-            this << method+s.code+" );"
+            this << prefix+s.code+suffix
           } else {
-            this << method+s.code+"{"
+            this << prefix+s.code+"{"
             indent {
               generate(s.body)
             }
-            this << "});"
+            this << "}" + suffix
           }
         }
       }
@@ -217,7 +237,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       } else {
         this << statement.code.getOrElse("") + "{"
         indent {
-          generate(statement.body)
+          generate_no_flush(statement.body)
+          flush_text
         }
         this << "}"
       }
@@ -387,15 +408,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
   }
 
 
-  override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
+  override def generate(engine:TemplateEngine, uri:String): Code = {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new ScamlParser).parse(hamlSource)
 
     val builder = new SourceBuilder()
-    builder.generate(packageName, className, bindings, statements)
-    Code(this.className(uri, bindings), builder.code, Set())
+    builder.generate(packageName, className, engine.bindings, statements)
+    Code(this.className(uri), builder.code, Set())
 
   }
 

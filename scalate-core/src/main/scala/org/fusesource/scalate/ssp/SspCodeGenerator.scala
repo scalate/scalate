@@ -57,7 +57,7 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
   var useTemplateNameToDiscoverModel = true
   var translationUnitLoader = new SspLoader
   
-  override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
+  override def generate(engine:TemplateEngine, uri:String): Code = {
 
     // Load the translation unit
     val tu = translationUnitLoader.loadTranslationUnit(engine, uri)
@@ -70,12 +70,12 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
     val fragments = (new SspParser).getPageFragments(translationUnit)
 
     // Convert the parsed representation to Scala source code
-    val params = bindings ::: findParams(uri, fragments)
+    val params = engine.bindings ::: findParams(uri, fragments)
 
     val sb = new SourceBuilder
     sb.generate(packageName, className, params, fragments)
 
-    Code(this.className(uri, bindings), sb.code, tu.dependencies)
+    Code(this.className(uri), sb.code, tu.dependencies)
   }
 
   private val classNameInUriRegex = """(\w+([\\|\.]\w+)*)\.\w+\.\w+""".r

@@ -34,13 +34,19 @@ trait ResourceLoader {
   def lastModified(uri:String): Long
   
   def resolve( base: String, path: String ): String
-  
+
+  def exists(uri: String): Boolean
+
 }
 
 class FileResourceLoader extends ResourceLoader {
 
+  override def exists(uri: String): Boolean = {
+    toFile(uri).exists
+  }
+  
   override def load(uri: String): String = {
-    val file = toFile(uri);
+    val file = toFileOrFail(uri);
     val reader = new InputStreamReader(new FileInputStream(file), pageFileEncoding)
     val writer = new StringWriter(file.length.asInstanceOf[Int]);
     try {
@@ -51,7 +57,7 @@ class FileResourceLoader extends ResourceLoader {
     }
   }
 
-  override def lastModified(uri:String) = toFile(uri).lastModified
+  override def lastModified(uri:String) = toFileOrFail(uri).lastModified
 
   override def resolve( base: String, path: String ): String = {
     if( path.startsWith( "/" ) )
@@ -64,6 +70,14 @@ class FileResourceLoader extends ResourceLoader {
     val file = new File(uri)
     if (!file.canRead) {
       throw new TemplateException("Cannot read file: " + file)
+    }
+    file
+  }
+
+  protected def toFileOrFail(uri:String):File = {
+    val file = toFile(uri)
+    if (!file.canRead) {
+      throw new TemplateException("Cannot find [" + uri + "];")
     }
     file
   }

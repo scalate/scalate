@@ -10,6 +10,8 @@ import org.scalatest.{FunSuite}
 @RunWith(classOf[JUnitRunner])
 class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
+  testPageContains("ssp/renderObject.ssp", "Strachan")
+
   test("home page") {
     webDriver.get(rootUrl)
     pageContains("Scalate")
@@ -25,7 +27,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
   testPageContains("ssp/standalone.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
-  testPageContains("ssp/renderObject.ssp", "Strachan")
+//  testPageContains("ssp/renderObject.ssp", "Strachan")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")

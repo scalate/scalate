@@ -1,93 +1,47 @@
-/*
- * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+/**
+ * Copyright (C) 2009, Progress Software Corporation and/or its
+ * subsidiaries or affiliates.  All rights reserved.
  *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.fusesource.scalate.servlet
 
-import java.io.File
 import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.{Binding, TemplateEngine}
-import org.fusesource.scalate.util.ClassLoaders._
-import collection.mutable.HashMap
+import org.fusesource.scalate.TemplateEngine
 
+/**
+ * Servlet which renders the requested scalate template
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
 class TemplateEngineServlet extends HttpServlet with Logging {
 
-  val templateEngine = new TemplateEngine
+  var templateEngine:TemplateEngine = null
 
   override def init(config: ServletConfig) = {
     super.init(config)
-    // Initialize the working directory, within which we'll write generated source code and .class files
-    templateEngine.workingDirectoryRoot = new File(getServletContext.getRealPath("WEB-INF/_scalate/"))
-    templateEngine.workingDirectoryRoot.mkdirs
-    templateEngine.classpath = buildClassPath
-    templateEngine.resourceLoader = new ServletResourceLoader(getServletContext)
+    templateEngine = new ServletTemplateEngine(config)
   }
-
 
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
-    val context = new ServletTemplateContext(request, response, getServletContext)
-    val template = templateEngine.load(uri, Binding("context", classOf[ServletTemplateContext].getName, true))
-    template.render(context)
+    val context = new ServletTemplateContext(templateEngine, request, response, getServletContext)
+    context.include(uri);
   }
-
-
-  def buildClassPath(): String = {
-    val servletConfig = getServletConfig()
-    val containerList = classLoaderList(getClass) ::: classLoaderList(classOf[HttpServlet])
-
-    // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
-    val classesDirectory = servletConfig.getServletContext.getRealPath("/WEB-INF/classes")
-    val libDirectory = servletConfig.getServletContext.getRealPath("/WEB-INF/lib")
-    val jars = findFiles(new File(libDirectory)).map {_.toString}
-
-    // Allow adding a classpath prefix & suffix via web.xml
-    val prefix = servletConfig.getInitParameter("compiler.classpath.prefix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-    val suffix = servletConfig.getInitParameter("compiler.classpath.suffix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-
-    // Put the pieces together
-
-    // TODO we should probably be smart enough to filter out duplicates here...
-    (prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(":")
-  }
-
-
-  private def findFiles(root: File): List[File] = {
-    if (root.isFile)
-      List(root)
-    else
-      makeList(root.listFiles).flatMap {f => findFiles(f)}
-  }
-
-
-  private def makeList(a: Array[File]): List[File] = {
-    if (a == null)
-      Nil
-    else
-      a.toList
-  }
-
 
 }

@@ -12,8 +12,8 @@
 <h2>Items</h2>
 
 <ul>
-  <li>${itemLink("abc", "ItemABC")}</li>
-  <li>${itemLink("def", "ItemDEF")}</li>
+  <li><%= itemLink("abc", "ItemABC") %></li>
+  <li><%= itemLink("def", "ItemDEF") %></li>
 </ul>
 
 </body>
