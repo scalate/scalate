@@ -1,6 +1,7 @@
 import sbt._
 
-import webbytest.HtmlTestsProject
+// TODO disable WebbyTest until its in a maven repo
+//import webbytest.HtmlTestsProject
 
 /**
  * @version $Revision : 1.1 $
@@ -18,7 +19,8 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
   lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core)
 
 
-  class Core(info: ProjectInfo) extends DefaultProject(info) with HtmlTestsProject {
+  // TODO disable WebbyTest until its in a maven repo
+  class Core(info: ProjectInfo) extends DefaultProject(info) { // TODO with HtmlTestsProject {
   }
 
   class Camel(info: ProjectInfo) extends DefaultProject(info) {
