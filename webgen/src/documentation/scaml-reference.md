@@ -757,25 +757,49 @@ would be compiled to
       result: 123
     </p>
     
-<!-- TODO
 ### Whitespace Preservation: `~` {#tilde}
 
-`~` works just like `=`, except that it runs {Scaml::Helpers#find\_and\_preserve} on its input.
-For example,
+`~` works just like `=`, except that it preserves the white space 
+formating on its input.
 
-    ~ "Foo\n<pre>Bar\nBaz</pre>"
+Scaml always produces HTML source which is easy to read since
+it properly indented.  Even dynamically generated output is 
+properly indented.  For example:
 
-is the same as:
+    %html
+      %p
+        = "line1\nline2\nline3"
 
-    = find_and_preserve("Foo\n<pre>Bar\nBaz</pre>")
+renders to
 
-and is compiled to:
+    <html>
+      <p>
+        line1
+        line2
+        line3
+      </p>
+    </html>
 
-    Foo
-    <pre>Bar&#x000A;Baz</pre>
+Sometimes you don't want Scaml to indent the dynamically generated content.
+For example, tags like `pre` and `textarea` are whitespace-sensitive;
+indenting the text makes them render wrong.
 
-See also [Whitespace Preservation](#whitespace_preservation).
--->
+When you use `~` instead of `=`,
+Scaml will convert newlines to the XHTML newline escape code, `&#x000A;` and avoid
+adding spaces for indentation.  For example:
+
+    %html
+      %pre
+        ~ "line1\nline2\nline3"
+
+renders to
+
+    <html>
+      <pre>
+        line1&#x000A;line2&#x000A;line3
+      </pre>
+    </html>
+
 
 ### Scala Interpolation: `#{}`
 
@@ -879,17 +903,11 @@ For example,
 renders to
 
     I feel <strong>!
-<!-- TODO
+
+<!--
 ## Whitespace Preservation
 
-Sometimes you don't want Scaml to indent all your text.
-For example, tags like `pre` and `textarea` are whitespace-sensitive;
-indenting the text makes them render wrong.
-
-Scaml deals with this by "preserving" newlines before they're put into the document
-converting them to the XHTML whitespace escape code, `&#x000A;`.
-Then Scaml won't try to re-format the indentation.
-
+    
 Literal `textarea` and `pre` tags automatically preserve content given through `=`.
 Dynamically-generated `textarea`s and `pre`s can't be preserved automatically,
 and so should be passed through {Scaml::Helpers#find\_and\_preserve} or the [`~` command](#tilde),

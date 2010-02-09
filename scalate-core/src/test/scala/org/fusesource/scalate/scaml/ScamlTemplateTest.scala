@@ -672,9 +672,6 @@ I feel <strong>!
 """)
 
 
-
-
-  
   testRender("'-@ val' makes an attribute accessibe as variable",
 """
 -@ val bean:Bean
@@ -709,6 +706,39 @@ The bean is blue
 <html>
   test
   The bean is red
+</html>
+""")
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // Preserving White Space
+  //
+  /////////////////////////////////////////////////////////////////////
+  testRender("Generated content in dynamic expression are properly indented.",
+"""
+%html
+  %p
+    = "line1\nline2\nline3"
+""","""
+<html>
+  <p>
+    line1
+    line2
+    line3
+  </p>
+</html>
+""")
+  
+  testRender("`~` preserves white space",
+"""
+%html
+  %p
+    ~ "line1\nline2\nline3"
+""","""
+<html>
+  <p>
+    line1&#x000A;line2&#x000A;line3
+  </p>
 </html>
 """)
 
