@@ -31,8 +31,8 @@ import xml.{NodeBuffer, Node}
  */
 class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) extends RenderContext {
 
-  var viewPrefixes = List("WEB-INF", "")
-  var viewPostfixes = List(".ssp", ".scaml")
+  var viewPrefixes = List("")
+  var viewPostfixes = engine.codeGenerators.keysIterator.map(x=>"."+x).toList
   var currentTemplate:String = null;
   
   /////////////////////////////////////////////////////////////////////
@@ -66,9 +66,20 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
       case v: String => v
       case v: Date => dateFormat.format(v)
       case v: Number => numberFormat.format(v)
+      case f:FilterRequest => {
+        var rc = filter(f.filter, f.content)
+        rc
+      }
       case s: NodeBuffer =>
         (s.foldLeft(new StringBuilder){(rc, x)=>rc.append(x)}).toString
       case v:Any => v.toString
+    }
+  }
+
+  def filter(name:String, content: String): String = {
+    engine.filters.get(name) match {
+      case None=> throw new NoSuchFilterException(name)
+      case Some(f)=> f.filter(this, content)
     }
   }
 

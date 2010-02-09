@@ -25,8 +25,7 @@ object RenderHelper
    * Pads the text following newlines with the specified
    * indent amount so that the text is indented.
    */
-  def indent( amount:String, text: String ): String =
-    text.replaceAll("\n", "\n"+amount )
+  def indent( amount:String, text: String ): String = text.replaceAll("\n(.)", "\n"+amount+"$1" )
 
   def indentAmount( level:Int, kind:String ): String = {
     val rc = new StringBuilder
@@ -53,12 +52,12 @@ object RenderHelper
 
 
   private def sanitize( ch: Char, buffer: StringBuffer ): StringBuffer = {
-    if( ( ch >= 0x20 && ch <= 0x21 )  || 
-        ( ch >= 0x23 && ch <= 0x25 )  ||
-        ( ch >= 0x28 && ch <= 0x3B )  ||
-        ( ch == 0x3D )                ||
-        ( ch == '\'' )                ||
-        ( ch >= 0x3F && ch <= 0x7E ) ) {
+    if( ( ch >= 0x20 && ch <= 0x21 ) ||
+        ( ch >= 0x23 && ch <= 0x25 ) ||
+        ( ch >= 0x28 && ch <= 0x3B ) ||
+        ( ch >= 0x3F && ch <= 0x7E ) ||
+          ch == 0x3D || ch == '\'' ||
+          ch == '\r' || ch == '\n') {
       buffer.append( ch )
     } else {
       buffer.append( ch match {

@@ -22,6 +22,7 @@ import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
+import scala.util.parsing.input.CharSequenceReader
 
 /**
  * Generates a scala class given a HAML document
@@ -123,8 +124,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:Executed=> {
           generate(s)
         }
-        case s:Filter=> {
-          throw new UnsupportedOperationException("filters not yet implemented.");
+        case s:FilterStatement=> {
+          generate(s)
         }
         case s:Doctype=>{
           generate(s)
@@ -175,6 +176,53 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       write_nl
     }
 
+    def generate(statement:FilterStatement):Unit = {
+      if( statement.flags.contains("&") && statement.flags.contains("!") ) {
+        throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos);
+      }
+
+      val preserve = statement.flags.contains("~")
+      val interpolate = statement.flags.contains("&") || statement.flags.contains("!")
+      val sanitize = interpolate && statement.flags.contains("&")
+
+      var content = statement.body.mkString("\n")
+
+      var text:TextExpression = if( interpolate ) {
+        val p = new ScamlParser()
+        p.parse(p.literal_text(Some(sanitize)), content)
+      } else {
+        LiteralText(List(content), Some(false))
+      }
+
+      write_indent
+      flush_text
+
+      var prefix = "$_scalate_$_context << ( "
+      var suffix = ");"
+
+      if( preserve ) {
+        prefix += "$_scalate_$_preserve (  "
+        suffix = ") " + suffix;
+      } else {
+        prefix += "$_scalate_$_indent ( "+asString(indent_string())+", "
+        suffix = ") " + suffix;
+      }
+
+      for ( f <- statement.filters ) {
+        prefix += "$_scalate_$_context.render ( _root_.org.fusesource.scalate.FilterRequest("+asString(f)+", "
+        suffix = ") ) " + suffix;
+      }
+
+      this << prefix + "$_scalate_$_context.capture { "
+      indent {
+        generate(text)
+        flush_text
+      }
+      this << "} "+suffix
+      write_nl
+    }
+
+
     def generate(statement:TextExpression):Unit = {
 
 
@@ -193,7 +241,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               } else {
                 "$_scalate_$_context << ( "
               }
-              this << method+part+");"
+              this << method+part+" );"
               literal=true
             }
           }
@@ -202,29 +250,29 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           flush_text
 
           var prefix = if(s.sanitise.getOrElse(ScamlOptions.escape_html)) {
-            "$_scalate_$_context <<< ( "
+            "$_scalate_$_context <<< ("
           } else {
-            "$_scalate_$_context << ( "
+            "$_scalate_$_context << ("
           }
 
-          var suffix = " );"
+          var suffix = ");"
 
           if( s.preserve ) {
-            prefix += "$_scalate_$_preserve ( $_scalate_$_context.render ( "
-            suffix = " ) ) " + suffix;
+            prefix += " $_scalate_$_preserve ( $_scalate_$_context.render ("
+            suffix = ") ) " + suffix;
           } else {
-            prefix += "$_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.render ( "
-            suffix = " ) ) " + suffix;
+            prefix += " $_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.render ("
+            suffix = ") ) " + suffix;
           }
 
           if( s.body.isEmpty ) {
             this << prefix+s.code+suffix
           } else {
-            this << prefix+s.code+"{"
+            this << prefix+s.code+" {"
             indent {
               generate(s.body)
             }
-            this << "}" + suffix
+            this << "} " + suffix
           }
         }
       }

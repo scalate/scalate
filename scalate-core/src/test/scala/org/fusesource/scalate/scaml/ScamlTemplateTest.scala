@@ -28,6 +28,108 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends FunSuite {
 
+  /////////////////////////////////////////////////////////////////////
+  //
+  // Filters
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  testRender("You can use `:` to use filters",
+"""
+%html
+  %p
+    :plain
+          Indentation levels are not enforced in filters.
+        #{Interpolation} is disabled by default
+      Last line
+""","""
+<html>
+  <p>
+        Indentation levels are not enforced in filters.
+      #{Interpolation} is disabled by default
+    Last line
+  </p>
+</html>
+""")
+
+  testRender("Use the `~` filter flag to preserve white space",
+"""
+%html
+  %p<
+    :~plain
+          Indentation levels are not enforced in filters.
+        #{Interpolation} is disabled by default
+      Last line
+""","""
+<html>
+  <p>    Indentation levels are not enforced in filters.&#x000A;  #{Interpolation} is disabled by default&#x000A;Last line</p>
+</html>
+""")
+
+  testRender("Use the `&` filter flag to enable sanitizing interpolation",
+"""
+%html
+  %p
+    :&plain
+      I like #{ "<strong>" } cheese
+""","""
+<html>
+  <p>
+    I like &lt;strong&gt; cheese
+  </p>
+</html>
+""")
+
+  testRender("Use the `!` filter flag to enable non-sanitizing interpolation",
+"""
+%html
+  %p
+    :!plain
+      I like #{ "<strong>" } cheese #{ "</strong>" }
+""","""
+<html>
+  <p>
+    I like <strong> cheese </strong>
+  </p>
+</html>
+""")
+
+  testRender(":javascript filter can be used to safely insert javascript",
+"""
+%html
+  %head
+    :javascript
+      alert("Hello");
+""","""
+<html>
+  <head>
+    <script type='text/javascript'>
+      //<![CDATA[
+        alert("Hello");
+      //]]>
+    </script>
+  </head>
+</html>
+""")
+
+  testRender("filters can be chained",
+"""
+%html
+  %head
+    :escaped :javascript
+      alert("Hello");
+""","""
+<html>
+  <head>
+    &lt;script type='text/javascript'&gt;
+      //&lt;![CDATA[
+        alert(&quot;Hello&quot;);
+      //]]&gt;
+    &lt;/script&gt;
+  </head>
+</html>
+""")
+
 
   /////////////////////////////////////////////////////////////////////
   //

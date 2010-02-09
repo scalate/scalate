@@ -65,8 +65,8 @@ object Trim extends Enumeration {
   val Outer, Inner, Both = Value
 }
 
-trait Statement extends Positional
-trait TextExpression extends Statement
+sealed trait Statement extends Positional
+sealed trait TextExpression extends Statement
 
 case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
 case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
@@ -74,7 +74,7 @@ case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[T
 case class ScamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
 case class Executed(code:Option[String], body:List[Statement]) extends Statement
-case class Filter(filter:String, body:List[String]) extends Statement
+case class FilterStatement(flags:List[String], filters:List[String], body:List[String]) extends Statement
 case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
 case class Doctype(line:List[String]) extends Statement
 
@@ -212,7 +212,9 @@ class ScamlParser extends IndentedParser() {
     case code~body=> Executed(code,body)
   }
 
-  def filter_statement = prefixed(":", text <~ nl) ~ rep(indent(any<~nl)) ^^ { case code~body=> Filter(code,body) }
+  def filter_statement = prefixed(":",
+      ( rep( "~" | "!" | "&" ) ~ rep1sep("""[^: \t\r\n]+""".r, """[ \t]*:[ \t]*""".r ) )<~ nl
+    ) ~ rep(indent(any<~nl)) ^^ { case (flags~code)~body=> FilterStatement(flags, code,body) }
 
   def doctype_statement = prefixed("!!!", rep(some_space ~> """[^ \t \r \n]+""".r) <~ some_space ~ nl) ^^ { Doctype(_) }
 
@@ -224,6 +226,7 @@ class ScamlParser extends IndentedParser() {
       positioned(attribute_statement) |
       positioned(executed_statement) |
       positioned(doctype_statement) |
+      positioned(filter_statement) |
       positioned(text_statement)
 
   def parser = rep( statement )
@@ -233,7 +236,15 @@ class ScamlParser extends IndentedParser() {
     if( !in.endsWith("\n") ) {
       content = in + "\n"
     }
-    val x = phrase[List[Statement]](parser)(new CharSequenceReader(content))
+    val x = phrase(parser)(new CharSequenceReader(content))
+    x match {
+      case Success(result, _) => result
+      case _ => throw new TemplateException(x.toString);
+    }
+  }
+
+  def parse[T](p:Parser[T], in:String):T = {
+    val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
       case _ => throw new TemplateException(x.toString);
@@ -245,10 +256,9 @@ class ScamlParser extends IndentedParser() {
 object ScamlParser {
   def main(args: Array[String]) = {
      val in = """
-v:#{t}
-v:\#{t}
-v:\\#{t}
-v:\\\#{t}
+:plain
+  line1
+  line2
 """
     val p = new ScamlParser
     println(p.phrase(p.parser)(new CharSequenceReader(in)))

@@ -17,6 +17,8 @@ import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext, NoSuchViewE
  * @version $Revision: 1.1 $
  */
 class ServletTemplateContext(engine:TemplateEngine, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, response.getWriter) {
+  
+  viewPrefixes = List("WEB-INF", "")
 
   /**
    * Returns the attribute of the given type or a   { @link NoValueSetException } exception is thrown

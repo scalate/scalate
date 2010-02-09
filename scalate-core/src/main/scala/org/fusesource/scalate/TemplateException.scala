@@ -16,6 +16,8 @@
  */
 package org.fusesource.scalate
 
+import scala.util.parsing.input.{NoPosition, Position}
+
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
@@ -25,11 +27,14 @@ class TemplateException(message:String, cause:Throwable) extends RuntimeExceptio
   }
 }
 
-class InvalidSyntaxException(message: String) extends TemplateException(message) {
+class InvalidSyntaxException(message: String, val pos:Position=NoPosition) extends TemplateException(message+" at "+pos) {
 }
 
 class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set") {
 }
 
 class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
+}
+
+class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.") {
 }
