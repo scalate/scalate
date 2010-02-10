@@ -10,6 +10,7 @@ template: ~
     <meta name="author" content="Your Name" />
 
     <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
+    <link href="{relocatable: css/pygmentize.css}" rel="stylesheet" type="text/css" />
     
     <title>{title:}</title>
 

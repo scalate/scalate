@@ -9,6 +9,7 @@
 # website.
 $LOAD_PATH << File.dirname(__FILE__)
 load 'fuse/asciidoc.rb'
+load 'fuse/pygmentize.rb'
 #load 'fuse/sitecopy_rake.rb'
 
 config = Webgen::WebsiteAccess.website.config
@@ -16,9 +17,6 @@ config['contentprocessor.map']['asciidoc'] = 'Fuse::AsciiDoc'
 
 module Fuse 
   autoload :AsciiDoc, 'fuse/asciidoc'
-  #autoload :SitecopyTask, 'fuse/sitecopy_rake'
-
-
 end
 
 #

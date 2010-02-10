@@ -20,20 +20,24 @@ If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using 
 
 Example:
 
-    <%@ var user:User %>
-    <p>Hi ${user.name},</p>
-    <% for(i <- 1 to 3) { %>
-    <p><%= i %></p>
-    <% } %>
-    <p>See, I can count!</p>
+{pygmentize:: jsp}
+<%@ var user:User %>
+<p>Hi ${user.name},</p>
+<% for(i <- 1 to 3) { %>
+<p><%= i %></p>
+<% } %>
+<p>See, I can count!</p>
+{pygmentize}
 
 Is rendered as:
 
-    <p>Hi James,</p>
-    <p>1</p>
-    <p>2</p>
-    <p>3</p>
-    <p>See, I can count!</p>
+{pygmentize:: xml}
+<p>Hi James,</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>See, I can count!</p>
+{pygmentize}
 
 For full documentation of the Ssp syntax see the [Ssp Reference Guide](ssp-reference.html)
 
@@ -52,19 +56,23 @@ with some code to generate dynamic content.
 
 Example :
 
-    -@ var user:User
-    %p Hi #{user.name},
-    - for(i <- 1 to 3)
-      %p= i
-    %p See, I can count!
+{pygmentize:: text}
+-@ var user:User
+%p Hi #{user.name},
+- for(i <- 1 to 3)
+  %p= i
+%p See, I can count!
+{pygmentize}
 
 Is rendered as:
 
-    <p>Hi James,</p>
-    <p>1</p>
-    <p>2</p>
-    <p>3</p>
-    <p>See, I can count!</p>
+{pygmentize:: xml}
+<p>Hi James,</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>See, I can count!</p>
+{pygmentize}
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
@@ -89,11 +97,13 @@ Scalate can be built either using Maven or SBT
 Install [Maven](http://maven.apache.org/) version 2.0.9 or later. Then type
 
     mvn install
+{: .syntax }
 
 To run the sample web application
 
     cd scalate-sample
     mvn jetty:run
+{: .syntax }
 
 Then open [the sample home page](http://localhost:8080/)
 
@@ -105,14 +115,17 @@ To setup your sbt environment and import the dependencies from the maven pom fil
 
     ./sbt
     update
+{: .syntax }
 
 Then to build the code type
 
     compile
+{: .syntax }
 
 to run the tests 
 
     test
+{: .syntax }
 
 For more information see the [sbt building instructions](http://scalate.fusesource.org/sbt.html)
 
@@ -121,21 +134,22 @@ For more information see the [sbt building instructions](http://scalate.fusesour
 
 * Add something like the following to your web.xml file to support Ssp and Scaml pages:
 
-{coderay:: xml}<servlet>
-  <servlet-name>TemplateEngineServlet</servlet-name>
-  <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-  <load-on-startup>1</load-on-startup>
-</servlet>
+  {pygmentize:: {lang: xml, lines: true}}
+  <servlet>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
 
-<servlet-mapping>
-  <servlet-name>TemplateEngineServlet</servlet-name>
-  <url-pattern>*.ssp</url-pattern>
-</servlet-mapping>
-<servlet-mapping>
-  <servlet-name>TemplateEngineServlet</servlet-name>
-  <url-pattern>*.scaml</url-pattern>
-</servlet-mapping>
-{coderay}
+  <servlet-mapping>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <url-pattern>*.ssp</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <url-pattern>*.scaml</url-pattern>
+  </servlet-mapping>
+  {pygmentize}
 
 *  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
     * scala-compiler.jar
