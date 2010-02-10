@@ -1,5 +1,8 @@
 # Scalate User Guide
 
+* Table of contents
+{:toc}
+
 Scalate is a template engine based on the Scala language.
 
 ## Features
@@ -150,4 +153,10 @@ You could add one or more of the above to your servlet container's server-wide c
 - Assumes template output is all UTF-8-encoded.
 
 - No support for pre-compiled templates (e.g., via a custom Ant task).
+
+## Embedding Scalate in your Application or Framework
+
+Scalate does not have any hard dependencies on a web framework or even HTTP.  It can be used as a standalone
+rendering engine in your application.  For more information on how to embed in your application, please reference the 
+[Scalate Embedding Guide](scalate-embedding-guide.html)
 

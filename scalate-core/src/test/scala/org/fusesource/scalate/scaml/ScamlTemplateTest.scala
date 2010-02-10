@@ -895,7 +895,6 @@ The bean is blue
   }
 
   var engine = new TemplateEngine
-  engine.workingDirectoryRoot = new File("target/test-data/"+(this.getClass.getName))
 
   def render(content:String): String = {
 

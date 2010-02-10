@@ -76,11 +76,26 @@ class TemplateEngine {
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 
-  def sourceDirectory = new File(workingDirectoryRoot, "source")
-  def bytecodeDirectory = new File(workingDirectoryRoot, "bytecode")
+  def sourceDirectory = new File(workingDirectory, "source")
+  def bytecodeDirectory = new File(workingDirectory, "bytecode")
 
   var classpath: String = null
-  var workingDirectoryRoot: File = null
+  
+  private var _workingDirectory: File = null
+
+  def workingDirectory: File = {
+    // Use a temp working directory if none is configured.
+    if( _workingDirectory == null ) {
+      _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+    }
+    _workingDirectory
+  }
+
+  def workingDirectory_=(value:File) = {
+    this._workingDirectory = value
+  }
+
+
   var classLoader = this.getClass.getClassLoader
 
   var bindings = List[Binding]()

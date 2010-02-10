@@ -39,7 +39,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
   //
   // RenderContext implementation
   //
-  /////////////////////////////////////////////////////////////////////
+  //////////////////////////////////x///////////////////////////////////
 
   def <<(value: Any): Unit = {
     out.print(render(value))
