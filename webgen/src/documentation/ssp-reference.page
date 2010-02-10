@@ -6,4 +6,4 @@ sort_info: 10
 # Ssp Reference Guide
 
 --- name:content pipeline:tags,markdown
-{include_file: {filename: src/documentation/ssp-reference.md, process_output: false, escape_html: false}}
+{include_file: {filename: src/documentation/ssp-reference.md, process_output: true, escape_html: false}}

@@ -7,4 +7,4 @@ sort_info: 10
 Scaml is Markup Haiku for Scala
 
 --- name:content pipeline:tags,markdown
-{include_file: {filename: src/documentation/scaml-reference.md, process_output: false, escape_html: false}}
+{include_file: {filename: src/documentation/scaml-reference.md, process_output: true, escape_html: false}}

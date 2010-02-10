@@ -19,52 +19,57 @@ Code wrapped by `<%=` and `%>` or with '${' and '}' is evaluated and
 the output is inserted into the document.
 
 For example:
-
-    <p>
-      <%= List("hi", "there", "reader!").mkString(" ") %>
-      ${ "yo "+(3+4) } 
-    </p>
+{pygmentize:: jsp}
+<p>
+  <%= List("hi", "there", "reader!").mkString(" ") %>
+  ${ "yo "+(3+4) } 
+</p>
+{pygmentize}
 
 is rendered as:
-
-    <p>
-      hi there reader!
-      yo 7
-    </p>
+{pygmentize:: xml}
+<p>
+  hi there reader!
+  yo 7
+</p>
+{pygmentize}
 
 ### Running Scala: `<% %>`
 
 Code wrapped by `<%` and `%>` is evaluated but *not* inserted into the document.
 
 For example:
-
-    <%
-      var foo = "hello"
-      foo += " there"
-      foo += " you!"
-    %>
-    <p>${foo}</p>
+{pygmentize:: jsp}
+<%
+  var foo = "hello"
+  foo += " there"
+  foo += " you!"
+%>
+<p>${foo}</p>
+{pygmentize}
 
 is rendered as:
-
-    <p>hello there you!</p>
+{pygmentize:: xml}
+<p>hello there you!</p>
+{pygmentize}
 
 ### Binding Variables: `<%@ %>`
 
 When a Scalate template is rendered, the caller can pass an attribute map
 which the template in charge of rendering. To bind the attribute to a Scala
 variable, a Scaml template uses the following syntax to declare the variable:
-
-
-    <%@ val foo: MyType %>
+{pygmentize:: jsp}
+<%@ val foo: MyType %>
+{pygmentize}
 
 If the attribute map does not contain a "foo" entry, then a 
 NoValueSetException is thrown when the the template is rendered.
 
 To avoid this exception, a default value can be configured.  For
 example:
-
-    <%@ val bar: String = "this is the default value" %>
+{pygmentize:: jsp}
+<%@ val bar: String = "this is the default value" %>
+{pygmentize}
 
 The attribute is now available for use as an expression. 
 
@@ -73,33 +78,40 @@ frequently accessed.  In this cases, it's convenient to import all the object's
 members.  This can be done by adding the import keyword to the attribute declaration.
 
 For example:
-
-    <%@ import val model: Person %>
-    <p>Hello ${name}, what is the weather like in ${city}</p>
+{pygmentize:: jsp}
+<%@ import val model: Person %>
+<p>Hello ${name}, what is the weather like in ${city}</p>
+{pygmentize}
 
 is the same as:
-
-    <%@ val model: Person %>
-    <% import model._ %>
-    <p>Hello ${name}, what is the weather like in ${city}</p>
+{pygmentize:: jsp}
+<%@ val model: Person %>
+<% import model._ %>
+<p>Hello ${name}, what is the weather like in ${city}</p>
+{pygmentize}
 
 Which is the same as:
 
-    <%@ val model: Person %>
-    <p>Hello ${model.name}, what is the weather like in ${model.city}</p>
-
+{pygmentize:: jsp}
+<%@ val model: Person %>
+<p>Hello ${model.name}, what is the weather like in ${model.city}</p>
+{pygmentize}
 
 ### Comments: `<%-- --%>`
 
 Ssp comments prevent everything inside the comment markers from being inserted in to the rendered document.
 
-    <%-- this is a comment --%>
+{pygmentize:: jsp}
+<%-- this is a comment --%>
+{pygmentize}
 
 ### Includes `<% include ... %>`
 
 You can include other scripts in your page using the include method
 
-    <% include file="relativeOrAbsoluteURL" %>
+{pygmentize:: jsp}
+<% include file="relativeOrAbsoluteURL" %>
+{pygmentize}
 
 The URL is then evaluated and included in place in your template.
 
@@ -111,13 +123,16 @@ template such as for looping or transforming content.
 For example if you want to XML escape a block of a template you can just 
 invoke the *xmlEscape* method.
 
-    <%= xmlEscape {%>
-      I like <strong> cheese & crackers
-    <% } %>
+{pygmentize:: jsp}
+<%= xmlEscape {%>
+  I like <strong> cheese & crackers
+<% } %>
+{pygmentize}
 
 is rendered as:
-
-      I like &lt;strong&gt; cheese &amp; crackers
+{pygmentize:: xml}
+I like &lt;strong&gt; cheese &amp; crackers
+{pygmentize}
       
 ## Other Resources
 
