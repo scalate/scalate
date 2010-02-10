@@ -456,14 +456,14 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
   }
 
 
-  override def generate(engine:TemplateEngine, uri:String): Code = {
+  override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
 
     val hamlSource = engine.resourceLoader.load(uri)
     val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new ScamlParser).parse(hamlSource)
 
     val builder = new SourceBuilder()
-    builder.generate(packageName, className, engine.bindings, statements)
+    builder.generate(packageName, className, bindings, statements)
     Code(this.className(uri), builder.code, Set())
 
   }
