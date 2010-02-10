@@ -118,4 +118,7 @@ invoke the *xmlEscape* method.
 is rendered as:
 
       I like &lt;strong&gt; cheese &amp; crackers
+      
+## Other Resources
 
+* [Scalate User Guide](scalate-user-guide.html)

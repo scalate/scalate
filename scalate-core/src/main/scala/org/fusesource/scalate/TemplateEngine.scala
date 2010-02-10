@@ -15,7 +15,7 @@
  */
 package org.fusesource.scalate
 
-import filter.{EscapedFilter, JavascriptFilter, PlainFilter}
+import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import scaml.ScamlCodeGenerator
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
@@ -56,7 +56,12 @@ class TemplateEngine {
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator)
-  var filters: Map[String, Filter] = Map("plain" -> PlainFilter, "javascript"-> JavascriptFilter, "escaped"->EscapedFilter )
+  var filters: Map[String, Filter] = Map(
+    "plain" -> PlainFilter,
+    "javascript"-> JavascriptFilter,
+    "escaped"->EscapedFilter,
+    "markdown"->MarkdownFilter 
+    )
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 

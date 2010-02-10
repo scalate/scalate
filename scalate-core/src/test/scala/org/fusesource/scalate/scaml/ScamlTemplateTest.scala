@@ -114,20 +114,57 @@ class ScamlTemplateTest extends FunSuite {
 
   testRender("filters can be chained",
 """
-%html
-  %head
-    :escaped :javascript
-      alert("Hello");
+%pre
+  :escaped :javascript
+    alert("Hello");
 ""","""
-<html>
-  <head>
-    &lt;script type='text/javascript'&gt;
-      //&lt;![CDATA[
-        alert(&quot;Hello&quot;);
-      //]]&gt;
-    &lt;/script&gt;
-  </head>
-</html>
+<pre>
+  &lt;script type='text/javascript'&gt;
+    //&lt;![CDATA[
+      alert(&quot;Hello&quot;);
+    //]]&gt;
+  &lt;/script&gt;
+</pre>
+""")
+
+  testRender("The markdown filter",
+"""
+%p
+  :markdown
+    Markdown
+    =======
+        
+    Hello, *World*
+""","""
+<p>
+  <h1>Markdown</h1>
+
+  <p>Hello, <em>World</em></p>
+</p>
+""")
+
+  testRender("The `&` flag enables sanitized interpolations.",
+"""
+- var flavor = "<raspberry/>"
+#content
+  :&markdown
+    I *really* prefer #{flavor} jam.
+""","""
+<div id='content'>
+  <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
+</div>
+""")
+
+  testRender("The `!` flag enables non-sanitized interpolations.",
+"""
+- var flavor = "<raspberry/>"
+#content
+  :!markdown
+    I *really* prefer #{flavor} jam.
+""","""
+<div id='content'>
+  <p>I <em>really</em> prefer <raspberry/> jam.</p>
+</div>
 """)
 
 

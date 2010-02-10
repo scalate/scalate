@@ -1,6 +1,6 @@
 ---
 title: Blog
-in_menu: true
+in_menu: false
 sort_info: 7
 --- name:head pipeline:tags
 <link rel="alternate" title="{project_name:} RSS" href="{relocatable:index.rss}" type="application/rss+xml">
@@ -15,7 +15,7 @@ Updates you can't afford to miss!
 
 <%
 max_posts_per_page = 10;
-pattern = /#{File.join(context.node.parent.absolute_lcn, '/')}.*\.html$/
+pattern = /#{File.join(context.node.parent.alcn, '/')}.*\.html$/
 nodes = context.content_node.tree.node_access[:path].select {|path, n| path =~ pattern};
 nodes.sort.reverse.slice(0,max_posts_per_page).each do |path, n|
   next if n.is_fragment?

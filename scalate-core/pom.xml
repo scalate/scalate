@@ -28,6 +28,14 @@
       <artifactId>sitemesh</artifactId>
       <optional>true</optional>
     </dependency>
+    
+    <dependency>
+      <groupId>org.markdownj</groupId>
+      <artifactId>markdownj</artifactId>
+      <version>0.3.0-1.0.2b4</version>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
 
   <build>

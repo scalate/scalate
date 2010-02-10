@@ -16,19 +16,22 @@
  */
 package org.fusesource.scalate.filter
 
+import org.fusesource.scalate.{Filter, RenderContext}
 import org.fusesource.scalate.util.RenderHelper
-import org.fusesource.scalate.{RenderContext, Filter}
-
+import com.petebevin.markdown.MarkdownProcessor
 
 /**
- * XML/XHTML escapes the content
+ * Renders markdown syntax
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object EscapedFilter extends Filter {
+object MarkdownFilter extends Filter {
+
+  val markdownProcessor = new MarkdownProcessor();
+  
 
   def filter(context: RenderContext, content:String): String = {
-    return RenderHelper.sanitize(content);
+    markdownProcessor.markdown(content).stripLineEnd;
   }
 
 }

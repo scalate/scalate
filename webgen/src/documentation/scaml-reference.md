@@ -904,14 +904,171 @@ renders to
 
     I feel <strong>!
 
+## Filters: `:` {#filters}
+
+The colon character designates a filter.
+This allows you to pass an indented block of text as input
+to another filtering program and add the result to the output of Haml.
+
+The syntax is a colon followed by an optional list of filter flags and then a colon
+separated list of filter names.
+
+A simple example,
+
+    %p
+      :markdown
+        Markdown
+        ========
+        
+        Hello, *World*
+
+is compiled to
+
+    <p>
+      <h1>Markdown</h1>
+
+      <p>Hello, <em>World</em></p>
+    </p>
+
+### Filter Interpolation
+
+If you use the `!` or `&` filter flags, you can have Scala code 
+interpolated with `#{}` expressions.  It is invalid to use both
+the `!` and `&` flags at the same time. 
+
+The `&` flag enables sanitized interpolations.  For example,
+
+    - var flavor = "<raspberry/>"
+    #content
+      :&markdown
+        I *really* prefer #{flavor} jam.
+
+is rendered to
+
+    <div id='content'>
+      <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
+    </div>
+
+The `!` flag enables non-sanitized interpolations.  For example,
+
+    - var flavor = "<raspberry/>"
+    #content
+      :!markdown
+        I *really* prefer #{flavor} jam.
+
+is rendered to
+
+    <div id='content'>
+      <p>I <em>really</em> prefer <raspberry/>; jam.</p>
+    </div>
+
+### Filter Whitespace Preservation
+
+The `~` filter flag enables preserves the white space of the content.
+The indent level is left unchanged and newlines are converted to `&#x000A;`
+
+For example:
+
+    %html
+      %p<
+        :~plain
+              Indentation levels are not enforced in filters.
+            #{Interpolation} is disabled by default
+          Last line
+
+is rendered to
+
+    <html>
+      <p>    Indentation levels are not enforced in filters.&#x000A;  #{Interpolation} is disabled by default&#x000A;Last line</p>
+    </html>
+
+### Filter Chaining
+
+More than one filter can be be used by separating each filter name with a colon.  When
+this is done, the filters are chained together so that the output of filter on right, is
+passed as input to the filter on the left.  For example:
+
+    %pre
+      :escaped :javascript
+        alert("Hello");
+
+    <pre>
+      &lt;script type='text/javascript'&gt;
+        //&lt;![CDATA[
+          alert(&quot;Hello&quot;);
+        //]]&gt;
+      &lt;/script&gt;
+    </pre>
+
+
+### Available Filters
+
+Scaml has the following filters defined:
+
+{#plain-filter}
+#### `:plain`
+Does not parse the filtered text.
+This is useful for large blocks of text or HTML.  Really handy when
+when you don't want lines starting with `.` or `-` to be parsed.
+
+{#javascript-filter}
+#### `:javascript`
+Surrounds the filtered text with `<script>` and CDATA tags.
+Useful for including inline Javascript.
+
 <!--
-## Whitespace Preservation
+{#css-filter}
+#### `:css`
+Surrounds the filtered text with `<style>` and CDATA tags.
+Useful for including inline CSS.
 
-    
-Literal `textarea` and `pre` tags automatically preserve content given through `=`.
-Dynamically-generated `textarea`s and `pre`s can't be preserved automatically,
-and so should be passed through {Scaml::Helpers#find\_and\_preserve} or the [`~` command](#tilde),
-which has the same effect.
-
-Blocks of literal text can be preserved using the [`:preserve` filter](#preserve-filter).
+{#cdata-filter}
+#### `:cdata`
+Surrounds the filtered text with CDATA tags.
 -->
+
+{#escaped-filter}
+#### `:escaped`
+Works the same as plain, but HTML-escapes the text
+before placing it in the document.
+
+<!--
+{#ruby-filter}
+#### `:ruby`
+Parses the filtered text with the normal Ruby interpreter.
+All output sent to `$stdout`, like with `puts`,
+is output into the Haml document.
+Not available if the [`:suppress_eval`](#suppress_eval-option) option is set to true.
+The Ruby code is evaluated in the same context as the Haml template.
+
+{#erb-filter}
+#### `:erb`
+Parses the filtered text with ERb, like an RHTML template.
+Not available if the [`:suppress_eval`](#suppress_eval-option) option is set to true.
+Embedded Ruby code is evaluated in the same context as the Haml template.
+
+{#sass-filter}
+#### `:sass`
+Parses the filtered text with Sass to produce CSS output.
+
+{#textile-filter}
+#### `:textile`
+Parses the filtered text with [Textile](http://www.textism.com/tools/textile).
+Only works if [RedCloth](http://redcloth.org) is installed.
+-->
+
+{#markdown-filter}
+#### `:markdown`
+Parses the filtered text with [Markdown](http://daringfireball.net/projects/markdown).
+Only works if [MarkdownJ](http://markdownj.org/) is found on the class path.
+
+<!--
+### Custom Filters
+
+You can also define your own filters. See {Haml::Filters} for details.
+-->
+
+## Other Resources
+
+* [Scalate User Guide](scalate-user-guide.html)
+
