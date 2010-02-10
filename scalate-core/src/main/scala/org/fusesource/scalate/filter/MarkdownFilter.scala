@@ -30,7 +30,7 @@ object MarkdownFilter extends Filter {
   val markdownProcessor = new MarkdownProcessor();
   
 
-  def filter(context: RenderContext, content:String): String = {
+  def filter(content:String): String = {
     markdownProcessor.markdown(content).stripLineEnd;
   }
 

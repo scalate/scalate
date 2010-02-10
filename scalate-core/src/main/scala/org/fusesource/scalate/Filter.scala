@@ -30,5 +30,5 @@ case class FilterRequest(filter:String, content:String)
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 trait Filter {
-  def filter(context: RenderContext, content:String): String
+  def filter(content:String): String
 }

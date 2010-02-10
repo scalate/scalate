@@ -56,12 +56,23 @@ class TemplateEngine {
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator)
-  var filters: Map[String, Filter] = Map(
-    "plain" -> PlainFilter,
-    "javascript"-> JavascriptFilter,
-    "escaped"->EscapedFilter,
-    "markdown"->MarkdownFilter 
-    )
+  var filters: Map[String, Filter] = Map()
+
+  // Attempt to load all the built in filters.. Some may not load do to missing classpath
+  // dependencies.
+  attempt( filters += "plain" -> PlainFilter );
+  attempt( filters += "javascript"-> JavascriptFilter );
+  attempt( filters += "escaped"->EscapedFilter );
+  attempt( filters += "markdown"->MarkdownFilter );
+
+  private def attempt[T](op: => T): Unit = {
+      try {
+          op
+      } catch {
+          case e:Throwable=>{
+          }
+      }
+  }
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 

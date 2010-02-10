@@ -79,7 +79,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
   def filter(name:String, content: String): String = {
     engine.filters.get(name) match {
       case None=> throw new NoSuchFilterException(name)
-      case Some(f)=> f.filter(this, content)
+      case Some(f)=> f.filter(content)
     }
   }
 

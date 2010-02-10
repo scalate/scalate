@@ -27,7 +27,7 @@ import org.fusesource.scalate.util.RenderHelper
  */
 object JavascriptFilter extends Filter {
 
-  def filter(context: RenderContext, content:String): String = {
+  def filter(content:String): String = {
     return """<script type='text/javascript'>
              |  //<![CDATA[
              |    """.stripMargin+RenderHelper.indent("    ", content)+"""

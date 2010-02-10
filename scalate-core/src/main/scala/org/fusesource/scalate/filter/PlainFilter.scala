@@ -26,7 +26,7 @@ import org.fusesource.scalate.{RenderContext, Filter}
  */
 object PlainFilter extends Filter {
 
-  def filter(context: RenderContext, content:String): String = {
+  def filter(content:String): String = {
     return content;
   }
 

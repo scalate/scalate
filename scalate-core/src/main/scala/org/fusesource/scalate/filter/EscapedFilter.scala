@@ -27,7 +27,7 @@ import org.fusesource.scalate.{RenderContext, Filter}
  */
 object EscapedFilter extends Filter {
 
-  def filter(context: RenderContext, content:String): String = {
+  def filter(content:String): String = {
     return RenderHelper.sanitize(content);
   }
 
