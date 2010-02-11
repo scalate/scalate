@@ -76,8 +76,8 @@ class TemplateEngine {
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 
-  def sourceDirectory = new File(workingDirectory, "source")
-  def bytecodeDirectory = new File(workingDirectory, "bytecode")
+  def sourceDirectory = new File(workingDirectory, "src")
+  def bytecodeDirectory = new File(workingDirectory, "classes")
 
   var classpath: String = null
   

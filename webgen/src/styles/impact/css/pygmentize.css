@@ -91,7 +91,7 @@ pre.syntax {
   background-color: #F8F8FF; overflow:auto;
 }
 
-code {
+.syntax code {
   font-family:Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
-  font-size: 9pt;
+  font-size: 10pt;
 }
