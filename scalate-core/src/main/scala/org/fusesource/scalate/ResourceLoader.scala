@@ -39,7 +39,7 @@ trait ResourceLoader {
 
 }
 
-class FileResourceLoader extends ResourceLoader {
+class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader {
 
   override def exists(uri: String): Boolean = {
     toFile(uri).exists
@@ -67,11 +67,10 @@ class FileResourceLoader extends ResourceLoader {
   }
 
   protected def toFile(uri:String):File = {
-    val file = new File(uri)
-    if (!file.canRead) {
-      throw new TemplateException("Cannot read file: " + file)
+    root match {
+      case Some(dir)=> new File(dir, uri);
+      case None=> new File(uri)
     }
-    file
   }
 
   protected def toFileOrFail(uri:String):File = {
