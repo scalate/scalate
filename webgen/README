@@ -24,7 +24,7 @@ You may also need to clear out your previously installed gems.  On OSX, you woul
 Installing:
 
     sudo gem install webgen coderay feedtools haml RedCloth
-    sudo gem install --source http://gems.github.com FooBarWidget-mizuho
+    sudo easy_install Pygments
 
 Configuring:
 

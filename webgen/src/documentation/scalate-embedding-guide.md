@@ -136,6 +136,61 @@ access to an imported "context" variable which is an instance of the `DefaultRen
 object which is collecting the render results.  It provides the template a bunch of handy helper methods to do things
 like `capture` to get the result of rendering nested content or `filter` to apply a transformation filter to some content.
 
+## Configuring the `TemplateEngine`
+
+### Working Directory
+
+The template engine needs a working directory to generate scala code and java byte codes associated with 
+the templates.  By default, it use a location under your java temporary directory.  You probably want to change
+this so that it uses data location configured for your application:
+{pygmentize:: scala}
+engine.workingDirectory = new File("/var/lib/myapp/work")
+{pygmentize}
+
+### Compiler Class Path
+
+Scalate needs to know what class path to compile the templates against.  By default it builds a class path using
+all the jars in the `ClassLoader` which loaded the Scalate jar.  If you are in fancy mutli-`ClassLoader` application,
+like OSGi, they this simple heuristic will not work and you will need to specify the class path that the `TemplateEngine`
+should compile against.  For example:
+
+{pygmentize:: scala}
+engine.classpath = "/path/to/lib.jar:/path/to/another-lib.jar"
+{pygmentize}
+
+
+### Custom Template Loading
+
+In the default configuration, templates are loaded from the file system.  The path you pass to the `TemplateEngine.load`
+method is expected to file path to an actual template file.  If you want to load templates from different location, perhaps the classpath or database you will need to supply the `TemplateEngine` a custom implementation of `ResourceLoader`.
+
+Here's simple example that loads a dynamically generated template:
+{pygmentize:: scala}
+engine.resourceLoader = new FileResourceLoader {
+    override def load( uri: String ): String = 
+        "<%@ var name:String %><p>Hello ${name}</p>"
+    override def lastModified(uri:String): Long = 0
+}
+{pygmentize}
+
+### Template Cache Configuration
+
+If you are running in production it may make sense to disable template reloading.  
+It should be slightly quicker as it avoids doing file system checks for template modifications:
+{pygmentize:: scala}
+engine.allowReload =  false
+{pygmentize}
+
+If you have a large number of templates and would rather not cache them in as compiled java classes in
+memory, you can disable template caching altogether with:
+{pygmentize:: scala}
+engine.allowCaching =  false
+{pygmentize}
+
+
+<!--
+TODO: Cover adding CodeGenerator and Filter extensions.
+-->
 
 ## Other Resources
 
