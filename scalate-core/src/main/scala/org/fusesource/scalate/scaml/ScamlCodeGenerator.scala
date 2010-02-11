@@ -464,7 +464,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val builder = new SourceBuilder()
     builder.generate(packageName, className, bindings, statements)
-    Code(this.className(uri), builder.code, Set())
+    Code(this.className(uri), builder.code, Set(uri))
 
   }
 

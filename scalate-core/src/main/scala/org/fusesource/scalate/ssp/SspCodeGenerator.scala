@@ -135,7 +135,7 @@ class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
     val sb = new SourceBuilder
     sb.generate(packageName, className, bindings:::templateBindings, fragments)
 
-    Code(this.className(uri), sb.code, tu.dependencies)
+    Code(this.className(uri), sb.code, tu.dependencies + uri)
   }
 
 }
