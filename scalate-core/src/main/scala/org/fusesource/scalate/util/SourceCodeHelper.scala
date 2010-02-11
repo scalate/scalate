@@ -40,23 +40,25 @@ object SourceCodeHelper {
       case "Double" => "Double"
       case "java.lang.Object" => "Any"
       case x => {
-        if( x.startsWith("scala.collection.immutable.Map.Map") )  {
-          "Map"
-        } else if( x.startsWith("scala.collection.immutable.Set.Set") )  {
-          "Set"
+        if( """^scala.collection.immutable.Map.Map\d*$""".r.findFirstIn(x).isDefined )  {
+          "Map" + type_parms(clazz)
+        } else if( """^scala.collection.immutable.Set.Set\d*$""".r.findFirstIn(x).isDefined )  {
+          "Set" + type_parms(clazz)
+        } else if( """^scala.Tuple\d*$""".r.findFirstIn(x).isDefined )  {
+          type_parms(clazz, "(", ")")
         } else {
-          x
+          x + type_parms(clazz)
         }
       }
-    }) + type_parms(clazz)
+    })
   }
 
-  def type_parms(clazz:Class[_]):String = {
+  def type_parms(clazz:Class[_], prefix:String="[", suffix:String="]"):String = {
     if( clazz.getTypeParameters.length > 0 ) {
       val types= clazz.getTypeParameters.toList.map { x=>
         name(x.getBounds.apply(0).asInstanceOf[Class[_]])
       }
-      "["+types.mkString(",")+"]"
+      prefix+types.mkString(",")+suffix
     } else {
       ""
     }
@@ -80,6 +82,8 @@ object SourceCodeHelper {
     println(name(Map("hello"->"world", "3"->"foo").getClass))
     println(name(None.getClass))
     println(name(Some("Hello").getClass))
+    println(name(("sdf","dsf").getClass))
+
   }
   
 }
