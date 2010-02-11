@@ -16,6 +16,8 @@
  */
 package org.fusesource.scalate.util
 
+import collection.mutable.LinkedList
+
 /**
  * Helpers that aid with Scala soruce code generation.
  *
@@ -28,9 +30,37 @@ object SourceCodeHelper {
    * can be used in Scala source code.
    */
   def name(clazz:Class[_]):String = {
-    split_name(clazz).mkString(".")
+    (split_name(clazz).mkString(".") match {
+      case "byte"   => "Byte"
+      case "char"   => "Char"
+      case "short"  => "Short"
+      case "int"    => "Int"
+      case "long"   => "Long"
+      case "float"  => "Float"
+      case "Double" => "Double"
+      case "java.lang.Object" => "Any"
+      case x => {
+        if( x.startsWith("scala.collection.immutable.Map.Map") )  {
+          "Map"
+        } else if( x.startsWith("scala.collection.immutable.Set.Set") )  {
+          "Set"
+        } else {
+          x
+        }
+      }
+    }) + type_parms(clazz)
   }
 
+  def type_parms(clazz:Class[_]):String = {
+    if( clazz.getTypeParameters.length > 0 ) {
+      val types= clazz.getTypeParameters.toList.map { x=>
+        name(x.getBounds.apply(0).asInstanceOf[Class[_]])
+      }
+      "["+types.mkString(",")+"]"
+    } else {
+      ""
+    }
+  }
   def split_name(clazz:Class[_]):List[String] = {
     if( clazz.getEnclosingClass != null ) {
       split_name(clazz.getEnclosingClass) ::: clazz.getSimpleName :: Nil
@@ -40,4 +70,16 @@ object SourceCodeHelper {
       clazz.getName :: Nil
     }
   }
+
+  def main(args: Array[String]) = {
+
+    println(name(classOf[Int]))
+    println(name("test".getClass))
+    println(name(List("hello", "world", "3").getClass))
+    println(name(Set("hello", "world", "3").getClass))
+    println(name(Map("hello"->"world", "3"->"foo").getClass))
+    println(name(None.getClass))
+    println(name(Some("Hello").getClass))
+  }
+  
 }
