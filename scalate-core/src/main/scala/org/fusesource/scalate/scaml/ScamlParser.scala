@@ -20,6 +20,8 @@ import scala.util.parsing.combinator._
 import util.parsing.input.{Positional, CharSequenceReader}
 import scala.None
 import org.fusesource.scalate.{TemplateException}
+import collection.mutable.ListBuffer
+import annotation.tailrec
 
 /**
  * Base class for parsers which use indentation to define
@@ -42,12 +44,37 @@ class IndentedParser extends RegexParsers() {
   var indent_unit:Parser[Any] = null
   var indent_level:Int = 1
 
+    /** A parser generator for a specified range of repetitions.
+   *
+   * <p> repRange(min, max, p) uses `p' from `min' upto `max' times to parse the input 
+   *       (the result is a `List' of the consecutive results of `p')</p>
+   *
+   * @param p a `Parser' that is to be applied successively to the input
+   * @param n the exact number of times `p' must succeed
+   * @return A parser that returns a list of results produced by repeatedly applying `p' to the input
+   *        (and that only succeeds if `p' matches exactly `n' times).
+   */
+  def repRange[T](min: Int, max: Int, p: => Parser[T]): Parser[List[T]] =
+    if (max == 0) success(Nil) else Parser { in =>
+      val elems = new ListBuffer[T]
+      @tailrec def applyp(in0: Input): ParseResult[List[T]] = {
+        if (elems.length == max) Success(elems.toList, in0)
+        else p(in0) match {
+          case Success(x, rest)   => elems += x ; applyp(rest)
+          case ns: NoSuccess      => if (elems.length < min) {ns} else {Success(elems.toList, in0)}
+        }
+      }
+      applyp(in)
+    }
 
   def current_indent(): Parser[Any] = {
     if( indent_level==0 ) {
       success()
     } else if( indent_unit!=null ) {
-      repN(indent_level,indent_unit)
+      // this is the normal indent case
+      repN(indent_level,indent_unit) |
+      // this is the case of a emplty line.. we will consider it indented too.
+      repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r)
     } else {
       ( """ +""".r | """\t+""".r) ^^ ( s=>{
           indent_unit=s;
@@ -258,6 +285,7 @@ object ScamlParser {
      val in = """
 :plain
   line1
+
   line2
 """
     val p = new ScamlParser
