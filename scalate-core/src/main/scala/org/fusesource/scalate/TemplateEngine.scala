@@ -134,10 +134,9 @@ class TemplateEngine {
 
         // Not in the cache..
         case None =>
-          val className = generator(uri).className(uri)
           try {
             // Try to load a pre-compiled template from the classpath
-            cache(uri, load_compiled_entry(className))
+              cache(uri, load_precompiled_entry(uri, extraBindings))
           } catch {
             case e:Throwable => {
               // It was not pre-compiled... compile and load it.
@@ -159,11 +158,25 @@ class TemplateEngine {
     }
   }
 
-  private def load_compiled_entry(className:String) = {
-    val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
-    val clazz = cl.loadClass(className)
-    val template = clazz.asInstanceOf[Class[Template]].newInstance
-    CacheEntry(template, Set(), Platform.currentTime)
+  private def load_precompiled_entry(uri:String, extraBindings:List[Binding]) = {
+    val className = generator(uri).className(uri)
+    val template = load_compiled_template(className);
+    if( allowCaching && allowReload) {
+      // Even though the template was pre-compiled, it may go or is stale
+      // We still need to parse the template to figure out it's dependencies..
+      val code = generateScala(uri, extraBindings);
+      val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
+      if( entry.isStale ) {
+        // Throw an exception since we should not load stale pre-compiled classes.
+        throw new Exception("Template is stale.");
+      }
+      // Yay the template is not stale.  Lets use it.
+      entry
+    } else {
+      // If we are not going to be cache reloading.. then we
+      // don't need to do the extra work.
+      CacheEntry(template, Set(), 0)
+    }
   }
 
   private def compile_and_load_entry(uri:String, extraBindings:List[Binding]) = {
@@ -193,7 +206,7 @@ class TemplateEngine {
       compiler.compile(sourceFile)
 
       // Load the compiled class and instantiate the template object
-      val template = load_compiled_entry(code.className).template
+      val template = load_compiled_template(code.className)
 
       (template, code.dependencies)
     } catch {
@@ -229,5 +242,31 @@ class TemplateEngine {
     }
   }
 
+  private def load_compiled_template(className:String) = {
+    val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
+    val clazz = cl.loadClass(className)
+    clazz.asInstanceOf[Class[Template]].newInstance
+  }
+
+  /**
+   * Figures out the modification time of the class.
+   */
+  private def lastModified(clazz:Class[_]):Long = {
+    val codeSource = clazz.getProtectionDomain.getCodeSource;
+    if( codeSource !=null && codeSource.getLocation.getProtocol == "file") {
+      val location = new File(codeSource.getLocation.getPath)
+      if( location.isDirectory ) {
+        val classFile = new File(location, clazz.getName.replace('.', '/')+".class")
+        if( classFile.exists ) {
+          return classFile.lastModified
+        }
+      } else {
+        // class is inside an archive.. just use the modification time of the jar
+        return location.lastModified
+      }
+    }
+    // Bail out
+    return 0
+  }
 }
 
