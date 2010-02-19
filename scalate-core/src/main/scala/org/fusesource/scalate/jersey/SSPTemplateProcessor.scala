@@ -9,7 +9,6 @@ import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import org.fusesource.scalate.util.Logging
-//import org.apache.log4j.Logger
 import com.sun.jersey.api.container.ContainerException
 import javax.ws.rs.core.Context
 

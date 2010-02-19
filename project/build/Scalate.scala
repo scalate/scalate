@@ -17,6 +17,7 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
   lazy val core = project("scalate-core", "Scalate Core", new Core(_))
   lazy val camel = project("scalate-camel", "Scalate Camel", new Camel(_), core)
   lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core)
+  lazy val bookstore = project("scalate-bookstore", "Scalate Bookstore Sample Web App", new Bookstore(_), core)
 
 
   // TODO disable WebbyTest until its in a maven repo
@@ -27,6 +28,9 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
   }
 
   class Sample(info: ProjectInfo) extends DefaultWebProject(info) {
+  }
+
+  class Bookstore(info: ProjectInfo) extends DefaultWebProject(info) {
   }
 
   lazy val cleanPlugins = task {

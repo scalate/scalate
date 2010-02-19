@@ -248,6 +248,7 @@
   <modules>
     <module>scalate-core</module>
     <module>scalate-camel</module>
+    <module>scalate-bookstore</module>
     <module>scalate-sample</module>
   </modules>
 

@@ -1,0 +1,19 @@
+<%@ val it: BookResource %>
+<% import it.book._ %>
+<html>
+<body>
+<h1>Book ${title}</h1>
+
+<ul>
+  <li>Title: <b>${title}</b></li>
+  <li>by: <b>${author}</b></li>
+  <li>id: <b>${id}</b></li>
+</ul>
+<p>
+
+
+
+</p>
+
+</body>
+</html>

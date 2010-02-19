@@ -1,0 +1,14 @@
+<%@ val it: Bookstore %>
+<html>
+<body>
+<h1>Bookstore</h1>
+
+<h2>Items</h2>
+
+<ul>
+  <li><a href="id/item1">Item1</a></li>
+  <li><a href="id/item2">Item2</a></li>
+</ul>
+
+</body>
+</html>
