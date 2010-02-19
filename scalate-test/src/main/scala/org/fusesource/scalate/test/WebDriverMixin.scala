@@ -1,4 +1,4 @@
-package org.fusesource.scalate.sample
+package org.fusesource.scalate.test
 
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import java.lang.String

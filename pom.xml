@@ -247,6 +247,7 @@
 
   <modules>
     <module>scalate-core</module>
+    <module>scalate-test</module>
     <module>scalate-camel</module>
     <module>scalate-bookstore</module>
     <module>scalate-sample</module>
@@ -292,13 +293,11 @@
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest</artifactId>
       <version>${scalaTest-version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.7</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -323,6 +322,11 @@
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>1.2.14</version>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-htmlunit-driver</artifactId>
+        <version>2.0a1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -587,26 +591,26 @@
         <artifactId>taglist-maven-plugin</artifactId>
       </plugin>
 
-<!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.6.1</version>
-        <configuration>
-          <detectLinks>true</detectLinks>
-          <linksource>true</linksource>
-        </configuration>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>javadoc</report>
-              &lt;!&ndash;<report>aggregate</report>&ndash;&gt;
-              <report>test-javadoc</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
--->
+      <!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.6.1</version>
+              <configuration>
+                <detectLinks>true</detectLinks>
+                <linksource>true</linksource>
+              </configuration>
+              <reportSets>
+                <reportSet>
+                  <reports>
+                    <report>javadoc</report>
+                    &lt;!&ndash;<report>aggregate</report>&ndash;&gt;
+                    <report>test-javadoc</report>
+                  </reports>
+                </reportSet>
+              </reportSets>
+            </plugin>
+      -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

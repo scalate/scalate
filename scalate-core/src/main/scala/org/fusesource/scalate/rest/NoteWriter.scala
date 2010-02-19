@@ -1,4 +1,4 @@
-package org.fusesource.scalate.jersey
+package org.fusesource.scalate.rest
 
 import java.io.OutputStream
 import java.lang.annotation.Annotation

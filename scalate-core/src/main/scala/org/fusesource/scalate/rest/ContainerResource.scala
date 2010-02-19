@@ -1,4 +1,4 @@
-package org.fusesource.scalate.jersey
+package org.fusesource.scalate.rest
 
 import com.sun.jersey.api.NotFoundException
 import javax.ws.rs.{Path, PathParam}

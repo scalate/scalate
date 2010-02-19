@@ -1,4 +1,4 @@
-package org.fusesource.scalate.sample
+package org.fusesource.scalate.test
 
 import org.scalatest.{Suite, BeforeAndAfterAll}
 

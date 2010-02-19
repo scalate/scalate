@@ -1,4 +1,4 @@
-package org.fusesource.scalate.sample
+package org.fusesource.scalate.test
 
 /**
  * @version $Revision: 1.1 $

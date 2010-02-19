@@ -1,7 +1,7 @@
 package org.fusesource.scalate.bookstore.resources
 
 import org.fusesource.scalate.bookstore.model.Book
-import org.fusesource.scalate.jersey.{Container, ElementResource}
+import org.fusesource.scalate.rest.{Container, ElementResource}
 
 /**
  * @version $Revision : 1.1 $

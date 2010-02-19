@@ -1,4 +1,4 @@
-package org.fusesource.scalate.jersey
+package org.fusesource.scalate.rest
 
 /**
  * @version $Revision: 1.1 $

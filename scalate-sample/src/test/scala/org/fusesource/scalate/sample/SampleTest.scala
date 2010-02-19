@@ -4,6 +4,8 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FunSuite}
 
+import org.fusesource.scalate.test._
+
 /**
  * @version $Revision: 1.1 $
  */

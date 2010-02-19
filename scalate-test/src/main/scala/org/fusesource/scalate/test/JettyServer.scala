@@ -1,4 +1,4 @@
-package org.fusesource.scalate.sample
+package org.fusesource.scalate.test
 
 import java.io.File
 
@@ -18,7 +18,7 @@ class JettyServer {
   private final val LOG = LogFactory.getLog(classOf[JettyServer])
 
   var defaultWebAppDir: String = "src/main/webapp"
-  var defaultDirectory: String = "scalate-bookstore"
+  var defaultDirectory: String = "."
 
   var server = new Server
   var port: Int = 0
