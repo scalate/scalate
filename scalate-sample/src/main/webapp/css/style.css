@@ -69,49 +69,6 @@ img {
 #overview div.message h1{ margin-bottom: 5px; display:none; }
 #overview div.message p{ margin-top: 0px; padding-bottom:14px; }
 
-#spot { width: 100%; float: left;
-    margin-top: 15px;
-    background:transparent url(../images/spot-banner.gif) repeat-x scroll 0 0;
-    height: 277px;
-}
-#spot div.title {
-    text-align:center; height:25px;
-    text-align:center; padding-top: 2px;
-    color: white; font-size: 10pt; font-weight: bold;
-    font-family: HelveticaNeue,"Helvetica Neue",Helvetica,Arial,Verdana,sans-serif;
-}
-#spot div.content table {
-    width: 100%; text-align:center;
-    color: black; font-size: 10pt;
-}
-
-#spot a:hover {text-decoration: none; }
-
-#spot div.spot-balloon {
-  background:transparent url( ../../../images/spot-get-involved.gif ) no-repeat;
-  background-position:center;
-  height: 121px;
-  text-align:left;
-  padding-top: 25px;
-  padding-left: 35px;
-}
-
-#spot div.spot-balloon li {
-/*
-  list-style: none;
-*/
-  list-style: disc;
-}
-
-/*
-#spot div.spot-balloon {
-  height: 120px;
-  text-align:left;
-  padding-top: 20px;
-  padding-left: 15px;
-}
-*/
-
 #content { width: 100%; float: left; }
 #content .wrapper { min-width: 700px; width: 700px; margin: 0 auto; padding-top: 1em}
 #content div.left {

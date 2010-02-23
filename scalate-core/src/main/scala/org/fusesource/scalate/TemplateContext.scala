@@ -83,7 +83,14 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     }
   }
 
-  def include(path: String): Unit = {
+  /**
+   * includes the given template path applying the layout to it before returning
+   */
+  def layout(path: String): Unit = include(path, true)
+
+  def include(path: String): Unit = include(path, false)
+
+  def include(path: String, layout: Boolean): Unit = {
 
     val uri = if( currentTemplate!=null ) {
       engine.resourceLoader.resolve(currentTemplate, path);
@@ -94,7 +101,13 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     val original = currentTemplate
     try {
       currentTemplate = uri
-      engine.layout(engine.load(uri), this);
+      val template = engine.load(uri)
+      if (layout) {
+        engine.layout(template, this);
+      }
+      else {
+        template.render(this);
+      }
     } finally {
       currentTemplate = original
     }
@@ -107,9 +120,9 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     }
   }
 
-  /**
-   * Renders a collection of model objects with an optional separator
-   */
+/**
+ * Renders a collection of model objects with an optional separator
+ */
   def includeCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): Unit = {
     var first = true
     for (model <- objects) {
