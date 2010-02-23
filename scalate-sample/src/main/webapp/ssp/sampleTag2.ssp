@@ -1,6 +1,3 @@
-<html>
-<body>
-
 <h1>Sample Tag</h1>
 
 <p>
@@ -14,6 +11,3 @@
 <% someLayoutUsingTemplateContext(context) { %>
 this is the body!
 <% } %>
-
-</body>
-</html>

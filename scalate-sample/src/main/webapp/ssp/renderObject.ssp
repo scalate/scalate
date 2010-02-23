@@ -1,5 +1,3 @@
-<html>
-<body>
 <h2>View Objects</h2>
 
 <p>This page renders a model object using its default template</p>
@@ -13,6 +11,3 @@
     includeView(person)
   }
 %>
-
-</body>
-</html>

@@ -16,6 +16,7 @@
 package org.fusesource.scalate
 
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
+import layout.DefaultLayoutStrategy
 import scaml.ScamlCodeGenerator
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
@@ -73,6 +74,8 @@ class TemplateEngine {
           }
       }
   }
+
+  var layoutStrategy = new DefaultLayoutStrategy(this)
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
 
@@ -158,6 +161,13 @@ class TemplateEngine {
     }
   }
 
+  /**
+   * Renders the given template using the current layoutStrategy
+   */
+  def layout(template: Template, context: RenderContext): Unit = {
+    layoutStrategy.layout(template, context)
+  }
+
   private def load_precompiled_entry(uri:String, extraBindings:List[Binding]) = {
     val className = generator(uri).className(uri)
     val template = load_compiled_template(className);
@@ -216,11 +226,11 @@ class TemplateEngine {
         if( attempt ==0 ) {
           compile_and_load(uri, extraBindings, 1)
         } else {
-          throw new TemplateException("Could not load template: "+e, e);
+          throw new TemplateNotFoundException(e);
         }
       }
       case e:Throwable=>{
-        throw new TemplateException("Could not load template: "+e, e);
+        throw new TemplateNotFoundException(e);
       }
     }
   }

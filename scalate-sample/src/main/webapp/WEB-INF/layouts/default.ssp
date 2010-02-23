@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ var body: String %>
+<%@ var title : String = "Scalate Sample" %>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="description goes here" />
+    <meta name="keywords" content="keywords,goes,here" />
+    <meta name="author" content="Your Name" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+    <title>${title}</title>
+</head>
+
+<body>
+
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Home</span></li>
+        <li class="webgen-menu-level1 webgen-menu-submenu"><a href="http://scalate.fusesource.org/">Documentation</a></li></ul>
+  	</div>
+  </div>
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <%= body %>
+  	</div>
+  </div>
+
+</body>
+</html>

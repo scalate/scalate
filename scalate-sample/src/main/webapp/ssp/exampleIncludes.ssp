@@ -1,5 +1,3 @@
-<html>
-<body>
 <h1>Includes Example</h1>
 
 <p>this example shows how to include other pages and templates</p>
@@ -16,6 +14,3 @@
 <p>
   Finished including!
 </b>
-
-</body>
-</html>

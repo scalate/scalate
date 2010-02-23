@@ -24,28 +24,33 @@ trait RenderContext {
   /**
    * Renders a value into a string.
    */
-  def render(value: Any): String;
+  def render(value: Any): String
 
   /**
    * Gets the value of a template variable binding
    */
-  def binding(name:String): Option[Any];
+  def binding(name:String): Option[Any]
 
   /**
    * Sets the value of a template variable binding
    */
-  def binding(name:String, value:Option[Any]): Unit;
+  def binding(name:String, value:Option[Any]): Unit
 
   /**
    * Evaluates the specified body capturing any output written to this context
    * during the evaluation
    */
-  def capture(body: => Unit): String;
+  def capture(body: => Unit): String
+
+  /**
+   * Evaluates the template capturing any output written to this page context during the body evaluation
+   */
+  def capture(template: Template): String
 
   /**
    * renders and inserts another template
    */
-  def include(path: String): Unit;
+  def include(path: String): Unit
 
   implicit def body(body: => Unit): () => String = {
     () => {

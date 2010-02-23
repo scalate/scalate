@@ -94,7 +94,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     val original = currentTemplate
     try {
       currentTemplate = uri
-      engine.load(uri).render(this);
+      engine.layout(engine.load(uri), this);
     } finally {
       currentTemplate = original
     }
@@ -185,6 +185,8 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
 
   def renderTemplate(uri: String): String = {
     capture {
+      // TODO should we call engine.layout() instead??
+
       engine.load(uri).render(this);
     }
   }
@@ -210,6 +212,22 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     out = new PrintWriter(buffer)
     try {
       body
+      out.close()
+      buffer.toString
+    } finally {
+      out = outStack.pop
+    }
+  }
+
+  /**
+   * Evaluates the template capturing any output written to this page context during the body evaluation
+   */
+  def capture(template: Template): String = {
+    val buffer = new StringWriter();
+    outStack.push(out)
+    out = new PrintWriter(buffer)
+    try {
+      template.render(this)
       out.close()
       buffer.toString
     } finally {

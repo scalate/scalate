@@ -1,13 +1,7 @@
-<html>
-<%
-  import org.fusesource.scalate.sample.resources.Snippets._
-%>
-<body>
+<% import org.fusesource.scalate.sample.resources.Snippets._ %>
 <%= cheese %>
 
 <h2>Another snippet</h2>
 
 <%= beer %>
 
-</body>
-</html>

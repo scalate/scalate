@@ -1,11 +1,7 @@
 <%@ import val it: Item %>
-<html>
-<body>
 <h1>Item!</h1>
 
 <p>Hello from a Item!</p>
 
 <p>The item id is <b><%= id %></b></p>
 <p>The item name is <b><%= name %></b></p>
-</body>
-</html>

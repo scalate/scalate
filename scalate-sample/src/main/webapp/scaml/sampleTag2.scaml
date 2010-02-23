@@ -1,12 +1,10 @@
-%html
-  %body
-    %h1 Sample Tag
-    %p
-      This page demonstrates a kinda pseudo custom tag in SSP
-      using an explicit PageContext parameter and a function which can be invoked
-      by the someLayoutUsingTemplateContext() to process the body (writing the output 
-      as a side effect).
-      
-    - import org.fusesource.scalate.sample.MyTags._ 
-    = someLayoutUsingTemplateContext(context)
-      this is the body!
+%h1 Sample Tag
+%p
+  This page demonstrates a kinda pseudo custom tag in SSP
+  using an explicit PageContext parameter and a function which can be invoked
+  by the someLayoutUsingTemplateContext() to process the body (writing the output
+  as a side effect).
+
+- import org.fusesource.scalate.sample.MyTags._
+= someLayoutUsingTemplateContext(context)
+  this is the body!

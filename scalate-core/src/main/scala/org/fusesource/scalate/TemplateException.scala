@@ -21,19 +21,23 @@ import scala.util.parsing.input.{NoPosition, Position}
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateException(message:String, cause:Throwable) extends RuntimeException(message, cause) {
-  def this(message:String) {
-    this(message, null)
+class TemplateException(message: String, cause: Throwable) extends RuntimeException(message, cause) {
+  def this(message: String) {
+    this (message, null)
   }
 }
 
-class InvalidSyntaxException(message: String, val pos:Position=NoPosition) extends TemplateException(message+" at "+pos) {
+class TemplateNotFoundException(cause: Throwable) extends TemplateException("Could not load template: " + cause, cause) {
+}
+
+class InvalidSyntaxException(message: String, val pos: Position = NoPosition) extends TemplateException(message + " at " + pos) {
 }
 
 class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set") {
 }
 
-class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view + "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
+class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view +
+        "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
 }
 
 class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.") {

@@ -1,9 +1,4 @@
-<html>
 <%@ val name : String %>
-<body>
 <h2>Attribute Passing Example</h2>
 
 <p>This page has been passed an attribute called 'name' = <b>${name}</b></p>
-
-</body>
-</html>

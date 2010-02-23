@@ -2,8 +2,6 @@
 
 <%@ val foo: org.fusesource.scalate.sample.Foo %>
 <%@ val timestamp: java.util.Date %>
-<html>
-<body>
 
 <h1>Test Scala Server Page</h1>
 
@@ -28,5 +26,3 @@
   <li>${header}</li>
   <% } %>
 </ul>
-</body>
-</html>

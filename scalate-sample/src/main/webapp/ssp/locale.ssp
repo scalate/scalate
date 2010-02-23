@@ -1,6 +1,3 @@
-<html>
-<body>
-
 <p>
   Hello from locale.ssp
 </p>
@@ -20,6 +17,3 @@
 <p>
   now = ${new java.util.Date()}
 </p>
-
-</body>
-</html>

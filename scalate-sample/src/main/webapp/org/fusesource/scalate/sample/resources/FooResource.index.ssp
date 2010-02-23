@@ -1,7 +1,5 @@
 <%@ val it: FooResource %>
 <% import Snippets._ %>
-<html>
-<body>
 <h1>FooResource!</h1>
 
 <p>Hello from a FooResource!</p>
@@ -15,6 +13,3 @@
   <li><%= itemLink("abc", "ItemABC") %></li>
   <li><%= itemLink("def", "ItemDEF") %></li>
 </ul>
-
-</body>
-</html>
