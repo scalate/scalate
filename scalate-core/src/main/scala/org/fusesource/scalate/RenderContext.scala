@@ -37,6 +37,11 @@ trait RenderContext {
   def binding(name:String, value:Option[Any]): Unit
 
   /**
+   * Sets the value of a template variable binding to a specific non-optional value
+   */
+  def bind(name:String, value:Any): Unit = binding(name, Some(value))
+
+  /**
    * Evaluates the specified body capturing any output written to this context
    * during the evaluation
    */

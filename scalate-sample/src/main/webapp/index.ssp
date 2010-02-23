@@ -8,10 +8,16 @@
 
 <ul>
   <li>
-    <a href="ssp/standalone.ssp">simple</a>
+    <a href="ssp/simple.ssp">simple</a>
   </li>
   <li>
     <a href="ssp/locale.ssp">shows use of locales and auto-formatting of numbers and dates</a>
+  </li>
+  <li>
+    <a href="ssp/customLayout.ssp">a custom layout</a>
+  </li>
+  <li>
+    <a href="ssp/noLayout.ssp">no layout</a>
   </li>
   <li>
     <a href="ssp/exampleIncludes.ssp">includes example</a> shows how to include other templates or fragments

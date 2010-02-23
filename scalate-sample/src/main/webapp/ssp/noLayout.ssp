@@ -1,0 +1,11 @@
+<% bind("layout", "") %>
+<html>
+<head>
+  <title>This page has no layout</title>
+</head>
+<body>
+<h1>No Layout</h1>
+
+<p>This page has no separate layout</p>
+</body>
+</html>

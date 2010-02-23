@@ -15,7 +15,14 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
     // lets try find the default layout
     context.binding("layout") match {
       case Some(name: String) =>
-        renderLayout(name, body, context)
+        val t = name.trim
+        if (t.length == 0) {
+          // lets not use layouts
+          noLayout(body, template, context)
+        }
+        else {
+          renderLayout(name, body, context)
+        }
 
       case _ =>
         try {
@@ -27,7 +34,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
             } catch {
               case e2: TemplateNotFoundException =>
                 // lets not use layouts
-                context << body
+                noLayout(body, template, context)
             }
         }
     }
@@ -40,4 +47,6 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
     context.binding("body", Some(body))
     layoutTemplate.render(context)
   }
+
+  def noLayout(body: String, template: Template, context: RenderContext): Unit = context << body
 }

@@ -1,4 +1,5 @@
 <%@ val name : String = "James" %>
+<% bind("title", "Attribute Passing Example") %>         
 <h2>Attribute Passing Example</h2>
 
 <p>This page uses an attribute which has a sensible default value so the page should always work</p>
