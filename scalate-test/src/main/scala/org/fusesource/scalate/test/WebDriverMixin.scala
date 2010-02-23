@@ -42,6 +42,17 @@ trait WebDriverMixin extends BeforeAndAfterAll {
     }
   }
 
+  def pageNotContains(textLines: String*): Unit = {
+    val source = webDriver.getPageSource
+    assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
+    for (text <- textLines) {
+      val index = source.indexOf(text)
+      if (index >= 0) {
+        assume(false, "Page contains '" + text + "' at index " + index + " for " + webDriver.getCurrentUrl + " when page was\n" + source)
+      }
+    }
+  }
+
   def pageMatches(regex: String): Unit = {
     val source = webDriver.getPageSource
     assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
@@ -55,6 +66,12 @@ trait WebDriverMixin extends BeforeAndAfterAll {
     }
   }
   
+  def testPageNotContains(uri: String, textLines:String*) {
+    testPage(uri) {
+      pageNotContains(textLines:_*)
+    }
+  }
+
   def testPageMatches(uri: String, matches:String) {
     testPage(uri) {
       pageMatches(matches)

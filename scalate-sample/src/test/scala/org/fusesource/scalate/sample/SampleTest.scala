@@ -21,19 +21,26 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
   testPageContains("sampleServlet", "The foo is: Foo(")
 
+  testPageContains("ssp/customLayout.ssp", "layout header goes here...", "Custom page", "This is some text", "layout footer goes here...")
   testPageContains("ssp/defaultAttribute.ssp", "James")
   testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp",
     "included from /ssp/child/foo.ssp", "included from /includes/something.jsp", "Finished including!")
 
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
   testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
-  testPageContains("ssp/snippet.ssp", "mmm I like beer")
+
+  testPage("ssp/noLayout.ssp") {
+    pageContains("No Layout", "This page has no separate layout")
+    pageNotContains("stylesheet", "text/css", "style.css")
+  }
+
 //  testPageContains("ssp/renderObject.ssp", "Strachan")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")
   testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "this is the body!", "End of wrapped body")
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
+  testPageContains("ssp/snippet.ssp", "mmm I like beer")
 
   testPageContains("foo", "Hello from a FooResource!")
   testPageContains("foo/abc", "The item id is", "abc")
