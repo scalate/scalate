@@ -13,7 +13,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
     val body = context.capture(template)
 
     // lets try find the default layout
-    context.binding("layout") match {
+    context.attributes.get("layout") match {
       case Some(name: String) =>
         val t = name.trim
         if (t.length == 0) {
@@ -44,7 +44,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
     fine("Attempting to load layout: " + templateName)
 
     val layoutTemplate = engine.load(templateName)
-    context.binding("body", Some(body))
+    context.attributes("body") = body
     layoutTemplate.render(context)
   }
 

@@ -28,7 +28,7 @@ import org.fusesource.scalate.util.ClassLoaders._;
  */
 class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
 
-  bindings = List(Binding("context", classOf[ServletTemplateContext].getName, true))
+  bindings = List(Binding("context", classOf[ServletRenderContext].getName, true))
   workingDirectory = new File(config.getServletContext.getRealPath("WEB-INF/_scalate/"))
   workingDirectory.mkdirs
   classpath = buildClassPath

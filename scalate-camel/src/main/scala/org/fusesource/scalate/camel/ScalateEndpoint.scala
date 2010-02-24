@@ -80,9 +80,9 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
       val variableMap = ExchangeHelper.createVariableMap(exchange)
       for ((key, value) <- variableMap) {
         println("setting " + key + " = " + value)
-        context.setAttribute(key, value)
+        context.attributes(key) = value
       }
-      context.setAttribute("context", context)
+      context.attributes("context") = context
       template.render(context)
 
       val out = exchange.getOut()

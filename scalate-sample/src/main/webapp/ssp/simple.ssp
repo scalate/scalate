@@ -1,4 +1,4 @@
-<% bind("title", "Simple Example") %>         
+<% attributes("title") = "Simple Example" %>
 <p>
   Hello from simple.ssp
 </p>
@@ -7,3 +7,6 @@
   1 + 2 = ${1+2}
 </p>
 
+<p>
+  title = ${attribute("title")}
+</p>

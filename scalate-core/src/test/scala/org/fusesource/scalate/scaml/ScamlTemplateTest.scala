@@ -914,8 +914,8 @@ The bean is blue
 
     engine.bindings = List(Binding("context", context.getClass.getName, true))
 
-    context.attributes += "context"-> context
-    context.attributes += "bean"-> Bean("red", 10)
+    context.attributes("context") = context
+    context.attributes("bean") = Bean("red", 10)
 
     val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml")
     template.render(context)

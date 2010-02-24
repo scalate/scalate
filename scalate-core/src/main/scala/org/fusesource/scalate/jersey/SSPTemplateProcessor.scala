@@ -25,7 +25,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
   @Context
   var response: HttpServletResponse = _
 
-  val basePath = resourceConfig.getProperties().get("org.scala-tools.serverpages.config.property.SSPTemplatesBasePath") match {
+  val basePath = resourceConfig.getProperties().get("org.fusesource.config.property.SSPTemplatesBasePath") match {
     case path: String =>
       if (path(0) == '/') {
         path

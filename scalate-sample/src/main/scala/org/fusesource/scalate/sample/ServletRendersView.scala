@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.ServletConfig
-import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletTemplateContext}
+import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletRenderContext}
 import org.fusesource.scalate.TemplateEngine
 
 class ServletRendersView extends HttpServlet
@@ -35,7 +35,7 @@ class ServletRendersView extends HttpServlet
 
   override def doGet(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val model = new Person("Bob", "Mcwhatnot")
-    val context = new ServletTemplateContext(templateEngine, request, response, getServletContext)
+    val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     context.render(model)
   }
 

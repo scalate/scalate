@@ -1,4 +1,4 @@
-<% bind("layout", "/WEB-INF/layouts/custom.ssp") %>
-<% bind("title", "This is the custom title") %>
+<% attributes("layout") = "/WEB-INF/layouts/custom.ssp" %>
+<% attributes("title") = "This is the custom title" %>
 <h3>Custom page</h3>
 <p>This is some text</p>        

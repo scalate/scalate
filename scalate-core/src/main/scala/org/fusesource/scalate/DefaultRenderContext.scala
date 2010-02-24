@@ -29,12 +29,14 @@ import xml.{NodeBuffer, Node}
 /**
  * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
  */
-class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) extends RenderContext {
-
+class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext {
   var viewPrefixes = List("")
-  var viewPostfixes = engine.codeGenerators.keysIterator.map(x=>"."+x).toList
-  var currentTemplate:String = null;
-  
+  var viewPostfixes = engine.codeGenerators.keysIterator.map(x => "." + x).toList
+  var currentTemplate: String = _
+  private val _attributes: AttributeMap[String, Any] = new HashMap[String, Any]() with AttributeMap[String, Any]
+
+  def attributes = _attributes
+
   /////////////////////////////////////////////////////////////////////
   //
   // RenderContext implementation
@@ -49,37 +51,26 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     out.print(RenderHelper.sanitize(render(value)))
   }
 
-  def binding(name: String) = {
-    attributes.get(name)
-  }
-
-  def binding(name:String, value:Option[Any]): Unit = {
-    value match {
-      case None    => attributes.remove(name)
-      case Some(v) => attributes.put(name, v)
-    }
-  }
-
   def render(value: Any): String = {
     value match {
       case null => nullString
       case v: String => v
       case v: Date => dateFormat.format(v)
       case v: Number => numberFormat.format(v)
-      case f:FilterRequest => {
+      case f: FilterRequest => {
         var rc = filter(f.filter, f.content)
         rc
       }
       case s: NodeBuffer =>
-        (s.foldLeft(new StringBuilder){(rc, x)=>rc.append(x)}).toString
-      case v:Any => v.toString
+        (s.foldLeft(new StringBuilder) {(rc, x) => rc.append(x)}).toString
+      case v: Any => v.toString
     }
   }
 
-  def filter(name:String, content: String): String = {
+  def filter(name: String, content: String): String = {
     engine.filters.get(name) match {
-      case None=> throw new NoSuchFilterException(name)
-      case Some(f)=> f.filter(content)
+      case None => throw new NoSuchFilterException(name)
+      case Some(f) => f.filter(content)
     }
   }
 
@@ -92,7 +83,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
 
   def include(path: String, layout: Boolean): Unit = {
 
-    val uri = if( currentTemplate!=null ) {
+    val uri = if (currentTemplate != null) {
       engine.resourceLoader.resolve(currentTemplate, path);
     } else {
       path
@@ -116,13 +107,13 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
 
   def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): String = {
     capture {
-      includeCollection(objects,  view, separator)
+      includeCollection(objects, view, separator)
     }
   }
 
-/**
- * Renders a collection of model objects with an optional separator
- */
+  /**
+   * Renders a collection of model objects with an optional separator
+   */
   def includeCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): Unit = {
     var first = true
     for (model <- objects) {
@@ -136,7 +127,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     }
   }
 
-  def renderView(model: AnyRef, view: String="index"): String = {
+  def renderView(model: AnyRef, view: String = "index"): String = {
     capture {
       includeView(model, view)
     }
@@ -146,7 +137,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
    * Renders the view of the given model object, looking for the view in
    * packageName/className.viewName.ext
    */
-  def includeView(model: AnyRef, view: String="index"): Unit = {
+  def includeView(model: AnyRef, view: String = "index"): Unit = {
     if (model == null) {
       throw new NullPointerException("No model object given!")
     }
@@ -154,7 +145,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     val classSearchList = new ListBuffer[Class[_]]()
 
     def buildClassList(clazz: Class[_]): Unit = {
-      if ( clazz != null && clazz != classOf[Object] && !classSearchList.contains(clazz)) {
+      if (clazz != null && clazz != classOf[Object] && !classSearchList.contains(clazz)) {
         classSearchList.append(clazz);
         buildClassList(clazz.getSuperclass)
         for (i <- clazz.getInterfaces) {
@@ -167,7 +158,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
       for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
         val path = clazz.getName.replace('.', '/') + "." + view + postfix
         val fullPath = if (prefix.isEmpty) {"/" + path} else {"/" + prefix + "/" + path}
-        if( engine.resourceLoader.exists(fullPath) ) {
+        if (engine.resourceLoader.exists(fullPath)) {
           return fullPath
         }
       }
@@ -175,9 +166,9 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     }
 
     def searchForView(): String = {
-      for (i <- classSearchList ) {
+      for (i <- classSearchList) {
         val rc = viewForClass(i)
-        if( rc!=null ) {
+        if (rc != null) {
           return rc;
         }
       }
@@ -187,7 +178,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
     buildClassList(model.getClass)
     val templateUri = searchForView()
 
-    if( templateUri==null ) {
+    if (templateUri == null) {
       model.toString
     } else {
       using(model) {
@@ -205,12 +196,17 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
   }
 
   private def using[T](model: AnyRef)(op: => T): T = {
-    val original = binding("it");
+    val original = attributes.get("it");
     try {
-      binding("it", Some(model))
+      attributes("it") = model
       op
     } finally {
-      binding("it", original)
+      if (original.isDefined) {
+        attributes("it") = original.get
+      }
+      else {
+        attributes.remove("it")
+      }
     }
   }
 
@@ -251,45 +247,6 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
 
   /////////////////////////////////////////////////////////////////////
   //
-  // attribute helpers/accessors
-  //
-  /////////////////////////////////////////////////////////////////////
-
-  val attributes = new HashMap[String, Any]()
-  
-  /**
-   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
-   */
-  def attribute[T](name: String): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      throw new NoValueSetException(name)
-    }
-  }
-
-  /**
-   * Returns the attribute of the given name and type or the default value if it is not available
-   */
-  def attributeOrElse[T](name: String, defaultValue: T): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      defaultValue
-    }
-  }
-
-  def setAttribute[T](name: String, value: T): Unit = {
-    attributes(name) = value
-  }
-
-
-  /////////////////////////////////////////////////////////////////////
-  //
   // resource helpers/accessors
   //
   /////////////////////////////////////////////////////////////////////
@@ -297,7 +254,7 @@ class DefaultRenderContext(val engine:TemplateEngine, var out: PrintWriter) exte
   private val resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a                { @link NoValueSetException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a                 { @link NoValueSetException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)

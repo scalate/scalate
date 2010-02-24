@@ -45,8 +45,8 @@ println(buffer.toString)
 Variables can passed as attributes to the template via the render context.  For example:
 {pygmentize:: scala}
 val context = new DefaultRenderContext(engine, new PrintWriter(buffer))
-context.attributes += "name" -> ("Hiram", "Chirino")
-context.attributes += "city" -> "Tampa"
+context.attributes("name") = ("Hiram", "Chirino")
+context.attributes("city") = "Tampa"
 template.render(context)
 {pygmentize}
 
@@ -67,6 +67,20 @@ on how to declare variable bindings in your template please reference:
 
 * [Ssp Reference: Binding Variables](ssp-reference.html#binding_variables_) 
 * [Scaml Reference: Binding Variables](scaml-reference.html#binding_variables_)
+
+## Passing Data from the Template elsewhere
+
+If you wish you can export attributes from the template using the attributes on the context in a similar way as above.
+
+For example inside a SSP page:
+
+
+{pygmentize:: jsp}
+<% attributes("title") = "This is my new title" %>
+<p> This is some content. </p>
+{pygmentize}
+
+Now if the page is using layouts, the title attribute would be set on the page. i.e. this template outputs the title attribute so that it could be used by the layout.
 
 ## Implicitly Bound Variables
 

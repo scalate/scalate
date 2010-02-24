@@ -1,4 +1,4 @@
-<% bind("layout", "") %>
+<% attributes("layout") = "" %>
 <html>
 <head>
   <title>This page has no layout</title>

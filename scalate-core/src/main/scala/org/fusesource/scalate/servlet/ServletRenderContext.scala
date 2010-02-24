@@ -1,34 +1,66 @@
 package org.fusesource.scalate.servlet
 
-import scala.xml.Node
 import javax.servlet.http._
-import org.fusesource.scalate.util.{Lazy}
-import java.text.{DateFormat, NumberFormat}
-import java.io._
-import javax.servlet.{ServletOutputStream, ServletContext, RequestDispatcher, ServletException}
+import javax.servlet.{ServletContext, ServletException}
 import java.lang.String
-import collection.mutable.{Stack, ListBuffer, HashMap}
-import java.util.{Properties, Date, Locale}
-import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext, NoSuchViewException, NoValueSetException}
+import collection.mutable.{ListBuffer, HashMap}
+import java.util.{Locale}
+import org.fusesource.scalate.{AttributeMap, TemplateEngine, DefaultRenderContext}
 
 /**
  * A template context for use in servlets
  *
- * @version $Revision: 1.1 $
+ * @version $Revision : 1.1 $
  */
-class ServletTemplateContext(engine:TemplateEngine, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, response.getWriter) {
-  
+class ServletRenderContext(engine: TemplateEngine, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, response.getWriter) {
   viewPrefixes = List("WEB-INF", "")
 
+  private val _requestAttributes = new AttributeMap[String, Any] {
+    def get(key: String): Option[Any] = {
+      val value = apply(key)
+      if (value == null) {
+        None
+      } else {
+        Some(value)
+      }
+    }
+
+    def apply(key: String): Any = {
+      if ("context" == key) {
+        ServletRenderContext.this
+      } else {
+        request.getAttribute(key)
+      }
+    }
+
+    def update(key: String, value: Any): Unit = {
+      if (value == null) {
+        request.removeAttribute(key)
+      }
+      else {
+        request.setAttribute(key, value)
+      }
+    }
+
+    def remove(key: String) = {
+      val answer = get(key)
+      request.removeAttribute(key)
+      answer
+    }
+  }
+
+  override def attributes = _requestAttributes
+
+  /*
   /**
-   * Returns the attribute of the given type or a   { @link NoValueSetException } exception is thrown
+   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
    */
   override def binding(name: String) = {
-    if( "context" == name ) {
+    if ("context" == name) {
       Some(this)
     } else {
       val value = request.getAttribute(name)
-      if ( value == null ) {
+      if (value == null) {
         None
       } else {
         Some(value)
@@ -36,12 +68,6 @@ class ServletTemplateContext(engine:TemplateEngine, val request: HttpServletRequ
     }
   }
 
-  override def binding(name:String, value:Option[Any]): Unit = {
-    value match {
-      case None    => request.removeAttribute(name)
-      case Some(v) => request.setAttribute(name, v)
-    }
-  }
 
   override def attribute[T](name: String): T = {
     val value = request.getAttribute(name)
@@ -72,6 +98,7 @@ class ServletTemplateContext(engine:TemplateEngine, val request: HttpServletRequ
   override def setAttribute[T](name: String, value: T): Unit = {
     request.setAttribute(name, value)
   }
+  */
 
 
   override def locale: Locale = {
@@ -83,7 +110,7 @@ class ServletTemplateContext(engine:TemplateEngine, val request: HttpServletRequ
       locale
     }
   }
-  
+
   /**
    * Forwards this request to the given page
    */

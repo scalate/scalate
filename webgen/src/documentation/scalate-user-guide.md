@@ -10,6 +10,7 @@ Scalate is a template engine based on the Scala language.
 * Supports multiple template syntaxes
   * Ssp: like JSP/ASP pages in syntax but using Scala code for expressions
   * Scaml: like [Haml](http://haml-lang.com/) pages in syntax, but again with Scala as the expression language.
+* inbuilt support for layouts
 * Easy to use replacement for JSP's in J2EE web container
 * No hard dependencies on a web container.  It can be used in a standalone application to template things like emails.
 * JAXRS integration so that Scalate template can render JAXRS resouces
@@ -21,7 +22,7 @@ If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using 
 Example:
 
 {pygmentize:: jsp}
-<%@ var user:User %>
+<%@ var user: User %>
 <p>Hi ${user.name},</p>
 <% for(i <- 1 to 3) { %>
 <p><%= i %></p>
@@ -57,7 +58,7 @@ with some code to generate dynamic content.
 Example :
 
 {pygmentize:: text}
--@ var user:User
+-@ var user: User
 %p Hi #{user.name},
 - for(i <- 1 to 3)
   %p= i
@@ -76,6 +77,69 @@ Is rendered as:
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
+
+## Layouts
+
+Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.
+
+You can achieve this using the layout support in Scalate.
+
+All you need to do is create a layout template in _/WEB-INF/layouts/default.ssp_ (or _/WEB-INF/layouts/default.scaml_ if you prefer). Here is a simple example layout which lays out the body and lets the title be customized on a per page basis.
+
+{pygmentize:: jsp}
+<%@ var body: String %>
+<%@ var title: String = "Some Default Title" %>
+<html>
+<head>
+  <title>${title}</title>
+</head>
+<body>
+  <p>layout header goes here...</p>
+
+  <%= body %>
+
+  <p>layout footer goes here...</p>
+</body>
+</html>
+{pygmentize}
+
+Then all pages will be wrapped in this layout by default.
+
+This means your templates don't need to include the whole html/head/body stuff, typically you'll just want the actual content to be displayed in the part of the layout you need. So a typical page might look like this...
+
+{pygmentize:: jsp}
+<h3>My Page</h3>
+<p>This is some text</p>
+{pygmentize}
+
+
+### Changing the title or layout template
+
+To set parameters on a layout or to change the layout template used, just output attribute values in your template.
+
+{pygmentize:: jsp}
+<% attributes("layout") = "/WEB-INF/layouts/custom.ssp" %>
+<% attributes("title") = "This is the custom title" %>
+<h3>Custom page</h3>
+<p>This is some text</p>
+{pygmentize}
+
+
+### Disabling layouts
+
+If you wish to disable the use of the layout on a template, just set the layout attribute to "" the empty string.
+
+{pygmentize:: jsp}
+<% attributes("layout") = "" %>
+<html>
+<body>
+  <h1>No Layout</h1>
+  <p>This page does not use the layout</p>
+</body>
+</html>
+{pygmentize}
+
+To see examples of layouts in use, try running the sample web application and looking at the layout related example pages.
 
 ## Requirements
 

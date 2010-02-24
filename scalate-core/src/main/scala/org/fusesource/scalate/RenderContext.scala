@@ -1,13 +1,9 @@
 package org.fusesource.scalate
 
-/**
- * Created by IntelliJ IDEA.
- * User: chirino
- * Date: Feb 1, 2010
- * Time: 10:24:35 AM
- * To change this template use File | Settings | File Templates.
- */
+import scala.collection.mutable.Map
 
+/**
+ */
 trait RenderContext {
 
   /**
@@ -22,24 +18,45 @@ trait RenderContext {
   def <<<(value: Any): Unit
 
   /**
+   * Access the attributes available in this context
+   */
+  def attributes : AttributeMap[String,Any]
+
+  /**
+   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
+   */
+  def attribute[T](name: String): T = {
+    val value = attributes.get(name)
+    if (value.isDefined) {
+      value.get.asInstanceOf[T]
+    }
+    else {
+      throw new NoValueSetException(name)
+    }
+  }
+
+  /**
+   * Returns the attribute of the given name and type or the default value if it is not available
+   */
+  def attributeOrElse[T](name: String, defaultValue: T): T = {
+    val value = attributes.get(name)
+    if (value.isDefined) {
+      value.get.asInstanceOf[T]
+    }
+    else {
+      defaultValue
+    }
+  }
+
+  def setAttribute[T](name: String, value: T): Unit = {
+    attributes(name) = value
+  }
+
+
+  /**
    * Renders a value into a string.
    */
   def render(value: Any): String
-
-  /**
-   * Gets the value of a template variable binding
-   */
-  def binding(name:String): Option[Any]
-
-  /**
-   * Sets the value of a template variable binding
-   */
-  def binding(name:String, value:Option[Any]): Unit
-
-  /**
-   * Sets the value of a template variable binding to a specific non-optional value
-   */
-  def bind(name:String, value:Any): Unit = binding(name, Some(value))
 
   /**
    * Evaluates the specified body capturing any output written to this context
