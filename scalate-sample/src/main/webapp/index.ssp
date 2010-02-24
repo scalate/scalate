@@ -35,6 +35,9 @@
     <a href="ssp/missingAttribute.ssp">try an SSP with missing attributes</a> (which should generate an error)
   </li>
   <li>
+    <a href="ssp/renderTemplate.ssp">render a partial template</a>
+  </li>
+  <li>
     <a href="ssp/renderObject.ssp">render an object using its default template</a>
   </li>
   <li>

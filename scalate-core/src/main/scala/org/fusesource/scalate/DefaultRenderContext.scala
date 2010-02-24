@@ -187,26 +187,59 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
-  def renderTemplate(uri: String): String = {
+  def renderTemplate(uri: String, attrMap: Map[String,Any] = Map())(body: () => String): String = {
     capture {
       // TODO should we call engine.layout() instead??
 
-      engine.load(uri).render(this);
+      val bodyText = body()
+      val context = this
+      withAttributes(attrMap + ("body" -> bodyText)) {
+        engine.load(uri).render(context);
+      }
     }
   }
 
+  /**
+   * uses the new sets of attributes for the given block, then replace them all
+   * (and remove any newly defined attributes)
+   */
+  def withAttributes(attrMap: Map[String,Any])(block: => Unit): Unit = {
+    val oldValues = new HashMap[String,Any]
+
+    // lets replace attributes, saving the old vlaues
+    for ((key, value) <- attrMap) {
+      val oldValue = attributes.get(key)
+      if (oldValue.isDefined) {
+        oldValues.put(key, oldValue.get)
+      }
+      attributes(key) = value
+    }
+
+    block
+
+    // restore old values
+    for (key <- attrMap.keysIterator) {
+      val oldValue = oldValues.get(key)
+      setAttribute(key, oldValue)
+    }
+  }
+
+  def setAttribute(name: String, value: Option[Any]): Unit = {
+    if (value.isDefined) {
+      attributes(name) = value.get
+    }
+    else {
+      attributes.remove(name)
+    }
+
+  }
   private def using[T](model: AnyRef)(op: => T): T = {
     val original = attributes.get("it");
     try {
       attributes("it") = model
       op
     } finally {
-      if (original.isDefined) {
-        attributes("it") = original.get
-      }
-      else {
-        attributes.remove("it")
-      }
+      setAttribute("it", original)
     }
   }
 

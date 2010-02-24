@@ -1,0 +1,11 @@
+<%@ val body: String %>
+<%@ val name: String = "N/A" %>
+<h1>Partial sample</h1>
+<table>
+  <tr>
+    <th>${name}</th>
+  </tr>
+  <tr>
+    <td><%= body %></td>
+  </tr>
+</table>

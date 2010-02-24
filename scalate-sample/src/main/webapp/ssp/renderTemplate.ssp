@@ -1,0 +1,7 @@
+<h2>Render Template</h2>
+
+<p>This page renders a template passing the body of the current template</p>
+
+<%= renderTemplate("/WEB-INF/partials/sample.ssp", Map("name" -> "James")) { %>
+  location: <b>London</b>
+<%}%>
