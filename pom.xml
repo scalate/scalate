@@ -248,9 +248,9 @@
   <modules>
     <module>scalate-core</module>
     <module>scalate-test</module>
-    <module>scalate-camel</module>
-    <module>scalate-bookstore</module>
     <module>scalate-sample</module>
+    <module>scalate-bookstore</module>
+    <module>scalate-camel</module>
   </modules>
 
 

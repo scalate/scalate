@@ -1,4 +1,4 @@
-<%@ val body: String %>
+<%@ val body: String = "No Location" %>
 <%@ val name: String = "N/A" %>
 <h1>Local sample</h1>
 <table>

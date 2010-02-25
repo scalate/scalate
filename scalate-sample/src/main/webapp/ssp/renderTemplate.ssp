@@ -1,15 +1,19 @@
 <h2>Render Template</h2>
 
-<h3>Absolute Partial</h3>
+<h3>Absolute Layout</h3>
 
 <p>This page renders a template passing the body of the current template</p>
 
-<%= render("/WEB-INF/partials/sample.ssp", "name" -> "James") { %>
+<%= layout("/WEB-INF/partials/sample.ssp", "name" -> "James") { %>
   location: <b>London</b>
 <%}%>
 
-<h3>Relative Partial</h3>
+<h3>Relative Layout</h3>
 
-<%= render("localPartial.ssp", "name" -> "Hiram") { %>
+<%= layout("localPartial.ssp", "name" -> "Hiram") { %>
   location: <b>Tampa</b>
 <%}%>
+
+<h3>Relative Render passing body as parameter</h3>
+
+<%= render("localPartial.ssp", "body" -> "location: <b>No Location</b>", "name" -> "Matt") %>

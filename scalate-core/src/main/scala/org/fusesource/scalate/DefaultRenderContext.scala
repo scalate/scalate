@@ -180,24 +180,48 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
-  def render(path: String, attributeValues: (String, Any)*)(body: () => String): String = {
-    val attrMap = Map(attributeValues:_*)
-    render(path, attrMap)(body)
-  }
+  /**
+   * Allows a symbol to be used with arguments to the {@link render} method such as
+   * <code>render("foo.ssp", `foo -> 123, `bar -> 456) {...}
+   */
+  implicit def toString(symbol: Symbol):String = symbol.toString
 
-  def render(path: String, attrMap: Map[String, Any])(body: () => String): String = {
+  /**
+   * Renders the given template with optional attributes
+   */
+  def render(path: String, attrMap: Map[String, Any]):String = {
     capture {
       // TODO should we call engine.layout() instead??
 
       val uri = resolveUri(path)
-      val bodyText = body()
       val context = this
-      withAttributes(attrMap + ("body" -> bodyText)) {
+
+      withAttributes(attrMap) {
         withUri(uri) {
           engine.load(uri).render(context);
         }
       }
     }
+  }
+
+  /**
+   * Renders the given template with optional attributes
+   */
+  def render(path: String, attributeValues: (String, Any)*):String = render(path, Map(attributeValues:_*))
+
+  /**
+   * Renders the given template with optoinal attributes passing the body block as the *body* attribute
+   * so that it can be layed out using the template.
+   */
+  def layout(path: String, attributeValues: (String, Any)*)(body: () => String): String = layout(path, Map(attributeValues:_*))(body)
+
+  /**
+   * Renders the given template with optoinal attributes passing the body block as the *body* attribute
+   * so that it can be layed out using the template.
+   */
+  def layout(path: String, attrMap: Map[String, Any])(body: () => String): String = {
+    val bodyText = body()
+    render(path, attrMap + ("body" -> bodyText))
   }
 
   /**
