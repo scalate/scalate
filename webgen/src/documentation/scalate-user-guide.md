@@ -155,24 +155,6 @@ You can also pass parameters into the template if it takes any
 {pygmentize}
 
 
-## Capturing output
-
-Sometimes you may wish to capture the result of rendering a block of template, assign it to a variable and then pass it as an argument to some method. For this the *capture* method can be used.
-
-For example
-
-{pygmentize:: jsp}
-<% val foo = capture { %>
-  hello there ${user.name} how are you?
-<%}%>
-...
-${foo}
-...
-${foo}
-{pygmentize}
-
-We capture the block which generates a greeting, assign it to the _foo_ variable which we can then render or pass into methods etc.
-
 ## Layouts
 
 Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.
@@ -273,6 +255,25 @@ Both will generate the same response.
 Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background. 
 
 The nice thing is there's really no difference technically between a regular template, a layout or a 'tag' template or a 'partial' (to use Rails terminology), they are all just templates which can have parameters which can be mandatory or optional.
+
+
+## Capturing output
+
+Sometimes you may wish to capture the result of rendering a block of template, assign it to a variable and then pass it as an argument to some method. For this the *capture* method can be used.
+
+For example
+
+{pygmentize:: jsp}
+<% val foo = capture { %>
+  hello there ${user.name} how are you?
+<%}%>
+...
+${foo}
+...
+${foo}
+{pygmentize}
+
+We capture the block which generates a greeting, assign it to the _foo_ variable which we can then render or pass into methods etc.
 
 
 ## Requirements
