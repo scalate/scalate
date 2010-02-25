@@ -181,25 +181,23 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   }
 
   /**
-   * Allows a symbol to be used with arguments to the {@link render} method such as
-   * <code>render("foo.ssp", `foo -> 123, `bar -> 456) {...}
+   * Allows a symbol to be used with arguments to the  { @link render } method such as
+   * <code>render("foo.ssp", `foo -> 123, `bar -> 456)  {...}
    */
-  implicit def toString(symbol: Symbol):String = symbol.toString
+  implicit def toString(symbol: Symbol): String = symbol.toString
 
   /**
    * Renders the given template with optional attributes
    */
-  def render(path: String, attrMap: Map[String, Any]):String = {
-    capture {
-      // TODO should we call engine.layout() instead??
+  def render(path: String, attrMap: Map[String, Any]): Unit = {
+    // TODO should we call engine.layout() instead??
 
-      val uri = resolveUri(path)
-      val context = this
+    val uri = resolveUri(path)
+    val context = this
 
-      withAttributes(attrMap) {
-        withUri(uri) {
-          engine.load(uri).render(context);
-        }
+    withAttributes(attrMap) {
+      withUri(uri) {
+        engine.load(uri).render(context);
       }
     }
   }
@@ -207,19 +205,19 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   /**
    * Renders the given template with optional attributes
    */
-  def render(path: String, attributeValues: (String, Any)*):String = render(path, Map(attributeValues:_*))
+  def render(path: String, attributeValues: (String, Any)*): Unit = render(path, Map(attributeValues: _*))
 
   /**
    * Renders the given template with optoinal attributes passing the body block as the *body* attribute
    * so that it can be layed out using the template.
    */
-  def layout(path: String, attributeValues: (String, Any)*)(body: () => String): String = layout(path, Map(attributeValues:_*))(body)
+  def layout(path: String, attributeValues: (String, Any)*)(body: () => String): Unit = layout(path, Map(attributeValues: _*))(body)
 
   /**
    * Renders the given template with optoinal attributes passing the body block as the *body* attribute
    * so that it can be layed out using the template.
    */
-  def layout(path: String, attrMap: Map[String, Any])(body: () => String): String = {
+  def layout(path: String, attrMap: Map[String, Any])(body: () => String): Unit = {
     val bodyText = body()
     render(path, attrMap + ("body" -> bodyText))
   }
@@ -322,7 +320,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   private val resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a                  { @link NoValueSetException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a                   { @link NoValueSetException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)
