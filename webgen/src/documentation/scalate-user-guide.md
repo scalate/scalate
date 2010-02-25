@@ -139,13 +139,13 @@ If a collection contains different types of objects then the correct view will b
 It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the *render* method as follows
 
 {pygmentize:: jsp}
-<% render "foo.ssp" %>
+<% render("foo.ssp") %>
 {pygmentize}
 
 This will render a template called *foo.ssp* relative to the current template. You can use absolute names if you prefer
 
 {pygmentize:: jsp}
-<% render "/customers/contact.ssp" %>
+<% render("/customers/contact.ssp") %>
 {pygmentize}
 
 You can also pass parameters into the template if it takes any
