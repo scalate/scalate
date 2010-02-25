@@ -154,7 +154,14 @@ You can also pass parameters into the template if it takes any
 <% render("/customers/contact.ssp", "customer" -> c, "title" -> "Customer") %>
 {pygmentize}
 
+When passing attributes you can use the Scala symbol notation for keys if you prefer...
+
+{pygmentize:: jsp}
+<% render("/customers/contact.ssp", 'customer -> c, 'title -> "Customer") %>
+{pygmentize}
+
 If you prefer you can pass in a body to the template using the *layout* method as described in [using explicit layouts inside a template](#explicit_layouts_inside_a_template).
+
 
 ## Layouts
 
