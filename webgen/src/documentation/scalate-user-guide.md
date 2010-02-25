@@ -92,7 +92,7 @@ Scalate uses a convention over configuration mechanism so that you can render an
 <p>... more stuff </p>
 {pygmentize}
 
-# view names
+### view names
 
 The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
 
