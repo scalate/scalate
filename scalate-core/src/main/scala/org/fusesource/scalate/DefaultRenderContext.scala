@@ -53,6 +53,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
 
   def render(value: Any): String = {
     value match {
+      case u: Unit => ""
       case null => nullString
       case v: String => v
       case v: Date => dateFormat.format(v)
@@ -63,6 +64,8 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
       }
       case s: NodeBuffer =>
         (s.foldLeft(new StringBuilder) {(rc, x) => rc.append(x)}).toString
+
+      // TODO for any should we use the renderView?
       case v: Any => v.toString
     }
   }
@@ -82,16 +85,9 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   def include(path: String): Unit = include(path, false)
 
   def include(path: String, layout: Boolean): Unit = {
+    val uri = resolveUri(path)
 
-    val uri = if (currentTemplate != null) {
-      engine.resourceLoader.resolve(currentTemplate, path);
-    } else {
-      path
-    }
-
-    val original = currentTemplate
-    try {
-      currentTemplate = uri
+    withUri(uri) {
       val template = engine.load(uri)
       if (layout) {
         engine.layout(template, this);
@@ -99,10 +95,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
       else {
         template.render(this);
       }
-    } finally {
-      currentTemplate = original
     }
-
   }
 
   def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): String = {
@@ -187,14 +180,17 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
-  def renderTemplate(uri: String, attrMap: Map[String,Any] = Map())(body: () => String): String = {
+  def renderTemplate(path: String, attrMap: Map[String, Any] = Map())(body: () => String): String = {
     capture {
       // TODO should we call engine.layout() instead??
 
+      val uri = resolveUri(path)
       val bodyText = body()
       val context = this
       withAttributes(attrMap + ("body" -> bodyText)) {
-        engine.load(uri).render(context);
+        withUri(uri) {
+          engine.load(uri).render(context);
+        }
       }
     }
   }
@@ -203,8 +199,8 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
    * uses the new sets of attributes for the given block, then replace them all
    * (and remove any newly defined attributes)
    */
-  def withAttributes(attrMap: Map[String,Any])(block: => Unit): Unit = {
-    val oldValues = new HashMap[String,Any]
+  def withAttributes(attrMap: Map[String, Any])(block: => Unit): Unit = {
+    val oldValues = new HashMap[String, Any]
 
     // lets replace attributes, saving the old vlaues
     for ((key, value) <- attrMap) {
@@ -224,6 +220,25 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
+
+  protected def withUri(uri: String)(block: => Unit): Unit = {
+    val original = currentTemplate
+    try {
+      currentTemplate = uri
+      block
+    } finally {
+      currentTemplate = original
+    }
+  }
+
+
+  protected def resolveUri(path: String) = if (currentTemplate != null) {
+    engine.resourceLoader.resolve(currentTemplate, path);
+  } else {
+    path
+  }
+
+
   def setAttribute(name: String, value: Option[Any]): Unit = {
     if (value.isDefined) {
       attributes(name) = value.get
@@ -231,9 +246,9 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     else {
       attributes.remove(name)
     }
-
   }
-  private def using[T](model: AnyRef)(op: => T): T = {
+
+  protected def using[T](model: AnyRef)(op: => T): T = {
     val original = attributes.get("it");
     try {
       attributes("it") = model
@@ -287,7 +302,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   private val resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a                 { @link NoValueSetException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a                  { @link NoValueSetException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)

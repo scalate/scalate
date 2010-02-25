@@ -37,7 +37,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 //  testPageContains("ssp/renderObject.ssp", "Strachan")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
-  testPageContains("ssp/renderTemplate.ssp", "James", "London")
+  testPageContains("ssp/renderTemplate.ssp", "James", "London", "Hiram", "Tampa")
   testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")
   testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "this is the body!", "End of wrapped body")
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
