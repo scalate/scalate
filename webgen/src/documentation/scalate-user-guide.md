@@ -296,7 +296,9 @@ Web Container Requirements:
 
 * Servlet 2.5 container or Newer
 
-## Building From Source
+## Running the Sample
+
+The easiest way to play with Scalate is to try out the sample web application.
 
 Scalate can be built either using Maven or SBT
 
