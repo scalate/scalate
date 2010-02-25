@@ -60,7 +60,7 @@ trait RenderContext {
   /**
    * Converts a value into a string, using the current locale for converting numbers and dates to a string.
    */
-  def toString(value: Any): String
+  def value(value: Any): String
 
   /**
    * Evaluates the specified body capturing any output written to this context

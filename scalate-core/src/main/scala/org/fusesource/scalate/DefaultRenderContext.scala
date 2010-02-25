@@ -43,15 +43,15 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   //
   //////////////////////////////////x///////////////////////////////////
 
-  def <<(value: Any): Unit = {
-    out.print(toString(value))
+  def <<(v: Any): Unit = {
+    out.print(value(v))
   }
 
-  def <<<(value: Any): Unit = {
-    out.print(RenderHelper.sanitize(toString(value)))
+  def <<<(v: Any): Unit = {
+    out.print(RenderHelper.sanitize(value(v)))
   }
 
-  def toString(value: Any): String = {
+  def value(value: Any): String = {
     value match {
       case u: Unit => ""
       case null => nullString

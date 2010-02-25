@@ -13,7 +13,7 @@ A Ssp template consists of plain text, usually an HTML document, which has speci
 portions of the document are rendered dynamically.  Everything outside of a `<% ... %>` and `${ ... }` sequence 
 are considered literal text and are generally passed through to the rendered document unmodified.
 
-### Inserting Scala: `=`
+### Inserting Scala: `<%= %>` or `${ }`
 
 Code wrapped by `<%=` and `%>` or with '${' and '}' is evaluated and 
 the output is inserted into the document.
