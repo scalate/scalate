@@ -21,6 +21,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
   testPageContains("sampleServlet", "The foo is: Foo(")
 
+  testPageContains("ssp/capture.ssp", "Hello James", "Sample 2", "Hello James")
   testPageContains("ssp/customLayout.ssp", "layout header goes here...", "Custom page", "This is some text", "layout footer goes here...")
   testPageContains("ssp/defaultAttribute.ssp", "James")
   testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp",
@@ -37,7 +38,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 //  testPageContains("ssp/renderObject.ssp", "Strachan")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
-  testPageContains("ssp/renderTemplate.ssp", "James", "London", "Hiram", "Tampa", "Matt", "No Location")
+  testPageContains("ssp/renderTemplate.ssp", "James", "London", "Hiram", "Tampa", "Matt", "No Location", "Paul", "USA")
   testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")
   testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "this is the body!", "End of wrapped body")
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")

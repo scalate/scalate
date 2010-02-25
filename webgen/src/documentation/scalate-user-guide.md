@@ -78,6 +78,101 @@ Is rendered as:
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
 
+## Views
+
+From within your Scala code or inside a template you often want to render an object or collection of objects. 
+Scalate uses a convention over configuration mechanism so that you can render any object using a simple method call in your template. e.g. in SSP
+
+{pygmentize:: jsp}
+<%@ var it: User %>
+<p>Something...</p>
+
+<% view(it) %>
+
+<p>... more stuff </p>
+{pygmentize}
+
+
+The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
+
+{pygmentize:: jsp}
+<%@ var it: User %>
+
+<% view(it, "edit") %>
+{pygmentize}
+
+Scalate will then look for the template called _packageDirectory.ClassName.viewName.(ssp|scaml)_ and render that. For example in the sample web application to render an _org.fusesource.scalate.sample.Person_ object Scalate uses the [org/fusesource/scalate/sample/Person.index.ssp template](http://github.com/scalate/scalate/blob/master/scalate-sample/src/main/webapp/org/fusesource/scalate/sample/Person.index.ssp).
+
+Notice that since the view is defined within the package of the model object, there is no need to import the _org.fusesource.scalate.sample.Person_, instead you can just refer to the model type directly as _Person_.
+
+If a template is not found for the exact class name then the class and interface (trait) hierarchies are walked until one is found.
+
+So for example you could provide a template for a generic trait you have - such as a template to render any [scala.Product](http://github.com/scalate/scalate/blob/master/scalate-sample/src/main/webapp/scala/Product.index.ssp) which will then render any case class; then you can customise the view on a class by class basis as required.
+
+### the 'it' variable
+
+By default we use the variable named _it_ to refer to the model parameter. This convention means that when working with JAXRS and Jersey's implicit views the model object is implicitly available to any templates using this naming convention.
+
+### Collections
+
+If you have a collection of objects you wish to view then you can use a simple helper method called *collection* which works like the *view* method described above.
+
+{pygmentize:: jsp}
+<%@ var it: List[Person] %>
+
+<% collection(it) %>
+{pygmentize}
+
+As with the *view* method you can specify an optional view name if you won't want to use the _"index"_ default.
+
+Also you can specify a separator to use between views of objects. The following example shows a horizontal line between views...
+
+{pygmentize:: jsp}
+<% val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino")) %>
+<% collection(people, separator = {() => "<hr/>"})  %>
+{pygmentize}
+
+If a collection contains different types of objects then the correct view will be used for each element in the collection.
+
+## Render templates
+
+It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the *render* method as follows
+
+{pygmentize:: jsp}
+<% render "foo.ssp" %>
+{pygmentize}
+
+This will render a template called *foo.ssp* relative to the current template. You can use absolute names if you prefer
+
+{pygmentize:: jsp}
+<% render "/customers/contact.ssp" %>
+{pygmentize}
+
+You can also pass parameters into the template if it takes any
+
+{pygmentize:: jsp}
+<% render("/customers/contact.ssp", "customer" -> c, "title" -> "Customer") %>
+{pygmentize}
+
+
+## Capturing output
+
+Sometimes you may wish to capture the result of rendering a block of template, assign it to a variable and then pass it as an argument to some method. For this the *capture* method can be used.
+
+For example
+
+{pygmentize:: jsp}
+<% val foo = capture { %>
+  hello there ${user.name} how are you?
+<%}%>
+...
+${foo}
+...
+${foo}
+{pygmentize}
+
+We capture the block which generates a greeting, assign it to the _foo_ variable which we can then render or pass into methods etc.
+
 ## Layouts
 
 Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.
@@ -140,6 +235,45 @@ If you wish to disable the use of the layout on a template, just set the layout 
 {pygmentize}
 
 To see examples of layouts in use, try running the sample web application and looking at the layout related example pages.
+
+### Explicit layouts inside a template
+
+You may want to layout some content within part of your template explicitly rather than just applying a layout to an entire page.
+
+For example you may want to create a layout as follows in file _foo.ssp_
+
+{pygmentize:: jsp}
+<%@ val body: String = "Bar" %>
+<table>
+ <tr>
+   <th>Some Header</th>
+ </tr>
+ <tr>
+   <td><%= body %></td>
+ </tr>
+</table>
+{pygmentize}
+
+Then we can invoke this template passing in the body as follows
+
+{pygmentize:: jsp}
+<% render("foo.ssp", "body" -> "Foo") %>
+{pygmentize}
+
+However if you want to pass in the body as a block of template you can use the *layout* method as follows
+
+{pygmentize:: jsp}
+<% layout("foo.ssp") {%>
+Foo
+<%}%>
+{pygmentize}
+
+Both will generate the same response.
+
+Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background. 
+
+The nice thing is there's really no difference technically between a regular template, a layout or a 'tag' template or a 'partial' (to use Rails terminology), they are all just templates which can have parameters which can be mandatory or optional.
+
 
 ## Requirements
 

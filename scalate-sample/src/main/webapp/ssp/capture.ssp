@@ -1,0 +1,15 @@
+<%@ val name : String = "James" %>
+
+<h2>Capture Sample</h2>
+
+<% val foo = capture { %>
+  Hello ${name}
+<% } %>
+
+<h3>Sample 1</h3>
+
+${foo}
+
+<h3>Sample 2</h3>
+
+${foo}

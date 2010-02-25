@@ -1,5 +1,7 @@
+<%-- a template to render any Scala Product or case class --%>
+
 <%@ val it : Product %>
-<% println("Called Product template with: " + it) %>
+
 <h3>${it.productPrefix}</h3>
 
 <table>
@@ -8,9 +10,6 @@
   import org.fusesource.scalate.util.CaseClassToMap._
 
   val map = toMap(it)
-
-  println("Map is: " + map)
-  
   for ((key, value) <- map) {
 %>
     <td>${key}:</td>

@@ -17,3 +17,7 @@
 <h3>Relative Render passing body as parameter</h3>
 
 <% render("localPartial.ssp", "body" -> "location: <b>No Location</b>", "name" -> "Matt") %>
+
+<h3>Relative Render using symbols as keys</h3>
+
+<% render("localPartial.ssp", 'body -> "location: <b>USA</b>", 'name -> "Paul") %>

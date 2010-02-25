@@ -169,10 +169,10 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   }
 
   /**
-   * Allows a symbol to be used with arguments to the  { @link render } method such as
-   * <code>render("foo.ssp", `foo -> 123, `bar -> 456)  {...}
+   * Allows a symbol to be used with arguments to the  {@link render} or {@link layout} method such as
+   * <code>render("foo.ssp", 'foo -> 123, 'bar -> 456)  {...}
    */
-  implicit def toString(symbol: Symbol): String = symbol.toString
+  implicit def toStringPair(entry: (Symbol,Any)): (String,Any) = (entry._1.name, entry._2)
 
   /**
    * Renders the given template with optional attributes
