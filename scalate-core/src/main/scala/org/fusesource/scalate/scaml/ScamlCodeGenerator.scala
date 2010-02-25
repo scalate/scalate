@@ -209,7 +209,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       for ( f <- statement.filters ) {
-        prefix += "$_scalate_$_context.render ( _root_.org.fusesource.scalate.FilterRequest("+asString(f)+", "
+        prefix += "$_scalate_$_context.toString ( _root_.org.fusesource.scalate.FilterRequest("+asString(f)+", "
         suffix = ") ) " + suffix;
       }
 
@@ -258,10 +258,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           var suffix = ");"
 
           if( s.preserve ) {
-            prefix += " $_scalate_$_preserve ( $_scalate_$_context.render ("
+            prefix += " $_scalate_$_preserve ( $_scalate_$_context.toString ("
             suffix = ") ) " + suffix;
           } else {
-            prefix += " $_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.render ("
+            prefix += " $_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.toString ("
             suffix = ") ) " + suffix;
           }
 

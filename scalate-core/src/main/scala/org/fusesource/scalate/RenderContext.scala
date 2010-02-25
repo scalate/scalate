@@ -54,9 +54,9 @@ trait RenderContext {
 
 
   /**
-   * Renders a value into a string.
+   * Converts a value into a string, using the current locale for converting numbers and dates to a string.
    */
-  def render(value: Any): String
+  def toString(value: Any): String
 
   /**
    * Evaluates the specified body capturing any output written to this context
