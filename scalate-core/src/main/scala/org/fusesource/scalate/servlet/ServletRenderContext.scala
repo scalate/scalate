@@ -51,56 +51,6 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
 
   override def attributes = _requestAttributes
 
-  /*
-  /**
-   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
-   */
-  override def binding(name: String) = {
-    if ("context" == name) {
-      Some(this)
-    } else {
-      val value = request.getAttribute(name)
-      if (value == null) {
-        None
-      } else {
-        Some(value)
-      }
-    }
-  }
-
-
-  override def attribute[T](name: String): T = {
-    val value = request.getAttribute(name)
-    if (value != null) {
-      value.asInstanceOf[T]
-    }
-    else {
-      throw new NoValueSetException(name)
-    }
-  }
-
-  /**
-   * Returns the attribute of the given name and type or the default value if it is not available
-   */
-  override def attributeOrElse[T](name: String, defaultValue: T): T = {
-    val value = request.getAttribute(name)
-    if (value != null) {
-      value.asInstanceOf[T]
-    }
-    else {
-      defaultValue
-    }
-  }
-
-  /**
-   * Updates the named attribute with the given value
-   */
-  override def setAttribute[T](name: String, value: T): Unit = {
-    request.setAttribute(name, value)
-  }
-  */
-
-
   override def locale: Locale = {
     var locale = request.getLocale
     if (locale == null) {

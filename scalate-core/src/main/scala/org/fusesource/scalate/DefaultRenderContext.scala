@@ -98,16 +98,10 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
-  def renderCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): String = {
-    capture {
-      includeCollection(objects, view, separator)
-    }
-  }
-
   /**
    * Renders a collection of model objects with an optional separator
    */
-  def includeCollection(objects: Traversable[AnyRef], view: String = "index", separator: () => String = {() => ""}): Unit = {
+  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: () => String = {() => ""}): Unit = {
     var first = true
     for (model <- objects) {
       if (first) {
@@ -116,13 +110,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
       else {
         this << separator()
       }
-      includeView(model, view)
-    }
-  }
-
-  def renderView(model: AnyRef, view: String = "index"): String = {
-    capture {
-      includeView(model, view)
+      view(model, viewName)
     }
   }
 
@@ -130,7 +118,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
    * Renders the view of the given model object, looking for the view in
    * packageName/className.viewName.ext
    */
-  def includeView(model: AnyRef, view: String = "index"): Unit = {
+  def view(model: AnyRef, viewName: String = "index"): Unit = {
     if (model == null) {
       throw new NullPointerException("No model object given!")
     }
@@ -149,7 +137,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
 
     def viewForClass(clazz: Class[_]): String = {
       for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
-        val path = clazz.getName.replace('.', '/') + "." + view + postfix
+        val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
         val fullPath = if (prefix.isEmpty) {"/" + path} else {"/" + prefix + "/" + path}
         if (engine.resourceLoader.exists(fullPath)) {
           return fullPath

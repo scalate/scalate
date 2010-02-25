@@ -6,5 +6,5 @@
   import org.fusesource.scalate.sample.AnyCaseClass
   val people = List(AnyCaseClass("James", "Strachan"), AnyCaseClass("Hiram", "Chirino"))
   
-  includeCollection(people, separator = {() => "<hr/>"})
+  collection(people, separator = {() => "<hr/>"})
 %>

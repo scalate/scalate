@@ -36,7 +36,7 @@ class ServletRendersView extends HttpServlet
   override def doGet(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val model = new Person("Bob", "Mcwhatnot")
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
-    context.renderView(model)
+    context.view(model)
   }
 
 }
