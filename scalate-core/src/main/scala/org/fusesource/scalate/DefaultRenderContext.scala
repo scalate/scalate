@@ -180,7 +180,12 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
-  def renderTemplate(path: String, attrMap: Map[String, Any] = Map())(body: () => String): String = {
+  def render(path: String, attributeValues: (String, Any)*)(body: () => String): String = {
+    val attrMap = Map(attributeValues:_*)
+    render(path, attrMap)(body)
+  }
+
+  def render(path: String, attrMap: Map[String, Any])(body: () => String): String = {
     capture {
       // TODO should we call engine.layout() instead??
 
@@ -238,15 +243,6 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     path
   }
 
-
-  def setAttribute(name: String, value: Option[Any]): Unit = {
-    if (value.isDefined) {
-      attributes(name) = value.get
-    }
-    else {
-      attributes.remove(name)
-    }
-  }
 
   protected def using[T](model: AnyRef)(op: => T): T = {
     val original = attributes.get("it");

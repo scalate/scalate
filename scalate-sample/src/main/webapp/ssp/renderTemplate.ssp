@@ -4,12 +4,12 @@
 
 <p>This page renders a template passing the body of the current template</p>
 
-<%= renderTemplate("/WEB-INF/partials/sample.ssp", Map("name" -> "James")) { %>
+<%= render("/WEB-INF/partials/sample.ssp", "name" -> "James") { %>
   location: <b>London</b>
 <%}%>
 
 <h3>Relative Partial</h3>
 
-<%= renderTemplate("localPartial.ssp", Map("name" -> "Hiram")) { %>
+<%= render("localPartial.ssp", "name" -> "Hiram") { %>
   location: <b>Tampa</b>
 <%}%>

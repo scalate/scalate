@@ -48,10 +48,14 @@ trait RenderContext {
     }
   }
 
-  def setAttribute[T](name: String, value: T): Unit = {
-    attributes(name) = value
+  def setAttribute(name: String, value: Option[Any]): Unit = {
+    if (value.isDefined) {
+      attributes(name) = value.get
+    }
+    else {
+      attributes.remove(name)
+    }
   }
-
 
   /**
    * Converts a value into a string, using the current locale for converting numbers and dates to a string.
