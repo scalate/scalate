@@ -15,7 +15,7 @@ Scalate is a template engine based on the Scala language.
 * No hard dependencies on a web container.  It can be used in a standalone application to template things like emails.
 * JAXRS integration so that Scalate template can render JAXRS resouces
 
-## Ssp (Scala Server Pages) Introduction
+### Ssp (Scala Server Pages)
 
 If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
@@ -43,7 +43,7 @@ Is rendered as:
 For full documentation of the Ssp syntax see the [Ssp Reference Guide](ssp-reference.html)
 
 
-## Scaml (Scala Markup Language) Introduction
+### Scaml (Scala Markup Language)
 
 Scaml is a markup language
 that's used to cleanly and simply describe the XHTML of any web document,
@@ -285,7 +285,13 @@ ${foo}
 We capture the block which generates a greeting, assign it to the _foo_ variable which we can then render or pass into methods etc.
 
 
-## Requirements
+## Running the Samples
+
+The easiest way to play with Scalate is to try out the sample web application.
+
+Scalate can be built either using Maven or SBT
+
+### Requirements
 
 General Requirements:
 
@@ -295,12 +301,6 @@ General Requirements:
 Web Container Requirements:
 
 * Servlet 2.5 container or Newer
-
-## Running the Sample
-
-The easiest way to play with Scalate is to try out the sample web application.
-
-Scalate can be built either using Maven or SBT
 
 ### Using Maven
 
