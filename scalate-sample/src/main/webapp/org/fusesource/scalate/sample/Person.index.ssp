@@ -1,4 +1,15 @@
+<%--
+  renders a Person
+
+  notice the use of import so we don't need to use the "it." prefix when
+  referring to the first and last name on the person
+-->
+
 <%@ import val it : Person %>
-<% println("Called Person template with: " + it) %>        
+
 <h3>Person</h3>
-<p>first: <b>${first}</b> last: <b>${last}</b></p>
+
+<p>
+  first: <b>${first}</b>
+  last: <b>${last}</b>
+</p>
