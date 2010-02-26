@@ -61,7 +61,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     def useCP = if (classpath != null) {
       classpath
     } else {
-      (classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ).mkString(":")
+      (classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ).mkString(File.pathSeparator)
     }
 
     fine("using classpath: " + useCP)
