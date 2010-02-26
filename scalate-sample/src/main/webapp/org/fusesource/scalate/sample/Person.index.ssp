@@ -3,7 +3,7 @@
 
   notice the use of import so we don't need to use the "it." prefix when
   referring to the first and last name on the person
--->
+--%>
 
 <%@ import val it : Person %>
 
