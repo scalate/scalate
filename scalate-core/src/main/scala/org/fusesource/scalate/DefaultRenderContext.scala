@@ -34,6 +34,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   var viewPostfixes = engine.codeGenerators.keysIterator.map(x => "." + x).toList
   var currentTemplate: String = _
   private val _attributes: AttributeMap[String, Any] = new HashMap[String, Any]() with AttributeMap[String, Any]
+  _attributes.update("context", this)
 
   def attributes = _attributes
 
