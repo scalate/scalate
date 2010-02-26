@@ -64,6 +64,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
       (classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ).mkString(File.pathSeparator)
     }
 
+    println("using classpath: " + useCP)
     fine("using classpath: " + useCP)
 
     val settings = new Settings(error)
