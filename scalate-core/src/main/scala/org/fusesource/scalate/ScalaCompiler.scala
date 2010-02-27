@@ -26,6 +26,7 @@ import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
 import org.fusesource.scalate.util.ClassLoaders._
 import org.fusesource.scalate.util.Logging
+import collection.mutable.HashSet
 
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging {
@@ -58,10 +59,11 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
     bytecodeDirectory.mkdirs
 
-    def useCP = if (classpath != null) {
+    var useCP = if (classpath != null) {
       classpath
     } else {
-      (classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ).mkString(File.pathSeparator)
+      removeDuplicates(classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
+              ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ::: javaClassPath).mkString(File.pathSeparator)
     }
 
     println("using classpath: " + useCP)
@@ -73,6 +75,21 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     settings.deprecation.value = true
     settings.unchecked.value = true
     settings
+  }
+
+  private def javaClassPath: List[String] = {
+    val jcp = System.getProperty("java.class.path", "")
+    if (jcp.length > 0) {
+      jcp.split(File.pathSeparator).toList
+    }
+    else {
+      List()
+    }
+  }
+
+  def removeDuplicates[T](seq: Seq[T]) : Seq[T] = {
+    val set = new HashSet[T]()
+    seq.filter(e => set.add(e))
   }
 
 }
