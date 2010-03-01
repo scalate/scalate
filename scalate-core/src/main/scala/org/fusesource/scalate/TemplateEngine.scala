@@ -23,7 +23,7 @@ import scala.collection.mutable.HashMap
 import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
 import util.IOUtil
-import java.io.{File}
+import java.io.{StringWriter, PrintWriter, FileWriter, File}
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -105,12 +105,40 @@ class TemplateEngine {
 
   private val templateCache = new HashMap[String, CacheEntry]
 
+
   /**
-   * Compiles a template without placing it in the template cache. Useful for temporary
-   * templates or dynamically created templates.
+   * Compiles the given SSP template text and returns the template
+   */
+  def compileSsp(text: String, extraBindings:List[Binding] = Nil):Template = {
+    compileText("ssp", text, extraBindings)
+  }
+
+  /**
+   * Compiles the given SSP template text and returns the template
+   */
+  def compileScaml(text: String, extraBindings:List[Binding] = Nil):Template = {
+    compileText("scaml", text, extraBindings)
+  }
+
+  /**
+   * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
+   * and return the template
+   */
+  def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
+    val file = File.createTempFile("scalate", "." + extension)
+    val writer = new FileWriter(file)
+    writer.write(text)
+    writer.close()
+    compile(file.getAbsolutePath, extraBindings)
+  }
+
+
+  /**
+   * Compiles a template file/URI without placing it in the template cache. Useful for temporary
+   * tes.emplates or dynamically created template
    */
   def compile(uri: String, extraBindings:List[Binding] = Nil):Template = {
-    compile_and_load(uri, extraBindings, 0)._1
+    compileAndLoad(uri, extraBindings, 0)._1
   }
 
   /**
@@ -139,11 +167,11 @@ class TemplateEngine {
         case None =>
           try {
             // Try to load a pre-compiled template from the classpath
-              cache(uri, load_precompiled_entry(uri, extraBindings))
+              cache(uri, loadPrecompiledEntry(uri, extraBindings))
           } catch {
             case e:Throwable => {
               // It was not pre-compiled... compile and load it.
-              cache(uri, compile_and_load_entry(uri, extraBindings))
+              cache(uri, compileAndLoadEntry(uri, extraBindings))
             }
           }
 
@@ -152,7 +180,7 @@ class TemplateEngine {
           // check for staleness
           if (allowReload && entry.isStale)
             // re-compile it
-            cache(uri, compile_and_load_entry(uri, extraBindings))
+            cache(uri, compileAndLoadEntry(uri, extraBindings))
           else
             // Cache entry is valid
             entry.template
@@ -168,9 +196,24 @@ class TemplateEngine {
     layoutStrategy.layout(template, context)
   }
 
-  private def load_precompiled_entry(uri:String, extraBindings:List[Binding]) = {
+
+  /**
+   * Renders the given template returning the output
+   */
+  def layout(template: Template, attributes: Map[String,Any] = Map()): String = {
+    val buffer = new StringWriter()
+    val out = new PrintWriter(buffer)
+    val context = new DefaultRenderContext(this, out)
+    for ((key, value) <- attributes) {
+      context.attributes(key) = value
+    }
+    layout(template, context)
+    buffer.toString
+  }
+
+  private def loadPrecompiledEntry(uri:String, extraBindings:List[Binding]) = {
     val className = generator(uri).className(uri)
-    val template = load_compiled_template(className);
+    val template = loadCompiledTemplate(className);
     if( allowCaching && allowReload) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
@@ -189,8 +232,8 @@ class TemplateEngine {
     }
   }
 
-  private def compile_and_load_entry(uri:String, extraBindings:List[Binding]) = {
-    val (template, dependencies) = compile_and_load(uri, extraBindings, 0)
+  private def compileAndLoadEntry(uri:String, extraBindings:List[Binding]) = {
+    val (template, dependencies) = compileAndLoad(uri, extraBindings, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
 
@@ -201,7 +244,7 @@ class TemplateEngine {
     ce.template
   }
 
-  private def compile_and_load(uri: String, extraBindings:List[Binding], attempt:Int): (Template, Set[String]) = {
+  private def compileAndLoad(uri: String, extraBindings:List[Binding], attempt:Int): (Template, Set[String]) = {
     try {
 
       // Generate the scala source code from the template
@@ -216,7 +259,7 @@ class TemplateEngine {
       compiler.compile(sourceFile)
 
       // Load the compiled class and instantiate the template object
-      val template = load_compiled_template(code.className)
+      val template = loadCompiledTemplate(code.className)
 
       (template, code.dependencies)
     } catch {
@@ -224,7 +267,7 @@ class TemplateEngine {
       // go away if you redo
       case e:InstantiationException=>{
         if( attempt ==0 ) {
-          compile_and_load(uri, extraBindings, 1)
+          compileAndLoad(uri, extraBindings, 1)
         } else {
           throw new TemplateNotFoundException(e);
         }
@@ -244,15 +287,19 @@ class TemplateEngine {
     if (t.length < 2) {
       throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
     } else {
-      val extension = t.last
-      codeGenerators.get(extension) match {
-        case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
-        case Some(generator) => generator
-      }
+      generatorForExtension(t.last)
     }
   }
 
-  private def load_compiled_template(className:String) = {
+  /**
+   * Returns the code generator for the given file extension
+   */
+  private def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
+        case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
+        case Some(generator) => generator
+      }
+
+  private def loadCompiledTemplate(className:String) = {
     val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     val clazz = cl.loadClass(className)
     clazz.asInstanceOf[Class[Template]].newInstance
