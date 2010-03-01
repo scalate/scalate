@@ -25,8 +25,11 @@ object ClassLoaders extends Logging {
           // so lets use URI as a workaround
           u =>
             val uri = new URI(u.toString)
+            new File(uri.getPath).getCanonicalPath
+/*
             val n = new File(uri.getPath).getCanonicalPath
             if (n.contains(' ')) {"\"" + n + "\""} else {n}
+*/
         }
 
       case acp: AntLikeClassLoader =>
