@@ -45,7 +45,7 @@
         <configuration>
           <forkMode>pertest</forkMode>
           <excludes>
-            <!-- <exclude>**/ParserUsingNewCombinatorialVersionTest.*</exclude> -->
+            <exclude>**/ScamlTemplateTest.*</exclude>
           </excludes>
         </configuration>
       </plugin>
