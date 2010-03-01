@@ -18,16 +18,15 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
+import org.fusesource.scalate.util.ClassLoaders._
+import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.Sequences.removeDuplicates
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
-import org.fusesource.scalate.util.ClassLoaders._
-import org.fusesource.scalate.util.Logging
-import collection.mutable.HashSet
-
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging {
 
@@ -59,14 +58,17 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
   private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
     bytecodeDirectory.mkdirs
 
+    val pathSeparator = File.pathSeparator
+
     var useCP = if (classpath != null) {
       classpath
     } else {
       removeDuplicates(classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
-              ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ::: javaClassPath).mkString(File.pathSeparator)
+              ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ::: javaClassPath).mkString(pathSeparator)
     }
 
     println("using classpath: " + useCP)
+    println("path separator = '" + pathSeparator + "'")
     fine("using classpath: " + useCP)
 
     val settings = new Settings(error)
@@ -85,11 +87,6 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     else {
       List()
     }
-  }
-
-  def removeDuplicates[T](seq: Seq[T]) : Seq[T] = {
-    val set = new HashSet[T]()
-    seq.filter(e => set.add(e))
   }
 
 }
