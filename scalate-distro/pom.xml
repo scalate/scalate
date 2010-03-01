@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2009 Progress Software, Inc.
+  http://fusesource.com
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.fusesource.scalate</groupId>
+    <artifactId>scalate-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>scalate-distro</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Scalate :: Distro</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-camel</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-test</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+
+    <!-- TODO include examples
+    <dependency>
+      <groupId>org.fusesource.scalate.examples</groupId>
+      <artifactId>scalate-sample</artifactId>
+      <version>${project.version}</version>
+      <classifier>project</classifier>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.meshkeeper.examples</groupId>
+      <artifactId>scalate-sample</artifactId>
+      <version>${project.version}</version>
+      <classifier>project</classifier>
+      <type>tar.gz</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.fusesource.scalate.examples</groupId>
+      <artifactId>scalate-bookstore</artifactId>
+      <version>${project.version}</version>
+      <classifier>project</classifier>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.meshkeeper.examples</groupId>
+      <artifactId>scalate-bookstore</artifactId>
+      <version>${project.version}</version>
+      <classifier>project</classifier>
+      <type>tar.gz</type>
+    </dependency>
+    -->
+
+  </dependencies>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-4</version>
+        <executions>
+          <execution>
+            <id>unix-bin</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>${basedir}/src/main/descriptors/unix-bin.xml</descriptor>
+              </descriptors>
+              <finalName>scalate-${pom.version}</finalName>
+              <tarLongFileMode>gnu</tarLongFileMode>
+            </configuration>
+          </execution>
+          <execution>
+            <id>windows-bin</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>${basedir}/src/main/descriptors/windows-bin.xml</descriptor>
+              </descriptors>
+              <finalName>scalate-${pom.version}</finalName>
+              <appendAssemblyId>true</appendAssemblyId>
+              <assemblyId />
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

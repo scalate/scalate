@@ -49,6 +49,14 @@
             <exclude>**/ScamlTemplateTest.*</exclude>
 -->
           </excludes>
+
+          <systemProperties>
+            <property>
+              <name>java.util.logging.config.file</name>
+              <value>src/test/resources/logging.properties</value>
+            </property>
+          </systemProperties>
+          
         </configuration>
       </plugin>
     </plugins>

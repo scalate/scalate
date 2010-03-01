@@ -61,15 +61,12 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     val pathSeparator = File.pathSeparator
 
     var useCP = if (classpath != null) {
-      println("configured with custom classpath: " + classpath)
       classpath
     } else {
       removeDuplicates(classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
               ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ::: javaClassPath).mkString(pathSeparator)
     }
 
-    println("using classpath: " + useCP)
-    println("path separator = '" + pathSeparator + "'")
     fine("using classpath: " + useCP)
 
     val settings = new Settings(error)
