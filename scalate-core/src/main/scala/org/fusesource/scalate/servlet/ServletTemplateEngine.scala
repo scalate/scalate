@@ -18,8 +18,10 @@ package org.fusesource.scalate.servlet;
 
 import javax.servlet.ServletConfig
 import org.fusesource.scalate.{Binding, TemplateEngine}
+import org.fusesource.scalate.util.ClassLoaders._
+import org.fusesource.scalate.util.Sequences.removeDuplicates
 import java.io.File
-import org.fusesource.scalate.util.ClassLoaders._;
+import scala.tools.nsc.Global;
 
 /**
  * A TemplateEngine which initializes itself using a ServletConfig
@@ -36,7 +38,8 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
 
   private def buildClassPath(): String = {
 
-    val containerList = classLoaderList(getClass) ::: classLoaderList(classOf[ServletConfig])
+    val containerList = classLoaderList(getClass) ::: classLoaderList(classOf[ServletConfig]) :::
+            classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
 
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
     val classesDirectory = config.getServletContext.getRealPath("/WEB-INF/classes")
@@ -53,10 +56,7 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
       case path: String => List(path)
     }
 
-    // Put the pieces together
-
-    // TODO we should probably be smart enough to filter out duplicates here...
-    (prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(":")
+    removeDuplicates(prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(File.pathSeparator)
   }
 
 
