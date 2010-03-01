@@ -21,6 +21,7 @@ import org.fusesoruce.scalate.haml._
 import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
+import java.io.File
 
 /**
  * Provies a common base class for CodeGenerator implementations.
@@ -156,7 +157,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
-    val normalizedURI = new URI(uri).normalize
+    val file = new File(uri)
+    val normalizedURI = if (file.exists) { file.getCanonicalPath } else { new URI(uri).normalize }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
