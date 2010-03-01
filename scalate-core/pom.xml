@@ -45,7 +45,9 @@
         <configuration>
           <forkMode>pertest</forkMode>
           <excludes>
+<!--
             <exclude>**/ScamlTemplateTest.*</exclude>
+-->
           </excludes>
         </configuration>
       </plugin>
