@@ -161,7 +161,15 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       new URI(uri).normalize
     } catch {
       // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
-      case e: Exception => new File(uri).getCanonicalPath
+      case e: Exception => val name = new File(uri).getCanonicalPath
+        val sep = File.pathSeparator
+        if (sep != "/") {
+          // on windows lets replace the \ in a directory name with /
+          name.replaceAll("\\" + sep, "/")
+        }
+        else {
+          name
+        }
     }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
