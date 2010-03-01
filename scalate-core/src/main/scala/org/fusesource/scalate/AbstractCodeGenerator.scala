@@ -166,7 +166,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
         if (sep != "/") {
           // on windows lets replace the \ in a directory name with /
           val newName = name.replace(File.pathSeparatorChar, '/')
-          println("converted dwindows path into: " + newName)
+          println("convertedd windows path into: " + newName)
           newName
         }
         else {
