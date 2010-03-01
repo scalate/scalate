@@ -157,8 +157,12 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
-    val file = new File(uri)
-    val normalizedURI = if (file.exists) { file.getCanonicalPath } else { new URI(uri).normalize }
+    val normalizedURI = try {
+      new URI(uri).normalize
+    } catch {
+      // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
+      case e: Exception => new File(uri).getCanonicalPath
+    }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
