@@ -154,22 +154,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
-    val normalizedURI = try {
-      new URI(uri).normalize
-    } catch {
-      // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
-      case e: Exception => val name = new File(uri).getCanonicalPath
-      val sep = File.pathSeparator
-      if (sep != "/") {
-        // on windows lets replace the \ in a directory name with /
-        val newName = name.replace(File.pathSeparatorChar, '/')
-        println("convertedd windows path into: " + newName)
-        newName
-      }
-      else {
-        name
-      }
-    }
+    val normalizedURI = new URI(uri).normalize
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
