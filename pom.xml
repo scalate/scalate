@@ -251,8 +251,6 @@
     <module>scalate-sample</module>
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
-    <module>scalate-website</module>
-    <module>scalate-distro</module>
   </modules>
 
 
@@ -638,6 +636,14 @@
 
   <profiles>
 
+    <profile>
+      <id>release</id>
+      <modules>
+        <module>scalate-website</module>
+        <module>scalate-distro</module>
+      </modules>
+    </profile>
+    
     <profile>
       <!-- endable the checkstyle source code checking -->
       <id>sourcecheck</id>

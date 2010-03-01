@@ -75,7 +75,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     settings.deprecation.value = true
     settings.unchecked.value = true
     // TODO not sure if these changes make much difference?
-    //settings.make.value = "changed"
+    //settings.make.value = "transitivenocp"
     settings
   }
 
