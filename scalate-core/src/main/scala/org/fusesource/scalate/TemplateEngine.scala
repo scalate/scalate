@@ -107,20 +107,24 @@ class TemplateEngine {
 
 
   /**
-   * Parses the given SSP template text and returns the template
+   * Compiles the given SSP template text and returns the template
    */
-  def parseSsp(text: String, extraBindings:List[Binding] = Nil):Template = {
-    parserText("ssp", text, extraBindings)
+  def compileSsp(text: String, extraBindings:List[Binding] = Nil):Template = {
+    compileText("ssp", text, extraBindings)
   }
 
   /**
-   * Parses the given SSP template text and returns the template
+   * Compiles the given SSP template text and returns the template
    */
-  def parseScaml(text: String, extraBindings:List[Binding] = Nil):Template = {
-    parserText("scaml", text, extraBindings)
+  def compileScaml(text: String, extraBindings:List[Binding] = Nil):Template = {
+    compileText("scaml", text, extraBindings)
   }
 
-  protected def parserText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
+  /**
+   * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
+   * and return the template
+   */
+  def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
     val file = File.createTempFile("scalate", "." + extension)
     val writer = new FileWriter(file)
     writer.write(text)
@@ -130,7 +134,7 @@ class TemplateEngine {
 
 
   /**
-   * Compiles a template without placing it in the template cache. Useful for temporary
+   * Compiles a template file/URI without placing it in the template cache. Useful for temporary
    * tes.emplates or dynamically created template
    */
   def compile(uri: String, extraBindings:List[Binding] = Nil):Template = {

@@ -32,7 +32,7 @@ class TemplateEngineTest extends FunSuite with Logging {
   engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 
   test("load template") {
-    val template = engine.parseSsp("""<%@ val name: String %>
+    val template = engine.compileSsp("""<%@ val name: String %>
 Hello ${name}!
 """)
 
