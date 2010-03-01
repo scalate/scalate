@@ -2,19 +2,24 @@ package org.fusesource.scalate.camel
 
 import org.apache.camel.component.ResourceBasedEndpoint
 import org.apache.camel._
+import impl.ProcessorEndpoint
 import java.io._
 import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
 import org.fusesource.scalate.util.{IOUtil}
 import org.fusesource.scalate.{DefaultRenderContext, TemplateEngine}
 import collection.JavaConversions._
+import java.util.concurrent.atomic.AtomicInteger
+import org.apache.commons.logging.{LogFactory, Log}
 
 /**
  * @version $Revision : 1.1 $
  */
 
-class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: String,
-                      templateEngine: TemplateEngine = new TemplateEngine(), defaultTemplateExtension: String = "ssp")
-        extends ResourceBasedEndpoint(uri, component, templateUri, null) {
+class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: String, defaultTemplateExtension: String = "ssp")
+        extends ProcessorEndpoint(uri, component) {
+
+  val log = LogFactory.getLog(getClass); 
+
   val RESOURCE_URI = "CamelScalateResourceUri"
   val TEMPLATE = "CamelScalateTemplate"
 
@@ -24,18 +29,16 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
 
   override def createEndpointUri = "scalate:" + templateUri
 
-
   def findOrCreateEndpoint(uri: String, newResourceUri: String): ScalateEndpoint = {
-    val newUri = uri.replace(getResourceUri(), newResourceUri)
+    val newUri = "scalate:" + component.templateEngine.resourceLoader.resolve(templateUri, newResourceUri)
     debug("Getting endpoint with URI: " + newUri)
     getCamelContext.getEndpoint(newUri, classOf[ScalateEndpoint])
   }
 
 
   override def onExchange(exchange: Exchange):Unit = {
-    val path = getResourceUri()
-    ObjectHelper.notNull(path, "resourceUri")
-
+    ObjectHelper.notNull(templateUri, "resourceUri")
+    val templateEngine = component.templateEngine;
     val newResourceUri = exchange.getIn().getHeader(RESOURCE_URI, classOf[String])
     if (newResourceUri != null) {
       exchange.getIn().removeHeader(RESOURCE_URI)
@@ -55,22 +58,15 @@ class ScalateEndpoint(uri: String, component: ScalateComponent, templateUri: Str
         // remove the header to avoid it being propagated in the routing
         exchange.getIn().removeHeader(TEMPLATE)
 
-        // lets create a new temporary file for now as the API does not yet support a reader...
-        val tempFile = File.createTempFile("scalate_", "." + defaultTemplateExtension)
-        IOUtil.copy(new StringReader(content), new FileWriter(tempFile))
-
-        val template = templateEngine.compile(uri)
-        tempFile.delete
-        template
-
+        component.tempTemplate.set(content);
+        try {
+           templateEngine.load("$temp$."+defaultTemplateExtension);
+        } finally {
+          component.tempTemplate.set(null);
+        }
+        
       } else {
-        // use resource from endpoint configuration
-        val resource = getResource()            
-        ObjectHelper.notNull(resource, "resource")
-        debug("Scalate content read from resource " + resource + " with resourceUri: " + path + " for endpoint " + getEndpointUri())
-
-        val uri = resource.getFile.getCanonicalPath
-        templateEngine.load(uri)
+        templateEngine.load(templateUri)
       }
 
       //val logTag = getClass().getName()
