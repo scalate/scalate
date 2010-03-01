@@ -74,6 +74,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     settings.outdir.value = bytecodeDirectory.toString
     settings.deprecation.value = true
     settings.unchecked.value = true
+    settings.make.value = "changed"
     settings
   }
 

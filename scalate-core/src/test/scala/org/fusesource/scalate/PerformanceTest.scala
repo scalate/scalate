@@ -21,24 +21,24 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import java.io.File
 import util.Logging
-import Asserts._     
+import Asserts._
 
-/**
- */
 @RunWith(classOf[JUnitRunner])
-class TemplateEngineTest extends FunSuite with Logging {
-
+class PerformanceTest extends FunSuite with Logging {
   val engine = new TemplateEngine
-  engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
+  engine.workingDirectory = new File("target/test-data/PerformanceTest")
 
-  test("load template") {
-    val template = engine.compileSsp("""<%@ val name: String %>
-Hello ${name}!
-""")
+  test("performance test") {
 
-    val output = engine.layout(template, Map("name" -> "James")).trim
-    assertContains(output, "Hello James")
-    fine("template generated: " + output)
+    for (i <- (1 to 10)) {
+      benchmark("parse and evaluate template " + i) {
+        val template = engine.compileSsp("""<%@ val name: String %>
+    Hello ${name}!
+    """)
+        val output = engine.layout(template, Map("name" -> "James")).trim
+        assertContains(output, "Hello James")
+      }
+    }
+
   }
-
 }
