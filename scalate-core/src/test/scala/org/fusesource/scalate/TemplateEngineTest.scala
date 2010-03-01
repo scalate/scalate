@@ -20,25 +20,28 @@ import org.scalatest.FunSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import java.io.File
-import org.fusesource.scalate._
+import util.Logging
 
 
 /**
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @RunWith(classOf[JUnitRunner])
-class TemplateEngineTest extends FunSuite {
+class TemplateEngineTest extends FunSuite with Logging {
 
-  val templateEngine = new TemplateEngine
-  templateEngine.workingDirectory = new File("target/test-data/TemplateEngineTest")
+  val engine = new TemplateEngine
+  engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 
-  test("parse attribute declaration") {
-    info("ok")
-//    var template = templateEngine.load("src/test/resource/simple.ssp")
+  test("load template") {
+    val template = engine.parseSsp("""<%@ val name: String %>
+Hello ${name}!
+""")
 
-//    val context = new TemplateContext
-//    template.renderTemplate(context)
-
+    val output = engine.layout(template, Map("name" -> "James")).trim
+    assertContains(output, "Hello James")
+    fine("template generated: " + output)
   }
 
+  def assertContains(actual: String, expected: String): Unit = {
+    assert(actual.contains(expected), "Should contain \"" + expected + "\" but was: " + actual)
+  }
 }
