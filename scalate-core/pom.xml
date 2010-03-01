@@ -23,12 +23,14 @@
       <artifactId>jersey-server</artifactId>
       <optional>true</optional>
     </dependency>
+<!--
     <dependency>
       <groupId>opensymphony</groupId>
       <artifactId>sitemesh</artifactId>
       <optional>true</optional>
     </dependency>
-    
+-->
+
     <dependency>
       <groupId>org.markdownj</groupId>
       <artifactId>markdownj</artifactId>

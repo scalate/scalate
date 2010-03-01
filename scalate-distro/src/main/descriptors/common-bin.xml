@@ -11,6 +11,8 @@
         <include>org.fusesource.scalate:scalate-camel</include>
         <include>org.fusesource.scalate:scalate-core</include>
         <include>org.fusesource.scalate:scalate-test</include>
+        <include>org.scala-lang:scala-library</include>
+        <include>org.scala-lang:scala-compiler</include>
       </includes>
     </dependencySet>
     <dependencySet>
@@ -18,7 +20,9 @@
       <unpack>false</unpack>
       <scope>runtime</scope>
       <includes>
-        <include>log4j:log4j</include>
+        <include>org.markdownj:markdownj</include>
+        <include>com.sun.jersey:jersey-server</include>
+        <include>com.sun.jersey:jersey-core</include>
       </includes>
     </dependencySet>
   </dependencySets>
