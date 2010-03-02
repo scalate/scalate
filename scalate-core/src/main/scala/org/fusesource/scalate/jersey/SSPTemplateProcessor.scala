@@ -44,19 +44,15 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     }
 
     try {
-      val path = if (basePath.length > 0) {basePath + requestPath} else {requestPath}
+      val path = if (basePath.length > 0) basePath + requestPath else requestPath
 
-      for (suffix <- Array("", ".ssp", ".scaml")) {
-        val fullPath = path + suffix;
-        
-        if (servletContext.getResource(fullPath) != null)
-          return fullPath;
-      }
+      SSPTemplateProcessor.suffixes.map {path + _}.
+        find {servletContext.getResource(_) ne null} getOrElse null
     } catch {
       case e: MalformedURLException =>
-      // TODO log
+        // TODO log
+        null
     }
-    null
   }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
@@ -77,4 +73,8 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     }
   }
 
+}
+
+object SSPTemplateProcessor {
+  val suffixes = List("", ".ssp", ".scaml")
 }
