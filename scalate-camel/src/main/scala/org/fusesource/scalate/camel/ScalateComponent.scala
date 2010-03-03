@@ -17,6 +17,14 @@ class ScalateComponent() extends DefaultComponent {
   var defaultTemplateExtension: String = "ssp"
   var templateEngine: TemplateEngine = new TemplateEngine()
 
+  var resourceLoader = new DefaultResourceLoader();
+
+  templateEngine.resourceLoader = new FileResourceLoader() {
+
+    override protected def toFile(uri:String):File = {
+      return resourceLoader.getResource(uri).getFile
+    }
+  }
   def createEndpoint(uri: String, remaining: String, parameters: Map[String, Object]): Endpoint = {
     new ScalateEndpoint(this, uri, remaining, defaultTemplateExtension)
   }
