@@ -38,8 +38,8 @@ Hello ${name}!
   }
 
   benchmarkTest("simple.ssp") {
-    val template = engine.load("simple.ssp")
-    val output = engine.layout(template, Map("name" -> "James")).trim
+    val output = engine.layout("simple.ssp", Map("name" -> "James")).trim
+
     assertContains(output, "1 + 2 = 3")
   }
 

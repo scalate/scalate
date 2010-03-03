@@ -190,6 +190,15 @@ class TemplateEngine {
   }
 
   /**
+   * Renders the given template URI using the current layoutStrategy
+   */
+  def layout(uri: String, context: RenderContext, extraBindings:List[Binding]): Unit = {
+    val template = load(uri, extraBindings)
+    layout(template, context)
+  }
+
+
+  /**
    * Renders the given template using the current layoutStrategy
    */
   def layout(template: Template, context: RenderContext): Unit = {
@@ -198,9 +207,17 @@ class TemplateEngine {
 
 
   /**
+   * Renders the given template URI returning the output
+   */
+  def layout(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): String = {
+    val template = load(uri, extraBindings)
+    layout(template, attributes)
+  }
+
+  /**
    * Renders the given template returning the output
    */
-  def layout(template: Template, attributes: Map[String,Any] = Map()): String = {
+  def layout(template: Template, attributes: Map[String,Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     val context = new DefaultRenderContext(this, out)
@@ -210,6 +227,12 @@ class TemplateEngine {
     layout(template, context)
     buffer.toString
   }
+
+  // can't use multiple methods with default arguments so lets manually expand them here...
+  def layout(uri: String, context: RenderContext): Unit = layout(uri, context, Nil)
+  def layout(template: Template): String = layout(template, Map[String,Any]())
+
+
 
   private def loadPrecompiledEntry(uri:String, extraBindings:List[Binding]) = {
     val className = generator(uri).className(uri)

@@ -77,7 +77,10 @@ class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader {
     var file = toFile(uri)
     if (!file.canRead) {
       // lets try the ClassLoader
-      val url = Thread.currentThread.getContextClassLoader.getResource(uri)
+      var url = Thread.currentThread.getContextClassLoader.getResource(uri)
+      if (url == null) {
+        url = getClass.getClassLoader.getResource(uri)
+      }
       if (url != null) {
         val fileName = url.getFile
         if (fileName != null) {
