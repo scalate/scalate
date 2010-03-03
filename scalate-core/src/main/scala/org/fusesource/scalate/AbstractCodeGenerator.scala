@@ -154,39 +154,45 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
-    val normalizedURI = try {
-      new URI(uri).normalize
+    val normalizedURI: String = try {
+      new URI(uri).normalize.toString
     } catch {
       // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
       case e: Exception => val name = new File(uri).getCanonicalPath
-        val sep = File.pathSeparator
-        if (sep != "/") {
-          // on windows lets replace the \ in a directory name with /
-          val newName = name.replace('\\', '/')
-          println("convertedd windows path into: " + newName)
-          newName
-        }
-        else {
-          name
-        }
+      val sep = File.pathSeparator
+      if (sep != "/") {
+        // on windows lets replace the \ in a directory name with /
+        val newName = name.replace('\\', '/')
+        println("convertedd windows path into: " + newName)
+        newName
+      }
+      else {
+        name
+      }
     }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
-    if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + normalizedURI + "]")
-    val unsafePackageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
-    var packages = unsafePackageName.split("\\.")
-
-    // lets find the tail of matching package names to use
-    val lastIndex = packages.findLastIndexOf(invalidPackageName(_))
-    if (lastIndex > 0) {
-      packages = packages.drop(lastIndex + 1)
+    if (matcher.matches == false) {
+      // lets assume we have no package then
+      val cn = "$_scalate_$" + normalizedURI.replace('.', '_')
+      ("", cn)
     }
+    else {
+      val unsafePackageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
+      var packages = unsafePackageName.split("\\.")
 
-    //val packageName = packages.map(safePackageName(_)).mkString(".")
-    val packageName = packages.mkString(".")
+      // lets find the tail of matching package names to use
+      val lastIndex = packages.findLastIndexOf(invalidPackageName(_))
+      if (lastIndex > 0) {
+        packages = packages.drop(lastIndex + 1)
+      }
 
-    val cn = "$_scalate_$" + matcher.group(2).replace('.', '_')
-    (packageName, cn)
+      //val packageName = packages.map(safePackageName(_)).mkString(".")
+      val packageName = packages.mkString(".")
+
+      val cn = "$_scalate_$" + matcher.group(2).replace('.', '_')
+      (packageName, cn)
+    }
   }
 
   /**
@@ -194,5 +200,5 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
    */
   private def invalidPackageName(name: String): Boolean = name.isEmpty || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
 
-  protected val reservedWords = Set[String]("package", "class", "trait", "if", "else", "while", "def", "extends", "val" , "var")
+  protected val reservedWords = Set[String]("package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var")
 }

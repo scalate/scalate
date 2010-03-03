@@ -28,17 +28,28 @@ class PerformanceTest extends FunSuite with Logging {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/PerformanceTest")
 
-  test("performance test") {
+  benchmarkTest("custom text") {
+    val template = engine.compileSsp("""<%@ val name: String %>
+Hello ${name}!
+""")
 
-    for (i <- (1 to 10)) {
-      benchmark("parse and evaluate template " + i) {
-        val template = engine.compileSsp("""<%@ val name: String %>
-    Hello ${name}!
-    """)
-        val output = engine.layout(template, Map("name" -> "James")).trim
-        assertContains(output, "Hello James")
+    val output = engine.layout(template, Map("name" -> "James")).trim
+    assertContains(output, "Hello James")
+  }
+
+  benchmarkTest("simple.ssp") {
+    val template = engine.load("simple.ssp")
+    val output = engine.layout(template, Map("name" -> "James")).trim
+    assertContains(output, "1 + 2 = 3")
+  }
+
+  def benchmarkTest(testName: String)(block: => Unit): Unit = {
+    test("benchmark: " + testName) {
+      for (i <- 1 to 10) {
+        benchmark(testName + " run " + i) {
+          block
+        }
       }
     }
-
   }
 }

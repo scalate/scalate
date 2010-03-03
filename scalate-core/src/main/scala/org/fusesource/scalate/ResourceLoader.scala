@@ -74,7 +74,17 @@ class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader {
   }
 
   protected def toFileOrFail(uri:String):File = {
-    val file = toFile(uri)
+    var file = toFile(uri)
+    if (!file.canRead) {
+      // lets try the ClassLoader
+      val url = Thread.currentThread.getContextClassLoader.getResource(uri)
+      if (url != null) {
+        val fileName = url.getFile
+        if (fileName != null) {
+          file = new File(fileName)
+        }
+      }
+    }
     if (!file.canRead) {
       throw new TemplateException("Cannot find [" + uri + "];")
     }
