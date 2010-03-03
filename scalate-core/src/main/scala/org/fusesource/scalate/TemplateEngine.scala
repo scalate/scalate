@@ -251,7 +251,8 @@ class TemplateEngine {
       val code = generateScala(uri, extraBindings)
 
       // Write the source code to file..
-      val sourceFile = new File(sourceDirectory, uri+".scala")
+      // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
+      val sourceFile = new File(sourceDirectory, uri.replace(':', '_') + ".scala")
       sourceFile.getParentFile.mkdirs
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
