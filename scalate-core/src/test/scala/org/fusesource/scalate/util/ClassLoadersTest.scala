@@ -13,10 +13,14 @@ class ClassLoadersTest extends FunSuite {
     
     assert(AntLikeClassLoader.unapply(hasMethod) === Some(hasMethod))
     
+    assert(AntLikeClassLoader.unapply(new ClassWithWrongGetClasspathMethod) === None)
     assert(AntLikeClassLoader.unapply("I don't have a getClasspath method") === None)
   }
   
   class ClassWithGetClasspathMethod {
     def getClasspath: String = ""
   }
+  class ClassWithWrongGetClasspathMethod {
+    def getClasspath: Int = 42
+  } 
 }
