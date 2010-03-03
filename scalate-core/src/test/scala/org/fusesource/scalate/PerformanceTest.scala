@@ -28,9 +28,7 @@ class PerformanceTest extends FunSuite with Logging {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/PerformanceTest")
 
-  // TODO this is failing on windows right now due to using a
-  // temp in the implementation.
-  ignore("performance test") {
+  test("performance test") {
 
     for (i <- (1 to 10)) {
       benchmark("parse and evaluate template " + i) {

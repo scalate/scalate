@@ -31,9 +31,7 @@ class TemplateEngineTest extends FunSuite with Logging {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 
-  // TODO this is failing on windows right now due to using a
-  // temp in the implementation.
-  ignore("load template") {
+  test("load template") {
     val template = engine.compileSsp("""<%@ val name: String %>
 Hello ${name}!
 """)

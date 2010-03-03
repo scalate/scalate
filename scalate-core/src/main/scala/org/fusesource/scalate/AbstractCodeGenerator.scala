@@ -154,30 +154,45 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
-    val normalizedURI = new URI(uri).normalize
+    val normalizedURI = try {
+      new URI(uri).normalize
+    } catch {
+      // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
+      case e: Exception => val name = new File(uri).getCanonicalPath
+        val sep = File.pathSeparator
+        if (sep != "/") {
+          // on windows lets replace the \ in a directory name with /
+          val newName = name.replace(File.pathSeparatorChar, '/')
+          println("convertedd windows path into: " + newName)
+          newName
+        }
+        else {
+          name
+        }
+    }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
     val unsafePackageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
-    val packages = unsafePackageName.split("\\.")
-    val packageName = packages.map(safePackageName(_)).mkString(".")
+    var packages = unsafePackageName.split("\\.")
+
+    // lets find the tail of matching package names to use
+    val lastIndex = packages.findLastIndexOf(invalidPackageName(_))
+    if (lastIndex > 0) {
+      packages = packages.drop(lastIndex + 1)
+    }
+
+    //val packageName = packages.map(safePackageName(_)).mkString(".")
+    val packageName = packages.mkString(".")
 
     val cn = "$_scalate_$" + matcher.group(2).replace('.', '_')
     (packageName, cn)
   }
 
   /**
-   * Lets avoid any dodgy named packages based on compiling a file in a strange directory (such as a temporary file)
+   * Filter out any dodgy package names
    */
-  private def safePackageName(name: String): String = if (reservedWords.contains(name)) {
-      "_" + name
-    }
-    else if (!name.isEmpty && name(0).isDigit) {
-      "_" + name
-    }
-    else {
-      name
-    }
+  private def invalidPackageName(name: String): Boolean = name.isEmpty || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
 
   protected val reservedWords = Set[String]("package", "class", "trait", "if", "else", "while", "def", "extends", "val" , "var")
 }

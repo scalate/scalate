@@ -58,13 +58,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
         // remove the header to avoid it being propagated in the routing
         exchange.getIn().removeHeader(TEMPLATE)
 
-        component.tempTemplate.set(content);
-        try {
-           templateEngine.load("$temp$."+defaultTemplateExtension);
-        } finally {
-          component.tempTemplate.set(null);
-        }
-        
+        templateEngine.compileText(defaultTemplateExtension, content)
       } else {
         templateEngine.load(templateUri)
       }

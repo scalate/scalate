@@ -12,30 +12,11 @@ import org.springframework.core.io.DefaultResourceLoader
  * @version $Revision : 1.1 $
  */
 
-class ScalateComponent() extends DefaultComponent {
+class ScalateComponent(var defaultTemplateExtension: String = "ssp") extends DefaultComponent {
   
   var templateEngine: TemplateEngine = new TemplateEngine()
-  var resourceLoader = new DefaultResourceLoader();
-
-  val tempTemplate = new ThreadLocal[String]();
-
-  templateEngine.resourceLoader = new FileResourceLoader() {
-    override def load(uri: String): String = {
-      if( uri.startsWith("$temp$") ) {
-        tempTemplate.get
-      } else {
-        super.load(uri)
-      }
-    }
-
-    override protected def toFile(uri:String):File = {
-      return resourceLoader.getResource(uri).getFile
-    }
-  }
-
 
   def createEndpoint(uri: String, remaining: String, parameters: Map[String, Object]): Endpoint = {
-    new ScalateEndpoint(this, uri, remaining)
+    new ScalateEndpoint(this, uri, remaining, defaultTemplateExtension)
   }
-
 }
