@@ -15,6 +15,20 @@ object ClassLoaders extends Logging {
   type AntLikeClassLoader = {
     def getClasspath: String
   }
+  
+  object AntLikeClassLoader {
+    def unapply(ref: AnyRef): Option[AntLikeClassLoader] = {
+      try {
+        val method = ref.getClass.getMethod("getClasspath")
+        if (method.getReturnType == classOf[String])
+          Some(ref.asInstanceOf[AntLikeClassLoader])
+        else
+          None
+      } catch {
+        case e: NoSuchMethodException => None
+      }
+    }
+  }
 
   def classLoaderList[T](classLoader: ClassLoader): List[String] = {
     classLoader match {
@@ -32,7 +46,7 @@ object ClassLoaders extends Logging {
 */
         }
 
-      case acp: AntLikeClassLoader =>
+      case AntLikeClassLoader(acp) =>
         val cp = acp.getClasspath
         cp.split(File.pathSeparator).toList
 
