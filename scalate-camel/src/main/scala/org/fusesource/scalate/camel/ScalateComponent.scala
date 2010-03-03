@@ -12,8 +12,9 @@ import org.springframework.core.io.DefaultResourceLoader
  * @version $Revision : 1.1 $
  */
 
-class ScalateComponent(var defaultTemplateExtension: String = "ssp") extends DefaultComponent {
-  
+class ScalateComponent() extends DefaultComponent {
+
+  var defaultTemplateExtension: String = "ssp"
   var templateEngine: TemplateEngine = new TemplateEngine()
 
   def createEndpoint(uri: String, remaining: String, parameters: Map[String, Object]): Endpoint = {
