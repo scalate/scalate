@@ -10,47 +10,32 @@ The {project_name:} community is here to help you
 --- name:content
 We really want you to get involved in the {project_name:} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
 
-# Nabble Forum
+# Mailing List
 
-The mailing lists are all mirrored with an online forum at Nabble
+The main mailing list is hosted at the [scalate google group](http://groups.google.com/group/scalate).
+
+ * [http://groups.google.com/group/scalate](http://groups.google.com/group/scalate)
+
+Please join us! 
+
+Be aware that to reduce spam your first post will be moderated through; so please be patient. (Unfortunately we get a lot of spam)
+
+### Commits Mailing List
+
+The [scalate-commits google group](http://groups.google.com/group/scalate-commits) is notified of all changes to the source code or changes to [issues](support.html) so you can use this list to watch development and support occur.
+
+* [http://groups.google.com/group/scalate-commits](http://groups.google.com/group/scalate-commits)
+
+### Old Archives
+
+Previously to moving to the [google group](http://groups.google.com/group/scalate), we hosted scalate mailing lists on Nabble here:
 
 * [scalate-dev](http://n3.nabble.com/scalate-f143585.html)
 * [scalate-commits](http://n3.nabble.com/scalate-commits-f143594.html)
 
-# Developer Mailing List
+# Twitter
 
-The developer list is used for general discussions and ideas about the code and how to use it.
+You can watch us on twitter by following [@scalate](http://twitter.com/scalate) or alternatively searching for [scalate](http://search.twitter.com/search?q=scalate) or the [#scalate](http://search.twitter.com/search?q=%23scalate) tag.
 
-<table cellspacing="10">
-  <tr>
-    <th align="left">To post an email:</th>
-    <td><a href="mailto:{project_id:}-dev@fusesource.org">{project_id:}-dev@fusesource.org</a></td>
-  </tr>
-  <tr>
-    <th align="left">To subscribe:</th>
-    <td><a href="mailto:{project_id:}-dev-subscribe@fusesource.org">{project_id:}-dev-subscribe@fusesource.org</a></td>
-  </tr>
-  <tr>
-    <th align="left">To unsubscribe:</th>
-    <td><a href="mailto:{project_id:}-dev-unsubscribe@fusesource.org">{project_id:}-dev-unsubscribe@fusesource.org</a></td>
-  </tr>
-</table>
+If you find something you like or don't like in scalate please do tweet it (with scalate or #scalate in the text) or lets chat about it on the [mailing list](http://groups.google.com/group/scalate)
 
-# Commit Mailing List
-
-The commit list is notified of all changes to the source code or changes to [issues](support.html) so you can use this list to watch development and support occur.
-
-<table cellspacing="10">
-  <tr>
-    <th align="left">To post an email:</th>
-    <td><a href="mailto:{project_id:}-commits@fusesource.org">{project_id:}-commits@fusesource.org</a></td>
-  </tr>
-  <tr>
-    <th align="left">To subscribe:</th>
-    <td><a href="mailto:{project_id:}-commits-subscribe@fusesource.org">{project_id:}-commits-subscribe@fusesource.org</a></td>
-  </tr>
-  <tr>
-    <th align="left">To unsubscribe:</th>
-    <td><a href="mailto:{project_id:}-commits-unsubscribe@fusesource.org">{project_id:}-commits-unsubscribe@fusesource.org</a></td>
-  </tr>
-</table>
