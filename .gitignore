@@ -14,3 +14,7 @@ _scalate
 project/boot
 .DS_Store
 .scala_dependencies
+.project
+.classpath
+.settings
+eclipse-classes
