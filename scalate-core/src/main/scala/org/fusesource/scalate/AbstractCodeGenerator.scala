@@ -162,7 +162,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
         val sep = File.pathSeparator
         if (sep != "/") {
           // on windows lets replace the \ in a directory name with /
-          val newName = name.replace(File.pathSeparatorChar, '/')
+          val newName = name.replace('\\', '/')
           println("convertedd windows path into: " + newName)
           newName
         }
@@ -172,7 +172,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
-    if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + uri + "]")
+    if (matcher.matches == false) throw new TemplateException("Internal error: unparseable URI [" + normalizedURI + "]")
     val unsafePackageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
     var packages = unsafePackageName.split("\\.")
 
