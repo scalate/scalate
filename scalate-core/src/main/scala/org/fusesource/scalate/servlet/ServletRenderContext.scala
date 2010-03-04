@@ -15,7 +15,7 @@ import org.fusesource.scalate.{AttributeMap, TemplateEngine, DefaultRenderContex
 class ServletRenderContext(engine: TemplateEngine, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, response.getWriter) {
   viewPrefixes = List("WEB-INF", "")
 
-  private val _requestAttributes = new AttributeMap[String, Any] {
+  override val attributes = new AttributeMap[String, Any] {
     def get(key: String): Option[Any] = {
       val value = apply(key)
       if (value == null) {
@@ -48,8 +48,6 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
       answer
     }
   }
-
-  override def attributes = _requestAttributes
 
   override def locale: Locale = {
     var locale = request.getLocale
