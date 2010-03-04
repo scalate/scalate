@@ -92,7 +92,7 @@ Scalate uses a convention over configuration mechanism so that you can render an
 <p>... more stuff </p>
 {pygmentize}
 
-### view names
+### View names
 
 The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
 
@@ -110,7 +110,7 @@ If a template is not found for the exact class name then the class and interface
 
 So for example you could provide a template for a generic trait you have - such as a template to render any [scala.Product](http://github.com/scalate/scalate/blob/master/scalate-sample/src/main/webapp/scala/Product.index.ssp) which will then render any case class; then you can customise the view on a class by class basis as required.
 
-### the 'it' variable
+### The 'it' variable
 
 By default we use the variable named _it_ to refer to the model parameter. This convention means that when working with JAXRS and Jersey's implicit views the model object is implicitly available to any templates using this naming convention.
 
