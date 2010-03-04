@@ -154,6 +154,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
   }
 
   protected def extractPackageAndClassNames(uri: String): (String, String) = {
+    
+    def processClassName(cn: String) = cn.replace('.', '_').replace("-", "$dash")
+    
     val normalizedURI: String = try {
       new URI(uri).normalize.toString
     } catch {
@@ -174,7 +177,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
     if (matcher.matches == false) {
       // lets assume we have no package then
-      val cn = "$_scalate_$" + normalizedURI.replace('.', '_')
+      val cn = "$_scalate_$" + processClassName(normalizedURI)
       ("", cn)
     }
     else {
@@ -190,7 +193,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       //val packageName = packages.map(safePackageName(_)).mkString(".")
       val packageName = packages.mkString(".")
 
-      val cn = "$_scalate_$" + matcher.group(2).replace('.', '_')
+      val cn = "$_scalate_$" + processClassName(matcher.group(2))
       (packageName, cn)
     }
   }
