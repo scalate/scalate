@@ -251,6 +251,7 @@
     <module>scalate-sample</module>
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
+    <module>maven-scalate-plugin</module>
   </modules>
 
 
