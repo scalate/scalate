@@ -89,7 +89,7 @@ class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader {
       }
     }
     if (!file.canRead) {
-      throw new TemplateException("Cannot find [" + uri + "];")
+      throw new ResourceNotFoundException(uri)
     }
     file
   }

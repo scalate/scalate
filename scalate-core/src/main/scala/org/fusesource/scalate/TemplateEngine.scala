@@ -289,16 +289,14 @@ class TemplateEngine {
     } catch {
       // TODO: figure out why we sometimes get these InstantiationException errors that
       // go away if you redo
-      case e:InstantiationException=>{
+      case e: InstantiationException =>
         if( attempt ==0 ) {
           compileAndLoad(uri, extraBindings, 1)
         } else {
-          throw new TemplateNotFoundException(e);
+          throw new TemplateException(e.getMessage, e)
         }
-      }
-      case e:Throwable=>{
-        throw new TemplateNotFoundException(e);
-      }
+      case e: ResourceNotFoundException => throw e
+      case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }
 

@@ -1,6 +1,6 @@
 package org.fusesource.scalate.layout
 
-import org.fusesource.scalate.{TemplateNotFoundException, RenderContext, Template, TemplateEngine}
+import org.fusesource.scalate.{ TemplateException, RenderContext, Template, TemplateEngine }
 import org.fusesource.scalate.util.Logging
 
 /**
@@ -8,7 +8,8 @@ import org.fusesource.scalate.util.Logging
  */
 
 class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy with Logging {
-  def layout(template: Template, context: RenderContext): Unit = {
+  
+  def layout(template: Template, context: RenderContext) {
     // lets capture the body and define any variables to be used for the layout
     val body = context.capture(template)
 
@@ -28,11 +29,11 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
         try {
           renderLayout("WEB-INF/layouts/default.ssp", body, context)
         } catch {
-          case e: TemplateNotFoundException =>
+          case e: TemplateException =>
             try {
               renderLayout("WEB-INF/layouts/default.scaml", body, context)
             } catch {
-              case e2: TemplateNotFoundException =>
+              case e2: TemplateException =>
                 // lets not use layouts
                 noLayout(body, template, context)
             }
@@ -40,7 +41,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
     }
   }
 
-  def renderLayout(templateName: String, body: String, context: RenderContext): Unit = {
+  def renderLayout(templateName: String, body: String, context: RenderContext) {
     fine("Attempting to load layout: " + templateName)
 
     val layoutTemplate = engine.load(templateName)

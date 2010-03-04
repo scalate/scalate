@@ -18,7 +18,7 @@ package org.fusesource.scalate.servlet
 import javax.servlet.ServletContext
 import java.io.{File, InputStreamReader, StringWriter}
 import org.fusesource.scalate.util.IOUtil
-import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, TemplateException}
+import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, ResourceNotFoundException}
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -29,13 +29,11 @@ class ServletResourceLoader(context: ServletContext) extends FileResourceLoader 
     new File(context.getRealPath(uri))
   }
 
-  override protected def toFileOrFail(uri:String):File = {
-    val path = context.getRealPath(uri);
-    if (path==null) {
-      throw new TemplateException("Cannot find [" + uri + "]; are you sure it's within [" + context.getRealPath("/") + "]?")
+  override protected def toFileOrFail(uri: String): File = {
+    val path = context.getRealPath(uri)
+    if (path == null) {
+      throw new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
     }
     new File(path)
   }
-
-
 }
