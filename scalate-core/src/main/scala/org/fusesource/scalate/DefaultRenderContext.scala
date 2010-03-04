@@ -104,7 +104,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   /**
    * Renders a collection of model objects with an optional separator
    */
-  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: => String = blankString): Unit = {
+  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: => Any = blankString): Unit = {
     var first = true
     for (model <- objects) {
       if (first) {

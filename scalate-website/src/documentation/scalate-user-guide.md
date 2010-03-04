@@ -130,10 +130,24 @@ Also you can specify a separator to use between views of objects. The following 
 
 {pygmentize:: jsp}
 <% val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino")) %>
-<% collection(people, separator = {() => "<hr/>"})  %>
+<% collection(people, separator = "<hr/>")  %>
+{pygmentize}
+
+Or without using named arguments
+
+{pygmentize:: jsp}
+<% collection(people, "index", "<hr/>")  %>
 {pygmentize}
 
 If a collection contains different types of objects then the correct view will be used for each element in the collection.
+
+You can also supply a function for the separator if you want it to be dynamic
+
+{pygmentize:: jsp}
+<% var x = 1 %>
+collection(people, separator = {x += 1; <h3>Person {x}</h3>})
+{pygmentize}
+
 
 ## Render templates
 
