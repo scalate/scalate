@@ -27,18 +27,17 @@ class TemplateException(message: String, cause: Throwable) extends RuntimeExcept
   }
 }
 
-class TemplateNotFoundException(cause: Throwable) extends TemplateException("Could not load template: " + cause, cause) {
+class ResourceNotFoundException(resource: String, root: String = "")
+  extends TemplateException(
+    "Could not load resource: [" + resource + 
+    (if (root == "") "]" else "]; are you sure it's within [" + root + "]?")) {
 }
 
-class InvalidSyntaxException(message: String, val pos: Position = NoPosition) extends TemplateException(message + " at " + pos) {
-}
+class InvalidSyntaxException(message: String, val pos: Position = NoPosition) extends TemplateException(message + " at " + pos)
 
-class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set") {
-}
+class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set")
 
 class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view +
-        "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName) {
-}
+        "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName)
 
-class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.") {
-}
+class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.")
