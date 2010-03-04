@@ -99,17 +99,19 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
+  protected def blankString: String = ""
+
   /**
    * Renders a collection of model objects with an optional separator
    */
-  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: () => String = {() => ""}): Unit = {
+  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: => String = blankString): Unit = {
     var first = true
     for (model <- objects) {
       if (first) {
         first = false
       }
       else {
-        this << separator()
+        this << separator
       }
       view(model, viewName)
     }

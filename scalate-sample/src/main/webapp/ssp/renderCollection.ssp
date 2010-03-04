@@ -5,5 +5,5 @@
 <%
   import org.fusesource.scalate.sample.Person
   val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino"))
-  collection(people, separator = {() => "<hr/>"}) 
+  collection(people, separator = "<hr/>") 
 %>
