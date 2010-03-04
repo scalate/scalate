@@ -18,6 +18,7 @@ object ClassLoaders extends Logging {
   
   object AntLikeClassLoader {
     def unapply(ref: AnyRef): Option[AntLikeClassLoader] = {
+      if (ref == null) return None
       try {
         val method = ref.getClass.getMethod("getClasspath")
         if (method.getReturnType == classOf[String])

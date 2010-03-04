@@ -20,6 +20,7 @@ import layout.DefaultLayoutStrategy
 import scaml.ScamlCodeGenerator
 import java.net.URLClassLoader
 import scala.collection.mutable.HashMap
+import scala.util.control.Exception
 import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
 import util.IOUtil
@@ -59,21 +60,14 @@ class TemplateEngine {
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
+  private val attempt = Exception.ignoring(classOf[Throwable])
+  
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
-  attempt( filters += "plain" -> PlainFilter );
-  attempt( filters += "javascript"-> JavascriptFilter );
-  attempt( filters += "escaped"->EscapedFilter );
-  attempt( filters += "markdown"->MarkdownFilter );
-
-  private def attempt[T](op: => T): Unit = {
-      try {
-          op
-      } catch {
-          case e:Throwable=>{
-          }
-      }
-  }
+  attempt( filters += "plain" -> PlainFilter )
+  attempt( filters += "javascript"-> JavascriptFilter )
+  attempt( filters += "escaped"->EscapedFilter )
+  attempt( filters += "markdown"->MarkdownFilter )
 
   var layoutStrategy = new DefaultLayoutStrategy(this)
 
@@ -267,7 +261,7 @@ class TemplateEngine {
     ce.template
   }
 
-  private def compileAndLoad(uri: String, extraBindings:List[Binding], attempt:Int): (Template, Set[String]) = {
+  private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     try {
 
       // Generate the scala source code from the template
@@ -290,7 +284,7 @@ class TemplateEngine {
       // TODO: figure out why we sometimes get these InstantiationException errors that
       // go away if you redo
       case e: InstantiationException =>
-        if( attempt ==0 ) {
+        if (attempt == 0) {
           compileAndLoad(uri, extraBindings, 1)
         } else {
           throw new TemplateException(e.getMessage, e)
@@ -307,7 +301,7 @@ class TemplateEngine {
   private def generator(uri: String): CodeGenerator = {
     val t = uri.split("\\.")
     if (t.length < 2) {
-      throw new TemplateException("Template file extension missing.  Cannot determine which template processor to use.");
+      throw new TemplateException("Template file extension missing. Cannot determine which template processor to use.")
     } else {
       generatorForExtension(t.last)
     }
@@ -317,9 +311,9 @@ class TemplateEngine {
    * Returns the code generator for the given file extension
    */
   private def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
-        case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
-        case Some(generator) => generator
-      }
+    case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
+    case Some(generator) => generator
+  }
 
   private def loadCompiledTemplate(className:String) = {
     val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
