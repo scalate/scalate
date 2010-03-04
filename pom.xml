@@ -426,7 +426,6 @@
           <args>
             <!-- arg>-unchecked</arg -->
             <arg>-deprecation</arg>
-            <arg>-Xno-varargs-conversion</arg>
           </args>
           <scalaVersion>${scala.version}</scalaVersion>
         </configuration>
