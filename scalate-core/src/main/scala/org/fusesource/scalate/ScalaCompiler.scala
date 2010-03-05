@@ -18,7 +18,7 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
-import org.fusesource.scalate.util.ClassLoaders._
+import org.fusesource.scalate.util.ClassPathBuilder
 import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.util.Sequences.removeDuplicates
 import java.io.File
@@ -63,8 +63,13 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     var useCP = if (classpath != null) {
       classpath
     } else {
-      removeDuplicates(classLoaderList(Thread.currentThread.getContextClassLoader) ::: classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
-              ::: classLoaderList(getClass) ::: classLoaderList(ClassLoader.getSystemClassLoader) ::: javaClassPath).mkString(pathSeparator)
+      (new ClassPathBuilder).addPathFromContextClassLoader()
+                            .addPathFrom(classOf[Product])
+                            .addPathFrom(classOf[Global])
+                            .addPathFrom(getClass)
+                            .addPathFromSystemClassLoader()
+                            .addJavaPath()
+                            .classPath
     }
 
     fine("using classpath: " + useCP)
@@ -78,15 +83,4 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
     //settings.make.value = "transitivenocp"
     settings
   }
-
-  private def javaClassPath: List[String] = {
-    val jcp = System.getProperty("java.class.path", "")
-    if (jcp.length > 0) {
-      jcp.split(File.pathSeparator).toList
-    }
-    else {
-      List()
-    }
-  }
-
 }

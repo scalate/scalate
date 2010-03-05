@@ -18,7 +18,7 @@ package org.fusesource.scalate.servlet;
 
 import javax.servlet.ServletConfig
 import org.fusesource.scalate.{Binding, TemplateEngine}
-import org.fusesource.scalate.util.ClassLoaders._
+import org.fusesource.scalate.util.ClassPathBuilder
 import org.fusesource.scalate.util.Sequences.removeDuplicates
 import java.io.File
 import scala.tools.nsc.Global;
@@ -38,42 +38,24 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
 
   private def buildClassPath(): String = {
 
-    val containerList = classLoaderList(getClass) ::: classLoaderList(classOf[ServletConfig]) :::
-            classLoaderList(classOf[Product].getClassLoader) ::: classLoaderList(classOf[Global].getClassLoader)
-
+    val builder = new ClassPathBuilder
+    
+    // Allow adding a classpath prefix & suffix via web.xml
+    builder.addEntry(config.getInitParameter("compiler.classpath.prefix"))
+    
+    // Add containers class path
+    builder.addPathFrom(getClass)
+           .addPathFrom(classOf[ServletConfig])
+           .addPathFrom(classOf[Product])
+           .addPathFrom(classOf[Global])
+    
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
-    val classesDirectory = config.getServletContext.getRealPath("/WEB-INF/classes")
-    val libDirectory = config.getServletContext.getRealPath("/WEB-INF/lib")
-    val jars = findFiles(new File(libDirectory)).map {_.toString}
+    builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
+           .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
 
     // Allow adding a classpath prefix & suffix via web.xml
-    val prefix = config.getInitParameter("compiler.classpath.prefix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-    val suffix = config.getInitParameter("compiler.classpath.suffix") match {
-      case null => Nil
-      case path: String => List(path)
-    }
-
-    removeDuplicates(prefix ::: containerList ::: classesDirectory :: jars ::: suffix ::: Nil).mkString(File.pathSeparator)
+    builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))           
+    
+    builder.classPath
   }
-
-
-  private def findFiles(root: File): List[File] = {
-    if (root.isFile)
-      List(root)
-    else
-      makeList(root.listFiles).flatMap {f => findFiles(f)}
-  }
-
-
-  private def makeList(a: Array[File]): List[File] = {
-    if (a == null)
-      Nil
-    else
-      a.toList
-  }
-
-
 }
