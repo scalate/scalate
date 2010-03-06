@@ -40,7 +40,7 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
 
     val builder = new ClassPathBuilder
     
-    // Allow adding a classpath prefix & suffix via web.xml
+    // Add optional classpath prefix via web.xml parameter
     builder.addEntry(config.getInitParameter("compiler.classpath.prefix"))
     
     // Add containers class path
@@ -53,7 +53,7 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
     builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
            .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
 
-    // Allow adding a classpath prefix & suffix via web.xml
+    // Add optional classpath suffix via web.xml parameter
     builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))           
     
     builder.classPath

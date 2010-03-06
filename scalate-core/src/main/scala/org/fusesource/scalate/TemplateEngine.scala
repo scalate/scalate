@@ -289,7 +289,7 @@ class TemplateEngine {
         } else {
           throw new TemplateException(e.getMessage, e)
         }
-      case e: ResourceNotFoundException => throw e
+      case e: TemplateException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }
