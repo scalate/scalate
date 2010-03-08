@@ -28,9 +28,9 @@ import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
 
-class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging {
+class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 
-  val settings = generateSettings(bytecodeDirectory, classpath)
+  val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
   val compiler = new Global(settings, null)
 
   def compile(file:File): Unit = {
@@ -55,12 +55,12 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
 
   private def error(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
-  private def generateSettings(bytecodeDirectory: File, classpath: String): Settings = {
+  private def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
     bytecodeDirectory.mkdirs
 
     val pathSeparator = File.pathSeparator
 
-    var useCP = if (classpath != null) {
+    var useCP = if (classpath != null && !combineClasspath) {
       classpath
     } else {
       (new ClassPathBuilder).addPathFromContextClassLoader()
@@ -68,6 +68,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String) extends Logging 
                             .addPathFrom(classOf[Global])
                             .addPathFrom(getClass)
                             .addPathFromSystemClassLoader()
+                            .addEntry(classpath)
                             .addJavaPath()
                             .classPath
     }

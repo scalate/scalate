@@ -54,6 +54,11 @@ class TemplateEngine {
   var allowReload = true
 
   /**
+   * Whether a custom classpath should be combined with the deduced classpath
+   */
+  var combinedClassPath = false
+
+  /**
    *
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader
@@ -71,7 +76,8 @@ class TemplateEngine {
 
   var layoutStrategy = new DefaultLayoutStrategy(this)
 
-  lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath)
+
+  lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath, combinedClassPath)
 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
