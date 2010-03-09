@@ -135,6 +135,12 @@
       <organization>Oracle</organization>
       <organizationUrl>http://oracle.com/</organizationUrl>
     </developer>
+    <developer>
+      <id>sptz45</id>
+      <name>Spiros Tzavellas</name>
+      <url>http://www.tzavellas.com</url>
+      <timezone>+2</timezone>
+    </developer>
   </developers>
 
   <repositories>
