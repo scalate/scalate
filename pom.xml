@@ -314,11 +314,13 @@
         <artifactId>jersey-server</artifactId>
         <version>${jersey-version}</version>
       </dependency>
+<!--
       <dependency>
         <groupId>opensymphony</groupId>
         <artifactId>sitemesh</artifactId>
         <version>${sitemesh-version}</version>
       </dependency>
+-->
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
