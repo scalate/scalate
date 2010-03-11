@@ -40,5 +40,11 @@ Hello ${name}!
     assertContains(output, "Hello James")
     fine("template generated: " + output)
   }
+  
+  test("throws ResourceNotFoundException if template file does not exist") {
+    intercept[ResourceNotFoundException] {
+      engine.load("does-not-exist.ssp", Nil)
+    }
+  }
 
 }
