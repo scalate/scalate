@@ -15,25 +15,31 @@
  */
 package org.fusesource.scalate.servlet
 
+import java.io.File
 import javax.servlet.ServletContext
-import java.io.{File, InputStreamReader, StringWriter}
-import org.fusesource.scalate.util.IOUtil
-import org.fusesource.scalate.{FileResourceLoader, ResourceLoader, ResourceNotFoundException}
+import org.fusesource.scalate.{ FileResourceLoader, ResourceNotFoundException }
 
 /**
+ * Loads files using <code>ServletContext</code>.
+ * 
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletResourceLoader(context: ServletContext) extends FileResourceLoader {
 
-  override protected def toFile(uri:String):File = {
-    new File(context.getRealPath(uri))
-  }
+  override protected def toFile(uri:String) = new File(context.getRealPath(uri))
 
   override protected def toFileOrFail(uri: String): File = {
+    
     val path = context.getRealPath(uri)
     if (path == null) {
       throw new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
     }
-    new File(path)
+    
+    val file = new File(path)
+    if (! file.canRead) {
+      throw new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+    }
+    
+    file
   }
 }

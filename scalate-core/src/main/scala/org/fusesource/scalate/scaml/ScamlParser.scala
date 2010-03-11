@@ -228,9 +228,8 @@ class ScamlParser extends IndentedParser() {
     prefixed("&=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
     prefixed("!=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
-
-  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ ident ~ (":" ~> qualified_type) ~ (opt("=" ~> text ))) ^^ {
-    case p_import~p_kind~p_name~p_type~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
+  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ ident ~ (":" ~> qualified_type) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
+    case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 

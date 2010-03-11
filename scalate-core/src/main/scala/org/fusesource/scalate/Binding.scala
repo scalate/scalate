@@ -21,4 +21,22 @@ package org.fusesource.scalate
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-case class Binding(name:String, className:String="Any", importMembers:Boolean=false, defaultValue:Option[String]=None, kind:String="val")
+case class Binding(
+  name: String,
+  className: String = "Any",
+  importMembers: Boolean = false,
+  defaultValue: Option[String] = None,
+  kind: String = "val",
+  isImplicit: Boolean = false) { 
+}
+
+object Binding {
+  
+  def of[T](
+    name: String,
+    importMembers: Boolean = false,
+    defaultValue: Option[String] = None,
+    kind: String = "val",
+    isImplicit: Boolean = false)(implicit m: Manifest[T]) =
+      new Binding(name, m.erasure.getName, importMembers, defaultValue, kind, isImplicit)
+}

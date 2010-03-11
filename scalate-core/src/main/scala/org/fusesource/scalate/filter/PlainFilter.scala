@@ -16,18 +16,17 @@
  */
 package org.fusesource.scalate.filter
 
-import org.fusesource.scalate.{RenderContext, Filter}
+import org.fusesource.scalate.Filter
 
 /**
- * Does not parse the filtered text. This is useful for large blocks
- * of text or HTML.
+ * A filter that simply returns the given String without any processing.
+ * 
+ * <p>This is useful for large blocks of text or HTML.</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object PlainFilter extends Filter {
 
-  def filter(content:String): String = {
-    return content;
-  }
+  def filter(content: String) = content
 
 }

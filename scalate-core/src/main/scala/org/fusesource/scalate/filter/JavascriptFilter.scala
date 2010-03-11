@@ -20,19 +20,20 @@ import org.fusesource.scalate.{Filter, RenderContext}
 import org.fusesource.scalate.util.RenderHelper
 
 /**
- * Surrounds the filtered text with <script> and CDATA tags. Useful for
- * including inline Javascript.
+ * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
+ * 
+ * <p>Useful for including inline Javascript.</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object JavascriptFilter extends Filter {
 
-  def filter(content:String): String = {
-    return """<script type='text/javascript'>
-             |  //<![CDATA[
-             |    """.stripMargin+RenderHelper.indent("    ", content)+"""
-             |  //]]>
-             |</script>""".stripMargin;
+  def filter(content: String) = {
+    """<script type='text/javascript'>
+       |  //<![CDATA[
+       |    """.stripMargin+RenderHelper.indent("    ", content)+"""
+       |  //]]>
+       |</script>""".stripMargin
   }
   
 }

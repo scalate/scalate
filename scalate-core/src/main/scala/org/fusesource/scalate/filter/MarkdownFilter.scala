@@ -16,22 +16,20 @@
  */
 package org.fusesource.scalate.filter
 
-import org.fusesource.scalate.{Filter, RenderContext}
-import org.fusesource.scalate.util.RenderHelper
+import org.fusesource.scalate.Filter
 import com.petebevin.markdown.MarkdownProcessor
 
 /**
- * Renders markdown syntax
+ * Renders markdown syntax.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object MarkdownFilter extends Filter {
 
-  val markdownProcessor = new MarkdownProcessor();
-  
+  val markdownProcessor = new MarkdownProcessor
 
-  def filter(content:String): String = {
-    markdownProcessor.markdown(content).stripLineEnd;
+  def filter(content: String) = {
+    markdownProcessor.markdown(content).stripLineEnd
   }
 
 }

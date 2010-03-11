@@ -22,7 +22,7 @@ import org.fusesource.scalate._
 import java.util.regex.Pattern
 import scala.collection.mutable.HashSet
 
-class SspCodeGenerator  extends AbstractCodeGenerator[PageFragment] {
+class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
   private class SourceBuilder extends AbstractSourceBuilder[PageFragment] {
 

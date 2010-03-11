@@ -21,14 +21,12 @@ import org.fusesource.scalate.{RenderContext, Filter}
 
 
 /**
- * XML/XHTML escapes the content
+ * Escapes any XML/XHTML special characters in the content.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object EscapedFilter extends Filter {
 
-  def filter(content:String): String = {
-    return RenderHelper.sanitize(content);
-  }
+  def filter(content: String) = RenderHelper.sanitize(content)
 
 }

@@ -24,24 +24,24 @@ import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.TemplateEngine
 
 /**
- * Servlet which renders the requested scalate template
+ * Servlet which renders the requested Scalate template.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngineServlet extends HttpServlet with Logging {
+class TemplateEngineServlet extends HttpServlet {
 
-  var templateEngine:TemplateEngine = null
+  var templateEngine: TemplateEngine = _
 
-  override def init(config: ServletConfig) = {
+  override def init(config: ServletConfig) {
     super.init(config)
     templateEngine = new ServletTemplateEngine(config)
   }
 
-  override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+  override def service(request: HttpServletRequest, response: HttpServletResponse) {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
-    context.layout(uri);
+    context.layout(uri)
   }
 
 }
