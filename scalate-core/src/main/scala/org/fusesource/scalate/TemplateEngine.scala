@@ -29,7 +29,7 @@ import java.io.{StringWriter, PrintWriter, FileWriter, File}
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
  * The TemplateEngine takes care of setting up the Scala compiler
- * and caching compiled templates for quicker subseqent loads
+ * and caching compiled templates for quicker subsequent loads
  * of a requested template.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

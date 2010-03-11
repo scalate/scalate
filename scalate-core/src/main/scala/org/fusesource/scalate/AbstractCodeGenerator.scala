@@ -22,7 +22,7 @@ import java.net.URI
 import java.io.File
 
 /**
- * Provies a common base class for CodeGenerator implementations.
+ * Provides a common base class for CodeGenerator implementations.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

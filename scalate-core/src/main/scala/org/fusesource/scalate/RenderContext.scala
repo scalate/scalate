@@ -1,8 +1,10 @@
 package org.fusesource.scalate
 
-import scala.collection.mutable.Map
-
 /**
+ * Provides helper methods for rendering templates.
+ * 
+ * @see DefaultRenderContext
+ * @see org.fusesource.scalate.servlet.ServletRenderContext
  */
 trait RenderContext {
 
@@ -23,37 +25,27 @@ trait RenderContext {
   def attributes : AttributeMap[String,Any]
 
   /**
-   * Returns the attribute of the given type or a    { @link NoValueSetException } exception is thrown
+   * Returns the attribute of the given type or a {@link NoValueSetException} exception is thrown
    */
   def attribute[T](name: String): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      throw new NoValueSetException(name)
-    }
+    attributes.get(name)
+              .getOrElse(throw new NoValueSetException(name))
+              .asInstanceOf[T]
   }
 
   /**
    * Returns the attribute of the given name and type or the default value if it is not available
    */
   def attributeOrElse[T](name: String, defaultValue: T): T = {
-    val value = attributes.get(name)
-    if (value.isDefined) {
-      value.get.asInstanceOf[T]
-    }
-    else {
-      defaultValue
-    }
+    attributes.get(name)
+              .getOrElse(defaultValue)
+              .asInstanceOf[T]
   }
 
-  def setAttribute(name: String, value: Option[Any]): Unit = {
-    if (value.isDefined) {
-      attributes(name) = value.get
-    }
-    else {
-      attributes.remove(name)
+  def setAttribute(name: String, value: Option[Any]) {
+    value match {
+      case Some(v) => attributes(name) = v
+      case None    => attributes.remove(name)
     }
   }
 
@@ -74,7 +66,7 @@ trait RenderContext {
   def capture(template: Template): String
 
   /**
-   * renders and inserts another template
+   * Renders and inserts another template
    */
   def include(path: String): Unit
 
@@ -83,5 +75,4 @@ trait RenderContext {
       capture(body)
     }
   }
-
 }

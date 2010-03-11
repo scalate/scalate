@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate
 
-
 import org.fusesource.scalate.util.{Lazy, RenderHelper}
 import java.text.{DateFormat, NumberFormat}
 import java.util.{Date, Locale}
@@ -27,7 +26,8 @@ import collection.mutable.{Stack, ListBuffer, HashMap}
 import xml.{NodeBuffer, Node}
 
 /**
- * The TemplateContext provides helper methods for interacting with the request, response, attributes and parameters
+ * The RenderContext provides helper methods for interacting with the request, response,
+ * attributes and parameters.
  */
 class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext {
   var viewPrefixes = List("")
@@ -81,7 +81,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   }
 
   /**
-   * includes the given template path applying the layout to it before returning
+   * Includes the given template path applying the layout to it before returning
    */
   def layout(path: String): Unit = include(path, true)
 
@@ -201,14 +201,14 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   def render(path: String, attributeValues: (String, Any)*): Unit = render(path, Map(attributeValues: _*))
 
   /**
-   * Renders the given template with optoinal attributes passing the body block as the *body* attribute
-   * so that it can be layed out using the template.
+   * Renders the given template with optional attributes passing the body block as the *body* attribute
+   * so that it can be layered out using the template.
    */
   def layout(path: String, attributeValues: (String, Any)*)(body: () => String): Unit = layout(path, Map(attributeValues: _*))(body)
 
   /**
-   * Renders the given template with optoinal attributes passing the body block as the *body* attribute
-   * so that it can be layed out using the template.
+   * Renders the given template with optional attributes passing the body block as the *body* attribute
+   * so that it can be layered out using the template.
    */
   def layout(path: String, attrMap: Map[String, Any])(body: () => String): Unit = {
     val bodyText = body()
@@ -216,13 +216,13 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   }
 
   /**
-   * uses the new sets of attributes for the given block, then replace them all
+   * Uses the new sets of attributes for the given block, then replace them all
    * (and remove any newly defined attributes)
    */
   def withAttributes(attrMap: Map[String, Any])(block: => Unit): Unit = {
     val oldValues = new HashMap[String, Any]
 
-    // lets replace attributes, saving the old vlaues
+    // lets replace attributes, saving the old values
     for ((key, value) <- attrMap) {
       val oldValue = attributes.get(key)
       if (oldValue.isDefined) {
@@ -313,7 +313,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   private val resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a                   { @link NoValueSetException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a {@link NoValueSetException} exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)
@@ -348,7 +348,6 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   def percent(number: Number) = percentFormat.format(number)
 
   // Locale based formatters
-  //
   // shame we can't use 'lazy var' for this cruft...
   def numberFormat: NumberFormat = _numberFormat()
 
@@ -363,8 +362,5 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   def dateFormat_=(value: DateFormat): Unit = _dateFormat(value)
 
 
-  def locale: Locale = {
-    Locale.getDefault
-  }
-
+  def locale: Locale = Locale.getDefault
 }
