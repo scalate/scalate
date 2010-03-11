@@ -26,6 +26,21 @@ class ParserTest extends FunSuite {
     assertAttribute(lines, AttributeFragment("val", "name", "String", None, false))
   }
 
+// Failing test!
+// In the current SspParser implementation we cannot have whitespace in the default value
+//  test("parse attribute declaration with the default value being a constructor invocation") {
+//    val lines = assertValid("""<%@ val name: String = new String("spiros")%>
+//<html>
+//  <%-- comment --%>
+//  <body>
+//    <h1>Hello ${name}</h1>
+//  </body>
+//</html>
+//""")
+//    assertAttribute(lines, AttributeFragment("val", "name", "String", Some("new String(\"spiros\")"), false))
+//  }
+  
+
   test("parse valid SSP file with attribute with default value") {
     val lines = assertValid("""<%@ val name : String = "Hello"%>
 <html>
