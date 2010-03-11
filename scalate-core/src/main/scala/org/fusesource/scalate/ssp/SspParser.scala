@@ -22,7 +22,7 @@ import scala.util.parsing.combinator._
 import util.parsing.input.CharSequenceReader
 import org.fusesource.scalate.InvalidSyntaxException
 
-sealed abstract class PageFragment()
+sealed abstract class PageFragment
 
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
@@ -46,15 +46,15 @@ class SspParser extends RegexParsers {
   val any_space   = """[ \t]*""".r
   val identifier  = """[a-zA-Z0-9\$_]+""".r
   val typeName    = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val some_text         = """.+""".r
+  val some_text   = """.+""".r
 
   val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ identifier ~ (":" ~> typeName) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
-  /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
+  /** Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
-  /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
+  /** Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
   def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
 
   def upto[T]( p1:Parser[T]):Parser[String] = {
@@ -83,7 +83,7 @@ class SspParser extends RegexParsers {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case _ => throw new InvalidSyntaxException(x.toString);
+      case _ => throw new InvalidSyntaxException(x.toString)
     }
   }
 
