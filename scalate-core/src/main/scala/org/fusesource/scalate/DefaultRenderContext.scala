@@ -33,10 +33,12 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   var viewPrefixes = List("")
   var viewPostfixes = engine.codeGenerators.keysIterator.map(x => "." + x).toList
   var currentTemplate: String = _
-  private val _attributes: AttributeMap[String, Any] = new HashMap[String, Any]() with AttributeMap[String, Any]
-  _attributes.update("context", this)
+  
+  val attributes: AttributeMap[String,Any] = new HashMapAttributes[String, Any] {
+    override def apply(key: String) =
+      if (key == "context") DefaultRenderContext.this else super.apply(key) 
+  }
 
-  def attributes = _attributes
 
   /////////////////////////////////////////////////////////////////////
   //

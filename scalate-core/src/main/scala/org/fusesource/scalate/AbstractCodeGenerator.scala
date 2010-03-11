@@ -98,17 +98,14 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     def generateBinding(binding: Binding): Unit = {
       def generateImplicit = if (binding.isImplicit) "implicit " else ""
       
-      this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes.get(" + asString(binding.name) + ") match {"
+      this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes(" + asString(binding.name) + ") match {"
       indent {
         if (binding.defaultValue.isEmpty) {
-          this << "case None => { throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ") }"
-          this << "case Some(null) => { throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ") }"
-          this << "case Some(value) => { value.asInstanceOf[" + binding.className + "] }"
+          this << "case null => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
         } else {
-          this << "case None => { " + binding.defaultValue.get + " }"
-          this << "case Some(null) => { " + binding.defaultValue.get + " }"
-          this << "case Some(value) => { value.asInstanceOf[" + binding.className + "] }"
+          this << "case null => " + binding.defaultValue.get
         }
+        this << "case value: "+binding.className+" => value"
       }
       this << "});"
       if (binding.importMembers) {
