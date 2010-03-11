@@ -16,7 +16,8 @@
  */
 package org.fusesource.scalate
 
-import scala.util.parsing.input.{NoPosition, Position}
+import scala.util.control.NoStackTrace
+import scala.util.parsing.input.{ NoPosition, Position }
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -40,3 +41,6 @@ class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateE
         "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName)
 
 class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.")
+
+class StaleCacheEntryException(uri: String)
+  extends TemplateException("The compiled template for "+uri+" needs to get recompiled") with NoStackTrace

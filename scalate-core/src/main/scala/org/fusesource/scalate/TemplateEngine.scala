@@ -169,10 +169,9 @@ class TemplateEngine {
             // Try to load a pre-compiled template from the classpath
               cache(uri, loadPrecompiledEntry(uri, extraBindings))
           } catch {
-            case e:Throwable => {
+            case _: Throwable =>
               // It was not pre-compiled... compile and load it.
               cache(uri, compileAndLoadEntry(uri, extraBindings))
-            }
           }
 
         // It was in the cache..
@@ -184,7 +183,6 @@ class TemplateEngine {
           else
             // Cache entry is valid
             entry.template
-
       }
     }
   }
@@ -244,7 +242,7 @@ class TemplateEngine {
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
       if( entry.isStale ) {
         // Throw an exception since we should not load stale pre-compiled classes.
-        throw new Exception("Template is stale.");
+        throw new StaleCacheEntryException(uri)
       }
       // Yay the template is not stale.  Lets use it.
       entry
