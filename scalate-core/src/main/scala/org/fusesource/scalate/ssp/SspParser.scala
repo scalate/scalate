@@ -29,57 +29,71 @@ case class DollarExpressionFragment(code: String) extends PageFragment
 case class ExpressionFragment(code: String) extends PageFragment
 case class ScriptletFragment(code: String) extends PageFragment
 case class TextFragment(text: String) extends PageFragment
-case class AttributeFragment(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends PageFragment
+case class AttributeFragment(kind: String, name: String, className: String, defaultValue: Option[String], autoImport: Boolean) extends PageFragment
 
 class SspParser extends RegexParsers {
-
   var skipWhitespaceOn = false
+
   override def skipWhitespace = skipWhitespaceOn
 
-  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] { in =>
-    skipWhitespaceOn = true
-    val result = p(in)
-    skipWhitespaceOn = false
-    result
+  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] {
+    in =>
+      skipWhitespaceOn = true
+      val result = p(in)
+      skipWhitespaceOn = false
+      result
   }
 
-  val any_space   = """[ \t]*""".r
-  val identifier  = """[a-zA-Z0-9\$_]+""".r
-  val typeName    = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val some_text   = """.+""".r
+  val any_space = """[ \t]*""".r
+  val identifier = """[a-zA-Z0-9\$_]+""".r
+  val typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
+  val some_text = """.+""".r
 
-  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ identifier ~ (":" ~> typeName) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
-    case (p_import~p_kind~p_name~p_type)~p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
+  val attribute = skip_whitespace(opt("import") ~ ("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r)) ^^ {
+    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
-  /** Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
-  def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
-  /** Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
-  def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
+  /**Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
+  def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
 
-  def upto[T]( p1:Parser[T]):Parser[String] = {
-    rep1( not( p1 ) ~> ".|\r|\n".r ) ^^ { _.mkString("") }
+  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
+  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
+
+  def upto[T](p1: Parser[T]): Parser[String] = {
+    rep1(not(p1) ~> ".|\r|\n".r) ^^ {_.mkString("")}
   }
 
-  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[String] = {
-    prefixed( prefix, upto(postfix) <~ postfix )
+  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[String] = {
+    prefixed(prefix, upto(postfix) <~ postfix)
   }
 
 
-  val comment_fragment            = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
-  val dollar_expression_fragment  = wrapped("${",   "}")    ^^ { DollarExpressionFragment(_) }
-  val expression_fragment         = wrapped("<%=",  "%>")   ^^ { ExpressionFragment(_) }
-  val attribute_fragement         = prefixed("<%@", attribute <~ any_space ~ "%>" ) 
-  val scriptlet_fragment          = wrapped("<%",   "%>")   ^^ { ScriptletFragment(_) }
-  val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
+  val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
+  val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
+  val expression_fragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+  val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ "%>")
+  val scriptlet_fragment = wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
 
-  val page_fragment:Parser[PageFragment] = comment_fragment | dollar_expression_fragment |
-    attribute_fragement | expression_fragment | scriptlet_fragment |
-    text_fragment
+  //val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
+  val text_fragment: Parser[TextFragment] = upto("<%" | """\<%""" | """${""" | """\${""") ~
+          opt(
+            """\${""" ~ text_fragment ^^ {case x ~ y => "${" + y.text} |
+                    """\<%""" ~ text_fragment ^^ {case x ~ y => "<%" + y.text}
+            ) ^^ {
+              case x~Some(y) => TextFragment(x+y)
+              case x~None => TextFragment(x)
+  }
 
-  val page_fragments = rep( page_fragment )
+  val any_space_then_nl      ="""[ \t]*\r?\n""".r
 
-  private def phraseOrFail[T](p:Parser[T], in:String): T = {
+
+  val page_fragment: Parser[PageFragment] = comment_fragment | dollar_expression_fragment |
+          attribute_fragement | expression_fragment | scriptlet_fragment |
+          text_fragment
+
+  val page_fragments = rep(page_fragment)
+
+  private def phraseOrFail[T](p: Parser[T], in: String): T = {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
@@ -87,7 +101,7 @@ class SspParser extends RegexParsers {
     }
   }
 
-  def getPageFragments(in:String): List[PageFragment] = {
+  def getPageFragments(in: String): List[PageFragment] = {
     phraseOrFail(page_fragments, in)
   }
 

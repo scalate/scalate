@@ -21,13 +21,12 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import java.io.File
 import util.Logging
-import Asserts._     
+import Asserts._
 
 /**
  */
 @RunWith(classOf[JUnitRunner])
 class TemplateEngineTest extends FunSuite with Logging {
-
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 
@@ -40,11 +39,28 @@ Hello ${name}!
     assertContains(output, "Hello James")
     fine("template generated: " + output)
   }
-  
+
   test("throws ResourceNotFoundException if template file does not exist") {
     intercept[ResourceNotFoundException] {
       engine.load("does-not-exist.ssp", Nil)
     }
+  }
+
+  test("escape template") {
+    val templateText = """<%@ val t: Class[_] %>
+\<%@ val it : ${t.getName} %>
+<p>hello \${it} how are you?</p>
+"""
+    val template = engine.compileSsp(templateText)
+    val output = engine.layout(template, Map("t" -> classOf[String])).trim
+    val lines = output.split('\n')
+
+    for (line <- lines) {
+      println("line: " + line)
+    }
+
+    expect("<%@ val it : java.lang.String %>") {lines(0)}
+    expect("<p>hello ${it} how are you?</p>") {lines(1)}
   }
 
 }
