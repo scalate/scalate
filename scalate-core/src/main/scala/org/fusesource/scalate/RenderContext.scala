@@ -1,5 +1,7 @@
 package org.fusesource.scalate
 
+import introspector.Introspector
+
 /**
  * Provides helper methods for rendering templates.
  * 
@@ -75,4 +77,12 @@ trait RenderContext {
       capture(body)
     }
   }
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // introspection for dynamic templates or for archetype templates
+  //
+  /////////////////////////////////////////////////////////////////////
+  def introspect(aType: Class[_]) = Introspector(aType)
 }

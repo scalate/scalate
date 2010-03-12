@@ -23,7 +23,7 @@ import java.util.{Date, Locale}
 import java.io._
 import java.lang.String
 import collection.mutable.{Stack, ListBuffer, HashMap}
-import xml.{NodeBuffer, Node}
+import xml.NodeBuffer
 
 /**
  * The RenderContext provides helper methods for interacting with the request, response,

@@ -7,7 +7,7 @@
 <table>
   <tr>
 <%
-  import org.fusesource.scalate.util.CaseClassToMap._
+  import org.fusesource.scalate.util.ProductReflector._
 
   val map = toMap(it)
   for ((key, value) <- map) {

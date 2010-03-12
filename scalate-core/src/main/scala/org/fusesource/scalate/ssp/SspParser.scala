@@ -75,16 +75,24 @@ class SspParser extends RegexParsers {
   val scriptlet_fragment = wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
 
   //val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
-  val text_fragment: Parser[TextFragment] = upto("<%" | """\<%""" | """${""" | """\${""") ~
-          opt(
-            """\${""" ~ text_fragment ^^ {case x ~ y => "${" + y.text} |
-                    """\<%""" ~ text_fragment ^^ {case x ~ y => "<%" + y.text}
-            ) ^^ {
-              case x~Some(y) => TextFragment(x+y)
-              case x~None => TextFragment(x)
+  val text_fragment: Parser[TextFragment] = {
+
+    def textOf(optionalTextFragment: Option[TextFragment]) = optionalTextFragment match {
+      case Some(textFragment) => textFragment.text
+      case _ => ""
+    }
+
+    upto("<%" | """\<%""" | """${""" | """\${""") ~
+            opt(
+              """\${""" ~ opt(text_fragment) ^^ {case x ~ y => "${" + textOf(y)} |
+                      """\<%""" ~ opt(text_fragment) ^^ {case x ~ y => "<%" + textOf(y)}
+              ) ^^ {
+      case x ~ Some(y) => TextFragment(x + y)
+      case x ~ None => TextFragment(x)
+    }
   }
 
-  val any_space_then_nl      ="""[ \t]*\r?\n""".r
+  val any_space_then_nl = """[ \t]*\r?\n""".r
 
 
   val page_fragment: Parser[PageFragment] = comment_fragment | dollar_expression_fragment |

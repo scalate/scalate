@@ -48,8 +48,9 @@ Hello ${name}!
 
   test("escape template") {
     val templateText = """<%@ val t: Class[_] %>
-\<%@ val it : ${t.getName} %>
-<p>hello \${it} how are you?</p>
+<%@ val name: String = "it" %>
+\<%@ val ${name} : ${t.getName} %>
+<p>hello \${${name}} how are you?</p>
 """
     val template = engine.compileSsp(templateText)
     val output = engine.layout(template, Map("t" -> classOf[String])).trim

@@ -101,7 +101,10 @@ class TemplateEngine {
 
   var classLoader = this.getClass.getClassLoader
 
-  var bindings = List[Binding]()
+  /**
+   * Hy default lets bind the context so we get to reuse its methods in a template
+   */
+  var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
 
   private val templateCache = new HashMap[String, CacheEntry]
 

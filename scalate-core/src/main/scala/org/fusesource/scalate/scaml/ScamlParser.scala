@@ -197,7 +197,7 @@ class ScamlParser extends IndentedParser() {
   val litteral_part:Parser[String] =
     upto("#{" | """\#{""" | """\\#{"""|any_space_then_nl) ~
       opt(
-        """\#{""" ~ litteral_part ^^ { case x~y=> "#{"+y }  |
+        """\#{""" ~ opt(litteral_part) ^^ { case x~y=> "#{"+y.getOrElse("") }  |
         """\\""" ^^ { s=>"""\""" }
       ) ^^ {
         case x~Some(y) => x+y
