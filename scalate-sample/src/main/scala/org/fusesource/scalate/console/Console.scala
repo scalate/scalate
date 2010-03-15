@@ -110,8 +110,8 @@ class Console extends DefaultRepresentations {
    * based on your OS and whether you have TextMate installed and whether you
    * have defined the <code>scalate.editor</code> system property
    */
-  def editLink(template: String, line: Option[Int] = None, col: Option[Int] = None) = {
+  def editLink(template: String, line: Option[Int] = None, col: Option[Int] = None)(body: => String) = {
     val file = servletContext.getRealPath(template)
-    EditLink.editLink(file, line, col)("Edit " + template)
+    EditLink.editLink(file, line, col)(body)
   }
 }
