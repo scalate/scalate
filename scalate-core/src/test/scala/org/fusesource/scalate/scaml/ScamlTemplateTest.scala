@@ -882,6 +882,59 @@ The bean is blue
 """)
 
 
+  /////////////////////////////////////////////////////////////////////
+  //
+  // Indent Handling..
+  // You should enable white space viewing in your editor before touching this
+  // section.
+  //
+  /////////////////////////////////////////////////////////////////////
+  testRender("An un-indented newline between content data is considered part of the nexted content.",
+"""
+%ul
+  %li item 1
+
+  %li item 2
+""","""
+<ul>
+  <li>item 1</li>
+  
+  <li>item 2</li>
+</ul>
+""")
+
+  testRender("An un-indented newline between at the end of content data is not considered part of the content.",
+"""
+%ul
+  %li item 1
+  %li item 2
+
+%p test
+""","""
+<ul>
+  <li>item 1</li>
+  <li>item 2</li>
+</ul>
+
+<p>test</p>
+""")
+
+  testRender("An indented newline between at the end of content data is considered part of the content.",
+"""
+%ul
+  %li item 1
+  %li item 2
+  
+%p test
+""","""
+<ul>
+  <li>item 1</li>
+  <li>item 2</li>
+  
+</ul>
+<p>test</p>
+""")
+
   def testRender(description:String, template:String, result:String) = {
     test(description) {
       expect(result) { render(template) }
