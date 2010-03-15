@@ -73,8 +73,8 @@ class IndentedParser extends RegexParsers() {
     } else if( indent_unit!=null ) {
       // this is the normal indent case
       repN(indent_level,indent_unit) |
-      // this is the case of a emplty line.. we will consider it indented too.
-      repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r)
+      // this is the case of a emplty line.. we will consider it indented too if it is followed with a proper indent.
+      repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent)
     } else {
       ( """ +""".r | """\t+""".r) ^^ ( s=>{
           indent_unit=s;
