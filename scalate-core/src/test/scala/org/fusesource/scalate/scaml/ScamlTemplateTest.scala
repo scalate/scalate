@@ -340,6 +340,13 @@ class ScamlTemplateTest extends FunSuite {
 <div count="5"></div>
 """)
 
+  testRender("Hash Attributes can use complex scala expressions",
+"""
+%div{:count=>{3+4}}
+""","""
+<div count="7"></div>
+""")
+
 
   /////////////////////////////////////////////////////////////////////
   //
