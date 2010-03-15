@@ -28,12 +28,19 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends FunSuite {
 
+  testRender("Html2 Attributes can use simple scala expressions",
+"""
+%div(count={3+4})
+""","""
+<div count="7"></div>
+""")              
+
+
   testRender("Html Attributes can use simple scala expressions",
 """
-- val count = 5
-%div(count="#{count}")
+%div(count="#{3+4}")
 ""","""
-<div count="5"></div>
+<div count="7"></div>
 """)
 
   testRender("Hash Attributes can use simple scala expressions",

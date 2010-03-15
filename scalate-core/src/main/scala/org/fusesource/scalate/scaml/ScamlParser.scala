@@ -181,7 +181,12 @@ class ScamlParser extends IndentedParser() {
     tag_ident ~ ("=" ~> string_literal) ^^ {
       case key~value =>
         (key, parse(literal_text(Some(true)), value))
-    }
+    } |
+    tag_ident ~ ("=" ~"{" ~> upto("}") <~ "}" ) ^^ {
+      case key~value =>
+        (key, EvaluatedText(value, List(), true, Some(true)))
+    } 
+
 
   def class_entry:Parser[(Any, Any)] = "." ~> word ^^ { case x=> ("class", x) }
   def id_entry:Parser[(Any, Any)] = "#" ~> word ^^ { case x=> ("id", x) }
