@@ -28,7 +28,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>org.fusesource.scalate.sample.resources</param-value>
+      <param-value>org.fusesource.scalate.sample.resources;org.fusesource.scalate.console</param-value>
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>

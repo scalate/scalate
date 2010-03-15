@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo "Using JavaRebel home directory of $JAVAREBEL_HOME"
+MAVEN_OPTS="-noverify -javaagent:$JAVAREBEL_HOME/javarebel.jar" 
+mvn -o jetty:run
+

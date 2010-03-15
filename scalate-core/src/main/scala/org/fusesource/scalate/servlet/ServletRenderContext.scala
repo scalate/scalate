@@ -58,4 +58,16 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
     
     requestDispatcher.forward(request, response)
   }
+
+  /**
+   * Creates a URI which if the uri starts with / then the link is prefixed with the web applications context
+   */
+  def uri(uri: String) = {
+    if (uri.startsWith("/")) {
+      request.getContextPath + uri
+    }
+    else {
+      uri
+    }
+  }
 }
