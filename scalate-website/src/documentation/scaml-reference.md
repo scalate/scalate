@@ -132,7 +132,7 @@ For example:
 
 is rendered to:
 {pygmentize:: xml}
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'></html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
 {pygmentize}
 
 Attribute hashes can also be stretched out over multiple lines
@@ -146,7 +146,7 @@ For example:
 
 is rendered to:
 {pygmentize:: xml}
-<script type='text/javascript' src='javascripts/script'/>
+<script type="text/javascript" src="javascripts/script"/>
 {pygmentize}
 
 #### HTML-style Attributes: `()`
@@ -199,17 +199,17 @@ A Scala method call that returns a hash
 can be substituted for the hash contents.
 For example, Scaml::Helpers defines the following method:
 
-    def html_attrs(lang = 'en-US')
-      {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
+    def html_attrs(lang = "en-US")
+      {:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => lang, :lang => lang}
     end
 
 This can then be used in Scaml, like so:
 
-    %html{html_attrs('fr-fr')}
+    %html{html_attrs("fr-fr")}
 
 This is rendered to:
 
-    <html lang='fr-fr' xml:lang='fr-fr' xmlns='http://www.w3.org/1999/xhtml'>
+    <html lang="fr-fr" xml:lang="fr-fr" xmlns="http://www.w3.org/1999/xhtml">
     </html>
 
 You can use as many such attribute methods as you want
@@ -219,11 +219,11 @@ All the hashes will me merged together, from left to right.
 For example, if you defined
 
     def hash1
-      {:bread => 'white', :filling => 'peanut butter and jelly'}
+      {:bread => "white", :filling => "peanut butter and jelly"}
     end
 
     def hash2
-      {:bread => 'whole wheat'}
+      {:bread => "whole wheat"}
     end
 
 then
@@ -232,7 +232,7 @@ then
 
 would render to:
 
-    <sandwich bread='whole wheat' delicious='true' filling='peanut butter and jelly' />
+    <sandwich bread="whole wheat" delicious="true" filling="peanut butter and jelly" />
 
 Note that the Scaml attributes list has the same syntax as a Scala method call.
 This means that any attribute methods must come before the hash literal.
@@ -258,7 +258,7 @@ To do this in Scaml using hash-style attributes, just assign a Scala
 In XHTML, the only valid value for these attributes is the name of the
 attribute.  Thus this will render in XHTML as
 
-    <input selected='selected'>
+    <input selected="selected">
 
 To set these attributes to false, simply assign them to a Scala false value.
 In both XHTML and HTML
@@ -290,16 +290,16 @@ For example:
 {pygmentize:: text}
 %div#things
   %span#rice Chicken Fried
-  %p.beans{ :food => 'true' } The magical fruit
+  %p.beans{ :food => "true" } The magical fruit
   %h1.class.otherclass#id La La La
 {pygmentize}
 
 is rendered to:
 {pygmentize:: xml}
-<div id='things'>
-  <span id='rice'>Chicken Fried</span>
-  <p class='beans' food='true'>The magical fruit</p>
-  <h1 id='id' class='class otherclass'>La La La</h1>
+<div id="things">
+  <span id="rice">Chicken Fried</span>
+  <p class="beans" food="true">The magical fruit</p>
+  <h1 id="id" class="class otherclass">La La La</h1>
 </div>
 {pygmentize}
 
@@ -315,11 +315,11 @@ And,
 
 is rendered to:
 {pygmentize:: xml}
-<div id='content'>
-  <div class='articles'>
-    <div class='article title'>Doogie Howser Comes Out</div>
-    <div class='article date'>2006-11-05</div>
-    <div class='article entry'>
+<div id="content">
+  <div class="articles">
+    <div class="article title">Doogie Howser Comes Out</div>
+    <div class="article date">2006-11-05</div>
+    <div class="article entry">
       Neil Patrick Harris would like to dispel any rumors that he is straight
     </div>
   </div>
@@ -347,9 +347,9 @@ is the same as:
 
 and is rendered to:
 {pygmentize:: xml}
-<div id='collection'>
-  <div class='item'>
-    <div class='description'>What a cool item!</div>
+<div id="collection">
+  <div class="item">
+    <div class="description">What a cool item!</div>
   </div>
 </div>
 {pygmentize}
@@ -361,13 +361,13 @@ causes the tag to be self-closed.
 For example:
 {pygmentize:: text}
 %br/
-%meta{'http-equiv' => 'Content-Type', :content => 'text/html'}/
+%meta{"http-equiv" => "Content-Type", :content => "text/html"}/
 {pygmentize}
 
 is rendered to:
 {pygmentize:: xml}
 <br />
-<meta http-equiv='Content-Type' content='text/html' />
+<meta http-equiv="Content-Type" content="text/html" />
 {pygmentize}
 
 Some tags are automatically closed, as long as they have no content.
@@ -376,13 +376,13 @@ This list can be customized by setting the [`ScamlOptions.autoclose`](#autoclose
 For example:
 {pygmentize:: text}
 %br
-%meta{'http-equiv' => 'Content-Type', :content => 'text/html'}
+%meta{"http-equiv" => "Content-Type", :content => "text/html"}
 {pygmentize}
 
 is also rendered to:
 {pygmentize:: xml}
 <br/>
-<meta http-equiv='Content-Type' content='text/html'/>
+<meta http-equiv="Content-Type" content="text/html"/>
 {pygmentize}
 
 ### Whitespace Removal: `>` and `<`
@@ -467,7 +467,7 @@ For example:
 
 is rendered to:
 {pygmentize:: xml}
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -540,7 +540,7 @@ For example:
 
 is rendered to:
 {pygmentize:: xml}
-<?xml version='1.0' encoding='iso-8859-1' ?>
+<?xml version="1.0" encoding="iso-8859-1" ?>
 {pygmentize}
 
 ## Comments
@@ -593,14 +593,14 @@ by enclosing the condition in square brackets after the `/`.
 For example:
 {pygmentize:: text}
 /[if IE]
-  %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
+  %a{ :href => "http://www.mozilla.com/en-US/firefox/" }
     %h1 Get Firefox
 {pygmentize}
 
 is rendered to:
 {pygmentize:: xml}
 <!--[if IE]>
-  <a href='http://www.mozilla.com/en-US/firefox/'>
+  <a href="http://www.mozilla.com/en-US/firefox/">
     <h1>Get Firefox</h1>
   </a>
 <![endif]-->
@@ -919,7 +919,7 @@ For example:
 
 might compile to
 
-    <script type='text/javascript'>
+    <script type="text/javascript">
       //<![CDATA[
         $(document).ready(function() {
           alert("Hi there!");
@@ -1033,7 +1033,7 @@ The `&` flag enables sanitized interpolations.  For example,
 
 is rendered to
 {pygmentize:: xml}
-<div id='content'>
+<div id="content">
   <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
 </div>
 {pygmentize}
@@ -1048,7 +1048,7 @@ The `!` flag enables non-sanitized interpolations.  For example,
 
 is rendered to
 {pygmentize:: xml}
-<div id='content'>
+<div id="content">
   <p>I <em>really</em> prefer <raspberry/>; jam.</p>
 </div>
 {pygmentize}

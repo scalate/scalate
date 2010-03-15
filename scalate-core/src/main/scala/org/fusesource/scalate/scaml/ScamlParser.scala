@@ -172,7 +172,7 @@ class ScamlParser extends IndentedParser() {
       floating_point_number |
       symbol
     ) ^^ { s=>eval_string_escapes(s) } |
-    ( tag_ident ) ^^ {
+    ( tag_ident | "{" ~> upto("}") <~ "}" ) ^^ {
       x=>EvaluatedText(x, List(), true, Some(true))
     }
 
@@ -182,7 +182,10 @@ class ScamlParser extends IndentedParser() {
       case key~value =>
         (key, parse(literal_text(Some(true)), value))
     } |
-    tag_ident ~ ("=" ~"{" ~> upto("}") <~ "}" ) ^^ {
+    (
+      tag_ident ~ ("=" ~> tag_ident) |
+      tag_ident ~ ("=" ~"{" ~> upto("}") <~ "}" )
+    ) ^^ {
       case key~value =>
         (key, EvaluatedText(value, List(), true, Some(true)))
     } 
