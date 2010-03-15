@@ -51,7 +51,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
       renderLayout(layoutTemplate, body, context)
       None
     } catch {
-      case e: ResourceNotFoundException => println("template " + layoutTemplate + " not found! " + e); Some(true)
+      case e: ResourceNotFoundException => Some(true)
     }
   }
 
