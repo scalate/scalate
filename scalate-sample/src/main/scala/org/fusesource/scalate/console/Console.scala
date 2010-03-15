@@ -1,13 +1,13 @@
 package org.fusesource.scalate.console
 
-import _root_.java.io.File
-import javax.servlet.ServletContext
+import _root_.java.io.{File, FileWriter}
+import _root_.javax.servlet.{ServletConfig, ServletContext}
+import _root_.javax.ws.rs.{POST, QueryParam, Path}
+import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
 import javax.ws.rs.core.Context
 import java.util.{Set => JSet}
-import javax.ws.rs.{QueryParam, Path}
 import scala.collection.mutable.Set
 import scala.collection.JavaConversions._
-
 
 
 /**
@@ -17,7 +17,6 @@ import scala.collection.JavaConversions._
  */
 @Path("/scalate")
 class Console extends DefaultRepresentations {
-
   @QueryParam("r")
   var resource: String = _
 
@@ -25,8 +24,39 @@ class Console extends DefaultRepresentations {
   var _templates: JSet[String] = _
 
   @Context
-  var servletContext: ServletContext = _
+  var _servletContext: ServletContext = _
 
+  def servletContext: ServletContext = {
+    if (_servletContext == null) {
+      throw new NullPointerException("servletContext not injected")
+    }
+    _servletContext
+  }
+
+  @Context
+  var _servletConfig: ServletConfig = _
+
+  def servletConfig: ServletConfig = {
+    if (_servletConfig == null) {
+      throw new NullPointerException("servletConfig not injected")
+    }
+    _servletConfig
+  }
+
+  @POST
+  @Path("createTemplate")
+  def createTemplate(@QueryParam("name") newTemplateName: String, @QueryParam("archetype") archetype: String) = {
+    // lets evaluate the archetype and write the output to the given template name
+    val fileName = servletContext.getRealPath(newTemplateName)
+    if (fileName == null) {
+      throw new IllegalArgumentException("Could not deduce real file name for: " + newTemplateName)
+    }
+    val engine = new ServletTemplateEngine(servletConfig)
+    val text = engine.layout(archetype)
+    val out = new FileWriter(fileName)
+    out.write(text)
+    out.close
+  }
 
   def templates: Set[String] = {
     if (_templates != null) {
@@ -45,10 +75,7 @@ class Console extends DefaultRepresentations {
    */
   def archetypes: Array[Archetype] = {
     val dir = "/WEB-INF/" + viewName
-    if (servletContext == null) {
-      throw new NullPointerException("servletContext not injected")
-    }
-    var files: Array[File] = Nil
+    var files: Array[File] = Array()
     val fileName = servletContext.getRealPath(dir)
     if (fileName != null) {
       val file = new File(fileName)

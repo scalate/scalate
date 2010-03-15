@@ -9,14 +9,15 @@
 
 - val newFile = newTemplateName
 - if (newFile.isDefined)
-  - name = newFile.get
+  - val name = newFile.get
   %h3 Create New Custom Template
   %p Create a new template called #{name} from archetype
-  %li
-    for (a <- archetypes)
+  %ul
+    - for (a <- archetypes)
+      - val u = uri(a.createUri(name))
       %li
-        %form(action = #{}, method=post)
-          %input(type=Submit, value=#{})
+        %form(action = #{u}, method=post)
+          %input(type=Submit, value=#{a.name})
         
     
 - if (templates.size > 0)

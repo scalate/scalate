@@ -9,16 +9,28 @@ import _root_.java.io.File
  */
 case class Archetype(file: File) {
 
+  def uri = file.getName
+
+  def name = file.getName
+
   /**
    * Returns the extension of the template archetype
    */
   def extension = {
-    val i = file.getName.lastIndexOf('.')
+    val i = uri.lastIndexOf('.')
     if (i > 0) {
       uri.substring(i + 1)
     }
     else {
       uri
     }
+  }
+
+
+  /**
+   * Returns the URI to post to that generates the new template for this archetype
+   */
+  def createUri(newTemplatePrefix: String) = {
+    "/scalate/createTemplate?name=" + newTemplatePrefix + "archetype=" + file.getPath 
   }
 }
