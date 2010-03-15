@@ -1,6 +1,11 @@
 package org.fusesource.scalate
 
+import java.util.{Locale, Date}
+import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
+import util.{Lazy}
+import collection.mutable.{ListBuffer, HashMap}
+import xml.NodeBuffer
 
 /**
  * Provides helper methods for rendering templates.
@@ -9,6 +14,17 @@ import introspector.Introspector
  * @see org.fusesource.scalate.servlet.ServletRenderContext
  */
 trait RenderContext {
+  /**
+   * Default string used to output null values
+   */
+  var nullString = ""
+  
+  var currentTemplate: String = _
+
+  var viewPrefixes = List("")
+  var viewPostfixes = engine.codeGenerators.keysIterator.map(x => "." + x).toList
+
+  def engine: TemplateEngine
 
   /**
    * Renders the provided value and inserts it into the final rendered document.
@@ -51,10 +67,226 @@ trait RenderContext {
     }
   }
 
+  /////////////////////////////////////////////////////////////////////
+  //
+  // Rendering API
+  //
+  //////////////////////////////////x///////////////////////////////////
+  def value(value: Any): String = {
+    value match {
+      case u: Unit => ""
+      case null => nullString
+      case v: String => v
+      case v: Date => dateFormat.format(v)
+      case v: Number => numberFormat.format(v)
+      case f: FilterRequest => {
+        var rc = filter(f.filter, f.content)
+        rc
+      }
+      case s: NodeBuffer =>
+        (s.foldLeft(new StringBuilder) {(rc, x) => rc.append(x)}).toString
+
+      // TODO for any should we use the renderView?
+      case v: Any => v.toString
+    }
+  }
+
+  def filter(name: String, content: String): String = {
+    engine.filters.get(name) match {
+      case None => throw new NoSuchFilterException(name)
+      case Some(f) => f.filter(content)
+    }
+  }
+
   /**
-   * Converts a value into a string, using the current locale for converting numbers and dates to a string.
+   * Includes the given template path applying the layout to it before returning
    */
-  def value(value: Any): String
+  def layout(path: String): Unit = include(path, true)
+
+  def include(path: String): Unit = include(path, false)
+
+  def include(path: String, layout: Boolean): Unit = {
+    val uri = resolveUri(path)
+
+    withUri(uri) {
+      val template = engine.load(uri)
+      if (layout) {
+        engine.layout(template, this);
+      }
+      else {
+        template.render(this);
+      }
+    }
+  }
+
+  protected def blankString: String = ""
+
+  /**
+   * Renders a collection of model objects with an optional separator
+   */
+  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: => Any = blankString): Unit = {
+    var first = true
+    for (model <- objects) {
+      if (first) {
+        first = false
+      }
+      else {
+        this << separator
+      }
+      view(model, viewName)
+    }
+  }
+
+  /**
+   * Renders the view of the given model object, looking for the view in
+   * packageName/className.viewName.ext
+   */
+  def view(model: AnyRef, viewName: String = "index"): Unit = {
+    if (model == null) {
+      throw new NullPointerException("No model object given!")
+    }
+
+    val classSearchList = new ListBuffer[Class[_]]()
+
+    def buildClassList(clazz: Class[_]): Unit = {
+      if (clazz != null && clazz != classOf[Object] && !classSearchList.contains(clazz)) {
+        classSearchList.append(clazz);
+        buildClassList(clazz.getSuperclass)
+        for (i <- clazz.getInterfaces) {
+          buildClassList(i)
+        }
+      }
+    }
+
+    def viewForClass(clazz: Class[_]): String = {
+      for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
+        val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
+        val fullPath = if (prefix.isEmpty) {"/" + path} else {"/" + prefix + "/" + path}
+        if (engine.resourceLoader.exists(fullPath)) {
+          return fullPath
+        }
+      }
+      null
+    }
+
+    def searchForView(): String = {
+      for (i <- classSearchList) {
+        val rc = viewForClass(i)
+        if (rc != null) {
+          return rc;
+        }
+      }
+      null
+    }
+
+    buildClassList(model.getClass)
+    val templateUri = searchForView()
+
+    if (templateUri == null) {
+      model.toString
+    } else {
+      using(model) {
+        include(templateUri)
+      }
+    }
+  }
+
+  /**
+   * Allows a symbol to be used with arguments to the  {@link render} or {@link layout} method such as
+   * <code>render("foo.ssp", 'foo -> 123, 'bar -> 456)  {...}
+   */
+  implicit def toStringPair(entry: (Symbol,Any)): (String,Any) = (entry._1.name, entry._2)
+
+  /**
+   * Renders the given template with optional attributes
+   */
+  def render(path: String, attrMap: Map[String, Any]): Unit = {
+    // TODO should we call engine.layout() instead??
+
+    val uri = resolveUri(path)
+    val context = this
+
+    withAttributes(attrMap) {
+      withUri(uri) {
+        engine.load(uri).render(context);
+      }
+    }
+  }
+
+  /**
+   * Renders the given template with optional attributes
+   */
+  def render(path: String, attributeValues: (String, Any)*): Unit = render(path, Map(attributeValues: _*))
+
+  /**
+   * Renders the given template with optional attributes passing the body block as the *body* attribute
+   * so that it can be layered out using the template.
+   */
+  def layout(path: String, attributeValues: (String, Any)*)(body: () => String): Unit = layout(path, Map(attributeValues: _*))(body)
+
+  /**
+   * Renders the given template with optional attributes passing the body block as the *body* attribute
+   * so that it can be layered out using the template.
+   */
+  def layout(path: String, attrMap: Map[String, Any])(body: () => String): Unit = {
+    val bodyText = body()
+    render(path, attrMap + ("body" -> bodyText))
+  }
+
+  /**
+   * Uses the new sets of attributes for the given block, then replace them all
+   * (and remove any newly defined attributes)
+   */
+  def withAttributes(attrMap: Map[String, Any])(block: => Unit): Unit = {
+    val oldValues = new HashMap[String, Any]
+
+    // lets replace attributes, saving the old values
+    for ((key, value) <- attrMap) {
+      val oldValue = attributes.get(key)
+      if (oldValue.isDefined) {
+        oldValues.put(key, oldValue.get)
+      }
+      attributes(key) = value
+    }
+
+    block
+
+    // restore old values
+    for (key <- attrMap.keysIterator) {
+      val oldValue = oldValues.get(key)
+      setAttribute(key, oldValue)
+    }
+  }
+
+
+  protected def withUri(uri: String)(block: => Unit): Unit = {
+    val original = currentTemplate
+    try {
+      currentTemplate = uri
+      block
+    } finally {
+      currentTemplate = original
+    }
+  }
+
+
+  protected def resolveUri(path: String) = if (currentTemplate != null) {
+    engine.resourceLoader.resolve(currentTemplate, path);
+  } else {
+    path
+  }
+
+
+  protected def using[T](model: AnyRef)(op: => T): T = {
+    val original = attributes.get("it");
+    try {
+      attributes("it") = model
+      op
+    } finally {
+      setAttribute("it", original)
+    }
+  }
+
 
   /**
    * Evaluates the specified body capturing any output written to this context
@@ -67,11 +299,7 @@ trait RenderContext {
    */
   def capture(template: Template): String
 
-  /**
-   * Renders and inserts another template
-   */
-  def include(path: String): Unit
-
+  
   implicit def body(body: => Unit): () => String = {
     () => {
       capture(body)
@@ -85,4 +313,67 @@ trait RenderContext {
   //
   /////////////////////////////////////////////////////////////////////
   def introspect(aType: Class[_]) = Introspector(aType)
+
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // resource helpers/accessors
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  private var resourceBeanAttribute = "it"
+
+  /**
+   * Returns the JAXRS resource bean of the given type or a {@link NoValueSetException} exception is thrown
+   */
+  def resource[T]: T = {
+    attribute[T](resourceBeanAttribute)
+  }
+
+  /**
+   * Returns the JAXRS resource bean of the given type or the default value if it is not available
+   */
+  def resourceOrElse[T](defaultValue: T): T = {
+    attributeOrElse(resourceBeanAttribute, defaultValue)
+  }
+
+
+
+
+  /////////////////////////////////////////////////////////////////////
+  //
+  // custom object rendering
+  //
+  /////////////////////////////////////////////////////////////////////
+
+  private var _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
+  private var _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
+  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
+
+  /**
+   * Returns the formatted string using the locale of the users request or the default locale if not available
+   */
+  def format(pattern: String, args: AnyRef*) = {
+    String.format(locale, pattern, args: _*)
+  }
+
+  def percent(number: Number) = percentFormat.format(number)
+
+  // Locale based formatters
+  // shame we can't use 'lazy var' for this cruft...
+  def numberFormat: NumberFormat = _numberFormat()
+
+  def numberFormat_=(value: NumberFormat): Unit = _numberFormat(value)
+
+  def percentFormat: NumberFormat = _percentFormat()
+
+  def percentFormat_=(value: NumberFormat): Unit = _percentFormat(value)
+
+  def dateFormat: DateFormat = _dateFormat()
+
+  def dateFormat_=(value: DateFormat): Unit = _dateFormat(value)
+
+
+  def locale: Locale = Locale.getDefault
 }
