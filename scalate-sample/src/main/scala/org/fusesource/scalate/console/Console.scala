@@ -2,7 +2,7 @@ package org.fusesource.scalate.console
 
 import _root_.java.io.{File, FileWriter}
 import _root_.javax.servlet.{ServletConfig, ServletContext}
-import _root_.javax.ws.rs.{POST, QueryParam, Path}
+import _root_.javax.ws.rs.{GET, POST, QueryParam, Path}
 import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
 import javax.ws.rs.core.Context
 import java.util.{Set => JSet}
@@ -17,6 +17,7 @@ import scala.collection.JavaConversions._
  */
 @Path("/scalate")
 class Console extends DefaultRepresentations {
+
   @QueryParam("r")
   var resource: String = _
 
@@ -74,7 +75,7 @@ class Console extends DefaultRepresentations {
    * Returns all the available archetypes for the current view name
    */
   def archetypes: Array[Archetype] = {
-    val dir = "/WEB-INF/" + viewName
+    val dir = "/WEB-INF/archetypes/" + viewName
     var files: Array[File] = Array()
     val fileName = servletContext.getRealPath(dir)
     if (fileName != null) {
@@ -86,6 +87,9 @@ class Console extends DefaultRepresentations {
     files.map(new Archetype(_))
   }
 
+  @GET
+  @Path("archetypes")
+  def archetypesText = archetypes.mkString(", ")
 
   def newTemplateName: Option[String] = {
     if (resource != null) {
@@ -99,5 +103,15 @@ class Console extends DefaultRepresentations {
       }
     }
     None
+  }
+
+  /**
+   * returns an edit link for the given URI, discovering the right URL
+   * based on your OS and whether you have TextMate installed and whether you
+   * have defined the <code>scalate.editor</code> system property
+   */
+  def editLink(template: String, line: Option[Int] = None, col: Option[Int] = None) = {
+    val file = servletContext.getRealPath(template)
+    EditLink.editLink(file, line, col)("Edit " + template)
   }
 }
