@@ -1,5 +1,4 @@
 -@ import val it: Console
-- import scala.collection.JavaConversions._
 
 %h2 Scalate Console
 
@@ -16,8 +15,8 @@
     - for (a <- archetypes)
       - val u = uri(a.createUri(name))
       %li
-        %form(action = #{u}, method=post)
-          %input(type=Submit, value=#{a.name})
+        %form(action = "#{u}", method=post)
+          %input(type=Submit, value="#{a.name}")
         
     
 - if (templates.size > 0)
@@ -25,7 +24,6 @@
   %ul
     - for (template <- templates)
       %li
-        - val templateFile = servletContext.getRealPath(template)
-        - val url = "txmt://open/?url=file:" + templateFile
-        %a{"href" => url}
-          edit #{template} in TextMate
+        -= editLink(template)
+          edit #{template}
+
