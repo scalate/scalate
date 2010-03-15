@@ -22,6 +22,7 @@ import scala.None
 import org.fusesource.scalate.{TemplateException}
 import collection.mutable.ListBuffer
 import annotation.tailrec
+import java.util.regex.Pattern
 
 /**
  * Base class for parsers which use indentation to define
@@ -136,25 +137,51 @@ class ScamlParser extends IndentedParser() {
 
   val ident                   = """[a-zA-Z_]\w*""".r
   val qualified_type          = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val scala_string_literal    = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"\""
+
+  def eval_string_escapes(value:String) = {
+    value.replaceAll(Pattern.quote("\\b"),"\b").
+          replaceAll(Pattern.quote("\\f"),"\f").
+          replaceAll(Pattern.quote("\\n"),"\n").
+          replaceAll(Pattern.quote("\\r"),"\r").
+          replaceAll(Pattern.quote("\\t"),"\t")
+  }
+
+  val scala_string_literal    = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""" .r<~"\""
   val ruby_string_literal     = "'"~>"""([^'\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*""".r<~"'"
   val string_literal          = scala_string_literal | ruby_string_literal
 
   val whole_number            = """-?\d+""".r
   val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
   val floating_point_number   = """-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r
+  def symbol = ":"~>ident
 
   // Haml hash style attributes are any valid ruby hash expression. The scala version should
   // either accept the same to allow easy migration of existing haml pages, or accept a
   // valid scala Map expression.
   //
-  def hash_style_attributes = prefixed("{" ~ some_space, repsep(hash_attribute_entry,"""[ \t]*,\s*""".r)) <~ some_space ~ "}"
-  def hash_attribute_entry: Parser[(Any, Any)] = (expression <~ some_space) ~ ("=>" ~ some_space ~> expression) ^^ { case key~value => (key, value) }
-  def expression: Parser[Any] = string_literal | whole_number | decimal_number | floating_point_number | symbol | tag_ident | attributes
-  def symbol = ":"~>ident 
+  def hash_style_attributes = prefixed("{", skip_whitespace( repsep(hash_attribute_entry, ","))) <~ some_space ~ "}"
+  def hash_attribute_entry: Parser[(Any, Any)] =
+    expression ~ ("=>" ~> expression) ^^ { case key~value => (key, value) }
 
-  def html_attribute_entry: Parser[(Any, Any)] = (tag_ident <~ some_space) ~ ("=" ~some_space ~> string_literal) ^^ { case key~value => (key, value) }
-  def html_style_attributes = prefixed("("~some_space, repsep(html_attribute_entry,"""\s+""".r)) <~ some_space~")"
+  def expression: Parser[Any] =
+    hash_style_attributes |
+    (
+      string_literal |
+      whole_number |
+      decimal_number |
+      floating_point_number |
+      symbol
+    ) ^^ { s=>eval_string_escapes(s) } |
+    ( tag_ident ) ^^ {
+      x=>EvaluatedText(x, List(), true, Some(true))
+    }
+
+  def html_style_attributes = prefixed("(", skip_whitespace(rep(html_attribute_entry))) <~ some_space~")"
+  def html_attribute_entry: Parser[(Any, Any)] =
+    tag_ident ~ ("=" ~> string_literal) ^^ {
+      case key~value =>
+        (key, parse(literal_text(Some(true)), value))
+    }
 
   def class_entry:Parser[(Any, Any)] = "." ~> word ^^ { case x=> ("class", x) }
   def id_entry:Parser[(Any, Any)] = "#" ~> word ^^ { case x=> ("id", x) }
@@ -172,8 +199,7 @@ class ScamlParser extends IndentedParser() {
 
   def element_text:Parser[Option[TextExpression]] = 
     prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None)) } |
-    space ~ nl ^^ { x=>None } |
-    nl ^^ { x=>None } |
+    some_space ~ nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
   def full_element_statement:Parser[Element] =
@@ -281,11 +307,7 @@ class ScamlParser extends IndentedParser() {
 
 object ScamlParser {
   def main(args: Array[String]) = {
-     val in = """
-:plain
-  line1
-
-  line2
+    val in = """%test(name="foo#{bar}end")
 """
     val p = new ScamlParser
     println(p.phrase(p.parser)(new CharSequenceReader(in)))

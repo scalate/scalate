@@ -28,6 +28,23 @@ import java.io.{StringWriter, PrintWriter, File}
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends FunSuite {
 
+  testRender("Html Attributes can use simple scala expressions",
+"""
+- val count = 5
+%div(count="#{count}")
+""","""
+<div count="5"></div>
+""")
+
+  testRender("Hash Attributes can use simple scala expressions",
+"""
+- val count = 5
+%div{:count=>count}
+""","""
+<div count="5"></div>
+""")
+
+
   /////////////////////////////////////////////////////////////////////
   //
   // Filters
@@ -150,7 +167,7 @@ class ScamlTemplateTest extends FunSuite {
   :&markdown
     I *really* prefer #{flavor} jam.
 ""","""
-<div id='content'>
+<div id="content">
   <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
 </div>
 """)
@@ -162,7 +179,7 @@ class ScamlTemplateTest extends FunSuite {
   :!markdown
     I *really* prefer #{flavor} jam.
 ""","""
-<div id='content'>
+<div id="content">
   <p>I <em>really</em> prefer <raspberry/> jam.</p>
 </div>
 """)
@@ -265,7 +282,7 @@ class ScamlTemplateTest extends FunSuite {
 """
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
 ""","""
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'></html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
 """)
 
   testRender("Attribute hashes can also be stretched out over multiple lines to accommodate many attributes.",
@@ -273,7 +290,7 @@ class ScamlTemplateTest extends FunSuite {
 %script{:type => "text/javascript",
             :src  => "javascripts/script"}
 ""","""
-<script type='text/javascript' src='javascripts/script'/>
+<script type="text/javascript" src="javascripts/script"/>
 """)
 
 
@@ -281,7 +298,7 @@ class ScamlTemplateTest extends FunSuite {
 """
 %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 ""","""
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'></html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
 """)
 
 /*
@@ -297,7 +314,7 @@ class ScamlTemplateTest extends FunSuite {
 """
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 ""","""
-<a title='Hello' href='http://scalate.fusesource.org'>Stuff</a>
+<a title="Hello" href="http://scalate.fusesource.org">Stuff</a>
 """)
 
   testRender("HTML-style attributes can be stretched across multiple lines just like hash-style attributes",
@@ -305,7 +322,7 @@ class ScamlTemplateTest extends FunSuite {
 %script(type="text/javascript"
      src="javascripts/script")
 ""","""
-<script type='text/javascript' src='javascripts/script'/>
+<script type="text/javascript" src="javascripts/script"/>
 """)
 
 
@@ -319,13 +336,13 @@ class ScamlTemplateTest extends FunSuite {
 """
 %div#things
   %span#rice Chicken Fried
-  %p.beans{ :food => 'true' } The magical fruit
+  %p.beans{ :food => "true" } The magical fruit
   %h1.class.otherclass#id La La La
 ""","""
-<div id='things'>
-  <span id='rice'>Chicken Fried</span>
-  <p class='beans' food='true'>The magical fruit</p>
-  <h1 id='id' class='class otherclass'>La La La</h1>
+<div id="things">
+  <span id="rice">Chicken Fried</span>
+  <p class="beans" food="true">The magical fruit</p>
+  <h1 id="id" class="class otherclass">La La La</h1>
 </div>
 """)
 
@@ -338,11 +355,11 @@ class ScamlTemplateTest extends FunSuite {
     .article.entry
       Neil Patrick Harris would like to dispel any rumors that he is straight
 ""","""
-<div id='content'>
-  <div class='articles'>
-    <div class='article title'>Doogie Howser Comes Out</div>
-    <div class='article date'>2006-11-05</div>
-    <div class='article entry'>
+<div id="content">
+  <div class="articles">
+    <div class="article title">Doogie Howser Comes Out</div>
+    <div class="article date">2006-11-05</div>
+    <div class="article entry">
       Neil Patrick Harris would like to dispel any rumors that he is straight
     </div>
   </div>
@@ -356,21 +373,21 @@ class ScamlTemplateTest extends FunSuite {
 """
 %html#i1#i2
 ""","""
-<html id='i2'></html>
+<html id="i2"></html>
 """)
 
   testRender("'%tag.c1' renders a tag with a class",
 """
 %html.c1
 ""","""
-<html class='c1'></html>
+<html class="c1"></html>
 """)
 
   testRender("'%tag.c1.c2' renders a tag with multiple classes",
 """
 %html.c1.c2
 ""","""
-<html class='c1 c2'></html>
+<html class="c1 c2"></html>
 """)
 
 
@@ -386,9 +403,9 @@ class ScamlTemplateTest extends FunSuite {
   .item
     .description What a cool item!
 ""","""
-<div id='collection'>
-  <div class='item'>
-    <div class='description'>What a cool item!</div>
+<div id="collection">
+  <div class="item">
+    <div class="description">What a cool item!</div>
   </div>
 </div>
 """)
@@ -404,19 +421,19 @@ class ScamlTemplateTest extends FunSuite {
   testRender("The forward slash character, when placed at the end of a tag definition, causes the tag to be self-closed.",
 """
 %br/
-%meta{'http-equiv' => 'Content-Type', :content => 'text/html'}/
+%meta{"http-equiv" => "Content-Type", :content => "text/html"}/
 ""","""
 <br/>
-<meta http-equiv='Content-Type' content='text/html'/>
+<meta http-equiv="Content-Type" content="text/html"/>
 """)
 
   testRender("`meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.",
 """
 %br/
-%meta{'http-equiv' => 'Content-Type', :content => 'text/html'}/
+%meta{"http-equiv" => "Content-Type", :content => "text/html"}/
 ""","""
 <br/>
-<meta http-equiv='Content-Type' content='text/html'/>
+<meta http-equiv="Content-Type" content="text/html"/>
 """)
   
 
@@ -497,7 +514,7 @@ bar</pre><img/>
     %h1 I am the international space station
     %p Sign my guestbook
 ""","""
-<?xml version='1.0' encoding='utf-8' ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -547,11 +564,11 @@ bar</pre><img/>
   testRender("You can also use Internet Explorer conditional comments by enclosing the condition in square brackets",
 """
 /[if IE]
-  %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
+  %a{ :href => "http://www.mozilla.com/en-US/firefox/" }
     %h1 Get Firefox
 ""","""
 <!--[if IE]>
-  <a href='http://www.mozilla.com/en-US/firefox/'>
+  <a href="http://www.mozilla.com/en-US/firefox/">
     <h1>Get Firefox</h1>
   </a>
 <![endif]-->
