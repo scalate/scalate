@@ -23,6 +23,7 @@ import java.net.URI
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
 import scala.util.parsing.input.CharSequenceReader
+import util.RenderHelper
 
 /**
  * Generates a scala class given a HAML document
@@ -137,9 +138,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       write_indent
       statement.line match {
         case List("XML")=>
-          write_text("<?xml version='1.0' encoding='utf-8' ?>")
+          write_text("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
         case List("XML", encoding)=>
-          write_text("<?xml version='1.0' encoding='"+encoding+"' ?>")
+          write_text("<?xml version=\"1.0\" encoding=\""+encoding+"\" ?>")
         case _=>
           ScamlOptions.format match {
             case ScamlOptions.Format.xhtml=>
@@ -363,15 +364,26 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Element):Unit = {
       var tag = statement.tag.getOrElse("div");
-      var prefix = "<"+tag+attributes(statement.attributes)+">"
-      var suffix = "</"+tag+">"
-
-      if( statement.close || isAutoClosed(statement) ) {
-        if( statement.text.isDefined || !statement.body.isEmpty ) {
-          throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.");
+      if( statement.text.isDefined && !statement.body.isEmpty ) {
+        throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.")
+      }
+      
+      def write_start_tag = {
+        write_text("<"+tag)
+        write_attributes(statement.attributes)
+        if( statement.close || isAutoClosed(statement) ) {
+          write_text("/>")
+        } else {
+          write_text(">")
         }
-        prefix = "<"+tag+attributes(statement.attributes)+"/>"
-        suffix = ""
+      }
+
+      def write_end_tag = {
+        if( statement.close || isAutoClosed(statement) ) {
+          write_text("")
+        } else {
+          write_text("</"+tag+">")
+        }
       }
 
       statement.trim match {
@@ -398,16 +410,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case Element(_,_,text,List(),_,_) => {
           outer_trim
           write_indent
-          write_text(prefix)
+          write_start_tag
           generate(text.getOrElse(LiteralText(List(""), Some(false))))
-          write_text(suffix)
+          write_end_tag
           write_nl
           outer_trim
         }
         case Element(_,_,None,list,_,_) => {
           outer_trim
           write_indent
-          write_text(prefix)
+          write_start_tag
           write_nl
 
           if( !inner_trim ) {
@@ -419,7 +431,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           }
 
           write_indent
-          write_text(suffix)
+          write_end_tag
           write_nl
           outer_trim
         }
@@ -427,7 +439,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
-    def attributes(entries: List[(Any,Any)]) = {
+    def write_attributes(entries: List[(Any,Any)]) = {
       val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
       val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
       var map = LinkedHashMap[Any,Any]( )
@@ -443,12 +455,26 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       entries_rest.foreach{ me => map += me._1 -> me._2 }
 
-      map.foldLeft(""){ case (r,e)=>r+" "+eval(e._1)+"='"+eval(e._2)+"'"}
+      if( !map.isEmpty ) {
+        map.foreach {
+          case (name,value) =>
+          write_text(" ")
+          attribute_eval(name)
+          write_text("=\"")
+          attribute_eval(value)
+          write_text("\"")
+        }
+      }
     }
 
-    def eval(expression:Any) = {
+    def attribute_eval(expression:Any) = {
       expression match {
         case s:String=>s
+          write_text(RenderHelper.sanitize(s))
+        case s:LiteralText=>
+          generate(s)
+        case s:EvaluatedText=>
+          generate(s)
         case _=> throw new UnsupportedOperationException("don't know how to eval: "+expression);
       }
     }
