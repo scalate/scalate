@@ -35,7 +35,19 @@
 
   <div id='footer'>
   	<div class='wrapper'>
-      <a href='${uri("/scalate/menu?uri=" + request.getRequestURI + "&q=" + request.getQueryString)}'>Scalate console</a>
+      <%
+      val query = request.getQueryString
+      val queryArg = if (query != null) {"&q=" + query} else {""}
+      val resourceArg = attributes.get("it") match {
+          case Some(it: AnyRef) => "&r=" + it.getClass.getName
+          case _ => ""
+      }
+      val templateArg = attributes.get("scalateTemplates") match {
+          case Some(list: List[String]) => "&t=" + list.mkString("&t=")
+          case _ => ""
+      }
+      %>
+      <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}'>Scalate console</a>
   	</div>
   </div>
 

@@ -1,0 +1,31 @@
+-@ import val it: Console
+- import scala.collection.JavaConversions._
+
+%h2 Scalate Console
+
+%ul
+  %li templates: #{templates}
+  %li resource: #{resource}
+
+- val newFile = newTemplateName
+- if (newFile.isDefined)
+  - val name = newFile.get
+  %h3 Create New Custom Template
+  %p Create a new template called #{name} from archetype
+  %ul
+    - for (a <- archetypes)
+      - val u = uri(a.createUri(name))
+      %li
+        %form(action = #{u}, method=post)
+          %input(type=Submit, value=#{a.name})
+        
+    
+- if (templates.size > 0)
+  %h3 Edit Templates
+  %ul
+    - for (template <- templates)
+      %li
+        - val templateFile = servletContext.getRealPath(template)
+        - val url = "txmt://open/?url=file:" + templateFile
+        %a{"href" => url}
+          edit #{template} in TextMate
