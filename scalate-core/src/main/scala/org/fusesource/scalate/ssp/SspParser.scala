@@ -67,33 +67,24 @@ class SspParser extends RegexParsers {
     prefixed(prefix, upto(postfix) <~ postfix)
   }
 
+  val litteral_part:Parser[String] =
+    upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" ) ~
+      opt(
+        """\<%""" ~ opt(litteral_part) ^^ { case x~y=> "<%"+y.getOrElse("") }  |
+        """\${""" ~ opt(litteral_part) ^^ { case x~y=> "${"+y.getOrElse("") }  |
+        """\\""" ^^ { s=>"""\""" }
+      ) ^^ {
+        case x~Some(y) => x+y
+        case x~None => x
+      }
+
 
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
   val expression_fragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
   val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ "%>")
   val scriptlet_fragment = wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
-
-  //val text_fragment               = upto("<%" | "${")       ^^ { TextFragment(_) }
-  val text_fragment: Parser[TextFragment] = {
-
-    def textOf(optionalTextFragment: Option[TextFragment]) = optionalTextFragment match {
-      case Some(textFragment) => textFragment.text
-      case _ => ""
-    }
-
-    upto("<%" | """\<%""" | """${""" | """\${""") ~
-            opt(
-              """\${""" ~ opt(text_fragment) ^^ {case x ~ y => "${" + textOf(y)} |
-                      """\<%""" ~ opt(text_fragment) ^^ {case x ~ y => "<%" + textOf(y)}
-              ) ^^ {
-      case x ~ Some(y) => TextFragment(x + y)
-      case x ~ None => TextFragment(x)
-    }
-  }
-
-  val any_space_then_nl = """[ \t]*\r?\n""".r
-
+  val text_fragment = litteral_part       ^^ { TextFragment(_) }
 
   val page_fragment: Parser[PageFragment] = comment_fragment | dollar_expression_fragment |
           attribute_fragement | expression_fragment | scriptlet_fragment |
