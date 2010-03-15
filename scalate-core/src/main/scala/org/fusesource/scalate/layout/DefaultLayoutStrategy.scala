@@ -1,6 +1,6 @@
 package org.fusesource.scalate.layout
 
-import org.fusesource.scalate.{ TemplateException, RenderContext, Template, TemplateEngine }
+import org.fusesource.scalate.{ResourceNotFoundException, RenderContext, Template, TemplateEngine }
 import org.fusesource.scalate.util.Logging
 
 /**
@@ -51,7 +51,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
       renderLayout(layoutTemplate, body, context)
       None
     } catch {
-      case e: TemplateException => Some(true)
+      case e: ResourceNotFoundException => println("template " + layoutTemplate + " not found! " + e); Some(true)
     }
   }
 
