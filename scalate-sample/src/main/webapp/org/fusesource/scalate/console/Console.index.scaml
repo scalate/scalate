@@ -15,8 +15,8 @@
     - for (a <- archetypes)
       - val u = uri(a.createUri(name))
       %li
-        %form(action = "#{u}", method=post)
-          %input(type=Submit, value="#{a.name}")
+        %form(action = "#{u}" method=post)
+          %input(type=Submit value="#{a.name}")
         
     
 - if (templates.size > 0)

@@ -22,6 +22,10 @@ import java.io._
 object IOUtil
 {
 
+  def loadTextFile( path: File, encoding:String="UTF-8" ) = {
+    new String(loadBinaryFile(path), encoding)
+  }
+
   def loadBinaryFile( path: File ): Array[Byte] = {
     val baos = new ByteArrayOutputStream
     val in = new FileInputStream( path )

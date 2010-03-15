@@ -23,6 +23,8 @@ import org.fusesource.scalate.{TemplateException}
 import collection.mutable.ListBuffer
 import annotation.tailrec
 import java.util.regex.Pattern
+import java.io.File
+import org.fusesource.scalate.util.IOUtil
 
 /**
  * Base class for parsers which use indentation to define
@@ -268,7 +270,7 @@ class ScamlParser extends IndentedParser() {
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 
 
-  def executed_statement = prefixed("-", opt(text) <~ nl) ~ rep(indent(statement)) ^^ {
+  def executed_statement = prefixed("-" ~ some_space, opt(text) <~ nl) ~ rep(indent(statement)) ^^ {
     case code~body=> Executed(code,body)
   }
 
@@ -315,8 +317,7 @@ class ScamlParser extends IndentedParser() {
 
 object ScamlParser {
   def main(args: Array[String]) = {
-    val in = """%test(name="foo#{bar}end")
-"""
+    val in = IOUtil.loadTextFile(new File(args(0)))
     val p = new ScamlParser
     println(p.phrase(p.parser)(new CharSequenceReader(in)))
   }

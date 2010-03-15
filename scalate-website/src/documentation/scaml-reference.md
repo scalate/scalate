@@ -112,9 +112,6 @@ Scaml will automatically generate opening and closing tags for any element.
 
 ### Attributes: `{` `}` or `(` `)` {#attributes}
 
-TODO: only simple expressions are supported in the following section.. need to expand to
-support complex Scala expressions too.
-
 Brackets represent a Scala Map
 that is used for specifying the attributes of an element.
 Ruby hash syntax is used instead of Scala syntax to 
@@ -149,6 +146,18 @@ is rendered to:
 <script type="text/javascript" src="javascripts/script"/>
 {pygmentize}
 
+Complex expression are supported if you wrap them between the `{` 
+and `}` characters.
+For example:
+{pygmentize:: text}
+%li{:counter={3+4}} Stuff
+{pygmentize}
+
+Would render as:
+{pygmentize:: xml}
+<li counter="7">Stuff</li>
+{pygmentize}
+
 #### HTML-style Attributes: `()`
 
 Scaml also supports a terser, less Scala-specific attribute syntax
@@ -158,7 +167,6 @@ These are used with parentheses instead of brackets, like so:
 %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 {pygmentize}
 
-<!-->
 Scala variables can be used by omitting the quotes.
 For example:
 
@@ -168,22 +176,29 @@ This is the same as:
 
     %a{:title =>title, :href => href} Stuff
 
-Because there are no commas separating attributes, though,
-more complicated expressions aren't allowed.
-For those you'll have to use the `{}` syntax.
--->
+Complex expression are supported if you wrap them between the `{` 
+and `}` characters.
+For example:
+{pygmentize:: text}
+%li(counter={3+4}) Stuff
+{pygmentize}
+
+Would render as:
+{pygmentize:: xml}
+<li counter="7">Stuff</li>
+{pygmentize}
 
 You can use both syntaxes together:
 {pygmentize:: xml}
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
 
-<!-- TODO:
 You can also use `#{}` interpolation to insert complicated expressions
 in a HTML-style attribute:
 
-    %span(class="widget_#{widget.number}")
--->
+{pygmentize:: xml}
+%span(class="widget_#{widget.number}")
+{pygmentize}
 
 HTML-style attributes can be stretched across multiple lines
 just like hash-style attributes:
