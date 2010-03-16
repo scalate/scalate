@@ -23,7 +23,6 @@
   %ul
     - for (template <- templates)
       %li
-        = editLink(template)
-          - capture
-            edit #{template}
+        - editLink(template)
+          edit #{template}
 

@@ -59,7 +59,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
-      body
+      val u: Unit = body
       out.close()
       buffer.toString
     } finally {
@@ -75,6 +75,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
+      println("rendering template " + template + " with attributes: " + attributes)
       template.render(this)
       out.close()
       buffer.toString

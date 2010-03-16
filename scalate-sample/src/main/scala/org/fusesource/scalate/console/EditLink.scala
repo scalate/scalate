@@ -10,7 +10,9 @@ import scala.xml.NodeSeq
 object EditLink {
   var idePluginPort = 51235
 
-  def editLink(file: String, line: Option[Int] = None, col: Option[Int] = None)(body: => String): NodeSeq = {
+  def editLink(file: String)(body: => String): NodeSeq = editLink(file, None, None)(body)
+
+  def editLink(file: String, line: Option[Int], col: Option[Int])(body: => String): NodeSeq = {
     System.getProperty("scalate.editor", "") match {
       case "textmate" => editLinkTextMate(file, line, col)(body)
       case "ide" => editLinkIdePlugin(file, line, col)(body)

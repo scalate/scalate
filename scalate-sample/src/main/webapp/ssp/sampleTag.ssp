@@ -2,13 +2,17 @@
 
 <p>
   This page demonstrates a kinda pseudo custom tag in SSP.
-  Notice how the method we invoke, <b>MyTags.someLayout</b> just takes a function
-  which when invoked returns a String. So you can write a simple function to process the body of a 'tag'
-  calling the body as many times as you like.
+  Notice how the method we invoke, <b>MyTags.someLayoutUsesRenderContext</b> just takes a function
+  which when invoked returns Unit.
+  To be able to capture the output of the body, the implementation uses the RenderContext() method to return
+  the current context which has a capture(body) method.
 </p>
 
-<% import org.fusesource.scalate.sample.MyTags._ %>
+<%
+  import org.fusesource.scalate.sample.MyTags._
+  val name = "James"         
+%>
 
-<%= someLayout { %>
-this is some body!
+<%= someLayoutUsesRenderContext { %>
+hey ${name} this is some body text!
 <% } %>

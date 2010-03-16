@@ -203,6 +203,7 @@ class TemplateEngine {
    * Renders the given template using the current layoutStrategy
    */
   def layout(template: Template, context: RenderContext): Unit = {
+    RenderContext.update(context)
     layoutStrategy.layout(template, context)
   }
 

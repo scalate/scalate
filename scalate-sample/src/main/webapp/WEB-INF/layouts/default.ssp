@@ -48,6 +48,7 @@
       }
       %>
       <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}' title="Open the Scalate Console" target="_blank">Scalate console</a>
+      attributes: ${attributes}
       <%--
       <ul>
         <% for (k <- attributes.keySet) { %>

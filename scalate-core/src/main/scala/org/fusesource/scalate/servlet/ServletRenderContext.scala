@@ -17,6 +17,8 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
   viewPrefixes = List("WEB-INF", "")
 
   override val attributes = new AttributeMap[String, Any] {
+    request.setAttribute("context", ServletRenderContext.this)
+
     def get(key: String): Option[Any] = {
       val value = apply(key)
       if (value == null) None else Some(value)
@@ -40,13 +42,13 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
 
     def keySet = {
       def answer = new HashSet[String]()
-      for (a <- request.getAttributeNames) {
+      for (a <- asIterator(request.getAttributeNames)) {
         answer.add(a.toString)
       }
       answer
     }
 
-    override def toString = keySet.map(k => k + "=" + apply(k)).mkString(", ", "{", "}")
+    override def toString = keySet.map(k => k + " -> " + apply(k)).mkString("{", ", ", "}")
   }
 
   override def locale: Locale = {
