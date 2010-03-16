@@ -13,10 +13,9 @@
   %p Create a new template called #{name} from archetype
   %ul
     - for (a <- archetypes)
-      - val u = uri(a.createUri(name))
       %li
-        %form(action="#{u}" method="post")
-          %input(type="submit" value="#{a.name}")
+        %form(action={uri(a.createUri(name))} method="post")
+          %input(type="submit" value={a.name})
         
     
 - if (templates.size > 0)

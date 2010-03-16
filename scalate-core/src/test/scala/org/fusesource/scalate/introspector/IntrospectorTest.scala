@@ -22,8 +22,6 @@ class MyBean {
   var _age: Int = _
   def getAge() = _age
   def setAge(age: Int): Unit = _age = age
-
-
 }
 
 @RunWith(classOf[JUnitRunner])
@@ -62,7 +60,7 @@ class IntrospectorTest extends FunSuite with Logging {
 
   def assertProperties(properties: Seq[Property], expectedSize: Int) = {
     for (property <- properties) {
-      println("Property: " + property)
+      fine("Property: " + property)
     }
     expect(expectedSize) { properties.size }
   }

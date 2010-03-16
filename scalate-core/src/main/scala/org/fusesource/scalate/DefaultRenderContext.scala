@@ -28,13 +28,12 @@ import collection.mutable.Stack
  * attributes and parameters.
  */
 class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext {
-  
-  val attributes: AttributeMap[String,Any] = new HashMapAttributes[String, Any] {
-    override def apply(key: String) =
-      if (key == "context") DefaultRenderContext.this else super.apply(key) 
+
+  val attributes: AttributeMap[String,Any] = new HashMapAttributes[String, Any]() {
+    update("context", DefaultRenderContext.this)
   }
 
-
+  
   /////////////////////////////////////////////////////////////////////
   //
   // RenderContext implementation

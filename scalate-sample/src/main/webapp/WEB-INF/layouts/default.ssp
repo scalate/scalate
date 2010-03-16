@@ -47,7 +47,14 @@
           case _ => ""
       }
       %>
-      <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}'>Scalate console</a>
+      <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}' title="Open the Scalate Console" target="_blank">Scalate console</a>
+      <%--
+      <ul>
+        <% for (k <- attributes.keySet) { %>
+          <li>${k} = ${attributes(k)}</li>
+        <% } %>
+      </ul>
+      --%>
   	</div>
   </div>
 

@@ -57,7 +57,7 @@ Hello ${name}!
     val lines = output.split('\n')
 
     for (line <- lines) {
-      println("line: " + line)
+      fine("line: " + line)
     }
 
     expect("<%@ val it : java.lang.String %>") {lines(0)}
