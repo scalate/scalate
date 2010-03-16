@@ -56,7 +56,10 @@
           <th>Attribute</th>
           <th>Value</th>          
         </tr>
-        <% for (k <- attributes.keySet) { %>
+        <%
+          import scala.collection.immutable.TreeSet
+          for (k <- attributeKeys) {
+        %>
           <tr>
             <td>${k}</td>
             <td>${attributes(k)}</td>

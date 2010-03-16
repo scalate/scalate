@@ -52,6 +52,12 @@ trait RenderContext {
    */
   def attributes : AttributeMap[String,Any]
 
+
+  /**
+   * Sorted list of attribute keys
+   */
+  def attributeKeys = attributes.keySet.toList.sort(_<_)
+  
   /**
    * Returns the attribute of the given type or a {@link NoValueSetException} exception is thrown
    */
