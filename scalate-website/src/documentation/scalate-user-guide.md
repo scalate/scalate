@@ -77,6 +77,81 @@ Is rendered as:
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
+## Calling Scala functions
+
+Its very simple to invoke any scala function inside Scalate. By default if the function you call returns NodeSeq then the output will already be properly XML encoded; so things output nicely without any possible cross scripting hacks etc.
+
+For example the following function creates a hypertext link using Scala's XML support
+
+{pygmentize:: scala}
+object Cheese {
+  def foo(productId: Int) = 
+    <a href={"/products/" + productId} title="Product link">My Product</a>
+}
+{pygmentize}
+
+This function can be invoked in your [Ssp](ssp-reference.html) code as
+
+{pygmentize:: jsp}
+<% import Cheese._  %>
+${foo(123)}
+{pygmentize}
+
+If your template is in the same package as the <b>Cheese</b> class then the import is not required.
+
+The [Scaml](scaml-reference.html) version is
+
+{pygmentize:: text}
+- import Cheese._
+= foo(123)    
+{pygmentize}
+
+
+### Passing a template block to a Scala function
+
+To use the JSP concept of custom tags, you might want to pass a block of template to a function for further processing or transformation.
+
+This can be done by just adding a parameter list of the form <b>(body: => Unit)</b> to your method. For example
+
+{pygmentize:: scala}
+import org.fusesource.scalate.RenderContext.capture
+
+object Cheese {
+  def foo(productId: Int)(body: => Unit) = 
+    <a href={"/products/" + productId} title="Product link">capture(body)</a>
+}
+{pygmentize}
+
+See how the body is captured using the <b>capture(body)</b> function. Now the text of the hypertext link can be specified as a block of template in [Ssp](ssp-reference.html)
+
+{pygmentize:: jsp}
+<%@ val id: Int = 123 %>
+<% import Cheese._  %>
+
+<%= foo(id) { %>
+  product ${id}
+<% } %>
+{pygmentize}
+
+This should generate something like
+
+{pygmentize:: xml}
+<a href="/products/123" title="Product link">product 123</a>
+{pygmentize}
+
+
+The [Scaml](scaml-reference.html) version is
+
+{pygmentize:: text}
+-@ val id: Int = 123
+- import Cheese._
+
+= foo(id)  
+  product #{id}  
+{pygmentize}
+
+Notice the [Scaml](scaml-reference.html) version is simpler, not requiring the open and close { } tokens as it uses indentation.
+
 
 ## Views
 
@@ -259,7 +334,7 @@ For example you may want to create a layout as follows in file _foo.ssp_
 </table>
 {pygmentize}
 
-Then we can invoke this template passing in the body as follows
+Then we can invoke this template passing in the body as follows in [Ssp](ssp-reference.html)
 
 {pygmentize:: jsp}
 <% render("foo.ssp", "body" -> "Foo") %>
@@ -297,6 +372,18 @@ ${foo}
 {pygmentize}
 
 We capture the block which generates a greeting, assign it to the _foo_ variable which we can then render or pass into methods etc.
+
+The [Scaml](scaml-reference.html) version of this is a bit more concise
+
+{pygmentize:: text}
+- var foo = capture
+  hello there #{user.name} how are you?
+    
+...
+= foo
+...
+= foo
+{pygmentize}
 
 
 ## Running the Samples

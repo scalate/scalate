@@ -41,8 +41,9 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/renderCollection2.ssp", "Strachan", "Person 2", "Chirino")
   testPageContains("ssp/renderCollection3.ssp", "Strachan", "Dude 2", "Chirino")
   testPageContains("ssp/renderTemplate.ssp", "James", "London", "Hiram", "Tampa", "Matt", "No Location", "Paul", "USA")
-  testPageContains("ssp/sampleTag.ssp", "Wrapped body", "this is some body!", "End of wrapped body")
-  testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "this is the body!", "End of wrapped body")
+  testPageContains("ssp/sampleTag.ssp",  "Wrapped body", "hey James this is some body text!", "End of wrapped body")
+  testPageContains("ssp/sampleTag2.ssp", "Wrapped body", "hey James this is some body text!", "End of wrapped body")
+  testPageContains("ssp/sampleTag3.ssp", "Wrapped body", "hey Hiram this is some body text!", "End of wrapped body")
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
 
@@ -59,7 +60,8 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("scaml/renderObject.scaml", "Strachan")
   testPageContains("scaml/renderCaseClass.scaml", "Strachan", "<hr/>", "Chirino")
   testPageContains("scaml/renderCollection.scaml", "Strachan", "<hr/>", "Chirino")
-  testPageContains("scaml/sampleTag.scaml", "Wrapped body", "this is some body!", "End of wrapped body")
-  testPageContains("scaml/sampleTag2.scaml", "Wrapped body", "this is the body!", "End of wrapped body")
+  testPageContains("scaml/sampleTag.scaml",  "Wrapped body", "hey Hiram this is some body text!", "End of wrapped body")
+  testPageContains("scaml/sampleTag2.scaml", "Wrapped body", "hey Hiram this is some body text!", "End of wrapped body")
+  testPageContains("scaml/sampleTag3.scaml", "Wrapped body", "hey James this is some body text!", "End of wrapped body")
 
 }

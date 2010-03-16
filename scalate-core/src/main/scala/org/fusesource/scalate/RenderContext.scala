@@ -7,6 +7,16 @@ import util.{Lazy}
 import collection.mutable.{ListBuffer, HashMap}
 import xml.NodeBuffer
 
+object RenderContext {
+  val threadLocal = new ThreadLocal[RenderContext]
+
+  def capture(body: => Unit) = apply().capture(body)
+
+  def apply(): RenderContext = threadLocal.get
+
+  def update(that: RenderContext) = threadLocal.set(that)
+}
+
 /**
  * Provides helper methods for rendering templates.
  * 
@@ -222,14 +232,14 @@ trait RenderContext {
    * Renders the given template with optional attributes passing the body block as the *body* attribute
    * so that it can be layered out using the template.
    */
-  def layout(path: String, attributeValues: (String, Any)*)(body: () => String): Unit = layout(path, Map(attributeValues: _*))(body)
+  def layout(path: String, attributeValues: (String, Any)*)(body: => Unit): Unit = layout(path, Map(attributeValues: _*))(body)
 
   /**
    * Renders the given template with optional attributes passing the body block as the *body* attribute
    * so that it can be layered out using the template.
    */
-  def layout(path: String, attrMap: Map[String, Any])(body: () => String): Unit = {
-    val bodyText = body()
+  def layout(path: String, attrMap: Map[String, Any])(body: => Unit): Unit = {
+    val bodyText = capture(body)
     render(path, attrMap + ("body" -> bodyText))
   }
 
@@ -305,11 +315,27 @@ trait RenderContext {
   def capture(template: Template): String
 
   
-  implicit def body(body: => Unit): () => String = {
+/*
+  Note due to the implicit conversions being applied to => Unit onkly taking the last
+  statement of the block as per this discussion:
+  http://old.nabble.com/-scala--is-this-a-compiler-bug-or-just-a-surprising-language-quirk-%28or-newbie--lack-of-understanding-%3A%29-ts27917276.html
+
+  then we can no longer support this approach which is a shame.
+
+  So tags must take => Unit as a parameter - then either take Rendercontext as the first parameter block
+  or use the RenderContext() to get the current active context for capturing.
+
+  implicit def bodyToStringFunction(body: => Unit): () => String = {
     () => {
-      capture(body)
+      println("capturing the body....")
+      val answer = capture(body)
+      println("captured body: " + answer)
+      answer
     }
   }
+
+  implicit def toBody(body: => Unit): Body = new Body(this, body)
+*/
 
 
   /////////////////////////////////////////////////////////////////////

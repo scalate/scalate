@@ -1,0 +1,19 @@
+<h1>Sample Tag</h1>
+
+<p>
+  This page demonstrates a kinda pseudo custom tag in SSP.
+  Notice how the method we invoke, <b>MyTags.someLayoutWithRenderContextVariable</b>
+  which takes a function that is passed a Unit returning block.
+
+  Inside this function we are using the <b>RenderContext()</b> function to get access to
+  the <b>capture</b> method to get the text body of the block
+</p>
+
+<%
+  import org.fusesource.scalate.sample.MyTags._
+  val name = "Hiram"         
+%>
+
+<%= someLayoutWithRenderContextVariable { %>
+hey ${name} this is some body text!
+<% } %>

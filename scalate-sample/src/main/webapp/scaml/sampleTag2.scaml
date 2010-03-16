@@ -1,10 +1,11 @@
 %h1 Sample Tag
 %p
   This page demonstrates a kinda pseudo custom tag in SSP
-  using an explicit PageContext parameter and a function which can be invoked
-  by the someLayoutUsingTemplateContext() to process the body (writing the output
-  as a side effect).
+  using an explicit RenderContext parameter and a function which can be invoked
+  by the <b>someLayoutWithRenderContextParam()</b> to process the body (writing the output as a side effect).
 
 - import org.fusesource.scalate.sample.MyTags._
-= someLayoutUsingTemplateContext(context)
-  this is the body!
+- val name = "Hiram"
+
+= someLayoutWithRenderContextParam(context)
+  hey #{name} this is some body text!

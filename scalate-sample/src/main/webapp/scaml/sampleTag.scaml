@@ -1,12 +1,12 @@
 %h1 Sample Tag
 %p
   This page demonstrates a kinda pseudo custom tag in SSP.
-  Notice how the method we invoke,
-  %b MyTags.someLayout
-  just takes a function
-  which when invoked returns a String. So you can write a simple function to process the body of a 'tag'
-  calling the body as many times as you like.
+  Notice how the method we invoke, <b>MyTags.someLayoutWithImportedCapture</b> just takes a function
+  which when invoked returns Unit.
+  To be able to capture the output of the body, the implementation uses the imported <b>RenderContext.capture</b> method 
 
 - import org.fusesource.scalate.sample.MyTags._
-= someLayout
-  this is some body!
+- val name = "Hiram"
+
+= someLayoutWithImportedCapture
+  hey #{name} this is some body text!

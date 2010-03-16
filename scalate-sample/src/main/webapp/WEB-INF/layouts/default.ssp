@@ -35,6 +35,8 @@
 
   <div id='footer'>
   	<div class='wrapper'>
+      <hr/>
+      
       <%
       val query = request.getQueryString
       val queryArg = if (query != null) {"&q=" + query} else {""}
@@ -47,14 +49,25 @@
           case _ => ""
       }
       %>
-      <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}' title="Open the Scalate Console" target="_blank">Scalate console</a>
-      <%--
-      <ul>
+      <a href='${uri("/scalate?uri=" + request.getRequestURI + queryArg + resourceArg + templateArg)}' title="Open the Scalate Console" target="_blank">Scalate Console</a>
+      <% if (parameterValues("_scalate").contains("showAttributes")) { %>
+      <table>
+        <tr>
+          <th>Attribute</th>
+          <th>Value</th>          
+        </tr>
         <% for (k <- attributes.keySet) { %>
-          <li>${k} = ${attributes(k)}</li>
+          <tr>
+            <td>${k}</td>
+            <td>${attributes(k)}</td>
+          </tr>
         <% } %>
-      </ul>
-      --%>
+      </table>
+      <% } else {
+        val queryPrefx = if (query != null) {query + "&" } else {"?"}
+      %>
+      <a href='${uri(request.getRequestURI + queryPrefx + "_scalate=showAttributes")}' title="Show the current request attributes">Show Attributes</a>
+      <% } %>
   	</div>
   </div>
 

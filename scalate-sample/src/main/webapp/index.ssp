@@ -50,7 +50,10 @@
     <a href="ssp/sampleTag.ssp">custom tag</a> process a block of text using a simple scala function
   </li>
   <li>
-    <a href="ssp/sampleTag2.ssp">custom tag</a> using an explicit TemplateContext
+    <a href="ssp/sampleTag2.ssp">custom tag 2</a> as above using an explicit RenderContext param
+  </li>
+  <li>
+    <a href="ssp/sampleTag3.ssp">custom tag 3</a> the scala function body uses a RenderContext variable
   </li>
 </ul>
 
@@ -87,7 +90,10 @@ Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup
     <a href="scaml/sampleTag.scaml">custom tag</a> process a block of text using a simple scala function
   </li>
   <li>
-    <a href="scaml/sampleTag2.scaml">custom tag</a> using an explicit TemplateContext
+    <a href="scaml/sampleTag2.scaml">custom tag 2</a> as above using an explicit RenderContext param
+  </li>
+  <li>
+    <a href="scaml/sampleTag3.scaml">custom tag 3</a> the scala function body uses a RenderContext variable
   </li>
 </ul>
 

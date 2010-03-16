@@ -3,9 +3,10 @@ package org.fusesource.scalate.servlet
 import javax.servlet.http._
 import javax.servlet.{ServletContext, ServletException}
 import java.lang.String
-import collection.JavaConversions._
-import scala.collection.mutable.HashSet
 import java.util.{Locale}
+import scala.collection.JavaConversions._
+import scala.collection.Set
+import scala.collection.mutable.HashSet
 import org.fusesource.scalate.{AttributeMap, TemplateEngine, DefaultRenderContext}
 
 /**
@@ -17,6 +18,8 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
   viewPrefixes = List("WEB-INF", "")
 
   override val attributes = new AttributeMap[String, Any] {
+    request.setAttribute("context", ServletRenderContext.this)
+
     def get(key: String): Option[Any] = {
       val value = apply(key)
       if (value == null) None else Some(value)
@@ -38,15 +41,15 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
       answer
     }
 
-    def keySet = {
-      def answer = new HashSet[String]()
-      for (a <- request.getAttributeNames) {
+    def keySet: Set[String] = {
+      val answer = new HashSet[String]()
+      for (a <- asIterator(request.getAttributeNames)) {
         answer.add(a.toString)
       }
       answer
     }
 
-    override def toString = keySet.map(k => k + "=" + apply(k)).mkString(", ", "{", "}")
+    override def toString = keySet.map(k => k + " -> " + apply(k)).mkString("{", ", ", "}")
   }
 
   override def locale: Locale = {
@@ -81,4 +84,23 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
       uri
     }
   }
+
+  /**
+   * Returns all of the parameter values
+   */
+  def parameterValues(name: String): Array[String] = {
+    val answer = request.getParameterValues(name)
+    if (answer != null) {
+      answer
+    }
+    else {
+      Array[String]()
+    }
+  }
+
+  /**
+   * Returns the first parameter
+   */
+  def parameter(name: String) = {request.getParameter(name)}
+
 }

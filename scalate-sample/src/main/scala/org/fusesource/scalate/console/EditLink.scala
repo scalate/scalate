@@ -1,5 +1,6 @@
 package org.fusesource.scalate.console
 
+import org.fusesource.scalate.RenderContext.capture
 import java.io.File
 import scala.xml.NodeSeq
 
@@ -10,7 +11,9 @@ import scala.xml.NodeSeq
 object EditLink {
   var idePluginPort = 51235
 
-  def editLink(file: String, line: Option[Int] = None, col: Option[Int] = None)(body: => String): NodeSeq = {
+  def editLink(file: String)(body: => Unit): NodeSeq = editLink(file, None, None)(body)
+
+  def editLink(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     System.getProperty("scalate.editor", "") match {
       case "textmate" => editLinkTextMate(file, line, col)(body)
       case "ide" => editLinkIdePlugin(file, line, col)(body)
@@ -24,20 +27,22 @@ object EditLink {
     }
   }
 
-  def editLinkFile(file: String, line: Option[Int], col: Option[Int])(body: => String)  = {
-    <a href={"file://" + file} title="Open File" target="_blank">{body}</a>
+  def editLinkFile(file: String, line: Option[Int], col: Option[Int])(body: => Unit)  = {
+    val bodyText = capture(body)
+    <a href={"file://" + file} title="Open File" target="_blank">{bodyText}</a>
   }
 
-  def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => String) = {
+  def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => Unit) = {
+    val bodyText = capture(body)
     val href="txmt://open?url=file://" + file +
             (if (line.isDefined) "&line=" + line.get else "") +
             (if (col.isDefined) "&col=" + col.get else "")
 
-    <a href={href} title="Open in TextMate">{body}</a>
+    <a href={href} title="Open in TextMate">{bodyText}</a>
   }
 
-  def editLinkIdePlugin(file: String, line: Option[Int], col: Option[Int])(body: => String) = {
-    val bodyText:String = body
+  def editLinkIdePlugin(file: String, line: Option[Int], col: Option[Int])(body: => Unit) = {
+    val bodyText = capture(body)
 
     // The Atlassian IDE plugin seems to highlight the line after the actual line number, so lets subtract one
     val lineNumber = if (line.isDefined) {

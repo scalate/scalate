@@ -1,6 +1,7 @@
 package org.fusesource.scalate.sample
 
-import org.fusesource.scalate.{RenderContext}
+import org.fusesource.scalate.{Body, RenderContext}
+import org.fusesource.scalate.RenderContext.capture
 
 /**
  * @version $Revision : 1.1 $
@@ -9,7 +10,39 @@ import org.fusesource.scalate.{RenderContext}
 object MyTags {
 
   /**
-   * This option hides the page context
+   * Implicit version we import the capture method
+   */
+  def someLayoutWithImportedCapture(body: => Unit) = {
+    val text = capture(body)
+    "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
+  }
+
+  /**
+   * Implicit version using an import
+   */
+  def someLayoutWithRenderContextVariable(body: => Unit) = {
+    val context = RenderContext()
+    val text = context.capture(body)
+   "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
+  }
+
+  /**
+   * Explicit version where you interact with the context parameter directly
+   */
+  def someLayoutWithRenderContextParam(context: RenderContext)(body: => Unit) = {
+    val text = context.capture(body)
+    context << ("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
+  }
+
+
+  //-------------------------------------------------------------------------
+  // TODO the following methods dont work!
+  //-------------------------------------------------------------------------
+
+  /**
+   * TODO not working yet!
+   *
+   * This option hides the render context
    */
   def someLayout(body: () => String) = {
     val text = body()
@@ -17,14 +50,15 @@ object MyTags {
     "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
   }
 
-
   /**
-   * Explicit version where you interact with the context parameter
+   * TODO not working yet!
+   *
+   * Takes a Body object
    */
-  def someLayoutUsingTemplateContext(context: RenderContext)(body: => Unit) = {
-    val text = context.capture(body)
-    println("Evaluated text: " + text)
-    context << ("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
+  def someLayoutUsingBody(body: Body) = {
+    val text = body.capture
+    println("found text: " + text)
+    "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
   }
 
 

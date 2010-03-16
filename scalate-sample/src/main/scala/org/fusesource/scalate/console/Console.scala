@@ -8,6 +8,7 @@ import javax.ws.rs.core.Context
 import java.util.{Set => JSet}
 import scala.collection.mutable.Set
 import scala.collection.JavaConversions._
+import scala.xml.NodeSeq
 
 
 /**
@@ -110,7 +111,14 @@ class Console extends DefaultRepresentations {
    * based on your OS and whether you have TextMate installed and whether you
    * have defined the <code>scalate.editor</code> system property
    */
-  def editLink(template: String, line: Option[Int] = None, col: Option[Int] = None)(body: => String) = {
+  def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
+
+    /**
+     * returns an edit link for the given URI, discovering the right URL
+     * based on your OS and whether you have TextMate installed and whether you
+     * have defined the <code>scalate.editor</code> system property
+     */
+  def editLink(template: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val file = servletContext.getRealPath(template)
     EditLink.editLink(file, line, col)(body)
   }
