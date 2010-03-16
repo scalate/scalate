@@ -1,6 +1,7 @@
 package org.fusesource.scalate.sample
 
 import org.fusesource.scalate.{Body, RenderContext}
+import org.fusesource.scalate.RenderContext.capture
 
 /**
  * @version $Revision : 1.1 $
@@ -9,22 +10,20 @@ import org.fusesource.scalate.{Body, RenderContext}
 object MyTags {
 
   /**
-   * Implicit version using an import
+   * Implicit version we import the capture method
    */
-  def someLayoutWithRenderContextImport(body: => Unit) = {
-    val current = RenderContext()
-    import current._
+  def someLayoutWithImportedCapture(body: => Unit) = {
     val text = capture(body)
-   "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
+    "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
   }
 
   /**
-   * Implicit version where the current render context is used in the implementation
+   * Implicit version using an import
    */
-  def someLayoutUsesRenderContext(body: => Unit) = {
+  def someLayoutWithRenderContextVariable(body: => Unit) = {
     val context = RenderContext()
     val text = context.capture(body)
-    context << ("<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>")
+   "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
   }
 
   /**

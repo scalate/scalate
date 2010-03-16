@@ -10,6 +10,8 @@ import xml.NodeBuffer
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
 
+  def capture(body: => Unit) = apply().capture(body)
+
   def apply(): RenderContext = threadLocal.get
 
   def update(that: RenderContext) = threadLocal.set(that)
