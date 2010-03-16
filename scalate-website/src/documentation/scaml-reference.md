@@ -770,6 +770,24 @@ is rendered to:
 <p>hello there you!</p>
 {pygmentize}
 
+Or alternatively, if you have a large block of Scala code, you can
+nest it under the hyphen character as demonstrated by the following example:
+
+For example:
+{pygmentize:: text}
+-
+  var foo = "hello"
+      // note: you can use creative indentation in the block
+      foo += " there"
+  foo += " you!"
+%p= foo
+{pygmentize}
+
+is rendered to:
+{pygmentize:: xml}
+<p>hello there you!</p>
+{pygmentize}
+
 #### Scala Blocks
 
 Scala blocks, like XHTML tags, don't need to be explicitly closed in Scaml.

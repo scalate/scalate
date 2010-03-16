@@ -16,12 +16,12 @@
  */
 package org.fusesoruce.scalate.haml
 
+import annotation.tailrec
+import _root_.org.fusesource.scalate.{InvalidSyntaxException}
 import scala.util.parsing.combinator._
 import util.parsing.input.{Positional, CharSequenceReader}
 import scala.None
-import org.fusesource.scalate.{TemplateException}
 import collection.mutable.ListBuffer
-import annotation.tailrec
 import java.util.regex.Pattern
 import java.io.File
 import org.fusesource.scalate.util.IOUtil
@@ -44,10 +44,15 @@ class IndentedParser extends RegexParsers() {
     result
   }
 
+  var mismatch_indent_desc:String = null
+  var mismatch_indent:Parser[Any] = null
+
+  var indent_desc:String = null
   var indent_unit:Parser[Any] = null
   var indent_level:Int = 1
 
-    /** A parser generator for a specified range of repetitions.
+
+  /** A parser generator for a specified range of repetitions.
    *
    * <p> repRange(min, max, p) uses `p' from `min' upto `max' times to parse the input 
    *       (the result is a `List' of the consecutive results of `p')</p>
@@ -70,24 +75,51 @@ class IndentedParser extends RegexParsers() {
       applyp(in)
     }
 
-  def current_indent(): Parser[Any] = {
+
+  def current_indent(strict:Boolean=false): Parser[Any] = {
     if( indent_level==0 ) {
       success()
     } else if( indent_unit!=null ) {
+
+      // Look for mismatch indent types..
+      var rc: Parser[Any] = mismatch_indent ~ err("Inconsistent indent detected: indented with "+mismatch_indent_desc+" but previous lines were indented with "+indent_desc)
+      if( strict ) {
+        // Look for indents that are too deep.
+        rc |= repN(indent_level,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: intended too deep")
+      }
       // this is the normal indent case
-      repN(indent_level,indent_unit) |
+      rc |= repN(indent_level,indent_unit)
+
       // this is the case of a emplty line.. we will consider it indented too if it is followed with a proper indent.
-      repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent)
+      rc |= repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent(strict))
+
+      if( indent_level > 0 ) {
+        // Look for indents that are too shallow
+        rc |= repN(indent_level-1,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: intended too shallow")
+      }
+
+      rc | failure("Inconsistent indent detected: "+indent_level+" indent level(s) were expected");
+      
     } else {
-      ( """ +""".r | """\t+""".r) ^^ ( s=>{
-          indent_unit=s;
-          s
-        } | failure("indent not found") )
+      """ +""".r ^^ {
+        case s=>
+        indent_desc  = "spaces"
+        mismatch_indent_desc = "tabs"
+        indent_unit=failure("expected space based indent") | s 
+        mismatch_indent = """\t+""".r
+      } |
+      """\t+""".r ^^ {
+        case s=>
+        indent_desc  = "tabs"
+        mismatch_indent_desc = "spaces"
+        indent_unit= failure("expected tab based indent") | s
+        mismatch_indent = """ +""".r
+      } 
     }
   }
 
-  def indent[U](p:Parser[U]) =
-    ( current_indent ^^ { s=>{ indent_level+=1;s}  } ) ~> p ^^ { s=>{indent_level-=1;  s}}
+  def indent[U](p:Parser[U], strict:Boolean=false) =
+    ( current_indent(strict) ^^ { s=>{ indent_level+=1;s}  } ) ~> p ^^ { s=>{indent_level-=1;  s}}
 
 }
 
@@ -103,7 +135,7 @@ case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends Text
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ScamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
-case class Executed(code:Option[String], body:List[Statement]) extends Statement
+case class Executed(code:String, body:List[Statement]) extends Statement
 case class FilterStatement(flags:List[String], filters:List[String], body:List[String]) extends Statement
 case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
 case class Doctype(line:List[String]) extends Statement
@@ -216,14 +248,14 @@ class ScamlParser extends IndentedParser() {
     opt("%"~>tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
       case (tag~attributes~wsc) => Element(tag, attributes, None, List(), wsc, true)
     } |
-    opt("%"~>tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ rep(indent(statement)) ^^ {
+    opt("%"~>tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ statement_block ^^ {
         case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
     }
 
   def element_statement:Parser[Element] = guarded("%"|"."|"#", full_element_statement)
 
   def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
-  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ rep(indent(statement)) ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
+  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
   def evaluated_fragment:Parser[List[String]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
     case code~Some(text)=>{ code :: text }
@@ -259,10 +291,10 @@ class ScamlParser extends IndentedParser() {
         ) <~ any_space_then_nl
 
   def evaluated_statement =
-    prefixed("=",  upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, None) }       |
-    prefixed("~",  upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, true,  None) }       |
-    prefixed("&=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
-    prefixed("!=", upto(nl) <~ nl ) ~ rep(indent(statement)) ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
+    prefixed("=",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, None) }       |
+    prefixed("~",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true,  None) }       |
+    prefixed("&=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
+    prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
   val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ ident ~ (":" ~> qualified_type) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
@@ -270,9 +302,13 @@ class ScamlParser extends IndentedParser() {
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 
 
-  def executed_statement = prefixed("-" ~ some_space, opt(text) <~ nl) ~ rep(indent(statement)) ^^ {
-    case code~body=> Executed(code,body)
-  }
+  def executed_statement =
+    prefixed("-" ~ some_space ~ nl,  rep1(indent(any<~nl))) ^^ {
+      case code=> Executed(code.mkString("\n"),List())
+    } |
+    prefixed("-" ~ some_space, text <~ nl) ~ statement_block ^^ {
+      case code~body=> Executed(code,body)
+    } 
 
   def filter_statement = prefixed(":",
       ( rep( "~" | "!" | "&" ) ~ rep1sep("""[^: \t\r\n]+""".r, """[ \t]*:[ \t]*""".r ) )<~ nl
@@ -291,7 +327,13 @@ class ScamlParser extends IndentedParser() {
       positioned(filter_statement) |
       positioned(text_statement)
 
-  def parser = rep( statement )
+
+  def statement_block = rep(indent(statement, true))
+
+  def parser = rep(
+    space ~ err("Inconsistent indent level detected: intended too shallow") ^^ { null } |
+    statement
+  )
 
   def parse(in:String) = {
     var content = in;
@@ -301,7 +343,7 @@ class ScamlParser extends IndentedParser() {
     val x = phrase(parser)(new CharSequenceReader(content))
     x match {
       case Success(result, _) => result
-      case _ => throw new TemplateException(x.toString);
+      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
@@ -309,7 +351,7 @@ class ScamlParser extends IndentedParser() {
     val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case _ => throw new TemplateException(x.toString);
+      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 

@@ -706,6 +706,17 @@ bar</pre><img/>
 <p>hello there you!</p>
 """)
   
+  testRender("`-` is followed by an indented Scala code block.  The code is evaluated but *not* inserted into the document.",
+"""
+-
+  var foo = "hello"
+      // note: you can use creative indentation in the block
+      foo += " there"
+  foo += " you!"
+%p= foo
+""","""
+<p>hello there you!</p>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -774,6 +785,32 @@ bar</pre><img/>
   <li>end</li>
 </ol>
 """)
+
+  testRender("if / else constructs",
+"""
+- if ( 1==2 )
+  %p alternate reality
+- else
+  %p still on earth
+""","""
+<p>still on earth</p>
+""")
+
+  testRender("try / catch constructs",
+"""
+- try
+  %p in try
+  - throw new IllegalStateException()
+- catch
+  - case e:IllegalStateException =>
+    %p got the expected error
+  - case e:Exception =>
+    %p some odd error occured
+""","""
+<p>in try</p>
+<p>got the expected error</p>
+""")
+
 
   /////////////////////////////////////////////////////////////////////
   //
