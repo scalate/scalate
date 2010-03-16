@@ -20,13 +20,14 @@ package org.fusesource.scalate
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
+import util.Logging
 
 /**
  * Provides a common base class for CodeGenerator implementations.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-abstract class AbstractCodeGenerator[T] extends CodeGenerator
+abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 {
   abstract class AbstractSourceBuilder[T] {
     var indent_level = 0
@@ -165,7 +166,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       if (sep != "/") {
         // on windows lets replace the \ in a directory name with /
         val newName = name.replace('\\', '/')
-        println("convertedd windows path into: " + newName)
+        fine("convertedd windows path into: " + newName)
         newName
       }
       else {

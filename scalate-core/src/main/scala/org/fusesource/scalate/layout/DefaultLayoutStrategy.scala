@@ -41,7 +41,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
   
   private def renderLayout(layoutTemplate: String, body: String, context: RenderContext) {
       fine("Attempting to load layout: " + layoutTemplate)
-      println("layout " + layoutTemplate + " with attributes: " + context.attributes)
+      fine("layout " + layoutTemplate + " with attributes: " + context.attributes)
       context.attributes("body") = body
       engine.load(layoutTemplate).render(context)
   }

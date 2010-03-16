@@ -17,17 +17,17 @@
  */
 package org.fusesource.scalate
 
-import org.fusesource.scalate.util.{Lazy, RenderHelper}
 import java.text.{DateFormat, NumberFormat}
 import java.util.Locale
 import java.io._
 import collection.mutable.Stack
+import util.{Logging, Lazy, RenderHelper}
 
 /**
  * The RenderContext provides helper methods for interacting with the request, response,
  * attributes and parameters.
  */
-class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext {
+class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext with Logging {
 
   val attributes: AttributeMap[String,Any] = new HashMapAttributes[String, Any]() {
     update("context", DefaultRenderContext.this)
@@ -75,7 +75,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
-      println("rendering template " + template + " with attributes: " + attributes)
+      fine("rendering template " + template + " with attributes: " + attributes)
       template.render(this)
       out.close()
       buffer.toString
