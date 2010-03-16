@@ -29,7 +29,7 @@ object EditLink {
   }
 
   def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => String) = {
-    val href="txmt://open/?url=file:" + file +
+    val href="txmt://open?url=file://" + file +
             (if (line.isDefined) "&line=" + line.get else "") +
             (if (col.isDefined) "&col=" + col.get else "")
 
