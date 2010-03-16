@@ -786,6 +786,32 @@ bar</pre><img/>
 </ol>
 """)
 
+  testRender("if / else constructs",
+"""
+- if ( 1==2 )
+  %p alternate reality
+- else
+  %p still on earth
+""","""
+<p>still on earth</p>
+""")
+
+  testRender("try / catch constructs",
+"""
+- try
+  %p in try
+  - throw new IllegalStateException()
+- catch
+  - case e:IllegalStateException =>
+    %p got the expected error
+  - case e:Exception =>
+    %p some odd error occured
+""","""
+<p>in try</p>
+<p>got the expected error</p>
+""")
+
+
   /////////////////////////////////////////////////////////////////////
   //
   // Scala Interpolation: `#{}`
