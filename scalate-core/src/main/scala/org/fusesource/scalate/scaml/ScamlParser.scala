@@ -135,7 +135,7 @@ case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends Text
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ScamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
-case class Executed(code:Option[String], body:List[Statement]) extends Statement
+case class Executed(code:String, body:List[Statement]) extends Statement
 case class FilterStatement(flags:List[String], filters:List[String], body:List[String]) extends Statement
 case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
 case class Doctype(line:List[String]) extends Statement
@@ -302,9 +302,13 @@ class ScamlParser extends IndentedParser() {
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 
 
-  def executed_statement = prefixed("-" ~ some_space, opt(text) <~ nl) ~ statement_block ^^ {
-    case code~body=> Executed(code,body)
-  }
+  def executed_statement =
+    prefixed("-" ~ some_space ~ nl,  rep1(indent(any<~nl))) ^^ {
+      case code=> Executed(code.mkString("\n"),List())
+    } |
+    prefixed("-" ~ some_space, text <~ nl) ~ statement_block ^^ {
+      case code~body=> Executed(code,body)
+    } 
 
   def filter_statement = prefixed(":",
       ( rep( "~" | "!" | "&" ) ~ rep1sep("""[^: \t\r\n]+""".r, """[ \t]*:[ \t]*""".r ) )<~ nl

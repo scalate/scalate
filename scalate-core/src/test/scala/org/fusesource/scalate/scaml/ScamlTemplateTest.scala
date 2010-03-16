@@ -706,6 +706,17 @@ bar</pre><img/>
 <p>hello there you!</p>
 """)
   
+  testRender("`-` is followed by an indented Scala code block.  The code is evaluated but *not* inserted into the document.",
+"""
+-
+  var foo = "hello"
+      // note: you can use creative indentation in the block
+      foo += " there"
+  foo += " you!"
+%p= foo
+""","""
+<p>hello there you!</p>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //

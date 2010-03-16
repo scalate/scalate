@@ -282,9 +282,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement:Executed):Unit = {
       flush_text
       if( statement.body.isEmpty ) {
-        this << statement.code.getOrElse("")
+        this << statement.code
       } else {
-        this << statement.code.getOrElse("") + "{"
+        this << statement.code + "{"
         indent {
           generate_no_flush(statement.body)
           flush_text
