@@ -7,10 +7,10 @@ All expressions inside Scalate are typesafe and checked at edit/compile time to 
 
 Two template languages are supported:
 
-  * SSP: Provides a JSP, ASP, ERB style template language
-  * HAML: Provides Haml style template lanaguage
+  * [Ssp](http://scalate.fusesource.org/documentation/scalate-user-guide.html#ssp_scala_server_pages): Provides a JSP, ASP, ERB style template language
+  * [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html): Provides Haml style template lanaguage
 
-Scalate is based on the original code by [Matt Hildebrand](http://github.com/matthild/serverpages)
+Scalate is based on code developed by [Matt Hildebrand](http://github.com/matthild/serverpages)
 
 Documentation
 -------------
