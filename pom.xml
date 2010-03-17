@@ -29,7 +29,7 @@
     <commons-logging-version>1.1.1</commons-logging-version>
     <commons-logging-api-version>1.1</commons-logging-api-version>
 
-    <jersey-version>1.2-SNAPSHOT</jersey-version>
+    <jersey-version>1.1.5.1</jersey-version>
 
     <jetty-port>8080</jetty-port>
     <jetty-version>6.1.19</jetty-version>
