@@ -33,11 +33,9 @@
 
     <sitemesh-version>2.3</sitemesh-version>
 
-    <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-RC7-with-test-interfaces-0.3-SNAPSHOT</scalaTest-version>
-    <!--
-    <scalaTest-version>1.0</scalaTest-version>
-    -->
+    <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalaTest-version>
     <scalaVersion>2.8.0.Beta1</scalaVersion>
+
     <scala-plugin-version>2.9.1</scala-plugin-version>
     <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
     <slf4j-version>1.5.6</slf4j-version>
@@ -296,18 +294,6 @@
       <version>${scalaVersion}</version>
     </dependency>
 
-
-    <!-- Testing -->
-    <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest</artifactId>
-      <version>${scalaTest-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.7</version>
-    </dependency>
   </dependencies>
 
   <dependencyManagement>
@@ -339,6 +325,27 @@
         <artifactId>selenium-htmlunit-driver</artifactId>
         <version>2.0a1</version>
       </dependency>
+
+
+      <!-- testing -->
+<!--
+      <dependency>
+        <groupId>org.scala-tools.testing</groupId>
+        <artifactId>specs_2.8.0.Beta1</artifactId>
+        <version>1.6.3</version>
+      </dependency>
+-->
+      <dependency>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest</artifactId>
+        <version>${scalaTest-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.7</version>
+      </dependency>
+      
     </dependencies>
   </dependencyManagement>
 
