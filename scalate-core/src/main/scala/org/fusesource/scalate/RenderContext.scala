@@ -56,7 +56,7 @@ trait RenderContext {
   /**
    * Sorted list of attribute keys
    */
-  def attributeKeys = attributes.keySet.toList.sort(_<_)
+  def attributeKeys = attributes.keySet.toList.sortWith(_<_)
   
   /**
    * Returns the attribute of the given type or a {@link NoValueSetException} exception is thrown
