@@ -1,0 +1,27 @@
+---
+title: Creating an IDE for Scalate
+in_menu: false
+--- name:overview
+
+# How to create a Scalate IDE
+We love awesome IDEs! :)
+
+--- name:content
+We specifically designed Scalate so that it should work amazingly well in an IDE since
+
+* the use of Scala as the language inside the template should at edit time have all of the attributes and their types available, so the existing Scala IDEs should be capable of great completion and error checking.
+* most IDEs already have a plugin to support JSP or Erb editing and dealing with the syntax of tags and mixing markup with a language (Java/Ruby). So for [Ssp](documentation/ssp-reference.html) its just a case of reusing the core JSP/Erb editor with Scala language instead.
+* for IDEs which support HAML already it should be relatively easy to provide [Scaml](documentation/scaml-reference.html) support by just switching the language from Ruby to Scala
+* both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse.
+* all the clever stuff in a Scalate template is done by the Scala language which already has great IDE support.
+
+## Types in scope for the Scala language completion
+
+Other than detecting when there is a Scala code block or expression in the  [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) template languages, the main thing for the IDE to do is to configure which variables are available and in scope. Here's a break down...
+
+* the RenderContext is imported so its methods are available. Typically in web applications the ServletRenderContext is imported.
+* each attribute declaration is available in scope (which maybe be imported too if the 'import' keyword is used)
+
+
+
+
