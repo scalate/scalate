@@ -16,106 +16,6 @@
   <prerequisites>
     <maven>2.0.9</maven>
   </prerequisites>
-  
-  <repositories>
-    <repository>
-      <id>repo1.maven</id>
-      <name>Maven Central Repo</name>
-      <url>http://repo1.maven.org/maven2/</url>
-    </repository>
-    <repository>
-      <id>fusesource.m2</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>http://repo.fusesource.com/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>fusesource.m2-snapshot</id>
-      <name>FuseSource Community Snapshot Repository</name>
-      <url>http://repo.fusesource.com/maven2-snapshot</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-
-    <repository>
-      <id>java.net.m2</id>
-      <name>java.net Maven 2 Repo</name>
-      <url>http://download.java.net/maven/2</url>
-    </repository>
-    <repository>
-      <id>openqa-releases</id>
-      <name>OpenQA Releases</name>
-      <url>http://archiva.openqa.org/repository/releases</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
-      <id>scala-tools.org</id>
-      <name>Scala Tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </repository>
-    <repository>
-      <id>scala-tools-snapshots.org</id>
-      <name>Scala Tools Maven2 Snapshot Repository</name>
-      <url>http://scala-tools.org/repo-snapshots</url>
-    </repository>
-
-    <repository>
-      <id>scala</id>
-      <name>Scala Tools</name>
-      <url>http://scala-tools.org/repo-releases/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots.scala-tools.org</id>
-      <name>Scala-Tools Maven2 Snapshot Repository</name>
-      <url>http://scala-tools.org/repo-snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <!--updatePolicy>never</updatePolicy-->
-        <checksumPolicy>fail</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <!--updatePolicy>never</updatePolicy-->
-        <checksumPolicy>fail</checksumPolicy>
-      </releases>
-    </repository>
-    <repository>
-      <id>nexus.snapshots.scala-tools.org</id>
-      <name>Scala-Tools Maven2 Snapshot Repository</name>
-      <url>http://nexus.scala-tools.org/content/repositories/snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <!--updatePolicy>never</updatePolicy-->
-        <checksumPolicy>fail</checksumPolicy>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <!--updatePolicy>never</updatePolicy-->
-        <checksumPolicy>fail</checksumPolicy>
-      </releases>
-    </repository>
-  </repositories>  
 
   <properties>
     <forge-project-id>scalate</forge-project-id>
@@ -779,8 +679,19 @@
             <checksumPolicy>fail</checksumPolicy>
           </releases>
         </repository>
+        <repository>
+          <id>apache.snapshots</id>
+          <name>Apache Development Snapshot Repository</name>
+          <url>https://repository.apache.org/content/repositories/snapshots/</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
       </repositories>
-  </profile>      
+    </profile>      
     
   </profiles>
 </project>
