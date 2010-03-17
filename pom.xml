@@ -115,12 +115,14 @@
     <developer>
       <id>chirino</id>
       <name>Hiram Chirino</name>
+      <url>http://hiramchirino.com/blog/</url>
       <organization>FuseSource</organization>
       <organizationUrl>http://fusesource.com/</organizationUrl>
     </developer>
     <developer>
       <id>jstrachan</id>
       <name>James Strachan</name>
+      <url>http://macstrac.blogspot.com/</url>
       <organization>FuseSource</organization>
       <organizationUrl>http://fusesource.com/</organizationUrl>
     </developer>
@@ -131,6 +133,7 @@
     <developer>
       <id>PaulSandoz</id>
       <name>Paul Sandoz</name>
+      <url>http://blogs.sun.com/sandoz/</url>
       <organization>Oracle</organization>
       <organizationUrl>http://oracle.com/</organizationUrl>
     </developer>
