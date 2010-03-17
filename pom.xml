@@ -77,7 +77,7 @@
   <scm>
     <connection>scm:git:git://github.com/scalate/scalate.git</connection>
     <developerConnection>scm:git:git@github.com:scalate/scalate.git</developerConnection>
-    <url>http://github.com/scalate/scalate</url>
+    <url>git://github.com/scalate/scalate</url>
   </scm>
 
   <issueManagement>
