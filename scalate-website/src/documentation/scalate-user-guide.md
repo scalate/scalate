@@ -485,3 +485,36 @@ Scalate does not have any hard dependencies on a web framework or even HTTP.  It
 rendering engine in your application.  For more information on how to embed in your application, please reference the 
 [Scalate Embedding Guide](scalate-embedding-guide.html)
 
+
+## IDE plugins
+
+Using an IDE plugin can make it much easier to view and edit Scalate templates.
+
+### TextMate Scaml plugin
+
+If you use [TextMate](http://macromates.com/) (which on OS X is a great text editor) you can install the [Scaml plugin](http://github.com/scalate/scaml.tmbundle) as follows:
+
+    cd ~/Library/Application\ Support/TextMate/Bundles/
+    git clone git://github.com/scalate/scaml.tmbundle.git
+{: .syntax }
+
+If you have not already done so you will also need a Scala plugin for TextMate which the Scaml plugin uses for the Scala code blocks.
+
+We like the [version by Dean Wampler](http://github.com/deanwampler/Scala.tmbundle) though there's a few around github and one included in sbaz in the Scala distro too.
+
+    cd ~/Library/Application\ Support/TextMate/Bundles/
+    git clone git://github.com/deanwampler/Scala.tmbundle.git
+{: .syntax }
+
+When you restart TextMate you should now get syntax highlighting and more when you open up a [Scaml](scaml-reference.html) file.
+
+### If you are an IDE hacker
+
+We created Scalate specifically to be IDE friendly and we'd love to help create more and better IDE plugins (plus we [love contributions](../contributing.html)!). It should be easy to reuse any JSP / Erb / HAML IDE plugins but just swizzle them a little to use the Scala language instead - then get all the benefits of smart completion from Scala's static type analysis.
+
+We've a [writing IDE plugins for Scalate page](../creating-ide.html) which has more details on how an IDE plugin should ideally work for Scalate.
+
+
+
+
+
