@@ -41,15 +41,37 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
 
     try {
       val path = if (basePath.length > 0) basePath + requestPath else requestPath
-      templateSuffixes.map  { path + _ }
-                      .find { servletContext.getResource(_) ne null }
-                      .getOrElse(null)
+      
+      tryFindPath(path) match {
+        case Some(answer) => answer
+        case None => 
+          /* 
+            before Jersey 1.2 paths were often searched as 
+              com/acme/foo/SomeClass/index.ssp
+            however we prefer to use this naming convention
+              com/acme/foo/SomeClass.index.ssp
+            so lets add a little hook in here
+           */
+          val idx = path.lastIndexOf('/')
+          if (idx > 1) {
+            val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
+            tryFindPath(newPath).getOrElse(null) 
+          }
+          else {
+            null
+          }
+      }
     } catch {
       case e: MalformedURLException =>
         warning("Tried to load template using Malformed URL. " + e.getMessage)
         null
     }
   }
+
+  def tryFindPath(path: String) = templateSuffixes.map { path + _ }.find { t =>
+      fine("Trying to find template: " + t)
+      servletContext.getResource(t) ne null
+    }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     // Ensure headers are committed

@@ -15,6 +15,14 @@
       </excludes>
       <lineEnding>unix</lineEnding>
     </fileSet>
+    <fileSet>
+      <directory>..</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>*.txt</include>
+      </includes>
+      <lineEnding>unix</lineEnding>
+    </fileSet>
 
     <!-- copy the examples -->
 <!--
