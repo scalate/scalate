@@ -12,22 +12,22 @@ We love awesome IDEs! :)
 
 We specifically designed Scalate so that it should work amazingly well in an IDE since all expressions in the templates are Scala using static typing so that when you are editing a template the IDE knows all of the attributes and their types. 
 
-Your IDE should be capable of great completion and error checking; plus at edit time your IDE should know if you have made any typos in any of your expressions such as maybe getting the property name wrong on a bean you are displaying or whatever.
+Your IDE should be capable of great completion and error checking; plus at edit time your IDE should know if you have made any typos in any of your expressions such as maybe getting the property name wrong on a bean you are displaying. Its very easy to make typos in templates!
 
 ## Making it easier on the IDE hacker
 
 Making great IDE plugins is a lot of work, but we hope we can cut some corners making great IDE plugins for Scalate because:
 
 * most IDEs already have a plugin to support JSP or Erb editing and dealing with the syntax of mixing HTML/XML markup with a language (Java/Ruby). So for [Ssp](documentation/ssp-reference.html) its just a case of reusing the core JSP/Erb editor with Scala language instead. JSP is pretty complex; Ssp is probably closer to the simplicity of Erb really
-* for IDEs which support HAML already it should be relatively easy to provide [Scaml](documentation/scaml-reference.html) support by just switching the language from Ruby to Scala for a very quick win. (other than the change to Scala the differences are minimal)
-* both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse.
+* for IDEs which support HAML already it should be relatively easy to provide [Scaml](documentation/scaml-reference.html) support by just switching the language from Ruby to Scala for a very quick win (other than the change to Scala the differences are minimal).
+* both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse if you need them.
 * all the clever stuff in a Scalate template is done by the Scala language which already has great IDE support.
 
 ## Types in scope for the Scala language completion
 
 Other than detecting when there is a Scala code block or expression in the  [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) template languages, the main thing for the IDE to do is to configure which variables are available and their types for error checking and completion. Here's a break down...
 
-* the RenderContext is imported so its methods are available. Typically in web applications the ServletRenderContext is imported which adds a few Servlet specific methods (like request/response/session/servletContext/servletConfig); though in some uses and frameworks just a RenderContext is in scope.
+* the RenderContext is imported so its methods are available. Typically in web applications the ServletRenderContext is imported which adds a few Servlet specific methods (like request/response/session/servletContext/servletConfig); though in some uses and frameworks just a RenderContext that is in scope.
 * each attribute declaration is available in scope (which maybe be imported too if the 'import' keyword is used)
 
 For example the following [Ssp](documentation/ssp-reference.html) script:

@@ -580,7 +580,7 @@
     <!-- enables extra repositories which may have some 
          goodies that have not reached central yet -->
     <profile>
-      <id>exta-repos</id>
+      <id>download</id>
       <repositories>
         <repository>
           <id>repo1.maven</id>
@@ -628,14 +628,12 @@
         </repository>
 
         <repository>
-          <id>scala-tools.org</id>
-          <name>Scala Tools Maven2 Repository</name>
-          <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-          <id>scala-tools-snapshots.org</id>
-          <name>Scala Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots</url>
+          <id>glassfish-repo-archive</id>
+          <name>Nexus repository collection for Glassfish</name>
+          <url>http://maven.glassfish.org/content/groups/glassfish</url>
+          <snapshots>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
         </repository>
 
         <repository>

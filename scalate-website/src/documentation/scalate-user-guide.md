@@ -508,11 +508,20 @@ We like the [version by Dean Wampler](http://github.com/deanwampler/Scala.tmbund
 
 When you restart TextMate you should now get syntax highlighting and more when you open up a [Scaml](scaml-reference.html) file.
 
+The current plugin does not highlight Scala expressions terribly well with the default Mac Classic colour scheme in TextMate. We found that it helps to add an extra colour to your scheme.
+
+* open TextMate preferences via the TextMate menu or by hitting the apple key and ','
+* select Fonts & Colors
+* hit + to add a new entry
+* type "Scaml expression" and pick a colour to use such as dark green (to differentiate from static markup text)
+* in the **Scope Selector:** field enter **source.scala**
+* you now should see Scala expressions in your Scaml file highlighted in green (so you can more easily tell the difference between static text and scala expressions)
+
 ### If you are an IDE hacker
 
-We created Scalate specifically to be IDE friendly and we'd love to help create more and better IDE plugins (plus we [love contributions](../contributing.html)!). It should be easy to reuse any JSP / Erb / HAML IDE plugins but just swizzle them a little to use the Scala language instead - then get all the benefits of smart completion from Scala's static type analysis.
+We created Scalate specifically to be IDE friendly and we'd love to help create more and better IDE plugins (plus we [love contributions](../contributing.html)!). It should be easy to reuse any JSP / Erb / HAML IDE plugins but just swizzle them a little to use the Scala language instead - then get all the benefits of smart completion from Scala's static type system.
 
-We've a [writing IDE plugins for Scalate page](../creating-ide.html) which has more details on how an IDE plugin should ideally work for Scalate.
+We've a [page on writing IDE plugins for Scalate](../creating-ide.html) which has more details on how an IDE plugin should ideally work for Scalate.
 
 
 
