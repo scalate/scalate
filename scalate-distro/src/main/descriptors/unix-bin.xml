@@ -44,12 +44,6 @@
     </fileSet>
 -->
 
-    <!-- copy the website docs -->
-    <fileSet>
-      <directory>${basedir}/../scalate-website/out/</directory>
-      <outputDirectory>/docs</outputDirectory>
-    </fileSet>
-
    <!-- copy the java docs -->
 <!--
    <fileSet>

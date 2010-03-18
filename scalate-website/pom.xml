@@ -37,6 +37,38 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>  
+        <artifactId>maven-antrun-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.markdownj</groupId>
+            <artifactId>markdownj</artifactId>
+            <version>${markdownj-version}</version>
+          </dependency>
+        </dependencies>
+
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <configuration>
+              <tasks>
+
+                <!-- lets transform the ReadMe to HTML -->
+                <copy file="../ReadMe.md" tofile="target/ReadMe.html">
+                  <filterchain>
+                    <filterreader classname="com.petebevin.markdown.MarkdownFilter">
+                    </filterreader>
+                  </filterchain>
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
