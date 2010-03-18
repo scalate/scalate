@@ -4,7 +4,7 @@ in_menu: false
 --- name:overview
 
 # Is putting code in the view bad?
-It all depends...
+Code in view bad? It all depends...
 
 --- name:content
 A common response we hear from folks; particularly folks using [Lift](http://liftweb.net/) is that putting code in views is bad. Blanket statements like that are often not that great themselves :), we really think it depends on your personal preferences, requirements and the makeup of your team. 

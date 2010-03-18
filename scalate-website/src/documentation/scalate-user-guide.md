@@ -57,7 +57,7 @@ with some code to generate dynamic content.
 
 Example :
 
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ var user: User
 %p Hi #{user.name},
 - for(i <- 1 to 3)
@@ -101,7 +101,7 @@ If your template is in the same package as the <b>Cheese</b> class then the impo
 
 The [Scaml](scaml-reference.html) version is
 
-{pygmentize:: text}
+{pygmentize:: haml}
 - import Cheese._
 = foo(123)    
 {pygmentize}
@@ -142,7 +142,7 @@ This should generate something like
 
 The [Scaml](scaml-reference.html) version is
 
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ val id: Int = 123
 - import Cheese._
 
@@ -375,7 +375,7 @@ We capture the block which generates a greeting, assign it to the _foo_ variable
 
 The [Scaml](scaml-reference.html) version of this is a bit more concise
 
-{pygmentize:: text}
+{pygmentize:: haml}
 - var foo = capture
   hello there #{user.name} how are you?
     

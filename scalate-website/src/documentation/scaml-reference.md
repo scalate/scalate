@@ -30,7 +30,7 @@ which is plain old text.
 Any Scaml line that's not interpreted as something else
 is taken to be plain text, and passed through unmodified.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %gee
   %whiz
     Wow this is cool!
@@ -50,7 +50,7 @@ If you have some HTML you don't want to convert to Scaml,
 or you're converting a file line-by-line,
 you can just include it as-is.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   <div id="blah">Blah!</div>
 {pygmentize}
@@ -67,7 +67,7 @@ is rendered to:
 The backslash character escapes the first character of a line,
 allowing use of otherwise interpreted characters as plain text.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %title
   = title
   \= title
@@ -92,7 +92,7 @@ then optionally by modifiers (see below), a space,
 and text to be rendered inside the element.
 It creates an element in the form of `<element></element>`.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %one
   %two
     %three Hey there
@@ -123,7 +123,7 @@ Quote characters within the attribute
 will be replaced by appropriate escape sequences.
 The hash is placed after the tag is defined.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
 {pygmentize}
 
@@ -136,7 +136,7 @@ Attribute hashes can also be stretched out over multiple lines
 to accommodate many attributes.
 However, newlines may only be placed immediately after commas.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %script{:type => "text/javascript",
         :src  => "javascripts/script"}
 {pygmentize}
@@ -149,7 +149,7 @@ is rendered to:
 Complex expression are supported if you wrap them between the `{` 
 and `}` characters.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %li{:counter={3+4}} Stuff
 {pygmentize}
 
@@ -163,7 +163,7 @@ Would render as:
 Scaml also supports a terser, less Scala-specific attribute syntax
 based on HTML's attributes.
 These are used with parentheses instead of brackets, like so:
-{pygmentize:: text}
+{pygmentize:: haml}
 %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 {pygmentize}
 
@@ -179,7 +179,7 @@ This is the same as:
 Complex expression are supported if you wrap them between the `{` 
 and `}` characters.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %li(counter={3+4}) Stuff
 {pygmentize}
 
@@ -202,7 +202,7 @@ in a HTML-style attribute:
 
 HTML-style attributes can be stretched across multiple lines
 just like hash-style attributes:
-{pygmentize:: text}
+{pygmentize:: haml}
 %script(type="text/javascript"
         src="javascripts/script")
 {pygmentize}
@@ -302,7 +302,7 @@ Multiple class names can be specified in a similar way to CSS,
 by chaining the class names together with periods.
 They are placed immediately after the tag and before an attributes hash.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %div#things
   %span#rice Chicken Fried
   %p.beans{ :food => "true" } The magical fruit
@@ -319,7 +319,7 @@ is rendered to:
 {pygmentize}
 
 And,
-{pygmentize:: text}
+{pygmentize:: haml}
 #content
   .articles
     .article.title Doogie Howser Comes Out
@@ -347,14 +347,14 @@ Because divs are used so often, they're the default elements.
 If you only define a class and/or id using `.` or `#`,
 a div is automatically used.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 #collection
   .item
     .description What a cool item!
 {pygmentize}
 
 is the same as:
-{pygmentize:: text}
+{pygmentize:: haml}
 %div#collection
   %div.item
     %div.description What a cool item!
@@ -374,7 +374,7 @@ and is rendered to:
 The forward slash character, when placed at the end of a tag definition,
 causes the tag to be self-closed.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %br/
 %meta{"http-equiv" => "Content-Type", :content => "text/html"}/
 {pygmentize}
@@ -389,7 +389,7 @@ Some tags are automatically closed, as long as they have no content.
 `meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.
 This list can be customized by setting the [`ScamlOptions.autoclose`](#autoclose-option) option.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %br
 %meta{"http-equiv" => "Content-Type", :content => "text/html"}
 {pygmentize}
@@ -412,7 +412,7 @@ They're placed at the end of a tag definition,
 after class, id, and attribute declarations
 but before `/` or `=`.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %blockquote<
   %div
     Foo!
@@ -426,7 +426,7 @@ is rendered to:
 {pygmentize}
 
 And:
-{pygmentize:: text}
+{pygmentize:: haml}
 %img
 %img>
 %img
@@ -438,7 +438,7 @@ is rendered to:
 {pygmentize}
 
 And:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p<= "Foo\nBar"
 {pygmentize}
 
@@ -449,7 +449,7 @@ Bar</p>
 {pygmentize}
 
 And finally:
-{pygmentize:: text}
+{pygmentize:: haml}
 %img
 %pre><
   foo
@@ -469,7 +469,7 @@ When describing HTML documents with Scaml,
 you can have a document type or XML prolog generated automatically
 by including the characters `!!!`.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 !!! XML
 !!!
 %html
@@ -549,7 +549,7 @@ If you're not using the UTF-8 character set for your document,
 you can specify which encoding should appear
 in the XML prolog in a similar way.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 !!! XML iso-8859-1
 {pygmentize}
 
@@ -569,7 +569,7 @@ and those that don't.
 The forward slash character, when placed at the beginning of a line,
 wraps all text after it in an HTML comment.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %peanutbutterjelly
   / This is the peanutbutterjelly element
   I like sandwiches!
@@ -584,7 +584,7 @@ is rendered to:
 {pygmentize}
 
 The forward slash can also wrap indented sections of code. For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 /
   %p This doesn't render...
   %div
@@ -606,7 +606,7 @@ is rendered to:
 You can also use [Internet Explorer conditional comments](http://www.quirksmode.org/css/condcom.html)
 by enclosing the condition in square brackets after the `/`.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 /[if IE]
   %a{ :href => "http://www.mozilla.com/en-US/firefox/" }
     %h1 Get Firefox
@@ -629,7 +629,7 @@ Any text following this isn't rendered in the resulting document
 at all.
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
   %p foo
   -# This is a comment
   %p bar
@@ -644,7 +644,7 @@ is rendered to:
 You can also nest text beneath a silent comment.
 None of this text will be rendered.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p foo
 -#
   This won't be displayed
@@ -668,7 +668,7 @@ variable, a Scaml template uses the hyphen character followed by a ampersand
 character and then a scala variable declaration statement.
 
 For example To define an attribute use the following declaration
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ val foo: MyType 
 {pygmentize}
 
@@ -677,7 +677,7 @@ NoValueSetException is thrown when the the template is rendered.
 
 To avoid this exception, a default value can be configured.  For
 example:
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ val bar: String = "this is the default value"
 {pygmentize}
 
@@ -688,20 +688,20 @@ frequently accessed.  In this cases, it's convenient to import all the object's
 members.  This can be done by adding the import keyword to the attribute declaration.
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ import val model: Person
 %p Hello #{name}, what is the weather like in #{city}
 {pygmentize}
 
 is the same as:
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ val model: Person
 - import model._
 %p Hello #{name}, what is the weather like in #{city}
 {pygmentize}
 
 Which is the same as:
-{pygmentize:: text}
+{pygmentize:: haml}
 -@ val model: Person
 %p Hello #{model.name}, what is the weather like in #{model.city}
 {pygmentize}
@@ -712,7 +712,7 @@ Which is the same as:
 The equals character is followed by Scala code.
 This code is evaluated and the output is inserted into the document.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   = List("hi", "there", "reader!").mkString(" ")
   = "yo"
@@ -728,7 +728,7 @@ is compiled to:
 
 If the [`ScamlOptions.escape_html`](#escape_html-option) option is set, `=` will sanitize any
 HTML-sensitive characters generated by the script. For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 = """<script>alert("I'm evil!");</script>"""
 {pygmentize}
 
@@ -739,7 +739,7 @@ would be rendered to
 
 `=` can also be used at the end of a tag to insert Scala code within that tag.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p= "hello"
 {pygmentize}
 
@@ -758,7 +758,7 @@ almost all processing code and logic should be restricted
 to the Controller, the Helper, or partials.**
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 - var foo = "hello"
 - foo += " there"
 - foo += " you!"
@@ -774,7 +774,7 @@ Or alternatively, if you have a large block of Scala code, you can
 nest it under the hyphen character as demonstrated by the following example:
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 -
   var foo = "hello"
       // note: you can use creative indentation in the block
@@ -801,7 +801,7 @@ It ends when the indentation decreases.
 -->
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 - for(i <- 42 to 46)
   %p= i
 %p See, I can count!
@@ -818,7 +818,7 @@ is rendered to:
 {pygmentize}
 
 Another example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   - 2 match
     - case 1 =>
@@ -838,7 +838,7 @@ is rendered to:
     
 When inserting evaluated statements, it can also take advantage of Scala blocks. It can be handy
 for passing partial functions.  For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   = List(1,2,3).foldLeft("result: ")
     - (a,x)=>
@@ -846,7 +846,7 @@ for passing partial functions.  For example:
 {pygmentize}
           
 Is the same as:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   = List(1,2,3).foldLeft("result: ") { (a,x)=> { a+x } }
 {pygmentize}
@@ -866,7 +866,7 @@ formating on its input.
 Scaml always produces HTML source which is easy to read since
 it properly indented.  Even dynamically generated output is 
 properly indented.  For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %html
   %p
     = "line1\nline2\nline3"
@@ -890,7 +890,7 @@ indenting the text makes them render wrong.
 When you use `~` instead of `=`,
 Scaml will convert newlines to the XHTML newline escape code, `&#x000A;` and avoid
 adding spaces for indentation.  For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %html
   %pre
     ~ "line1\nline2\nline3"
@@ -910,12 +910,12 @@ renders to
 
 Scala code can be interpolated within plain text using `#{}`.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p This is #{quality} cake!
 {pygmentize}
 
 is the same as
-{pygmentize:: text}
+{pygmentize:: haml}
 %p= "This is the "+(quality)+" cake!"
 {pygmentize}
 
@@ -927,7 +927,7 @@ and might rendered to
 Backslashes can be used to escape `#{` strings,
 but they don't act as escapes anywhere else in the string.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   A slash make a difference here: \#{name} is set to: \\#{name}
   But is ignored for: \# or \\
@@ -967,7 +967,7 @@ An ampersand followed by one or two equals characters
 evaluates Scala code just like the equals without the ampersand,
 but sanitizes any HTML-sensitive characters in the result of the code.
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 &= "I like cheese & crackers"
 {pygmentize}
 
@@ -981,7 +981,7 @@ If the [`ScamlOptions.escape_html`](#escape_html-option) option is set,
 
 `&` can also be used on its own so that `#{}` interpolation is escaped.
 For example,
-{pygmentize:: text}
+{pygmentize:: haml}
 & I like #{"cheese & crackers"}
 {pygmentize}
 
@@ -1000,7 +1000,7 @@ By default, the single equals doesn't sanitize HTML either.
 However, if the [`:escape_html`](#escape_html-option) option is set,
 `=` will sanitize the HTML, but `!=` still won't.
 For example, if `:escape_html` is set:
-{pygmentize:: text}
+{pygmentize:: haml}
 = "I feel <strong>!"
 != "I feel <strong>!"
 {pygmentize}
@@ -1013,7 +1013,7 @@ I feel <strong>!
 
 `!` can also be used on its own so that `#{}` interpolation is unescaped.
 For example,
-{pygmentize:: text}
+{pygmentize:: haml}
 ! I feel #{"<strong>"}!
 {pygmentize}
 
@@ -1032,7 +1032,7 @@ The syntax is a colon followed by an optional list of filter flags and then a co
 separated list of filter names.
 
 A simple example,
-{pygmentize:: text}
+{pygmentize:: haml}
 %p
   :markdown
     Markdown
@@ -1057,7 +1057,7 @@ interpolated with `#{}` expressions.  It is invalid to use both
 the `!` and `&` flags at the same time. 
 
 The `&` flag enables sanitized interpolations.  For example,
-{pygmentize:: text}
+{pygmentize:: haml}
 - var flavor = "<raspberry/>"
 #content
   :&markdown
@@ -1072,7 +1072,7 @@ is rendered to
 {pygmentize}
 
 The `!` flag enables non-sanitized interpolations.  For example,
-{pygmentize:: text}
+{pygmentize:: haml}
 - var flavor = "<raspberry/>"
 #content
   :!markdown
@@ -1092,7 +1092,7 @@ The `~` filter flag enables preserves the white space of the content.
 The indent level is left unchanged and newlines are converted to `&#x000A;`
 
 For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %html
   %p<
     :~plain
@@ -1113,7 +1113,7 @@ is rendered to
 More than one filter can be be used by separating each filter name with a colon.  When
 this is done, the filters are chained together so that the output of filter on right, is
 passed as input to the filter on the left.  For example:
-{pygmentize:: text}
+{pygmentize:: haml}
 %pre
   :escaped :javascript
     alert("Hello");
