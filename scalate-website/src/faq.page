@@ -26,7 +26,7 @@ The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)
 
 ### How do I build Scalate
 
-See the [building guide](building.html)
+First [get the source](source.html) then see he [building guide](building.html)
 
 ### How do I get support?
 
@@ -40,9 +40,23 @@ We love [contributions](contributing.html)! More details on how to contribute an
 
 For details on how to edit the website and how it works see [How the Site works](site.html)
 
-### Using {project_name:}
+## The Scalate Approach
+
+### Isn't putting code in views a bad thing?
+
+Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
+
+### How does Scalate compare to Lift views?
+
+We [compare approaches here](code-in-view.html), see which is right for you and your team.
+
+## Using Scalate
 
 ### How do I get started?
+
+Your best bet is starting with the [User Guide](documentation/index.html) then for more detail reading either 
+* [Ssp Reference](documentation/ssp-reference.html) 
+* [Scaml Reference](documentation/scaml-reference.html) 
 
 ## Errors
 
