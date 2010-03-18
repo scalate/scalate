@@ -170,11 +170,15 @@ These are used with parentheses instead of brackets, like so:
 Scala variables can be used by omitting the quotes.
 For example:
 
-    %a(title=title href=href) Stuff
+{pygmentize:: haml}
+%a(title=title href=href) Stuff
+{pygmentize}
 
 This is the same as:
 
-    %a{:title =>title, :href => href} Stuff
+{pygmentize:: haml}
+%a{:title =>title, :href => href} Stuff
+{pygmentize}
 
 Complex expression are supported if you wrap them between the `{` 
 and `}` characters.
@@ -189,14 +193,14 @@ Would render as:
 {pygmentize}
 
 You can use both syntaxes together:
-{pygmentize:: xml}
+{pygmentize:: haml}
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
 
 You can also use `#{}` interpolation to insert complicated expressions
 in a HTML-style attribute:
 
-{pygmentize:: xml}
+{pygmentize:: haml}
 %span(class="widget_#{widget.number}")
 {pygmentize}
 
