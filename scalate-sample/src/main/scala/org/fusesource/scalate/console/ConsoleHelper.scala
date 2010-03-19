@@ -1,14 +1,8 @@
 package org.fusesource.scalate.console
 
 
-import _root_.java.io.{File, FileWriter}
-import _root_.javax.servlet.{ServletConfig, ServletContext}
-import _root_.javax.ws.rs.{GET, POST, QueryParam, Path}
-import _root_.org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine}
-import javax.ws.rs.core.Context
-import java.util.{Set => JSet}
-import scala.collection.mutable.Set
-import scala.collection.JavaConversions._
+import java.io.{File}
+import org.fusesource.scalate.servlet.{ServletRenderContext}
 import scala.xml.NodeSeq
 
 /**
@@ -43,7 +37,7 @@ class ConsoleHelper(context: ServletRenderContext) {
         files = file.listFiles
       }
     }
-    files.map(new Archetype(_))
+    files.map(f => new Archetype(new File(dir, f.getName)))
   }
 
   /**
@@ -51,7 +45,7 @@ class ConsoleHelper(context: ServletRenderContext) {
    */
   def newTemplateName(): Option[String] = resourceClassName match {
     case Some(resource) =>
-      val prefix = resource + "."
+      val prefix = "/" + resource.replace('.', '/') + "."
 
       if (templates.exists(_.startsWith(prefix)) == false) {
         Some(prefix + viewName)

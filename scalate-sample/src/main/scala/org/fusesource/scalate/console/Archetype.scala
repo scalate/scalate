@@ -26,6 +26,7 @@ case class Archetype(file: File) {
     }
   }
 
+  def archetype = file.getPath
 
   /**
    * Returns the URI to post to that generates the new template for this archetype

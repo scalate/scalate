@@ -18,11 +18,38 @@ package org.fusesource.scalate.servlet
 
 ;
 
-import javax.servlet.ServletConfig
+import _root_.javax.servlet.{ServletContext, ServletConfig}
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
 import java.io.File
 import scala.tools.nsc.Global;
+
+object ServletTemplateEngine {
+  val templateEngineKey = classOf[ServletTemplateEngine].getName
+
+  /**
+   * Gets the current template engine
+   *
+   * @throw IllegalArgumentException if no template engine has been registered with the {@link ServletContext}
+   */
+  def apply(servletContext: ServletContext): ServletTemplateEngine = {
+    val answer = servletContext.getAttribute(templateEngineKey)
+    if (answer == null) {
+      throw new IllegalArgumentException("No ServletTemplateEngine instance registered on ServletContext for key " +
+              templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?")
+    }
+    else {
+      answer.asInstanceOf[ServletTemplateEngine]
+    }
+  }
+
+  /**
+   * Updates the current template engine - called on initialisation of the {@link TemplateEngineServlet}
+   */
+  def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
+    servletContext.setAttribute(templateEngineKey, templateEngine)
+  }
+}
 
 /**
  * A TemplateEngine which initializes itself using a ServletConfig

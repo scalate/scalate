@@ -2,27 +2,6 @@
 
 %h2 Scalate Console
 
-%ul
-  %li templates: #{templates}
-  %li resource: #{resource}
-
-- val newFile = newTemplateName
-- if (newFile.isDefined)
-  - val name = newFile.get
-  %h3 Create New Custom Template
-  %p Create a new template called #{name} from archetype
-  %ul
-    - for (a <- archetypes)
-      %li
-        %form(action={uri(a.createUri(name))} method="post")
-          %input(type="submit" value={a.name})
-        
-    
-- if (templates.size > 0)
-  %h3 Edit Templates
-  %ul
-    - for (template <- templates)
-      %li
-        = editLink(template)
-          edit #{template}
-
+%p
+ The console is typically rendered in place currently, so there's nothing much to show here right now :)
+ 

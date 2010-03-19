@@ -1,6 +1,6 @@
-<%@ val paramName : String = "it" %>
-<%@ val paramType : Class[_] %>
-<% val i = introspect(paramType) %>
+<%@ val resourceName : String = "it" %>
+<%@ val resourceType : Class[_] %>
+<% val i = introspect(resourceType) %>
 <table class="${i.typeStyleName}">
   <% for (property <- i.properties) {%>
   <tr>
@@ -8,7 +8,7 @@
       <label>${property.label}</label>
     </td>
     <td class="value">
-      \${<%= paramName %>.<%= property.name %>}
+      \${<%= resourceName %>.<%= property.name %>}
     </td>
   </tr>
   <% } %>
