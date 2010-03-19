@@ -324,16 +324,17 @@ class ScamlParser extends IndentedParser() {
 
   def doctype_statement = prefixed("!!!", rep(some_space ~> """[^ \t \r \n]+""".r) <~ some_space ~ nl) ^^ { Doctype(_) }
 
-  def statement:Parser[Statement] =
-      positioned(haml_comment_statement) |
-      positioned(html_comment_statement) |
-      positioned(element_statement) |
-      positioned(evaluated_statement) |
-      positioned(attribute_statement) |
-      positioned(executed_statement) |
-      positioned(doctype_statement) |
-      positioned(filter_statement) |
-      positioned(text_statement)
+  def statement:Parser[Statement] = positioned(
+      haml_comment_statement |
+      html_comment_statement |
+      element_statement |
+      evaluated_statement |
+      attribute_statement |
+      executed_statement |
+      doctype_statement |
+      filter_statement |
+      text_statement
+    )
 
 
   def statement_block = rep(indent(statement, true))
