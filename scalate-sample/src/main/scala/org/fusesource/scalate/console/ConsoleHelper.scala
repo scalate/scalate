@@ -1,10 +1,16 @@
 package org.fusesource.scalate.console
 
-import _root_.org.fusesource.scalate.RenderContext
-import _root_.org.fusesource.scalate.util.Logging
-import java.io.File
 import org.fusesource.scalate.servlet.ServletRenderContext
-import xml.{Text, NodeSeq}
+import org.fusesource.scalate.util.Logging
+import java.io.File
+import scala.io.Source
+import scala.xml.{Text, NodeSeq}
+
+case class SourceLine(line: Int, source: String) {
+  def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
+
+  def nonBlank = source != null && source.length > 0
+}
 
 /**
  * Helper snippets for creating the console
@@ -156,4 +162,36 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
    * Link to the current page with the option disabled
    */
   def disableLink(name: String): String = currentUriMinus(consoleParameter + "=" + name)
+
+
+  /**
+   * Retrieves a chunk fo lines either side of the given error line
+   */
+  def lines(template: String, errorLine: Int, chunk: Int = 5): Seq[SourceLine] = {
+    val file = servletContext.getRealPath(template)
+    if (file != null) {
+      val source = Source.fromPath(file)
+      val start = (errorLine - chunk).min(0)
+      val end = errorLine + chunk
+
+      var seq = start.to(end).map(i => SourceLine(i, source.getLine(i)))
+
+/*
+      // lets strip the head and tail blank items (TODO there must be an easier way??)
+      val from = seq.indexWhere(_.nonBlank) - 1
+      if (from > 0) {
+        seq = seq.drop(from)
+      }
+      val to = seq.lastIndexWhere(_.nonBlank) + 1
+      if (to > 0) {
+        seq = seq.take(to)
+      }
+*/
+      seq
+    }
+    else {
+      Nil
+    }
+  }
+  
 }

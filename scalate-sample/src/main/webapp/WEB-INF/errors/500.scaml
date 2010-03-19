@@ -23,7 +23,15 @@
         = editLink(template, pos.line, pos.column)
           In #{template} near line #{pos.line} col #{pos.column}
 
-      -# TODO show snippet of file here...
+      - for (s <- lines(template, pos.line))
+        - val ss = s.style(pos.line)
+        -# TODO we need the editLink code to handle XML encoded bodies!
+        -#  = editLink(template, s.line, pos.column)
+        %div(class=ss)
+          %span.lineNumber
+            = s.line
+          %pre
+            &nbsp;#{s.source}
 
   - case e:CompilerException =>
     - val template = e.template
@@ -37,8 +45,8 @@
       %h2 
         = editLink(template)
           In #{template} 
-
-      -# TODO show snippet of file here...
+          
+      -# TODO show code here!
 
   - case u =>
     #header.block
