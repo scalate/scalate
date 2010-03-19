@@ -1,0 +1,12 @@
+%h1 Compiler Error
+
+%table
+  %tr
+   %th Name
+   %th Value
+  - for (i <- unknown)
+    %tr
+      %td 
+        = i.name
+      %td
+        = i.value

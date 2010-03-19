@@ -75,4 +75,9 @@
   <welcome-file-list>
     <welcome-file>index.ssp</welcome-file>
   </welcome-file-list>
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/errors/500.scaml</location>
+  </error-page>
 </web-app>
