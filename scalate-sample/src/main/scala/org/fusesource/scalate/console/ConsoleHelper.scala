@@ -1,16 +1,17 @@
 package org.fusesource.scalate.console
 
+import _root_.org.fusesource.scalate.RenderContext
+import _root_.org.fusesource.scalate.util.Logging
 import java.io.File
 import org.fusesource.scalate.servlet.ServletRenderContext
-import scala.xml.NodeSeq
-
+import xml.{Text, NodeSeq}
 
 /**
  * Helper snippets for creating the console
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: ServletRenderContext) {
+class ConsoleHelper(context: ServletRenderContext) extends Logging {
   import context._
 
   val consoleParameter = "_scalate"
@@ -108,7 +109,18 @@ class ConsoleHelper(context: ServletRenderContext) {
    */
   def editLink(template: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val file = servletContext.getRealPath(template)
-    EditLink.editLink(file, line, col)(body)
+    val answer = EditLink.editLink(file, line, col)(body)
+
+    // lets try create a link to the generated file too
+    val genFile = engine.sourceFileName(template)
+    if (genFile.exists) {
+      val codeLink = editFileLink(genFile.getAbsolutePath)(context << "scala")
+      answer ++ (Text(" - ") :: Nil) ++ codeLink
+    }
+    else {
+      warning("Could not find scala source file: " + genFile)
+      answer
+    }
   }
 
   /**

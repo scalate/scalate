@@ -269,15 +269,22 @@ class TemplateEngine {
     ce.template
   }
 
+  /**
+   * Returns the source file of the template URI
+   */
+  def sourceFileName(uri: String) = {
+    // Write the source code to file..
+    // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
+    new File(sourceDirectory, uri.replace(':', '_') + ".scala")
+  }
+
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     try {
 
       // Generate the scala source code from the template
       val code = generateScala(uri, extraBindings)
 
-      // Write the source code to file..
-      // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
-      val sourceFile = new File(sourceDirectory, uri.replace(':', '_') + ".scala")
+      val sourceFile = sourceFileName(uri)
       sourceFile.getParentFile.mkdirs
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 

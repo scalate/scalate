@@ -7,5 +7,5 @@ echo "    mvn scala:cc"
 echo
 echo Using JRebel home directory of $JAVAREBEL_HOME
 MAVEN_OPTS="-noverify -javaagent:$JAVAREBEL_HOME/javarebel.jar" 
-mvn jetty:run $*
+mvn $* jetty:run
 
