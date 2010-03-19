@@ -17,12 +17,13 @@
 
 package org.fusesource.scalate
 
+import _root_.scala.util.parsing.input.Position
 import java.io.File
 
 
 trait CodeGenerator {
 
-  case class Code(className:String, source:String, dependencies:Set[String])
+  case class Code(className:String, source:String, dependencies:Set[String], positions:Map[Position, Position])
 
   def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code
 

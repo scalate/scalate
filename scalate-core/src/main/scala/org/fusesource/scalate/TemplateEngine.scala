@@ -289,7 +289,7 @@ class TemplateEngine {
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
       // Compile the generated scala code
-      compiler.compile(sourceFile)
+      compiler.compile(sourceFile, code.positions)
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
@@ -304,6 +304,13 @@ class TemplateEngine {
         } else {
           throw new TemplateException(e.getMessage, e)
         }
+
+      case e:CompilerException=>
+        e.template = uri
+        throw e
+      case e: InvalidSyntaxException =>
+        e.template = uri
+        throw e
       case e: TemplateException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
