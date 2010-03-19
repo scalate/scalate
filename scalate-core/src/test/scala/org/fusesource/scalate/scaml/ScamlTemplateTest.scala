@@ -283,15 +283,13 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
 """)
 
-/*
   testRender("Scala variables can be used by omitting the quotes.",
 """
 %a(title=title href=href) Stuff
 ""","""
-<a title='MyPage' href='http://scalate.fusesource.org'>Stuff</a>
+<a title="MyPage" href="http://scalate.fusesource.org">Stuff</a>
 """)
-*/
-  
+
   testRender("You can use both syntaxes together.",
 """
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
@@ -306,7 +304,6 @@ class ScamlTemplateTest extends ScamlTestSupport {
 ""","""
 <script type="text/javascript" src="javascripts/script"/>
 """)
-
 
   testRender("Html Attributes can use complex scala expressions",
 """
