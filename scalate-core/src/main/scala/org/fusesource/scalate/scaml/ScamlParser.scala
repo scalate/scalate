@@ -259,7 +259,7 @@ class ScamlParser extends IndentedParser() {
         case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
     }
 
-  def element_statement:Parser[Element] = guarded("%"|"."|"#", full_element_statement)
+  def element_statement:Parser[Element] = guarded("%"|"."|"#"~word, full_element_statement)
 
   def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
   def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
