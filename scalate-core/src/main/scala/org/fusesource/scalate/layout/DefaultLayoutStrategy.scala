@@ -43,6 +43,8 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
       fine("Attempting to load layout: " + layoutTemplate)
       fine("layout " + layoutTemplate + " with attributes: " + context.attributes)
       context.attributes("body") = body
+      context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List()) 
+
       engine.load(layoutTemplate).render(context)
   }
   

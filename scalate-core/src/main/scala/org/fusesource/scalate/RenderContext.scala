@@ -287,8 +287,7 @@ trait RenderContext {
       currentTemplate = uri
 
       // lets keep track of the templates
-      val list = uri :: attributeOrElse[List[String]]("scalateTemplates", List()) 
-      attributes("scalateTemplates") = list
+      attributes("scalateTemplates") = uri :: attributeOrElse[List[String]]("scalateTemplates", List()) 
 
       block
     } finally {

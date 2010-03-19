@@ -13,6 +13,8 @@ import scala.xml.NodeSeq
 class ConsoleHelper(context: ServletRenderContext) {
   import context._
 
+  val consoleParameter = "_scalate"
+
   // TODO figure out the viewName from the current template?
   def viewName = "index"
 
@@ -64,6 +66,14 @@ class ConsoleHelper(context: ServletRenderContext) {
     case _ => Nil
   }
 
+  /**
+   * Returns the current layouts used in the current context
+   */
+  def layouts: List[String] = attributes.get("scalateLayouts") match {
+    case Some(list: List[String]) => list.removeDuplicates.sortWith(_<_)
+    case _ => Nil
+  }
+
 
   /**
    * returns an edit link for the given URI, discovering the right URL
@@ -81,4 +91,20 @@ class ConsoleHelper(context: ServletRenderContext) {
     val file = servletContext.getRealPath(template)
     EditLink.editLink(file, line, col)(body)
   }
+
+
+  /**
+   * Returns true if the option is enabled
+   */
+  def optionEnabled(name: String): Boolean = parameterValues(consoleParameter).contains(name)
+
+  /**
+   * Link to the current page with the option enabled
+   */
+  def enableLink(name: String): String = currentUriPlus(consoleParameter + "=" + name)
+
+  /**
+   * Link to the current page with the option disabled
+   */
+  def disableLink(name: String): String = currentUriMinus(consoleParameter + "=" + name)
 }

@@ -62,7 +62,6 @@ object EditLink {
     </span>
   }
   
-  
 
   def isMacOsx = System.getProperty("os.name", "").contains("Mac OS X")
 
