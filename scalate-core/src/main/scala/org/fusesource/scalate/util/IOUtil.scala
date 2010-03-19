@@ -19,18 +19,16 @@ package org.fusesource.scalate.util
 
 import java.io._
 
-object IOUtil
-{
-
-  def loadTextFile( path: File, encoding:String="UTF-8" ) = {
+object IOUtil {
+  def loadTextFile(path: File, encoding: String = "UTF-8") = {
     new String(loadBinaryFile(path), encoding)
   }
 
-  def loadBinaryFile( path: File ): Array[Byte] = {
+  def loadBinaryFile(path: File): Array[Byte] = {
     val baos = new ByteArrayOutputStream
-    val in = new FileInputStream( path )
+    val in = new FileInputStream(path)
     try {
-      copy( in, baos )
+      copy(in, baos)
     } finally {
       in.close
     }
@@ -39,40 +37,54 @@ object IOUtil
   }
 
 
-  def writeBinaryFile( path: File, contents: Array[Byte] ): Unit = {
-    val out = new FileOutputStream( path )
+  def writeText(path: String, text: String): Unit = writeText(new File(path), text)
+
+  def writeText(path: File, text: String): Unit = {
+    val out = new FileWriter(path)
     try {
-      out.write( contents )
+      out.write(text)
     } finally {
       out.close
     }
   }
 
 
-  def copy( in: InputStream, out: OutputStream ): Long = {
-    var bytesCopied: Long = 0
-    val buffer = new Array[Byte]( 8192 )
+  def writeBinaryFile(path: String, contents: Array[Byte]): Unit = writeBinaryFile(new File(path), contents)
 
-    var bytes = in.read( buffer )
-    while( bytes >= 0 ) {
-      out.write( buffer, 0, bytes )
+  def writeBinaryFile(path: File, contents: Array[Byte]): Unit = {
+    val out = new FileOutputStream(path)
+    try {
+      out.write(contents)
+    } finally {
+      out.close
+    }
+  }
+
+
+  def copy(in: InputStream, out: OutputStream): Long = {
+    var bytesCopied: Long = 0
+    val buffer = new Array[Byte](8192)
+
+    var bytes = in.read(buffer)
+    while (bytes >= 0) {
+      out.write(buffer, 0, bytes)
       bytesCopied += bytes
-      bytes = in.read( buffer )
+      bytes = in.read(buffer)
     }
 
     bytesCopied
   }
 
 
-  def copy( in: Reader, out: Writer ): Long = {
+  def copy(in: Reader, out: Writer): Long = {
     var charsCopied: Long = 0
-    val buffer = new Array[Char]( 8192 )
+    val buffer = new Array[Char](8192)
 
-    var chars = in.read( buffer )
-    while( chars >= 0 ) {
-      out.write( buffer, 0, chars )
+    var chars = in.read(buffer)
+    while (chars >= 0) {
+      out.write(buffer, 0, chars)
       charsCopied += chars
-      chars = in.read( buffer )
+      chars = in.read(buffer)
     }
 
     charsCopied

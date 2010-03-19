@@ -15,7 +15,7 @@ class ArchetypeTest extends FunSuite with Logging {
   engine.workingDirectory = new File("target/test-data/ArchetypeTest")
 
   test("use tableView archetype") {
-    val output = engine.layout("src/main/webapp/WEB-INF/archetypes/index/tableView.ssp", Map("paramType" -> classOf[Person])).trim
+    val output = engine.layout("src/main/webapp/WEB-INF/archetypes/index/tableView.ssp", Map("resourceType" -> classOf[Person])).trim
 
     println("Generated SSP:")
     println(output)

@@ -36,8 +36,7 @@
 
     <log4j-version>1.2.14</log4j-version>
     <junit-version>4.5</junit-version>
-
-    <sitemesh-version>2.3</sitemesh-version>
+    <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
 
     <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalaTest-version>
     <scalaVersion>2.8.0.Beta1</scalaVersion>
@@ -158,7 +157,6 @@
   </modules>
 
   <dependencies>
-
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
@@ -169,7 +167,6 @@
       <artifactId>scala-compiler</artifactId>
       <version>${scalaVersion}</version>
     </dependency>
-
   </dependencies>
 
   <dependencyManagement>
@@ -196,6 +193,11 @@
         <version>2.0a1</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.markdownj</groupId>
+        <artifactId>markdownj</artifactId>
+        <version>${markdownj-version}</version>
+      </dependency>
 
       <!-- testing -->
 <!--

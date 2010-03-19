@@ -14,22 +14,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.servlet;
+package org.fusesource.scalate.servlet
 
-import javax.servlet.ServletConfig
+;
+
+import _root_.javax.servlet.{ServletContext, ServletConfig}
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
-import org.fusesource.scalate.util.Sequences.removeDuplicates
 import java.io.File
 import scala.tools.nsc.Global;
+
+object ServletTemplateEngine {
+  val templateEngineKey = classOf[ServletTemplateEngine].getName
+
+  /**
+   * Gets the current template engine
+   *
+   * @throw IllegalArgumentException if no template engine has been registered with the {@link ServletContext}
+   */
+  def apply(servletContext: ServletContext): ServletTemplateEngine = {
+    val answer = servletContext.getAttribute(templateEngineKey)
+    if (answer == null) {
+      throw new IllegalArgumentException("No ServletTemplateEngine instance registered on ServletContext for key " +
+              templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?")
+    }
+    else {
+      answer.asInstanceOf[ServletTemplateEngine]
+    }
+  }
+
+  /**
+   * Updates the current template engine - called on initialisation of the {@link TemplateEngineServlet}
+   */
+  def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
+    servletContext.setAttribute(templateEngineKey, templateEngine)
+  }
+}
 
 /**
  * A TemplateEngine which initializes itself using a ServletConfig
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
-
+class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true))
   workingDirectory = new File(config.getServletContext.getRealPath("WEB-INF/_scalate/"))
   workingDirectory.mkdirs
@@ -39,23 +66,23 @@ class ServletTemplateEngine(var config:ServletConfig) extends TemplateEngine {
   private def buildClassPath(): String = {
 
     val builder = new ClassPathBuilder
-    
+
     // Add optional classpath prefix via web.xml parameter
     builder.addEntry(config.getInitParameter("compiler.classpath.prefix"))
-    
+
     // Add containers class path
     builder.addPathFrom(getClass)
-           .addPathFrom(classOf[ServletConfig])
-           .addPathFrom(classOf[Product])
-           .addPathFrom(classOf[Global])
-    
+            .addPathFrom(classOf[ServletConfig])
+            .addPathFrom(classOf[Product])
+            .addPathFrom(classOf[Global])
+
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
     builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
-           .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
+            .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
 
     // Add optional classpath suffix via web.xml parameter
-    builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))           
-    
+    builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))
+
     builder.classPath
   }
 }

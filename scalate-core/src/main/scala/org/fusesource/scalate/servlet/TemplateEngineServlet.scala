@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse
 import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.TemplateEngine
 
+
 /**
  * Servlet which renders the requested Scalate template.
  *
@@ -30,13 +31,17 @@ import org.fusesource.scalate.TemplateEngine
  */
 class TemplateEngineServlet extends HttpServlet {
 
-  var templateEngine: TemplateEngine = _
+  var templateEngine: ServletTemplateEngine = _
 
   override def init(config: ServletConfig) {
     super.init(config)
     templateEngine = new ServletTemplateEngine(config)
+
+    // register the template engine so it can be easily resolved
+    ServletTemplateEngine(getServletContext) = templateEngine
   }
 
+  
   override def service(request: HttpServletRequest, response: HttpServletResponse) {
     // Get our ducks in a row before we get started
     val uri = request.getServletPath

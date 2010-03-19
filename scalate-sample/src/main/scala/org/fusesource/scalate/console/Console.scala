@@ -1,15 +1,13 @@
 package org.fusesource.scalate.console
 
-import _root_.java.io.{File, FileWriter}
-import _root_.javax.servlet.{ServletConfig, ServletContext}
-import _root_.javax.ws.rs.{GET, POST, QueryParam, Path}
-import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
+import _root_.java.io.FileWriter
+import _root_.javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import _root_.javax.servlet.ServletContext
+import _root_.javax.ws.rs._
+import _root_.org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine}
+import _root_.org.fusesource.scalate.util.Constraints._
+import _root_.org.fusesource.scalate.util.IOUtil
 import javax.ws.rs.core.Context
-import java.util.{Set => JSet}
-import scala.collection.mutable.Set
-import scala.collection.JavaConversions._
-import scala.xml.NodeSeq
-
 
 /**
  * The Scalate development console
@@ -18,108 +16,57 @@ import scala.xml.NodeSeq
  */
 @Path("/scalate")
 class Console extends DefaultRepresentations {
-
-  @QueryParam("r")
-  var resource: String = _
-
-  @QueryParam("t")
-  var _templates: JSet[String] = _
-
   @Context
   var _servletContext: ServletContext = _
-
-  def servletContext: ServletContext = {
-    if (_servletContext == null) {
-      throw new NullPointerException("servletContext not injected")
-    }
-    _servletContext
-  }
-
   @Context
-  var _servletConfig: ServletConfig = _
+  var _request: HttpServletRequest = _
+  @Context
+  var _response: HttpServletResponse = _
 
-  def servletConfig: ServletConfig = {
-    if (_servletConfig == null) {
-      throw new NullPointerException("servletConfig not injected")
-    }
-    _servletConfig
-  }
+  def servletContext: ServletContext = assertInjected(_servletContext, "servletContext")
+
+  def request: HttpServletRequest = assertInjected(_request, "request")
+
+  def response: HttpServletResponse = assertInjected(_response, "response")
+
 
   @POST
   @Path("createTemplate")
-  def createTemplate(@QueryParam("name") newTemplateName: String, @QueryParam("archetype") archetype: String) = {
+  def createTemplate(@FormParam("newTemplateName") newTemplateName: String,
+                     @FormParam("archetype") archetype: String,
+                     @FormParam("resourceClass") resourceClassName: String) = {
+
+    assertNotNull(newTemplateName, "name")
+    assertNotNull(archetype, "archetype")
+    assertNotNull(resourceClassName, "resourceClass")
+
     // lets evaluate the archetype and write the output to the given template name
     val fileName = servletContext.getRealPath(newTemplateName)
+
+    println("About to render archetype: " + archetype + " and generate: " + fileName)
+
     if (fileName == null) {
       throw new IllegalArgumentException("Could not deduce real file name for: " + newTemplateName)
     }
-    val engine = new ServletTemplateEngine(servletConfig)
-    val text = engine.layout(archetype)
-    val out = new FileWriter(fileName)
-    out.write(text)
-    out.close
-  }
+    val engine = ServletTemplateEngine(servletContext)
+    val context = new ServletRenderContext(engine, request, response, servletContext)
 
-  def templates: Set[String] = {
-    if (_templates != null) {
-      asSet(_templates)
+    // lets try load the resource class
+    val resourceClass = try {
+      Thread.currentThread.getContextClassLoader.loadClass(resourceClassName)
     }
-    else {
-      Set()
+    catch {
+      case e : ClassNotFoundException => getClass.getClassLoader.loadClass(resourceClassName)
     }
-  }
+    
+    context.attributes("resourceType") = resourceClass
+    context.attributes("layout") = ""
 
-  // TODO figure out the viewName from the current template?
-  def viewName = "index"
-
-  /**
-   * Returns all the available archetypes for the current view name
-   */
-  def archetypes: Array[Archetype] = {
-    val dir = "/WEB-INF/archetypes/" + viewName
-    var files: Array[File] = Array()
-    val fileName = servletContext.getRealPath(dir)
-    if (fileName != null) {
-      val file = new File(fileName)
-      if (file.exists && file.isDirectory) {
-        files = file.listFiles
-      }
+    // lets capture the output of rendering the context
+    val text = context.capture {
+      engine.layout(archetype, context)
     }
-    files.map(new Archetype(_))
-  }
 
-  @GET
-  @Path("archetypes")
-  def archetypesText = archetypes.mkString(", ")
-
-  def newTemplateName: Option[String] = {
-    if (resource != null) {
-      val prefix = resource + "."
-
-      if (templates.exists(_.startsWith(prefix)) == false) {
-        Some(prefix + viewName)
-      }
-      else {
-        None
-      }
-    }
-    None
-  }
-
-  /**
-   * returns an edit link for the given URI, discovering the right URL
-   * based on your OS and whether you have TextMate installed and whether you
-   * have defined the <code>scalate.editor</code> system property
-   */
-  def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
-
-    /**
-     * returns an edit link for the given URI, discovering the right URL
-     * based on your OS and whether you have TextMate installed and whether you
-     * have defined the <code>scalate.editor</code> system property
-     */
-  def editLink(template: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    val file = servletContext.getRealPath(template)
-    EditLink.editLink(file, line, col)(body)
+    IOUtil.writeText(fileName, text)
   }
 }
