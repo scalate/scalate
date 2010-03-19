@@ -19,10 +19,10 @@
 package org.fusesource.scalate.ssp
 
 import scala.util.parsing.combinator._
-import util.parsing.input.CharSequenceReader
 import org.fusesource.scalate.InvalidSyntaxException
+import util.parsing.input.{Positional, CharSequenceReader}
 
-sealed abstract class PageFragment
+sealed abstract class PageFragment extends Positional
 
 case class CommentFragment(comment: String) extends PageFragment
 case class DollarExpressionFragment(code: String) extends PageFragment
@@ -86,9 +86,9 @@ class SspParser extends RegexParsers {
   val scriptlet_fragment = wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
   val text_fragment = litteral_part       ^^ { TextFragment(_) }
 
-  val page_fragment: Parser[PageFragment] = comment_fragment | dollar_expression_fragment |
+  val page_fragment: Parser[PageFragment] = positioned(comment_fragment | dollar_expression_fragment |
           attribute_fragement | expression_fragment | scriptlet_fragment |
-          text_fragment
+          text_fragment)
 
   val page_fragments = rep(page_fragment)
 
@@ -96,7 +96,7 @@ class SspParser extends RegexParsers {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case _ => throw new InvalidSyntaxException(x.toString)
+      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 

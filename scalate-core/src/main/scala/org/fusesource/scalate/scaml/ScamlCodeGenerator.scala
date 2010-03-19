@@ -106,6 +106,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Statement):Unit = {
       statement match {
+        case s:Newline=> {
+        }
         case s:Attribute=> {
         }
         case s:ScamlComment=> {
