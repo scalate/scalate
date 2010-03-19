@@ -35,7 +35,7 @@
           - for (template <- templates)
             %li
               = editLink(template)
-                = template
+                = template.stripPrefix("/")
     %tr
       %td Layouts
       %td
@@ -43,7 +43,7 @@
           - for (layout <- layouts)
             %li
               = editLink(layout)
-                = layout
+                = layout.stripPrefix("/")
 
   %a(href={disableLink("console")} title="Hide the Scalate Console") 
     Hide Scalate Console
