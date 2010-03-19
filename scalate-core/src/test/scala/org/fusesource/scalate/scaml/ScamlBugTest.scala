@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class ScamlBugTest extends ScamlTestSupport {
 
-    testRender("SCALATE-45 test1",
+    testRender("SCALATE-44 test1",
 """
 - if (name == "Hiram")
   - if (title == "MyPage")
