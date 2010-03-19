@@ -7,4 +7,27 @@
   border: 1px solid #BDBD81;
   font-family:Arial,Verdana,Helvetica,sans-serif;
   font-size: 80%;
+  max-width: 400px;
+}
+
+#scalate-console .templates ul, #scalate-console .resources ul, #scalate-console .layouts ul   {
+  padding-left:20px;
+  overflow: auto;
+}
+
+#scalate-console .toggle {
+  text-align: right;
+}
+
+#scalate-console div.attributes {
+  margin: 10px;
+  overflow: auto;
+  background: #E3E39B;
+}
+
+#scalate-console div.body {
+  margin: 10px;
+  overflow: auto;
+  max-height: 300px;
+  background: white;
 }
