@@ -11,7 +11,7 @@
 
 - exception match
   - case e:InvalidSyntaxException =>
-    - val template = "/scaml/errors/templateCompileError.scaml"
+    - val template = e.template
     - val pos = e.pos
     
     #header.block
@@ -25,10 +25,27 @@
 
       -# TODO show snippet of file here...
 
+  - case e:CompilerException =>
+    - val template = e.template
+    -# - val pos = e.pos
+    
+    #header.block
+      %h1
+        = message
+        
+    #source.block 
+      %h2 
+        = editLink(template)
+          In #{template} 
+
+      -# TODO show snippet of file here...
+
   - case u =>
     #header.block
       %h1
         = message
+      %p
+        = u
 
 
 
