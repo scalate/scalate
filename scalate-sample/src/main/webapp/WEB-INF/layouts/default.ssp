@@ -19,7 +19,7 @@
   <div id="navigation">
   	<div class="wrapper">
       <ul>
-        <% if (request.getRequestURI.startsWith("/index.")) { %>
+        <% if (requestURI.startsWith("/index.")) { %>
         <li class="webgen-menu-level1 webgen-menu-item-selected"><span>Home</span></li>
         <% } else { %>
         <li class="webgen-menu-level1 webgen-menu-submenu"><a href="/">Home</a></li>
