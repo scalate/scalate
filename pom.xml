@@ -459,11 +459,13 @@
         </reportSets>
       </plugin>
 
+      <!-- Can't use this until it supports scala based mojo extractors
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>2.5</version>
       </plugin>
+      -->
       
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
