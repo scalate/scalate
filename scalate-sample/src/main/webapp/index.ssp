@@ -111,3 +111,15 @@ Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup
     <a href="foo/def">Item DEF</a> a child resource
   </li>
 </ul>
+
+<h2>Error Messages</h2>
+
+<ul>
+  <li>
+    <a href="scaml/errors/templateCompileError.scaml">Template Syntax Error</a>
+  </li>
+  <li>
+    <a href="scaml/errors/scalaCompileError.scaml">Scala Compile Error</a>
+  </li>
+</ul>
+
