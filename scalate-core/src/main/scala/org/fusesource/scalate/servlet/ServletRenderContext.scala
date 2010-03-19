@@ -1,13 +1,14 @@
 package org.fusesource.scalate.servlet
 
+import _root_.javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._
-import javax.servlet.{ServletContext, ServletException}
 import java.lang.String
 import java.util.{Locale}
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 import org.fusesource.scalate.{AttributeMap, TemplateEngine, DefaultRenderContext}
+import org.fusesource.scalate.util.URIs._
 
 /**
  * A template context for use in servlets
@@ -52,6 +53,11 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
     override def toString = keySet.map(k => k + " -> " + apply(k)).mkString("{", ", ", "}")
   }
 
+  def servletConfig: ServletConfig = engine match {
+    case servletEngine: ServletTemplateEngine => servletEngine.config
+    case _ => throw new IllegalArgumentException("render context not created with ServletTemplateEngine so cannot provide a ServletConfig")
+  }
+  
   override def locale: Locale = {
     var locale = request.getLocale
     if (locale == null) Locale.getDefault else locale
@@ -86,6 +92,21 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
   }
 
   /**
+   * Returns the current URI with new query arguments (separated with &)
+   */
+  def currentUriPlus(newQueryArgs: String) = {
+    uriPlus(requestURI, queryString, newQueryArgs)
+  }
+
+
+  /**
+   * Returns the current URI with query arguments (separated with &) removed
+   */
+  def currentUriMinus(newQueryArgs: String) = {
+    uriMinus(requestURI, queryString, newQueryArgs)
+  }
+
+  /**
    * Returns all of the parameter values
    */
   def parameterValues(name: String): Array[String] = {
@@ -102,5 +123,29 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
    * Returns the first parameter
    */
   def parameter(name: String) = {request.getParameter(name)}
+
+  /**
+   * Returns the forwarded request uri or the current request URI if its not forwarded
+   */
+  def requestURI: String = attributes.get("javax.servlet.forward.request_uri") match {
+    case Some(value: String) => value
+    case _ => request.getRequestURI
+  }
+
+  /**
+   * Returns the forwarded query string or the current query string if its not forwarded
+   */
+  def queryString: String = attributes.get("javax.servlet.forward.query_string") match {
+    case Some(value: String) => value
+    case _ => request.getQueryString
+  }
+
+  /**
+   * Returns the forwarded context path or the current context path if its not forwarded
+   */
+  def contextPath: String = attributes.get("javax.servlet.forward.context_path") match {
+    case Some(value: String) => value
+    case _ => request.getContextPath
+  }
 
 }

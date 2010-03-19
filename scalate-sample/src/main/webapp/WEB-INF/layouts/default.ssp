@@ -36,7 +36,7 @@
   <div id='footer'>
   	<div class='wrapper'>
       <hr/>
-      ${include("/org/fusesource/scalate/console/consoleLink.ssp")}
+      ${include("/org/fusesource/scalate/console/console.scaml")}
   	</div>
   </div>
 

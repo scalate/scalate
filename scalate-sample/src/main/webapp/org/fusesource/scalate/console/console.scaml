@@ -1,0 +1,53 @@
+-@ import val consoleHelper: ConsoleHelper = new ConsoleHelper(context) 
+
+- if (parameterValues("_scalate").contains("console"))
+  %h2 Scalate Console
+
+  %ul
+    %li templates: #{templates}
+    %li resource: #{resourceClassName}
+
+  - val newFile = newTemplateName
+  - if (newFile.isDefined)
+    - val name = newFile.get
+    %h3 Create New Custom Template
+    %p Create a new template called #{name} from archetype
+    %ul
+      - for (a <- archetypes)
+        %li
+          %form(action={uri(a.createUri(name))} method="post")
+            %input(type="submit" value={a.name})
+        
+    
+  - if (templates.size > 0)
+    %h3 Edit Templates
+    %ul
+      - for (template <- templates)
+        %li
+          = editLink(template)
+            edit #{template}
+
+
+  %a(href={currentUriMinus("_scalate=console")} title="Hide the Scalate Console") 
+    Hide Scalate Console
+  - if (parameterValues("_scalate").contains("showAttributes"))
+    %table#attributes
+      %tr
+        %th Attribute
+        %th Value
+        - for (k <- attributeKeys) 
+          %tr
+            %td#name
+              = k
+            %td#value
+              = attributes(k)
+    %a(href={currentUriMinus("_scalate=showAttributes")} title="Hide the Attributes") 
+      Hide Attributes
+  - else
+    %a(href={currentUriPlus("_scalate=showAttributes")} title="Show the Attributes") 
+      Show Attributes
+    
+- else
+  %a(href={currentUriPlus("_scalate=console")} title="Show the Scalate Console") 
+    Show Scalate Console
+

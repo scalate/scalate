@@ -270,10 +270,16 @@ trait RenderContext {
     // restore old values
     for (key <- attrMap.keysIterator) {
       val oldValue = oldValues.get(key)
-      setAttribute(key, oldValue)
+      if (removeOldAttributes || oldValue.isDefined) {
+        setAttribute(key, oldValue)
+      }
     }
   }
 
+  /**
+   * Should we remove attributes from the context after we've rendered a child request?
+   */
+  protected def removeOldAttributes = true
 
   protected def withUri(uri: String)(block: => Unit): Unit = {
     val original = currentTemplate
