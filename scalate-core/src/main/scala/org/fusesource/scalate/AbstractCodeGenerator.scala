@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate
 
+
+import _root_.scala.util.parsing.input.{OffsetPosition, Positional, Position}
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
@@ -32,6 +34,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
   abstract class AbstractSourceBuilder[T] {
     var indent_level = 0
     var code = ""
+    var generated_positions = Map[Position, Int]()
 
     def <<(): this.type = <<("")
 
@@ -41,6 +44,21 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       }
       code += line + "\n";
       this
+    }
+
+    def << (node:Positional): this.type = {
+      generated_positions = generated_positions + ( node.pos -> current_position )
+      this
+    }
+
+    def current_position = {
+      code.length
+    }
+
+    def positions():Map[Position,Position] = {
+      generated_positions.map {
+        entry=>(entry._1->OffsetPosition(code, entry._2))
+      }
     }
 
     def indent[T](op: => T): T = {indent_level += 1; val rc = op; indent_level -= 1; rc}

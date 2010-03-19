@@ -17,6 +17,7 @@
 
 package org.fusesource.scalate.ssp
 
+import tools.nsc.util.{FakePos, NoPosition, Position}
 import org.fusesource.scalate._
 import org.fusesource.scalate.util.ClassPathBuilder
 import org.fusesource.scalate.util.Logging
@@ -33,12 +34,17 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
   val compiler = new Global(settings, null)
 
-  def compile(file:File): Unit = {
+  def compile(file:File, positions:Map[scala.util.parsing.input.Position, scala.util.parsing.input.Position]): Unit = {
     
     synchronized {
       val messageCollector = new StringWriter
       val messageCollectorWrapper = new PrintWriter(messageCollector)
-      val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper)
+      val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper) {
+        override def printMessage(posIn: Position, msg: String) {
+          // TODO: remap using the positions map..
+          super.printMessage(posIn, msg)
+        }
+      }
       compiler.reporter = reporter
 
       // Attempt compilation
@@ -48,7 +54,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       if (reporter.hasErrors) {
         reporter.printSummary
         messageCollectorWrapper.close
-        throw new TemplateException("Compilation failed:\n" +messageCollector)
+        throw new CompilerException("Compilation failed:\n" +messageCollector)
       }
     }
   }

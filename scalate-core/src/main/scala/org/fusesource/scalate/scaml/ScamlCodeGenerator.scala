@@ -105,6 +105,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Statement):Unit = {
+      this << statement;
       statement match {
         case s:Newline=> {
         }
@@ -492,7 +493,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val builder = new SourceBuilder()
     builder.generate(packageName, className, bindings, statements)
-    Code(this.className(uri), builder.code, Set(uri))
+    Code(this.className(uri), builder.code, Set(uri), builder.positions)
   }
 
 

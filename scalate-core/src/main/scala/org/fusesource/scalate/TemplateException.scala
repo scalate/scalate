@@ -33,7 +33,13 @@ class ResourceNotFoundException(resource: String, root: String = "")
     "Could not load resource: [" + resource + 
     (if (root == "") "]" else "]; are you sure it's within [" + root + "]?"))
 
-class InvalidSyntaxException(message: String, val pos: Position = NoPosition) extends TemplateException(message + " at " + pos)
+class InvalidSyntaxException(message: String, val pos: Position = NoPosition) extends TemplateException(message + " at " + pos) {
+  var template:String=null;
+}
+
+class CompilerException(message: String) extends TemplateException(message) {
+  var template:String=null;
+}
 
 class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set")
 

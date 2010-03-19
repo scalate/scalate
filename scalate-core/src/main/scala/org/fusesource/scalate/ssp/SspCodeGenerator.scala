@@ -31,6 +31,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
 
     def generate(fragment: PageFragment):Unit = {
+      this << fragment;
       fragment match {
         case CommentFragment(code) => {
         }
@@ -73,7 +74,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     val sb = new SourceBuilder
     sb.generate(packageName, className, bindings:::templateBindings, fragments)
 
-    Code(this.className(uri), sb.code, Set(uri))
+    Code(this.className(uri), sb.code, Set(uri), sb.positions)
   }
 
 }
