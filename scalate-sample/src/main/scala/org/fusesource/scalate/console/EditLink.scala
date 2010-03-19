@@ -17,31 +17,35 @@ object EditLink {
     System.getProperty("scalate.editor", "") match {
       case "textmate" => editLinkTextMate(file, line, col)(body)
       case "ide" => editLinkIdePlugin(file, line, col)(body)
-      case "file" => editLinkFile(file, line, col)(body)
+      case "file" => editLinkFileScheme(file, line, col)(body)
       case _ =>
         if (isMacOsx && hasTextMate)
           editLinkTextMate(file, line, col)(body)
         else {
-          editLinkFile(file, line, col)(body)
+          editLinkFileScheme(file, line, col)(body)
         }
     }
   }
 
-  def editLinkFile(file: String, line: Option[Int], col: Option[Int])(body: => Unit)  = {
+  def editLinkFileScheme(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = capture(body)
-    <a href={"file://" + file} title="Open File" target="_blank">{bodyText}</a>
+    <a href={"file://" + file} title="Open File" target="_blank">
+      {bodyText}
+    </a>
   }
 
-  def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => Unit) = {
+  def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = capture(body)
-    val href="txmt://open?url=file://" + file +
+    val href = "txmt://open?url=file://" + file +
             (if (line.isDefined) "&line=" + line.get else "") +
             (if (col.isDefined) "&col=" + col.get else "")
 
-    <a href={href} title="Open in TextMate">{bodyText}</a>
+    <a href={href} title="Open in TextMate">
+      {bodyText}
+    </a>
   }
 
-  def editLinkIdePlugin(file: String, line: Option[Int], col: Option[Int])(body: => Unit) = {
+  def editLinkIdePlugin(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = capture(body)
 
     // The Atlassian IDE plugin seems to highlight the line after the actual line number, so lets subtract one
@@ -52,16 +56,15 @@ object EditLink {
     else 0
 
     <span>
-      {bodyText}
-      <img class="ide-icon tb_right_mid"
-         id={"ide-" + file.hashCode}
-         title={bodyText}
-         onclick={"this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);"}
-         alt="Open in IDE"
-         src={"http://localhost:" + idePluginPort + "/icon"}/>
+      {bodyText}<img class="ide-icon tb_right_mid"
+                     id={"ide-" + file.hashCode}
+                     title={bodyText}
+                     onclick={"this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);"}
+                     alt="Open in IDE"
+                     src={"http://localhost:" + idePluginPort + "/icon"}/>
     </span>
   }
-  
+
 
   def isMacOsx = System.getProperty("os.name", "").contains("Mac OS X")
 
