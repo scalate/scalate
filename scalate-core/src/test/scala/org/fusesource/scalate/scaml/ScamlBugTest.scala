@@ -40,4 +40,24 @@ class ScamlBugTest extends ScamlTestSupport {
 ""","""
 Worked!
 """)
+
+
+  testRender("SCALATE-45: creating a link with a title seems to remove whitespace from inside the title attribute",
+"""
+%a(href={1+2} title="foo bar")
+""","""
+<a href="3" title="foo bar"></a>
+""")
+
+  testRender("SCALATE-46: changing a body expression from 'foo #{bar}' to '#{bar}' leads to error",
+"""
+- var name="James"
+%p
+  #{name}
+""","""
+<p>
+  James
+</p>
+""")
+  
 }
