@@ -19,6 +19,16 @@
 
   %table#templates  
     %tr
+      %td#name Resource
+      %td
+        - val sourceFile = resourceSourceFile
+        - if (sourceFile.isDefined)
+          - val file = resourceSourceFile.get
+          %ul
+            %li
+              = editFileLink(file.getAbsolutePath)
+                = file.getPath
+    %tr
       %td#name Templates
       %td
         %ul

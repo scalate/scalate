@@ -1,9 +1,9 @@
 package org.fusesource.scalate.console
 
-
-import java.io.{File}
-import org.fusesource.scalate.servlet.{ServletRenderContext}
+import java.io.File
+import org.fusesource.scalate.servlet.ServletRenderContext
 import scala.xml.NodeSeq
+
 
 /**
  * Helper snippets for creating the console
@@ -23,6 +23,25 @@ class ConsoleHelper(context: ServletRenderContext) {
    */
   def resourceClassName: Option[String] = attributes.get("it") match {
     case Some(it: AnyRef) => Some(it.getClass.getName)
+    case _ => None
+  }
+
+
+  /**
+   * Returns an attempt at finding the source file for the current resource.
+   *
+   * TODO use bytecode swizzling to find the accurate name from the debug info in
+   * the class file!
+   */
+  def resourceSourceFile: Option[File] = resourceClassName match {
+    case Some(name: String) =>
+      val fileName = name.replace('.', '/')
+      val prefixes = List("src/main/scala/", "src/main/java/")
+      val postfixes = List(".scala", ".java")
+
+      val names = for (prefix <- prefixes; postfix <- postfixes) yield new File(prefix + fileName + postfix)
+      names.find(_.exists)
+
     case _ => None
   }
 
@@ -62,7 +81,7 @@ class ConsoleHelper(context: ServletRenderContext) {
    * Returns the current template names used in the current context
    */
   def templates: List[String] = attributes.get("scalateTemplates") match {
-    case Some(list: List[String]) => list.removeDuplicates.sortWith(_<_)
+    case Some(list: List[String]) => list.removeDuplicates.sortWith(_ < _)
     case _ => Nil
   }
 
@@ -70,7 +89,7 @@ class ConsoleHelper(context: ServletRenderContext) {
    * Returns the current layouts used in the current context
    */
   def layouts: List[String] = attributes.get("scalateLayouts") match {
-    case Some(list: List[String]) => list.removeDuplicates.sortWith(_<_)
+    case Some(list: List[String]) => list.removeDuplicates.sortWith(_ < _)
     case _ => Nil
   }
 
@@ -82,13 +101,29 @@ class ConsoleHelper(context: ServletRenderContext) {
    */
   def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
 
-    /**
-     * returns an edit link for the given URI, discovering the right URL
-     * based on your OS and whether you have TextMate installed and whether you
-     * have defined the <code>scalate.editor</code> system property
-     */
+  /**
+   * returns an edit link for the given URI, discovering the right URL
+   * based on your OS and whether you have TextMate installed and whether you
+   * have defined the <code>scalate.editor</code> system property
+   */
   def editLink(template: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val file = servletContext.getRealPath(template)
+    EditLink.editLink(file, line, col)(body)
+  }
+
+  /**
+   * returns an edit link for the given file, discovering the right URL
+   * based on your OS and whether you have TextMate installed and whether you
+   * have defined the <code>scalate.editor</code> system property
+   */
+  def editFileLink(template: String)(body: => Unit): NodeSeq = editFileLink(template, None, None)(body)
+
+  /**
+   * returns an edit link for the given file, discovering the right URL
+   * based on your OS and whether you have TextMate installed and whether you
+   * have defined the <code>scalate.editor</code> system property
+   */
+  def editFileLink(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     EditLink.editLink(file, line, col)(body)
   }
 
