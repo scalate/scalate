@@ -8,17 +8,17 @@
 
 - exception match
   - case e:InvalidSyntaxException =>
-    .header#block
+    #header.block
       %h1
         = message
         
-    .source#block 
+    #source.block 
       %h2 
         In #{e} (around #{e.pos})
       -# TODO show snippet of file here...
 
   - case u =>
-    .header#block
+    #header.block
       %h1
         = message
 

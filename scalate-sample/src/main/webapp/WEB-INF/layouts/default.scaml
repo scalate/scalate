@@ -1,7 +1,7 @@
--@ var body: String 
+!!! Basic
+-@ var body: String
 -@ var title : String = "Scalate Sample"
 - response.setContentType("text/html") 
-!!! Basic
 %html(lang="en")
   %head
     %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
@@ -14,8 +14,8 @@
       = title
   
   %body
-    .navigation
-      #wrapper
+    #navigation
+      .wrapper
         %ul
           - if (requestURI.startsWith("/index."))
             %li(class="webgen-menu-level1 webgen-menu-item-selected")
@@ -28,12 +28,12 @@
             %a(href="http://scalate.fusesource.org/")
               Documentation
 
-    .content
-      #wrapper
+    #content
+      .wrapper
         = body
     
-    .footer
-      #wrapper
+    #footer
+      .wrapper
         %hr
         = include("/org/fusesource/scalate/console/console.scaml")
         
