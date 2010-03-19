@@ -26,7 +26,7 @@ import java.io.{StringWriter, PrintWriter, File}
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @RunWith(classOf[JUnitRunner])
-class ScamlTemplateErrorTest extends FunSuite {
+class ScamlTemplateErrorTest extends ScamlTestSupport {
 
   testRender("valid indenting",
 """
@@ -92,60 +92,7 @@ class ScamlTemplateErrorTest extends FunSuite {
 """,
 "`)' expected but `,' found at 3.22")
 
-  def testInvalidSyntaxException(description:String, template:String, error:String) = {
-    test(description) {
-      try {
-        println(render(template))
-        fail("Expected InvalidSyntaxException was not thrown")
-      } catch {
-        case e:TestFailedException=> throw e
-        case e:InvalidSyntaxException=> {
-          expect(error) {
-            e.getMessage
-          }
-        }
-        case x=>
-          fail("Expected InvalidSyntaxException was not thrown.  Instead got a: "+x)
-      }
-    }
-  }
 
-  def ignoreInvalidSyntaxException(description:String, template:String, error:String) = {
-    ignore(description) {
-    }
-  }
-
-  def testRender(description:String, template:String, result:String) = {
-    test(description) {
-      expect(result) { render(template) }
-    }
-  }
-
-  def ignoreRender(description:String, template:String, result:String) = {
-    ignore(description) {
-      expect(result) { render(template) }
-    }
-  }
-
-  var engine = new TemplateEngine
-
-  def render(content:String): String = {
-
-    engine.resourceLoader = new FileResourceLoader {
-      override def load( uri: String ): String = content
-      override def lastModified(uri:String): Long = 0
-    }
-
-    val buffer = new StringWriter()
-    val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(engine, out)
-    context.attributes("context") = context
-
-    val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml")
-    template.render(context)
-    out.close
-    buffer.toString
-  }  
 }
 
 

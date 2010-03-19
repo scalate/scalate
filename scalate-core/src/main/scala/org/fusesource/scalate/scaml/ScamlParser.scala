@@ -86,12 +86,17 @@ class IndentedParser extends RegexParsers() {
       if( strict ) {
         // Look for indents that are too deep.
         rc |= repN(indent_level,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: intended too deep")
+        // eat empty lines..
+        rc |= rep(indent_unit) ~ """\r?\n""".r ~> current_indent(strict)
       }
+
       // this is the normal indent case
       rc |= repN(indent_level,indent_unit)
 
-      // this is the case of a emplty line.. we will consider it indented too if it is followed with a proper indent.
-      rc |= repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent(strict))
+      if( !strict ) {
+        // preseve emtpy lines inside filters..
+        rc |= repRange(0, indent_level-1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent(strict))
+      }
 
       if( indent_level > 0 ) {
         // Look for indents that are too shallow
@@ -130,6 +135,7 @@ object Trim extends Enumeration {
 sealed trait Statement extends Positional
 sealed trait TextExpression extends Statement
 
+case class Newline extends Statement
 case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
 case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
@@ -332,8 +338,9 @@ class ScamlParser extends IndentedParser() {
 
   def parser = rep(
     space ~ err("Inconsistent indent level detected: intended too shallow") ^^ { null } |
+    nl ^^ { x=> Newline() } |
     statement
-  )
+  ) ^^ { case x=> x.filter(_ != Newline()) } 
 
   def parse(in:String) = {
     var content = in;
