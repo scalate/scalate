@@ -1,0 +1,10 @@
+#scalate-console {
+  position:fixed;
+  top:40px;
+  right:10px;
+  background: #FDFCAD;
+  padding:10px;
+  border: 1px solid #BDBD81;
+  font-family:Arial,Verdana,Helvetica,sans-serif;
+  font-size: 80%;
+}
