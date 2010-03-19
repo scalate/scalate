@@ -9,6 +9,7 @@
     <meta name="keywords" content="keywords,goes,here" />
     <meta name="author" content="Your Name" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/css/console.css" rel="stylesheet" type="text/css" />
 
     <title>${title}</title>
 </head>

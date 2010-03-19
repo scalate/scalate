@@ -49,7 +49,7 @@ Worked!
 <a href="3" title="foo bar"></a>
 """)
 
-  testRender("SCALATE-46: changing a body expression from 'foo #{bar}' to '#{bar}' leads to error",
+  testRender("other",
 """
 - var name="James"
 %p
@@ -59,5 +59,14 @@ Worked!
   James
 </p>
 """)
-  
+
+
+  testRender("Any css class/name can be used.",
+"""
+.my-class
+._whacky_1
+""","""
+<div class="my-class"></div>
+<div class="_whacky_1"></div>
+""")
 }
