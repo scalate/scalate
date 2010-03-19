@@ -1,79 +1,79 @@
 -@ import val consoleHelper: ConsoleHelper = new ConsoleHelper(context) 
+.scala-console
+  - if (optionEnabled("console"))
+    %h2 Scalate Console
 
-- if (optionEnabled("console"))
-  %h2 Scalate Console
-
-  - if (newTemplateName.isDefined && resourceClassName.isDefined)
-    - val newName = newTemplateName.get
-    %h3 Create New Custom Template
-    %p Create a new template called #{newName} from archetype
-    %ul
-      - for (a <- archetypes)
-        %li
-          %form(action={uri("/scalate/createTemplate")} method="post")
-            %input(type="hidden" name="archetype" value={a.archetype})
-            %input(type="hidden" name="newTemplateName" value={newName})
-            %input(type="hidden" name="resourceClass" value={resourceClassName.get})
-            %input(type="submit" value={a.name})
+    - if (newTemplateName.isDefined && resourceClassName.isDefined)
+      - val newName = newTemplateName.get
+      %h3 Create New Custom Template
+      %p Create a new template called #{newName} from archetype
+      %ul
+        - for (a <- archetypes)
+          %li
+            %form(action={uri("/scalate/createTemplate")} method="post")
+              %input(type="hidden" name="archetype" value={a.archetype})
+              %input(type="hidden" name="newTemplateName" value={newName})
+              %input(type="hidden" name="resourceClass" value={resourceClassName.get})
+              %input(type="submit" value={a.name})
         
 
-  %table#templates  
-    %tr
-      %td#name Resource
-      %td
-        - val sourceFile = resourceSourceFile
-        - if (sourceFile.isDefined)
-          - val file = resourceSourceFile.get
-          %ul
-            %li
-              = editFileLink(file.getAbsolutePath)
-                = file.getPath
-    %tr
-      %td#name Templates
-      %td
-        %ul
-          - for (template <- templates)
-            %li
-              = editLink(template)
-                = template.stripPrefix("/")
-    %tr
-      %td Layouts
-      %td
-        %ul
-          - for (layout <- layouts)
-            %li
-              = editLink(layout)
-                = layout.stripPrefix("/")
-
-  %a(href={disableLink("console")} title="Hide the Scalate Console") 
-    Hide Scalate Console
-  - if (optionEnabled("attributes"))
-    %a(href={disableLink("attributes")} title="Hide the Attributes") 
-      Hide Attributes
-    %table#attributes
+    %table#templates  
       %tr
-        %th Attribute
-        %th Value
-        - for (k <- attributeKeys) 
-          %tr
-            %td#name
-              = k
-            %td#value
-              - if (k == "body")
-                - if (optionEnabled("body"))
-                  %a(href={disableLink("body")} title="Hide the Body") 
-                    Hide Body
-                  = attributes(k)
+        %td#name Resource
+        %td
+          - val sourceFile = resourceSourceFile
+          - if (sourceFile.isDefined)
+            - val file = resourceSourceFile.get
+            %ul
+              %li
+                = editFileLink(file.getAbsolutePath)
+                  = file.getPath
+      %tr
+        %td#name Templates
+        %td
+          %ul
+            - for (template <- templates)
+              %li
+                = editLink(template)
+                  = template.stripPrefix("/")
+      %tr
+        %td Layouts
+        %td
+          %ul
+            - for (layout <- layouts)
+              %li
+                = editLink(layout)
+                  = layout.stripPrefix("/")
+
+    %a(href={disableLink("console")} title="Hide the Scalate Console") 
+      Hide Scalate Console
+    - if (optionEnabled("attributes"))
+      %a(href={disableLink("attributes")} title="Hide the Attributes") 
+        Hide Attributes
+      %table#attributes
+        %tr
+          %th Attribute
+          %th Value
+          - for (k <- attributeKeys) 
+            %tr
+              %td#name
+                = k
+              %td#value
+                - if (k == "body")
+                  - if (optionEnabled("body"))
+                    %a(href={disableLink("body")} title="Hide the Body") 
+                      Hide Body
+                    = attributes(k)
+                  - else
+                    %a(href={enableLink("body")} title="Show the Body") 
+                      Show Body
                 - else
-                  %a(href={enableLink("body")} title="Show the Body") 
-                    Show Body
-              - else
-                = attributes(k)
-  - else
-    %a(href={enableLink("attributes")} title="Show the Attributes") 
-      Show Attributes
+                  = attributes(k)
+    - else
+      %a(href={enableLink("attributes")} title="Show the Attributes") 
+        Show Attributes
     
-- else
-  %a(href={enableLink("console")} title="Show the Scalate Console") 
-    Show Scalate Console
+  - else
+    %a(href={enableLink("console")} title="Show the Scalate Console") 
+      Show Scalate Console
 

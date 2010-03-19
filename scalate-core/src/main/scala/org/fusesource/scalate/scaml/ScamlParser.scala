@@ -169,14 +169,15 @@ class ScamlParser extends IndentedParser() {
 
   val any                     = """.*""".r
   val nl                      = """\r?\n""".r
-  val any_space_then_nl      ="""[ \t]*\r?\n""".r
-  val tag_ident              = """[a-zA-Z_0-9][\:a-zA-Z_0-9]*""".r
-  val word                    = """[a-zA-Z_0-9]+""".r
+  val any_space_then_nl       ="""[ \t]*\r?\n""".r
+  val tag_ident               = """[a-zA-Z_0-9][\:a-zA-Z_0-9-]*""".r
+  val css_name                    = """[a-zA-Z_0-9][a-zA-Z_0-9-]*""".r
+
   val text                    = """.+""".r
   val space                   = """[ \t]+""".r
   val some_space              = """[ \t]*""".r
 
-  val ident                   = """[a-zA-Z_]\w*""".r
+  val scala_ident                   = """[a-zA-Z_]\w*""".r
   val qualified_type          = """[a-zA-Z0-9\$_\[\]\.]+""".r
 
   def eval_string_escapes(value:String) = {
@@ -194,7 +195,7 @@ class ScamlParser extends IndentedParser() {
   val whole_number            = """-?\d+""".r
   val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
   val floating_point_number   = """-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r
-  def symbol = ":"~>ident
+  def symbol = ":"~>scala_ident
 
   // Haml hash style attributes are any valid ruby hash expression. The scala version should
   // either accept the same to allow easy migration of existing haml pages, or accept a
@@ -232,8 +233,8 @@ class ScamlParser extends IndentedParser() {
     } 
 
 
-  def class_entry:Parser[(Any, Any)] = "." ~> word ^^ { case x=> ("class", x) }
-  def id_entry:Parser[(Any, Any)] = "#" ~> word ^^ { case x=> ("id", x) }
+  def class_entry:Parser[(Any, Any)] = "." ~> css_name ^^ { case x=> ("class", x) }
+  def id_entry:Parser[(Any, Any)] = "#" ~> css_name ^^ { case x=> ("id", x) }
 
   def attributes =
           (rep(class_entry|id_entry)) ~
@@ -259,7 +260,7 @@ class ScamlParser extends IndentedParser() {
         case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
     }
 
-  def element_statement:Parser[Element] = guarded("%"|"."|"#"~word, full_element_statement)
+  def element_statement:Parser[Element] = guarded("%"|"."|"#"~css_name, full_element_statement)
 
   def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
   def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
@@ -303,7 +304,7 @@ class ScamlParser extends IndentedParser() {
     prefixed("&=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
     prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
-  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ ident ~ (":" ~> qualified_type) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
+  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
