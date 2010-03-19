@@ -1,20 +1,28 @@
+- import org.fusesource.scalate._
+- import org.fusesource.scalate.console._
+- val consoleHelper = new ConsoleHelper(context)
+- import consoleHelper._
 - val exception = attributes("javax.servlet.error.exception")
 - val message = attributeOrElse("javax.servlet.error.message", "")
 - val errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
 - val errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
-- import org.fusesource.scalate._
 
 %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
 - exception match
   - case e:InvalidSyntaxException =>
+    - val template = "/scaml/errors/templateCompileError.scaml"
+    - val pos = e.pos
+    
     #header.block
       %h1
         = message
         
     #source.block 
       %h2 
-        In #{e} (around #{e.pos})
+        = editLink(template, pos.line, pos.column)
+          In #{template} near line #{pos.line} col #{pos.column}
+
       -# TODO show snippet of file here...
 
   - case u =>

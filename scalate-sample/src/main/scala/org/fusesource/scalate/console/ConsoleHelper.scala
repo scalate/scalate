@@ -101,6 +101,7 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
    * have defined the <code>scalate.editor</code> system property
    */
   def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
+  def editLink(template: String, line: Int, col: Int)(body: => Unit): NodeSeq = editLink(template, Some(line), Some(col))(body)
 
   /**
    * returns an edit link for the given URI, discovering the right URL
@@ -122,6 +123,7 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
       answer
     }
   }
+
 
   /**
    * returns an edit link for the given file, discovering the right URL
