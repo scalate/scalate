@@ -689,6 +689,28 @@ bar</pre><img/>
 </html>
 """)
 
+  testRender("= on a NodeSeq is rendered unsanitized",
+"""
+-@ val bean:Bean
+= bean.link
+""","""
+<a href="#size-10">red</a>
+""")
+
+  testRender("!= a NodeSeq is rendered unsanitized",
+"""
+-@ val bean:Bean
+!= bean.link
+""","""
+<a href="#size-10">red</a>
+""")
+  testRender("&= a NodeSeq is rendered sanitized",
+"""
+-@ val bean:Bean
+&= bean.link
+""","""
+&lt;a href=&quot;#size-10&quot;&gt;red&lt;/a&gt;
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1006,4 +1028,10 @@ item 2
 """)
 }
 
-case class Bean(color:String, size:Int)
+case class Bean(color:String, size:Int) {
+
+  def link = {
+    <a href={"#size-"+size}>{color}</a>
+  }
+
+}

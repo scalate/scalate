@@ -85,7 +85,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statements:List[Statement]):Unit = {
-      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, attributes=>$_scalate_$_attributes}"
+      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, default_write=>$_scalate_$_write, attributes=>$_scalate_$_attributes}"
       generate_with_flush(statements)
     }
 
@@ -244,10 +244,13 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               literal=false
             } else {
               flush_text
-              val method = if(s.sanitise.getOrElse(ScamlOptions.escape_html)) {
-                "$_scalate_$_context <<< ( "
-              } else {
-                "$_scalate_$_context << ( "
+              val method = s.sanitise match {
+                case None=>
+                  "$_scalate_$_write ($_scalate_$_context, "+ScamlOptions.escape_html+", "
+                case Some(true)=>
+                  "$_scalate_$_context <<< ( "
+                case Some(false)=>
+                  "$_scalate_$_context << ( "
               }
               this << method+part+" );"
               literal=true

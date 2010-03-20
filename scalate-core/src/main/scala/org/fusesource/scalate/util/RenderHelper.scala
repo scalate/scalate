@@ -19,6 +19,7 @@ package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.RenderContext
 import collection.mutable.LinkedHashMap
+import xml.NodeSeq
 
 
 object RenderHelper
@@ -106,4 +107,23 @@ object RenderHelper
 
   }
 
+  def default_write(context:RenderContext, sanitize:Boolean, value:Any ) {
+    if( value == null ) {
+      if (sanitize) {
+        context <<< value
+      } else {
+        context << value
+      }
+    }
+    value match {
+      case x:NodeSeq=>
+        context << value
+      case _ =>
+        if (sanitize) {
+          context <<< value
+        } else {
+          context << value
+        }
+    }
+  }
 }

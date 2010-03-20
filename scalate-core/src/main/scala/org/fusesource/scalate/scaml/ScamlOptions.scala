@@ -40,5 +40,4 @@ object ScamlOptions {
     "script",
     "br",
     "hr")
-
 }
