@@ -132,7 +132,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       }
     }
 
-    def asString(text: String): StringBuffer = {
+    def asString(text: String): String = {
       val buffer = new StringBuffer
       buffer.append("\"")
       text.foreach(c => {
@@ -156,7 +156,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
         }
       })
       buffer.append("\"")
-      buffer
+      buffer.toString
     }
   }
 

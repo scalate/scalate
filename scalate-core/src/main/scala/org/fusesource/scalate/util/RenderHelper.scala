@@ -17,6 +17,9 @@
 
 package org.fusesource.scalate.util
 
+import _root_.org.fusesource.scalate.RenderContext
+import collection.mutable.LinkedHashMap
+
 
 object RenderHelper
 {
@@ -68,6 +71,39 @@ object RenderHelper
         case _   => {  "&#x" + ch.toInt.toHexString + ";" }
       })
     }
+  }
+
+
+  def attributes(context:RenderContext, entries: List[(Any,Any)]) {
+
+    val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
+    val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
+    var map = LinkedHashMap[Any,Any]( )
+
+    if( !entries_id.isEmpty ) {
+      map += "id" -> entries_id.last._2
+    }
+
+    if( !entries_class.isEmpty ) {
+      val value = entries_class.map(x=>x._2).mkString(" ")
+      map += "class"->value
+    }
+
+    entries_rest.foreach{ me => map += me._1 -> me._2 }
+
+    if( !map.isEmpty ) {
+      map.foreach {
+        case (name,value) =>
+        if( value!=null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])) {
+          context << " "
+          context << (context.value(name))
+          context << ("=\"")
+          context << (sanitize(context.value(value)))
+          context << ("\"")
+        }
+      }
+    }
+
   }
 
 }

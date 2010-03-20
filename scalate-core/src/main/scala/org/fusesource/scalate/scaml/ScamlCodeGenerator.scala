@@ -85,7 +85,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statements:List[Statement]):Unit = {
-      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent}"
+      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, attributes=>$_scalate_$_attributes}"
       generate_with_flush(statements)
     }
 
@@ -447,44 +447,110 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def write_attributes(entries: List[(Any,Any)]) = {
-      val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
-      val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
-      var map = LinkedHashMap[Any,Any]( )
 
-      if( !entries_id.isEmpty ) {
-        map += "id" -> entries_id.last._2
-      }
-
-      if( !entries_class.isEmpty ) {
-        val value = entries_class.map(x=>x._2).mkString(" ")
-        map += "class"->value
-      }
-
-      entries_rest.foreach{ me => map += me._1 -> me._2 }
-
-      if( !map.isEmpty ) {
-        map.foreach {
-          case (name,value) =>
-          write_text(" ")
-          attribute_eval(name)
-          write_text("=\"")
-          attribute_eval(value)
-          write_text("\"")
+      // Check to see if it's a dynamic attribute list
+      var dynamic=false
+      entries.foreach {
+        (entry)=> entry._2 match {
+          case x:EvaluatedText=>
+            dynamic=true
+          case x:LiteralText=>
+            if( x.text.length > 1 ) {
+              dynamic=true
+            }
+          case _=>
         }
+
+      }
+      if( dynamic ) {
+
+        def write_expression(expression:Any) = {
+          expression match {
+            case s:String=>s
+              this << asString(s)
+            case s:LiteralText=>
+              this << "$_scalate_$_context.capture {"
+              indent {
+                generate(s)
+                flush_text
+              }
+              this << "}"
+            case s:EvaluatedText=>
+              if( s.body.isEmpty ) {
+                this << s.code
+              } else {
+                this << s.code+" {"
+                indent {
+                  generate_with_flush(s.body)
+                }
+                this << "} "
+              }
+            case _=> throw new UnsupportedOperationException("don't know how to eval: "+expression);
+          }
+        }
+
+        flush_text
+        this << "$_scalate_$_context << $_scalate_$_attributes( $_scalate_$_context, List( ("
+        indent {
+          var first=true
+          entries.foreach {
+            (entry) =>
+            if( !first ) {
+              this << "), ("
+            }
+            first = false
+            indent {
+              write_expression(entry._1)
+            }
+            this << ","
+            indent {
+              write_expression(entry._2)
+            }
+          }
+        }
+        this << ") ) )"
+
+      } else {
+
+        val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
+        val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
+        var map = LinkedHashMap[Any,Any]( )
+
+        if( !entries_id.isEmpty ) {
+          map += "id" -> entries_id.last._2
+        }
+
+        if( !entries_class.isEmpty ) {
+          val value = entries_class.map(x=>x._2).mkString(" ")
+          map += "class"->value
+        }
+
+        entries_rest.foreach{ me => map += me._1 -> me._2 }
+
+        def write_expression(expression:Any) = {
+          expression match {
+            case s:String=>s
+              write_text(s)
+            case s:LiteralText=>
+              write_text( s.text.head )
+            case _=> throw new UnsupportedOperationException("don't know how to eval: "+expression);
+          }
+        }
+
+        if( !map.isEmpty ) {
+          map.foreach {
+            case (name,value) =>
+            write_text(" ")
+            write_expression(name)
+            write_text("=\"")
+            write_expression(value)
+            write_text("\"")
+          }
+        }
+
       }
     }
 
-    def attribute_eval(expression:Any) = {
-      expression match {
-        case s:String=>s
-          write_text(RenderHelper.sanitize(s))
-        case s:LiteralText=>
-          generate(s)
-        case s:EvaluatedText=>
-          generate(s)
-        case _=> throw new UnsupportedOperationException("don't know how to eval: "+expression);
-      }
-    }
 
   }
 
