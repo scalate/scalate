@@ -18,7 +18,7 @@
   #source.block
     %h2
       != editLink(file, pos.line, pos.column)
-        In #{file} near line #{pos.line} col #{pos.column}
+        In #{shorten(file)} near line #{pos.line} col #{pos.column}
 
     - for (s <- lines(file, pos))
       - println("line " + s.line + " = " + s.source)
@@ -33,7 +33,7 @@
 
 - exception match
   - case e:InvalidSyntaxException =>
-    - displayError(e.template, e.pos, olderror)
+    - displayError( e.template, e.pos, olderror)
 
   - case e:CompilerException =>
     - for ( error <- e.errors )

@@ -340,7 +340,7 @@ class TemplateEngine {
             if( pos==null ) {
               newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
               newmessage += olderror.pos.longString+"\n"
-              olderror
+              CompilerError(olderror.file, olderror.message, olderror.pos)
             } else {
               newmessage += uri+":"+pos+" "+olderror.message+"\n"
               newmessage += pos.longString+"\n"

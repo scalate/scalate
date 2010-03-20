@@ -1,5 +1,6 @@
 package org.fusesource.scalate.console
 
+import _root_.org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.util.Logging
 import java.io.File
@@ -117,23 +118,15 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
    * based on your OS and whether you have TextMate installed and whether you
    * have defined the <code>scalate.editor</code> system property
    */
-  def editLink(template: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    val file = servletContext.getRealPath(template)
-    val answer = EditLink.editLink(file, line, col)(body)
-
-    // it might be an absolute path..
-    var genFile = new File(template)
-    if( !genFile.exists ) {
-      genFile = engine.sourceFileName(template)
+  def editLink(filePath: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
+    // It might be a real file path
+    val file = new File(filePath);
+    val realPath = if( file.exists ) {
+      file.getCanonicalPath
+    } else {
+      servletContext.getRealPath(filePath)
     }
-    if (genFile.exists) {
-      val codeLink = editFileLink(genFile.getAbsolutePath)(context << "scala")
-      answer ++ (Text(" - ") :: Nil) ++ codeLink
-    }
-    else {
-      warning("Could not find scala source file: " + genFile)
-      answer
-    }
+    EditLink.editLink(realPath, line, col)(body)
   }
 
 
@@ -244,6 +237,15 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
         lines(template, pos.line, chunk)
     }
 
+  }
+
+  def shorten(file: String): String = {
+    var root = RenderContext().engine.workingDirectory.getPath;
+    if( file.startsWith(root) ) {
+      file.substring(root.length +1 )
+    } else {
+      file
+    }
   }
 
 }
