@@ -5,7 +5,7 @@ import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
 import collection.mutable.{ListBuffer, HashMap}
 import util.{XmlHelper, Lazy}
-import xml.{NodeSeq, NodeBuffer}
+import xml.{PCData, NodeSeq, NodeBuffer}
 
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
@@ -102,7 +102,13 @@ trait RenderContext {
         rc
       }
       case s: NodeBuffer =>
-        (s.foldLeft(new StringBuilder) {(rc, x) => rc.append(x)}).toString
+        (s.foldLeft(new StringBuilder) {
+          (rc, x) => x match {
+            case cd: PCData => rc.append(cd.data)
+            case _ => rc.append(x)
+          }
+        }).toString
+    
 
       // TODO for any should we use the renderView?
       case v: Any => v.toString

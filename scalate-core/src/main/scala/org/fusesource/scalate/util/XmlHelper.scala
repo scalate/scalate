@@ -5,7 +5,7 @@ import scala.xml.parsing.ConstructingParser
 import scala.io.Source
 
 /**
- * @version $Revision: 1.1 $
+ * @version $Revision : 1.1 $
  */
 
 object XmlHelper extends Logging {
@@ -16,10 +16,26 @@ object XmlHelper extends Logging {
    */
   def textToNodeSeq(text: String): NodeSeq = {
     fine("parsing markup: " + text)
-    
+
     val src = Source.fromString("<p>" + text + "</p>");
-    val cpa = ConstructingParser.fromSource(src, false);
-    cpa.document().docElem.child
+
+    // lets deal with HTML entities
+    // lets preserve whitespace for <pre> stuff to avoid trimming indentation with code
+    object parser extends ConstructingParser(src, true /* keep ws*/ ) {
+      override def replacementText(entityName: String): io.Source = {
+        entityName match {
+          ///case "nbsp" => io.Source.fromString("\u0160");
+          case "nbsp" => io.Source.fromString("<![CDATA[&nbsp;]]>");
+          case _ => super.replacementText(entityName);
+        }
+      }
+      nextch; // !!important, to initialize the parser
+    }
+    parser.document().docElem.child
+    /*
+        val cpa = ConstructingParser.fromSource(src, false);
+        cpa.document().docElem.child
+    */
   }
 
 }

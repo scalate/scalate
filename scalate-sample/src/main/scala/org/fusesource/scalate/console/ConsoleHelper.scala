@@ -5,6 +5,7 @@ import org.fusesource.scalate.util.Logging
 import java.io.File
 import scala.io.Source
 import scala.xml.{Text, NodeSeq}
+import collection.mutable.ListBuffer
 
 case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
@@ -175,12 +176,14 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
       val start = (errorLine - chunk).min(0)
       val end = errorLine + chunk
 
-      println("getting lines " + start + " to " + end)
-
-      var seq = start.to(end).map {
-        i => SourceLine(i + 1, source.getLine(i))
+      val list = new ListBuffer[SourceLine]
+      for (i <- 1.to(end)) {
+        val code = source.getLine(1)
+        if (i >= start) {
+          list += SourceLine(i, code)
+        }
       }
-
+      list
       /*
             // lets strip the head and tail blank items (TODO there must be an easier way??)
             val from = seq.indexWhere(_.nonBlank) - 1
@@ -191,8 +194,8 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
             if (to > 0) {
               seq = seq.take(to)
             }
-      */
       seq
+      */
     }
     else {
       Nil

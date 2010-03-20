@@ -24,14 +24,16 @@
           In #{template} near line #{pos.line} col #{pos.column}
 
       - for (s <- lines(template, pos.line))
+        - println("line " + s.line + " = " + s.source)
         - val ss = s.style(pos.line)
-        != editLink(template, s.line, (if (pos.line == s.line) pos.column else 0))
+        != editLink(template, s.line, (if (pos.line == s.line) pos.column else 1))
           %div(class=ss)
             %span.lineNumber
               = s.line
             %pre
-              = s.source
-              -# &nbsp; #{s.source}
+              -# = s.source
+              -# TODO when we can parse them!!!
+              &nbsp; #{s.source}
 
   - case e:CompilerException =>
     - val template = e.template
