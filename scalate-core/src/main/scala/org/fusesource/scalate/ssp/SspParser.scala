@@ -49,7 +49,7 @@ class SspParser extends RegexParsers {
   val typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
   val some_text = """.+""".r
 
-  val attribute = skip_whitespace(opt("import") ~ ("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r)) ^^ {
+  val attribute = skip_whitespace(opt("import") ~ ("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
     case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 

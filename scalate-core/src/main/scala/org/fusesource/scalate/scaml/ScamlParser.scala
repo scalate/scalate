@@ -304,7 +304,8 @@ class ScamlParser extends IndentedParser() {
     prefixed("&=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
     prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
 
-  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ opt("""\s*=\s*""".r ~> upto("""\s*%>""".r) ) ^^ {
+  
+  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ ( some_space ~> opt( "="~some_space ~> upto(nl) ) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 

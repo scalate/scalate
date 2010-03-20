@@ -49,24 +49,21 @@ Worked!
 <a href="3" title="foo bar"></a>
 """)
 
-  testRender("other",
+  testRender("SCALATE-48: odd compile error when whitespace added to end of '-@ val: x: String '",
 """
-- var name="James"
-%p
-  #{name}
+-@ val label: String
+%p #{label}
 ""","""
-<p>
-  James
-</p>
+<p>Scalate</p>
+""")
+
+  testRender("SCALATE-49: using a #{foo} expression inside a HTML attribute causes strangeness",
+"""
+- var x="blue"
+%div(class="line #{x}")
+""","""
+<div class="line blue"></div>
 """)
 
 
-  testRender("Any css class/name can be used.",
-"""
-.my-class
-._whacky_1
-""","""
-<div class="my-class"></div>
-<div class="_whacky_1"></div>
-""")
 }

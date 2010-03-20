@@ -83,6 +83,7 @@ class ScamlTestSupport extends FunSuite {
 
     context.attributes("context") = context
     context.attributes("bean") = Bean("red", 10)
+    context.attributes("label") = "Scalate"
 
     val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml")
     template.render(context)

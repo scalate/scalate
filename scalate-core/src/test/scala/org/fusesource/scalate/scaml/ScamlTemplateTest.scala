@@ -407,6 +407,14 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <html class="c1 c2"></html>
 """)
 
+  testRender("Any css class/name can be used.",
+"""
+.my-class
+._whacky_1
+""","""
+<div class="my-class"></div>
+<div class="_whacky_1"></div>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
