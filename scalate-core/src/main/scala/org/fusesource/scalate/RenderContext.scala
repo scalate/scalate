@@ -3,14 +3,16 @@ package org.fusesource.scalate
 import java.util.{Locale, Date}
 import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
-import util.{Lazy}
 import collection.mutable.{ListBuffer, HashMap}
-import xml.NodeBuffer
+import util.{XmlHelper, Lazy}
+import xml.{NodeSeq, NodeBuffer}
 
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
 
   def capture(body: => Unit) = apply().capture(body)
+
+  def captureNodeSeq(body: => Unit) = apply().captureNodeSeq(body)
 
   def apply(): RenderContext = threadLocal.get
 
@@ -325,7 +327,16 @@ trait RenderContext {
    */
   def capture(template: Template): String
 
-  
+  /**
+   * Captures the text of the body and then parses it as markup
+   */
+  def captureNodeSeq(body: => Unit): NodeSeq = XmlHelper.textToNodeSeq(capture(body))
+
+  /**
+   * Captures the text of the template rendering and then parses it as markup
+   */
+  def captureNodeSeq(template: Template): NodeSeq = XmlHelper.textToNodeSeq(capture(template))
+
 /*
   Note due to the implicit conversions being applied to => Unit onkly taking the last
   statement of the block as per this discussion:
@@ -367,7 +378,7 @@ trait RenderContext {
   private var resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a {@link NoValueSetException} exception is thrown
+   *  Returns the JAXRS resource bean of the given type or a  { @link NoValueSetException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)

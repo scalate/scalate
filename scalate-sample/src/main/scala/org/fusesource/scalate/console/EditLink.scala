@@ -1,6 +1,6 @@
 package org.fusesource.scalate.console
 
-import org.fusesource.scalate.RenderContext.capture
+import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
 import scala.xml.NodeSeq
 
@@ -28,14 +28,14 @@ object EditLink {
   }
 
   def editLinkFileScheme(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    val bodyText = capture(body)
+    val bodyText = captureNodeSeq(body)
     <a href={"file://" + file} title="Open File" target="_blank">
       {bodyText}
     </a>
   }
 
   def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    val bodyText = capture(body)
+    val bodyText = captureNodeSeq(body)
     val href = "txmt://open?url=file://" + file +
             (if (line.isDefined) "&line=" + line.get else "") +
             (if (col.isDefined) "&col=" + col.get else "")
@@ -46,7 +46,7 @@ object EditLink {
   }
 
   def editLinkIdePlugin(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    val bodyText = capture(body)
+    val bodyText = captureNodeSeq(body)
 
     // The Atlassian IDE plugin seems to highlight the line after the actual line number, so lets subtract one
     val lineNumber = if (line.isDefined) {
