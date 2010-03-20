@@ -24,7 +24,8 @@ import org.fusesource.scalate.RenderContext
  */
 object ScamlOptions {
 
-  var escape_html = false;
+  // TODO lets enable this by default once SCALATE-50 is fixed
+  var escape_html = true;
 
   object Format extends Enumeration {
     val xhtml, html4, html5 = Value

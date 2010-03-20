@@ -20,17 +20,18 @@
         
     #source.block 
       %h2 
-        = editLink(template, pos.line, pos.column)
+        != editLink(template, pos.line, pos.column)
           In #{template} near line #{pos.line} col #{pos.column}
 
       - for (s <- lines(template, pos.line))
         - val ss = s.style(pos.line)
-        = editLink(template, s.line, pos.column)
+        != editLink(template, s.line, (if (pos.line == s.line) pos.column else 0))
           %div(class=ss)
             %span.lineNumber
               = s.line
             %pre
-              &nbsp;#{s.source}
+              = s.source
+              -# &nbsp; #{s.source}
 
   - case e:CompilerException =>
     - val template = e.template
@@ -42,7 +43,7 @@
         
     #source.block 
       %h2 
-        = editLink(template)
+        != editLink(template)
           In #{template} 
           
       -# TODO show code here!

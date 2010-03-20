@@ -107,6 +107,7 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
    * have defined the <code>scalate.editor</code> system property
    */
   def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
+
   def editLink(template: String, line: Int, col: Int)(body: => Unit): NodeSeq = editLink(template, Some(line), Some(col))(body)
 
   /**
@@ -174,24 +175,28 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
       val start = (errorLine - chunk).min(0)
       val end = errorLine + chunk
 
-      var seq = start.to(end).map(i => SourceLine(i, source.getLine(i)))
+      println("getting lines " + start + " to " + end)
 
-/*
-      // lets strip the head and tail blank items (TODO there must be an easier way??)
-      val from = seq.indexWhere(_.nonBlank) - 1
-      if (from > 0) {
-        seq = seq.drop(from)
+      var seq = start.to(end).map {
+        i => SourceLine(i + 1, source.getLine(i))
       }
-      val to = seq.lastIndexWhere(_.nonBlank) + 1
-      if (to > 0) {
-        seq = seq.take(to)
-      }
-*/
+
+      /*
+            // lets strip the head and tail blank items (TODO there must be an easier way??)
+            val from = seq.indexWhere(_.nonBlank) - 1
+            if (from > 0) {
+              seq = seq.drop(from)
+            }
+            val to = seq.lastIndexWhere(_.nonBlank) + 1
+            if (to > 0) {
+              seq = seq.take(to)
+            }
+      */
       seq
     }
     else {
       Nil
     }
   }
-  
+
 }

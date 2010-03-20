@@ -30,7 +30,7 @@
         - val file = resourceSourceFile.get
         %ul
           %li
-            = editFileLink(file.getAbsolutePath)
+            != editFileLink(file.getAbsolutePath)
               = file.getPath
 
     - if (!templates.isEmpty)
@@ -39,7 +39,7 @@
         %ul
           - for (template <- templates)
             %li
-              = editLink(template)
+              != editLink(template)
                 = template.stripPrefix("/")
 
     - if (!layouts.isEmpty)
@@ -48,7 +48,7 @@
         %ul
           - for (layout <- layouts)
             %li
-              = editLink(layout)
+              != editLink(layout)
                 = layout.stripPrefix("/")
 
     - if (!optionEnabled("attributes"))
