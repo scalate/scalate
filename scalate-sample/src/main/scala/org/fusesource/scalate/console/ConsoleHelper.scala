@@ -5,7 +5,8 @@ import org.fusesource.scalate.util.Logging
 import java.io.File
 import scala.io.Source
 import scala.xml.{Text, NodeSeq}
-import collection.mutable.ListBuffer
+import collection.mutable.{ArrayBuffer, ListBuffer}
+import util.parsing.input.{Position, OffsetPosition}
 
 case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
@@ -120,8 +121,11 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
     val file = servletContext.getRealPath(template)
     val answer = EditLink.editLink(file, line, col)(body)
 
-    // lets try create a link to the generated file too
-    val genFile = engine.sourceFileName(template)
+    // it might be an absolute path..
+    var genFile = new File(template)
+    if( !genFile.exists ) {
+      genFile = engine.sourceFileName(template)
+    }
     if (genFile.exists) {
       val codeLink = editFileLink(genFile.getAbsolutePath)(context << "scala")
       answer ++ (Text(" - ") :: Nil) ++ codeLink
@@ -169,12 +173,12 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
   /**
    * Retrieves a chunk fo lines either side of the given error line
    */
-  def lines(template: String, errorLine: Int, chunk: Int = 5): Seq[SourceLine] = {
+  def lines(template: String, errorLine: Int, chunk: Int): Seq[SourceLine] = {
     val file = servletContext.getRealPath(template)
     if (file != null) {
       val source = Source.fromPath(file)
       val start = (errorLine - chunk).min(0)
-      val end = errorLine + chunk
+      val end = start + chunk
 
       val list = new ListBuffer[SourceLine]
       for (i <- 1.to(end)) {
@@ -200,6 +204,46 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
     else {
       Nil
     }
+  }
+
+  /**
+   * Retrieves a chunk of lines either side of the given error line
+   */
+  def lines(template: String, pos: Position, chunk: Int = 5): Seq[SourceLine] = {
+    pos match {
+      case op:OffsetPosition=>
+
+        // OffsetPosition's already are holding onto the file contents
+        val index: Array[String] = {
+          val source = op.source
+          var rc = new ArrayBuffer[String]
+          var start = 0;
+          for (i <- 0 until source.length) {
+            if (source.charAt(i) == '\n') {
+              rc += source.subSequence(start, i).toString.stripLineEnd
+              start = i + 1
+            }
+          }
+          rc.toArray
+        }
+
+
+        val start = (pos.line - chunk).max(1)
+        val end = (pos.line + chunk).min(index.length)
+
+        val list = new ListBuffer[SourceLine]
+        for (i <- start to end) {
+          list += SourceLine(i, index(i-1))
+        }
+        list
+
+
+      case _=>
+
+        // We need to manually load the file..
+        lines(template, pos.line, chunk)
+    }
+
   }
 
 }

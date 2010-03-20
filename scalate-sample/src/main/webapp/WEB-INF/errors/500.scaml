@@ -1,59 +1,48 @@
+- import util.parsing.input.Position
 - import org.fusesource.scalate._
 - import org.fusesource.scalate.console._
 - val consoleHelper = new ConsoleHelper(context)
 - import consoleHelper._
 - val exception = attributes("javax.servlet.error.exception")
-- val message = attributeOrElse("javax.servlet.error.message", "")
+- val olderror = attributeOrElse("javax.servlet.error.olderror", "")
 - val errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
 - val errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
 
 %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
+- def displayError(file:String, pos:Position, message:String)
+  #header.block
+    %h1
+      = message
+
+  #source.block
+    %h2
+      != editLink(file, pos.line, pos.column)
+        In #{file} near line #{pos.line} col #{pos.column}
+
+    - for (s <- lines(file, pos))
+      - println("line " + s.line + " = " + s.source)
+      - val ss = s.style(pos.line)
+      != editLink(file, s.line, (if (pos.line == s.line) pos.column else 1))
+        %div(class=ss)
+          %span.lineNumber
+            = s.line
+          %pre<
+            :~&plain
+               #{s.source}
+
 - exception match
   - case e:InvalidSyntaxException =>
-    - val template = e.template
-    - val pos = e.pos
-    
-    #header.block
-      %h1
-        = message
-        
-    #source.block 
-      %h2 
-        != editLink(template, pos.line, pos.column)
-          In #{template} near line #{pos.line} col #{pos.column}
-
-      - for (s <- lines(template, pos.line))
-        - println("line " + s.line + " = " + s.source)
-        - val ss = s.style(pos.line)
-        != editLink(template, s.line, (if (pos.line == s.line) pos.column else 1))
-          %div(class=ss)
-            %span.lineNumber
-              = s.line
-            %pre
-              -# = s.source
-              -# TODO when we can parse them!!!
-              &nbsp; #{s.source}
+    - displayError(e.template, e.pos, olderror)
 
   - case e:CompilerException =>
-    - val template = e.template
-    -# - val pos = e.pos
-    
-    #header.block
-      %h1
-        = message
-        
-    #source.block 
-      %h2 
-        != editLink(template)
-          In #{template} 
-          
-      -# TODO show code here!
+    - for ( error <- e.errors )
+      - displayError(error.file, error.pos, error.message)
 
   - case u =>
     #header.block
       %h1
-        = message
+        = olderror
       %p
         = u
 

@@ -37,9 +37,10 @@ class InvalidSyntaxException(message: String, val pos: Position = NoPosition) ex
   var template:String=null;
 }
 
-class CompilerException(message: String) extends TemplateException(message) {
-  var template:String=null;
-}
+case class CompilerError(file:String, message:String, pos: Position = NoPosition)
+
+class CompilerException(msg:String, val errors:List[CompilerError]) extends TemplateException(msg)
+
 
 class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set")
 

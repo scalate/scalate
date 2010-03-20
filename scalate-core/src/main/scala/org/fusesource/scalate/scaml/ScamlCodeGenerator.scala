@@ -86,6 +86,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statements:List[Statement]):Unit = {
       this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent}"
+      generate_with_flush(statements)
+    }
+
+    def generate_with_flush(statements:List[Statement]):Unit = {
       generate_no_flush(statements)
       flush_text
     }
@@ -274,7 +278,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           } else {
             this << prefix+s.code+" {"
             indent {
-              generate(s.body)
+              generate_with_flush(s.body)
             }
             this << "} " + suffix
           }

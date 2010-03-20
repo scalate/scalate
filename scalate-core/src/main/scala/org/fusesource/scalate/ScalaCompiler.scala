@@ -17,7 +17,7 @@
 
 package org.fusesource.scalate.ssp
 
-import tools.nsc.util.{FakePos, NoPosition, Position}
+import _root_.scala.util.parsing.input.OffsetPosition
 import org.fusesource.scalate._
 import org.fusesource.scalate.util.ClassPathBuilder
 import org.fusesource.scalate.util.Logging
@@ -28,21 +28,39 @@ import java.io.StringWriter
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
+import tools.nsc.io.VirtualFile
+import tools.nsc.util.{OffsetPosition, FakePos, NoPosition, Position}
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
   val compiler = new Global(settings, null)
 
-  def compile(file:File, positions:Map[scala.util.parsing.input.Position, scala.util.parsing.input.Position]): Unit = {
-    
+  def compile(file:File): Unit = {
+
+
+
     synchronized {
       val messageCollector = new StringWriter
       val messageCollectorWrapper = new PrintWriter(messageCollector)
+
+      var messages = List[CompilerError]()
       val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper) {
+
         override def printMessage(posIn: Position, msg: String) {
-          // TODO: remap using the positions map..
-          super.printMessage(posIn, msg)
+          val pos = if (posIn eq null) NoPosition
+                    else if (posIn.isDefined) posIn.inUltimateSource(posIn.source)
+                    else posIn
+          pos match {
+            case FakePos(fmsg) =>
+              super.printMessage(posIn, msg);
+            case NoPosition =>
+              super.printMessage(posIn, msg);
+            case _ =>
+              messages = CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point)) :: messages
+              super.printMessage(posIn, msg);
+          }
+
         }
       }
       compiler.reporter = reporter
@@ -54,7 +72,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       if (reporter.hasErrors) {
         reporter.printSummary
         messageCollectorWrapper.close
-        throw new CompilerException("Compilation failed:\n" +messageCollector)
+        throw new CompilerException("Compilation failed:\n" +messageCollector, messages)
       }
     }
   }

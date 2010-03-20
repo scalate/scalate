@@ -15,6 +15,7 @@
  */
 package org.fusesource.scalate
 
+import _root_.scala.util.parsing.input.Position
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import layout.DefaultLayoutStrategy
 import scaml.ScamlCodeGenerator
@@ -279,17 +280,18 @@ class TemplateEngine {
   }
 
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
+    var code:Code = null
     try {
 
       // Generate the scala source code from the template
-      val code = generateScala(uri, extraBindings)
+      code = generateScala(uri, extraBindings)
 
       val sourceFile = sourceFileName(uri)
       sourceFile.getParentFile.mkdirs
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
       // Compile the generated scala code
-      compiler.compile(sourceFile, code.positions)
+      compiler.compile(sourceFile)
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
@@ -306,8 +308,46 @@ class TemplateEngine {
         }
 
       case e:CompilerException=>
-        e.template = uri
-        throw e
+
+        // Translate the scala error location info
+        // to the template locations..
+        def template_pos(pos:Position) = {
+          var best:scala.util.parsing.input.Position = null
+          var rc = best
+          var target_line = pos.line
+          code.positions.foreach {
+            (entry)=>
+              val current=entry._2
+              if( target_line == current.line ) {
+                if( best == null ) {
+                  best = current
+                  rc = entry._1
+                } else {
+                  if( (best.column-pos.column) > (current.column-pos.column) ) {
+                    best = current
+                    rc = entry._1
+                  }
+                }
+              }
+          }
+          rc
+        }
+
+        var newmessage = "Compilation failed:\n"
+        val errors = e.errors.map {
+          (olderror) =>
+            val pos =  template_pos(olderror.pos)
+            if( pos==null ) {
+              newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
+              newmessage += olderror.pos.longString+"\n"
+              olderror
+            } else {
+              newmessage += uri+":"+pos+" "+olderror.message+"\n"
+              newmessage += pos.longString+"\n"
+              CompilerError(uri, olderror.message, pos)
+            }
+        }
+        throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.template = uri
         throw e
@@ -315,6 +355,7 @@ class TemplateEngine {
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }
+
 
   /**
    * Gets the code generator to use for the give uri string by looking up the uri's extension
