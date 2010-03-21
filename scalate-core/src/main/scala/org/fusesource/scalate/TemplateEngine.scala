@@ -347,6 +347,7 @@ class TemplateEngine {
               CompilerError(uri, olderror.message, pos)
             }
         }
+        e.printStackTrace
         throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.template = uri

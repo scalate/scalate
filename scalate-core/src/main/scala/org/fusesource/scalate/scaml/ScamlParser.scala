@@ -137,8 +137,8 @@ sealed trait Statement extends Positional
 sealed trait TextExpression extends Statement
 
 case class Newline(skip:Boolean=true) extends Statement
-case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitise:Option[Boolean]) extends TextExpression
-case class LiteralText(text:List[String], sanitise:Option[Boolean]) extends TextExpression
+case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean]) extends TextExpression
+case class LiteralText(text:List[String], sanitize:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ScamlComment(text:Option[String], body:List[String]) extends Statement
 case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
@@ -302,7 +302,9 @@ class ScamlParser extends IndentedParser() {
     prefixed("=",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, None) }       |
     prefixed("~",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true,  None) }       |
     prefixed("&=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
-    prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) }
+    prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) } |
+    prefixed("&~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(true)) } |
+    prefixed("!~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(false)) } 
 
   
   val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ ( some_space ~> opt( "="~some_space ~> upto(nl) ) ) ^^ {

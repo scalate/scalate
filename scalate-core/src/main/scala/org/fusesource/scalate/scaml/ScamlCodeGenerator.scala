@@ -85,7 +85,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statements:List[Statement]):Unit = {
-      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, default_write=>$_scalate_$_write, attributes=>$_scalate_$_attributes}"
+      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{sanitize=>$_scalate_$_sanitize, preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, smart_sanitize=>$_scalate_$_smart_sanitize, attributes=>$_scalate_$_attributes}"
       generate_with_flush(statements)
     }
 
@@ -233,7 +233,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:TextExpression):Unit = {
 
-
       statement match {
         case s:LiteralText=> {
           var literal=true;
@@ -244,15 +243,18 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               literal=false
             } else {
               flush_text
-              val method = s.sanitise match {
+              s.sanitize match {
                 case None=>
-                  "$_scalate_$_write ($_scalate_$_context, "+ScamlOptions.escape_html+", "
+                  if( ScamlOptions.escape_html ) {
+                    this << "$_scalate_$_context << ( $_scalate_$_smart_sanitize ($_scalate_$_context, "+part+" ));"
+                  } else {
+                    this << "$_scalate_$_context << ( "+part+" );"
+                  }
                 case Some(true)=>
-                  "$_scalate_$_context <<< ( "
+                  this << "$_scalate_$_context <<< ( "+part+" );"
                 case Some(false)=>
-                  "$_scalate_$_context << ( "
+                  this << "$_scalate_$_context << ( "+part+" );"
               }
-              this << method+part+" );"
               literal=true
             }
           }
@@ -260,21 +262,39 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case s:EvaluatedText=> {
           flush_text
 
-          var prefix = if(s.sanitise.getOrElse(ScamlOptions.escape_html)) {
-            "$_scalate_$_context <<< ("
-          } else {
-            "$_scalate_$_context << ("
-          }
-
+          var prefix = "$_scalate_$_context << ("
           var suffix = ");"
 
           if( s.preserve ) {
-            prefix += " $_scalate_$_preserve ( $_scalate_$_context.value ("
-            suffix = ") ) " + suffix;
+            prefix += " $_scalate_$_preserve ("
+            suffix = ") " + suffix;
           } else {
-            prefix += " $_scalate_$_indent ( "+asString(indent_string())+", $_scalate_$_context.value ("
-            suffix = ") ) " + suffix;
+            prefix += " $_scalate_$_indent ( "+asString(indent_string())+","
+            suffix = ") " + suffix;
           }
+
+          val takeValue = s.sanitize match {
+            case None=>
+              if( ScamlOptions.escape_html ) {
+                prefix += " $_scalate_$_smart_sanitize ($_scalate_$_context, "
+                suffix = ") " + suffix;
+                false
+              } else {
+                true
+              }
+            case Some(true)=>
+              prefix += " $_scalate_$_sanitize ( "
+              suffix = ") " + suffix;
+              true
+            case Some(false)=>
+              true
+          }
+
+          if( takeValue ) {
+            prefix += " $_scalate_$_context.value ("
+            suffix = ") " + suffix;
+          }
+
 
           if( s.body.isEmpty ) {
             this << prefix+s.code+suffix

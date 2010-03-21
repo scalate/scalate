@@ -107,23 +107,15 @@ object RenderHelper
 
   }
 
-  def default_write(context:RenderContext, sanitize:Boolean, value:Any ) {
+  def smart_sanitize(context:RenderContext, value:Any):String = {
     if( value == null ) {
-      if (sanitize) {
-        context <<< value
-      } else {
-        context << value
-      }
+      return context.value(value);
     }
     value match {
       case x:NodeSeq=>
-        context << value
+        context.value(value)
       case _ =>
-        if (sanitize) {
-          context <<< value
-        } else {
-          context << value
-        }
+        sanitize(context.value(value))
     }
   }
 }

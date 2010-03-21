@@ -980,6 +980,19 @@ The bean is blue
 </html>
 """)
 
+  testRender("`&~` preserves and sanitizes",
+"""
+&~ "<tag>\n</tag>"
+""","""
+&lt;tag&gt;&#x000A;&lt;/tag&gt;
+""")
+
+  testRender("`!~` preserves and does not sanitize",
+"""
+!~ "<tag>\n</tag>"
+""","""
+<tag>&#x000A;</tag>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
