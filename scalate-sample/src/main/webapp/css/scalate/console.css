@@ -19,10 +19,23 @@
   text-align: right;
 }
 
+#scalate-console .toggle img {
+  vertical-align: middle;
+}
+
 #scalate-console div.attributes {
   margin: 10px;
   overflow: auto;
-  background: #E3E39B;
+  background: white;
+}
+
+#scalate-console div.attributes table th {
+  text-align: left;
+  color: #993333;
+}
+#scalate-console div.attributes table td {
+  padding:2px;
+  border-top: 1px solid #BDBD81;
 }
 
 #scalate-console div.body {
