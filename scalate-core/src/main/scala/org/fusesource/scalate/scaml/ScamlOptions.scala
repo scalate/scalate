@@ -37,7 +37,6 @@ object ScamlOptions {
     "meta",
     "img",
     "link",
-    "script",
     "br",
     "hr")
 }

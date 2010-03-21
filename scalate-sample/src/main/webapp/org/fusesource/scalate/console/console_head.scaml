@@ -1,6 +1,8 @@
 -@ import val consoleHelper: ConsoleHelper = new ConsoleHelper(context)
 - if (optionEnabled("body"))
-  <link href="http://alexgorbatchev.com/pub/sh/2.1.364/styles/shCore.css" rel="stylesheet" type="text/css" />
-  <link href="http://alexgorbatchev.com/pub/sh/2.1.364/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/2.1.364/scripts/shCore.js"></script>
-  <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/2.1.364/scripts/shBrushXml.js"></script>
+  -# var base="http://alexgorbatchev.com/pub/sh/2.1.364"
+  - var base="http://scalate.fusesource.org/repo/tools/SyntaxHighlighter/2.1.364"
+  %link(href="#{base}/styles/shCore.css" rel="stylesheet" type="text/css")
+  %link(href="#{base}//styles/shThemeDefault.css" rel="stylesheet" type="text/css")
+  %script(src="#{base}/scripts/shCore.js" type="text/javascript")
+  %script(src="#{base}/scripts/shBrushXml.js" type="text/javascript")
