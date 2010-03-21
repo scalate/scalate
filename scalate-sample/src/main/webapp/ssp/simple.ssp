@@ -10,3 +10,9 @@
 <p>
   title = ${attribute("title")}
 </p>
+
+<ul>
+<% for (i <- 1 to 5) { %>
+  <li>${i}</li>
+<% } +%>
+</ul>

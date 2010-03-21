@@ -78,10 +78,6 @@ class SspParser extends RegexParsers {
     prefixed(prefix, upto(postfix) <~ postfix)
   }
 
-  def wrapped_end_guard[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
-    prefixed(prefix, upto(postfix))
-  }
-
   val litteral_part:Parser[Text] =
     upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" ) ~
       opt(
@@ -93,14 +89,12 @@ class SspParser extends RegexParsers {
         case x~None => x
       }
 
-
+  val tag_ending = "+%>" | """%>[ \t]*\r?\n?""".r 
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
-  val expression_fragment =
-    wrapped_end_guard("<%=", "-?%>".r) <~ ("""-%>[ \t]*\r?\n?""".r |"%>") ^^ {ExpressionFragment(_)}
-  val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ "%>")
-  val scriptlet_fragment =
-    wrapped_end_guard("<%", "-?%>".r) <~ ("""-%>[ \t]*\r?\n?""".r |"%>") ^^ {ScriptletFragment(_)}
+  val expression_fragment = wrapped("<%=", tag_ending) ^^ {ExpressionFragment(_)}
+  val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ tag_ending)
+  val scriptlet_fragment =  wrapped("<%", tag_ending) ^^ {ScriptletFragment(_)}
   val text_fragment = litteral_part       ^^ { TextFragment(_) }
 
   val page_fragment: Parser[PageFragment] = positioned(comment_fragment | dollar_expression_fragment |
