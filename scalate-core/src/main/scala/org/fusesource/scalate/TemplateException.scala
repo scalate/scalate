@@ -37,7 +37,7 @@ class InvalidSyntaxException(val brief: String, val pos: Position = NoPosition) 
   var template:String=null;
 }
 
-case class CompilerError(file:String, message:String, pos: Position = NoPosition)
+case class CompilerError(file:String, message:String, pos: Position = NoPosition, original:CompilerError=null)
 
 class CompilerException(msg:String, val errors:List[CompilerError]) extends TemplateException(msg)
 
