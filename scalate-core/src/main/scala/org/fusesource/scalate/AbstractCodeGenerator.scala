@@ -19,7 +19,7 @@ package org.fusesource.scalate
 
 
 import _root_.java.util.{Comparator, TreeMap}
-import _root_.scala.util.parsing.input.{OffsetPosition, Positional, Position}
+import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
@@ -47,8 +47,10 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       this
     }
 
-    def << (node:Positional): this.type = {
-      generated_positions = generated_positions + ( node.pos -> current_position )
+    def << (pos:Position): this.type = {
+      if( pos!=null ) {
+        generated_positions = generated_positions + ( pos -> current_position )
+      }
       this
     }
 

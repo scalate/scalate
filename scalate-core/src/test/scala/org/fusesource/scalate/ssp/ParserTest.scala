@@ -12,6 +12,8 @@ import org.scalatest.FunSuite
 class ParserTest extends FunSuite {
   val logging = false
 
+  implicit def stringToText(x:String) = Text(x)
+
   test("parse attribute declaration") {
     val lines = assertValid("""<%@ val name: String %>
 <html>

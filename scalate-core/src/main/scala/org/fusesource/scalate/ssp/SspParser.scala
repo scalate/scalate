@@ -24,12 +24,19 @@ import util.parsing.input.{Positional, CharSequenceReader}
 
 sealed abstract class PageFragment extends Positional
 
-case class CommentFragment(comment: String) extends PageFragment
-case class DollarExpressionFragment(code: String) extends PageFragment
-case class ExpressionFragment(code: String) extends PageFragment
-case class ScriptletFragment(code: String) extends PageFragment
-case class TextFragment(text: String) extends PageFragment
-case class AttributeFragment(kind: String, name: String, className: String, defaultValue: Option[String], autoImport: Boolean) extends PageFragment
+case class Text(value:String) extends Positional {
+  def +(other:String) = Text(value+other).setPos(pos)
+  def +(other:Text) = Text(value+other.value).setPos(pos)
+  def replaceAll(x:String, y:String) = Text(value.replaceAll(x,y)).setPos(pos)
+  override def toString = value
+}
+
+case class CommentFragment(comment: Text) extends PageFragment
+case class DollarExpressionFragment(code: Text) extends PageFragment
+case class ExpressionFragment(code: Text) extends PageFragment
+case class ScriptletFragment(code: Text) extends PageFragment
+case class TextFragment(text: Text) extends PageFragment
+case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends PageFragment
 
 class SspParser extends RegexParsers {
   var skipWhitespaceOn = false
@@ -44,12 +51,16 @@ class SspParser extends RegexParsers {
       result
   }
 
-  val any_space = """[ \t]*""".r
-  val identifier = """[a-zA-Z0-9\$_]+""".r
-  val typeName = """[a-zA-Z0-9\$_\[\]\.]+""".r
-  val some_text = """.+""".r
+  def text(p1:Parser[String]): Parser[Text] = {
+    positioned(p1 ^^ { Text(_) })
+  }
 
-  val attribute = skip_whitespace(opt("import") ~ ("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
+  val any_space   = text("""[ \t]*""".r)
+  val identifier  = text("""[a-zA-Z0-9\$_]+""".r)
+  val typeName    = text("""[a-zA-Z0-9\$_\[\]\.]+""".r)
+  val some_text   = text(""".+""".r)
+
+  val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
     case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
@@ -59,15 +70,19 @@ class SspParser extends RegexParsers {
   /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
   def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
 
-  def upto[T](p1: Parser[T]): Parser[String] = {
-    rep1(not(p1) ~> ".|\r|\n".r) ^^ {_.mkString("")}
+  def upto[T](p1: Parser[T]): Parser[Text] = {
+    text(rep1(not(p1) ~> ".|\r|\n".r) ^^ {_.mkString("")})
   }
 
-  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[String] = {
+  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
     prefixed(prefix, upto(postfix) <~ postfix)
   }
 
-  val litteral_part:Parser[String] =
+  def wrapped_end_guard[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
+    prefixed(prefix, upto(postfix))
+  }
+
+  val litteral_part:Parser[Text] =
     upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" ) ~
       opt(
         """\<%""" ~ opt(litteral_part) ^^ { case x~y=> "<%"+y.getOrElse("") }  |
@@ -81,9 +96,15 @@ class SspParser extends RegexParsers {
 
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
-  val expression_fragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+  val expression_fragment =
+    // <%= -%> eats the trailing newline
+    wrapped("<%=", "-%>[ \t]*\r?\n?") ^^ {ExpressionFragment(_)} |
+    wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
   val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ "%>")
-  val scriptlet_fragment = wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
+  val scriptlet_fragment =
+    // <% -%> eats the trailing newline
+    wrapped("<%", "-%>[ \t]*\r?\n?") ^^ {ScriptletFragment(_)} |
+    wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
   val text_fragment = litteral_part       ^^ { TextFragment(_) }
 
   val page_fragment: Parser[PageFragment] = positioned(comment_fragment | dollar_expression_fragment |

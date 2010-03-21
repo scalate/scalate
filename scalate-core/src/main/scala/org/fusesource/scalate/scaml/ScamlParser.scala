@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesoruce.scalate.haml
+package org.fusesoruce.scalate.scaml
 
 import annotation.tailrec
 import _root_.org.fusesource.scalate.{InvalidSyntaxException}
@@ -136,16 +136,31 @@ object Trim extends Enumeration {
 sealed trait Statement extends Positional
 sealed trait TextExpression extends Statement
 
+case class Text(value:String) extends Positional {
+  def +(other:String) = Text(value+other).setPos(pos)
+  def +(other:Text) = Text(value+other.value).setPos(pos)
+  def replaceAll(x:String, y:String) = Text(value.replaceAll(x,y)).setPos(pos)
+
+  override def equals(obj: Any) = if ( obj!=null && obj.isInstanceOf[Text] ) {
+    obj.asInstanceOf[Text].value.equals(value)
+  } else {
+    false
+  }
+
+  override def hashCode = value.hashCode
+
+  override def toString = value
+}
 case class Newline(skip:Boolean=true) extends Statement
-case class EvaluatedText(code:String, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean]) extends TextExpression
-case class LiteralText(text:List[String], sanitize:Option[Boolean]) extends TextExpression
-case class Element(tag:Option[String], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
-case class ScamlComment(text:Option[String], body:List[String]) extends Statement
-case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
-case class Executed(code:String, body:List[Statement]) extends Statement
-case class FilterStatement(flags:List[String], filters:List[String], body:List[String]) extends Statement
-case class Attribute(kind:String, name: String, className: String, defaultValue: Option[String], autoImport:Boolean) extends Statement
-case class Doctype(line:List[String]) extends Statement
+case class EvaluatedText(code:Text, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean]) extends TextExpression
+case class LiteralText(text:List[Text], sanitize:Option[Boolean]) extends TextExpression
+case class Element(tag:Option[Text], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
+case class ScamlComment(text:Option[Text], body:List[Text]) extends Statement
+case class HtmlComment(conditional:Option[Text], text:Option[Text], body:List[Statement]) extends Statement
+case class Executed(code:List[Text], body:List[Statement]) extends Statement
+case class FilterStatement(flags:List[Text], filters:List[Text], body:List[Text]) extends Statement
+case class Attribute(kind:Text, name: Text, className: Text, defaultValue: Option[Text], autoImport:Boolean) extends Statement
+case class Doctype(line:List[Text]) extends Statement
 
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/
@@ -159,28 +174,33 @@ class ScamlParser extends IndentedParser() {
   /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
   def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
 
-  def upto[T]( p1:Parser[T]):Parser[String] = {
-    rep1( not( p1 ) ~> ".".r ) ^^ { _.mkString("") }
+  def upto[T]( p1:Parser[T]):Parser[Text] = {
+    text( rep1( not( p1 ) ~> ".".r ) ^^ {_.mkString("")} )
   }
 
-  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[String] = {
+  def text(p1:Parser[String]): Parser[Text] = {
+    positioned(p1 ^^ { Text(_) })
+  }
+
+  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[Text] = {
     prefixed( prefix, upto(postfix) <~ postfix )
   }
 
-  val any                     = """.*""".r
-  val nl                      = """\r?\n""".r
-  val any_space_then_nl       ="""[ \t]*\r?\n""".r
-  val tag_ident               = """[a-zA-Z_0-9][\:a-zA-Z_0-9-]*""".r
-  val css_name                    = """[a-zA-Z_0-9][a-zA-Z_0-9-]*""".r
+  val dot                     = text(""".+""".r)
+  val opt_dot                 = text(""".*""".r)
+  val space                   = text("""[ \t]+""".r)
+  val opt_space               = text("""[ \t]*""".r)
 
-  val text                    = """.+""".r
-  val space                   = """[ \t]+""".r
-  val some_space              = """[ \t]*""".r
+  val nl                      = text("""\r?\n""".r)
+  val any_space_then_nl       = text("""[ \t]*\r?\n""".r)
+  val tag_ident               = text("""[a-zA-Z_0-9][\:a-zA-Z_0-9-]*""".r)
+  val css_name                = text("""[a-zA-Z_0-9][a-zA-Z_0-9-]*""".r)
 
-  val scala_ident                   = """[a-zA-Z_]\w*""".r
-  val qualified_type          = """[a-zA-Z0-9\$_\[\]\.]+""".r
 
-  def eval_string_escapes(value:String) = {
+  val scala_ident             = text("""[a-zA-Z_]\w*""".r)
+  val qualified_type          = text("""[a-zA-Z0-9\$_\[\]\.]+""".r)
+
+  def eval_string_escapes(value:Text) = {
     value.replaceAll(Pattern.quote("\\b"),"\b").
           replaceAll(Pattern.quote("\\f"),"\f").
           replaceAll(Pattern.quote("\\n"),"\n").
@@ -188,20 +208,20 @@ class ScamlParser extends IndentedParser() {
           replaceAll(Pattern.quote("\\t"),"\t")
   }
 
-  val scala_string_literal    = "\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*|[ \t]*""".r<~"\""
-  val ruby_string_literal     = "'"~>"""([^'\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*|[ \t]*""".r<~"'"
+  val scala_string_literal    = text("\""~>"""([^"\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*|[ \t]*""".r<~"\"")
+  val ruby_string_literal     = text("'"~>"""([^'\p{Cntrl}\\]|\\[\\/bfnrt]|\\u[a-fA-F0-9]{4})*|[ \t]*""".r<~"'")
   val string_literal          = scala_string_literal | ruby_string_literal
 
-  val whole_number            = """-?\d+""".r
-  val decimal_number          = """(\d+(\.\d*)?|\d*\.\d+)""".r
-  val floating_point_number   = """-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r
+  val whole_number            = text("""-?\d+""".r)
+  val decimal_number          = text("""(\d+(\.\d*)?|\d*\.\d+)""".r)
+  val floating_point_number   = text("""-?(\d+(\.\d*)?|\d*\.\d+)([eE][+-]?\d+)?[fFdD]?""".r)
   def symbol = ":"~>scala_ident
 
   // Haml hash style attributes are any valid ruby hash expression. The scala version should
   // either accept the same to allow easy migration of existing haml pages, or accept a
   // valid scala Map expression.
   //
-  def hash_style_attributes = prefixed("{", skip_whitespace( repsep(hash_attribute_entry, ","))) <~ some_space ~ "}"
+  def hash_style_attributes = prefixed("{", skip_whitespace( repsep(hash_attribute_entry, ","))) <~ opt_space ~ "}"
   def hash_attribute_entry: Parser[(Any, Any)] =
     expression ~ ("=>" ~> expression) ^^ { case key~value => (key, value) }
 
@@ -218,11 +238,11 @@ class ScamlParser extends IndentedParser() {
       x=>EvaluatedText(x, List(), true, Some(true))
     }
 
-  def html_style_attributes = prefixed("(", skip_whitespace(rep(html_attribute_entry))) <~ some_space~")"
+  def html_style_attributes = prefixed("(", skip_whitespace(rep(html_attribute_entry))) <~ opt_space~")"
   def html_attribute_entry: Parser[(Any, Any)] =
     tag_ident ~ ("=" ~> string_literal) ^^ {
       case key~value =>
-        (key, parse(skip_whitespace(literal_text(Some(true)), false), value))
+        (key, parse(skip_whitespace(literal_text(Some(true)), false), value.value))
     } |
     (
       tag_ident ~ ("=" ~> tag_ident) |
@@ -249,11 +269,11 @@ class ScamlParser extends IndentedParser() {
 
   def element_text:Parser[Option[TextExpression]] = 
     prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None)) } |
-    some_space ~ nl ^^ { x=>None } |
+    opt_space ~ nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
   def full_element_statement:Parser[Element] =
-    opt("%"~>tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! some_space ~ nl ) ^^ {
+    opt("%"~>tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! opt_space ~ nl ) ^^ {
       case (tag~attributes~wsc) => Element(tag, attributes, None, List(), wsc, true)
     } |
     opt("%"~>tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ statement_block ^^ {
@@ -262,27 +282,27 @@ class ScamlParser extends IndentedParser() {
 
   def element_statement:Parser[Element] = guarded("%"|"."|"#"~css_name, full_element_statement)
 
-  def haml_comment_statement = prefixed("-#", opt(some_space~>text)<~nl) ~ rep(indent(any<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
-  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(some_space~>text)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
+  def haml_comment_statement = prefixed("-#", opt(opt_space~>dot)<~nl) ~ rep(indent(opt_dot<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
+  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(opt_space~>dot)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
-  def evaluated_fragment:Parser[List[String]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
+  def evaluated_fragment:Parser[List[Text]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
     case code~Some(text)=>{ code :: text }
     case code~None=>{ code :: Nil }
   }
 
-  val litteral_part:Parser[String] =
+  val litteral_part:Parser[Text] =
     upto("#{" | """\#{""" | """\\#{"""|any_space_then_nl) ~
       opt(
-        """\#{""" ~ opt(litteral_part) ^^ { case x~y=> "#{"+y.getOrElse("") }  |
+        """\#{""" ~ opt(litteral_part) ^^ { case x~y=> "#{"+y.getOrElse(Text("")) }  |
         """\\""" ^^ { s=>"""\""" }
       ) ^^ {
         case x~Some(y) => x+y
         case x~None => x
       }
 
-  val litteral_fragment:Parser[List[String]] = opt(litteral_part) ~ opt(evaluated_fragment) ^^ {
-    case None~Some(code)=>{ "" :: code }
-    case None~None=>{ "" :: Nil }
+  val litteral_fragment:Parser[List[Text]] = opt(litteral_part) ~ opt(evaluated_fragment) ^^ {
+    case None~Some(code)=>{ Text("") :: code }
+    case None~None=>{ Text("") :: Nil }
     case Some(text)~Some(code)=>{ text :: code }
     case Some(text)~None=>{ text :: Nil }
   }
@@ -291,8 +311,8 @@ class ScamlParser extends IndentedParser() {
 
   def text_statement = (
           prefixed("""\""", literal_text(None))      |
-          prefixed("&=="~some_space, literal_text(Some(true)) )  |
-          prefixed("!=="~some_space, literal_text(Some(false)) ) |
+          prefixed("&=="~opt_space, literal_text(Some(true)) )  |
+          prefixed("!=="~opt_space, literal_text(Some(false)) ) |
           prefixed("&"~space, literal_text(Some(true)) )  |
           prefixed("!"~space, literal_text(Some(false)) ) |
           literal_text(None)
@@ -306,26 +326,29 @@ class ScamlParser extends IndentedParser() {
     prefixed("&~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(true)) } |
     prefixed("!~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(false)) } 
 
-  
-  val attribute = skip_whitespace( opt("import") ~ ("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ ( some_space ~> opt( "="~some_space ~> upto(nl) ) ) ^^ {
+
+  val attribute = skip_whitespace( opt(text("import")) ~ text("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ ( opt_space ~> opt( "="~opt_space ~> upto(nl) ) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
   def attribute_statement = prefixed("-@", attribute <~ nl) 
 
   def executed_statement =
-    prefixed("-" ~ some_space ~ nl,  rep1(indent(any<~nl))) ^^ {
-      case code=> Executed(code.mkString("\n"),List())
+    prefixed("-" ~ opt_space ~ nl,  rep1(indent(opt_dot<~nl))) ^^ {
+      case code=> Executed(code,List())
     } |
-    prefixed("-" ~ some_space, text <~ nl) ~ statement_block ^^ {
-      case code~body=> Executed(code,body)
+    prefixed("-" ~ opt_space, dot <~ nl) ~ statement_block ^^ {
+      case code~body=> Executed(code::Nil,body)
     } 
 
   def filter_statement = prefixed(":",
-      ( rep( "~" | "!" | "&" ) ~ rep1sep("""[^: \t\r\n]+""".r, """[ \t]*:[ \t]*""".r ) )<~ nl
-    ) ~ rep(indent(any<~nl)) ^^ { case (flags~code)~body=> FilterStatement(flags, code,body) }
+      ( rep(text("~" | "!" | "&") ) ~ rep1sep(text("""[^: \t\r\n]+""".r), """[ \t]*:[ \t]*""".r ) )<~ nl
+    ) ~ rep(indent(opt_dot<~nl)) ^^ {
+      case (flags~code)~body=>
+        FilterStatement(flags, code,body) 
+  }
 
-  def doctype_statement = prefixed("!!!", rep(some_space ~> """[^ \t \r \n]+""".r) <~ some_space ~ nl) ^^ { Doctype(_) }
+  def doctype_statement = prefixed("!!!", rep(opt_space ~> text("""[^ \t \r \n]+""".r)) <~ opt_space ~ nl) ^^ { Doctype(_) }
 
   def statement:Parser[Statement] = positioned(
       haml_comment_statement |

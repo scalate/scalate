@@ -24,6 +24,12 @@ import scala.collection.mutable.HashSet
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
+  implicit def textToString(text:Text) = text.value
+  implicit def textOptionToString(text:Option[Text]):Option[String] = text match {
+    case None=>None
+    case Some(x) => Some(x.value)
+  }
+
   private class SourceBuilder extends AbstractSourceBuilder[PageFragment] {
 
     def generate(fragments: List[PageFragment]):Unit = {
@@ -31,22 +37,25 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
 
     def generate(fragment: PageFragment):Unit = {
-      this << fragment;
       fragment match {
         case CommentFragment(code) => {
         }
         case ScriptletFragment(code) => {
+          this << code.pos;
           this << code
         }
         case TextFragment(text) => {
+          this << fragment.pos;
           this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
         case af:AttributeFragment => {
         }
         case DollarExpressionFragment(code) => {
+          this << code.pos;
           this << "$_scalate_$_context <<< "+code+""
         }
         case ExpressionFragment(code) => {
+          this << code.pos;
           this << "$_scalate_$_context << "+code+""
         }
       }

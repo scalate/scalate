@@ -26,7 +26,6 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends ScamlTestSupport {
 
-
   /////////////////////////////////////////////////////////////////////
   //
   // Filters

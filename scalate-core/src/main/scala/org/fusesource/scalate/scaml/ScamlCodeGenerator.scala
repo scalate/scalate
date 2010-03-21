@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scaml
 
-import org.fusesoruce.scalate.haml._
+import _root_.org.fusesoruce.scalate.scaml._
 import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
@@ -31,6 +31,12 @@ import util.RenderHelper
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
+
+  implicit def textToString(text:Text) = text.value
+  implicit def textOptionToString(text:Option[Text]):Option[String] = text match {
+    case None=>None
+    case Some(x) => Some(x.value)
+  }
 
   private class SourceBuilder extends AbstractSourceBuilder[Statement] {
 
@@ -106,7 +112,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate_no_flush(statements:List[Statement]):Unit = {
 
       val bindings = statements.flatMap {
-        case attribute: Attribute => List(Binding(attribute.name, attribute.className, attribute.autoImport, attribute.defaultValue))
+        case attribute: Attribute => List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue))
         case _ => Nil
       }
 
@@ -127,7 +133,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           generate(s)
         }
         case s:TextExpression=> {
-          this << statement;
+          this << statement.pos;
           write_indent
           generate(s)
           write_nl
@@ -151,9 +157,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Doctype):Unit = {
-      this << statement;
+      this << statement.pos;
       write_indent
-      statement.line match {
+      statement.line.map{_.value} match {
         case List("XML")=>
           write_text("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
         case List("XML", encoding)=>
@@ -161,7 +167,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case _=>
           ScamlOptions.format match {
             case ScamlOptions.Format.xhtml=>
-              statement.line match {
+              statement.line.map{_.value} match {
                 case List("Strict")=>
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">""")
                 case List("Frameset")=>
@@ -178,7 +184,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">""")
               }
             case ScamlOptions.Format.html4=>
-              statement.line match {
+              statement.line.map{_.value} match {
                 case List("Strict")=>
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">""")
                 case List("Frameset")=>
@@ -195,21 +201,25 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:FilterStatement):Unit = {
-      if( statement.flags.contains("&") && statement.flags.contains("!") ) {
+
+      def isEnabled(flag:String) = {
+        statement.flags.contains(Text(flag))
+      }
+      if( isEnabled("&") && isEnabled("!") ) {
         throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos);
       }
 
-      val preserve = statement.flags.contains("~")
-      val interpolate = statement.flags.contains("&") || statement.flags.contains("!")
-      val sanitize = interpolate && statement.flags.contains("&")
+      val preserve = isEnabled("~")
+      val interpolate = isEnabled("&") || isEnabled("!")
+      val sanitize = interpolate && isEnabled("&")
 
-      var content = statement.body.mkString("\n")
+      var content = statement.body.map{_.value}.mkString("\n")
 
       var text:TextExpression = if( interpolate ) {
         val p = new ScamlParser()
         p.parse(p.literal_text(Some(sanitize)), content)
       } else {
-        LiteralText(List(content), Some(false))
+        LiteralText(List(Text(content)), Some(false))
       }
 
       write_indent
@@ -233,7 +243,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       this << prefix + "$_scalate_$_context.capture { "
       indent {
-        this << statement;
+        this << statement.pos;
         generate(text)
         flush_text
       }
@@ -243,7 +253,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
 
     def generate(statement:TextExpression):Unit = {
-      this << statement;
+      this << statement.pos;
       statement match {
         case s:LiteralText=> {
           var literal=true;
@@ -322,11 +332,22 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Executed):Unit = {
       flush_text
-      this << statement;
       if( statement.body.isEmpty ) {
-        this << statement.code
+        statement.code.foreach {
+          (line) =>
+          this << line.pos
+          this << line.value
+        }
       } else {
-        this << statement.code + "{"
+        statement.code.foreach {
+          (line) =>
+          this << line.pos
+          if( line ne statement.code.last ) {
+            this << line.value
+          } else {
+            this << line.value + "{"
+          }
+        }
         indent {
           generate_no_flush(statement.body)
           flush_text
@@ -356,15 +377,17 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statement match {
         case HtmlComment(_, text, List()) => {
           write_indent
-          this << statement;
+          this << statement.pos;
           write_text(prefix+" ")
-          write_text(text.getOrElse(""))
+          if( text.isDefined ) {
+            write_text(text.get)
+          }
           write_text(" "+suffix)
           write_nl
         }
         case HtmlComment(_, None, list) => {
           write_indent
-          this << statement;
+          this << statement.pos;
           write_text(prefix)
           write_nl
 
@@ -386,7 +409,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
 
     def generate(statement:ScamlComment):Unit = {
-      this << statement;
+      this << statement.pos;
       statement match {
         case ScamlComment(text, List()) => {
           this << "//" + text.getOrElse("")
@@ -452,13 +475,13 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
       
       outer_trim
-      this << statement;
+      this << statement.pos;
       write_indent
       write_start_tag
 
       statement match {
         case Element(_,_,text,List(),_,_) => {
-          generate(text.getOrElse(LiteralText(List(""), Some(false))))
+          generate(text.getOrElse(LiteralText(List(Text("")), Some(false))))
           write_end_tag
           write_nl
           outer_trim
@@ -503,7 +526,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
         def write_expression(expression:Any) = {
           expression match {
-            case s:String=>s
+            case s:Text=>s
+              this << s.pos
               this << asString(s)
             case s:LiteralText=>
               this << "$_scalate_$_context.capture {"
@@ -513,6 +537,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               }
               this << "}"
             case s:EvaluatedText=>
+              this << s.code.pos
               if( s.body.isEmpty ) {
                 this << s.code
               } else {
@@ -549,25 +574,31 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       } else {
 
-        def value_of(value:Any):String = {
+        def value_of(value:Any):Text = {
           value match {
             case LiteralText(text, _) => text.head
-            case s:String => s
+            case s:Text => s
             case _=> throw new UnsupportedOperationException("don't know how to deal with: "+value);
           }
         }
 
         val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
         val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
-        var map = LinkedHashMap[String,String]( )
+        var map = LinkedHashMap[Text,Text]( )
 
         if( !entries_id.isEmpty ) {
-          map += "id" -> value_of(entries_id.last._2)
+          map += Text("id") -> value_of(entries_id.last._2)
         }
 
         if( !entries_class.isEmpty ) {
-          val value = entries_class.map(x=>value_of(x._2)).mkString(" ")
-          map += "class"->value
+          var value:Option[Text] = None
+          value = entries_class.foldLeft(value) {
+            (rc, x)=> rc match {
+              case None=>Some(value_of(x._2))
+              case Some(y)=>Some(y+" "+value_of(x._2))
+            }
+          }
+          map += Text("class")->value.get
         }
 
         entries_rest.foreach{ me => map += value_of(me._1) -> value_of(me._2) }
@@ -577,9 +608,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           map.foreach {
             case (name,value) =>
             write_text(" ")
+            this << name.pos
             write_text(name)
             write_text("=\"")
-            write_text(value)
+            this << value.pos
+            write_text(RenderHelper.sanitize(value))
             write_text("\"")
           }
         }
