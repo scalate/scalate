@@ -97,14 +97,10 @@ class SspParser extends RegexParsers {
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
   val expression_fragment =
-    // <%= -%> eats the trailing newline
-    wrapped("<%=", "-%>[ \t]*\r?\n?") ^^ {ExpressionFragment(_)} |
-    wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+    wrapped_end_guard("<%=", "-?%>".r) <~ ("""-%>[ \t]*\r?\n?""".r |"%>") ^^ {ExpressionFragment(_)}
   val attribute_fragement = prefixed("<%@", attribute <~ any_space ~ "%>")
   val scriptlet_fragment =
-    // <% -%> eats the trailing newline
-    wrapped("<%", "-%>[ \t]*\r?\n?") ^^ {ScriptletFragment(_)} |
-    wrapped("<%", "%>") ^^ {ScriptletFragment(_)}
+    wrapped_end_guard("<%", "-?%>".r) <~ ("""-%>[ \t]*\r?\n?""".r |"%>") ^^ {ScriptletFragment(_)}
   val text_fragment = litteral_part       ^^ { TextFragment(_) }
 
   val page_fragment: Parser[PageFragment] = positioned(comment_fragment | dollar_expression_fragment |
