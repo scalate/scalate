@@ -272,7 +272,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 %script{:type => "text/javascript",
             :src  => "javascripts/script"}
 ""","""
-<script type="text/javascript" src="javascripts/script"/>
+<script type="text/javascript" src="javascripts/script"></script>
 """)
 
 
@@ -302,7 +302,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 %script(type="text/javascript"
      src="javascripts/script")
 ""","""
-<script type="text/javascript" src="javascripts/script"/>
+<script type="text/javascript" src="javascripts/script"></script>
 """)
 
   testRender("Html Attributes can use complex scala expressions",
@@ -480,7 +480,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 </div></blockquote>
 """)
 
-  testRender("`<` will remove all whitespace surrounding a tag",
+  testRender("`>` will remove all whitespace surrounding a tag",
 """
 %img/
 %img>/

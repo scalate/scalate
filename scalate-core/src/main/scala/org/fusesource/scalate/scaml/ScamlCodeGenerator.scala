@@ -40,6 +40,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     var suppress_indent = false
     var in_html_comment = false
 
+    override def current_position = {
+      if( text_buffer.length==0 ) {
+        super.current_position
+      } else {
+        super.current_position + ("$_scalate_$_context << ( "+asString(text_buffer.toString)).length
+      }
+    }
+
+
     def write_indent() = {
       if( pending_newline ) {
         text_buffer.append("\n")
@@ -142,7 +151,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Doctype):Unit = {
-      flush_text
       this << statement;
       write_indent
       statement.line match {
@@ -187,8 +195,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:FilterStatement):Unit = {
-      flush_text
-      this << statement;
       if( statement.flags.contains("&") && statement.flags.contains("!") ) {
         throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos);
       }
@@ -227,6 +233,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       this << prefix + "$_scalate_$_context.capture { "
       indent {
+        this << statement;
         generate(text)
         flush_text
       }
@@ -236,7 +243,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
 
     def generate(statement:TextExpression):Unit = {
-      flush_text
       this << statement;
       statement match {
         case s:LiteralText=> {
@@ -331,8 +337,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:HtmlComment):Unit = {
       //  case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
-      flush_text
-      this << statement;
       var prefix = "<!--"
       var suffix = "-->"
       if( statement.conditional.isDefined ) {
@@ -352,6 +356,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statement match {
         case HtmlComment(_, text, List()) => {
           write_indent
+          this << statement;
           write_text(prefix+" ")
           write_text(text.getOrElse(""))
           write_text(" "+suffix)
@@ -359,6 +364,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case HtmlComment(_, None, list) => {
           write_indent
+          this << statement;
           write_text(prefix)
           write_nl
 
@@ -380,7 +386,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
 
     def generate(statement:ScamlComment):Unit = {
-      flush_text
       this << statement;
       statement match {
         case ScamlComment(text, List()) => {
@@ -402,9 +407,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Element):Unit = {
-      flush_text
-      this << statement;
-
 
       var tag = statement.tag.getOrElse("div");
       if( statement.text.isDefined && !statement.body.isEmpty ) {
@@ -449,20 +451,19 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case _ => { false }
       }
       
+      outer_trim
+      this << statement;
+      write_indent
+      write_start_tag
+
       statement match {
         case Element(_,_,text,List(),_,_) => {
-          outer_trim
-          write_indent
-          write_start_tag
           generate(text.getOrElse(LiteralText(List(""), Some(false))))
           write_end_tag
           write_nl
           outer_trim
         }
         case Element(_,_,None,list,_,_) => {
-          outer_trim
-          write_indent
-          write_start_tag
           write_nl
 
           if( !inner_trim ) {

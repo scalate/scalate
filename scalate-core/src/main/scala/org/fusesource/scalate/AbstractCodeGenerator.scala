@@ -53,7 +53,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
     }
 
     def current_position = {
-      code.length+(indent_level*2)
+      code.length + (indent_level*2)
     }
 
     def positions() = {
