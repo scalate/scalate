@@ -28,8 +28,7 @@
           %span.lineNumber
             = s.line
           %pre<
-            :~&plain
-               #{s.source}
+            &~ s.source
 
 - exception match
   - case e:InvalidSyntaxException =>
