@@ -109,7 +109,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Statement):Unit = {
-      this << statement;
       statement match {
         case s:Newline=> {
         }
@@ -119,6 +118,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           generate(s)
         }
         case s:TextExpression=> {
+          this << statement;
           write_indent
           generate(s)
           write_nl
@@ -142,6 +142,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Doctype):Unit = {
+      flush_text
+      this << statement;
       write_indent
       statement.line match {
         case List("XML")=>
@@ -185,6 +187,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:FilterStatement):Unit = {
+      flush_text
+      this << statement;
       if( statement.flags.contains("&") && statement.flags.contains("!") ) {
         throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos);
       }
@@ -232,7 +236,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
 
     def generate(statement:TextExpression):Unit = {
-
+      flush_text
+      this << statement;
       statement match {
         case s:LiteralText=> {
           var literal=true;
@@ -311,6 +316,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:Executed):Unit = {
       flush_text
+      this << statement;
       if( statement.body.isEmpty ) {
         this << statement.code
       } else {
@@ -325,6 +331,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:HtmlComment):Unit = {
       //  case class HtmlComment(conditional:Option[String], text:Option[String], body:List[Statement]) extends Statement
+      flush_text
+      this << statement;
       var prefix = "<!--"
       var suffix = "-->"
       if( statement.conditional.isDefined ) {
@@ -373,6 +381,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement:ScamlComment):Unit = {
       flush_text
+      this << statement;
       statement match {
         case ScamlComment(text, List()) => {
           this << "//" + text.getOrElse("")
@@ -393,6 +402,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement:Element):Unit = {
+      flush_text
+      this << statement;
+
+
       var tag = statement.tag.getOrElse("div");
       if( statement.text.isDefined && !statement.body.isEmpty ) {
         throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.")

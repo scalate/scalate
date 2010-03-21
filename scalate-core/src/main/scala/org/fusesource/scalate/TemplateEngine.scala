@@ -15,7 +15,7 @@
  */
 package org.fusesource.scalate
 
-import _root_.scala.util.parsing.input.Position
+import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import layout.DefaultLayoutStrategy
 import scaml.ScamlCodeGenerator
@@ -312,25 +312,17 @@ class TemplateEngine {
         // Translate the scala error location info
         // to the template locations..
         def template_pos(pos:Position) = {
-          var best:scala.util.parsing.input.Position = null
-          var rc = best
-          var target_line = pos.line
-          code.positions.foreach {
-            (entry)=>
-              val current=entry._2
-              if( target_line == current.line ) {
-                if( best == null ) {
-                  best = current
-                  rc = entry._1
-                } else {
-                  if( (best.column-pos.column) > (current.column-pos.column) ) {
-                    best = current
-                    rc = entry._1
-                  }
-                }
-              }
+          var entry = code.positions.floorEntry(pos);
+          if( entry==null ) {
+            null;
+          } else {
+            val p = entry.getValue.asInstanceOf[OffsetPosition]
+            if( (pos.column - entry.getKey.column) == 0 ) {
+              p
+            } else {
+              OffsetPosition(p.source, p.offset+(pos.column - entry.getKey.column))
+            }
           }
-          rc
         }
 
         var newmessage = "Compilation failed:\n"

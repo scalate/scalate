@@ -18,6 +18,7 @@
 package org.fusesource.scalate
 
 
+import _root_.java.util.{Comparator, TreeMap}
 import _root_.scala.util.parsing.input.{OffsetPosition, Positional, Position}
 import java.util.regex.Pattern
 import java.net.URI
@@ -52,13 +53,25 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
     }
 
     def current_position = {
-      code.length
+      code.length+(indent_level*2)
     }
 
-    def positions():Map[Position,Position] = {
-      generated_positions.map {
-        entry=>(entry._1->OffsetPosition(code, entry._2))
+    def positions() = {
+      val rc = new TreeMap[Position,Position](new Comparator[Position]() {
+        def compare(p1:Position, p2:Position):Int = {
+          val rc = p1.line - p2.line
+          if( rc==0 ) {
+            p1.column - p2.column  
+          } else {
+            rc
+          }
+        }
+      })
+      generated_positions.foreach {
+        entry=>
+          rc.put(OffsetPosition(code, entry._2), entry._1)
       }
+      rc
     }
 
     def indent[T](op: => T): T = {indent_level += 1; val rc = op; indent_level -= 1; rc}

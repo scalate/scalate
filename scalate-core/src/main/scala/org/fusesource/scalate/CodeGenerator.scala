@@ -17,9 +17,10 @@
 
 package org.fusesource.scalate
 
+import _root_.java.util.TreeMap
 import _root_.scala.util.parsing.input.Position
 
-case class Code(className:String, source:String, dependencies:Set[String], positions:Map[Position, Position])
+case class Code(className:String, source:String, dependencies:Set[String], positions:TreeMap[Position,Position])
 
 trait CodeGenerator {
 

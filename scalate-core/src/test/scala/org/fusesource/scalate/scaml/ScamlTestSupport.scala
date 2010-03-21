@@ -43,7 +43,7 @@ class ScamlTestSupport extends FunSuite {
   def testInvalidSyntaxException(description:String, template:String, error:String) = {
     test(description) {
       try {
-        println(render(template))
+        println(render(template.trim).trim)
         fail("Expected InvalidSyntaxException was not thrown")
       } catch {
         case e:TestFailedException=> throw e
@@ -61,7 +61,25 @@ class ScamlTestSupport extends FunSuite {
   def ignoreInvalidSyntaxException(description:String, template:String, error:String) = {
     ignore(description) {
     }
-  }  
+  }
+  def testCompilerException(description:String, template:String, error:String) = {
+    test(description) {
+      try {
+        println(render(template.trim).trim)
+        fail("Expected InvalidSyntaxException was not thrown")
+      } catch {
+        case e:TestFailedException=> throw e
+        case e:CompilerException=> {
+          expect(error) {
+            e.errors.head.message
+          }
+        }
+        case x=>
+          fail("Expected InvalidSyntaxException was not thrown.  Instead got a: "+x)
+      }
+    }
+  }
+
 
   def render(content:String): String = {
 
