@@ -65,5 +65,12 @@ Worked!
 <div class="line blue"></div>
 """)
 
+  testRender("SCALATE-49: simple case",
+"""
+%pre(class="brush: html")<
+  test
+""","""
+<pre class="brush: html">test</pre>
+""")
 
 }

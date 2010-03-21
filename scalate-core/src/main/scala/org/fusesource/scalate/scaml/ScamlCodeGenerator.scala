@@ -535,38 +535,37 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       } else {
 
+        def value_of(value:Any):String = {
+          value match {
+            case LiteralText(text, _) => text.head
+            case s:String => s
+            case _=> throw new UnsupportedOperationException("don't know how to deal with: "+value);
+          }
+        }
+
         val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
         val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
-        var map = LinkedHashMap[Any,Any]( )
+        var map = LinkedHashMap[String,String]( )
 
         if( !entries_id.isEmpty ) {
-          map += "id" -> entries_id.last._2
+          map += "id" -> value_of(entries_id.last._2)
         }
 
         if( !entries_class.isEmpty ) {
-          val value = entries_class.map(x=>x._2).mkString(" ")
+          val value = entries_class.map(x=>value_of(x._2)).mkString(" ")
           map += "class"->value
         }
 
-        entries_rest.foreach{ me => map += me._1 -> me._2 }
+        entries_rest.foreach{ me => map += value_of(me._1) -> value_of(me._2) }
 
-        def write_expression(expression:Any) = {
-          expression match {
-            case s:String=>s
-              write_text(s)
-            case s:LiteralText=>
-              write_text( s.text.head )
-            case _=> throw new UnsupportedOperationException("don't know how to eval: "+expression);
-          }
-        }
 
         if( !map.isEmpty ) {
           map.foreach {
             case (name,value) =>
             write_text(" ")
-            write_expression(name)
+            write_text(name)
             write_text("=\"")
-            write_expression(value)
+            write_text(value)
             write_text("\"")
           }
         }

@@ -32,7 +32,7 @@
 
 - exception match
   - case e:InvalidSyntaxException =>
-    - displayError( e.template, e.pos, olderror)
+    - displayError( e.template, e.pos, e.brief)
 
   - case e:CompilerException =>
     - for ( error <- e.errors )

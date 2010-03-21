@@ -8,6 +8,9 @@
     %meta(name="description" content="description goes here")
     %meta(name="keywords" content="keywords,goes,here")
     %meta(name="author" content="Your Name")
+
+    = include("/org/fusesource/scalate/console/console_head.scaml")
+
     %link(href={uri("/css/style.css")} rel="stylesheet" type="text/css")
     %link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
     %title
@@ -30,7 +33,7 @@
 
     #content
       .wrapper
-        !#{body}
+        ! #{body}
     
     #footer
       .wrapper
