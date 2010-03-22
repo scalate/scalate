@@ -13,6 +13,19 @@ case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
 
   def nonBlank = source != null && source.length > 0
+
+
+  /**
+   * Return a tuple of the prefix, the error character and the postfix of this source line
+   * to highlight the error at the given column
+   */
+  def splitOnCharacter(col: Int): Tuple3[String,String,String] = {
+    val next = col + 1
+    val prefix = source.substring(0, col)
+    val ch = source.substring(col, next)
+    val postfix = source.substring(next, source.length)
+    (prefix, ch, postfix)
+  }
 }
 
 /**
