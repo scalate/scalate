@@ -11,7 +11,7 @@
     %h1
       = message
 
-  .source.block
+  .details.block
     %h2
       = editLink(file, pos.line, pos.column)
         in #{shorten(file)} near line #{pos.line} col #{pos.column}
@@ -33,6 +33,21 @@
             %pre<
               &~ s.source
 
+- def displayException(e:Throwable)
+  .header.block
+    %h1
+      = e.getMessage
+    %p
+      = e
+  .details.block
+    - for( stack <- e.getStackTrace )
+      %pre.stacktrace<
+        at #{stack.getClassName}.#{stack.getMethodName}(#{stack.getFileName}:#{stack.getLineNumber})
+    - if( e.getCause!=null )
+      .nested
+        - displayException(e.getCause)
+
+
 #scalate-error
   - exception match
     - case e:InvalidSyntaxException =>
@@ -43,9 +58,12 @@
         - displayError(error.file, error.pos, error.message)
         - val o = error.original
         - if (o != null)
-          .source.block
+          .section.block
             = editLink(o.file, o.pos.line, o.pos.column)
               from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
+
+    - case e:Throwable =>
+      - displayException(e)
 
     - case u =>
       .header.block

@@ -1,0 +1,7 @@
+-
+  try {
+    throw new Exception("Original Exception")
+  } catch {
+    case e:Exception=>
+      throw new Exception("Wraped Exception", e)
+  }

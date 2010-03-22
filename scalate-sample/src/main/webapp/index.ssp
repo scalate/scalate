@@ -121,5 +121,8 @@ Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup
   <li>
     <a href="scaml/errors/scalaCompileError.scaml">Scala Compile Error</a>
   </li>
+  <li>
+    <a href="scaml/errors/runtimeException.scaml">An Exception thrown at Runtime while rendering a template</a>
+  </li>
 </ul>
 
