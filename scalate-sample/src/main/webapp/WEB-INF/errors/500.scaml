@@ -18,7 +18,7 @@
   #source.block
     %h2
       = editLink(file, pos.line, pos.column)
-        In #{shorten(file)} near line #{pos.line} col #{pos.column}
+        in #{shorten(file)} near line #{pos.line} col #{pos.column}
 
     - for (s <- lines(file, pos))
       - val ss = s.style(pos.line)
@@ -45,6 +45,11 @@
   - case e:CompilerException =>
     - for ( error <- e.errors )
       - displayError(error.file, error.pos, error.message)
+      - val o = error.original
+      - if (o != null)
+        #source.block
+          = editLink(o.file, o.pos.line, o.pos.column)
+            from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
 
   - case u =>
     #header.block
