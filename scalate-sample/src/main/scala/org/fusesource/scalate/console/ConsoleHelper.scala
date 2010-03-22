@@ -261,4 +261,11 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
     }
   }
 
+  // Error Handling helper methods
+  //-------------------------------------------------------------------------
+  def exception = attributes("javax.servlet.error.exception")
+  def oldError = attributeOrElse("javax.servlet.error.oldError", "")
+  def errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
+  def errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
+
 }

@@ -40,8 +40,6 @@ object EditLink {
             (if (line.isDefined) "&line=" + line.get else "") +
             (if (col.isDefined) "&col=" + col.get else "")
 
-    println("Body: " + bodyText)
-    
     <a href={href} title="Open in TextMate">
       {bodyText}
     </a>

@@ -3,10 +3,6 @@
 - import org.fusesource.scalate.console._
 - val consoleHelper = new ConsoleHelper(context)
 - import consoleHelper._
-- val exception = attributes("javax.servlet.error.exception")
-- val olderror = attributeOrElse("javax.servlet.error.olderror", "")
-- val errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
-- val errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
 
 %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
@@ -18,7 +14,7 @@
   #source.block
     %h2
       = editLink(file, pos.line, pos.column)
-        In #{shorten(file)} near line #{pos.line} col #{pos.column}
+        in #{shorten(file)} near line #{pos.line} col #{pos.column}
 
     - for (s <- lines(file, pos))
       - val ss = s.style(pos.line)
@@ -28,7 +24,6 @@
             = s.line
           - if (pos.line == s.line)
             - val (prefix, ch, postfix) = s.splitOnCharacter(pos.column - 1)
-            - println("prefix: " + prefix + " ch: " + ch + " postfix: " + postfix)
             %pre<
               &~ prefix
               %span.errorCol><
@@ -45,11 +40,16 @@
   - case e:CompilerException =>
     - for ( error <- e.errors )
       - displayError(error.file, error.pos, error.message)
+      - val o = error.original
+      - if (o != null)
+        #source.block
+          = editLink(o.file, o.pos.line, o.pos.column)
+            from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
 
   - case u =>
     #header.block
       %h1
-        = olderror
+        = oldError
       %p
         = u
 
