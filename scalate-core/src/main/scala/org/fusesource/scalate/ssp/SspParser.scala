@@ -71,7 +71,11 @@ class SspParser extends RegexParsers {
   def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
 
   def upto[T](p1: Parser[T]): Parser[Text] = {
-    text(rep1(not(p1) ~> ".|\r|\n".r) ^^ {_.mkString("")})
+    text(
+      text("""\z""".r) ~ failure("end of file") ^^{ null } |
+      guard(p1) ^^ { _ => "" } |
+      rep1(not(p1) ~> ".|\r|\n".r) ^^ { _.mkString("") }
+    )
   }
 
   def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
@@ -89,8 +93,7 @@ class SspParser extends RegexParsers {
         case x~None => x
       }
 
-  val tag_ending = "+%>" | """%>""".r 
-//  val tag_ending = "+%>" | """%>[ \t]*\r?\n?""".r
+  val tag_ending = "+%>" | """%>[ \t]*\r?\n?""".r
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
   val expression_fragment = wrapped("<%=", tag_ending) ^^ {ExpressionFragment(_)}
