@@ -173,9 +173,13 @@ class ScamlParser extends IndentedParser() {
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
   /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
   def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
-
-  def upto[T]( p1:Parser[T]):Parser[Text] = {
-    text( rep1( not( p1 ) ~> ".".r ) ^^ {_.mkString("")} )
+  
+  def upto[T](p1: Parser[T]): Parser[Text] = {
+    text(
+      text("""\z""".r) ~ failure("end of file") ^^{ null } |
+      guard(p1) ^^ { _ => "" } |
+      rep1(not(p1) ~> ".".r) ^^ { _.mkString("") }
+    )
   }
 
   def text(p1:Parser[String]): Parser[Text] = {
@@ -394,6 +398,8 @@ class ScamlParser extends IndentedParser() {
   }
 
 }
+
+
 
 object ScamlParser {
   def main(args: Array[String]) = {
