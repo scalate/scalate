@@ -17,11 +17,13 @@
  */
 package org.fusesource.scalate
 
-import java.text.{DateFormat, NumberFormat}
-import java.util.Locale
 import java.io._
 import collection.mutable.Stack
-import util.{Logging, Lazy, RenderHelper}
+import util.{Logging, RenderHelper}
+
+class Elvis(val defaultValue: Any) {
+  def ?:(value: Any) = if (value != null) value else defaultValue
+}
 
 /**
  * The RenderContext provides helper methods for interacting with the request, response,
@@ -33,7 +35,13 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     update("context", DefaultRenderContext.this)
   }
 
-  
+
+  /**
+   * Provide access to the elvis operator so that we can use it to provide null handling nicely
+   */
+  implicit def anyToElvis(value: Any): Elvis = new Elvis(value)
+
+
   /////////////////////////////////////////////////////////////////////
   //
   // RenderContext implementation
