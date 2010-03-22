@@ -3,10 +3,6 @@
 - import org.fusesource.scalate.console._
 - val consoleHelper = new ConsoleHelper(context)
 - import consoleHelper._
-- val exception = attributes("javax.servlet.error.exception")
-- val olderror = attributeOrElse("javax.servlet.error.olderror", "")
-- val errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
-- val errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
 
 %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
@@ -28,7 +24,6 @@
             = s.line
           - if (pos.line == s.line)
             - val (prefix, ch, postfix) = s.splitOnCharacter(pos.column - 1)
-            - println("prefix: " + prefix + " ch: " + ch + " postfix: " + postfix)
             %pre<
               &~ prefix
               %span.errorCol><
@@ -54,7 +49,7 @@
   - case u =>
     #header.block
       %h1
-        = olderror
+        = oldError
       %p
         = u
 
