@@ -490,15 +490,15 @@ rendering engine in your application.  For more information on how to embed in y
 
 Using an IDE plugin can make it much easier to view and edit Scalate templates.
 
-### TextMate Scaml plugin
+### TextMate plugin
 
-If you use [TextMate](http://macromates.com/) (which on OS X is a great text editor) you can install the [Scaml plugin](http://github.com/scalate/scaml.tmbundle) as follows:
+If you use [TextMate](http://macromates.com/) (which on OS X is a great text editor) you can install the [Scalate plugin](http://github.com/scalate/Scalate.tmbundle) as follows:
 
     cd ~/Library/Application\ Support/TextMate/Bundles/
-    git clone git://github.com/scalate/scaml.tmbundle.git
+    git clone git://github.com/scalate/Scalate.tmbundle.git
 {: .syntax }
 
-If you have not already done so you will also need a Scala plugin for TextMate which the Scaml plugin uses for the Scala code blocks.
+If you have not already done so you will also need a Scala plugin for TextMate which the [Ssp](ssp-reference.html) and [Scaml](scaml-reference.html) languages uses for the Scala code blocks.
 
 We like the [version by Dean Wampler](http://github.com/deanwampler/Scala.tmbundle) though there's a few around github and one included in sbaz in the Scala distro too.
 
@@ -506,7 +506,7 @@ We like the [version by Dean Wampler](http://github.com/deanwampler/Scala.tmbund
     git clone git://github.com/deanwampler/Scala.tmbundle.git
 {: .syntax }
 
-When you restart TextMate you should now get syntax highlighting and more when you open up a [Scaml](scaml-reference.html) file.
+When you restart TextMate you should now get syntax highlighting and more when you open up either a [Ssp](ssp-reference.html) or  [Scaml](scaml-reference.html) file. 
 
 The current plugin does not highlight Scala expressions terribly well with the default Mac Classic colour scheme in TextMate. We found that it helps to add an extra colour to your scheme.
 
