@@ -18,12 +18,12 @@
 package org.fusesource.scalate
 
 
-import _root_.java.util.{Comparator, TreeMap}
 import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
 import util.Logging
+import collection.immutable.TreeMap
 
 /**
  * Provides a common base class for CodeGenerator implementations.
@@ -35,7 +35,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
   abstract class AbstractSourceBuilder[T] {
     var indent_level = 0
     var code = ""
-    var generated_positions = Map[Position, Int]()
+    var generated_positions = Map[OffsetPosition, Int]()
 
     def <<(): this.type = <<("")
 
@@ -49,7 +49,11 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 
     def << (pos:Position): this.type = {
       if( pos!=null ) {
-        generated_positions = generated_positions + ( pos -> current_position )
+        pos match {
+          case p:OffsetPosition =>
+            generated_positions = generated_positions + ( p -> current_position )
+          case _=>
+        }
       }
       this
     }
@@ -59,11 +63,11 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
     }
 
     def positions() = {
-      val rc = new TreeMap[Position,Position](new Comparator[Position]() {
-        def compare(p1:Position, p2:Position):Int = {
+      var rc = new TreeMap[OffsetPosition,OffsetPosition]()( new Ordering[OffsetPosition] {
+        def compare(p1:OffsetPosition, p2:OffsetPosition):Int = {
           val rc = p1.line - p2.line
           if( rc==0 ) {
-            p1.column - p2.column  
+            p1.column - p2.column
           } else {
             rc
           }
@@ -71,7 +75,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       })
       generated_positions.foreach {
         entry=>
-          rc.put(OffsetPosition(code, entry._2), entry._1)
+          rc = rc + (OffsetPosition(code, entry._2)->entry._1)
       }
       rc
     }
