@@ -9,31 +9,31 @@ html, body {
     padding: 20px;
     border-bottom: 1px solid #aaa;
 }
-#header h1 {
+#scalate-error .header h1 {
     font-weight: normal;
     font-size: 28px;
     margin: 0;
 }
-#more {
+#scalate-error .more {
     color: #666;
     font-size: 80%;
     border: none;
 }
-#header {
+#scalate-error .header {
     background: #fcd2da;
 }
-#header p {
+#scalate-error .header p {
     color: #333;
 }
-#source {
+#scalate-error .source {
     background: #f6f6f6;
 }
-#source h2 {
+#scalate-error .source h2 {
     font-weight: normal;
     font-size: 18px;
     margin: 0 0 10px 0;
 }
-#source .lineNumber {
+#scalate-error .source .lineNumber {
     float: left;
     display: block;
     width: 40px;
@@ -44,32 +44,32 @@ html, body {
     background: #333;
     color: #fff;
 }
-#source .line {
+#scalate-error .source .line {
     clear: both;
     color: #333;
     margin-bottom: 1px;
 }
-#source pre {
+#scalate-error .source pre {
     font-size: 14px;
     margin: 0;
     overflow-x: hidden;
 }
-#source .error {
+#scalate-error .source .error {
     color: #c00 !important;
 }
-#source .error .lineNumber {
+#scalate-error .source .error .lineNumber {
     background: #c00;
 }
-#source .errorCol {
+#scalate-error .source .errorCol {
     background: #c00;
     color:#fff;
 }
-#source a {
+#scalate-error .source a {
     text-decoration: none;
 }
-#source a:hover * {
+#scalate-error .source a:hover * {
     cursor: pointer !important;
 }
-#source a:hover pre {
+#scalate-error .source a:hover pre {
     background: #FAFFCF !important;
 }

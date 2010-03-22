@@ -7,11 +7,11 @@
 %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
 - def displayError(file:String, pos:Position, message:String)
-  #header.block
+  .header.block
     %h1
       = message
 
-  #source.block
+  .source.block
     %h2
       = editLink(file, pos.line, pos.column)
         in #{shorten(file)} near line #{pos.line} col #{pos.column}
@@ -33,25 +33,23 @@
             %pre<
               &~ s.source
 
-- exception match
-  - case e:InvalidSyntaxException =>
-    - displayError( e.template, e.pos, e.brief)
+#scalate-error
+  - exception match
+    - case e:InvalidSyntaxException =>
+      - displayError( e.template, e.pos, e.brief)
 
-  - case e:CompilerException =>
-    - for ( error <- e.errors )
-      - displayError(error.file, error.pos, error.message)
-      - val o = error.original
-      - if (o != null)
-        #source.block
-          = editLink(o.file, o.pos.line, o.pos.column)
-            from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
+    - case e:CompilerException =>
+      - for ( error <- e.errors )
+        - displayError(error.file, error.pos, error.message)
+        - val o = error.original
+        - if (o != null)
+          .source.block
+            = editLink(o.file, o.pos.line, o.pos.column)
+              from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
 
-  - case u =>
-    #header.block
-      %h1
-        = oldError
-      %p
-        = u
-
-
-
+    - case u =>
+      .header.block
+        %h1
+          = oldError
+        %p
+          = u
