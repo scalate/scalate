@@ -26,6 +26,7 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends ScamlTestSupport {
 
+
   /////////////////////////////////////////////////////////////////////
   //
   // Filters
@@ -991,6 +992,21 @@ The bean is blue
 !~ "<tag>\n</tag>"
 ""","""
 <tag>&#x000A;</tag>
+""")
+
+  testRender("`~~` ugly preserves white space. values are not indented at all.",
+"""
+%html
+  %p
+    ~~ "line1\nline2\nline3"
+""","""
+<html>
+  <p>
+line1
+line2
+line3
+  </p>
+</html>
 """)
 
   /////////////////////////////////////////////////////////////////////

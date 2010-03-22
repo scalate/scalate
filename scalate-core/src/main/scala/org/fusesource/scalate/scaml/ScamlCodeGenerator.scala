@@ -133,10 +133,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           generate(s)
         }
         case s:TextExpression=> {
-          this << statement.pos;
-          write_indent
-          generate(s)
-          write_nl
+          generateTextExpression(s,true)
         }
         case s:HtmlComment=> {
           generate(s)
@@ -244,7 +241,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       this << prefix + "$_scalate_$_context.capture { "
       indent {
         this << statement.pos;
-        generate(text)
+        generateTextExpression(text, false)
         flush_text
       }
       this << "} "+suffix
@@ -252,10 +249,12 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
 
-    def generate(statement:TextExpression):Unit = {
-      this << statement.pos;
+    def generateTextExpression(statement:TextExpression, is_line:Boolean):Unit = {
       statement match {
         case s:LiteralText=> {
+          if( is_line ) {
+            write_indent
+          }
           var literal=true;
           for( part <- s.text ) {
             // alternate between rendering literal and interpolated text
@@ -279,16 +278,22 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               literal=true
             }
           }
+          if( is_line ) {
+            write_nl
+          }
         }
         case s:EvaluatedText=> {
-          flush_text
 
           var prefix = "$_scalate_$_context << ("
           var suffix = ");"
 
           if( s.preserve ) {
-            prefix += " $_scalate_$_preserve ("
-            suffix = ") " + suffix;
+            if( s.ugly ) {
+              suppress_indent=true
+            } else {
+              prefix += " $_scalate_$_preserve ("
+              suffix = ") " + suffix;
+            }
           } else {
             prefix += " $_scalate_$_indent ( "+asString(indent_string())+","
             suffix = ") " + suffix;
@@ -316,15 +321,31 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             suffix = ") " + suffix;
           }
 
-
+          if( is_line ) {
+            write_indent
+          }
+          flush_text
           if( s.body.isEmpty ) {
-            this << prefix+s.code+suffix
-          } else {
-            this << prefix+s.code+" {"
+            this << prefix
             indent {
-              generate_with_flush(s.body)
+              this << s.code.pos
+              this << s.code
             }
-            this << "} " + suffix
+            this << suffix
+          } else {
+            this << prefix
+            indent {
+              this << s.code.pos
+              this << s.code+" {"
+              indent {
+                generate_with_flush(s.body)
+              }
+              this << "}"
+            }
+            this << suffix
+          }
+          if( is_line ) {
+            write_nl
           }
         }
       }
@@ -481,7 +502,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       statement match {
         case Element(_,_,text,List(),_,_) => {
-          generate(text.getOrElse(LiteralText(List(Text("")), Some(false))))
+          generateTextExpression(text.getOrElse(LiteralText(List(Text("")), Some(false))), false)
           write_end_tag
           write_nl
           outer_trim
@@ -532,7 +553,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             case s:LiteralText=>
               this << "$_scalate_$_context.capture {"
               indent {
-                generate(s)
+                generateTextExpression(s, false)
                 flush_text
               }
               this << "}"

@@ -152,7 +152,7 @@ case class Text(value:String) extends Positional {
   override def toString = value
 }
 case class Newline(skip:Boolean=true) extends Statement
-case class EvaluatedText(code:Text, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean]) extends TextExpression
+case class EvaluatedText(code:Text, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean], ugly:Boolean) extends TextExpression
 case class LiteralText(text:List[Text], sanitize:Option[Boolean]) extends TextExpression
 case class Element(tag:Option[Text], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ScamlComment(text:Option[Text], body:List[Text]) extends Statement
@@ -235,7 +235,7 @@ class ScamlParser extends IndentedParser() {
       symbol
     ) ^^ { s=>eval_string_escapes(s) } |
     ( tag_ident | "{" ~> upto("}") <~ "}" ) ^^ {
-      x=>EvaluatedText(x, List(), true, Some(true))
+      x=>EvaluatedText(x, List(), true, Some(true), false)
     }
 
   def html_style_attributes = prefixed("(", skip_whitespace(rep(html_attribute_entry))) <~ opt_space~")"
@@ -249,7 +249,7 @@ class ScamlParser extends IndentedParser() {
       tag_ident ~ ("=" ~"{" ~> upto("}") <~ "}" )
     ) ^^ {
       case key~value =>
-        (key, EvaluatedText(value, List(), true, Some(true)))
+        (key, EvaluatedText(value, List(), true, Some(true), false))
     } 
 
 
@@ -268,7 +268,7 @@ class ScamlParser extends IndentedParser() {
       "<"  ^^{ s=> Trim.Inner } 
 
   def element_text:Parser[Option[TextExpression]] = 
-    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None)) } |
+    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None, false)) } |
     opt_space ~ nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
@@ -318,14 +318,13 @@ class ScamlParser extends IndentedParser() {
           literal_text(None)
         ) <~ any_space_then_nl
 
-  def evaluated_statement =
-    prefixed("=",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, None) }       |
-    prefixed("~",  upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true,  None) }       |
-    prefixed("&=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(true)) } |
-    prefixed("!=", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, false, Some(false)) } |
-    prefixed("&~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(true)) } |
-    prefixed("!~", upto(nl) <~ nl ) ~ statement_block ^^ { case code~body => EvaluatedText(code, body, true, Some(false)) } 
-
+  def evaluated_statement = (opt("&"|"!")~("="|"~~"|"~")) ~! (( upto(nl) <~ nl ) ~ statement_block) ^^ {
+      case (sanitize~preserve)~(code~body) => EvaluatedText(code, body, "="!=preserve, sanitize match {
+        case Some("&") => Some(true)
+        case Some("!") => Some(false)
+        case None => None
+      }, "~~"==preserve)
+    }
 
   val attribute = skip_whitespace( opt(text("import")) ~ text("var"|"val") ~ scala_ident ~ (":" ~> qualified_type) ) ~ ( opt_space ~> opt( "="~opt_space ~> upto(nl) ) ) ^^ {
     case (p_import~p_kind~p_name~p_type)~p_default => Attribute(p_kind, p_name, p_type, p_default, p_import.isDefined)
