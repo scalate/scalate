@@ -32,11 +32,11 @@ class IntrospectorTest extends FunSuite with Logging {
     val introspector = Introspector(classOf[MyProduct])
     expect("myProduct") { introspector.typeStyleName }
 
-    val properties = introspector.properties
+    val properties = introspector.properties.sortBy(_.name)
     assertProperties(properties, 2)
 
-    assertProperty(properties(0), "name", "name", classOf[String])
-    assertProperty(properties(1), "age", "age", classOf[Int])
+    assertProperty(properties(0), "age", "age", classOf[Int])
+    assertProperty(properties(1), "name", "name", classOf[String])
   }
 
 
@@ -44,7 +44,7 @@ class IntrospectorTest extends FunSuite with Logging {
     val introspector = Introspector(classOf[MyBean])
     expect("myBean") { introspector.typeStyleName }
 
-    val properties = introspector.properties
+    val properties = introspector.properties.sortBy(_.name)
     assertProperties(properties, 2)
 
     assertProperty(properties(0), "age", "age", classOf[Int])
