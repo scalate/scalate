@@ -38,5 +38,7 @@ object ScamlOptions {
     "img",
     "link",
     "br",
-    "hr")
+    "hr",
+    "input")
+  
 }

@@ -89,7 +89,8 @@ class SspParser extends RegexParsers {
         case x~None => x
       }
 
-  val tag_ending = "+%>" | """%>[ \t]*\r?\n?""".r 
+  val tag_ending = "+%>" | """%>""".r 
+//  val tag_ending = "+%>" | """%>[ \t]*\r?\n?""".r
   val comment_fragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val dollar_expression_fragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
   val expression_fragment = wrapped("<%=", tag_ending) ^^ {ExpressionFragment(_)}

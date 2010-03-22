@@ -259,7 +259,6 @@ This means that any attribute methods must come before the hash literal.
 Attribute methods aren't supported for HTML-style attributes.
 -->
 
-<!-- TODO
 #### Boolean Attributes
 
 Some attributes, such as "checked" for `input` tags or "selected" for `option` tags,
@@ -277,7 +276,7 @@ To do this in Scaml using hash-style attributes, just assign a Scala
 In XHTML, the only valid value for these attributes is the name of the
 attribute.  Thus this will render in XHTML as
 
-    <input selected="selected">
+    <input selected="selected"/>
 
 To set these attributes to false, simply assign them to a Scala false value.
 In both XHTML and HTML
@@ -286,7 +285,7 @@ In both XHTML and HTML
 
 will just render as
 
-    <input>
+    <input/>
 
 HTML-style boolean attributes can be written just like HTML:
 
@@ -295,7 +294,6 @@ HTML-style boolean attributes can be written just like HTML:
 or using `true` and `false`:
 
     %input(selected=true)
--->
 
 ### Class and ID: `.` and `#`
 
@@ -909,6 +907,29 @@ renders to
 </html>
 {pygmentize}
 
+#### Ugly Preservation: `~~` {#tilde-tilde}
+
+Sometimes, you don't want Scaml to indent or apply the whitespace transformation on
+the evaluated expression. When this is the case, use `~~` to use ugly whitespace
+preservation.  We call it ugly because the produce HTML will not properly indented.
+
+Example:
+{pygmentize:: haml}
+%html
+  %p
+    ~~ "line1\nline2\nline3"
+{pygmentize}
+
+renders to
+{pygmentize:: xml}
+<html>
+  <p>
+line1
+line2
+line3
+  </p>
+</html>
+{pygmentize}
 
 ### Scala Interpolation: `#{}`
 

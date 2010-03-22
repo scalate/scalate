@@ -226,7 +226,6 @@ class ScamlParser extends IndentedParser() {
     expression ~ ("=>" ~> expression) ^^ { case key~value => (key, value) }
 
   def expression: Parser[Any] =
-    hash_style_attributes |
     (
       string_literal |
       whole_number |
@@ -250,7 +249,11 @@ class ScamlParser extends IndentedParser() {
     ) ^^ {
       case key~value =>
         (key, EvaluatedText(value, List(), true, Some(true), false))
-    } 
+    } |
+    tag_ident ^^ {
+      case key =>
+        (key, EvaluatedText(Text("true").setPos(key.pos), List(), true, Some(true), false))
+    }
 
 
   def class_entry:Parser[(Any, Any)] = "." ~> css_name ^^ { case x=> ("class", x) }

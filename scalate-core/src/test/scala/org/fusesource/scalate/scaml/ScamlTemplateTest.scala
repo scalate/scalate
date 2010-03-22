@@ -26,7 +26,6 @@ import org.junit.runner.RunWith
 @RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends ScamlTestSupport {
 
-
   /////////////////////////////////////////////////////////////////////
   //
   // Filters
@@ -342,6 +341,41 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <div count="7"></div>
 """)
 
+
+  testRender("Enabled boolean attribute in hash style",
+"""
+%input{:selected => true}
+""","""
+<input selected="selected"/>
+""")
+
+  testRender("Disabled boolean attribute in hash style",
+"""
+%input{:selected => false}
+""","""
+<input/>
+""")
+
+  testRender("Enabled boolean attribute in html style",
+"""
+%input(selected=true)
+""","""
+<input selected="selected"/>
+""")
+
+  testRender("Disabled boolean attribute in html style",
+"""
+%input(selected=false)
+""","""
+<input/>
+""")
+
+  testRender("Enabled boolean attribute in html style using shorthand",
+"""
+%input(selected)
+""","""
+<input selected="selected"/>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //

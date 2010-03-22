@@ -99,7 +99,11 @@ object RenderHelper
           context << " "
           context << (context.value(name))
           context << ("=\"")
-          context << (sanitize(context.value(value)))
+          if( value.isInstanceOf[Boolean] ) {
+            context << (context.value(name))
+          } else {
+            context << (sanitize(context.value(value)))
+          }
           context << ("\"")
         }
       }
