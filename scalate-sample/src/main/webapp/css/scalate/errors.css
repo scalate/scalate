@@ -63,8 +63,9 @@ html, body {
 #source .errorCol {
     text-decoration: underline;
     font-weight: bolder;
+    background: #FDFCAD;
+    color:black;
 }
-
 #source a {
     text-decoration: none;
 }
