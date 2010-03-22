@@ -312,16 +312,19 @@ class TemplateEngine {
         // Translate the scala error location info
         // to the template locations..
         def template_pos(pos:Position) = {
-          var entry = code.positions.floorEntry(pos);
-          if( entry==null ) {
-            null;
-          } else {
-            val p = entry.getValue.asInstanceOf[OffsetPosition]
-            if( (pos.column - entry.getKey.column) == 0 ) {
-              p
-            } else {
-              OffsetPosition(p.source, p.offset+(pos.column - entry.getKey.column))
+          pos match {
+            case p:OffsetPosition => {
+              val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
+              if( filtered.isEmpty ) {
+                null
+              } else {
+                val (key,value) = filtered.last
+                // TODO: handle the case where the line is different too.
+                val colChange = pos.column - key.column
+                OffsetPosition(value.source, value.offset+colChange)
+              }
             }
+            case _=> null
           }
         }
 
