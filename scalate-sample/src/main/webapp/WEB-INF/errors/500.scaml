@@ -26,8 +26,17 @@
         %div(class=ss)
           %span.lineNumber
             = s.line
-          %pre<
-            &~ s.source
+          - if (pos.line == s.line)
+            - val (prefix, ch, postfix) = s.splitOnCharacter(pos.column - 1)
+            - println("prefix: " + prefix + " ch: " + ch + " postfix: " + postfix)
+            %pre<
+              &~ prefix
+              %span.errorCol><
+                &~ ch
+              &~ postfix
+          - else
+            %pre<
+              &~ s.source
 
 - exception match
   - case e:InvalidSyntaxException =>
