@@ -17,13 +17,12 @@
 
   #source.block
     %h2
-      != editLink(file, pos.line, pos.column)
+      = editLink(file, pos.line, pos.column)
         In #{shorten(file)} near line #{pos.line} col #{pos.column}
 
     - for (s <- lines(file, pos))
-      - println("line " + s.line + " = " + s.source)
       - val ss = s.style(pos.line)
-      != editLink(file, s.line, (if (pos.line == s.line) pos.column else 1))
+      = editLink(file, s.line, (if (pos.line == s.line) pos.column else 1))
         %div(class=ss)
           %span.lineNumber
             = s.line
