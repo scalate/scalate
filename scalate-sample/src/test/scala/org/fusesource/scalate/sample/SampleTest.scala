@@ -49,6 +49,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
 
+  testPageContains("bad", "error: not found: value unknown")
   testPageContains("foo", "Hello from a FooResource!")
   testPageContains("foo/abc", "The item id is", "abc")
   testPageContains("foo/def", "The item id is", "def")

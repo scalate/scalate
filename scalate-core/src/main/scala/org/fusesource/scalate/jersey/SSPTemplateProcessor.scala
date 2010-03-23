@@ -32,6 +32,8 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     case _            => ""
   }
 
+  var errorUris: List[String] = List("/WEB-INF/errors/500.scaml", "/WEB-INF/errors/500.ssp")
+
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
@@ -87,9 +89,37 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
       wrapper.forward(request, response)
       //wrapper.forward(requestInvoker.get(), responseInvoker.get())
     } catch {
-      case e: Exception => throw new ContainerException(e)
+      case e: Exception =>
+        // lets forward to the error handler
+        var notFound = true
+        for (uri <- errorUris if notFound) {
+          val rd = servletContext.getRequestDispatcher(uri)
+          if (rd != null) {
+
+            // we need to expose all the errors property here...
+            request.setAttribute("javax.servlet.error.exception", e)
+            request.setAttribute("javax.servlet.error.exception_type", e.getClass)
+            request.setAttribute("javax.servlet.error.message", e.getMessage)
+            request.setAttribute("javax.servlet.error.request_uri", request.getRequestURI)
+            request.setAttribute("javax.servlet.error.servlet_name", request.getServerName)
+
+            // TODO how to get the status code???
+            val status = 500
+            request.setAttribute("javax.servlet.error.status_code", status)
+
+            val rdw = new RequestDispatcherWrapper(rd, basePath, hc, new Viewable(uri, e))
+            rdw.forward(request, response)
+            notFound = false
+          }
+        }
+        if (notFound) {
+          throw new ContainerException(e)
+        }
+
+        // throw new ContainerException(e)
     }
   }
+
 
 }
 
