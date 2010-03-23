@@ -30,6 +30,8 @@ You must first install a [Git client](http://git-scm.com/download). Then you clo
     git clone git://github.com/scalate/scalate.git
     cd {project_id:}
 
+Now you probably want to try [build the scalate code]({relocatable: building.html}) 
+
 ## Committer access
 
 Project members can push to the repository using the following URL:
