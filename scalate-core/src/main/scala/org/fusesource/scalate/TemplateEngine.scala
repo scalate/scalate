@@ -15,6 +15,8 @@
  */
 package org.fusesource.scalate
 
+import _root_.org.objectweb.asm.tree.ClassNode
+import _root_.org.objectweb.asm.{ClassReader, ClassWriter}
 import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import layout.DefaultLayoutStrategy
@@ -26,6 +28,7 @@ import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
 import util.IOUtil
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
+import collection.immutable.TreeMap
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -279,6 +282,12 @@ class TemplateEngine {
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
+  def classFileName(uri: String) = {
+    // Write the source code to file..
+    // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
+    new File(sourceDirectory, uri.replace(':', '_') + ".scala")
+  }
+
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     var code:Code = null
     try {
@@ -292,6 +301,11 @@ class TemplateEngine {
 
       // Compile the generated scala code
       compiler.compile(sourceFile)
+      
+      // Write the source map information to the class file
+      val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
+      val classFile = new File(bytecodeDirectory, code.className.replace('.', '/')+".class")
+      storeSourceMap(classFile, sourceMap)
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
@@ -358,11 +372,20 @@ class TemplateEngine {
    * in the the codeGenerators map.
    */
   private def generator(uri: String): CodeGenerator = {
+    extension(uri) match {
+      case Some(ext)=>
+        generatorForExtension(ext)
+      case None=>
+        throw new TemplateException("Template file extension missing. Cannot determine which template processor to use.")
+    }
+  }
+
+  private def extension(uri: String): Option[String] = {
     val t = uri.split("\\.")
     if (t.length < 2) {
-      throw new TemplateException("Template file extension missing. Cannot determine which template processor to use.")
+      None
     } else {
-      generatorForExtension(t.last)
+      Some(t.last)
     }
   }
 
@@ -399,6 +422,60 @@ class TemplateEngine {
     }
     // Bail out
     return 0
+  }
+
+
+  def buildSourceMap(uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
+
+    // Pretend to be a JSP for now..     
+    // val stratum = extension(uri).get.toUpperCase
+    val stratum = "JSP"
+
+    var rc = "SAMP\n"
+    rc += scalaFile.getName+"\n";
+    rc += stratum+"\n"
+    rc += "*S "+stratum+"\n"
+    rc += "*F\n" 
+    rc += "+ 0 "+uri.split("/").last+"\n"
+    rc += uri+"\n"
+    rc += "*L\n"
+
+    // build a map of input-line -> List( output-line )
+    var smap = new TreeMap[Int,List[Int]]()
+    positions.foreach {
+      case (out,in)=>
+        var outs = out.line :: smap.getOrElse(in.line, Nil)
+        smap += in.line -> outs
+    }
+    // sort the output lines..
+    smap = smap.transform { (x,y)=> y.sortWith(_<_) }
+
+    // the smap encoding support specifying ranges
+    // to compress the data down a bit..
+    // for now just do it the dumb way
+    smap.foreach{
+      case (in, outs)=>
+      outs.foreach {
+        out=>
+        rc += in+":"+out+"\n"
+      }
+    }
+    rc += "*E\n"
+    rc
+  }
+
+  def storeSourceMap(classFile:File, sourceMap:String) = {
+    // Load the ASM ClassNode
+    val cn = new ClassNode();
+    val cr = new ClassReader( IOUtil.loadBinaryFile(classFile) )
+    cr.accept(cn, 0);
+
+    cn.sourceDebug = sourceMap
+
+    // Store the ASM ClassNode
+    val cw = new ClassWriter(0);
+    cn.accept(cw);
+    IOUtil.writeBinaryFile(classFile, cw.toByteArray())
   }
 }
 
