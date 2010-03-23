@@ -30,7 +30,9 @@ class ClassPathBuilderTest extends FunSuite {
     val builder = new ClassPathBuilder
     builder.addJar("/path/to/file.jar")
 
-    assert(builder.classPath === new File("/path/to/file.jar").getAbsolutePath)
+    val actualFile = new File(builder.classPath)
+    val expectedFile = new File("/path/to/file.jar")
+    assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
   }
   
   test("Add an entry for a classes directory") {
