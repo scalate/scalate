@@ -35,7 +35,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
-      log.warning("No servlet context")
+      warning("No servlet context")
       return null
     }
 

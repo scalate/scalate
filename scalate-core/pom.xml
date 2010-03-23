@@ -19,17 +19,14 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
       <optional>true</optional>
     </dependency>
-<!--
-    <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>sitemesh</artifactId>
-      <optional>true</optional>
-    </dependency>
--->
 
     <dependency>
       <groupId>org.markdownj</groupId>
@@ -47,13 +44,6 @@
     </dependency>
     
     <!-- testing -->
-<!--
-    <dependency>
-      <groupId>org.scala-tools.testing</groupId>
-      <artifactId>specs_2.8.0.Beta1</artifactId>
-      <scope>test</scope>
-    </dependency>
--->
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest</artifactId>
@@ -62,6 +52,11 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
       <scope>test</scope>
     </dependency>
     

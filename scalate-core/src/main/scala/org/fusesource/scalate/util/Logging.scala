@@ -1,30 +1,22 @@
 package org.fusesource.scalate.util
 
-import java.util.logging.{Level, Logger}
-import java.util.logging.Level._
+import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 
 trait Logging {
-  val log = Logger.getLogger(this.getClass.getName)
+  val log = LoggerFactory.getLogger(getClass.getName)
 
-  def severe(fn: => String): Unit = log(SEVERE, fn)
+  def severe(fn: => String): Unit = log.error(fn)
 
-  def warning(fn: => String): Unit = log(WARNING, fn)
+  def warning(fn: => String): Unit = log.warn(fn)
 
-  def info(fn: => String): Unit = log(INFO, fn)
+  def info(fn: => String): Unit = log.info(fn)
 
-  def fine(fn: => String): Unit = log(FINE, fn)
+  def fine(fn: => String): Unit = log.debug(fn)
 
-  def finer(fn: => String): Unit = log(FINER, fn)
+  def finer(fn: => String): Unit = log.trace(fn)
 
-  def finest(fn: => String): Unit = log(FINEST, fn)
-
-  def log(level: Level, fn: => String): Unit = {
-    if (log.isLoggable(level)) {
-      log.log(level, fn)
-    }
-  }
 }
