@@ -1,5 +1,6 @@
 package org.fusesource.scalate.util
 
+import java.io.File
 import java.net.{URL, URLClassLoader}
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
@@ -28,7 +29,8 @@ class ClassPathBuilderTest extends FunSuite {
   test("Add an entry for a jar file") {
     val builder = new ClassPathBuilder
     builder.addJar("/path/to/file.jar")
-    assert(builder.classPath === "/path/to/file.jar")
+
+    assert(builder.classPath === new File("/path/to/file.jar").getAbsolutePath)
   }
   
   test("Add an entry for a classes directory") {
