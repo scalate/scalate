@@ -69,4 +69,13 @@ class Console extends DefaultRepresentations {
 
     IOUtil.writeText(fileName, text)
   }
+
+  @POST
+  @Path("invalidateCachedTemplates")
+  def invalidateCachedTemplates() = {
+    println("clearing template cache")
+    val engine = ServletTemplateEngine(servletContext)
+    engine.invalidateCachedTemplates
+  }
+
 }

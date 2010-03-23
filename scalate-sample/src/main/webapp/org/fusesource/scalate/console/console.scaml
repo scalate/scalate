@@ -12,6 +12,10 @@
         Scalate Console
         %img(src="/images/minus.png")
 
+    %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
+      %input(type="submit" value="Clear Cache")
+
+
     - if (newTemplateName.isDefined && resourceClassName.isDefined)
       - val newName = newTemplateName.get
       %h3 Create New Custom Template

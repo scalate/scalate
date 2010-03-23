@@ -195,7 +195,16 @@ class TemplateEngine {
   }
 
   /**
-   * Renders the given template URI using the current layoutStrategy
+   * Invalidates any cached Templates
+   */
+  def invalidateCachedTemplates() = {
+    templateCache.synchronized {
+      templateCache.clear
+    }
+  }
+
+  /**
+   *  Renders the given template URI using the current layoutStrategy
    */
   def layout(uri: String, context: RenderContext, extraBindings:List[Binding]): Unit = {
     val template = load(uri, extraBindings)
