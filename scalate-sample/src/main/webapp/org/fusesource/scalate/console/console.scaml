@@ -15,6 +15,9 @@
     %h3 Create
     = render("/WEB-INF/archetypes/menu.scaml")
 
+    %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
+      %input(type="submit" value="Clear Cache")
+
     -#
       - if (newTemplateName.isDefined && resourceClassName.isDefined)
         - val newName = newTemplateName.get
@@ -28,7 +31,7 @@
                 %input(type="hidden" name="newTemplateName" value={newName})
                 %input(type="hidden" name="resourceClass" value={resourceClassName.get})
                 %input(type="submit" value={a.name})
-        
+
 
     - val sourceFile = resourceSourceFile
     - if (sourceFile.isDefined)

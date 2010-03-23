@@ -29,6 +29,9 @@ class Console extends DefaultRepresentations {
 
   def response: HttpServletResponse = assertInjected(_response, "response")
 
+  def templateEngine = ServletTemplateEngine(servletContext)
+  def renderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
+
 
   @Path("archetypes/{name}")
   def archetype(@PathParam("name") name: String) = new ArchetypeResource(this, name)
@@ -74,6 +77,11 @@ class Console extends DefaultRepresentations {
     IOUtil.writeText(fileName, text)
   }
 
-  def templateEngine = ServletTemplateEngine(servletContext)
-  def renderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
+  @POST
+  @Path("invalidateCachedTemplates")
+  def invalidateCachedTemplates() = {
+    println("clearing template cache")
+    val engine = ServletTemplateEngine(servletContext)
+    engine.invalidateCachedTemplates
+  }
 }

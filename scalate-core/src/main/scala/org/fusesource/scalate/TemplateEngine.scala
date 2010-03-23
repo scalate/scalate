@@ -26,9 +26,9 @@ import scala.collection.mutable.HashMap
 import scala.util.control.Exception
 import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
-import util.IOUtil
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import collection.immutable.TreeMap
+import util.{SmapStratum, SmapGenerator, SDEInstaller, IOUtil}
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -195,7 +195,16 @@ class TemplateEngine {
   }
 
   /**
-   * Renders the given template URI using the current layoutStrategy
+   * Invalidates any cached Templates
+   */
+  def invalidateCachedTemplates() = {
+    templateCache.synchronized {
+      templateCache.clear
+    }
+  }
+
+  /**
+   *  Renders the given template URI using the current layoutStrategy
    */
   def layout(uri: String, context: RenderContext, extraBindings:List[Binding]): Unit = {
     val template = load(uri, extraBindings)
@@ -304,9 +313,10 @@ class TemplateEngine {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
-      // println(sourceMap)
-      val classFile = new File(bytecodeDirectory, code.className.replace('.', '/')+".class")
-      storeSourceMap(classFile, sourceMap)
+      println("installing:")
+      println(sourceMap)
+      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
+      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+"$.class"), sourceMap)
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
@@ -427,19 +437,11 @@ class TemplateEngine {
 
 
   def buildSourceMap(uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
+    val shortName = uri.split("/").last
+    val longName = uri.stripPrefix("/")
 
-    // Pretend to be a JSP for now..     
-    // val stratum = extension(uri).get.toUpperCase
-    val stratum = "JSP"
-
-    var rc = "SMAP\n"
-    rc += scalaFile.getName+"\n";
-    rc += stratum+"\n"
-    rc += "*S "+stratum+"\n"
-    rc += "*F\n" 
-    rc += "+ 0 "+uri.split("/").last+"\n"
-    rc += uri.stripPrefix("/")+"\n"
-    rc += "*L\n"
+    val s: SmapStratum = new SmapStratum("JSP")
+    s.addFile(shortName, longName)
 
     // build a map of input-line -> List( output-line )
     var smap = new TreeMap[Int,List[Int]]()
@@ -451,32 +453,22 @@ class TemplateEngine {
     // sort the output lines..
     smap = smap.transform { (x,y)=> y.sortWith(_<_) }
 
-    // the smap encoding support specifying ranges
-    // to compress the data down a bit..
-    // for now just do it the dumb way
     smap.foreach{
       case (in, outs)=>
-//      outs.foreach {
-//        out=>
-//        rc += in+":"+out+"\n"
-//      }
-        rc += in+",1:"+outs.last+"\n"
+      outs.foreach {
+        out=>
+        s.addLineData(in, longName, 1, out, 1)
+      }
     }
-    rc += "*E\n"
-    rc
+    s.optimizeLineSection
+
+    var g: SmapGenerator = new SmapGenerator
+    g.setOutputFileName(scalaFile.getName)
+    g.addStratum(s, true)
+    g.toString
   }
 
   def storeSourceMap(classFile:File, sourceMap:String) = {
-    // Load the ASM ClassNode
-    val cn = new ClassNode();
-    val cr = new ClassReader( IOUtil.loadBinaryFile(classFile) )
-    cr.accept(cn, 0);
-
-    cn.sourceDebug = sourceMap
-
-    // Store the ASM ClassNode
-    val cw = new ClassWriter(0);
-    cn.accept(cw);
-    IOUtil.writeBinaryFile(classFile, cw.toByteArray())
+    SDEInstaller.install(classFile, sourceMap.getBytes("UTF-8"))
   }
 }
