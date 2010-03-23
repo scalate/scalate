@@ -420,7 +420,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_text(suffix)
           write_nl
         }
-        case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html comment and nested within it.");
+        case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html comment and nested within it", statement.pos);
       }
 
       if( prefix.length!= 0 ) {
@@ -454,7 +454,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       var tag = statement.tag.getOrElse("div");
       if( statement.text.isDefined && !statement.body.isEmpty ) {
-        throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed.")
+        throw new InvalidSyntaxException("Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed", statement.pos)
       }
       
       def write_start_tag = {
@@ -523,7 +523,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_nl
           outer_trim
         }
-        case _ => throw new IllegalArgumentException("Syntax error on line "+statement.pos.line+": Illegal nesting: content can't be both given on the same line as html element and nested within it.");
+        case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html element and nested within it", statement.pos);
       }
     }
 

@@ -304,6 +304,7 @@ class TemplateEngine {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
+      // println(sourceMap)
       val classFile = new File(bytecodeDirectory, code.className.replace('.', '/')+".class")
       storeSourceMap(classFile, sourceMap)
 
@@ -431,13 +432,13 @@ class TemplateEngine {
     // val stratum = extension(uri).get.toUpperCase
     val stratum = "JSP"
 
-    var rc = "SAMP\n"
+    var rc = "SMAP\n"
     rc += scalaFile.getName+"\n";
     rc += stratum+"\n"
     rc += "*S "+stratum+"\n"
     rc += "*F\n" 
     rc += "+ 0 "+uri.split("/").last+"\n"
-    rc += uri+"\n"
+    rc += uri.stripPrefix("/")+"\n"
     rc += "*L\n"
 
     // build a map of input-line -> List( output-line )
@@ -455,10 +456,11 @@ class TemplateEngine {
     // for now just do it the dumb way
     smap.foreach{
       case (in, outs)=>
-      outs.foreach {
-        out=>
-        rc += in+":"+out+"\n"
-      }
+//      outs.foreach {
+//        out=>
+//        rc += in+":"+out+"\n"
+//      }
+        rc += in+",1:"+outs.last+"\n"
     }
     rc += "*E\n"
     rc
@@ -478,4 +480,3 @@ class TemplateEngine {
     IOUtil.writeBinaryFile(classFile, cw.toByteArray())
   }
 }
-

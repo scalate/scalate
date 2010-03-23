@@ -41,7 +41,9 @@
       <groupId>asm</groupId>
       <artifactId>asm-tree</artifactId>
       <version>${asm-version}</version>
+      <!--
       <optional>true</optional>
+      -->
     </dependency>
     
     <!-- testing -->
