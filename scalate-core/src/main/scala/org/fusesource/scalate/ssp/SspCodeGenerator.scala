@@ -56,11 +56,18 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
         case ExpressionFragment(code) => {
           this << code.pos;
-          this << "$_scalate_$_context << "+code+""
+          this << "$_scalate_$_context << " + (
+                  if (canWrapInParens(code)) {"( " + code + " )"} else {"" + code + ""})
         }
       }
     }
 
+    /**
+     * Returns true if the code expression can be wrapped in parens - namely if the use of () and {} match up
+     */
+    protected def canWrapInParens(code: String) = equalCount(code, '(', ')') && equalCount(code, '{', '}')
+
+    protected def equalCount(code: String, start: Char, end: Char) = code.count(_ == start) == code.count(_ == end)
   }
 
   override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {

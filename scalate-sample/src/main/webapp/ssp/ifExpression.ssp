@@ -1,0 +1,20 @@
+<%
+  var x = 1
+  var y = 2
+%>
+
+<h2>Testing out Scala if expressions</h2>        
+
+<p>
+  trying expression using Scala if clause when x = ${x}
+</p>
+<h3>
+  <%= if (x == 1) "x is 1" else "x is not 1" %>
+</h3>
+
+<p>
+  trying expression using Scala if clause when y = ${y}
+</p>
+<h3>
+  <%= if (y == 1) "y is 1" else "y is not 1" %>
+</h3>
