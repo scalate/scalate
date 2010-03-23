@@ -15,8 +15,6 @@
  */
 package org.fusesource.scalate
 
-import _root_.org.objectweb.asm.tree.ClassNode
-import _root_.org.objectweb.asm.{ClassReader, ClassWriter}
 import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import layout.DefaultLayoutStrategy
@@ -28,7 +26,7 @@ import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import collection.immutable.TreeMap
-import util.{SmapStratum, SmapGenerator, SDEInstaller, IOUtil}
+import util._
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -38,7 +36,7 @@ import util.{SmapStratum, SmapGenerator, SDEInstaller, IOUtil}
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine {
+class TemplateEngine extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -313,8 +311,8 @@ class TemplateEngine {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
-      println("installing:")
-      println(sourceMap)
+      debug("installing:" + sourceMap)
+
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+"$.class"), sourceMap)
 
@@ -367,7 +365,7 @@ class TemplateEngine {
               CompilerError(uri, olderror.message, pos, olderror)
             }
         }
-        e.printStackTrace
+        error(e)
         throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.template = uri

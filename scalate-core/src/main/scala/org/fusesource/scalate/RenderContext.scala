@@ -224,13 +224,13 @@ trait RenderContext {
   /**
    * Renders the given template with optional attributes
    */
-  def render(path: String, attrMap: Map[String, Any]): Unit = {
+  def render(path: String, attributeMap: Map[String, Any]): Unit = {
     // TODO should we call engine.layout() instead??
 
     val uri = resolveUri(path)
     val context = this
 
-    withAttributes(attrMap) {
+    withAttributes(attributeMap) {
       withUri(uri) {
         engine.load(uri).render(context);
       }
@@ -344,7 +344,7 @@ trait RenderContext {
   def captureNodeSeq(template: Template): NodeSeq = XmlHelper.textToNodeSeq(capture(template))
 
 /*
-  Note due to the implicit conversions being applied to => Unit onkly taking the last
+  Note due to the implicit conversions being applied to => Unit only taking the last
   statement of the block as per this discussion:
   http://old.nabble.com/-scala--is-this-a-compiler-bug-or-just-a-surprising-language-quirk-%28or-newbie--lack-of-understanding-%3A%29-ts27917276.html
 
