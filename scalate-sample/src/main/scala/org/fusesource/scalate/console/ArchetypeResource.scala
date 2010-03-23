@@ -1,16 +1,16 @@
 package org.fusesource.scalate.console
 
+import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
 import com.sun.jersey.api.view.Viewable
 import javax.ws.rs._
-import java.io.File
 import org.fusesource.scalate.util.{Logging, IOUtil}
 import org.fusesource.scalate.{NoFormParameterException, RenderContext}
 
 /**
  * @version $Revision : 1.1 $
  */
-class ArchetypeResource(console: Console, name: String) extends Logging {
+class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets with Logging {
   var _form: Form = _
 
   var src = "src"
@@ -20,6 +20,7 @@ class ArchetypeResource(console: Console, name: String) extends Logging {
   var templatePrefix = "/WEB-INF/archetypes/"
 
   def renderContext = console.renderContext
+  def servletContext: ServletContext = console.servletContext
 
   @Path("{name}")
   def child(@PathParam("name") childName: String) = new ArchetypeResource(console, name + "/" + childName)

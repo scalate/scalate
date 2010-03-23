@@ -1,0 +1,38 @@
+---
+title: Using JRebel with Scalate
+in_menu: false
+--- name:overview
+
+# Dynamically reload code
+Reload Java or Scala code without restarting your web app
+
+--- name:content
+If you are building a web application you want to be able to create and edit Java and Scala code on the fly without having to stop and restart your web container for each code change.
+
+## JRebel to the rescue!
+
+[JRebel](http://www.zeroturnaround.com/jrebel) allows you to hot reload bytecode on the fly in your application without having to restart your web container.
+
+Here's how you can use it in a web application with Scalate.
+
+* [Download JRebel](http://www.zeroturnaround.com/blog/free-javarebel-for-scala-users-zeroturnaround-announces/)
+* set your **MAVEN\_OPTS** environment variable to point to where you installed the jrebel jar. For example:
+
+
+    export MAVEN_OPTS="-noverify -javaagent:$JAVAREBEL_HOME/javarebel.jar" 
+    
+* run your web application in maven
+
+
+    mvn jetty:run
+
+Now if your code is compiled by your IDE or a build process, the classes are automatically reloaded on the fly. Neat eh!
+
+For example if you run the following in another shell
+
+    mvn scala:cc
+    
+Then as you edit your scala code it will be recompiled using Scala's incremental compiler, then JRebel will auto-reload any recompiled classes.
+
+
+

@@ -1,11 +1,13 @@
 package org.fusesource.scalate.console
 
+import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
+import _root_.scala.Option
 import org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.util.Logging
 import java.io.File
 import scala.io.Source
-import scala.xml.{Text, NodeSeq}
+import scala.xml.{NodeSeq}
 import collection.mutable.{ArrayBuffer, ListBuffer}
 import util.parsing.input.{Position, OffsetPosition}
 
@@ -19,7 +21,7 @@ case class SourceLine(line: Int, source: String) {
    * Return a tuple of the prefix, the error character and the postfix of this source line
    * to highlight the error at the given column
    */
-  def splitOnCharacter(col: Int): Tuple3[String,String,String] = {
+  def splitOnCharacter(col: Int): Tuple3[String, String, String] = {
     val next = col + 1
     val prefix = source.substring(0, col)
     val ch = source.substring(col, next)
@@ -33,16 +35,19 @@ case class SourceLine(line: Int, source: String) {
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: ServletRenderContext) extends Logging {
+class ConsoleHelper(context: ServletRenderContext) extends ConsoleSnippets with Logging {
   import context._
 
   val consoleParameter = "_scalate"
+
+  def servletContext: ServletContext = context.servletContext
+  def renderContext = context
 
   // TODO figure out the viewName from the current template?
   def viewName = "index"
 
   /**
-   * Returns the class name of the curren tresource
+   * Returns the class name of the current resource
    */
   def resourceClassName: Option[String] = attributes.get("it") match {
     case Some(it: AnyRef) => Some(it.getClass.getName)
@@ -118,49 +123,6 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
 
 
   /**
-   * returns an edit link for the given URI, discovering the right URL
-   * based on your OS and whether you have TextMate installed and whether you
-   * have defined the <code>scalate.editor</code> system property
-   */
-  def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
-
-  def editLink(template: String, line: Int, col: Int)(body: => Unit): NodeSeq = editLink(template, Some(line), Some(col))(body)
-
-  /**
-   * returns an edit link for the given URI, discovering the right URL
-   * based on your OS and whether you have TextMate installed and whether you
-   * have defined the <code>scalate.editor</code> system property
-   */
-  def editLink(filePath: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    // It might be a real file path
-    val file = new File(filePath);
-    val realPath = if( file.exists ) {
-      file.getCanonicalPath
-    } else {
-      servletContext.getRealPath(filePath)
-    }
-    EditLink.editLink(realPath, line, col)(body)
-  }
-
-
-  /**
-   * returns an edit link for the given file, discovering the right URL
-   * based on your OS and whether you have TextMate installed and whether you
-   * have defined the <code>scalate.editor</code> system property
-   */
-  def editFileLink(template: String)(body: => Unit): NodeSeq = editFileLink(template, None, None)(body)
-
-  /**
-   * returns an edit link for the given file, discovering the right URL
-   * based on your OS and whether you have TextMate installed and whether you
-   * have defined the <code>scalate.editor</code> system property
-   */
-  def editFileLink(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    EditLink.editLink(file, line, col)(body)
-  }
-
-
-  /**
    * Returns true if the option is enabled
    */
   def optionEnabled(name: String): Boolean = parameterValues(consoleParameter).contains(name)
@@ -217,7 +179,7 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
    */
   def lines(template: String, pos: Position, chunk: Int = 5): Seq[SourceLine] = {
     pos match {
-      case op:OffsetPosition=>
+      case op: OffsetPosition =>
 
         // OffsetPosition's already are holding onto the file contents
         val index: Array[String] = {
@@ -239,12 +201,12 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
 
         val list = new ListBuffer[SourceLine]
         for (i <- start to end) {
-          list += SourceLine(i, index(i-1))
+          list += SourceLine(i, index(i - 1))
         }
         list
 
 
-      case _=>
+      case _ =>
 
         // We need to manually load the file..
         lines(template, pos.line, chunk)
@@ -252,20 +214,14 @@ class ConsoleHelper(context: ServletRenderContext) extends Logging {
 
   }
 
-  def shorten(file: String): String = {
-    var root = RenderContext().engine.workingDirectory.getPath;
-    if( file.startsWith(root) ) {
-      file.substring(root.length +1 )
-    } else {
-      file
-    }
-  }
-
   // Error Handling helper methods
   //-------------------------------------------------------------------------
   def exception = attributes("javax.servlet.error.exception")
+
   def errorMessage = attributeOrElse("javax.servlet.error.message", "")
+
   def errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
+
   def errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
 
 }

@@ -1,7 +1,6 @@
 <%@ import val it: org.fusesource.scalate.console.ArchetypeResource %>
 <% 
   val params = org.fusesource.scalate.console.archetypes.ResourceParams(it); 
-  println("invoked with params: " + params)
   import params._
   
   val fileName = scalaSourceFileName(qualifiedClassName) 
@@ -17,6 +16,10 @@ class ${className} {
 }
 <% } %>
 
-<h3>Generated ${fileName}</h3>
+<h3>generated: <%= editLink(fileName) { %>
+  ${shorten(fileName)}
+<% } %></h3>
 
+<h3><a href="${resourceUri}">try the New Resource</a></h3>
 
+<p>To be able to dynamically build and reload new code on the fly you should enable <a href="http://scalate.fusesource.org/jrebel.html">JRebel</a></p>

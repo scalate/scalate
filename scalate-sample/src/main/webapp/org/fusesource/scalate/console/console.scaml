@@ -15,9 +15,6 @@
     %h3 Create
     = render("/WEB-INF/archetypes/menu.scaml")
 
-    %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
-      %input(type="submit" value="Clear Cache")
-
     -#
       - if (newTemplateName.isDefined && resourceClassName.isDefined)
         - val newName = newTemplateName.get
@@ -40,8 +37,9 @@
         - val file = resourceSourceFile.get
         %ul
           %li
+            - println("Found file: " + file)
             = editFileLink(file.getAbsolutePath)
-              = file.getPath
+              = shorten(file)
 
     - if (!templates.isEmpty)
       .templates
@@ -60,6 +58,9 @@
             %li
               = editLink(layout)
                 = layout.stripPrefix("/")
+
+    %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
+      %input(type="submit" value="Clear Cache")
 
     - if (!optionEnabled("attributes"))
       .toggle.show

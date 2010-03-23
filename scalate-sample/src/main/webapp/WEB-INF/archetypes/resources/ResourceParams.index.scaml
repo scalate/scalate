@@ -1,4 +1,5 @@
 -# A form to capture the ResourceParams
+
 -@ val title: String = "Create Resource"
 -@ val body: String = ""
 
@@ -10,20 +11,20 @@
   %table.form
     %tr
       %td
-        %label Resource URI
+        %label(for="resourceUri") Resource URI
       %td
-        %input(type="text" name="resourceUri" value="/foo")
+        %input(type="text" name="resourceUri" size="40" value="/sample")
     %tr
       %td
-        %label Resource Class Name
+        %label(for="className") Resource Class Name
       %td
-        %input(type="text" name="className" value="FooResource")
+        %input(type="text" name="className" size="40" value="SampleResource")
     %tr
       %td
-        %label Package Name
+        %label(for="packageName") Package Name
       %td
-        %input(type="text" name="packageName" value="com.acme.demo.resources")
-    %td
-      %td(colspan="2")
+        %input(type="text" name="packageName" size="40" value="com.acme.demo.resources")
+    %tr
+      %td(colspan="2" align="center")
         %input(type="submit" value="Create")
 
