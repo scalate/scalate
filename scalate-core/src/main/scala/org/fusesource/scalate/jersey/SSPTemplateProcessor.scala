@@ -35,7 +35,7 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
-      warning("No servlet context")
+      warn("No servlet context")
       return null
     }
 
@@ -63,13 +63,13 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
       }
     } catch {
       case e: MalformedURLException =>
-        warning("Tried to load template using Malformed URL. " + e.getMessage)
+        warn("Tried to load template using Malformed URL. " + e.getMessage)
         null
     }
   }
 
   def tryFindPath(path: String) = templateSuffixes.map { path + _ }.find { t =>
-      fine("Trying to find template: " + t)
+      debug("Trying to find template: " + t)
       servletContext.getResource(t) ne null
     }
 

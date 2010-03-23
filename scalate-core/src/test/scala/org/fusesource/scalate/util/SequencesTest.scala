@@ -18,7 +18,7 @@ class SequencesTest extends FunSuite with Logging {
 
     expect(List("a", "b", "c")) { unique }
 
-    fine("removing duplicates from " + list + " created " + unique)
+    debug("removing duplicates from " + list + " created " + unique)
   }
 
 }

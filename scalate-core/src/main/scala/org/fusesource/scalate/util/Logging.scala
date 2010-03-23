@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory
 trait Logging {
   val log = LoggerFactory.getLogger(getClass.getName)
 
-  def severe(fn: => String): Unit = log.error(fn)
+  def error(fn: => String): Unit = log.error(fn)
 
-  def warning(fn: => String): Unit = log.warn(fn)
+  def warn(fn: => String): Unit = log.warn(fn)
 
   def info(fn: => String): Unit = log.info(fn)
 
-  def fine(fn: => String): Unit = log.debug(fn)
+  def debug(fn: => String): Unit = log.debug(fn)
 
-  def finer(fn: => String): Unit = log.trace(fn)
+  def trace(fn: => String): Unit = log.trace(fn)
 
 }
