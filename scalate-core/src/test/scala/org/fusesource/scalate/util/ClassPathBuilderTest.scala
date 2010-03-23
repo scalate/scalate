@@ -30,11 +30,10 @@ class ClassPathBuilderTest extends FunSuite {
     val builder = new ClassPathBuilder
     builder.addJar("/path/to/file.jar")
 
-    val actualFile = new File(builder.classPath)
-    val expectedFile = new File("/path/to/file.jar")
-    assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
+    assertFiles(builder.classPath, "/path/to/file.jar")
   }
-  
+
+
   test("Add an entry for a classes directory") {
     val builder = new ClassPathBuilder
     builder.addClassesDir("/WEB-INF/classes")
@@ -68,7 +67,7 @@ class ClassPathBuilderTest extends FunSuite {
     val loader = new URLClassLoader(Array(new URL("file:///path/to/file.jar")))
     val builder = new ClassPathBuilder
     builder.addPathFrom(loader)
-    assert(builder.classPath === "/path/to/file.jar")
+    assertFiles(builder.classPath, "/path/to/file.jar")
   }
   
   test("Add path from AntLikeClassLoader") {
@@ -78,7 +77,7 @@ class ClassPathBuilderTest extends FunSuite {
     assert(builder.classPath === "")
     
     builder.addPathFrom(ValidAntLikeClassLoader)
-    assert(builder.classPath === "/path/to/file.jar")
+    assertFiles(builder.classPath, "/path/to/file.jar")
   }
   
   test("Add path from context class loader") {
@@ -92,7 +91,7 @@ class ClassPathBuilderTest extends FunSuite {
     
     Thread.currentThread.setContextClassLoader(ValidAntLikeClassLoader)
     builder.addPathFromContextClassLoader()
-    assert(builder.classPath === "/path/to/file.jar")
+    assertFiles(builder.classPath, "/path/to/file.jar")
     
     Thread.currentThread.setContextClassLoader(contextClassLoader)
   }
@@ -101,6 +100,12 @@ class ClassPathBuilderTest extends FunSuite {
     val builder = new ClassPathBuilder
     builder.addLibDir(testLibDir)
     assert(builder.classPath.contains("fake-jar"))
+  }
+
+  def assertFiles(actualPath: String, expectedPath: String) = {
+    val actualFile = new File(actualPath)
+    val expectedFile = new File(expectedPath)
+    assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
   }
 }
 
