@@ -63,11 +63,9 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
 
     /**
-     * Returns true if the code expression can be wrapped in parens - namely if the use of () and {} match up
+     * Returns true if the code expression can be safely wrapped in parens
      */
-    protected def canWrapInParens(code: String) = equalCount(code, '(', ')') && equalCount(code, '{', '}')
-
-    protected def equalCount(code: String, start: Char, end: Char) = code.count(_ == start) == code.count(_ == end)
+    protected def canWrapInParens(code: String) = false
   }
 
   override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
