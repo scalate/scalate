@@ -12,8 +12,9 @@
         Scalate Console
         %img(src="/images/minus.png")
 
-    %h3 Create
-    = render("/WEB-INF/archetypes/menu.scaml")
+    .archetypes
+      %p Create
+      = render("/WEB-INF/archetypes/menu.scaml")
 
     -#
       - if (newTemplateName.isDefined && resourceClassName.isDefined)
@@ -32,7 +33,7 @@
 
     - val sourceFile = resourceSourceFile
     - if (sourceFile.isDefined)
-      .resoruces
+      .resources
         %p Resources
         - val file = resourceSourceFile.get
         %ul

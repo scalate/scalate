@@ -10,7 +10,7 @@
   max-width: 400px;
 }
 
-#scalate-console .templates ul, #scalate-console .resources ul, #scalate-console .layouts ul   {
+#scalate-console .archetypes ul, #scalate-console .templates ul, #scalate-console .resources ul, #scalate-console .layouts ul   {
   padding-left:20px;
   overflow: auto;
 }
