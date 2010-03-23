@@ -3,6 +3,7 @@ package org.fusesource.scalate.console
 /**
  * @version $Revision: 1.1 $
  */
+import _root_.java.io.{OutputStreamWriter, PrintWriter}
 import org.fusesource.scalate._
 import org.fusesource.scalate.util._
 import org.junit.runner.RunWith
@@ -24,6 +25,10 @@ class EditLinkTest extends FunSuite with Logging {
   }
 
   def editLink(name: String) = {
+
+    // lets put a render context in scope
+    RenderContext() = new DefaultRenderContext(new TemplateEngine(), new PrintWriter(new OutputStreamWriter(System.out)))
+    
     val link = EditLink.editLink(file)("Edit file")
 
     println(name + " link = " + link)
