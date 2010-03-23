@@ -44,6 +44,8 @@ class CompilerException(msg:String, val errors:List[CompilerError]) extends Temp
 
 class NoValueSetException(val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set")
 
+class NoFormParameterException(val parameter: String) extends TemplateException("The form parameter '" + parameter + "' was not set")
+
 class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateException("No '" + view +
         "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName)
 

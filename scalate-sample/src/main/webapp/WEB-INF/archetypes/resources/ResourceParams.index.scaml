@@ -1,0 +1,29 @@
+-# A form to capture the ResourceParams
+-@ val title: String = "Create Resource"
+-@ val body: String = ""
+
+%h2= title
+
+%p= body
+
+%form(action={requestURI} method="post")
+  %table.form
+    %tr
+      %td
+        %label Resource URI
+      %td
+        %input(type="text" name="resourceUri" value="/foo")
+    %tr
+      %td
+        %label Resource Class Name
+      %td
+        %input(type="text" name="className" value="FooResource")
+    %tr
+      %td
+        %label Package Name
+      %td
+        %input(type="text" name="packageName" value="com.acme.demo.resources")
+    %td
+      %td(colspan="2")
+        %input(type="submit" value="Create")
+

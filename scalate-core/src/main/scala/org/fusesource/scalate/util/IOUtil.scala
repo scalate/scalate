@@ -20,6 +20,22 @@ package org.fusesource.scalate.util
 import java.io._
 
 object IOUtil {
+
+  /**
+   * Creates any parent directories of the given path if they do not exist
+   */
+  def makeParentDirs(fileName: String): Unit = makeParentDirs(new File(fileName))
+
+  /**
+   * Creates any parent directories of the given directory if they do not exist
+   */
+  def makeParentDirs(file: File): Unit = {
+    val parent = file.getParentFile
+    if (parent != null) {
+      parent.mkdirs
+    }
+  }
+
   def loadTextFile(path: File, encoding: String = "UTF-8") = {
     new String(loadBinaryFile(path), encoding)
   }

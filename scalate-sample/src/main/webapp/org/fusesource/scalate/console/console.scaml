@@ -12,18 +12,22 @@
         Scalate Console
         %img(src="/images/minus.png")
 
-    - if (newTemplateName.isDefined && resourceClassName.isDefined)
-      - val newName = newTemplateName.get
-      %h3 Create New Custom Template
-      %p Create a new template called #{newName} from archetype
-      %ul
-        - for (a <- archetypes)
-          %li
-            %form(action={uri("/scalate/createTemplate")} method="post")
-              %input(type="hidden" name="archetype" value={a.archetype})
-              %input(type="hidden" name="newTemplateName" value={newName})
-              %input(type="hidden" name="resourceClass" value={resourceClassName.get})
-              %input(type="submit" value={a.name})
+    %h3 Create
+    = render("/WEB-INF/archetypes/menu.scaml")
+
+    -#
+      - if (newTemplateName.isDefined && resourceClassName.isDefined)
+        - val newName = newTemplateName.get
+        %h3 Create New Custom Template
+        %p Create a new template called #{newName} from archetype
+        %ul
+          - for (a <- archetypes)
+            %li
+              %form(action={uri("/scalate/createTemplate")} method="post")
+                %input(type="hidden" name="archetype" value={a.archetype})
+                %input(type="hidden" name="newTemplateName" value={newName})
+                %input(type="hidden" name="resourceClass" value={resourceClassName.get})
+                %input(type="submit" value={a.name})
         
 
     - val sourceFile = resourceSourceFile

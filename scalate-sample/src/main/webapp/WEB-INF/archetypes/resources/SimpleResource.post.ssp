@@ -1,0 +1,22 @@
+<%@ import val it: org.fusesource.scalate.console.ArchetypeResource %>
+<% 
+  val params = org.fusesource.scalate.console.archetypes.ResourceParams(it); 
+  println("invoked with params: " + params)
+  import params._
+  
+  val fileName = scalaSourceFileName(qualifiedClassName) 
+  createFile(fileName) { 
+%>
+package ${packageName}
+
+import javax.ws.rs.{Path}
+
+@Path("${resourceUri}")
+class ${className} {
+  
+}
+<% } %>
+
+<h3>Generated ${fileName}</h3>
+
+

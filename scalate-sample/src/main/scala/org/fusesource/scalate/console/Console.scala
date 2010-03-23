@@ -30,6 +30,9 @@ class Console extends DefaultRepresentations {
   def response: HttpServletResponse = assertInjected(_response, "response")
 
 
+  @Path("archetypes/{name}")
+  def archetype(@PathParam("name") name: String) = new ArchetypeResource(this, name)
+
   @POST
   @Path("createTemplate")
   def createTemplate(@FormParam("newTemplateName") newTemplateName: String,
@@ -48,8 +51,8 @@ class Console extends DefaultRepresentations {
     if (fileName == null) {
       throw new IllegalArgumentException("Could not deduce real file name for: " + newTemplateName)
     }
-    val engine = ServletTemplateEngine(servletContext)
-    val context = new ServletRenderContext(engine, request, response, servletContext)
+    val engine = templateEngine
+    val context = renderContext
 
     // lets try load the resource class
     val resourceClass = try {
@@ -60,6 +63,7 @@ class Console extends DefaultRepresentations {
     }
     
     context.attributes("resourceType") = resourceClass
+
     context.attributes("layout") = ""
 
     // lets capture the output of rendering the context
@@ -69,4 +73,7 @@ class Console extends DefaultRepresentations {
 
     IOUtil.writeText(fileName, text)
   }
+
+  def templateEngine = ServletTemplateEngine(servletContext)
+  def renderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
 }
