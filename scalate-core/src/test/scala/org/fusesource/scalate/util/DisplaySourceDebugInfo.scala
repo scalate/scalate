@@ -28,9 +28,18 @@ import _root_.org.objectweb.asm.ClassReader
  */
 object DisplaySourceDebugInfo {
   def main(args: Array[String]) = {
-    val cn = new ClassNode();
-    val cr = new ClassReader( IOUtil.loadBinaryFile(new File(args(0))) )
-    cr.accept(cn, 0);
-    println(cn.sourceDebug)
+    val fileName = if (args.size > 0) args(0) else "scalate-sample/src/main/webapp/WEB-INF/_scalate/classes/scaml/$_scalate_$missingAttribute_scaml$.class"
+    println("Loading class file: " + fileName)
+
+    val file = new File(fileName)
+    if (file.exists) {
+      val cn = new ClassNode();
+      val cr = new ClassReader( IOUtil.loadBinaryFile(file) )
+      cr.accept(cn, 0);
+      println(cn.sourceDebug)
+    }
+    else {
+      println("ERROR: " + file + " does not exist!")
+    }
   }
 }
