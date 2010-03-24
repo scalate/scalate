@@ -438,8 +438,8 @@ class TemplateEngine extends Logging {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
-    val s: SmapStratum = new SmapStratum("JSP")
-    s.addFile(shortName, longName)
+    val stratum: SourceMapStratum = new SourceMapStratum("JSP")
+    val fileId = stratum.addFile(shortName, longName)
 
     // build a map of input-line -> List( output-line )
     var smap = new TreeMap[Int,List[Int]]()
@@ -455,15 +455,15 @@ class TemplateEngine extends Logging {
       case (in, outs)=>
       outs.foreach {
         out=>
-        s.addLineData(in, longName, 1, out, 1)
+        stratum.addLine(in, fileId, 1, out, 1)
       }
     }
-    s.optimizeLineSection
+    stratum.optimize
 
-    var g: SmapGenerator = new SmapGenerator
-    g.setOutputFileName(scalaFile.getName)
-    g.addStratum(s, true)
-    g.toString
+    var sourceMap: SourceMap = new SourceMap
+    sourceMap.setOutputFileName(scalaFile.getName)
+    sourceMap.addStratum(stratum, true)
+    sourceMap.toString
   }
 
   def storeSourceMap(classFile:File, sourceMap:String) = {
