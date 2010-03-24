@@ -15,6 +15,8 @@ trait Logging {
 
   def info(fn: => String): Unit = log.info(fn)
 
+  def debug(fn: => String): Unit = log.debug(fn)
+  
   def fine(fn: => String): Unit = log.debug(fn)
 
   def finer(fn: => String): Unit = log.trace(fn)

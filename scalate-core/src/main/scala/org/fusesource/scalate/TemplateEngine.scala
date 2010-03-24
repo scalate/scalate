@@ -15,8 +15,6 @@
  */
 package org.fusesource.scalate
 
-import _root_.org.objectweb.asm.tree.ClassNode
-import _root_.org.objectweb.asm.{ClassReader, ClassWriter}
 import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import layout.DefaultLayoutStrategy
@@ -28,7 +26,7 @@ import scala.compat.Platform
 import ssp.{SspCodeGenerator, ScalaCompiler}
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import collection.immutable.TreeMap
-import util.{SmapStratum, SmapGenerator, SDEInstaller, IOUtil}
+import util._
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -440,8 +438,8 @@ class TemplateEngine {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
-    val s: SmapStratum = new SmapStratum("JSP")
-    s.addFile(shortName, longName)
+    val stratum: SourceMapStratum = new SourceMapStratum("JSP")
+    val fileId = stratum.addFile(shortName, longName)
 
     // build a map of input-line -> List( output-line )
     var smap = new TreeMap[Int,List[Int]]()
@@ -457,15 +455,15 @@ class TemplateEngine {
       case (in, outs)=>
       outs.foreach {
         out=>
-        s.addLineData(in, longName, 1, out, 1)
+        stratum.addLine(in, fileId, 1, out, 1)
       }
     }
-    s.optimizeLineSection
+    stratum.optimize
 
-    var g: SmapGenerator = new SmapGenerator
-    g.setOutputFileName(scalaFile.getName)
-    g.addStratum(s, true)
-    g.toString
+    var sourceMap: SourceMap = new SourceMap
+    sourceMap.setOutputFileName(scalaFile.getName)
+    sourceMap.addStratum(stratum, true)
+    sourceMap.toString
   }
 
   def storeSourceMap(classFile:File, sourceMap:String) = {
