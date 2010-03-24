@@ -18,8 +18,7 @@ Here's how you can use it in a web application with Scalate.
 * [Download JRebel](http://www.zeroturnaround.com/blog/free-javarebel-for-scala-users-zeroturnaround-announces/)
 * set your **MAVEN\_OPTS** environment variable to point to where you installed the jrebel jar. For example:
 
-
-    export MAVEN_OPTS="-noverify -javaagent:$JAVAREBEL_HOME/javarebel.jar" 
+    export MAVEN_OPTS="-noverify -javaagent:$JREBEL_HOME/jrebel.jar" 
     
 * run your web application in maven
 
