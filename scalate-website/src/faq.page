@@ -36,6 +36,10 @@ See the [support guide](support.html) for more details.
 
 We love [contributions](contributing.html)! More details on how to contribute and how to become a committer are in the [contributing guide](contributing.html).
 
+### How do I register for the issue tracker?
+
+For more detail see the [support page](support.html). If you haven't done so already you can  <a href=" http://fusesource.com/forge/register">register with the issue tracker here</a>
+
 ### How does the website work?
 
 For details on how to edit the website and how it works see [How the Site works](site.html)
@@ -64,7 +68,5 @@ Your best bet is starting with the [User Guide](documentation/index.html) maybe 
 Scalate itself auto-recompiles and reloads templates on the fly. However if you are changing Scala code which the Scalate templates use then you normally have to stop and restart your web container.
 
 So for a more RAD approach we recommend using [JRebel](jrebel.html) which can hot-reload the Scala code on the fly, leading to a rapid edit &lt;-&gt; browser reload cycle.
-
-## Errors
 
 
