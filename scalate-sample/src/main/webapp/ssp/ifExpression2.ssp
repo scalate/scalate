@@ -1,0 +1,13 @@
+<h2>Testing out Scala if expressions</h2>
+
+<% for (x <- 1.to(2)) { %>
+
+<p>
+  trying expression using Scala if clause when x = ${x}
+</p>
+
+<h3>
+  ${ if (x == 1) "x is 1" else "x is not 1" }
+</h3>
+
+<% } %>
