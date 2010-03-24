@@ -1,11 +1,7 @@
 package org.fusesource.scalate.sample.resources
 
-import com.sun.jersey.api.view.Viewable
-import com.sun.jersey.api.view.ImplicitProduces
+import _root_.com.sun.jersey.api.view.{ImplicitProduces, Viewable}
 import javax.ws.rs.{Produces, GET, Path, PathParam}
-
-@ImplicitProduces(Array("text/html;qs=5"))
-case class Item(id: String, name: String)
 
 /**
  * A JAX-RS bean
@@ -13,8 +9,7 @@ case class Item(id: String, name: String)
  * @version $Revision : 1.1 $
  */
 @Path("/foo")
-@ImplicitProduces(Array("text/html;qs=5"))
-class FooResource {
+class FooResource extends DefaultRepresentations {
 
   @GET
   @Produces(Array("application/xml", "text/xml"))

@@ -36,7 +36,7 @@ import util._
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine {
+class TemplateEngine extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -311,8 +311,8 @@ class TemplateEngine {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
-      println("installing:")
-      println(sourceMap)
+      debug("installing:" + sourceMap)
+
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+"$.class"), sourceMap)
 
@@ -365,7 +365,7 @@ class TemplateEngine {
               CompilerError(uri, olderror.message, pos, olderror)
             }
         }
-        e.printStackTrace
+        error(e)
         throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.template = uri

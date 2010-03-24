@@ -12,7 +12,7 @@ abstract class ContainerResource[K,E,R] extends Logging {
 
   @Path("id/{id}")
   def get(@PathParam("id") key : K) : R = {
-    fine("Loading id '" + key + "'")
+    debug("Loading id '" + key + "'")
 
     container.get(key) match {
       case Some(e) => createChild(e)

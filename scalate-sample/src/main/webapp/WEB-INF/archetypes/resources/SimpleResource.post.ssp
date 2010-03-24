@@ -4,7 +4,18 @@
   import params._
   
   val fileName = scalaSourceFileName(qualifiedClassName) 
-  createFile(fileName) { 
+  if (exists(fileName)) {
+%>
+
+<h3>Could not create file as <%= editLink(fileName) { %>
+  ${shorten(fileName)}
+<% } %> already exists!</h3>
+
+<p>To continue you must delete the file through your IDE, then refresh this page in the browser</p>
+
+<%    
+  } else {
+    createFile(fileName) { 
 %>
 package ${packageName}
 
@@ -14,7 +25,7 @@ import javax.ws.rs.{Path}
 class ${className} {
   
 }
-<% } %>
+<%  }%>
 
 <h3>generated: <%= editLink(fileName) { %>
   ${shorten(fileName)}
@@ -23,3 +34,5 @@ class ${className} {
 <h3><a href="${resourceUri}">try the New Resource</a></h3>
 
 <p>To be able to dynamically build and reload new code on the fly you should enable <a href="http://scalate.fusesource.org/jrebel.html">JRebel</a></p>
+
+<%}%>

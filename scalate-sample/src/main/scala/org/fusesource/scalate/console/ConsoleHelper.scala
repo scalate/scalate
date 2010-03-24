@@ -8,6 +8,8 @@ import org.fusesource.scalate.util.Logging
 import java.io.File
 import scala.io.Source
 import scala.xml.{NodeSeq}
+import collection.JavaConversions._
+import collection.immutable.SortedMap
 import collection.mutable.{ArrayBuffer, ListBuffer}
 import util.parsing.input.{Position, OffsetPosition}
 
@@ -212,6 +214,12 @@ class ConsoleHelper(context: ServletRenderContext) extends ConsoleSnippets with 
         lines(template, pos.line, chunk)
     }
 
+  }
+
+  def systemProperties: SortedMap[String,String] = {
+    // TODO is there a better way?
+    val m: Map[String,String] = System.getProperties.toMap
+    SortedMap(m.iterator.toSeq :_*)
   }
 
   // Error Handling helper methods

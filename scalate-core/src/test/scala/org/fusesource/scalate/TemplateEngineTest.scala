@@ -38,7 +38,7 @@ Hello ${name}!
 
     val output = engine.layout(template, Map("name" -> "James")).trim
     assertContains(output, "Hello James")
-    fine("template generated: " + output)
+    debug("template generated: " + output)
   }
 
   test("throws ResourceNotFoundException if template file does not exist") {
@@ -58,7 +58,7 @@ Hello ${name}!
     val lines = output.split('\n')
 
     for (line <- lines) {
-      fine("line: " + line)
+      debug("line: " + line)
     }
 
     expect("<%@ val it : java.lang.String %>") {lines(0)}

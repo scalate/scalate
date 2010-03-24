@@ -72,5 +72,8 @@ trait ConsoleSnippets {
     }
   }
 
+
+  def exists(fileName: String) = new File(fileName).exists
+  
   protected var sourcePrefixes = List("src/main/scala", "src/main/java")
 }

@@ -77,7 +77,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     }
   }
 
-  private def error(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
+  private def errorHandler(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
   private def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
     bytecodeDirectory.mkdirs
@@ -97,9 +97,9 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
                             .classPath
     }
 
-    fine("using classpath: " + useCP)
+    debug("using classpath: " + useCP)
 
-    val settings = new Settings(error)
+    val settings = new Settings(errorHandler)
     settings.classpath.value = useCP
     settings.outdir.value = bytecodeDirectory.toString
     settings.deprecation.value = true

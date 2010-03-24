@@ -203,7 +203,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       if (sep != "/") {
         // on windows lets replace the \ in a directory name with /
         val newName = name.replace('\\', '/')
-        fine("convertedd windows path into: " + newName)
+        debug("convertedd windows path into: " + newName)
         newName
       }
       else {

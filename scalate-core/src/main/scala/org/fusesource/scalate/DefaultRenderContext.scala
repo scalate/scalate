@@ -83,7 +83,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
-      fine("rendering template " + template + " with attributes: " + attributes)
+      debug("rendering template " + template + " with attributes: " + attributes)
       template.render(this)
       out.close()
       buffer.toString

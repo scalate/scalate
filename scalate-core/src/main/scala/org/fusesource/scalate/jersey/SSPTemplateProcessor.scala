@@ -32,10 +32,12 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     case _            => ""
   }
 
+  var errorUris: List[String] = List("/WEB-INF/errors/500.scaml", "/WEB-INF/errors/500.ssp")
+
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
-      warning("No servlet context")
+      warn("No servlet context")
       return null
     }
 
@@ -63,13 +65,13 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
       }
     } catch {
       case e: MalformedURLException =>
-        warning("Tried to load template using Malformed URL. " + e.getMessage)
+        warn("Tried to load template using Malformed URL. " + e.getMessage)
         null
     }
   }
 
   def tryFindPath(path: String) = templateSuffixes.map { path + _ }.find { t =>
-      fine("Trying to find template: " + t)
+      debug("Trying to find template: " + t)
       servletContext.getResource(t) ne null
     }
 
@@ -87,9 +89,37 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
       wrapper.forward(request, response)
       //wrapper.forward(requestInvoker.get(), responseInvoker.get())
     } catch {
-      case e: Exception => throw new ContainerException(e)
+      case e: Exception =>
+        // lets forward to the error handler
+        var notFound = true
+        for (uri <- errorUris if notFound) {
+          val rd = servletContext.getRequestDispatcher(uri)
+          if (rd != null) {
+
+            // we need to expose all the errors property here...
+            request.setAttribute("javax.servlet.error.exception", e)
+            request.setAttribute("javax.servlet.error.exception_type", e.getClass)
+            request.setAttribute("javax.servlet.error.message", e.getMessage)
+            request.setAttribute("javax.servlet.error.request_uri", request.getRequestURI)
+            request.setAttribute("javax.servlet.error.servlet_name", request.getServerName)
+
+            // TODO how to get the status code???
+            val status = 500
+            request.setAttribute("javax.servlet.error.status_code", status)
+
+            val rdw = new RequestDispatcherWrapper(rd, basePath, hc, new Viewable(uri, e))
+            rdw.forward(request, response)
+            notFound = false
+          }
+        }
+        if (notFound) {
+          throw new ContainerException(e)
+        }
+
+        // throw new ContainerException(e)
     }
   }
+
 
 }
 

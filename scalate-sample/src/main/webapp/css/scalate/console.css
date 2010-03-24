@@ -10,7 +10,7 @@
   max-width: 400px;
 }
 
-#scalate-console .templates ul, #scalate-console .resources ul, #scalate-console .layouts ul   {
+#scalate-console .archetypes ul, #scalate-console .templates ul, #scalate-console .resources ul, #scalate-console .layouts ul   {
   padding-left:20px;
   overflow: auto;
 }
@@ -39,6 +39,13 @@
 }
 
 #scalate-console div.body {
+  margin: 10px;
+  overflow: auto;
+  max-height: 300px;
+  background: white;
+}
+
+#scalate-console div.systemProperties {
   margin: 10px;
   overflow: auto;
   max-height: 300px;

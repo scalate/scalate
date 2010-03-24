@@ -13,16 +13,24 @@ sort_info: 1
 Scalate: Scala Template Engine
 ==============================
 
-Scalate is a [Scala](http://www.scala-lang.org) based template engine. Scalate can be used stand alone or as a servlet or renderer when using JAXRS with [Jersey](http://jersey.dev.java.net/).
+Scalate is a [Scala](http://www.scala-lang.org) based template engine which can be used in the following environments
 
-Scalate supports the following languages
+* stand alone in any JVM
+* as a servlet in any Java in a web application 
+* when using JAXRS with [Jersey](http://jersey.dev.java.net/)
+* in the [Play Framework](http://www.playframework.org/) via [play-scalate](http://github.com/pk11/play-scalate)
+* in [Apache Camel](http://camel.apache.org/scalate.html) for transforming messages and templating
 
-* [SSP](documentation/manual/book.html) pages which are like JSP/ASP pages 
-* [Scaml](documentation/scaml-reference.html) pages which is a Scala dialect of [Haml](http://haml-lang.com/)
+Scalate supports the following template formats
 
-Compared to JSP, SSP misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, scalate reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. You can also invoke methods in regular Scala code which can use Scala's XML support to return page fragments.
+* [SSP](documentation/ssp-reference.html) which is like JSP/Erb/ASP 
+* [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 
-All expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. Also since Scalate is based on Scala it generates fast statically typed method dispatch bytecode rather than using dynamic dispatch or reflection. Hopefully IDEs will soon be able to support full completion of all scala expressions within scalate template files.
+All expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. You can reuse Scala's powerful functions, closures and matchers as well as invoking Scala methods can use Scala's XML support to return page fragments.
+
+Scalate templates generate Scala code which is compiled to fast statically typed method dispatch bytecode rather than using dynamic dispatch or reflection. Hopefully [IDEs will soon](creating-ide.html) be able to support full completion of all scala expressions within scalate template files.
+
+Compared to JSP, Scalate misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, Scalate reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. 
 
 The code is based on [serverpages](http://github.com/matthild/serverpages) by Matt Hildebrand
 

@@ -11,6 +11,12 @@
     <a href="ssp/simple.ssp">simple</a>
   </li>
   <li>
+    <a href="ssp/ifExpression.ssp">using Scala if expression inside an SSP expression</a>
+  </li>
+  <li>
+    <a href="ssp/matchExpression.ssp">using Scala match/case expression inside an SSP expression</a>
+  </li>
+  <li>
     <a href="ssp/locale.ssp">shows use of locales and auto-formatting of numbers and dates</a>
   </li>
   <li>

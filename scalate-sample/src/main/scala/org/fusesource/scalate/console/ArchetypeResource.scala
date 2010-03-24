@@ -63,7 +63,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
    * Creates a file of the given name using the body as the content
    */
   def createFile(fileName: String)(body: => Unit): Unit = {
-    fine("archetype creating file:" + name)
+    debug("archetype creating file:" + name)
     
     val text = RenderContext.capture(body)
 

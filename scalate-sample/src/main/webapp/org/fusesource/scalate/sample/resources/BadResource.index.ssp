@@ -1,0 +1,7 @@
+<ul>
+<% val typo = List(1, 2, 3) %>
+
+<% for (i <- unknown) { %>
+  <li>item ${i}</li>
+<% } %>
+</ul>

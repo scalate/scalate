@@ -103,7 +103,7 @@ private object ClassPathBuilder extends Logging {
       cp.split(File.pathSeparator)
 
     case _ =>
-      warning("Cannot introspect on class loader: "+classLoader+" of type "+classLoader.getClass.getCanonicalName)
+      warn("Cannot introspect on class loader: "+classLoader+" of type "+classLoader.getClass.getCanonicalName)
       val parent = classLoader.getParent
       if (parent != null && parent != classLoader) getClassPathFrom(parent)
       else Nil

@@ -60,7 +60,7 @@ class IntrospectorTest extends FunSuite with Logging {
 
   def assertProperties(properties: Seq[Property], expectedSize: Int) = {
     for (property <- properties) {
-      fine("Property: " + property)
+      debug("Property: " + property)
     }
     expect(expectedSize) { properties.size }
   }

@@ -17,8 +17,10 @@
     </layout>
   </appender>
 
+<!--
   <logger name="org.fusesource.scalate.jersey" level="DEBUG" />
   <logger name="org.fusesource.scalate.console" level="DEBUG" />
+-->
 
   <root level="info">
     <appender-ref ref="FILE" />

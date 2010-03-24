@@ -15,7 +15,7 @@ object XmlHelper extends Logging {
    * by wrapping it in a root XML element first
    */
   def textToNodeSeq(text: String): NodeSeq = {
-    fine("parsing markup: " + text)
+    debug("parsing markup: " + text)
 
     val src = Source.fromString("<p>" + text + "</p>");
 

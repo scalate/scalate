@@ -1,0 +1,16 @@
+<h2>Testing out Scala match/case expressions</h2>
+
+<% for (i <- 1.to(3)) {%>
+
+<p>
+  trying scala match expression when
+  <b>i = ${i}</b>
+</p>
+
+<h3>
+  <%= (i match {
+    case 1 => "i is 1"
+    case 2 => "i is 2"
+    case _ => "i is something" }) %>
+</h3>
+<% } %>

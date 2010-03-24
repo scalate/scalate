@@ -27,7 +27,9 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp",
     "included from /ssp/child/foo.ssp", "included from /includes/something.jsp", "Finished including!")
 
+  testPageContains("ssp/ifExpression.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
+  testPageContains("ssp/matchExpression.ssp", "i = 1", "i is 1", "i = 2", "i is 2", "i = 3", "i is something")
   testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
 
   testPage("ssp/noLayout.ssp") {
@@ -47,6 +49,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
 
+  testPageContains("bad", "error: not found: value unknown")
   testPageContains("foo", "Hello from a FooResource!")
   testPageContains("foo/abc", "The item id is", "abc")
   testPageContains("foo/def", "The item id is", "def")
