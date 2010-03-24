@@ -8,9 +8,9 @@
 </p>
 
 <h3>
-  <%= (i match {
+  <%= i match {
     case 1 => "i is 1"
     case 2 => "i is 2"
-    case _ => "i is something" }) %>
+    case _ => "i is something" } %>
 </h3>
 <% } %>
