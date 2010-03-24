@@ -44,3 +44,10 @@
   max-height: 300px;
   background: white;
 }
+
+#scalate-console div.systemProperties {
+  margin: 10px;
+  overflow: auto;
+  max-height: 300px;
+  background: white;
+}

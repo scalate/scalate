@@ -17,7 +17,9 @@
     </layout>
   </appender>
 
+<!--
   <logger name="org.fusesource.scalate" level="DEBUG" />
+-->
 
   <root level="info">
     <appender-ref ref="FILE" />

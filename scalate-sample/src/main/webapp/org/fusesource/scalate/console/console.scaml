@@ -103,3 +103,25 @@
           :javascript
             SyntaxHighlighter.all()
 
+    - if (!optionEnabled("sysProp"))
+      .toggle.show
+        %a(href={enableLink("sysProp")} title="Show the System Properties") 
+          System Properties
+          %img(src="/images/plus.png")
+    - else 
+      .toggle.hide
+        %a(href={disableLink("sysProp")} title="Hide the System Properties") 
+          System Properties
+          %img(src="/images/minus.png")
+      .systemProperties
+        %table#systemProperties
+          %tr
+            %th Name
+            %th Value
+          - for ((k,v) <- systemProperties)
+            %tr
+              %td#name
+                = k
+              %td#value
+                = v
+
