@@ -6,7 +6,7 @@
   trying expression using Scala if clause when x = ${x}
 </p>
 <h3>
-  <%= (if (x == 1) "x is 1" else "x is not 1") %>
+  <%= if (x == 1) "x is 1" else "x is not 1" %>
 </h3>
 
 <% } %>

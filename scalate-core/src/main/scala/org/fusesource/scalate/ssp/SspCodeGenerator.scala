@@ -65,7 +65,10 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     /**
      * Returns true if the code expression can be safely wrapped in parens
      */
-    protected def canWrapInParens(code: String) = false
+    protected def canWrapInParens(code: String) = {
+      val lastChar = code.trim.takeRight(1)
+      lastChar != "{" && lastChar != "("
+    }
   }
 
   override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
