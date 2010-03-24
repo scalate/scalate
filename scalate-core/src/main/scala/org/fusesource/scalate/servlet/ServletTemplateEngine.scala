@@ -58,8 +58,10 @@ object ServletTemplateEngine {
  */
 class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true))
-  workingDirectory = new File(config.getServletContext.getRealPath("WEB-INF/_scalate/"))
-  workingDirectory.mkdirs
+  if (useWebInfWorkingDirectory) {
+    workingDirectory = new File(config.getServletContext.getRealPath("WEB-INF/_scalate/"))
+    workingDirectory.mkdirs
+  }
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
 
@@ -84,5 +86,11 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
     builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))
 
     builder.classPath
+  }
+
+  def useWebInfWorkingDirectory = {
+    val property = System.getProperty("scalate.temp.workingdir", "")
+    println("using scalate.temp.workingdir: " + property)
+    property.toLowerCase != "true"
   }
 }
