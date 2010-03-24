@@ -17,9 +17,6 @@
 package org.fusesource.scalate.util
 
 import _root_.java.io.File
-import _root_.org.objectweb.asm.tree.ClassNode
-import _root_.org.objectweb.asm.ClassReader
-
 
 /**
  * Displays the source debugging info associated with a class file.
@@ -33,10 +30,7 @@ object DisplaySourceDebugInfo {
 
     val file = new File(fileName)
     if (file.exists) {
-      val cn = new ClassNode();
-      val cr = new ClassReader( IOUtil.loadBinaryFile(file) )
-      cr.accept(cn, 0);
-      println(cn.sourceDebug)
+      println(SourceMapInstaller.load(file))
     }
     else {
       println("ERROR: " + file + " does not exist!")

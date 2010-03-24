@@ -467,6 +467,6 @@ class TemplateEngine extends Logging {
   }
 
   def storeSourceMap(classFile:File, sourceMap:String) = {
-    SDEInstaller.install(classFile, sourceMap.getBytes("UTF-8"))
+    SourceMapInstaller.store(classFile, sourceMap)
   }
 }
