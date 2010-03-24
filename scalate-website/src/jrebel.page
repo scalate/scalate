@@ -34,4 +34,13 @@ For example if you run the following in another shell
 Then as you edit your scala code it will be recompiled using Scala's incremental compiler, then JRebel will auto-reload any recompiled classes.
 
 
+## Things to watch
 
+We've found that if you use **\_scalate** directory in the **WEB-INF** directory when running your web app using **jetty:run** JRebel really slows down the Scalate recompile step hugely; so its better to let Scalate use a temporary file outside of the web application.
+
+This should happen by default now; if not specify the **scalate.temp.workingdir** system property to be true instead of false. For example
+
+    mvn -Dscalate.temp.workingdir=true jetty:run
+    
+  
+  
