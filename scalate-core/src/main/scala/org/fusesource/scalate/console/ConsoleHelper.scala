@@ -1,17 +1,18 @@
 package org.fusesource.scalate.console
 
+import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
+import _root_.org.fusesource.scalate.util.{SourceMapInstaller, SourceMap, Logging}
 import _root_.scala.Option
 import org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.util.Logging
 import java.io.File
 import scala.io.Source
-import scala.xml.{NodeSeq}
 import collection.JavaConversions._
 import collection.immutable.SortedMap
 import collection.mutable.{ArrayBuffer, ListBuffer}
 import util.parsing.input.{Position, OffsetPosition}
+import xml.{Elem, NodeSeq}
 
 case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
@@ -231,5 +232,37 @@ class ConsoleHelper(context: ServletRenderContext) extends ConsoleSnippets with 
   def errorRequestUri = attributeOrElse("javax.servlet.error.request_uri", "")
 
   def errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
+
+  def renderStackTraceElement(stack:StackTraceElement): NodeSeq = {
+    var rc:NodeSeq = null
+
+    // Does it look like a scalate template class??
+    var className = stack.getClassName.split(Pattern.quote(".")).last
+    if( className.startsWith("$_scalate_$") ) {
+      // Then try to load it's smap info..
+      var file = RenderContext().engine.bytecodeDirectory
+      file = new File(file, stack.getClassName.replace('.', '/')+".class")
+      try {
+        val smap = SourceMap.parse(SourceMapInstaller.load(file))
+        // And then render a link to the original template file.
+        smap.mapToStratum(stack.getLineNumber) match {
+          case None =>
+          case Some((file, line)) =>
+            rc = editLink(file, Some(line), Some(1)) {
+              RenderContext() << <pre class="stacktrace">at ({file}:{line})</pre>
+            }
+        }
+      } catch {
+        // ignore errors trying to load the smap... we can fallback
+        // to rendering a plain stack line.
+        case e:Throwable=>
+      }
+    }
+
+    if( rc==null )
+      <pre class="stacktrace">at {stack.getClassName}.{stack.getMethodName}({stack.getFileName}:{stack.getLineNumber})</pre>
+    else
+      rc
+  }  
 
 }
