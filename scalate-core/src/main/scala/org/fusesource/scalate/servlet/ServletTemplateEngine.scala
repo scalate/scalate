@@ -60,8 +60,11 @@ object ServletTemplateEngine {
 class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true))
   if (useWebInfWorkingDirectory) {
-    workingDirectory = new File(config.getServletContext.getRealPath("WEB-INF/_scalate/"))
-    workingDirectory.mkdirs
+    val path = config.getServletContext.getRealPath("WEB-INF")
+    if (path != null) {
+      workingDirectory = new File(path, "_scalate")
+      workingDirectory.mkdirs
+    }
   }
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
