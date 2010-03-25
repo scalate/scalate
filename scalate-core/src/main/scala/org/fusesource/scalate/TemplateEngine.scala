@@ -92,7 +92,14 @@ class TemplateEngine extends Logging {
   def workingDirectory: File = {
     // Use a temp working directory if none is configured.
     if( _workingDirectory == null ) {
-      _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+      val value = System.getProperty("scalate.workdir", "")
+      if (value != null && value.length > 0) {
+        _workingDirectory = new File(value)
+        _workingDirectory.mkdirs
+      }
+      else {
+        _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+      }
     }
     _workingDirectory
   }

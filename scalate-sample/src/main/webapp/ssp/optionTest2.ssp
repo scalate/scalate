@@ -1,0 +1,8 @@
+<%@ val foo: Option[org.fusesource.scalate.sample.Person] = None %>
+
+<% if (foo.isDefined) { %>
+   Hello ${foo.get}
+<% } else { %>
+   no foo
+<% } %>
+        

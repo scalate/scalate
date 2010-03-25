@@ -61,6 +61,7 @@
 
   <welcome-file-list>
     <welcome-file>index.scaml</welcome-file>
+    <welcome-file>index.ssp</welcome-file>
   </welcome-file-list>
 
   <error-page>
