@@ -25,11 +25,17 @@ case class SourceLine(line: Int, source: String) {
    * to highlight the error at the given column
    */
   def splitOnCharacter(col: Int): Tuple3[String, String, String] = {
-    val next = col + 1
-    val prefix = source.substring(0, col)
-    val ch = source.substring(col, next)
-    val postfix = source.substring(next, source.length)
-    (prefix, ch, postfix)
+    val length = source.length
+    if (col >= length) {
+      (source, "", "")
+    }
+    else {
+      val next = col + 1
+      val prefix = source.substring(0, col)
+      val ch = if (col < length) source.substring(col, next) else ""
+      val postfix = if (next < length) source.substring(next, length) else ""
+      (prefix, ch, postfix)
+    }
   }
 }
 
