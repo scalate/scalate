@@ -19,6 +19,7 @@ package org.fusesource.scalate.servlet
 ;
 
 import _root_.javax.servlet.{ServletContext, ServletConfig}
+import _root_.org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
 import java.io.File
@@ -64,6 +65,7 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   }
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
+  layoutStrategy = new DefaultLayoutStrategy(this, "/WEB-INF/layouts/default.scaml", "/WEB-INF/layouts/default.ssp")
 
   private def buildClassPath(): String = {
 

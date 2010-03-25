@@ -15,18 +15,19 @@
  */
 package org.fusesource.scalate
 
-import _root_.scala.util.parsing.input.{OffsetPosition, Position}
+import layout.{NullLayoutStrategy, LayoutStrategy}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
-import layout.DefaultLayoutStrategy
 import scaml.ScamlCodeGenerator
-import java.net.URLClassLoader
+import ssp.{SspCodeGenerator, ScalaCompiler}
+import util._
+
+import scala.util.parsing.input.{OffsetPosition, Position}
 import scala.collection.mutable.HashMap
+import scala.collection.immutable.TreeMap
 import scala.util.control.Exception
 import scala.compat.Platform
-import ssp.{SspCodeGenerator, ScalaCompiler}
+import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
-import collection.immutable.TreeMap
-import util._
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -76,7 +77,7 @@ class TemplateEngine extends Logging {
   attempt( filters += "escaped"->EscapedFilter )
   attempt( filters += "markdown"->MarkdownFilter )
 
-  var layoutStrategy = new DefaultLayoutStrategy(this)
+  var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
 
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath, combinedClassPath)
@@ -295,6 +296,8 @@ class TemplateEngine extends Logging {
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
+  val sourceMapLog = Logging(getClass, "SourceMap")
+
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     var code:Code = null
     try {
@@ -311,7 +314,7 @@ class TemplateEngine extends Logging {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
-      debug("installing:" + sourceMap)
+      sourceMapLog.debug("installing:" + sourceMap)
 
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+"$.class"), sourceMap)

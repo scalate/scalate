@@ -1,0 +1,15 @@
+<%@ val resourceName : String = "it" %>
+<%@ val resourceType : Class[_] %>
+<% val i = introspect(resourceType) %>
+<table class="${i.typeStyleName}">
+  <% for (property <- i.properties) {%>
+  <tr>
+    <td>
+      <label>${property.label}</label>
+    </td>
+    <td class="value">
+      \${<%= resourceName %>.<%= property.name %>}
+    </td>
+  </tr>
+  <% } %>
+</table>

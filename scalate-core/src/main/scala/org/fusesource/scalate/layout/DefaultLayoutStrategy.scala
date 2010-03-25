@@ -13,8 +13,8 @@ import org.fusesource.scalate.util.Logging
  * 
  * @version $Revision : 1.1 $
  */
-class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy with Logging {
-  
+class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
+
   def layout(template: Template, context: RenderContext) {
     
     def isLayoutDisabled(layout: String) = layout.trim.isEmpty
@@ -31,30 +31,31 @@ class DefaultLayoutStrategy(val engine: TemplateEngine) extends LayoutStrategy w
           renderLayout(layout, body, context)
 
       case _ =>
-        for {
-          _ <- tryLayout("WEB-INF/layouts/default.ssp", body, context)
-          _ <- tryLayout("WEB-INF/layouts/default.scaml", body, context)
-          _ <- noLayout(body, context)
-        } { }
+        val layoutName = defaultLayouts.find(tryLayout(_, body, context))
+        if (layoutName.isEmpty) {
+          noLayout(body, context)
+        }
     }
   }
   
   private def renderLayout(layoutTemplate: String, body: String, context: RenderContext) {
       debug("Attempting to load layout: " + layoutTemplate)
-      debug("layout " + layoutTemplate + " with attributes: " + context.attributes)
       context.attributes("body") = body
       context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List()) 
 
       engine.load(layoutTemplate).render(context)
+      debug("layout completed of: " + layoutTemplate)
   }
   
-  /* Returns Option so it can be used in a for comprehension. */
-  private def tryLayout(layoutTemplate: String, body: String, context: RenderContext): Option[Boolean] = {
+  private def tryLayout(layoutTemplate: String, body: String, context: RenderContext): Boolean = {
     try {
       renderLayout(layoutTemplate, body, context)
-      None
+      true
     } catch {
-      case e: ResourceNotFoundException => Some(true)
+      case e: ResourceNotFoundException => error("Caught: " + e, e)
+        false
+      case e: Exception => error("Unhandled: " + e, e)
+        throw e
     }
   }
 

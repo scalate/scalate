@@ -18,7 +18,7 @@ package org.fusesource.scalate
 
 import java.net.URI
 import java.io.{File, FileInputStream, StringWriter, InputStreamReader}
-import util.IOUtil
+import util.{Logging, IOUtil}
 
 /**
  * Used by the template engine to load the content of templates.
@@ -39,14 +39,26 @@ trait ResourceLoader {
 
 }
 
-class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader {
+class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader with Logging {
 
   override def exists(uri: String): Boolean = {
-    toFile(uri).exists
+    var answer = false
+    if (uri != null) {
+      val file = toFile(uri)
+      if (file != null && file.exists) {
+        answer = true
+      }
+    }
+    answer
   }
   
   override def load(uri: String): String = {
+    debug("Trying to load uri: " + uri)
+
     val file = toFileOrFail(uri);
+
+    debug("Found file: " + file)
+
     val reader = new InputStreamReader(new FileInputStream(file), pageFileEncoding)
     val writer = new StringWriter(file.length.asInstanceOf[Int]);
     try {

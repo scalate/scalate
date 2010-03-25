@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-  <display-name>Sample</display-name>
+  <display-name>Scalate Sample</display-name>
 
   <description>
-    Server Pages - Sample
+    Scalate Sample
   </description>
 
   <!-- START: JAX RS config -->

@@ -88,12 +88,12 @@ private object ClassPathBuilder extends Logging {
     case null => Nil
     
     case cl: URLClassLoader =>
-      for (url <- cl.getURLs.toList) yield {
+      for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
+
         // on windows the path can include %20
         // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
         // so lets use URI as a workaround
-        val uri = new URI(url.toString)
-        new File(uri.getPath).getCanonicalPath
+        new File(path).getCanonicalPath
         //val n = new File(uri.getPath).getCanonicalPath
         //if (n.contains(' ')) {"\"" + n + "\""} else {n}
       }

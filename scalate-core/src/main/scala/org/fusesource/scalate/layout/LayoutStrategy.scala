@@ -22,6 +22,6 @@ trait LayoutStrategy {
  * A <code>LayoutStrategy</code> that renders the given template without
  * using any layout. 
  */
-class NullLayoutStrategy extends LayoutStrategy {
+object NullLayoutStrategy extends LayoutStrategy {
   def layout(template: Template, context: RenderContext) = template.render(context)
 }
