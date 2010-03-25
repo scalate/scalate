@@ -1,4 +1,4 @@
-<img src="/images/project-logo.png"/>
+<img src="/images/scalate/project-logo.png"/>
 
 <p>
   Welcome to Scalate: the Scala Template Engine. Try surfing some of the examples below
@@ -126,6 +126,9 @@ Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup
   </li>
   <li>
     <a href="scaml/errors/scalaCompileError.scaml">Scala Compile Error</a>
+  </li>
+  <li>
+    <a href="bad">Error in JAXRS view template</a>
   </li>
   <li>
     <a href="scaml/errors/runtimeException.scaml">An Exception thrown at Runtime while rendering a template</a>

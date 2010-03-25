@@ -66,6 +66,6 @@
 
   <error-page>
     <error-code>500</error-code>
-    <location>/WEB-INF/errors/500.scaml</location>
+    <location>/WEB-INF/errors/scalate/500.scaml</location>
   </error-page>
 </web-app>

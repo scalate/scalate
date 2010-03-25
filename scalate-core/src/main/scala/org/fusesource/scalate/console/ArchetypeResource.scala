@@ -17,7 +17,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
   var srcMain = src + "/main"
   var srcMainScala = srcMain + "/scala"
   var srcMainJava = srcMain + "/java"
-  var templatePrefix = "/WEB-INF/archetypes/"
+  var templatePrefix = "/WEB-INF/scalate/archetypes/"
 
   def renderContext = console.renderContext
   def servletContext: ServletContext = console.servletContext

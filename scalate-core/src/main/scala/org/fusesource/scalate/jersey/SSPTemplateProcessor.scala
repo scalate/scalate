@@ -31,7 +31,9 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     case _            => ""
   }
 
-  var errorUris: List[String] = List("/WEB-INF/errors/500.scaml", "/WEB-INF/errors/500.ssp")
+  // TODO it would be nice to be able to slurp these out of the web.xml or Servlet 3 configuration
+  // so that they reused whatever the web app was setup to use...
+  var errorUris: List[String] = List("/WEB-INF/scalate/errors/500.scaml", "/WEB-INF/scalate/errors/500.ssp")
 
   var templateSuffixes = List("", ".ssp", ".scaml")
   var templateDirectories = List("/WEB-INF", "")

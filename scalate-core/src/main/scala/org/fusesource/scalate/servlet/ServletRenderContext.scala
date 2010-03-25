@@ -50,7 +50,7 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
       answer
     }
 
-    override def toString = keySet.map(k => k + " -> " + apply(k)).mkString("{", ", ", "}")
+    override def toString = keySet.map(k => "" + k + " -> " + apply(k)).mkString("{", ", ", "}")
   }
 
   def servletConfig: ServletConfig = engine match {
