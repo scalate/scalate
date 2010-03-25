@@ -4,70 +4,78 @@
 - val consoleHelper = new ConsoleHelper(context)
 - import consoleHelper._
 
-%link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
+-# Wrap in a try catch block so if there is a error on this page it gets logged to the console
+- try
+  %link(href={uri("/css/scalate/errors.css")} rel="stylesheet" type="text/css")
 
-- def displayError(file:String, pos:Position, message:String)
+  - def displayError(file:String, pos:Position, message:String)
+    .header.block
+      %h1
+        = message
+
+    .details.block
+      %h2
+        = editLink(file, pos.line, pos.column)
+          in #{shorten(file)} near line #{pos.line} col #{pos.column}
+
+      - for (s <- lines(file, pos))
+        - val ss = s.style(pos.line)
+        = editLink(file, s.line, (if (pos.line == s.line) pos.column else 1))
+          %div(class=ss)
+            %span.lineNumber
+              = s.line
+            - if (pos.line == s.line)
+              - val (prefix, ch, postfix) = s.splitOnCharacter(pos.column - 1)
+              %pre<
+                &~ prefix
+                %span.errorCol><
+                  &~ ch
+                &~ postfix
+            - else
+              %pre<
+                &~ s.source
+
+  - def displayException(e:Throwable)
+    .header.block
+      %h1
+        = e.getMessage
+      %p
+        = e
+    .details.block
+      - for( stack <- e.getStackTrace )
+        = renderStackTraceElement(stack)
+      - if( e.getCause!=null )
+        .nested
+          - displayException(e.getCause)
+
+  #scalate-error
+    - exception match
+      - case e:InvalidSyntaxException =>
+        - displayError( e.template, e.pos, e.brief)
+
+      - case e:CompilerException =>
+        - for ( error <- e.errors )
+          - displayError(error.file, error.pos, error.message)
+          - val o = error.original
+          - if (o != null)
+            .section.block
+              = editLink(o.file, o.pos.line, o.pos.column)
+                from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
+
+      - case e:Throwable =>
+        - displayException(e)
+
+      - case u =>
+        .header.block
+          %h1
+            = errorMessage
+          %p
+            = u
+- catch
+  - case e:Throwable=>
+  - e.printStackTrace
+  -# Fallback to a simple rendering of the error message
   .header.block
     %h1
-      = message
+      = errorMessage
 
-  .details.block
-    %h2
-      = editLink(file, pos.line, pos.column)
-        in #{shorten(file)} near line #{pos.line} col #{pos.column}
-
-    - for (s <- lines(file, pos))
-      - val ss = s.style(pos.line)
-      = editLink(file, s.line, (if (pos.line == s.line) pos.column else 1))
-        %div(class=ss)
-          %span.lineNumber
-            = s.line
-          - if (pos.line == s.line)
-            - val (prefix, ch, postfix) = s.splitOnCharacter(pos.column - 1)
-            %pre<
-              &~ prefix
-              %span.errorCol><
-                &~ ch
-              &~ postfix
-          - else
-            %pre<
-              &~ s.source
-
-- def displayException(e:Throwable)
-  .header.block
-    %h1
-      = e.getMessage
-    %p
-      = e
-  .details.block
-    - for( stack <- e.getStackTrace )
-      %pre.stacktrace<
-        at #{stack.getClassName}.#{stack.getMethodName}(#{stack.getFileName}:#{stack.getLineNumber})
-    - if( e.getCause!=null )
-      .nested
-        - displayException(e.getCause)
-
-
-#scalate-error
-  - exception match
-    - case e:InvalidSyntaxException =>
-      - displayError( e.template, e.pos, e.brief)
-
-    - case e:CompilerException =>
-      - for ( error <- e.errors )
-        - displayError(error.file, error.pos, error.message)
-        - val o = error.original
-        - if (o != null)
-          .section.block
-            = editLink(o.file, o.pos.line, o.pos.column)
-              from generated #{shorten(o.file)} near line #{o.pos.line} col #{o.pos.line}
-
-    - case e:Throwable =>
-      - displayException(e)
-
-    - case u =>
-      .header.block
-        %h1
-          = errorMessage
-        %p
-          = u

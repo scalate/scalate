@@ -40,7 +40,7 @@ class SourceMapStratum(val name: String) {
       if( value._2==null ) value._1 else value._2
     }
     
-    val rc = lines.filter( _.containsOutputLine(line) ).map( line=>(file(line.file), line.istart) )
+    val rc = lines.filter( _.containsOutputLine(line) ).map( x=>(file(x.file), x.mapOutputLine(line)) )
     if( rc.isEmpty ) None else Some(rc.head)
   }
 
@@ -189,6 +189,10 @@ class SourceMapStratum(val name: String) {
     def containsOutputLine(line:Int) = {
       var oend = ostart + (icount * oincrement)
       ostart <= line && line < oend   
+    }
+
+    def mapOutputLine(line:Int) = {
+      istart + ((line-ostart) / oincrement)
     }
 
     private def check(proc: => Boolean) = {

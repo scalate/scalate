@@ -1,8 +1,9 @@
 package org.fusesource.scalate.console
 
+import _root_.org.fusesource.scalate.util.{SourceMap}
 import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
-import scala.xml.NodeSeq
+import xml.{Elem, NodeSeq}
 
 /**
  * @version $Revision : 1.1 $
@@ -71,4 +72,6 @@ object EditLink {
   def hasTextMate = exists("/Applications/TextMate.app") || exists("~/Applications/TextMate.app")
 
   def exists(fileName: String) = new File(fileName).exists
+
+
 }
