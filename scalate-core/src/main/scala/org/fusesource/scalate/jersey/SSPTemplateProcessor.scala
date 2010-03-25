@@ -16,7 +16,6 @@ import javax.ws.rs.core.Context
  * @version $Revision : 1.1 $
  */
 class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
-  import SSPTemplateProcessor._
   
   @Context
   var servletContext: ServletContext = _
@@ -34,6 +33,8 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
 
   var errorUris: List[String] = List("/WEB-INF/errors/500.scaml", "/WEB-INF/errors/500.ssp")
 
+  var templateSuffixes = List("", ".ssp", ".scaml")
+  var templateDirectories = List("/WEB-INF", "")
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
@@ -70,10 +71,15 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     }
   }
 
-  def tryFindPath(path: String) = templateSuffixes.map { path + _ }.find { t =>
-      debug("Trying to find template: " + t)
-      servletContext.getResource(t) ne null
+  def tryFindPath(path: String): Option[String] = {
+    val paths = for (prefix <- templateDirectories; postfix <- templateSuffixes) yield prefix + path + postfix
+
+    paths.find {
+      t =>
+        debug("Trying to find template: " + t)
+        servletContext.getResource(t) ne null
     }
+  }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     // Ensure headers are committed
@@ -119,10 +125,4 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
         // throw new ContainerException(e)
     }
   }
-
-
-}
-
-object SSPTemplateProcessor {
-  private val templateSuffixes = List("", ".ssp", ".scaml")
 }

@@ -38,6 +38,11 @@ class JettyServer {
 
 
   def start: Unit = {
+    // we are typically used in a test so lets define the scalate test dir by default
+    if (System.getProperty("scalate.workdir", "").length == 0) {
+      System.setProperty("scalate.workdir", basedir + "target/scalate")
+    }
+
     LOG.info("Starting Web Server on port: " + port)
     var connector = new SelectChannelConnector
     connector.setPort(port)

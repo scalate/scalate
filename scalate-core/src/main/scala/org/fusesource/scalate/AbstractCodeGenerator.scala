@@ -218,7 +218,11 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       ("", cn)
     }
     else {
-      val unsafePackageName = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
+      val unsafePackageNameWithWebInf = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
+
+      // lets remove WEB-INF from the first name, since we should consider stuff in WEB-INF/org/foo as being in package org.foo
+      val unsafePackageName = unsafePackageNameWithWebInf.stripPrefix("WEB_INF.")
+
       var packages = unsafePackageName.split("\\.")
 
       // lets find the tail of matching package names to use
