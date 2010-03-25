@@ -19,8 +19,7 @@ package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.RenderContext
 import collection.mutable.LinkedHashMap
-import xml.NodeSeq
-
+import xml.{Node, NodeBuffer, NodeSeq}
 
 object RenderHelper
 {
@@ -111,13 +110,17 @@ object RenderHelper
 
   }
 
-  def smart_sanitize(context:RenderContext, value:Any):String = {
-    if( value == null ) {
+  def smart_sanitize(context: RenderContext, value: Any): String = {
+    if (value == null) {
       return context.value(value);
     }
     value match {
-      case x:NodeSeq=>
+      case x: Node =>
         context.value(value)
+
+      case x: Traversable[Any] =>
+        x.map( smart_sanitize(context, _) ).mkString("")
+
       case _ =>
         sanitize(context.value(value))
     }
