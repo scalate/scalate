@@ -39,6 +39,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   }
 
 //  testPageContains("ssp/renderObject.ssp", "Strachan")
+  testPageContains("ssp/optionTest.ssp", "no bar", "no foo")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection2.ssp", "Strachan", "Person 2", "Chirino")

@@ -138,7 +138,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       
       this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes.get(" + asString(binding.name) + ") match {"
       indent {
-        this << "case Some(value: "+binding.className+") => value"
+        //this << "case Some(value: "+binding.className+") => value"
+        this << "case Some(value) => value.asInstanceOf[" + binding.className + "]"
         if (binding.defaultValue.isEmpty) {
           this << "case None => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
         } else {
