@@ -22,6 +22,7 @@ import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
+import ssp.{ScriptletFragment, PageFragment}
 import util.Logging
 import collection.immutable.TreeMap
 
@@ -96,8 +97,22 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
         // conflict with definitions declared in the template
         this << "def $_scalate_$render($_scalate_$_context:_root_.org.fusesource.scalate.RenderContext): Unit = {"
         indent {
+
+          // lets perform all the imports first
+
+          val (imports, otherStatements) = {
+            val firstNonImport = statements.findIndexOf(!isImportStatementOrCommentOrWhitespace(_))
+            if (firstNonImport > 0) {
+              statements.splitAt(firstNonImport)
+            }
+            else {
+              (Nil, statements)
+            }
+          }
+
+          generate(imports)
           generateBindings(bindings) {
-            generate(statements)
+            generate(otherStatements)
           }
         }
         this << "}"
@@ -117,6 +132,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 
     def generate(statements: List[T]): Unit
 
+    protected def isImportStatementOrCommentOrWhitespace(statement: T): Boolean
 
     def generateBindings(bindings: List[Binding])(body: => Unit): Unit = {
       bindings.foreach(arg => {

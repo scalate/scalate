@@ -32,22 +32,15 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
   private class SourceBuilder extends AbstractSourceBuilder[PageFragment] {
 
-    def generate(fragments: List[PageFragment]):Unit = {
-      // lets find all nodes which are imports first...
-      val firstNonImport = fragments.findIndexOf(!isImportStatement(_))
-      if (firstNonImport > 0) {
-        val (imports, others) = fragments.splitAt(firstNonImport)
-        imports.foreach(generate)
-        others.foreach(generate)
-      }
-      else {
-        fragments.foreach(generate)
-      }
+    protected def isImportStatementOrCommentOrWhitespace(fragment: PageFragment) = fragment match {
+      case s: ScriptletFragment if (s.code.trim.startsWith("import ")) => true
+      case s: TextFragment if (s.text.trim.length == 0) => true
+      case s: CommentFragment => true
+      case _ => false
     }
 
-    def isImportStatement(fragment: PageFragment) = fragment match {
-      case s: ScriptletFragment if (s.code.trim.startsWith("import ")) => true
-      case _ => false
+    def generate(fragments: List[PageFragment]):Unit = {
+      fragments.foreach(generate)
     }
 
     def generate(fragment: PageFragment):Unit = {

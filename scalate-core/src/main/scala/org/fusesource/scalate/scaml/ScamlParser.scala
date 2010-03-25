@@ -153,7 +153,10 @@ case class Text(value:String) extends Positional {
 }
 case class Newline(skip:Boolean=true) extends Statement
 case class EvaluatedText(code:Text, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean], ugly:Boolean) extends TextExpression
-case class LiteralText(text:List[Text], sanitize:Option[Boolean]) extends TextExpression
+case class LiteralText(text:List[Text], sanitize:Option[Boolean]) extends TextExpression {
+  // every odd item starting at 1 is an interpolated expression like #{foo} 
+  def isStatic = text.size < 2
+}
 case class Element(tag:Option[Text], attributes:List[(Any,Any)], text:Option[TextExpression], body:List[Statement], trim:Option[Trim.Value], close:Boolean) extends Statement
 case class ScamlComment(text:Option[Text], body:List[Text]) extends Statement
 case class HtmlComment(conditional:Option[Text], text:Option[Text], body:List[Statement]) extends Statement

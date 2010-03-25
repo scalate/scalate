@@ -40,6 +40,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
 //  testPageContains("ssp/renderObject.ssp", "Strachan")
   testPageContains("ssp/optionTest.ssp", "no bar", "no foo")
+  testPageContains("ssp/optionTest2.ssp", "no foo")
   testPageContains("ssp/renderCaseClass.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection.ssp", "Strachan", "<hr/>", "Chirino")
   testPageContains("ssp/renderCollection2.ssp", "Strachan", "Person 2", "Chirino")
@@ -61,6 +62,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("scaml/errors/scalaCompileError.scaml", "error: not found: value unknown", "- for (i &lt;-")
   testPageContains("scaml/locale.scaml", "22.0 / 7 = 3.143")
   testPageContains("scaml/missingAttribute.scaml", "The value for 'name' was not set")
+  testPageContains("scaml/optionTest.scaml", "no foo")
   testPageContains("scaml/renderObject.scaml", "Strachan")
   testPageContains("scaml/renderCaseClass.scaml", "Strachan", "<hr/>", "Chirino")
   testPageContains("scaml/renderCollection.scaml", "Strachan", "<hr/>", "Chirino")

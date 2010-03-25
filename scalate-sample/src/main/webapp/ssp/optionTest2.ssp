@@ -1,4 +1,10 @@
-<%@ val foo: Option[org.fusesource.scalate.sample.Person] = None %>
+<%-- This is a comment --%>
+
+<% import org.fusesource.scalate.sample.Person %>
+
+<%-- This is a comment --%>
+
+<%@ val foo: Option[Person] = None %>
 
 <% if (foo.isDefined) { %>
    Hello ${foo.get}
