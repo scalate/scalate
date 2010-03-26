@@ -94,8 +94,9 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   }
 
   def useWebInfWorkingDirectory = {
+    val customWorkDir = System.getProperty("scalate.workingdir", "")
     val property = System.getProperty("scalate.temp.workingdir", "")
     println("using scalate.temp.workingdir: " + property)
-    property.toLowerCase != "true"
+    property.toLowerCase != "true" && customWorkDir.length <= 0
   }
 }

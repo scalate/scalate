@@ -46,6 +46,7 @@
 
     <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.temp.workingdir>true</scalate.temp.workingdir>
+    <scalate.workdir>${basedir}/target/scalateWorkDir</scalate.workdir>
 
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.5.6</slf4j-version>
@@ -322,6 +323,10 @@
               <systemProperty>
                 <name>scalate.temp.workingdir</name>
                 <value>${scalate.temp.workingdir}</value>
+              </systemProperty>
+              <systemProperty>
+                <name>scalate.workdir</name>
+                <value>${scalate.workdir}</value>
               </systemProperty>
             </systemProperties>
             <scanIntervalSeconds>0</scanIntervalSeconds>
