@@ -1,6 +1,6 @@
 package org.fusesource.scalate.sample
 
-import org.fusesource.scalate.{Body, RenderContext}
+import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.RenderContext.capture
 
 /**
@@ -49,18 +49,6 @@ object MyTags {
     println("found text: " + text)
     "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
   }
-
-  /**
-   * TODO not working yet!
-   *
-   * Takes a Body object
-   */
-  def someLayoutUsingBody(body: Body) = {
-    val text = body.capture
-    println("found text: " + text)
-    "<h3>Wrapped body</h3><p>" + text + "</p><h3>End of wrapped body</h3>"
-  }
-
 
   /**
    * TODO Not working yet - we currently only support the () => String version

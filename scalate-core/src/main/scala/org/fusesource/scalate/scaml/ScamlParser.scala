@@ -16,6 +16,7 @@
  */
 package org.fusesoruce.scalate.scaml
 
+import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import annotation.tailrec
 import _root_.org.fusesource.scalate.{InvalidSyntaxException}
 import scala.util.parsing.combinator._
@@ -170,7 +171,7 @@ case class Doctype(line:List[Text]) extends Statement
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ScamlParser extends IndentedParser() {
+class ScamlParser extends IndentedParser() with ScalaParseSupport  {
 
   /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
   def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
@@ -205,7 +206,7 @@ class ScamlParser extends IndentedParser() {
 
 
   val scala_ident             = text("""[a-zA-Z_]\w*""".r)
-  val qualified_type          = text("""[a-zA-Z0-9\$_\[\]\.]+""".r)
+  val qualified_type          = text(scalaType)
 
   def eval_string_escapes(value:Text) = {
     value.replaceAll(Pattern.quote("\\b"),"\b").

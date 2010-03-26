@@ -18,6 +18,7 @@
 
 package org.fusesource.scalate.ssp
 
+import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import scala.util.parsing.combinator._
 import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.{Positional, CharSequenceReader}
@@ -38,7 +39,7 @@ case class ScriptletFragment(code: Text) extends PageFragment
 case class TextFragment(text: Text) extends PageFragment
 case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends PageFragment
 
-class SspParser extends RegexParsers {
+class SspParser extends RegexParsers with ScalaParseSupport {
   var skipWhitespaceOn = false
 
   override def skipWhitespace = skipWhitespaceOn
@@ -57,7 +58,7 @@ class SspParser extends RegexParsers {
 
   val any_space   = text("""[ \t]*""".r)
   val identifier  = text("""[a-zA-Z0-9\$_]+""".r)
-  val typeName    = text("""[a-zA-Z0-9\$_\[\]\.]+""".r)
+  val typeName    = text(scalaType)
   val some_text   = text(""".+""".r)
 
   val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
