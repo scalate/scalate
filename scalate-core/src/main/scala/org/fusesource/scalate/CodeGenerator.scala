@@ -28,4 +28,6 @@ trait CodeGenerator {
 
   def className(uri:String): String
 
+  val stratumName: String
+
 }

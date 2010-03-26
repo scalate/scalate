@@ -32,6 +32,8 @@ import util.RenderHelper
  */
 class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
+  override val stratumName = "SCAML"
+  
   implicit def textToString(text:Text) = text.value
   implicit def textOptionToString(text:Option[Text]):Option[String] = text match {
     case None=>None

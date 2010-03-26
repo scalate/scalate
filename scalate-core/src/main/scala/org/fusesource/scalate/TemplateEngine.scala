@@ -315,7 +315,8 @@ class TemplateEngine extends Logging {
     try {
 
       // Generate the scala source code from the template
-      code = generateScala(uri, extraBindings)
+      val g = generator(uri);
+      code = g.generate(this, uri, bindings ::: extraBindings)
 
       val sourceFile = sourceFileName(uri)
       sourceFile.getParentFile.mkdirs
@@ -325,7 +326,7 @@ class TemplateEngine extends Logging {
       compiler.compile(sourceFile)
       
       // Write the source map information to the class file
-      val sourceMap = buildSourceMap(uri, sourceFile, code.positions)
+      val sourceMap = buildSourceMap(g.stratumName, uri, sourceFile, code.positions)
       sourceMapLog.debug("installing:" + sourceMap)
 
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
@@ -449,11 +450,11 @@ class TemplateEngine extends Logging {
   }
 
 
-  def buildSourceMap(uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
+  def buildSourceMap(stratumName:String, uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
-    val stratum: SourceMapStratum = new SourceMapStratum("JSP")
+    val stratum: SourceMapStratum = new SourceMapStratum(stratumName)
     val fileId = stratum.addFile(shortName, longName)
 
     // build a map of input-line -> List( output-line )

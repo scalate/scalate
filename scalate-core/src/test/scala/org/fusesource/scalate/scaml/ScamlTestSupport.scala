@@ -52,7 +52,8 @@ class ScamlTestSupport extends FunSuite {
             e.getMessage
           }
         }
-        case x=>
+        case x:Throwable=>
+          x.printStackTrace
           fail("Expected InvalidSyntaxException was not thrown.  Instead got a: "+x)
       }
     }
@@ -66,7 +67,7 @@ class ScamlTestSupport extends FunSuite {
     test(description) {
       try {
         println(render(template.trim).trim)
-        fail("Expected InvalidSyntaxException was not thrown")
+        fail("Expected CompilerException was not thrown")
       } catch {
         case e:TestFailedException=> throw e
         case e:CompilerException=> {
@@ -74,8 +75,9 @@ class ScamlTestSupport extends FunSuite {
             e.errors.head.message
           }
         }
-        case x=>
-          fail("Expected InvalidSyntaxException was not thrown.  Instead got a: "+x)
+        case x:Throwable=>
+          x.printStackTrace
+          fail("Expected CompilerException was not thrown.  Instead got a: "+x)
       }
     }
   }

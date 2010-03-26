@@ -24,6 +24,8 @@ import scala.collection.mutable.HashSet
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
+  override val stratumName = "SSP"
+
   implicit def textToString(text:Text) = text.value
   implicit def textOptionToString(text:Option[Text]):Option[String] = text match {
     case None=>None
