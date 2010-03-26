@@ -422,6 +422,13 @@ object SourceMap {
  */
 object SourceMapInstaller {
 
+  /**
+   * By default we only store smaps that are <= than 65535
+   * due to http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6294277
+   * if your JVM support larger values, just set the SOURCE_DEBUG_EXTENSION_MAX_SIZE system property.
+   */
+  val SOURCE_DEBUG_EXTENSION_MAX_SIZE = Integer.getInteger("SOURCE_DEBUG_EXTENSION_MAX_SIZE", 65535).intValue
+
   class Writer(val orig: Array[Byte], val sourceDebug:String) extends Logging {
 
     val bais = new ByteArrayInputStream(orig)
@@ -679,7 +686,14 @@ object SourceMapInstaller {
   }
 
   def store(input: Array[Byte], sourceDebug: String): Array[Byte] = {
-    (new Writer(input, sourceDebug)).store
+
+    var bytes = sourceDebug.getBytes("UTF-8")
+    if( bytes.length <= SOURCE_DEBUG_EXTENSION_MAX_SIZE ) {
+      (new Writer(input, sourceDebug)).store
+    } else {
+      input
+    }
+
   }
 
   private def readText(input: File) = {
