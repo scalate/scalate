@@ -62,6 +62,11 @@ class TemplateEngine extends Logging {
   var combinedClassPath = false
 
   /**
+   * Sets the import statements used in each generated template class
+   */
+  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._")
+
+  /**
    *
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader

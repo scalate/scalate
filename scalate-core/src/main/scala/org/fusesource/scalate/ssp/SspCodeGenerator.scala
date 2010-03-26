@@ -79,7 +79,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
   }
 
-  override def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code = {
+  override def generate(engine: TemplateEngine, uri: String, bindings: List[Binding]): Code = {
 
     // Load the translation unit
     val content = engine.resourceLoader.load(uri)
@@ -97,7 +97,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
 
     val sb = new SourceBuilder
-    sb.generate(packageName, className, bindings:::templateBindings, fragments)
+    sb.generate(engine, packageName, className, bindings:::templateBindings, fragments)
 
     Code(this.className(uri), sb.code, Set(uri), sb.positions)
   }

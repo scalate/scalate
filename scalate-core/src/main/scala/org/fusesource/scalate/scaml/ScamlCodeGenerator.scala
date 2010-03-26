@@ -660,7 +660,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     val statements = (new ScamlParser).parse(hamlSource)
 
     val builder = new SourceBuilder()
-    builder.generate(packageName, className, bindings, statements)
+    builder.generate(engine, packageName, className, bindings, statements)
     Code(this.className(uri), builder.code, Set(uri), builder.positions)
   }
 
