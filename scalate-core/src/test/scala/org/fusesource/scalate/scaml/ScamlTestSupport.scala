@@ -16,18 +16,20 @@
  */
 package org.fusesource.scalate.scaml
 
-import _root_.org.scalatest.{TestFailedException, FunSuite}
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
+import _root_.java.util.concurrent.atomic.AtomicInteger
+import _root_.org.fusesource.scalate.FunSuiteSupport
+import _root_.org.scalatest.TestFailedException
 import org.fusesource.scalate._
 import java.io.{StringWriter, PrintWriter, File}
+import support.FileResourceLoader
+
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@RunWith(classOf[JUnitRunner])
-class ScamlTestSupport extends FunSuite {
+class ScamlTestSupport extends FunSuiteSupport {
 
   var engine = new TemplateEngine
+  val testCounter = new AtomicInteger(1)
 
   def testRender(description:String, template:String, result:String) = {
     test(description) {
@@ -99,11 +101,15 @@ class ScamlTestSupport extends FunSuite {
 
     engine.bindings = List(Binding("context", context.getClass.getName, true))
 
+    val testIdx = testCounter.incrementAndGet
+    val dir = new File("target/ScamlTest")
+    dir.mkdirs
+    engine.workingDirectory = dir
     context.attributes("context") = context
     context.attributes("bean") = Bean("red", 10)
     context.attributes("label") = "Scalate"
 
-    val template = engine.compile("/org/fusesource/scalate/scaml/test.scaml")
+    val template = engine.compile("/org/fusesource/scalate/scaml/test" + testIdx +".scaml")
     template.render(context)
     out.close
     buffer.toString

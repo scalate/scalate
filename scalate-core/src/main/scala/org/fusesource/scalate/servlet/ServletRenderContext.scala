@@ -1,13 +1,14 @@
 package org.fusesource.scalate.servlet
 
-import _root_.javax.servlet.{ServletConfig, ServletContext, ServletException}
+import javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._
 import java.lang.String
 import java.util.{Locale}
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
-import org.fusesource.scalate.{AttributeMap, TemplateEngine, DefaultRenderContext}
+import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext}
+import org.fusesource.scalate.support.AttributeMap
 import org.fusesource.scalate.util.URIs._
 
 /**

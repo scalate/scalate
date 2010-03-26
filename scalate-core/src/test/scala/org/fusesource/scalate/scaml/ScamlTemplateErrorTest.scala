@@ -17,15 +17,11 @@
 package org.fusesource.scalate.scaml
 
 
-import _root_.org.scalatest.{TestFailedException, FunSuite}
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-import org.fusesource.scalate._
 import java.io.{StringWriter, PrintWriter, File}
+
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@RunWith(classOf[JUnitRunner])
 class ScamlTemplateErrorTest extends ScamlTestSupport {
 
 

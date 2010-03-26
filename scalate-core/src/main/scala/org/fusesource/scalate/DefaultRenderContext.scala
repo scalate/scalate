@@ -17,6 +17,7 @@
  */
 package org.fusesource.scalate
 
+import org.fusesource.scalate.support.{AttributeMap, HashMapAttributes}
 import java.io._
 import collection.mutable.Stack
 import util.{Logging, RenderHelper}

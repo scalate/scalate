@@ -14,11 +14,13 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.fusesource.scalate
 
+package org.fusesource.scalate.support
+
+import org.fusesource.scalate.ResourceNotFoundException
+import org.fusesource.scalate.util.{Logging, IOUtil}
 import java.net.URI
 import java.io.{File, FileInputStream, StringWriter, InputStreamReader}
-import util.{Logging, IOUtil}
 
 /**
  * Used by the template engine to load the content of templates.

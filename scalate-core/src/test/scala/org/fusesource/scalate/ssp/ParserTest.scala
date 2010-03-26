@@ -1,15 +1,12 @@
 package org.fusesource.scalate.ssp
 
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
+import _root_.org.fusesource.scalate.FunSuiteSupport
 import collection.mutable.HashMap
-import org.scalatest.FunSuite
 
 /**
  * @version $Revision : 1.1 $
  */
-@RunWith(classOf[JUnitRunner])
-class ParserTest extends FunSuite {
+class ParserTest extends FunSuiteSupport {
   val logging = false
 
   implicit def stringToText(x:String) = Text(x)

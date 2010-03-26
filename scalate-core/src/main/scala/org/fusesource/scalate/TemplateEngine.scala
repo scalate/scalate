@@ -18,7 +18,8 @@ package org.fusesource.scalate
 import layout.{NullLayoutStrategy, LayoutStrategy}
 import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import scaml.ScamlCodeGenerator
-import ssp.{SspCodeGenerator, ScalaCompiler}
+import ssp.SspCodeGenerator
+import support.{Code, FileResourceLoader, CodeGenerator, ResourceLoader, ScalaCompiler}
 import util._
 
 import scala.util.parsing.input.{OffsetPosition, Position}
@@ -311,7 +312,7 @@ class TemplateEngine extends Logging {
   val sourceMapLog = Logging(getClass, "SourceMap")
 
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
-    var code:Code = null
+    var code: Code = null
     try {
 
       // Generate the scala source code from the template

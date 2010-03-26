@@ -15,16 +15,16 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.fusesource.scalate
+package org.fusesource.scalate.support
 
 
-import _root_.scala.util.parsing.input.{OffsetPosition, Position}
+import org.fusesource.scalate.{Binding, TemplateEngine}
+import org.fusesource.scalate.util.Logging
 import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
-import ssp.{ScriptletFragment, PageFragment}
-import util.Logging
-import collection.immutable.TreeMap
+import scala.collection.immutable.TreeMap
+import scala.util.parsing.input.{OffsetPosition, Position}
 
 /**
  * Provides a common base class for CodeGenerator implementations.
@@ -119,6 +119,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
             }
           }
 
+          generateInitialImports
           generate(imports)
           generateBindings(bindings) {
             generate(otherStatements)
@@ -138,6 +139,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       this << "}"
 
     }
+
+    def generateInitialImports: Unit = {}
 
     def generate(statements: List[T]): Unit
 

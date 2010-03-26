@@ -1,12 +1,8 @@
 package org.fusesource.scalate.console
 
-import org.fusesource.scalate.util.Logging
-import org.scalatest.FunSuite
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import _root_.org.fusesource.scalate.FunSuiteSupport
 
-@RunWith(classOf[JUnitRunner])
-class SourceLineTest extends FunSuite with Logging {
+class SourceLineTest extends FunSuiteSupport {
   val line = SourceLine(1, "abcd")
 
   test("split line") {

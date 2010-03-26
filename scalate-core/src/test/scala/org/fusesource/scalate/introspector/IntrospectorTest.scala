@@ -1,16 +1,9 @@
 package org.fusesource.scalate.introspector
 
-/**
- * @version $Revision: 1.1 $
- */
-
-
-import org.fusesource.scalate.Asserts
-import org.fusesource.scalate.util.Logging
-import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
 import java.io.File
+import _root_.org.fusesource.scalate.Asserts._
+import _root_.org.fusesource.scalate.FunSuiteSupport
+import _root_.org.fusesource.scalate.util.Logging
 
 case class MyProduct(name: String, age: Int) {}
 
@@ -24,8 +17,7 @@ class MyBean {
   def setAge(age: Int): Unit = _age = age
 }
 
-@RunWith(classOf[JUnitRunner])
-class IntrospectorTest extends FunSuite with Logging {
+class IntrospectorTest extends FunSuiteSupport {
 
 
   test("product introspector") {

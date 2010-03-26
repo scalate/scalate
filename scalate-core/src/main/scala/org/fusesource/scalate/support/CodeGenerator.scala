@@ -14,9 +14,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+package org.fusesource.scalate.support
 
-package org.fusesource.scalate
-
+import _root_.org.fusesource.scalate.{Binding, TemplateEngine}
 import _root_.scala.util.parsing.input.{OffsetPosition, Position}
 import collection.immutable.TreeMap
 

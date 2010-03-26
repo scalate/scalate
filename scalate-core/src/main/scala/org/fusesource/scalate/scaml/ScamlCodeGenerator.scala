@@ -23,7 +23,10 @@ import java.net.URI
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
 import scala.util.parsing.input.CharSequenceReader
+import support.{Code, AbstractCodeGenerator}
 import util.RenderHelper
+import util.RenderHelper
+import collection.immutable.List
 
 /**
  * Generates a scala class given a HAML document
@@ -107,8 +110,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
-    def generate(statements:List[Statement]):Unit = {
+    override def generateInitialImports = {
       this << "import _root_.org.fusesource.scalate.util.RenderHelper.{sanitize=>$_scalate_$_sanitize, preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, smart_sanitize=>$_scalate_$_smart_sanitize, attributes=>$_scalate_$_attributes}"
+    }
+
+    def generate(statements:List[Statement]):Unit = {
       generate_with_flush(statements)
     }
 

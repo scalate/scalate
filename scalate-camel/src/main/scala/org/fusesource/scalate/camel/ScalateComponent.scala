@@ -1,10 +1,11 @@
 package org.fusesource.scalate.camel
 
+import _root_.org.fusesource.scalate.support.FileResourceLoader
+import _root_.org.fusesource.scalate.TemplateEngine
 import org.apache.camel.impl.DefaultComponent
 import java.util.Map
 import java.lang.String
 import org.apache.camel.Endpoint
-import org.fusesource.scalate.{FileResourceLoader, TemplateEngine}
 import java.io.File
 import org.springframework.core.io.DefaultResourceLoader
 

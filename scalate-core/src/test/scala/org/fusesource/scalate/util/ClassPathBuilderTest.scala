@@ -1,13 +1,10 @@
 package org.fusesource.scalate.util
 
+import _root_.org.fusesource.scalate.FunSuiteSupport
 import java.io.File
 import java.net.{URL, URLClassLoader}
-import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
 
-@RunWith(classOf[JUnitRunner])
-class ClassPathBuilderTest extends FunSuite {
+class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
   
   test("Construct an empty class path") {

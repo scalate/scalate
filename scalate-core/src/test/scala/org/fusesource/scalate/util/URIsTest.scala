@@ -1,15 +1,12 @@
 package org.fusesource.scalate.util
 
-import org.scalatest.FunSuite
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.util.URIs._
 
 /**
  * @version $Revision: 1.1 $
  */
-@RunWith(classOf[JUnitRunner])
-class URIsTest extends FunSuite with Logging {
+class URIsTest extends FunSuiteSupport {
 
   test("adding query argument to no query string") {
     expect("/foo?x=1") { uri("/foo", "x=1")}

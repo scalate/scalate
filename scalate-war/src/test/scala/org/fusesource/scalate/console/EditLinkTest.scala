@@ -4,11 +4,11 @@ package org.fusesource.scalate.console
  * @version $Revision: 1.1 $
  */
 import _root_.java.io.{OutputStreamWriter, PrintWriter}
-import org.fusesource.scalate._
-import org.fusesource.scalate.util._
-import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
+import _root_.org.fusesource.scalate._
+import _root_.org.fusesource.scalate.util._
+import _root_.org.junit.runner.RunWith
+import _root_.org.scalatest.FunSuite
+import _root_.org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class EditLinkTest extends FunSuite with Logging {

@@ -1,12 +1,11 @@
 package org.fusesource.scalate.sample
 
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.util._
-import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
-import java.io.File
+import _root_.org.fusesource.scalate._
+import _root_.org.junit.runner.RunWith
+import _root_.org.scalatest.FunSuite
+import _root_.org.scalatest.junit.JUnitRunner
+import _root_.java.io.File
 import util.Logging
 
 case class Person(first: String, last: String) {

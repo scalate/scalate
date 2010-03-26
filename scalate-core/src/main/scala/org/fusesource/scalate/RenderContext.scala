@@ -1,5 +1,6 @@
 package org.fusesource.scalate
 
+import _root_.org.fusesource.scalate.support.AttributeMap
 import java.util.{Locale, Date}
 import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector

@@ -16,14 +16,9 @@
  */
 package org.fusesource.scalate.scaml
 
-
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@RunWith(classOf[JUnitRunner])
 class ScamlTemplateTest extends ScamlTestSupport {
 
   /////////////////////////////////////////////////////////////////////

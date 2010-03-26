@@ -16,14 +16,9 @@
  */
 package org.fusesource.scalate.scaml
 
-
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-
 /**
  * Some tests for Scaml bugs reported
  */
-@RunWith(classOf[JUnitRunner])
 class ScamlBugTest extends ScamlTestSupport {
 
     testRender("SCALATE-44 test1",

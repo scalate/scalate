@@ -21,6 +21,7 @@ package org.fusesource.scalate.ssp
 import org.fusesource.scalate._
 import java.util.regex.Pattern
 import scala.collection.mutable.HashSet
+import support.{Code, AbstractCodeGenerator}
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 

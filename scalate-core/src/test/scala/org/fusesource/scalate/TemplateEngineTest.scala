@@ -16,17 +16,10 @@
  */
 package org.fusesource.scalate
 
-import org.scalatest.FunSuite
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import java.io.File
-import util.Logging
 import Asserts._
 
-/**
- */
-@RunWith(classOf[JUnitRunner])
-class TemplateEngineTest extends FunSuite with Logging {
+class TemplateEngineTest extends FunSuiteSupport {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 

@@ -1,14 +1,14 @@
 package org.fusesource.scalate.camel
 
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.FunSuite
-import java.io.File
-import org.fusesource.scalate._
-import org.apache.camel.builder.RouteBuilder
-import org.apache.camel._
-import org.apache.camel.impl.DefaultCamelContext
+import _root_.org.junit.runner.RunWith
+import _root_.org.scalatest.junit.JUnitRunner
+import _root_.org.scalatest.FunSuite
+import _root_.java.io.File
+import _root_.org.fusesource.scalate._
+import _root_.org.apache.camel.builder.RouteBuilder
+import _root_.org.apache.camel._
+import _root_.org.apache.camel.impl.DefaultCamelContext
 
 /**
  * @version $Revision : 1.1 $

@@ -16,15 +16,10 @@
  */
 package org.fusesource.scalate
 
-import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
 import java.io.File
-import util.Logging
 import Asserts._
 
-@RunWith(classOf[JUnitRunner])
-class ExtraImportTest extends FunSuite with Logging {
+class ExtraImportTest extends FunSuiteSupport {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/ExtraImportTest")
   engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")

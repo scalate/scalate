@@ -14,14 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+package org.fusesource.scalate.support
 
-package org.fusesource.scalate.ssp
-
-import _root_.scala.util.parsing.input.OffsetPosition
 import org.fusesource.scalate._
-import org.fusesource.scalate.util.ClassPathBuilder
-import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.util.Sequences.removeDuplicates
+import util.ClassPathBuilder
+import util.Logging
+import util.Sequences.removeDuplicates
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -30,6 +28,7 @@ import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
 import tools.nsc.io.VirtualFile
 import tools.nsc.util.{OffsetPosition, FakePos, NoPosition, Position}
+import scala.util.parsing.input.OffsetPosition
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 

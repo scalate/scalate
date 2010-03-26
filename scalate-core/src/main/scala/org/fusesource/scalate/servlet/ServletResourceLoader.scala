@@ -15,9 +15,10 @@
  */
 package org.fusesource.scalate.servlet
 
+import org.fusesource.scalate.support.FileResourceLoader
 import java.io.File
 import javax.servlet.ServletContext
-import org.fusesource.scalate.{FileResourceLoader, ResourceNotFoundException}
+import org.fusesource.scalate.ResourceNotFoundException
 
 object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context)

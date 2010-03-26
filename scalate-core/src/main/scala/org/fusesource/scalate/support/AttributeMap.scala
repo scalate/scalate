@@ -1,4 +1,4 @@
-package org.fusesource.scalate
+package org.fusesource.scalate.support
 
 import scala.collection.JavaConversions._
 import scala.collection.Set
