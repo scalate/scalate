@@ -8,9 +8,12 @@ sort_info: 50
 The {project_name:} community is here to help you
 
 --- name:content
-We really want you to get involved in the {project_name:} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
 
+<div class="left" markdown="1">
 # Mailing List
+</div>
+<div class="right" markdown="1">
+We really want you to get involved in the {project_name:} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
 
 The main mailing list is hosted at the [scalate google group](http://groups.google.com/group/scalate).
 
@@ -20,8 +23,12 @@ Please join us!
 
 Be aware that to reduce spam your first post will be moderated through; so please be patient. (Unfortunately we get a lot of spam)
 
-### Commits Mailing List
+</div>
 
+<div class="left" markdown="1">
+# Commits List
+</div>
+<div class="right" markdown="1">
 The [scalate-commits google group](http://groups.google.com/group/scalate-commits) is notified of all changes to the source code or changes to [issues](support.html) so you can use this list to watch development and support occur.
 
 * [http://groups.google.com/group/scalate-commits](http://groups.google.com/group/scalate-commits)
@@ -33,12 +40,22 @@ Previously to moving to the [google group](http://groups.google.com/group/scalat
 * [scalate-dev](http://n3.nabble.com/scalate-f143585.html)
 * [scalate-commits](http://n3.nabble.com/scalate-commits-f143594.html)
 
-# Twitter
+</div>
 
+<div class="left" markdown="1">
+# Twitter
+</div>
+<div class="right" markdown="1">
 You can watch us on twitter by following [@scalate](http://twitter.com/scalate) or alternatively searching for [scalate](http://search.twitter.com/search?q=scalate) or the [#scalate](http://search.twitter.com/search?q=%23scalate) tag.
 
 If you find something you like or don't like in scalate please do tweet it (with scalate or #scalate in the text) or lets chat about it on the [mailing list](http://groups.google.com/group/scalate)
+</div>
 
+<div class="left" markdown="1">
 # IRC
+</div>
+<div class="right" markdown="1">
+  You can also catch us on IRC to chat via **#scalate** on **irc.freenode.net**
+</div>
 
-You can also catch us on IRC to chat via **#scalate** on **irc.freenode.net**
+
