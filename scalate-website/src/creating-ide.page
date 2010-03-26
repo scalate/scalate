@@ -23,6 +23,10 @@ Making great IDE plugins is a lot of work, but we hope we can cut some corners m
 * both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse if you need them.
 * all the clever stuff in a Scalate template is done by the Scala language which already has great IDE support.
 
+## JSR 45 Support
+
+Scalate adds [JSR 45](http://jcp.org/aboutJava/communityprocess/final/jsr045/index.html) metadata to the template classes that it generates.  This means that, when running in Java a debugger, browsing through stack frames of generated template classes will take you to the template file instead of the generated scala file.  This feature should also allow IDE implementors to create Ssp and Scaml editors which allow you to set debugging breakpoints in the templates.
+
 ## Types in scope for the Scala language completion
 
 Other than detecting when there is a Scala code block or expression in the  [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) template languages, the main thing for the IDE to do is to configure which variables are available and their types for error checking and completion. Here's a break down...
