@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate
 
-import org.fusesource.scalate.support.{AttributeMap, HashMapAttributes}
+import org.fusesource.scalate.support.AttributesHashMap
 import java.io._
 import collection.mutable.Stack
 import util.{Logging, RenderHelper}
@@ -32,7 +32,7 @@ class Elvis(val defaultValue: Any) {
  */
 class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext with Logging {
 
-  val attributes: AttributeMap[String,Any] = new HashMapAttributes[String, Any]() {
+  val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
     update("context", DefaultRenderContext.this)
   }
 

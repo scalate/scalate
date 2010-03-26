@@ -7,8 +7,7 @@ import java.util.{Locale}
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
-import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext}
-import org.fusesource.scalate.support.AttributeMap
+import org.fusesource.scalate.{AttributeMap, DefaultRenderContext, TemplateEngine}
 import org.fusesource.scalate.util.URIs._
 
 /**
