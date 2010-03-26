@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <parent>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-project</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.fusesource.scalate</groupId>
+  <artifactId>scalate-archetype-empty</artifactId>
+  <name>Scalate :: Archetype :: Empty</name>
+  <description>An archetype which creates an empty Scalate web application</description>
+
+</project>

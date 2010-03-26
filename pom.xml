@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -25,7 +23,8 @@
 
     <compiler.fork>false</compiler.fork>
 
-    <!-- Note that activemq dependency is only used for testing! -->
+    <asm-version>3.1</asm-version>
+
     <commons-logging-version>1.1.1</commons-logging-version>
     <commons-logging-api-version>1.1</commons-logging-api-version>
 
@@ -34,9 +33,10 @@
     <jetty-port>8080</jetty-port>
     <jetty-version>6.1.22</jetty-version>
     <jetty-plugin-version>7.0.1.v20091125</jetty-plugin-version>
+    <junit-version>4.5</junit-version>
 
     <log4j-version>1.2.14</log4j-version>
-    <junit-version>4.5</junit-version>
+    <logback-version>0.9.18</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
 
     <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalaTest-version>
@@ -47,8 +47,8 @@
     <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.temp.workingdir>true</scalate.temp.workingdir>
 
+    <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.5.6</slf4j-version>
-    <asm-version>3.1</asm-version>
     
     <!-- vscaladoc settings -->
     <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
@@ -160,6 +160,7 @@
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
     <module>maven-scalate-plugin</module>
+    <module>scalate-archetype-empty</module>
   </modules>
 
   <dependencies>
@@ -180,7 +181,7 @@
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
-        <version>2.5</version>
+        <version>${servlet-api-version}</version>
       </dependency>
       <dependency>
         <groupId>com.sun.jersey</groupId>
@@ -213,7 +214,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>0.9.18</version>
+        <version>${logback-version}</version>
       </dependency>
 
       <!-- testing -->

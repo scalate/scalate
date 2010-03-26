@@ -5,7 +5,47 @@ sort_info: 2
 --- name:overview
 # Get Your Learn On
 
-All the information you need to be become an expert with {project_name:}
+All the information you need to be become an expert with Scalate
 
---- name:content pipeline:tags,markdown
-{include_file: {filename: src/documentation/scalate-user-guide.md, process_output: true, escape_html: false}}
+
+--- name:content
+
+<div class="left" markdown="1">
+# [FAQ](faq.html)
+</div>
+<div class="right" markdown="1">
+Frequently asked questions on all things Scalate
+</div>
+
+<div class="left" markdown="1">
+# [User Guide](user-guide.html)
+</div>
+<div class="right" markdown="1">
+A detailed walk through Scalate and how to use it.
+</div>
+
+
+<div class="left" markdown="1">
+# [Scaml Reference](scaml-reference.html)
+</div>
+<div class="right" markdown="1">
+Full reference on the Scaml template language
+</div>
+
+
+<div class="left" markdown="1">
+# [SSP Reference](ssp-reference.html)
+</div>
+<div class="right" markdown="1">
+Full reference on the SSP template language
+</div>
+
+<div class="left" markdown="1">
+# [Maven Reports](../maven.html)
+</div>
+<div class="right" markdown="1">
+Various generated reports from Maven
+</div>
+
+
+

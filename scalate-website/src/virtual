@@ -19,7 +19,7 @@ in_menu: false
 \--- !omap
 - /development.html:
     title: Maven Reports
-    in_menu: true
+    in_menu: false
     sort_info: 100
     url: http://scalate.fusesource.org/maven/1.0-SNAPSHOT/
     
