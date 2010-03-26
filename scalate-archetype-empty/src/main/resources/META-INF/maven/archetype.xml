@@ -1,9 +1,16 @@
 <archetype>
   <id>scalate-archetype-empty</id>
+<!--
   <sources>
-    <source>src/main/java/App.java</source>
+    <source>src/main/scala/App.java</source>
   </sources>
-  <testSources>
-    <source>src/test/java/AppTest.java</source>
-  </testSources>
+-->
+  <resources>
+    <resource>src/main/resources/logback.xml</resource>
+    <resource>src/main/webapp/index.scaml</resource>
+    <resource>src/main/webapp/css/style.css</resource>
+    <resource>src/main/webapp/WEB-INF/scalate/layouts/default.scaml</resource>
+    <resource>src/main/webapp/WEB-INF/web.xml</resource>
+    <resource>src/test/scala/AppTest.scala</resource>
+  </resources>
 </archetype>

@@ -16,6 +16,7 @@
   </prerequisites>
 
   <properties>
+    <!-- build settings -->
     <forge-project-id>scalate</forge-project-id>
     <forge-project-id-uc>SCALATE</forge-project-id-uc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,36 +24,34 @@
 
     <compiler.fork>false</compiler.fork>
 
-    <asm-version>3.1</asm-version>
-
-    <commons-logging-version>1.1.1</commons-logging-version>
-    <commons-logging-api-version>1.1</commons-logging-api-version>
-
-    <jersey-version>1.1.5.1</jersey-version>
-
+    <!-- environment settings -->
     <jetty-port>8080</jetty-port>
-    <jetty-version>6.1.22</jetty-version>
-    <jetty-plugin-version>7.0.1.v20091125</jetty-plugin-version>
-    <junit-version>4.5</junit-version>
-
-    <log4j-version>1.2.14</log4j-version>
-    <logback-version>0.9.18</logback-version>
-    <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
-
-    <scalaTest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalaTest-version>
-    <scalaVersion>2.8.0.Beta1</scalaVersion>
-
-    <scala-plugin-version>2.9.1</scala-plugin-version>
-
     <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.temp.workingdir>true</scalate.temp.workingdir>
     <scalate.workdir>${basedir}/target/scalateWorkDir</scalate.workdir>
 
-    <servlet-api-version>2.5</servlet-api-version>
-    <slf4j-version>1.5.6</slf4j-version>
-    
+
+    <!-- version info -->
+    <asm-version>3.1</asm-version>
+    <commons-logging-version>1.1.1</commons-logging-version>
+    <commons-logging-api-version>1.1</commons-logging-api-version>
+    <jersey-version>1.1.5.1</jersey-version>
+    <jetty-version>6.1.22</jetty-version>
+    <jetty-plugin-version>7.0.1.v20091125</jetty-plugin-version>
+    <junit-version>4.5</junit-version>
+    <log4j-version>1.2.14</log4j-version>
+    <logback-version>0.9.18</logback-version>
+    <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
     <!-- vscaladoc settings -->
     <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
+
+    <scala-version>2.8.0.Beta1</scala-version>
+    <scala-plugin-version>2.13.1</scala-plugin-version>
+    <scalatest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalatest-version>
+
+    <servlet-api-version>2.5</servlet-api-version>
+    <slf4j-version>1.5.6</slf4j-version>
+    <surefire-version>2.4.3</surefire-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
@@ -168,12 +167,12 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>${scalaVersion}</version>
+      <version>${scala-version}</version>
     </dependency>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
-      <version>${scalaVersion}</version>
+      <version>${scala-version}</version>
     </dependency>
   </dependencies>
 
@@ -229,7 +228,7 @@
       <dependency>
         <groupId>org.scalatest</groupId>
         <artifactId>scalatest</artifactId>
-        <version>${scalaTest-version}</version>
+        <version>${scalatest-version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -340,7 +339,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
-        <version>2.13.1</version>
+        <version>${scala-plugin-version}</version>
         <executions>
           <execution>
             <goals>
@@ -357,7 +356,7 @@
             <!-- arg>-unchecked</arg -->
             <arg>-deprecation</arg>
           </args>
-          <scalaVersion>${scala.version}</scalaVersion>
+          <scala-version>${scala-version}</scala-version>
         </configuration>
       </plugin>
 
@@ -373,7 +372,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>${surefire-version}</version>
         <configuration>
           <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
           <useSystemClassLoader>false</useSystemClassLoader>
