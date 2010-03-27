@@ -8,7 +8,7 @@
     </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.fusesource.scalate</groupId>
+  <groupId>org.fusesource.scalate.tooling</groupId>
   <artifactId>scalate-archetype-empty</artifactId>
   <name>Scalate :: Archetype :: Empty</name>
   <description>An archetype which creates an empty Scalate web application</description>
@@ -42,13 +42,47 @@
                 <mkdir dir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF/scalate/layouts"/>
 
                 <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/css" 
-                  file="../scalate-war/src/main/webapp/css/style.css" />
+                  file="../../scalate-war/src/main/webapp/css/style.css" />
                 <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF" 
-                  file="../scalate-war/src/main/webapp/WEB-INF/web.xml" />
+                  file="../../scalate-war/src/main/webapp/WEB-INF/web.xml" />
                 <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF/scalate/layouts" 
-                  file="../scalate-war/src/main/webapp/WEB-INF/scalate/layouts/default.scaml" />
+                  file="../../scalate-war/src/main/webapp/WEB-INF/scalate/layouts/default.scaml" />
               </tasks>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <debug>true</debug>
+          <projectsDirectory>src/it</projectsDirectory>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <pomIncludes>
+            <pomInclude>pom.xml</pomInclude>
+          </pomIncludes>
+          <preBuildHookScript>setup</preBuildHookScript>
+          <postBuildHookScript>verify</postBuildHookScript>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <settingsFile>../settings.xml</settingsFile>
+          <goals>
+            <goal>archetype:create -DgroupId=foo -DartifactId=bar -DarchetypeGroupId=org.fusesource.scalate -DarchetypeArtifactId=scalate-archetype-empty -DarchetypeVersion=1.0-SNAPSHOT</goal>
+            <goal>install</goal>
+          </goals>
+          <properties>
+<!--
+            <restygwt-version>${pom.version}</restygwt-version>
+-->
+          </properties>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>install</goal>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

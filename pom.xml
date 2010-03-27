@@ -160,7 +160,7 @@
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
     <module>maven-scalate-plugin</module>
-    <module>scalate-archetype-empty</module>
+    <module>archetypes</module>
   </modules>
 
   <dependencies>
