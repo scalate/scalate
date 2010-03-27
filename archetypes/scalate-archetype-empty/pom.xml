@@ -68,6 +68,7 @@
           <settingsFile>../settings.xml</settingsFile>
           <goals>
             <goal>archetype:create -DgroupId=foo -DartifactId=bar -DarchetypeGroupId=org.fusesource.scalate -DarchetypeArtifactId=scalate-archetype-empty -DarchetypeVersion=1.0-SNAPSHOT</goal>
+            <goal>clean</goal>
             <goal>install</goal>
           </goals>
           <properties>

@@ -29,7 +29,8 @@ A detailed walk through Scalate and how to use it.
 # [Scaml Reference](scaml-reference.html)
 </div>
 <div class="right" markdown="1">
-Full reference on the Scaml template language
+Reference for the Scaml template language. 
+Scaml is a Scala version of [Haml](http://haml-lang.com/)
 </div>
 
 
@@ -37,7 +38,8 @@ Full reference on the Scaml template language
 # [SSP Reference](ssp-reference.html)
 </div>
 <div class="right" markdown="1">
-Full reference on the SSP template language
+Reference for the SSP template language. 
+SSP is a Scala version of JSP / ASP / Erb
 </div>
 
 <div class="left" markdown="1">
