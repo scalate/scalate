@@ -3,6 +3,7 @@ package org.fusesource.scalate.console
 import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
+import _root_.org.fusesource.scalate.DefaultRenderContext
 import _root_.org.fusesource.scalate.util.{SourceMapInstaller, SourceMap, Logging}
 import _root_.scala.Option
 import org.fusesource.scalate.servlet.ServletRenderContext
@@ -44,12 +45,12 @@ case class SourceLine(line: Int, source: String) {
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: ServletRenderContext) extends ConsoleSnippets with Logging {
+class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with Logging {
   import context._
 
   val consoleParameter = "_scalate"
 
-  def servletContext: ServletContext = context.servletContext
+  def servletContext: ServletContext = context.asInstanceOf[ServletRenderContext].servletContext
   def renderContext = context
 
   // TODO figure out the viewName from the current template?
@@ -134,17 +135,17 @@ class ConsoleHelper(context: ServletRenderContext) extends ConsoleSnippets with 
   /**
    * Returns true if the option is enabled
    */
-  def optionEnabled(name: String): Boolean = parameterValues(consoleParameter).contains(name)
+  def optionEnabled(name: String): Boolean = context.asInstanceOf[ServletRenderContext].parameterValues(consoleParameter).contains(name)
 
   /**
    * Link to the current page with the option enabled
    */
-  def enableLink(name: String): String = currentUriPlus(consoleParameter + "=" + name)
+  def enableLink(name: String): String = context.asInstanceOf[ServletRenderContext].currentUriPlus(consoleParameter + "=" + name)
 
   /**
    * Link to the current page with the option disabled
    */
-  def disableLink(name: String): String = currentUriMinus(consoleParameter + "=" + name)
+  def disableLink(name: String): String = context.asInstanceOf[ServletRenderContext]currentUriMinus(consoleParameter + "=" + name)
 
 
   /**
