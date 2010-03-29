@@ -15,6 +15,7 @@
 
   <modules>
     <module>scalate-archetype-empty</module>
+    <module>scalate-archetypes-itests</module>
   </modules>
 
   <build>

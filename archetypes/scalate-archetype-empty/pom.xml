@@ -53,6 +53,8 @@
         </executions>
       </plugin>
 
+
+<!--
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
         <configuration>
@@ -72,9 +74,6 @@
             <goal>install</goal>
           </goals>
           <properties>
-<!--
-            <restygwt-version>${pom.version}</restygwt-version>
--->
           </properties>
         </configuration>
         <executions>
@@ -87,6 +86,7 @@
           </execution>
         </executions>
       </plugin>
+-->
     </plugins>
   </build>
   
