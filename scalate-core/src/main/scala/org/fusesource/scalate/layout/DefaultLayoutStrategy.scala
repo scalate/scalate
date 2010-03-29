@@ -13,7 +13,8 @@ import org.fusesource.scalate.util.Logging
  * 
  * @version $Revision : 1.1 $
  */
-class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
+class
+DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
 
   def layout(template: Template, context: RenderContext) {
     
@@ -52,7 +53,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
       renderLayout(layoutTemplate, body, context)
       true
     } catch {
-      case e: ResourceNotFoundException => error("Caught: " + e, e)
+      case e: ResourceNotFoundException => debug("Caught: " + e, e)
         false
       case e: Exception => error("Unhandled: " + e, e)
         throw e
