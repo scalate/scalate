@@ -4,7 +4,7 @@ import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.servlet.{ServletResourceLoader, ServletRenderContext}
 import java.io.File
 import scala.xml.NodeSeq
-
+import org.fusesource.scalate.DefaultRenderContext
 /**
  * @version $Revision : 1.1 $
  */
@@ -12,7 +12,7 @@ import scala.xml.NodeSeq
 trait ConsoleSnippets {
   def servletContext: ServletContext
 
-  def renderContext: ServletRenderContext
+  def renderContext: DefaultRenderContext
 
 
   def realPath(uri: String) = ServletResourceLoader(servletContext).realPath(uri)
