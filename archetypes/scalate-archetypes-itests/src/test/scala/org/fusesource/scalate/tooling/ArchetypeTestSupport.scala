@@ -1,5 +1,6 @@
 package org.fusesource.scalate.tooling
 
+import _root_.org.apache.maven.project.{DefaultProjectBuildingRequest, ProjectBuildingRequest, ProjectBuilder, MavenProject}
 import _root_.org.junit.{After, Before, Assert}
 import org.codehaus.plexus.{DefaultContainerConfiguration, ContainerConfiguration, DefaultPlexusContainer}
 import org.apache.maven.Maven
@@ -11,7 +12,6 @@ import org.apache.maven.execution.MavenExecutionRequest
 import org.apache.maven.execution.MavenExecutionRequestPopulator
 import org.apache.maven.execution.MavenExecutionResult
 import org.apache.maven.lifecycle.LifecycleExecutionException
-import org.apache.maven.project.MavenProject
 import org.apache.maven.repository.RepositorySystem
 import org.apache.maven.settings.building.DefaultSettingsBuildingRequest
 import org.apache.maven.settings.building.SettingsBuilder
@@ -37,15 +37,20 @@ class ArchetypeTestSupport {
   protected var container: DefaultPlexusContainer = null
 
   // TODO discover this from the pom!
-  protected var version: String = "1.0-SNAPSHOT"
+  protected var version: String = _
 
   protected def testScalateArchetype(artifactId: String): Unit = {
+    // lets try resolve the current project version
+    version = findCurrentPomVersion
+    logger.info("Looked up version from current pom: " + version)
+
     testArchetype("org.fusesource.scalate.tooling", artifactId, version)
   }
 
-
   protected def testArchetype(groupId: String, artifactId: String, version: String): Unit = {
-    System.out.println("Attempting to create archetype: " + artifactId)
+    System.out.logger.info("Attempting to create archetype: " + artifactId + " using version: " + version)
+
+    // create a temp directory to run the archetype in
     var targetDir: File = new File(baseDir, "target/archetypes/" + artifactId)
     FileUtils.deleteDirectory(targetDir)
     targetDir.mkdirs
@@ -71,7 +76,7 @@ class ArchetypeTestSupport {
 
 
     var newProjectDir: File = new File(targetDir, createdArtifactId)
-    System.out.println("Now building created archetype in: " + newProjectDir)
+    System.out.logger.info("Now building created archetype in: " + newProjectDir)
 
     request = new DefaultMavenExecutionRequest
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
@@ -97,9 +102,28 @@ class ArchetypeTestSupport {
   }
 
 
+  /**
+   * Uses the current pom.xml to find the version
+   */
+  protected def findCurrentPomVersion: String = {
+    val builder = container.lookup(classOf[ProjectBuilder])
+    assert(builder != null)
+
+    val buildingRequest = new DefaultProjectBuildingRequest
+    buildingRequest.setOffline(false)
+
+    var rsys = container.lookup(classOf[RepositorySystem])
+    buildingRequest.setLocalRepository(rsys.createDefaultLocalRepository)
+    buildingRequest.setRemoteRepositories(Collections.singletonList(rsys.createDefaultRemoteRepository))
+
+    val buildingResult = builder.build(new File(baseDir, "pom.xml"), buildingRequest)
+    assert(buildingResult != null)
+    buildingResult.getProject.getVersion
+  }
+
   protected def runMaven(request: MavenExecutionRequest): MavenExecutionResult = {
     assert(container != null)
-    var maven: Maven = container.lookup(classOf[Maven])
+    var maven = container.lookup(classOf[Maven])
     Assert.assertNotNull("Should have a maven!", maven)
     configureRequest(request)
     var result: MavenExecutionResult = null
@@ -109,16 +133,13 @@ class ArchetypeTestSupport {
     finally {
       container.release(maven)
     }
-    System.out.println("Got result: " + result)
     if (result.hasExceptions) {
       var handler: ExceptionHandler = new DefaultExceptionHandler
       var references: Map[String, String] = new LinkedHashMap[String, String]
       var project: MavenProject = null
 
       for (exception <- result.getExceptions) {
-        System.out.println("Exception: " + exception)
         var summary: ExceptionSummary = handler.handleException(exception)
-        System.out.println("summary: " + summary)
         logSummary(summary, references, "", request.isShowErrors)
         if (project == null && exception.isInstanceOf[LifecycleExecutionException]) {
           project = (exception.asInstanceOf[LifecycleExecutionException]).getProject
@@ -138,21 +159,21 @@ class ArchetypeTestSupport {
     settingsRequest.setUserProperties(request.getUserProperties)
 
     var settingsResult: SettingsBuildingResult = null
-    var settingsBuilder: SettingsBuilder = container.lookup(classOf[SettingsBuilder])
+    val settingsBuilder = container.lookup(classOf[SettingsBuilder])
     try {
       settingsResult = settingsBuilder.build(settingsRequest)
     }
     finally {
       container.release(settingsBuilder)
     }
-    var populator: MavenExecutionRequestPopulator = container.lookup(classOf[MavenExecutionRequestPopulator])
+    val populator = container.lookup(classOf[MavenExecutionRequestPopulator])
     try {
       populator.populateFromSettings(request, settingsResult.getEffectiveSettings)
     }
     finally {
       container.release(populator)
     }
-    var rsys: RepositorySystem = container.lookup(classOf[RepositorySystem])
+    val rsys = container.lookup(classOf[RepositorySystem])
     request.setLocalRepository(rsys.createDefaultLocalRepository)
     request.setRemoteRepositories(Collections.singletonList(rsys.createDefaultRemoteRepository))
     if (!settingsResult.getProblems.isEmpty && logger.isWarnEnabled) {
