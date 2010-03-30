@@ -1,6 +1,6 @@
-package org.fusesource.scalate.bookstore.resources
+package org.fusesource.scalate.samples.bookstore.resources
 
-import org.fusesource.scalate.bookstore.model.Book
+import org.fusesource.scalate.samples.bookstore.model.Book
 import org.fusesource.scalate.rest.{MapContainer, ContainerResource}
 import java.lang.String
 import javax.ws.rs.{Path}

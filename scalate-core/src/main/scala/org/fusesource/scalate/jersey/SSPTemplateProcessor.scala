@@ -1,5 +1,6 @@
 package org.fusesource.scalate.jersey
 
+import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
@@ -87,6 +88,59 @@ class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends View
     // Ensure headers are committed
     out.flush()
 
+    val servlet = TemplateEngineServlet()
+    if (servlet == null) {
+      // we have not been initialised yet so lets use the request dispatcher
+      writeToUsingRequestDispatcher(resolvedPath, viewable, out)
+    }
+    else {
+      writeToUsingServlet(servlet, resolvedPath, viewable, out)
+    }
+  }
+
+  /**
+   * Renders the template using the servlet instance directly as its a little more efficient
+   * plus it avoids issues with using jersey with guice-servlet not correctly dispatching to the servlet
+   */
+  def writeToUsingServlet(servlet: TemplateEngineServlet, resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+    // lets use the singleton servlet as its a bit more efficient and avoids issues with
+    // using jersey with guice-servlet not correctly dispatching to the servlet
+    request.setAttribute("it", viewable.getModel)
+
+    try {
+      servlet.render(resolvedPath, request, response)
+    } catch {
+      case e: Exception =>
+        // lets forward to the error handler
+        var notFound = true
+        for (uri <- errorUris if notFound) {
+          if (servletContext.getResource(uri) != null) {
+
+            // we need to expose all the errors property here...
+            request.setAttribute("javax.servlet.error.exception", e)
+            request.setAttribute("javax.servlet.error.exception_type", e.getClass)
+            request.setAttribute("javax.servlet.error.message", e.getMessage)
+            request.setAttribute("javax.servlet.error.request_uri", request.getRequestURI)
+            request.setAttribute("javax.servlet.error.servlet_name", request.getServerName)
+
+            // TODO how to get the status code???
+            val status = 500
+            request.setAttribute("javax.servlet.error.status_code", status)
+
+            request.setAttribute("it", e)
+            servlet.render(uri, request, response)
+            notFound = false
+          }
+        }
+        if (notFound) {
+          throw new ContainerException(e)
+        }
+
+        // throw new ContainerException(e)
+    }
+  }
+
+  def writeToUsingRequestDispatcher(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     val dispatcher = servletContext.getRequestDispatcher(resolvedPath)
     if (dispatcher == null) {
       throw new ContainerException("No request dispatcher for: " + resolvedPath)

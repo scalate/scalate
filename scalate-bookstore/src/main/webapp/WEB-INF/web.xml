@@ -10,53 +10,19 @@
     Bookstore Sample
   </description>
 
-  <!-- START: JAX RS config -->
+  <listener>
+    <listener-class>org.fusesource.scalate.samples.bookstore.ServletContextListener</listener-class>
+  </listener>
+
   <filter>
-    <filter-name>Jersey Filter</filter-name>
-    <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
-    <init-param>
-      <param-name>com.sun.jersey.config.feature.Trace</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.feature.Redirect</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.feature.ImplicitViewables</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>org.fusesource.scalate.bookstore.resources</param-value>
-    </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>.+\.(ssp|scaml)|(/(images|css|ssp|scaml)/.*)</param-value>
-    </init-param>
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
   </filter>
 
   <filter-mapping>
-    <filter-name>Jersey Filter</filter-name>
+    <filter-name>guiceFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <!-- END: JAX RS config -->
 
-  <!-- START: SSP and HAML config -->
-  <servlet>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.scaml</url-pattern>
-  </servlet-mapping>
-  <!-- END: SSP and HAML config -->
 
 </web-app>

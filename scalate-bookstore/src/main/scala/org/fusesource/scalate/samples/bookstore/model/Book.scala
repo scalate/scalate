@@ -1,4 +1,4 @@
-package org.fusesource.scalate.bookstore.model
+package org.fusesource.scalate.samples.bookstore.model
 
 /**
  * @version $Revision: 1.1 $

@@ -32,7 +32,7 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-guice</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
