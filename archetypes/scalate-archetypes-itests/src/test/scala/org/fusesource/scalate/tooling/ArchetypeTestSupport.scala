@@ -48,7 +48,7 @@ class ArchetypeTestSupport {
   }
 
   protected def testArchetype(groupId: String, artifactId: String, version: String): Unit = {
-    System.out.logger.info("Attempting to create archetype: " + artifactId + " using version: " + version)
+    logger.info("Attempting to create archetype: " + artifactId + " using version: " + version)
 
     // create a temp directory to run the archetype in
     var targetDir: File = new File(baseDir, "target/archetypes/" + artifactId)
@@ -76,7 +76,7 @@ class ArchetypeTestSupport {
 
 
     var newProjectDir: File = new File(targetDir, createdArtifactId)
-    System.out.logger.info("Now building created archetype in: " + newProjectDir)
+    logger.info("Now building created archetype in: " + newProjectDir)
 
     request = new DefaultMavenExecutionRequest
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
