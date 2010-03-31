@@ -32,7 +32,7 @@ template: ~
     <div class="wrapper">
       <% if context.node.node_info[:page].meta_info.has_key?('project_logo') %>
       <div class="logo">
-        <img alt="{project_name:} logo" src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}"/>
+        <img alt="{project_name:} logo" src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}">
       </div>
       <% end %>
       <div class="message">
