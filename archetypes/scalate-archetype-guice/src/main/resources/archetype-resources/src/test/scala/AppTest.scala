@@ -1,4 +1,4 @@
-package ${packageName}
+package ${package}
 
 import org.fusesource.scalate.test.{WebDriverMixin, WebServerMixin}
 import org.junit.runner.RunWith

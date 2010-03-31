@@ -1,4 +1,4 @@
-package ${packageName}
+package ${package}
 
 import _root_.com.google.inject.Guice
 import _root_.com.google.inject.servlet.GuiceServletContextListener

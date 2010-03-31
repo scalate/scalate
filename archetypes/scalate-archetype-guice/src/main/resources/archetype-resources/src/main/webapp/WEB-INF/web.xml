@@ -11,7 +11,7 @@
   </description>
 
   <listener>
-    <listener-class>${packageName}.ServletContextListener</listener-class>
+    <listener-class>${package}.ServletContextListener</listener-class>
   </listener>
 
   <filter>

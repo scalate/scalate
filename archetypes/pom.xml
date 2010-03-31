@@ -14,6 +14,10 @@
   <name>Scalate :: Archetypes</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.resources.escapeString>\</maven.resources.escapeString>
+  </properties>
+
   <modules>
     <module>scalate-archetype-empty</module>
     <module>scalate-archetype-guice</module>

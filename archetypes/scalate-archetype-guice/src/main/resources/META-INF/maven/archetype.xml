@@ -1,17 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <archetype>
-  <id>scalate-archetype-empty</id>
-<!--
-  <sources>
-    <source>src/main/scala/App.java</source>
-  </sources>
--->
-  <resources>
-    <resource>src/main/scala/ServletContextListener.scala</resource>
-    <resource>src/main/resources/logback.xml</resource>
-    <resource>src/main/webapp/index.scaml</resource>
-    <resource>src/main/webapp/css/style.css</resource>
-    <resource>src/main/webapp/WEB-INF/scalate/layouts/default.scaml</resource>
-    <resource>src/main/webapp/WEB-INF/web.xml</resource>
-    <resource>src/test/scala/AppTest.scala</resource>
-  </resources>
+  <id>scalate-archetype-guice</id>
+  <sources/>
+  <resources/>
 </archetype>

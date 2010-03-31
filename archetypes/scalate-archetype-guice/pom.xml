@@ -1,57 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <parent>
-      <groupId>org.fusesource.scalate.tooling</groupId>
-      <artifactId>archetypes</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </parent>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <parent>
+    <groupId>org.fusesource.scalate.tooling</groupId>
+    <artifactId>archetypes</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>scalate-archetype-guice</artifactId>
+  <packaging>maven-archetype</packaging>
   <name>Scalate :: Archetype :: Guice</name>
   <description>An archetype which creates an empty Scalate Guice web application</description>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>2.0-alpha-4</version>
+      </extension>
+    </extensions>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <replace casesensitive="true" file="${project.build.directory}/classes/archetype-resources/pom.xml">
-                  <replacefilter token="$JERSEY_VERSION_REPLACEME$" value="${jersey-version}" /> 
-                  <replacefilter token="$JETTY_VERSION_REPLACEME$" value="${jetty-version}" /> 
-                  <replacefilter token="$JETTY_PLUGIN_VERSION_REPLACEME$" value="${jetty-plugin-version}" /> 
-                  <replacefilter token="$LOGBACK_VERSION_REPLACEME$" value="${logback-version}" /> 
-                  <replacefilter token="$SCALA_VERSION_REPLACEME$" value="${scala-version}" />
-                  <replacefilter token="$SCALA_PLUGIN_VERSION_REPLACEME$" value="${scala-plugin-version}" />
-                  <replacefilter token="$SCALATE_VERSION_REPLACEME$" value="${project.version}" />
-                  <replacefilter token="$SERVLET_API_VERSION_REPLACEME$" value="${servlet-api-version}" /> 
-                  <replacefilter token="$SUREFIRE_VERSION_REPLACEME$" value="${surefire-version}" /> 
-                </replace>
-                
-                <mkdir dir="${project.build.directory}/classes/archetype-resources/src/main/webapp/css"/>
-                <mkdir dir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF/scalate/layouts"/>
-
-                <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/css" 
-                  file="../../scalate-war/src/main/webapp/css/style.css" />
-                <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF" 
-                  file="../../scalate-war/src/main/webapp/WEB-INF/web.xml" />
-                <copy todir="${project.build.directory}/classes/archetype-resources/src/main/webapp/WEB-INF/scalate/layouts" 
-                  file="../../scalate-war/src/main/webapp/WEB-INF/scalate/layouts/default.scaml" />
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
+        <artifactId>maven-archetype-plugin</artifactId>
+        <version>2.0-alpha-4</version>
+        <extensions>true</extensions>
       </plugin>
     </plugins>
   </build>
-  
+
 </project>

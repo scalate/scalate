@@ -17,19 +17,19 @@
    <properties>
      <!-- environment settings -->
     <jetty-port>8080</jetty-port>
-    <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
+    <scalateEditor>\${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.workdir>\${basedir}/target/scalateWorkDir</scalate.workdir>
 
     <!-- version info -->
-    <jersey-version>$JERSEY_VERSION_REPLACEME$</jersey-version>
-    <jetty-version>$JETTY_VERSION_REPLACEME$</jetty-version>
-    <jetty-plugin-version>$JETTY_PLUGIN_VERSION_REPLACEME$</jetty-plugin-version>
-    <logback-version>$LOGBACK_VERSION_REPLACEME$</logback-version>
-    <scala-version>$SCALA_VERSION_REPLACEME$</scala-version>
-    <scala-plugin-version>$SCALA_PLUGIN_VERSION_REPLACEME$</scala-plugin-version>
-    <scalate-version>$SCALATE_VERSION_REPLACEME$</scalate-version>
-    <servlet-api-version>$SERVLET_API_VERSION_REPLACEME$</servlet-api-version>
-    <surefire-version>$SUREFIRE_VERSION_REPLACEME$</surefire-version>
+    <jersey-version>${jersey-version}</jersey-version>
+    <jetty-version>${jetty-version}</jetty-version>
+    <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
+    <logback-version>${logback-version}</logback-version>
+    <scala-version>${scala-version}</scala-version>
+    <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
+    <scalate-version>${project.version}</scalate-version>
+    <servlet-api-version>${servlet-api-version}</servlet-api-version>
+    <surefire-version>${surefire-version}</surefire-version>
    </properties>
    
   <dependencies>
@@ -37,37 +37,37 @@
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-war</artifactId>
-      <version>${scalate-version}</version>
+      <version>\${scalate-version}</version>
       <type>war</type>
     </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
-      <version>${servlet-api-version}</version>
+      <version>\${servlet-api-version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
-      <version>${scalate-version}</version>
+      <version>\${scalate-version}</version>
     </dependency>
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
-      <version>${jersey-version}</version>
+      <version>\${jersey-version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>${logback-version}</version>
+      <version>\${logback-version}</version>
     </dependency>
 
     <!-- testing -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-test</artifactId>
-      <version>${scalate-version}</version>
+      <version>\${scalate-version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -187,7 +187,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
-        <version>${scala-plugin-version}</version>
+        <version>\${scala-plugin-version}</version>
         <executions>
           <execution>
             <goals>
@@ -204,13 +204,13 @@
             <!-- arg>-unchecked</arg -->
             <arg>-deprecation</arg>
           </args>
-          <scala-version>${scala-version}</scala-version>
+          <scala-version>\${scala-version}</scala-version>
         </configuration>
       </plugin>
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-version}</version>
+        <version>\${surefire-version}</version>
         <configuration>
           <forkMode>once</forkMode>
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->
@@ -246,12 +246,12 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty-plugin-version}</version>
+        <version>\${jetty-plugin-version}</version>
         <configuration>
           <!--
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>${jetty.port}</port>
+              <port>\${jetty.port}</port>
               <maxIdleTime>60000</maxIdleTime>
             </connector>
           </connectors>
@@ -268,11 +268,11 @@
             </systemProperty>
             <systemProperty>
               <name>scalate.editor</name>
-              <value>${scalateEditor}</value>
+              <value>\${scalateEditor}</value>
             </systemProperty>
             <systemProperty>
               <name>scalate.temp.workingdir</name>
-              <value>${scalate.temp.workingdir}</value>
+              <value>\${scalate.temp.workingdir}</value>
             </systemProperty>
           </systemProperties>
           <scanIntervalSeconds>0</scanIntervalSeconds>

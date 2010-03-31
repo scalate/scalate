@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor name="scalate-archetype-empty">
+  <requiredProperties>
+<!--
+    <requiredProperty key="scala-version">
+      <defaultValue>${scala-version}</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="jersey-version">
+      <defaultValue>${jersey-version}</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="jetty-version">
+      <defaultValue>${jetty-version}</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="jetty-plugin-version">
+      <defaultValue>${jetty-plugin-version}</defaultValue>
+    </requiredProperty>
+-->
+  </requiredProperties>
+  <fileSets>
+    <!-- store the pom -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory/>
+      <includes>
+        <include>pom.xml</include>
+      </includes>
+    </fileSet>
+    <!-- place main sources -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+      <directory>src/main/scala</directory>
+      <includes>
+        <include>*.scala</include>
+        <include>**/*.scala</include>
+      </includes>
+    </fileSet>
+    <!-- place templates -->
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <!-- place resources -->
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <!-- place test sources -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+      <directory>src/test/scala</directory>
+      <includes>
+        <include>*.scala</include>
+        <include>**/*.scala</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</archetype-descriptor>

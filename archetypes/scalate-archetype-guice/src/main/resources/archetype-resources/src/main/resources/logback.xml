@@ -24,7 +24,6 @@
   <logger name="org.fusesource.scalate.jersey" level="DEBUG" />
 -->
 
-  <logger name="org.fusesource.scalate" level="DEBUG" />
   
   <logger name="org.fusesource.scalate.servlet.ServletTemplateEngine.SourceMap" level="INFO" />
   

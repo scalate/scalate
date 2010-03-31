@@ -69,7 +69,7 @@ class ArchetypeTestSupport {
 
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
     request.setUserProperties(props)
-    request.setGoals(Collections.singletonList("archetype:create"))
+    request.setGoals(Collections.singletonList("archetype:generate"))
     request.setBaseDirectory(targetDir)
     request.setProjectPresent(false)
     runMaven(request)
