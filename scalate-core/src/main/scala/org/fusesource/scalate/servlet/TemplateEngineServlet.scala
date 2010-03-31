@@ -16,12 +16,11 @@
  */
 package org.fusesource.scalate.servlet
 
+import _root_.org.fusesource.scalate.util.Logging
 import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.TemplateEngine
 
 object TemplateEngineServlet {
   protected var singleton: TemplateEngineServlet = _
@@ -36,8 +35,7 @@ object TemplateEngineServlet {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngineServlet extends HttpServlet {
-
+class TemplateEngineServlet extends HttpServlet with Logging {
   var templateEngine: ServletTemplateEngine = _
 
   override def init(config: ServletConfig) {
@@ -50,14 +48,27 @@ class TemplateEngineServlet extends HttpServlet {
     ServletTemplateEngine(getServletContext) = templateEngine
   }
 
-  
+
   override def service(request: HttpServletRequest, response: HttpServletResponse) {
     render(request.getServletPath, request, response)
   }
 
   def render(template: String, request: HttpServletRequest, response: HttpServletResponse): Unit = {
-    val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
-    context.layout(template)
+    val servletContext = getServletContext
+    val context = new ServletRenderContext(templateEngine, request, response, servletContext)
+
+    // lets try find an index page if we are given an empty URI which sometimes happens
+    // with jersey filter and guice servlet
+    val actualTemplate = if (template == null || template.length == 0 || template == "/") {
+      List("index.scaml", "index.ssp").find(u => servletContext.getRealPath(u) != null) match {
+        case Some(name) => debug("asked to resolve uri: " + template + " so delegating to: " + name); name
+        case _ => template
+      }
+    }
+    else {
+      template
+    }
+    context.layout(actualTemplate)
   }
 
 }

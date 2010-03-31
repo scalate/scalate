@@ -1,12 +1,13 @@
 package org.fusesource.scalate.guice
 
+import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import _root_.com.google.inject.servlet.ServletModule
 import _root_.com.google.inject.{Injector, Provides, Singleton}
 import _root_.com.sun.jersey.api.core.{PackagesResourceConfig, DefaultResourceConfig, ResourceConfig}
 import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.javax.servlet.http.HttpServlet
-import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
-import _root_.java.util.HashMap
+import _root_.java.{ util => ju}
+import _root_.scala.collection.JavaConversions._
 
 /**
  * A default Guice  {@link ServletModule} which registers Jersey and the Scalate servlets
@@ -20,6 +21,9 @@ class ScalateModule extends ServletModule {
    */
   implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder) = new RichBuilder(builder);
 
+  /**
+   * Configure any servlets or filters for the application
+   */
   override def configureServlets = {
     applyScalateServlets
     applyJerseyFilter
@@ -28,6 +32,9 @@ class ScalateModule extends ServletModule {
   // TODO these could come from the TemplateEngine?
   var scalateServletUris = List("*.ssp", "*.scaml")
 
+  /**
+   * Registers the Scalate servlets
+   */
   protected def applyScalateServlets = {
     val servlet = classOf[TemplateEngineServlet]
     bind(servlet).in(classOf[Singleton])
@@ -37,29 +44,46 @@ class ScalateModule extends ServletModule {
     }
   }
 
+  /**
+   * Registers the Jersey filter
+   */
   protected def applyJerseyFilter = filter("/*").through(classOf[GuiceContainer])
 
+  /**
+   * Creates the {@link GuiceContainer} to configure Jersey
+   */
   @Provides @Singleton
   def createGuiceContainer(injector: Injector): GuiceContainer = {
     val container = new ScalateGuiceContainer(injector)
-    println("created Guice configured container: " + container)
     container
   }
 
+  /**
+   * Creates the resource configuration for the Jersey {@link GuiceContainer}
+   */
   @Provides @Singleton
   def createResourceConfig: ResourceConfig = {
-    val map = new HashMap[String, AnyRef]()
-    map.put("com.sun.jersey.config.property.packages", resourcePackageNames.mkString(";"))
-    map.put("com.sun.jersey.config.property.WebPageContentRegex", webPageContentRegex)
-    map.put("com.sun.jersey.config.feature.ImplicitViewables", "true")
-    map.put("com.sun.jersey.config.feature.Redirect", "true")
-    map.put("com.sun.jersey.config.feature.Trace", "true")
-
-    val answer = new PackagesResourceConfig(map)
-    //answer.setPropertiesAndFeatures(map)
-    println("Created Guice configured resourceConfig: " + answer + " with properties: " + answer.getProperties)
-    answer
+    // TODO shame there's not an easy way to go ju.Map -> Map in the standard library!
+    val jumap = new ju.HashMap[String, AnyRef]()
+    for ((k, v) <- createResourceConfigProperties) {
+      jumap.put(k, v)
+    }
+    new PackagesResourceConfig(jumap)
   }
+
+  /**
+   * Creates the properties used to configure the {@link GuiceContainer}'s resource config in
+   * {@link #createResourceConfig} for Jersey
+   */
+  @Provides @Singleton
+  def createResourceConfigProperties: Map[String, AnyRef] = Map(
+    "com.sun.jersey.config.property.packages" -> resourcePackageNames.mkString(";"),
+    "com.sun.jersey.config.property.WebPageContentRegex" -> webPageContentRegex.mkString("|"),
+    "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
+    "com.sun.jersey.config.feature.Redirect" -> "true",
+    "com.sun.jersey.config.feature.Trace" -> "true"
+  )
+
 
   // TODO demonstrate injection of the TemplateEngine??
 
@@ -67,7 +91,7 @@ class ScalateModule extends ServletModule {
   /**
    * The regular expression to find web content which should not be processed by the Jersey filter
    */
-  def webPageContentRegex = ".+\\.(ssp|scaml)|(/(images|css|style|static)/.*)"
+  def webPageContentRegex: List[String] = List(".+\\.(ssp|scaml)", "/images/.*", "/css/.*")
 
   /**
    * Returns a list of package names which are recursively scanned looking for JAXRS resource classes

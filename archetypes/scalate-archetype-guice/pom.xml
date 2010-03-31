@@ -8,9 +8,9 @@
     </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>scalate-archetype-empty</artifactId>
-  <name>Scalate :: Archetype :: Empty</name>
-  <description>An archetype which creates an empty Scalate web application</description>
+  <artifactId>scalate-archetype-guice</artifactId>
+  <name>Scalate :: Archetype :: Guice</name>
+  <description>An archetype which creates an empty Scalate Guice web application</description>
 
   <build>
     <plugins>

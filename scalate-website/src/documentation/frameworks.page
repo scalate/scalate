@@ -1,0 +1,34 @@
+---
+title: Frameworks
+in_menu: false
+sort_info: 2
+--- name:overview
+# Frameworks
+
+Using Scalate with popular web frameworks
+
+--- name:content
+
+There are lots of different web frameworks out there to suit all tastes and requirements:
+
+<div class="left" markdown="1">
+# [Jog](jog.html)
+</div>
+<div class="right" markdown="1">
+Scalate with JAXRS (Jersey) on Guice
+</div>
+
+<div class="left" markdown="1">
+# [Lift](lift.html)
+</div>
+<div class="right" markdown="1">
+Scalate with the [Lift framework](http://liftweb.net/) 
+</div>
+
+
+<div class="left" markdown="1">
+# [Play](http://www.playframework.org/modules/scalate)
+</div>
+<div class="right" markdown="1">
+Scalate with the [Play framework](http://www.playframework.org/)
+</div>

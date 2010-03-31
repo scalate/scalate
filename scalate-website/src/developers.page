@@ -1,0 +1,32 @@
+---
+title: Developers
+in_menu: false
+--- name:overview
+
+# Developers
+Various links for developers 
+
+--- name:content 
+
+<div class="left" markdown="1">
+# Maven reports
+</div>
+<div class="right" markdown="1">
+## Snapshots
+
+* [1.0-SNAPSHOT](http://scalate.fusesource.org/maven/1.0-SNAPSHOT/)
+
+## Releases
+
+* [1.0](http://scalate.fusesource.org/maven/1.0/)
+
+</div>
+
+<div class="left" markdown="1">
+# Developer Links
+</div>
+<div class="right" markdown="1">
+* [Building](building.html)
+* [Contributing](contributing.html)
+
+</div>

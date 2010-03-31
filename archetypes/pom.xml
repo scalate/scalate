@@ -9,12 +9,14 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>org.fusesource.scalate.tooling</groupId>
   <artifactId>archetypes</artifactId>
   <name>Scalate :: Archetypes</name>
   <packaging>pom</packaging>
 
   <modules>
     <module>scalate-archetype-empty</module>
+    <module>scalate-archetype-guice</module>
     <module>scalate-archetypes-itests</module>
   </modules>
 

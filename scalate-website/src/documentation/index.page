@@ -11,7 +11,7 @@ All the information you need to be become an expert with Scalate
 --- name:content
 
 <div class="left" markdown="1">
-# [FAQ](faq.html)
+# [FAQ](../faq.html)
 </div>
 <div class="right" markdown="1">
 Frequently asked questions on all things Scalate
@@ -24,29 +24,37 @@ Frequently asked questions on all things Scalate
 A detailed walk through Scalate and how to use it.
 </div>
 
+<div class="left" markdown="1">
+# [Frameworks](frameworks.html)
+</div>
+<div class="right" markdown="1">
+How to use Scalate with popular web frameworks
+</div>
 
 <div class="left" markdown="1">
-# [Scaml Reference](scaml-reference.html)
+# [Scaml](scaml-reference.html)
 </div>
 <div class="right" markdown="1">
 Reference for the Scaml template language. 
-Scaml is a Scala version of [Haml](http://haml-lang.com/)
+
+Scaml is a Scala version of [Haml](http://haml-lang.com/) and its very DRY for generating markup, XML, HTML.
 </div>
 
 
 <div class="left" markdown="1">
-# [SSP Reference](ssp-reference.html)
+# [SSP](ssp-reference.html)
 </div>
 <div class="right" markdown="1">
 Reference for the SSP template language. 
-SSP is a Scala version of JSP / ASP / Erb
+
+SSP is a Scala version of JSP / ASP / Erb so its easy to pick up if you've used one of those and can be used to generate any textual output.
 </div>
 
 <div class="left" markdown="1">
-# [Maven Reports](../maven.html)
+# [Developers](../developers.html)
 </div>
 <div class="right" markdown="1">
-Various generated reports from Maven
+Various links for developers along with generated reports from Maven
 </div>
 
 

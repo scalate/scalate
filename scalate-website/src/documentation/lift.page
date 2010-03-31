@@ -1,0 +1,20 @@
+---
+title: Lift
+in_menu: false
+sort_info: 2
+--- name:overview
+# Jog
+
+Using Scalate with Lift
+
+--- name:content
+
+<h1>Under Construction!</h1>
+
+<div class="left" markdown="1">
+# Overview
+</div>
+<div class="right" markdown="1">
+Lift is a popular Scala based web framework with particularly powerful Comet support.
+</div>
+
