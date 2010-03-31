@@ -5,12 +5,12 @@ template: ~
 <html lang="{lang:}">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates" />
-    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp" />
-    <meta name="author" content="Scalate" />
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
 
-    <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
-    <link href="{relocatable: css/pygmentize.css}" rel="stylesheet" type="text/css" />
+    <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css">
+    <link href="{relocatable: css/pygmentize.css}" rel="stylesheet" type="text/css">
     
     <title>{title:}</title>
 
@@ -32,7 +32,7 @@ template: ~
     <div class="wrapper">
       <% if context.node.node_info[:page].meta_info.has_key?('project_logo') %>
       <div class="logo">
-        <img src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}"/>
+        <img alt="{project_name:} logo" src="{relocatable:<%= context.node.node_info[:page].meta_info['project_logo'] %>}"/>
       </div>
       <% end %>
       <div class="message">
