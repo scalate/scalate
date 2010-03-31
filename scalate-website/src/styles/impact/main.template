@@ -5,9 +5,9 @@ template: ~
 <html lang="{lang:}">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="description goes here" />
-    <meta name="keywords" content="keywords,goes,here" />
-    <meta name="author" content="Your Name" />
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates" />
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp" />
+    <meta name="author" content="Scalate" />
 
     <link href="{relocatable: css/site.css}" rel="stylesheet" type="text/css" />
     <link href="{relocatable: css/pygmentize.css}" rel="stylesheet" type="text/css" />
