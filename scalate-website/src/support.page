@@ -8,7 +8,7 @@ sort_info: 55
 We can help!
 
 --- name:content pipeline:textile,tags
-You may find the "Frequently Asked Questions (FAQ)":documentation/faq.html useful.
+You may find the "Frequently Asked Questions (FAQ)":faq.html useful.
 
 We love feedback of all kinds; whether it's thoughts, suggestions, or bug reports. To submit feedback please use the 
 <a href="{project_issue_url:}">Scalate Issue Tracker</a>. If you have not done so already you can <a href=" http://fusesource.com/forge/register">register here</a>.

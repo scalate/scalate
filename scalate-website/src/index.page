@@ -17,7 +17,7 @@ Scalate is a [Scala](http://www.scala-lang.org) based template engine which can 
 
 * stand alone in any JVM
 * as a servlet in any Java in a web application 
-* when using JAXRS with [Jersey](http://jersey.dev.java.net/)
+* when using JAXRS with [Jersey](https://jersey.dev.java.net/)
 * in the [Play Framework](http://www.playframework.org/) via [play-scalate](http://github.com/pk11/play-scalate)
 * in [Apache Camel](http://camel.apache.org/scalate.html) for transforming messages and templating
 
