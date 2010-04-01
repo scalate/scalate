@@ -19,31 +19,25 @@ Scalate is a template engine based on the Scala language.
 
 If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
-
-<div class="compare"><div class="compare-left">
-
-<h3>.ssp file</h3>
-{pygmentize:: jsp}
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
 <%@ var user: User %>
 <p>Hi ${user.name},</p>
 <% for(i <- 1 to 3) { %>
 <p><%= i %></p>
 <% } %>
 <p>See, I can count!</p>
-{pygmentize}
-
-</div><div class="compare-right">
-
-<h3>produces</h3>
-{pygmentize:: xml}
+-----------------------------
+xml: produces
+-----------------------------
 <p>Hi James,</p>
 <p>1</p>
 <p>2</p>
 <p>3</p>
 <p>See, I can count!</p>
-{pygmentize}
-
-</div><br class="clear"/></div>
+{pygmentize_and_compare}
 
 For full documentation of the Ssp syntax see the [Ssp Reference Guide](ssp-reference.html)
 
@@ -60,29 +54,24 @@ However, Scaml avoids the need for explicitly coding XHTML into the template,
 because it is actually an abstract description of the XHTML,
 with some code to generate dynamic content.
 
-<div class="compare"><div class="compare-left">
-  
-<h3>.scaml file</h3>
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: .scaml file
+-----------------------------
 -@ var user: User
 %p Hi #{user.name},
 - for(i <- 1 to 3)
   %p= i
 %p See, I can count!
-{pygmentize}
-
-</div><div class="compare-right">
-  
-<h3>produces</h3>
-{pygmentize:: xml}
+-----------------------------
+xml: produces
+-----------------------------
 <p>Hi James,</p>
 <p>1</p>
 <p>2</p>
 <p>3</p>
 <p>See, I can count!</p>
-{pygmentize}  
-
-</div><br class="clear"/></div>
+{pygmentize_and_compare}
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
