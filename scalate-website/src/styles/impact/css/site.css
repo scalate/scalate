@@ -48,7 +48,8 @@ img {
 #navigation { width: 100%; float: left;
     font-family: Helvetica,Verdana,Arial,sans-serif; 
     background: black; 
-	text-align:center; padding: 8px;
+	text-align:center; 
+	padding: 8px 0 8px 0;
     color: #b55; 
 	font-size: 10pt; 
 	font-weight: bold;
