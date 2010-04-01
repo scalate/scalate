@@ -30,56 +30,63 @@ which is plain old text.
 Any Scaml line that's not interpreted as something else
 is taken to be plain text, and passed through unmodified.
 For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %gee
   %whiz
     Wow this is cool!
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <gee>
   <whiz>
     Wow this is cool!
   </whiz>
 </gee>
-{pygmentize}
+{pygmentize_and_compare}
 
 Note that HTML tags are passed through unmodified as well.
 If you have some HTML you don't want to convert to Scaml,
 or you're converting a file line-by-line,
 you can just include it as-is.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p
   <div id="blah">Blah!</div>
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>
   <div id="blah">Blah!</div>
 </p>
-{pygmentize}
+{pygmentize_and_compare}
 
 ### Escaping: `\`
 
 The backslash character escapes the first character of a line,
 allowing use of otherwise interpreted characters as plain text.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %title
   = title
   \= title
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <title>
   MyPage
   = title
 </title>
-{pygmentize}
+{pygmentize_and_compare}
 
 ## HTML Elements
 
@@ -91,21 +98,23 @@ It's followed immediately by the name of an element,
 then optionally by modifiers (see below), a space,
 and text to be rendered inside the element.
 It creates an element in the form of `<element></element>`.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %one
   %two
     %three Hey there
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <one>
   <two>
     <three>Hey there</three>
   </two>
 </one>
-{pygmentize}
+{pygmentize_and_compare}
 
 Any string is a valid element name;
 Scaml will automatically generate opening and closing tags for any element.
@@ -122,47 +131,58 @@ so logic will work in it and local variables may be used.
 Quote characters within the attribute
 will be replaced by appropriate escape sequences.
 The hash is placed after the tag is defined.
-For example:
-{pygmentize:: haml}
-%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
-{pygmentize}
 
-is rendered to:
-{pygmentize:: xml}
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
+-----------------------------
+xml: renders to
+-----------------------------
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 Attribute hashes can also be stretched out over multiple lines
 to accommodate many attributes.
 However, newlines may only be placed immediately after commas.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %script{:type => "text/javascript",
         :src  => "javascripts/script"}
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <script type="text/javascript" src="javascripts/script"/>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 Complex expression are supported if you wrap them between the `{` 
 and `}` characters.
-For example:
-{pygmentize:: haml}
-%li{:counter={3+4}} Stuff
-{pygmentize}
 
-Would render as:
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%li{:counter={3+4}} Stuff
+-----------------------------
+xml: renders to
+-----------------------------
 <li counter="7">Stuff</li>
-{pygmentize}
+{pygmentize_and_compare}
 
 #### HTML-style Attributes: `()`
 
 Scaml also supports a terser, less Scala-specific attribute syntax
 based on HTML's attributes.
 These are used with parentheses instead of brackets, like so:
+
 {pygmentize:: haml}
 %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 {pygmentize}
@@ -182,17 +202,20 @@ This is the same as:
 
 Complex expression are supported if you wrap them between the `{` 
 and `}` characters.
-For example:
-{pygmentize:: haml}
-%li(counter={3+4}) Stuff
-{pygmentize}
 
-Would render as:
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%li(counter={3+4}) Stuff
+-----------------------------
+xml: renders to
+-----------------------------
 <li counter="7">Stuff</li>
-{pygmentize}
+{pygmentize_and_compare}
 
 You can use both syntaxes together:
+
 {pygmentize:: haml}
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
@@ -265,35 +288,43 @@ Some attributes, such as "checked" for `input` tags or "selected" for `option` t
 are "boolean" in the sense that their values don't matter -
 it only matters whether or not they're present.
 In HTML (but not XHTML), these attributes can be written as
-
-    <input selected>
+{pygmentize:: xml}
+<input selected>
+{pygmentize}
 
 To do this in Scaml using hash-style attributes, just assign a Scala
 `true` value to the attribute:
-
-    %input{:selected => true}
+{pygmentize:: haml}
+%input{:selected => true}
+{pygmentize}
 
 In XHTML, the only valid value for these attributes is the name of the
 attribute.  Thus this will render in XHTML as
-
-    <input selected="selected"/>
+{pygmentize:: xml}
+<input selected="selected"/>
+{pygmentize}
 
 To set these attributes to false, simply assign them to a Scala false value.
 In both XHTML and HTML
-
-    %input{:selected => false}
+{pygmentize:: haml}
+%input{:selected => false}
+{pygmentize}
 
 will just render as
 
-    <input/>
+{pygmentize:: xml}
+<input/>
+{pygmentize}
 
 HTML-style boolean attributes can be written just like HTML:
-
-    %input(selected)
+{pygmentize:: haml}
+%input(selected)
+{pygmentize}
 
 or using `true` and `false`:
-
-    %input(selected=true)
+{pygmentize:: haml}
+%input(selected=true)
+{pygmentize}
 
 ### Class and ID: `.` and `#`
 
@@ -303,35 +334,40 @@ and `id` attributes of an element, respectively.
 Multiple class names can be specified in a similar way to CSS,
 by chaining the class names together with periods.
 They are placed immediately after the tag and before an attributes hash.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %div#things
   %span#rice Chicken Fried
   %p.beans{ :food => "true" } The magical fruit
   %h1.class.otherclass#id La La La
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <div id="things">
   <span id="rice">Chicken Fried</span>
   <p class="beans" food="true">The magical fruit</p>
   <h1 id="id" class="class otherclass">La La La</h1>
 </div>
-{pygmentize}
+{pygmentize_and_compare}
 
 And,
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 #content
   .articles
     .article.title Doogie Howser Comes Out
     .article.date 2006-11-05
     .article.entry
       Neil Patrick Harris would like to dispel any rumors that he is straight
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <div id="content">
   <div class="articles">
     <div class="article title">Doogie Howser Comes Out</div>
@@ -341,26 +377,28 @@ is rendered to:
     </div>
   </div>
 </div>
-{pygmentize}
+{pygmentize_and_compare}
 
 #### Implicit Div Elements
 
 Because divs are used so often, they're the default elements.
 If you only define a class and/or id using `.` or `#`,
 a div is automatically used.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 #collection
   .item
     .description What a cool item!
-{pygmentize}
-
-is the same as:
-{pygmentize:: haml}
+-----------------------------
+haml: is the same as
+-----------------------------
 %div#collection
   %div.item
     %div.description What a cool item!
-{pygmentize}
+{pygmentize_and_compare}
 
 and is rendered to:
 {pygmentize:: xml}
@@ -376,31 +414,40 @@ and is rendered to:
 The forward slash character, when placed at the end of a tag definition,
 causes the tag to be self-closed.
 For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %br/
 %meta{"http-equiv" => "Content-Type", :content => "text/html"}/
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
-<br />
-<meta http-equiv="Content-Type" content="text/html" />
-{pygmentize}
+-----------------------------
+xml: renders to
+-----------------------------
+<br/>
+<meta http-equiv="Content-Type" content="text/html"/>
+{pygmentize_and_compare}
+</div>
 
 Some tags are automatically closed, as long as they have no content.
 `meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.
 This list can be customized by setting the [`ScamlOptions.autoclose`](#autoclose-option) option.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %br
 %meta{"http-equiv" => "Content-Type", :content => "text/html"}
-{pygmentize}
-
-is also rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <br/>
 <meta http-equiv="Content-Type" content="text/html"/>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 ### Whitespace Removal: `>` and `<`
 
@@ -413,65 +460,77 @@ and `<` faces into the tag and eats the whitespace on the inside.
 They're placed at the end of a tag definition,
 after class, id, and attribute declarations
 but before `/` or `=`.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %blockquote<
   %div
     Foo!
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <blockquote><div>
   Foo!
 </div></blockquote>
-{pygmentize}
+{pygmentize_and_compare}
 
 And:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %img
 %img>
 %img
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
-<img /><img /><img />
-{pygmentize}
+-----------------------------
+xml: renders to
+-----------------------------
+<img/><img/><img/>
+{pygmentize_and_compare}
 
 And:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p<= "Foo\nBar"
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>Foo
 Bar</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 And finally:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %img
 %pre><
   foo
   bar
 %img
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <img /><pre>foo
 bar</pre><img />
-{pygmentize}
+{pygmentize_and_compare}
 
 ## Doctype: `!!!`
 
 When describing HTML documents with Scaml,
 you can have a document type or XML prolog generated automatically
 by including the characters `!!!`.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 !!! XML
 !!!
 %html
@@ -480,10 +539,9 @@ For example:
   %body
     %h1 I am the international space station
     %p Sign my guestbook
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -495,54 +553,55 @@ is rendered to:
     <p>Sign my guestbook</p>
   </body>
 </html>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 You can also specify the specific doctype after the `!!!`
 When the [`:format`](#format) is set to `:xhtml` (the default),
 the following doctypes are supported:
 
-`!!!`
-: XHTML 1.0 Transitional<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">`
+#### `!!!`
+> XHTML 1.0 Transitional
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">`
 
-`!!! Strict`
-: XHTML 1.0 Strict<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">`
+#### `!!! Strict`
+> XHTML 1.0 Strict
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">`
 
-`!!! Frameset`
-: XHTML 1.0 Frameset<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">`
+#### `!!! Frameset`
+> XHTML 1.0 Frameset<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">`
 
-`!!! 5`
-: XHTML 5<br/>
- `<!DOCTYPE html>`<br/>
+#### `!!! 5`
+> XHTML 5<br/>
+> `<!DOCTYPE html>`<br/>
 
-`!!! 1.1`
-: XHTML 1.1<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">`
+#### `!!! 1.1`
+> XHTML 1.1<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">`
 
-`!!! Basic`
-: XHTML Basic 1.1<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> `
+#### `!!! Basic`
+> XHTML Basic 1.1<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> `
 
-`!!! Mobile`
-: XHTML Mobile 1.2<br/>
- `<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">`
+#### `!!! Mobile`
+> XHTML Mobile 1.2<br/>
+> `<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">`
 
 When the [`:format`](#format) option is set to `:html4`,
 the following doctypes are supported:
 
-`!!!`
-: HTML 4.01 Transitional<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">`
+#### `!!!`
+> HTML 4.01 Transitional<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">`
 
-`!!! Strict`
-: HTML 4.01 Strict<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">`
+#### `!!! Strict`
+> HTML 4.01 Strict<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">`
 
-`!!! Frameset`
-: HTML 4.01 Frameset<br/>
- `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">`
+#### `!!! Frameset`
+> HTML 4.01 Frameset<br/>
+> `<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">`
 
 When the [`:format`](#format) option is set to `:html5`,
 `!!!` is always `<!DOCTYPE html>`.
@@ -550,15 +609,18 @@ When the [`:format`](#format) option is set to `:html5`,
 If you're not using the UTF-8 character set for your document,
 you can specify which encoding should appear
 in the XML prolog in a similar way.
-For example:
-{pygmentize:: haml}
-!!! XML iso-8859-1
-{pygmentize}
 
-is rendered to:
-{pygmentize:: xml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+!!! XML iso-8859-1
+-----------------------------
+xml: renders to
+-----------------------------
 <?xml version="1.0" encoding="iso-8859-1" ?>
-{pygmentize}
+{pygmentize_and_compare}
 
 ## Comments
 
@@ -570,58 +632,67 @@ and those that don't.
 
 The forward slash character, when placed at the beginning of a line,
 wraps all text after it in an HTML comment.
-For example:
-{pygmentize:: haml}
-%peanutbutterjelly
-  / This is the peanutbutterjelly element
-  I like sandwiches!
-{pygmentize}
 
-is rendered to:
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%peanutbutterjelly
+  / This is the comment
+  I like sandwiches!
+-----------------------------
+xml: renders to
+-----------------------------
 <peanutbutterjelly>
-  <!-- This is the peanutbutterjelly element -->
+  <!-- This is the comment -->
   I like sandwiches!
 </peanutbutterjelly>
-{pygmentize}
+{pygmentize_and_compare}
 
 The forward slash can also wrap indented sections of code. For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 /
   %p This doesn't render...
   %div
     %h1 Because it's commented out!
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <!--
   <p>This doesn't render...</p>
   <div>
     <h1>Because it's commented out!</h1>
   </div>
 -->
-{pygmentize}
+{pygmentize_and_compare}
 
 #### Conditional Comments: `/[]`
 
 You can also use [Internet Explorer conditional comments](http://www.quirksmode.org/css/condcom.html)
 by enclosing the condition in square brackets after the `/`.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 /[if IE]
   %a{ :href => "http://www.mozilla.com/en-US/firefox/" }
     %h1 Get Firefox
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <!--[if IE]>
   <a href="http://www.mozilla.com/en-US/firefox/">
     <h1>Get Firefox</h1>
   </a>
 <![endif]-->
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 ### Scaml Comments: `-#`
 
@@ -631,34 +702,39 @@ Any text following this isn't rendered in the resulting document
 at all.
 
 For example:
-{pygmentize:: haml}
-  %p foo
-  -# This is a comment
-  %p bar
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%p foo
+-# This is a comment
+%p bar
+-----------------------------
+xml: renders to
+-----------------------------
 <p>foo</p>
 <p>bar</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 You can also nest text beneath a silent comment.
 None of this text will be rendered.
-For example:
-{pygmentize:: haml}
+
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p foo
 -#
   This won't be displayed
     Nor will this
 %p bar
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>foo</p>
 <p>bar</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 ## Scala Evaluation
 
@@ -713,42 +789,53 @@ Which is the same as:
 
 The equals character is followed by Scala code.
 This code is evaluated and the output is inserted into the document.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p
   = List("hi", "there", "reader!").mkString(" ")
   = "yo"
-{pygmentize}
-
-is compiled to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>
   hi there reader!
   yo
 </p>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 If the [`ScamlOptions.escape_html`](#escape_html-option) option is set, `=` will sanitize any
-HTML-sensitive characters generated by the script. For example:
-{pygmentize:: haml}
-= """<script>alert("I'm evil!");</script>"""
-{pygmentize}
+HTML-sensitive characters generated by the script. 
 
-would be rendered to
-{pygmentize:: xml}
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+= """<script>alert("I'm evil!");</script>"""
+-----------------------------
+xml: renders to
+-----------------------------
 &lt;script&gt;alert(&quot;I'm evil!&quot;);&lt;/script&gt;
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 `=` can also be used at the end of a tag to insert Scala code within that tag.
-For example:
-{pygmentize:: haml}
-%p= "hello"
-{pygmentize}
 
-would be rendered to
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%p= "hello"
+-----------------------------
+xml: renders to
+-----------------------------
 <p>hello</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 ### Running Scala: `-`
 
@@ -759,36 +846,37 @@ This code is evaluated but *not* inserted into the document.
 almost all processing code and logic should be restricted
 to the Controller, the Helper, or partials.**
 
-For example:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 - var foo = "hello"
 - foo += " there"
 - foo += " you!"
 %p= foo
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>hello there you!</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 Or alternatively, if you have a large block of Scala code, you can
 nest it under the hyphen character as demonstrated by the following example:
 
-For example:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 -
   var foo = "hello"
-      // note: you can use creative indentation in the block
       foo += " there"
   foo += " you!"
 %p= foo
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>hello there you!</p>
-{pygmentize}
+{pygmentize_and_compare}
 
 #### Scala Blocks
 
@@ -798,29 +886,30 @@ A block begins whenever the indentation is increased
 after a Scala insertion or evaluation command.
 It ends when the indentation decreases.
 
-<!-- TODO
-(as long as it's not an `else` clause or something similar).
--->
-
-For example:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 - for(i <- 42 to 46)
   %p= i
 %p See, I can count!
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>42</p>
 <p>43</p>
 <p>44</p>
 <p>45</p>
 <p>46</p>
 <p>See, I can count!</p>
-{pygmentize}
+{pygmentize_and_compare}
 
-Another example:
-{pygmentize:: haml}
+And,
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p
   - 2 match
     - case 1 =>
@@ -829,31 +918,32 @@ Another example:
       = "two"
     - case 3 =>
       = "three"
-{pygmentize}
-
-is rendered to:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>
   two
 </p>
-{pygmentize}
+{pygmentize_and_compare}
     
 When inserting evaluated statements, it can also take advantage of Scala blocks. It can be handy
-for passing partial functions.  For example:
+for passing partial functions.  
+
+For example:
 {pygmentize:: haml}
 %p
   = List(1,2,3).foldLeft("result: ")
     - (a,x)=>
       - a+x 
 {pygmentize}
-          
-Is the same as:
+
+is the same as:
 {pygmentize:: haml}
 %p
   = List(1,2,3).foldLeft("result: ") { (a,x)=> { a+x } }
-{pygmentize}
+{pygmentize_and_compare}
 
-would be rendered to
+would be rendered to:
 {pygmentize:: xml}
 <p>
   result: 123
@@ -867,15 +957,18 @@ formating on its input.
 
 Scaml always produces HTML source which is easy to read since
 it properly indented.  Even dynamically generated output is 
-properly indented.  For example:
-{pygmentize:: haml}
+properly indented. 
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %html
   %p
     = "line1\nline2\nline3"
-{pygmentize}
-
-renders to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <html>
   <p>
     line1
@@ -883,7 +976,7 @@ renders to
     line3
   </p>
 </html>
-{pygmentize}
+{pygmentize_and_compare}
 
 Sometimes you don't want Scaml to indent the dynamically generated content.
 For example, tags like `pre` and `textarea` are whitespace-sensitive;
@@ -891,21 +984,25 @@ indenting the text makes them render wrong.
 
 When you use `~` instead of `=`,
 Scaml will convert newlines to the XHTML newline escape code, `&#x000A;` and avoid
-adding spaces for indentation.  For example:
-{pygmentize:: haml}
+adding spaces for indentation.  
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %html
   %pre
     ~ "line1\nline2\nline3"
-{pygmentize}
-
-renders to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <html>
   <pre>
     line1&#x000A;line2&#x000A;line3
   </pre>
 </html>
-{pygmentize}
+{pygmentize_and_compare}
+
 
 #### Ugly Preservation: `~~` {#tilde-tilde}
 
@@ -913,15 +1010,16 @@ Sometimes, you don't want Scaml to indent or apply the whitespace transformation
 the evaluated expression. When this is the case, use `~~` to use ugly whitespace
 preservation.  We call it ugly because the produce HTML will not properly indented.
 
-Example:
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %html
   %p
     ~~ "line1\nline2\nline3"
-{pygmentize}
-
-renders to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <html>
   <p>
 line1
@@ -929,43 +1027,49 @@ line2
 line3
   </p>
 </html>
-{pygmentize}
+{pygmentize_and_compare}
 
 ### Scala Interpolation: `#{}`
 
 Scala code can be interpolated within plain text using `#{}`.
-For example:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p This is #{quality} cake!
-{pygmentize}
-
-is the same as
-{pygmentize:: haml}
+-----------------------------
+xml: is the same as
+-----------------------------
 %p= "This is the "+(quality)+" cake!"
-{pygmentize}
+{pygmentize_and_compare}
 
-and might rendered to
+and renders to
 {pygmentize:: xml}
 <p>This is scrumptious cake!</p>
 {pygmentize}
     
 Backslashes can be used to escape `#{` strings,
 but they don't act as escapes anywhere else in the string.
-For example:
-{pygmentize:: haml}
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p
   A slash make a difference here: \#{name} is set to: \\#{name}
   But is ignored for: \# or \\
-{pygmentize}
-
-might rendered to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>
   A slash make a difference here: #{name} is set to: \Hiram
   But is ignored for: \# or \\
 </p>
-{pygmentize}
-    
+{pygmentize_and_compare}
+</div>
+
 <!--
 Interpolation can also be used within [filters](#filters).
 For example:
@@ -991,29 +1095,34 @@ might compile to
 An ampersand followed by one or two equals characters
 evaluates Scala code just like the equals without the ampersand,
 but sanitizes any HTML-sensitive characters in the result of the code.
-For example:
-{pygmentize:: haml}
-&= "I like cheese & crackers"
-{pygmentize}
 
-renders to
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+&= "I like cheese & crackers"
+-----------------------------
+xml: renders to
+-----------------------------
 I like cheese &amp; crackers
-{pygmentize}
+{pygmentize_and_compare}
+
 
 If the [`ScamlOptions.escape_html`](#escape_html-option) option is set,
 `&=` behaves identically to `=`.
 
 `&` can also be used on its own so that `#{}` interpolation is escaped.
-For example,
-{pygmentize:: haml}
-& I like #{"cheese & crackers"}
-{pygmentize}
 
-renders to
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+& I like #{"cheese & crackers"}
+-----------------------------
+xml: renders to
+-----------------------------
 I like cheese &amp; crackers
-{pygmentize}
+{pygmentize_and_compare}
 
 ### Unescaping HTML: `!=` {#unescaping_html}
 
@@ -1025,27 +1134,32 @@ By default, the single equals doesn't sanitize HTML either.
 However, if the [`:escape_html`](#escape_html-option) option is set,
 `=` will sanitize the HTML, but `!=` still won't.
 For example, if `:escape_html` is set:
-{pygmentize:: haml}
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 = "I feel <strong>!"
 != "I feel <strong>!"
-{pygmentize}
-
-renders to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 I feel &lt;strong&gt;!
 I feel <strong>!
-{pygmentize}
+{pygmentize_and_compare}
 
 `!` can also be used on its own so that `#{}` interpolation is unescaped.
-For example,
-{pygmentize:: haml}
-! I feel #{"<strong>"}!
-{pygmentize}
 
-renders to
-{pygmentize:: xml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+! I feel #{"<strong>"}!
+-----------------------------
+xml: renders to
+-----------------------------
 I feel <strong>!
-{pygmentize}
+{pygmentize_and_compare}
 
 ## Filters: `:` {#filters}
 
@@ -1056,24 +1170,25 @@ to another filtering program and add the result to the output of Haml.
 The syntax is a colon followed by an optional list of filter flags and then a colon
 separated list of filter names.
 
-A simple example,
-{pygmentize:: haml}
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %p
   :markdown
     Markdown
     ========
     
     Hello, *World*
-{pygmentize}
-
-is compiled to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <p>
   <h1>Markdown</h1>
 
   <p>Hello, <em>World</em></p>
 </p>
-{pygmentize}
+{pygmentize_and_compare}
 
 ### Filter Interpolation
 
@@ -1081,71 +1196,87 @@ If you use the `!` or `&` filter flags, you can have Scala code
 interpolated with `#{}` expressions.  It is invalid to use both
 the `!` and `&` flags at the same time. 
 
-The `&` flag enables sanitized interpolations.  For example,
-{pygmentize:: haml}
+The `&` flag enables sanitized interpolations.  
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 - var flavor = "<raspberry/>"
 #content
   :&markdown
     I *really* prefer #{flavor} jam.
-{pygmentize}
-
-is rendered to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <div id="content">
   <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
 </div>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
-The `!` flag enables non-sanitized interpolations.  For example,
-{pygmentize:: haml}
+The `!` flag enables non-sanitized interpolations.
+
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 - var flavor = "<raspberry/>"
 #content
   :!markdown
     I *really* prefer #{flavor} jam.
-{pygmentize}
-
-is rendered to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <div id="content">
   <p>I <em>really</em> prefer <raspberry/>; jam.</p>
 </div>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 ### Filter Whitespace Preservation
 
 The `~` filter flag enables preserves the white space of the content.
 The indent level is left unchanged and newlines are converted to `&#x000A;`
 
-For example:
-{pygmentize:: haml}
+<div class="wide">
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %html
   %p<
     :~plain
           Indentation levels are not enforced in filters.
         #{Interpolation} is disabled by default
       Last line
-{pygmentize}
-
-is rendered to
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <html>
   <p>    Indentation levels are not enforced in filters.&#x000A;  #{Interpolation} is disabled by default&#x000A;Last line</p>
 </html>
-{pygmentize}
+{pygmentize_and_compare}
+</div>
 
 ### Filter Chaining
 
 More than one filter can be be used by separating each filter name with a colon.  When
 this is done, the filters are chained together so that the output of filter on right, is
-passed as input to the filter on the left.  For example:
-{pygmentize:: haml}
+passed as input to the filter on the left.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
 %pre
   :escaped :javascript
     alert("Hello");
-{pygmentize}
-
-Is rendered as:
-{pygmentize:: xml}
+-----------------------------
+xml: renders to
+-----------------------------
 <pre>
   &lt;script type='text/javascript'&gt;
     //&lt;![CDATA[
@@ -1153,8 +1284,7 @@ Is rendered as:
     //]]&gt;
   &lt;/script&gt;
 </pre>
-{pygmentize}
-
+{pygmentize_and_compare}
 
 ### Available Filters
 
@@ -1162,30 +1292,30 @@ Scaml has the following filters defined:
 
 {#plain-filter}
 #### `:plain`
-Does not parse the filtered text.
-This is useful for large blocks of text or HTML.  Really handy when
-when you don't want lines starting with `.` or `-` to be parsed.
+> Does not parse the filtered text.
+> This is useful for large blocks of text or HTML.  Really handy when
+> when you don't want lines starting with `.` or `-` to be parsed.
 
 {#javascript-filter}
 #### `:javascript`
-Surrounds the filtered text with `<script>` and CDATA tags.
-Useful for including inline Javascript.
+> Surrounds the filtered text with `<script>` and CDATA tags.
+> Useful for including inline Javascript.
 
 <!--
 {#css-filter}
 #### `:css`
-Surrounds the filtered text with `<style>` and CDATA tags.
+> Surrounds the filtered text with `<style>` and CDATA tags.
 Useful for including inline CSS.
 
 {#cdata-filter}
 #### `:cdata`
-Surrounds the filtered text with CDATA tags.
+> Surrounds the filtered text with CDATA tags.
 -->
 
 {#escaped-filter}
 #### `:escaped`
-Works the same as plain, but HTML-escapes the text
-before placing it in the document.
+> Works the same as plain, but HTML-escapes the text
+> before placing it in the document.
 
 <!--
 {#ruby-filter}
@@ -1214,8 +1344,8 @@ Only works if [RedCloth](http://redcloth.org) is installed.
 
 {#markdown-filter}
 #### `:markdown`
-Parses the filtered text with [Markdown](http://daringfireball.net/projects/markdown).
-Only works if [MarkdownJ](http://markdownj.org/) is found on the class path.
+> Parses the filtered text with [Markdown](http://daringfireball.net/projects/markdown).
+> Only works if [MarkdownJ](http://markdownj.org/) is found on the class path.
 
 <!--
 ### Custom Filters
