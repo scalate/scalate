@@ -2,13 +2,13 @@ package org.fusesource.scalate.console
 
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.servlet.{ServletResourceLoader, ServletRenderContext}
+import _root_.org.fusesource.scalate.support.DefaultRenderContext
 import java.io.File
 import scala.xml.NodeSeq
-import org.fusesource.scalate.DefaultRenderContext
+
 /**
  * @version $Revision : 1.1 $
  */
-
 trait ConsoleSnippets {
   def servletContext: ServletContext
 

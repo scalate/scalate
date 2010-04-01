@@ -1,5 +1,8 @@
 package org.fusesource.scalate.servlet
 
+import _root_.org.fusesource.scalate.{AttributeMap, TemplateEngine}
+import _root_.org.fusesource.scalate.support.DefaultRenderContext
+import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._
 import java.lang.String
@@ -7,8 +10,6 @@ import java.util.{Locale}
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
-import org.fusesource.scalate.{AttributeMap, DefaultRenderContext, TemplateEngine}
-import org.fusesource.scalate.util.URIs._
 
 /**
  * A template context for use in servlets

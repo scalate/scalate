@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesoruce.scalate.scaml
+package org.fusesource.scalate.scaml
 
 import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import annotation.tailrec

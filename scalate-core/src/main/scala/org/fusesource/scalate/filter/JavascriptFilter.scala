@@ -16,7 +16,6 @@
  */
 package org.fusesource.scalate.filter
 
-import org.fusesource.scalate.{Filter, RenderContext}
 import org.fusesource.scalate.util.RenderHelper
 
 /**

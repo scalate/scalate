@@ -15,12 +15,12 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-package org.fusesource.scalate
+package org.fusesource.scalate.support
 
-import org.fusesource.scalate.support.AttributesHashMap
+import _root_.org.fusesource.scalate.util.{RenderHelper, Logging}
+import _root_.org.fusesource.scalate.{Template, AttributeMap, RenderContext, TemplateEngine}
 import java.io._
 import collection.mutable.Stack
-import util.{Logging, RenderHelper}
 
 class Elvis(val defaultValue: Any) {
   def ?:(value: Any) = if (value != null) value else defaultValue

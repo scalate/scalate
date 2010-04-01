@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scaml
 
-import _root_.org.fusesoruce.scalate.scaml._
+import _root_.org.fusesource.scalate.scaml._
 import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
@@ -250,7 +250,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       for ( f <- statement.filters ) {
-        prefix += "$_scalate_$_context.value ( _root_.org.fusesource.scalate.FilterRequest("+asString(f)+", "
+        prefix += "$_scalate_$_context.value ( _root_.org.fusesource.scalate.filter.FilterRequest("+asString(f)+", "
         suffix = ") ) " + suffix;
       }
 

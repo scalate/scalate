@@ -23,6 +23,32 @@ class TemplateEngineTest extends FunSuiteSupport {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
 
+
+  test("load file template") {
+    val template = engine.load(new File("src/test/resources/simple.ssp"))
+    val output = engine.layout(template).trim
+
+    assertContains(output, "1 + 2 = 3")
+  }
+
+  test("string template with custom bindings") {
+    val source = "hello ${name}"
+    val template = engine.compileSsp(source, List(Binding("name", "String")))
+    val output = engine.layout(template, Map("name" -> "James"))
+
+    expect("hello James") {output}
+  }
+
+
+  test("string template with attributes") {
+    val source = "<%@ val name: String %> hello ${name}"
+
+    val template = engine.compileSsp(source)
+    val output = engine.layout(template, Map("name" -> "Hiram"))
+
+    expect("hello Hiram") {output.trim}
+  }
+
   test("load template") {
     val template = engine.compileSsp("""
 <%@ val name: String %>
@@ -57,5 +83,4 @@ Hello ${name}!
     expect("<%@ val it : java.lang.String %>") {lines(0)}
     expect("<p>hello ${it} how are you?</p>") {lines(1)}
   }
-
 }

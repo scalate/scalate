@@ -1,6 +1,4 @@
-package org.fusesource.scalate.console.archetypes
-
-import _root_.org.fusesource.scalate.console.ArchetypeResource
+package org.fusesource.scalate.console
 
 /**
  * Parameters to create a JAXRS resource template
