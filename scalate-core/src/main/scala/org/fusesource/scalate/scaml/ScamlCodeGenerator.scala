@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scaml
 
-import _root_.org.fusesoruce.scalate.scaml._
+import _root_.org.fusesource.scalate.scaml._
 import java.util.regex.Pattern
 import java.net.URI
 import org.fusesource.scalate._
