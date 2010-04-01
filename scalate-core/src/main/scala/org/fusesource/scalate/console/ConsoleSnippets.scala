@@ -2,7 +2,7 @@ package org.fusesource.scalate.console
 
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.servlet.{ServletResourceLoader, ServletRenderContext}
-import _root_.org.fusesource.scalate.support.DefaultRenderContext
+import _root_.org.fusesource.scalate.DefaultRenderContext
 import java.io.File
 import scala.xml.NodeSeq
 

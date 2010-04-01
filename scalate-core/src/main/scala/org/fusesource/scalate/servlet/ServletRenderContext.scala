@@ -1,7 +1,6 @@
 package org.fusesource.scalate.servlet
 
-import _root_.org.fusesource.scalate.{AttributeMap, TemplateEngine}
-import _root_.org.fusesource.scalate.support.DefaultRenderContext
+import _root_.org.fusesource.scalate.{AttributeMap, DefaultRenderContext, TemplateEngine}
 import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._

@@ -2,11 +2,10 @@ package org.fusesource.scalate.console
 
 import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
-import _root_.org.fusesource.scalate.RenderContext
-import _root_.org.fusesource.scalate.support.DefaultRenderContext
+import _root_.org.fusesource.scalate.{DefaultRenderContext, RenderContext}
+import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.org.fusesource.scalate.util.{SourceMapInstaller, SourceMap, Logging}
 import _root_.scala.Option
-import org.fusesource.scalate.servlet.ServletRenderContext
 import java.io.File
 import scala.io.Source
 import collection.JavaConversions._
