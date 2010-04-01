@@ -207,6 +207,31 @@ class TemplateEngine extends Logging {
     }
   }
 
+
+  /**
+   * Compiles and then caches the specified template.  If the template
+   * was previously cached, the previously compiled template instance
+   * is returned.  The cache entry in invalidated and then template
+   * is re-compiled if the template file has been updated since
+   * it was last compiled.
+   */
+  def load(file: File, extraBindings: List[Binding]): Template = {
+    load(file.getPath, extraBindings)
+  }
+
+
+  /**
+   * Compiles and then caches the specified template.  If the template
+   * was previously cached, the previously compiled template instance
+   * is returned.  The cache entry in invalidated and then template
+   * is re-compiled if the template file has been updated since
+   * it was last compiled.
+   */
+  def load(file: File): Template = {
+    load(file.getPath, Nil)
+  }
+
+
   /**
    * Returns true if the URI can be loaded as a template
    */
