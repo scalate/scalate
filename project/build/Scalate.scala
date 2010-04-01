@@ -20,6 +20,7 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
 
   // TODO disable WebbyTest until its in a maven repo
   class Core(info: ProjectInfo) extends DefaultProject(info) { // TODO with HtmlTestsProject {
+    println("core project uses " + testScalaSourcePath)
   }
 
   class Camel(info: ProjectInfo) extends DefaultProject(info) {
