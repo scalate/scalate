@@ -16,8 +16,6 @@
  */
 package org.fusesource.scalate.filter
 
-import org.fusesource.scalate.Filter
-
 /**
  * A filter that simply returns the given String without any processing.
  * 

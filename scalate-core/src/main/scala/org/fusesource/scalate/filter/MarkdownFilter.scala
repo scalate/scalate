@@ -16,7 +16,6 @@
  */
 package org.fusesource.scalate.filter
 
-import org.fusesource.scalate.Filter
 import com.petebevin.markdown.MarkdownProcessor
 
 /**

@@ -18,7 +18,8 @@
 package org.fusesource.scalate
 
 /**
- * Defines a bunch of helper methods available to SSP pages
+ * A template is something which can be rendered when given a {@link RenderContext}.
+ * They may involve code generation in the case of Ssp and Scaml but any mechanism can be used in the rendering process.
  *
  * @version $Revision : 1.1 $
  */

@@ -1,12 +1,13 @@
 package org.fusesource.scalate.camel
 
-import org.apache.camel.component.ResourceBasedEndpoint
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.support.DefaultRenderContext
+import org.fusesource.scalate.util.{IOUtil}
 import org.apache.camel._
+import org.apache.camel.component.ResourceBasedEndpoint
+import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
 import impl.ProcessorEndpoint
 import java.io._
-import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
-import org.fusesource.scalate.util.{IOUtil}
-import org.fusesource.scalate.{DefaultRenderContext, TemplateEngine}
 import collection.JavaConversions._
 import java.util.concurrent.atomic.AtomicInteger
 import org.apache.commons.logging.{LogFactory, Log}

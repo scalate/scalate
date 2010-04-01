@@ -18,6 +18,7 @@ package org.fusesource.scalate
 
 import scala.util.control.NoStackTrace
 import scala.util.parsing.input.{ NoPosition, Position }
+import support.CompilerError
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -36,8 +37,6 @@ class ResourceNotFoundException(resource: String, root: String = "")
 class InvalidSyntaxException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos) {
   var template:String=null;
 }
-
-case class CompilerError(file:String, message:String, pos: Position = NoPosition, original:CompilerError=null)
 
 class CompilerException(msg:String, val errors:List[CompilerError]) extends TemplateException(msg)
 

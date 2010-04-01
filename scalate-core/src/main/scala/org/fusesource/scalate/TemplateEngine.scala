@@ -15,11 +15,11 @@
  */
 package org.fusesource.scalate
 
+import filter._
 import layout.{NullLayoutStrategy, LayoutStrategy}
-import filter.{MarkdownFilter, EscapedFilter, JavascriptFilter, PlainFilter}
 import scaml.ScamlCodeGenerator
 import ssp.SspCodeGenerator
-import support.{Code, FileResourceLoader, CodeGenerator, ResourceLoader, ScalaCompiler}
+import support._
 import util._
 
 import scala.util.parsing.input.{OffsetPosition, Position}

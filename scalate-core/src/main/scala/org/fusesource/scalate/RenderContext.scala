@@ -1,5 +1,6 @@
 package org.fusesource.scalate
 
+import filter.FilterRequest
 import java.util.{Locale, Date}
 import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector

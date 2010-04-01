@@ -14,9 +14,10 @@ import com.sun.jersey.api.container.ContainerException
 import javax.ws.rs.core.Context
 
 /**
+ * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
  * @version $Revision : 1.1 $
  */
-class SSPTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
+class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
   
   @Context
   var servletContext: ServletContext = _

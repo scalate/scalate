@@ -9,6 +9,7 @@ import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.FunSuite
 import _root_.org.scalatest.junit.JUnitRunner
+import support.DefaultRenderContext
 
 @RunWith(classOf[JUnitRunner])
 class EditLinkTest extends FunSuite with Logging {

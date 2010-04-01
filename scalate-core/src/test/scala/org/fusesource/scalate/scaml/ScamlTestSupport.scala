@@ -16,12 +16,11 @@
  */
 package org.fusesource.scalate.scaml
 
-import _root_.java.util.concurrent.atomic.AtomicInteger
-import _root_.org.fusesource.scalate.FunSuiteSupport
+import _root_.org.fusesource.scalate._
 import _root_.org.scalatest.TestFailedException
-import org.fusesource.scalate._
+import _root_.java.util.concurrent.atomic.AtomicInteger
 import java.io.{StringWriter, PrintWriter, File}
-import support.FileResourceLoader
+import support.{DefaultRenderContext, FileResourceLoader}
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

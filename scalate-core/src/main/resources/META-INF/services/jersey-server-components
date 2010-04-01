@@ -1,2 +1,2 @@
 org.fusesource.scalate.rest.NodeWriter
-org.fusesource.scalate.jersey.SSPTemplateProcessor
+org.fusesource.scalate.jersey.ScalateTemplateProcessor
