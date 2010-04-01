@@ -16,5 +16,3 @@ Documentation
 * [Web Site](http://scalate.fusesource.org/)
 * [Documentation](http://scalate.fusesource.org/documentation/)
 
-Scalate is based on code developed by [Matt Hildebrand](http://github.com/matthild/serverpages)
-

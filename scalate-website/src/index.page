@@ -32,8 +32,6 @@ Scalate templates generate Scala code which is compiled to fast statically typed
 
 Compared to JSP, Scalate misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, Scalate reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. 
 
-The code is based on [serverpages](http://github.com/matthild/serverpages) by Matt Hildebrand
-
 Getting started
 ---------------
 
