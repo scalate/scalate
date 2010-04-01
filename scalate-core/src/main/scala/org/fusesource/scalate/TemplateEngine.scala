@@ -405,6 +405,7 @@ class TemplateEngine extends Logging {
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(g.stratumName, uri, sourceFile, code.positions)
+
       sourceMapLog.debug("installing:" + sourceMap)
 
       storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
