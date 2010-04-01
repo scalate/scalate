@@ -29,6 +29,7 @@ import scala.util.control.Exception
 import scala.compat.Platform
 import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
+import xml.NodeSeq
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -207,13 +208,30 @@ class TemplateEngine extends Logging {
   }
 
   /**
-   * Invalidates any cached Templates
+   * Returns true if the URI can be loaded as a template
+   */
+  def canLoad(uri: String, extraBindings:List[Binding]= Nil): Boolean = {
+    try {
+      load(uri, extraBindings) != null
+    } catch {
+      case e: ResourceNotFoundException => false
+    }
+  }
+
+
+  /**
+   *  Invalidates any cached Templates
    */
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
       templateCache.clear
     }
   }
+
+
+  // Layout as text methods
+  //-------------------------------------------------------------------------
+
 
   /**
    *  Renders the given template URI using the current layoutStrategy
@@ -258,6 +276,40 @@ class TemplateEngine extends Logging {
   // can't use multiple methods with default arguments so lets manually expand them here...
   def layout(uri: String, context: RenderContext): Unit = layout(uri, context, Nil)
   def layout(template: Template): String = layout(template, Map[String,Any]())
+
+
+  // Layout as markup methods
+  //-------------------------------------------------------------------------
+
+  /**
+   * Renders the given template URI returning the output
+   */
+  def layoutAsNodes(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): NodeSeq = {
+    val template = load(uri, extraBindings)
+    layoutAsNodes(template, attributes)
+  }
+
+  /**
+   * Renders the given template returning the output
+   */
+  def layoutAsNodes(template: Template, attributes: Map[String,Any]): NodeSeq = {
+    // TODO there is a much better way of doing this by adding native NodeSeq
+    // support into the generated templates - especially for Scaml!
+    // for now lets do it a crappy way...
+
+    val buffer = new StringWriter()
+    val out = new PrintWriter(buffer)
+    val context = new DefaultRenderContext(this, out)
+    for ((key, value) <- attributes) {
+      context.attributes(key) = value
+    }
+    //layout(template, context)
+    context.captureNodeSeq(template)
+  }
+
+  // can't use multiple methods with default arguments so lets manually expand them here...
+  def layoutAsNodes(template: Template): NodeSeq = layoutAsNodes(template, Map[String,Any]())
+
 
 
 
