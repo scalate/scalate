@@ -6,8 +6,7 @@ import java.io._
 import collection.mutable.Stack
 
 /**
- * The RenderContext provides helper methods for interacting with the request, response,
- * attributes and parameters.
+ * Default implementation of {@link RenderContext}
  */
 class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext with Logging {
 
