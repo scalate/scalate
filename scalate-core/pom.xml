@@ -78,6 +78,7 @@
       </plugin>
 
 
+<!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -88,6 +89,7 @@
           <maxmem>256M</maxmem>
         </configuration>
       </plugin>
+-->
     </plugins>
   </build>
 </project>

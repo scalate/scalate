@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -7,7 +8,7 @@
   <artifactId>scalate-project</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  
+
   <name>Scalate Project</name>
   <description>Scalate Project POM</description>
 
@@ -211,13 +212,13 @@
       </dependency>
 
       <!-- testing -->
-<!--
-      <dependency>
-        <groupId>org.scala-tools.testing</groupId>
-        <artifactId>specs_2.8.0.Beta1</artifactId>
-        <version>1.6.3</version>
-      </dependency>
--->
+      <!--
+            <dependency>
+              <groupId>org.scala-tools.testing</groupId>
+              <artifactId>specs_2.8.0.Beta1</artifactId>
+              <version>1.6.3</version>
+            </dependency>
+      -->
       <dependency>
         <groupId>org.scalatest</groupId>
         <artifactId>scalatest</artifactId>
@@ -228,7 +229,7 @@
         <artifactId>junit</artifactId>
         <version>4.7</version>
       </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 
@@ -353,7 +354,7 @@
         </configuration>
       </plugin>
 
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -376,7 +377,7 @@
           <failIfNoTests>false</failIfNoTests>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
@@ -389,7 +390,7 @@
           <arguments>-Prelease</arguments>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-scm-plugin</artifactId>
@@ -436,7 +437,7 @@
           </reportSets>
         </plugin>
       -->
-            
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -487,7 +488,7 @@
         <version>2.5</version>
       </plugin>
       -->
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -515,12 +516,19 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
       </plugin>
-      
+
     </plugins>
-   
+
   </reporting>
 
   <profiles>
+    <profile>
+      <id>site</id>
+      <properties>
+        <!-- this snapshot release works with 2.8.0-beta1 apparently -->
+         <scala-plugin-version>2.13.2-SNAPSHOT</scala-plugin-version>
+      </properties>
+    </profile>
 
     <!-- enables extra repositories which may have some
          goodies that have not reached central yet -->
@@ -584,6 +592,9 @@
         <repository>
           <id>scala</id>
           <name>Scala Tools</name>
+<!--
+          <url>http://nexus.scala-tools.org/content/repositories/releases/</url>
+-->
           <url>http://scala-tools.org/repo-releases/</url>
           <releases>
             <enabled>true</enabled>
@@ -595,33 +606,31 @@
         <repository>
           <id>snapshots.scala-tools.org</id>
           <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots</url>
+          <url>http://scala-tools.org/repo-snapshots/</url>
           <snapshots>
             <enabled>true</enabled>
-            <!--updatePolicy>never</updatePolicy-->
             <checksumPolicy>fail</checksumPolicy>
           </snapshots>
           <releases>
             <enabled>true</enabled>
-            <!--updatePolicy>never</updatePolicy-->
             <checksumPolicy>fail</checksumPolicy>
           </releases>
         </repository>
+<!--
         <repository>
           <id>nexus.snapshots.scala-tools.org</id>
           <name>Scala-Tools Maven2 Snapshot Repository</name>
           <url>http://nexus.scala-tools.org/content/repositories/snapshots/</url>
           <snapshots>
             <enabled>true</enabled>
-            <!--updatePolicy>never</updatePolicy-->
             <checksumPolicy>fail</checksumPolicy>
           </snapshots>
           <releases>
             <enabled>true</enabled>
-            <!--updatePolicy>never</updatePolicy-->
             <checksumPolicy>fail</checksumPolicy>
           </releases>
         </repository>
+-->
         <repository>
           <id>apache.snapshots</id>
           <name>Apache Development Snapshot Repository</name>
@@ -634,6 +643,36 @@
           </snapshots>
         </repository>
       </repositories>
+
+      <pluginRepositories>
+        <pluginRepository>
+          <id>scala</id>
+          <name>Scala Tools</name>
+<!--
+          <url>http://nexus.scala-tools.org/content/repositories/releases/</url>
+-->
+          <url>http://scala-tools.org/repo-releases/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>snapshots.scala-tools.org</id>
+          <name>Scala-Tools Maven2 Snapshot Repository</name>
+          <url>http://scala-tools.org/repo-snapshots/</url>
+          <snapshots>
+            <enabled>true</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </releases>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
     
     <profile>
