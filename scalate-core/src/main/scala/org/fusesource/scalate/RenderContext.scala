@@ -21,7 +21,7 @@ object RenderContext {
 }
 
 /**
- * Provides helper methods for rendering templates.
+ * Provides helper methods for rendering templates and values and for working with attributes.
  * 
  * @see DefaultRenderContext
  * @see org.fusesource.scalate.servlet.ServletRenderContext

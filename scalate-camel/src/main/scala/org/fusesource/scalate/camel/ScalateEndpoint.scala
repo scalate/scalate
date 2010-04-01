@@ -1,7 +1,6 @@
 package org.fusesource.scalate.camel
 
-import org.fusesource.scalate.TemplateEngine
-import org.fusesource.scalate.support.DefaultRenderContext
+import org.fusesource.scalate.{DefaultRenderContext, TemplateEngine}
 import org.fusesource.scalate.util.{IOUtil}
 import org.apache.camel._
 import org.apache.camel.component.ResourceBasedEndpoint

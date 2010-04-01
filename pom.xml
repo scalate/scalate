@@ -549,7 +549,7 @@
         <repository>
           <id>repo1.maven</id>
           <name>Maven Central Repo</name>
-          <url>http://repo1.maven.org/maven2/</url>
+          <url>http://repo1.maven.org/maven2</url>
         </repository>
         <repository>
           <id>fusesource.m2</id>
@@ -604,9 +604,9 @@
           <id>scala</id>
           <name>Scala Tools</name>
 <!--
-          <url>http://nexus.scala-tools.org/content/repositories/releases/</url>
+          <url>http://nexus.scala-tools.org/content/repositories/releases</url>
 -->
-          <url>http://scala-tools.org/repo-releases/</url>
+          <url>http://scala-tools.org/repo-release</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -617,7 +617,7 @@
         <repository>
           <id>snapshots.scala-tools.org</id>
           <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots/</url>
+          <url>http://scala-tools.org/repo-snapshots</url>
           <snapshots>
             <enabled>true</enabled>
             <checksumPolicy>fail</checksumPolicy>
@@ -631,7 +631,7 @@
         <repository>
           <id>nexus.snapshots.scala-tools.org</id>
           <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://nexus.scala-tools.org/content/repositories/snapshots/</url>
+          <url>http://nexus.scala-tools.org/content/repositories/snapshots</url>
           <snapshots>
             <enabled>true</enabled>
             <checksumPolicy>fail</checksumPolicy>
@@ -645,7 +645,7 @@
         <repository>
           <id>apache.snapshots</id>
           <name>Apache Development Snapshot Repository</name>
-          <url>https://repository.apache.org/content/repositories/snapshots/</url>
+          <url>https://repository.apache.org/content/repositories/snapshots</url>
           <releases>
             <enabled>false</enabled>
           </releases>
@@ -660,9 +660,9 @@
           <id>scala</id>
           <name>Scala Tools</name>
 <!--
-          <url>http://nexus.scala-tools.org/content/repositories/releases/</url>
+          <url>http://nexus.scala-tools.org/content/repositories/releases</url>
 -->
-          <url>http://scala-tools.org/repo-releases/</url>
+          <url>http://scala-tools.org/repo-releases</url>
           <releases>
             <enabled>true</enabled>
           </releases>
@@ -673,7 +673,7 @@
         <pluginRepository>
           <id>snapshots.scala-tools.org</id>
           <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots/</url>
+          <url>http://scala-tools.org/repo-snapshots</url>
           <snapshots>
             <enabled>true</enabled>
             <checksumPolicy>fail</checksumPolicy>

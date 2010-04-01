@@ -155,7 +155,7 @@ class TemplateEngine extends Logging {
 
   /**
    * Compiles a template file/URI without placing it in the template cache. Useful for temporary
-   * tes.emplates or dynamically created template
+   * templates or dynamically created template
    */
   def compile(uri: String, extraBindings:List[Binding] = Nil):Template = {
     compileAndLoad(uri, extraBindings, 0)._1
@@ -374,19 +374,19 @@ class TemplateEngine extends Logging {
   /**
    * Returns the source file of the template URI
    */
-  def sourceFileName(uri: String) = {
+  protected def sourceFileName(uri: String) = {
     // Write the source code to file..
     // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
-  def classFileName(uri: String) = {
+  protected def classFileName(uri: String) = {
     // Write the source code to file..
     // to avoid paths like foo/bar/C:/whatnot on windows lets mangle the ':' character
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
-  val sourceMapLog = Logging(getClass, "SourceMap")
+  protected val sourceMapLog = Logging(getClass, "SourceMap")
 
   private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     var code: Code = null
@@ -529,7 +529,7 @@ class TemplateEngine extends Logging {
   }
 
 
-  def buildSourceMap(stratumName:String, uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
+  protected def buildSourceMap(stratumName:String, uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
@@ -561,7 +561,7 @@ class TemplateEngine extends Logging {
     sourceMap.toString
   }
 
-  def storeSourceMap(classFile:File, sourceMap:String) = {
+  protected def storeSourceMap(classFile:File, sourceMap:String) = {
     SourceMapInstaller.store(classFile, sourceMap)
   }
 }
