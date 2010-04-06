@@ -1,0 +1,22 @@
+---
+title: Release Guide
+in_menu: false
+--- name:overview
+
+# Release Guide
+How to create releases of Scalate
+
+--- name:content 
+
+* check your repo is clean and you are on master branch
+* prepare the release
+
+      mvn release:prepare
+
+* perform the release
+
+      mvn release:perform
+
+* update the download.page on the wiki
+* blog about the release
+
