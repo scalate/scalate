@@ -755,6 +755,16 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
+            
+            <!-- copied dependency from scalate-website as this plugin might zap it -->
+            <dependencies>
+              <dependency>
+                <groupId>org.markdownj</groupId>
+                <artifactId>markdownj</artifactId>
+                <version>${markdownj-version}</version>
+              </dependency>
+            </dependencies>
+            
             <executions>
               <execution>
                 <id>javadoc-work-around</id>
