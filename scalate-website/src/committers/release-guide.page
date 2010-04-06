@@ -20,7 +20,9 @@ How to create releases of Scalate
       mvn release:perform -P release
 
 * update the download.page on the wiki
-* blog about the release
+* edit the **scalate\_website/src/metainf* file and change the **project\_version** value
+* blog about the release by creating an entry in **scalate\_website/src/blog/releases**
+* announce the release on the [mailing list](community.html)
 
 ## Using a temporary local repo
 

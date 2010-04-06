@@ -1,0 +1,55 @@
+---
+title: Getting Started
+in_menu: false
+sort_info: 5
+--- name:overview
+
+# Getting Started
+Lets get scalating!
+
+--- name:content
+
+<div class="left" markdown="1">
+# Introduction
+</div>
+<div class="right" markdown="1">
+Lets try and get you up to speed using Scalate as quickly as possible.
+
+This guide will assume you have a reasonably recent installation of [Maven](http://maven.apache.org), say version 2.0.9 or later. If you don't, please [install one now](http://maven.apache.org/download.html).
+
+</div>
+
+<div class="left" markdown="1">
+# Create a project
+</div>
+<div class="right" markdown="1">
+Lets use one of the Scalate Maven archetypes to create a new [Jog](jog.html) project that we can use as a base on which to build.
+
+In a command line type this:
+
+    mvn archetype:create \
+      -DarchetypeGroupId=org.fusesource.scalate.tooling \
+      -DarchetypeArtifactId=scalate-archetype-guice \
+      -DarchetypeVersion={project_version:} \
+      -DgroupId=myGroup -DartifactId=myArtifact 
+    
+You might want to change the last line changing *myGroup* and *myArtifact* to whatever maven groupId and artifactId you want to use.
+
+Now you've successfully created a base [Jog](jog.html) project using Scalate, Scala, [Jersey](https://jersey.dev.java.net/) and [Guice](http://code.google.com/p/google-guice/).
+
+Now change directory to the new *myArtifact* directory (or whatever name you used)  
+
+    cd myArtifact  
+</div>
+
+<div class="left" markdown="1">
+# Run the new project
+</div>
+<div class="right" markdown="1">
+To run the project run the following command
+
+    mvn jetty:run
+    
+Now when the application starts up you should be able to point your browser at [http://localhost:8080](http://localhost:8080) to run the application.
+</div>
+

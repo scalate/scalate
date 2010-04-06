@@ -15,6 +15,8 @@ Using Scalate with JAXRS (Jersey) on Guice
 # Overview
 </div>
 <div class="right" markdown="1">
-Jog is a way of using Scalate with JAXRS (Jersey) for the RESTful controller layer along with Guice for dependency injection
+Jog is a way of using Scalate with JAXRS (using the [Jersey](https://jersey.dev.java.net/) reference implementation) for the RESTful controller layer along with [Guice](http://code.google.com/p/google-guice/) for dependency injection
+
+The quickest way to get up to speed on Jog is trying the [getting started guide](getting-started.html)
 </div>
 

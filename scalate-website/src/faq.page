@@ -28,13 +28,17 @@ Scalate stands for Scala Template Engine hence ScalaTE, though its easier on the
 
 The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)
 
-### How do I build Scalate
+### How do I get started?
 
-First [get the source](source.html) then see he [building guide](building.html)
+Try the [Getting Started Guide](getting-started.html) which should have you *scalating* nicely really quickly!
 
 ### How do I get support?
 
 See the [support guide](support.html) for more details.
+
+### How do I build Scalate
+
+First [get the source](source.html) then see he [building guide](building.html)
 
 ### How do I contribute or become a committer?
 
