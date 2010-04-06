@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>scalate-project</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>pom</packaging>
 
   <name>Scalate Project</name>
@@ -345,7 +344,7 @@
               <!-- enable easy JMX connection to JConsole -->
               <systemProperty>
                 <name>com.sun.management.jmxremote</name>
-                <value/>
+                <value />
               </systemProperty>
               <systemProperty>
                 <name>scalate.editor</name>
@@ -771,8 +770,8 @@
                 <phase>compile</phase>
                 <configuration>
                   <tasks>
-                    <mkdir dir="${project.build.directory}/apidocs"/>
-                    <echo file="${project.build.directory}/apidocs/readme.txt" message="comming soon."/>
+                    <mkdir dir="${project.build.directory}/apidocs" />
+                    <echo file="${project.build.directory}/apidocs/readme.txt" message="comming soon." />
                   </tasks>
                 </configuration>
                 <goals>
