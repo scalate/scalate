@@ -10,17 +10,22 @@ Download it today!
 --- name:content
 
 <div class="left" markdown="1">
-# Just need a distro?
+# Download
 </div>
 <div class="right" markdown="1">
-You can download *{project_name:}* from the [Scalate Maven Repository](http://scalate.fusesource.org/repo/release) in the [{project_name:} area](http://scalate.fusesource.org/repo/release/org/fusesource/{project_id:}/).
+You can download **Scalate** from the [Snapshot Maven Repository](http://repo.fusesource.com/nexus/content/repositories/snapshots/) in the [{project_name:} area](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/).
+
+Download a distribution:
+
+* [1.0-SNAPSHOT zip](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/scalate-distro/1.0-SNAPSHOT/scalate-distro-1.0-SNAPSHOT.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/scalate-distro/1.0-SNAPSHOT/scalate-distro-1.0-SNAPSHOT.tar.gz)
+
 </div>
 
 <div class="left" markdown="1">
-# Are you a Maven User?
+# Maven
 </div>
 <div class="right" markdown="1">
-Just add the following to your *pom.xml*
+If you build your project using [Maven](http://maven.apache.org/) then just add the following to your *pom.xml*
 </div> 
 <div class="right">
 {coderay:: xml}<dependency>
@@ -31,13 +36,13 @@ Just add the following to your *pom.xml*
 {coderay}
 </div>
 <div class="right" markdown="1">
-You should ensure you have the Scalate Maven repository defined in your *pom.xml*</div> 
+You should ensure you have the Scalate Snapshot Maven repository defined in your *pom.xml*</div> 
 <div class="right">
 {coderay:: xml}  <repositories>
    <repository>
-     <id>fusesource.m2</id>
-     <name>FuseSource Community Release Repository</name>
-     <url>http://scalate.fusesource.org/repo/release</url>
+     <id>fusesource.snapshots</id>
+     <name>FuseSource Snapshot Repository</name>
+     <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
      <snapshots>
        <enabled>false</enabled>
      </snapshots>
@@ -51,7 +56,7 @@ You should ensure you have the Scalate Maven repository defined in your *pom.xml
 
 
 <div class="left" markdown="1">
-# Building from Source
+# Building
 </div>
 
 <div class="right" markdown="1">
