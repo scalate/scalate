@@ -10,9 +10,11 @@ Two template languages are supported:
   * [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax): Provides a JSP, ASP, ERB style template language
   * [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html#features): Provides Haml style template lanaguage
 
-Documentation
--------------
+Links
+-----
 
-* [Web Site](http://scalate.fusesource.org/)
+* [Home](http://scalate.fusesource.org/)
+* [Community](http://scalate.fusesource.org/community.html)
 * [Documentation](http://scalate.fusesource.org/documentation/)
+* [Issue Tracker](http://scalate.assembla.com/spaces/scalate/tickets)
 
