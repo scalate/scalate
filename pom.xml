@@ -40,10 +40,6 @@
     <junit-version>4.5</junit-version>
     <logback-version>0.9.18</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
-    <!-- vscaladoc settings -->
-<!--
-    <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
--->
 
     <scala-version>2.8.0.Beta1</scala-version>
     <scala-plugin-version>2.13.1</scala-plugin-version>
@@ -55,7 +51,7 @@
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
-  <inceptionYear>201</inceptionYear>
+  <inceptionYear>2010</inceptionYear>
 
   <organization>
     <name>FuseSource</name>
@@ -72,14 +68,18 @@
 
   <mailingLists>
     <mailingList>
-      <name>${forge-project-id} dev</name>
-      <post>${forge-project-id}-dev@fusesource.org</post>
-      <subscribe>${forge-project-id}-dev-subscribe@fusesource.org</subscribe>
+      <name>Scalate discussion list</name>
+      <archive>http://groups.google.com/group/scalate</archive>
+      <post>scalate@googlegroups.com</post>
+      <subscribe>scalate+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>scalate+unsubscribe@googlegroups.com</unsubscribe>
     </mailingList>
     <mailingList>
-      <name>${forge-project-id} commits</name>
-      <post>${forge-project-id}-commits@fusesource.org</post>
-      <subscribe>${forge-project-id}-commits-subscribe@fusesource.org</subscribe>
+      <name>Commits and issue tracker list</name>
+      <archive>http://groups.google.com/group/scalate-commits</archive>
+      <post>scalate-commits@googlegroups.com</post>
+      <subscribe>scalate-commits+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>scalate-commits+unsubscribe@googlegroups.com</unsubscribe>
     </mailingList>
   </mailingLists>
 
@@ -91,8 +91,8 @@
   </scm>
 
   <issueManagement>
-    <system>jira</system>
-    <url>http://fusesource.com/issues/browse/${forge-project-id-uc}</url>
+    <system>assembla</system>
+    <url>http://scalate.assembla.com/spaces/scalate</url>
   </issueManagement>
 
   <ciManagement>
