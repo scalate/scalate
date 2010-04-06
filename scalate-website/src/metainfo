@@ -24,7 +24,8 @@
   project_forums_url: 'http://scalate.fusesource.org/community.html'
   project_wiki_url: 'http://wiki.github.com/scalate/scalate/'
   project_logo: "/images/project-logo.png"
-  project_version: '1.0-SNAPSHOT'
+  project_version: '1.0'
+  project_snapshot_version: '1.1-SNAPSHOT'
 
   # -------------------------------------------------------------------
   # TODO it would be nice to define these in terms of the project_id variable!
