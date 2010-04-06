@@ -13,11 +13,17 @@ Download it today!
 # Download
 </div>
 <div class="right" markdown="1">
-You can download **Scalate** from the [Snapshot Maven Repository](http://repo.fusesource.com/nexus/content/repositories/snapshots/) in the [{project_name:} area](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/).
+You can download **Scalate** from the [Maven Repository](http://repo.fusesource.com/nexus/content/repositories/public/) in the [Scalate area](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/).
 
 Download a distribution:
 
-* [1.0-SNAPSHOT zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.0-SNAPSHOT&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.0-SNAPSHOT&e=tar.gz&c=unix-bin)
+* [1.0 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-unix-bin.tar.gz)
+
+## Snapshots
+
+You can download a recent snapshot from the [Snapshot Maven Repository](http://repo.fusesource.com/nexus/content/repositories/snapshots/) in the [Scalate area](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/).
+
+* [1.1-SNAPSHOT zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=tar.gz&c=unix-bin)
 
 </div>
 
@@ -35,8 +41,34 @@ If you build your project using [Maven](http://maven.apache.org/) then just add 
 </dependency>
 {coderay}
 </div>
+
 <div class="right" markdown="1">
-You should ensure you have the Scalate Snapshot Maven repository defined in your *pom.xml*</div> 
+The releases should be synchronized to the [central maven repository](http://repo1.maven.org/maven2/org/fusesource/scalate/) so you should not need to add a maven repository to your pom.xml. 
+
+However if a release has not yet made it to the central repository or you want to add a repository for completeness, add the following to your *pom.xml*
+</div>
+<div class="right">
+{coderay:: xml}  <repositories>
+   <repository>
+     <id>fusesource.m2</id>
+     <name>FuseSource Public Repository</name>
+     <url>http://repo.fusesource.com/nexus/content/repositories/public</url>
+     <snapshots>
+       <enabled>false</enabled>
+     </snapshots>
+     <releases>
+       <enabled>true</enabled>
+     </releases>
+   </repository>
+ </repositories>
+{coderay}
+</div>
+
+<div class="right" markdown="1">
+## Snapshots
+
+If you want to use a **snapshot version** you should ensure you have the Scalate Snapshot Maven repository defined in your *pom.xml*
+</div> 
 <div class="right">
 {coderay:: xml}  <repositories>
    <repository>
@@ -44,10 +76,10 @@ You should ensure you have the Scalate Snapshot Maven repository defined in your
      <name>FuseSource Snapshot Repository</name>
      <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
      <snapshots>
-       <enabled>false</enabled>
+       <enabled>true</enabled>
      </snapshots>
      <releases>
-       <enabled>true</enabled>
+       <enabled>false</enabled>
      </releases>
    </repository>
  </repositories>
