@@ -41,6 +41,6 @@ then edit your **~/.m2/settings.xml** file and add this...
         </profile>
       </profiles>	
 
-then perform a release in this new scala-release directory. This will then push to your local repo, not the remote one.
+then perform a release in this new **scala-release** directory. This will then push to your local repo, not the remote one.
 
     
