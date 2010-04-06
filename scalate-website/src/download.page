@@ -17,7 +17,7 @@ You can download **Scalate** from the [Snapshot Maven Repository](http://repo.fu
 
 Download a distribution:
 
-* [1.0-SNAPSHOT zip](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/scalate-distro/1.0-SNAPSHOT/scalate-distro-1.0-SNAPSHOT.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/scalate-distro/1.0-SNAPSHOT/scalate-distro-1.0-SNAPSHOT.tar.gz)
+* [1.0-SNAPSHOT zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.0-SNAPSHOT&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.0-SNAPSHOT&e=tar.gz&c=unix-bin)
 
 </div>
 
