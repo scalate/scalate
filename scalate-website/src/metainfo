@@ -20,9 +20,9 @@
   project_slogan: 'Scala Template Engine: like JSP without the crap but with added Scala coolness'
   project_id: 'scalate'
   project_jira_key: 'SCALATE'
-  project_issue_url: 'http://fusesource.com/issues/browse/SCALATE'
-  project_forums_url: 'http://fusesource.com/forums'
-  project_wiki_url: 'http://fusesource.com/wiki/display/SCALATE'
+  project_issue_url: 'http://scalate.assembla.com/spaces/scalate'
+  project_forums_url: 'http://scalate.fusesource.org/community.html'
+  project_wiki_url: 'http://wiki.github.com/scalate/scalate/'
   project_logo: "/images/project-logo.png"
   project_version: '1.0-SNAPSHOT'
 
