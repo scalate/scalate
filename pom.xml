@@ -751,11 +751,13 @@
             </executions>
           </plugin>
 
+          <!-- temporary work around until scala doc works with 2.8:  Generate empty javadoc artifacts -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
+                <id>javadoc-work-around</id>
                 <phase>compile</phase>
                 <configuration>
                   <tasks>
