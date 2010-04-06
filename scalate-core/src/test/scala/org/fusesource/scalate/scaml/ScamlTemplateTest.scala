@@ -372,6 +372,13 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <input selected="selected"/>
 """)
 
+testRender("Mixing attributes with complex expressions",
+"""
+%p{ :counter1=>{1 + 2}, :counter2=>10 }
+""","""
+<p counter1="3" counter2="10"></p>
+""")
+
   /////////////////////////////////////////////////////////////////////
   //
   // HTML Elements : Class and ID: `.` and `#`
