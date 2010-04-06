@@ -13,7 +13,7 @@ sort_info: 1
 Scalate: Scala Template Engine
 ==============================
 
-Scalate is a [Scala](http://www.scala-lang.org) based template engine which can be used in the following environments
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based template engine which can be used in the following environments
 
 * stand alone in any JVM
 * as a servlet in any Java in a web application 

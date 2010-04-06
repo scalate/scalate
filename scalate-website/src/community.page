@@ -10,6 +10,14 @@ The {project_name:} community is here to help you
 --- name:content
 
 <div class="left" markdown="1">
+# Blog
+</div>
+<div class="right" markdown="1">
+Keep up to date on the latest and greatest releases by following the [Scalate Blog](blog/index.html)
+
+</div>
+
+<div class="left" markdown="1">
 # Mailing List
 </div>
 <div class="right" markdown="1">

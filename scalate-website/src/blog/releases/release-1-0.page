@@ -1,0 +1,28 @@
+---
+blog_post: true
+title: Scalate 1.0 Released
+author: James Strachan
+author_url: http://macstrac.blogspot.com
+created_at: 2010-04-06 12:06:40.000000 -00:00
+--- 
+
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.0. 
+
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based template engine which can be used stand alone, with servlets, in JAXRS, with the [Play Framework](http://github.com/pk11/play-scalate) or in [Apache Camel](http://camel.apache.org/scalate.html). (Work on lift integration is in progress).
+
+All expressions inside Scalate benefit from the full power of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
+
+Two template languages are currently supported:
+
+* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of JSP or Erb from Rails 
+* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
+
+Further information:
+
+* [Change Log](http://scalate.assembla.com/spaces/scalate/milestones/191839-1-0)
+* [Community](http://scalate.fusesource.org/community.html)
+* [Documentation](http://scalate.fusesource.org/documentation/)
+* [Download](http://scalate.fusesource.org/download.html)
+
+
+

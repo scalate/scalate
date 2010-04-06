@@ -20,6 +20,10 @@ This page contains all the frequently asked questions about the {project_name:} 
 
 General questions on the *{project_name:}* project.
 
+### Why the name Scalate?
+
+Scalate stands for Scala Template Engine hence ScalaTE, though its easier on the eye to just write 'Scalate'
+
 ### What is the license?
 
 The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)
@@ -38,7 +42,7 @@ We love [contributions](contributing.html)! More details on how to contribute an
 
 ### How do I register for the issue tracker?
 
-For more detail see the [support page](support.html). If you haven't done so already you can  <a href=" http://fusesource.com/forge/register">register with the issue tracker here</a>
+For more detail see the [support page](support.html). If you haven't done so already you can  <a href=" https://www.assembla.com/user/signup">register with the issue tracker here</a>
 
 ### How does the website work?
 
