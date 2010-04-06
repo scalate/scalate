@@ -22,7 +22,7 @@ Scalate with the [Play framework](http://www.playframework.org/).  Play focuses 
 # [Jog](jog.html)
 </div>
 <div class="right" markdown="1">
-Scalate with JAXRS (Jersey) on Guice (Jog).  Jog is a way of using Scalate with JAXRS for the RESTful controller layer along with Guice for dependency injection.
+Jog stands for JAXRS/[Jersey](https://jersey.dev.java.net/) on [Guice](http://code.google.com/p/google-guice/). [Jog](jog.html) is a way of using Scalate with JAXRS for the RESTful controller layer along with [Guice](http://code.google.com/p/google-guice/) for dependency injection.
 </div>
 
 <div class="left" markdown="1">

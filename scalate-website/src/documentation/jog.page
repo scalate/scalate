@@ -9,8 +9,6 @@ Using Scalate with JAXRS (Jersey) on Guice
 
 --- name:content
 
-<h1>Under Construction!</h1>
-
 <div class="left" markdown="1">
 # Overview
 </div>
@@ -20,3 +18,59 @@ Jog is a way of using Scalate with JAXRS (using the [Jersey](https://jersey.dev.
 The quickest way to get up to speed on Jog is trying the [getting started guide](getting-started.html)
 </div>
 
+<div class="left" markdown="1">
+# Dependency Injection
+</div>
+<div class="right" markdown="1">
+Jog uses the [Guice Servlet](http://code.google.com/p/google-guice/wiki/Servlets) approach to configuring your web application along with configuring Scalate and Jersey. 
+
+This lets you use dependency injection with Guice to configure your web application, the servlets and servlet filters and all the other resources and services used in your application without any icky XML configuration files and keeping a minimal simple web.xml.
+
+If you try the [getting started guide](getting-started.html) guide, then your running application will have a **src/main/webapp/WEB-INF/web.xml** file which contains the Guice Servlet initialisation configuration. 
+
+The ServletContextListener class configured in this part of the web.xml file
+</div> 
+<div class="right">
+{coderay:: xml}<listener>
+  <listener-class>somePackage.ServletContextListener</listener-class>
+</listener>
+{coderay}
+</div>
+<div class="right" markdown="1">
+is the Scala class which creates the Guice Module that performs all the dependency injection for your application which is in the **src/main/scala** directory. 
+
+So if you need to inject any new services via Guice, just add a new **@Provides** annotated method to the ServletContextListener class.  See the comments in the code for samples.
+</div>
+
+<div class="left" markdown="1">
+# Scalate and JAXRS
+</div>
+<div class="right" markdown="1">
+Scalate operates as an implicit view provider in [Jersey](https://jersey.dev.java.net/). So if create a JAXRS resource which is annotated with **@ImplicitProduces** then your Jog web application will look for Scalate templates to render a HTML.
+
+This uses a naming convention where Scalate will look in your web application for the view to use based on the class name of the resource bean being rendered. 
+
+For example if you had a resource bean like this
+</div> 
+<div class="right">
+{coderay:: scala}
+package somePackage
+
+import com.sun.jersey.api.view.ImplicitProduces
+import javax.ws.rs.{GET, Path, Produces}
+
+@ImplicitProduces(Array("text/html;qs=5"))
+@Path("/foo")
+@Produces(Array("application/xml","text/xml", "application/json"))
+class MyResource {
+  
+  @GET
+  def get = new SomeDTO(this)
+}
+{coderay}
+</div>
+<div class="right" markdown="1">
+If you ask for the URI **/foo** this resource can be rendered using **SomeDTO** as XML/JSON, or if a web browser or REST client asks for media type *text/html* Scalate will look for the template called **somePackage/MyResource.index.ssp** or  **somePackage/MyResource.index.scaml**.
+
+You can have multiple HTML views of the resource by appending the view name. For example requesting **/foo/edit** would look for templates **somePackage/MyResource.edit.ssp** or  **somePackage/MyResource.edit.scaml**.
+</div>

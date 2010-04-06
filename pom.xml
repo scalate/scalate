@@ -605,7 +605,7 @@
 <!--
           <url>http://nexus.scala-tools.org/content/repositories/releases</url>
 -->
-          <url>http://scala-tools.org/repo-release</url>
+          <url>http://scala-tools.org/repo-releases</url>
           <releases>
             <enabled>true</enabled>
           </releases>
