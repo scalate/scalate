@@ -13,7 +13,7 @@ sort_info: 1
 Scalate: Scala Template Engine
 ==============================
 
-Scalate is a [Scala 2.8](http://www.scala-lang.org) based template engine which can be used in the following environments
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based template engine which can be used in the following [frameworks](documentation/frameworks.html) and environments:
 
 * stand alone in any JVM
 * as a servlet in any Java in a web application 
@@ -26,7 +26,12 @@ Scalate supports the following template formats
 * [SSP](documentation/ssp-reference.html) which is like JSP/Erb/ASP 
 * [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 
-All expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. You can reuse Scala's powerful functions, closures and matchers as well as invoking Scala methods can use Scala's XML support to return page fragments.
+Features
+--------
+
+Scalate provides a [Console](documentation/console.html) to make it easy to deal with typos in templates together with making it easy to edit source code, templates and layouts inside your web application.
+
+All expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. You can reuse Scala's powerful functions, closures and matchers as well as invoking Scala methods which can use Scala's XML support to return page fragments.
 
 Scalate templates generate Scala code which is compiled to fast statically typed method dispatch bytecode rather than using dynamic dispatch or reflection. Hopefully [IDEs will soon](creating-ide.html) be able to support full completion of all scala expressions within scalate template files.
 
@@ -35,5 +40,5 @@ Compared to JSP, Scalate misses out lots of stuff like EL, JSTL, tag libraries, 
 Getting started
 ---------------
 
-Try checkout the [Documentation](documentation/index.html)
+Try reading the [Documentation](documentation/index.html) or jump straight to the [Getting Started Guide](documentation/getting-started.html)
 

@@ -51,5 +51,22 @@ To run the project run the following command
     mvn jetty:run
     
 Now when the application starts up you should be able to point your browser at [http://localhost:8080](http://localhost:8080) to run the application.
+
+Your application is now ready for you to create new JAXRS resource beans (in Scala or Java code) as well as rendering any Scalate templates in the **src/main/webapp** directory.
+
+To start hacking on a template, try editing the **src/main/webapp/index.scaml** file which is used to render the home page (a [Scaml](scaml-reference.html) template). Or try adding new templates. 
+
+For more detail on how the web application works please refer to the [Jog documentation](jog.html)
+</div>
+
+<div class="left" markdown="1">
+# Scalate console
+</div>
+<div class="right" markdown="1">
+While looking at the [home page](http://localhost:8080) of your running application you should see a little icon near the top right of the screen which opens/closes the [Scalate Console](console.html). Try opening it and try out its links.
+
+The [Scalate Console](console.html) provides nice error messages if you make a typo in a template together with edit links to the source code, plus provides handy links to the current source, templates and layouts you are viewing in development mode along with a number of other features. 
+
+Please refer to the [Console documentation](console.html) for more detail.
 </div>
 
