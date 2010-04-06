@@ -703,6 +703,15 @@
       </reporting>
     </profile>
 
+    <!-- so we can create a distro on our CI box -->
+    <profile>
+      <id>distro</id>
+      <modules>
+        <module>scalate-website</module>
+        <module>scalate-distro</module>
+      </modules>
+    </profile>
+
     <profile>
       <id>release</id>
       <modules>
