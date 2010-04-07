@@ -384,13 +384,19 @@ The [Scaml](scaml-reference.html) version of this is a bit more concise
 {pygmentize}
 
 
-## Running the Samples
+## Scalate Samples
 
-The easiest way to play with Scalate is to try out the sample web application.
+### Getting Started
+
+The easiest way to get started is to try the [Getting Started Guide](getting-started.html)
+
+### Running the Sample Web Application
+
+The [source code](../source.html) comes with a sample web application called **scalate-sample** which includes a number of exmample templates you can play around with>
 
 Scalate can be built either using Maven or SBT
 
-### Requirements
+#### Requirements
 
 General Requirements:
 
@@ -401,7 +407,7 @@ Web Container Requirements:
 
 * Servlet 2.5 container or Newer
 
-### Using Maven
+#### Using Maven
 
 Install [Maven](http://maven.apache.org/) version 2.0.9 or later. Then type
 
@@ -416,7 +422,7 @@ To run the sample web application
 
 Then open [the sample home page](http://localhost:8080/)
 
-### Using SBT
+#### Using SBT
 
 You can also use [sbt](http://code.google.com/p/simple-build-tool/ "simple build tool") to build Scalate.
 
@@ -438,8 +444,18 @@ to run the tests
 
 For more information see the [sbt building instructions](http://scalate.fusesource.org/sbt.html)
 
-## Using Scalate in your Web Application
 
+## Using Scalate
+
+You might want to refer to the [Frameworks Documentation](frameworks.html) to see if there is some specific instructions on using Scalate with your favourite web framework.
+
+### Using Scalate with JAXRS/Jersey
+
+Our recommendation is to start with [JOG](jog.html) (Jersey on Guice).
+
+To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html)
+
+### Using Scalate as Servlets in your Web Application
 
 * Add something like the following to your web.xml file to support Ssp and Scaml pages:
 
@@ -467,21 +483,21 @@ For more information see the [sbt building instructions](http://scalate.fusesour
 
 You could add one or more of the above to your servlet container's server-wide configuration if you prefer
 
+### Embedding Scalate in your Application or Framework
+
+Scalate does not have any hard dependencies on a web framework or even HTTP.  It can be used as a standalone
+rendering engine in your application.  For more information on how to embed in your application, please reference the 
+[Scalate Embedding Guide](scalate-embedding-guide.html)
+
 ### Possible Gotchas
 
-- Works with expanded WARs - or servlet containers who's ClassLoader implements URLClassLoader
+- Scalate works with expanded WARs - or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing. This is due to the Scala compiler requiring a full expended classloader path rather than taking an actual ClassLoader object.
 
 - Assumes template source files are all UTF-8-encoded.
 
 - Assumes template output is all UTF-8-encoded.
 
 - No support for pre-compiled templates (e.g., via a custom Ant task).
-
-## Embedding Scalate in your Application or Framework
-
-Scalate does not have any hard dependencies on a web framework or even HTTP.  It can be used as a standalone
-rendering engine in your application.  For more information on how to embed in your application, please reference the 
-[Scalate Embedding Guide](scalate-embedding-guide.html)
 
 
 ## IDE plugins
