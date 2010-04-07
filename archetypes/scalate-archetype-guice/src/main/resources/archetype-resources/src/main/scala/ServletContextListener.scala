@@ -20,7 +20,7 @@ class ServletContextListener extends GuiceServletContextListener {
     // @Provides def createSomething = new MyThing()
 
     // lets add any package names which contain JAXRS resources
-    override def resourcePackageNames = "${packageName}.resources" :: super.resourcePackageNames
+    override def resourcePackageNames = "${package}.resources" :: super.resourcePackageNames
     
 
     // Note lets explicitly allow / to be served using a scaml template for now, remove this if you want a JAXRS

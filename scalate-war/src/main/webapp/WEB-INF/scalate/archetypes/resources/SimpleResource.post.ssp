@@ -1,6 +1,6 @@
 <%@ import val it: org.fusesource.scalate.console.ArchetypeResource %>
 <% 
-  val params = org.fusesource.scalate.console.archetypes.ResourceParams(it); 
+  val params = org.fusesource.scalate.console.ResourceParams(it); 
   import params._
   
   val fileName = scalaSourceFileName(qualifiedClassName) 
