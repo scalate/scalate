@@ -136,4 +136,5 @@ I like &lt;strong&gt; cheese &amp; crackers
       
 ## Other Resources
 
-* [Scalate User Guide](scalate-user-guide.html)
+* [User Guide](user-guide.html)
+* [Documentation](index.html)

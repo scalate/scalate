@@ -1355,5 +1355,6 @@ You can also define your own filters. See Haml::Filters for details.
 
 ## Other Resources
 
-* [Scalate User Guide](scalate-user-guide.html)
+* [User Guide](user-guide.html)
+* [Documentation](index.html)
 

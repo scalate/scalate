@@ -36,7 +36,7 @@ Try the [Getting Started Guide](documentation/getting-started.html) which should
 
 See the [support guide](support.html) for more details.
 
-### How do I build Scalate
+### How do I build Scalate?
 
 First [get the source](source.html) then see he [building guide](building.html)
 
@@ -71,10 +71,29 @@ Your best bet is starting with the [User Guide](documentation/index.html) maybe 
 * [Ssp Reference](documentation/ssp-reference.html) 
 * [Scaml Reference](documentation/scaml-reference.html) 
 
-### How can I use Scalate and Scala in a RAD way
+### How can I use Scalate and Scala in a RAD way?
 
 Scalate itself auto-recompiles and reloads templates on the fly. However if you are changing Scala code which the Scalate templates use then you normally have to stop and restart your web container.
 
 So for a more RAD approach we recommend using [JRebel](jrebel.html) which can hot-reload the Scala code on the fly, leading to a rapid edit &lt;-&gt; browser reload cycle.
 
+### Can I use Scalate with a non file based template?
+
+You can configure the [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html)  to provide a *resourceLoader* to resolve URIs for templates. See the [Custom Template Loading in the Embedding Guide](documentation/scalate-embedding-guide.html#custom_template_loading).
+
+Or if you are using the Scalate API directly there are methods on [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) API for loading a [Template](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/Template.html) by supplying the source of the template as a String. So you can create the template content however you wish, then compile and render the template.
+
+For example
+{pygmentize:: scala}
+// a template with an attribute 
+val source = "<%@ val name: String %> hello ${name}" 
+
+val template = engine.compileSsp(source) 
+val output = engine.layout(template, Map("name" -> "James")) 
+
+// test it works... 
+expect("hello James") {output} 
+{pygmentize}
+
+To see more examples try the [TemplateEngineTest.scala test case](http://github.com/scalate/scalate/blob/master/scalate-core/src/test/scala/org/fusesource/scalate/TemplateEngineTest.scala)
 
