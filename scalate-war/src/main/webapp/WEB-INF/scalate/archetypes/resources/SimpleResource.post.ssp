@@ -66,6 +66,4 @@ class ${className} {
 
 <p>Otherwise you should restart your web application to be able to try this new resource.</p>
 
-<p>About to generate template ${templateFile}</p>        
-
 <%}%>
