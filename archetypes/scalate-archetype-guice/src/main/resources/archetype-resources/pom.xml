@@ -9,29 +9,30 @@
 
   <name>My Web App</name>
   <description>Web Application Using Scalate, Scala and JAXRS/Jersey</description>
-  
-  <prerequisites>
-     <maven>2.0.9</maven>
-   </prerequisites>
 
-   <properties>
-     <!-- environment settings -->
+  <prerequisites>
+    <maven>2.0.9</maven>
+  </prerequisites>
+
+  <properties>
+    <!-- environment settings -->
     <jetty-port>8080</jetty-port>
     <scalateEditor>${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.workdir>\${basedir}/target/scalateWorkDir</scalate.workdir>
+    <scalate.package.resources>${package}.resources</scalate.package.resources>
 
     <!-- version info -->
-     <jersey-version>${jersey-version}</jersey-version>
-     <jetty-version>${jetty-version}</jetty-version>
-     <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
-     <logback-version>${logback-version}</logback-version>
-     <scala-version>${scala-version}</scala-version>
-     <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
-     <scalate-version>${project.version}</scalate-version>
-     <servlet-api-version>${servlet-api-version}</servlet-api-version>
-     <surefire-version>${surefire-version}</surefire-version>
-   </properties>
-   
+    <jersey-version>${jersey-version}</jersey-version>
+    <jetty-version>${jetty-version}</jetty-version>
+    <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
+    <logback-version>${logback-version}</logback-version>
+    <scala-version>${scala-version}</scala-version>
+    <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
+    <scalate-version>${project.version}</scalate-version>
+    <servlet-api-version>${servlet-api-version}</servlet-api-version>
+    <surefire-version>${surefire-version}</surefire-version>
+  </properties>
+
   <dependencies>
     <!-- war overlay to get the Scalate console and error pages -->
     <dependency>
@@ -268,6 +269,10 @@
             <systemProperty>
               <name>scalate.temp.workingdir</name>
               <value>\${scalate.temp.workingdir}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>scalate.package.resources</name>
+              <value>\${scalate.package.resources}</value>
             </systemProperty>
           </systemProperties>
           <scanIntervalSeconds>0</scanIntervalSeconds>

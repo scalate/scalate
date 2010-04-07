@@ -23,7 +23,7 @@
       %td
         %label(for="packageName") Package Name
       %td
-        %input(type="text" name="packageName" size="40" value="com.acme.demo.resources")
+        %input(type="text" name="packageName" size="40" value={System.getProperty("scalate.package.resources", "com.acme.demo.resources")})
     %tr
       %td(colspan="2" align="center")
         %input(type="submit" value="Create")

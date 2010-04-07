@@ -19,20 +19,47 @@
 %>
 package ${packageName}
 
-import javax.ws.rs.{Path}
+import com.sun.jersey.api.view.ImplicitProduces
+import javax.ws.rs.{GET, Path, Produces}
 
 @Path("${resourceUri}")
+@ImplicitProduces(Array("text/html;qs=5"))
 class ${className} {
-  
-}
-<%  }%>
 
-<h3>generated: <%= editLink(fileName) { %>
+  // TODO delete me:
+  // this is just some dummy data we can use in a template
+  def name = "Some Name"
+}
+<%  }
+
+    // lets generate a template file too
+    val templateFile = "src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/" + className + ".index.scaml"
+    createFile(templateFile) {
+%>
+-@ import val it : ${className}
+%h1 ${className}
+%p
+  Hello I am the view of a resource.
+%p
+  My name is:
+  %b
+    = name
+<%  }
+%>
+
+<h3>generated resource: <%= editLink(fileName) { %>
   ${shorten(fileName)}
+<% } %></h3>
+<h3>generated view: <%= editLink(templateFile) { %>
+  ${shorten(templateFile)}
 <% } %></h3>
 
 <h3><a href="${resourceUri}">try the New Resource</a></h3>
 
 <p>To be able to dynamically build and reload new code on the fly you should enable <a href="http://scalate.fusesource.org/jrebel.html">JRebel</a></p>
+
+<p>Otherwise you should restart your web application to be able to try this new resource.</p>
+
+<p>About to generate template ${templateFile}</p>        
 
 <%}%>
