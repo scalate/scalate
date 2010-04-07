@@ -31,10 +31,10 @@ If you try the [getting started guide](getting-started.html) guide, then your ru
 The ServletContextListener class configured in this part of the web.xml file
 </div> 
 <div class="right">
-{coderay:: xml}<listener>
+{pygmentize:: xml}<listener>
   <listener-class>somePackage.ServletContextListener</listener-class>
 </listener>
-{coderay}
+{pygmentize}
 </div>
 <div class="right" markdown="1">
 is the Scala class which creates the Guice Module that performs all the dependency injection for your application which is in the **src/main/scala** directory. 
@@ -73,4 +73,16 @@ class MyResource {
 If you ask for the URI **/foo** this resource can be rendered using **SomeDTO** as XML/JSON, or if a web browser or REST client asks for media type *text/html* Scalate will look for the template called **somePackage/MyResource.index.ssp** or  **somePackage/MyResource.index.scaml**.
 
 You can have multiple HTML views of the resource by appending the view name. For example requesting **/foo/edit** would look for templates **somePackage/MyResource.edit.ssp** or  **somePackage/MyResource.edit.scaml**.
+</div>
+
+
+<div class="left" markdown="1">
+# See Also
+</div>
+<div class="right" markdown="1">
+  
+* [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
+* [Scalate Console](console.html)
+* [Documentation](documentation.html) for further information on user guides and template references
+  
 </div>

@@ -13,7 +13,7 @@ The console that helps you scalate!
 # Features
 </div>
 <div class="right" markdown="1">
-The Scalate console is designed to make it easier to work on your Scalate web application.
+The Scalate console is designed to make it easier to work on your Scalate web application. The console is implemented using a [WAR Overlay](war-overlay.html), so its as simple as adding a single dependency to your maven pom.xml.
 
 The console provides edit links to the current JAXRS resource class (if it can figure it out) together with all the templates that have been used to render the current page; including any includes and layout files. If you want to edit one of the files you can just click on the links.
 
@@ -48,3 +48,13 @@ If you want to open scala and template files in [Eclipse](http://eclipse.org/) o
 
 </div>
 
+
+<div class="left" markdown="1">
+# See Also
+</div>
+<div class="right" markdown="1">
+  
+* [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
+* [Documentation](documentation.html) for further information on user guides and template references
+  
+</div>

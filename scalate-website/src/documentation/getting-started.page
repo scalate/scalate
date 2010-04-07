@@ -101,3 +101,15 @@ The [Scalate Console](console.html) provides nice error messages if you make a t
 Please refer to the [Console documentation](console.html) for more detail.
 </div>
 
+<div class="left" markdown="1">
+# Diving deeper
+</div>
+<div class="right" markdown="1">
+Once you have the application working and you've played with the [Console](console.html) you might want to dive deeper into Scalate and understand how it works.
+
+* [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
+* [Scalate Console](console.html)
+* [Documentation](documentation.html) for further information on user guides and template references
+  
+</div>
+
