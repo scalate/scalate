@@ -53,7 +53,7 @@ This uses a naming convention where Scalate will look in your web application fo
 For example if you had a resource bean like this
 </div> 
 <div class="right">
-{coderay:: scala}
+{pygmentize:: scala}
 package somePackage
 
 import com.sun.jersey.api.view.ImplicitProduces
@@ -61,13 +61,13 @@ import javax.ws.rs.{GET, Path, Produces}
 
 @ImplicitProduces(Array("text/html;qs=5"))
 @Path("/foo")
-@Produces(Array("application/xml","text/xml", "application/json"))
+@Produces(Array("text/xml", "application/json"))
 class MyResource {
   
   @GET
   def get = new SomeDTO(this)
 }
-{coderay}
+{pygmentize}
 </div>
 <div class="right" markdown="1">
 If you ask for the URI **/foo** this resource can be rendered using **SomeDTO** as XML/JSON, or if a web browser or REST client asks for media type *text/html* Scalate will look for the template called **somePackage/MyResource.index.ssp** or  **somePackage/MyResource.index.scaml**.
