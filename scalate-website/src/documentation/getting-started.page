@@ -27,19 +27,37 @@ Lets use one of the Scalate Maven archetypes to create a new [Jog](jog.html) pro
 
 In a command line type this:
 
-    mvn archetype:create \
+    mvn archetype:generate \
       -DarchetypeGroupId=org.fusesource.scalate.tooling \
       -DarchetypeArtifactId=scalate-archetype-guice \
-      -DarchetypeVersion={project_version:} \
-      -DgroupId=myGroup -DartifactId=myArtifact 
+      -DarchetypeVersion=1.0 \
+      -DarchetypeRepository=http://repo.fusesource.com/nexus \
+      -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT
     
 You might want to change the last line changing *myGroup* and *myArtifact* to whatever maven groupId and artifactId you want to use.
 
-Now you've successfully created a base [Jog](jog.html) project using Scalate, Scala, [Jersey](https://jersey.dev.java.net/) and [Guice](http://code.google.com/p/google-guice/).
+The maven archetype plugin will ask you to hit enter to confirm those settings.
 
-Now change directory to the new *myArtifact* directory (or whatever name you used)  
+Now change directory to the new *myArtifact* directory (or whatever name you used for the artifactId)  
 
     cd myArtifact  
+    
+You should now see a directory tree something like this
+
+    |-src
+    |---main
+    |-----resources
+    |-----scala
+    |-------myGroup
+    |-----webapp
+    |-------WEB-INF
+    |---test
+    |-----scala
+    |-------myGroup
+
+If this step didn't work, [let us know](../community.html)!
+
+Hopefully you now have a base [Jog](jog.html) project using Scalate, Scala, [Jersey](https://jersey.dev.java.net/) and [Guice](http://code.google.com/p/google-guice/).
 </div>
 
 <div class="left" markdown="1">
