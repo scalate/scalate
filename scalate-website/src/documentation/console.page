@@ -19,6 +19,8 @@ The console provides edit links to the current JAXRS resource class (if it can f
 
 If you make a typo in a template, the console will render a nice error page together with the line and column where the error occurred and edit links so you can fix the mistake quickly.
 
+If you get a stack trace, Scalate will show the line/column of the template in the stack trace, so you can easily click and edit the template which caused an exception to occur.
+
 In addition the console provides easy access to view
 
 * the source of the main output of the current template (before layout) 
