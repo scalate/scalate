@@ -47,14 +47,20 @@ class ${className} {
 <%  }
 %>
 
-<h3>generated resource: <%= editLink(fileName) { %>
-  ${shorten(fileName)}
-<% } %></h3>
-<h3>generated view: <%= editLink(templateFile) { %>
-  ${shorten(templateFile)}
-<% } %></h3>
+<h3>generated</h3>
 
-<h3><a href="${resourceUri}">try the New Resource</a></h3>
+<ul>
+  <li>resource: <%= editLink(fileName) { %>
+  ${shorten(fileName)}
+<% } %>
+  </li>
+  <li>view: <%= editLink(templateFile) { %>
+  ${shorten(templateFile)}
+<% } %>
+  </li>
+</ul>
+
+<h3><a href="${resourceUri}">Try the New Resource</a></h3>
 
 <p>To be able to dynamically build and reload new code on the fly you should enable <a href="http://scalate.fusesource.org/jrebel.html">JRebel</a></p>
 
