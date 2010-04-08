@@ -1,7 +1,9 @@
 package org.fusesource.scalate.tooling
 
-import _root_.org.apache.maven.project.{DefaultProjectBuildingRequest, ProjectBuildingRequest, ProjectBuilder, MavenProject}
+import _root_.org.fusesource.scalate.util.IOUtil._
+import _root_.org.apache.maven.project.{DefaultProjectBuildingRequest, ProjectBuilder, MavenProject}
 import _root_.org.junit.{After, Before, Assert}
+import _root_.scala.collection.JavaConversions._
 import org.codehaus.plexus.{DefaultContainerConfiguration, ContainerConfiguration, DefaultPlexusContainer}
 import org.apache.maven.Maven
 import org.apache.maven.exception.DefaultExceptionHandler
@@ -21,12 +23,10 @@ import org.codehaus.plexus.util.FileUtils
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.Collections
+import java.util.{List => JList}
 import java.util.LinkedHashMap
 import java.util.Map
 import java.util.Properties
-import java.util.UUID
-import scala.collection.JavaConversions._
-
 /**
  * @version $Revision : 1.1 $
  */
@@ -39,22 +39,25 @@ class ArchetypeTestSupport {
   // TODO discover this from the pom!
   protected var version: String = _
 
-  protected def testScalateArchetype(artifactId: String): Unit = {
+  protected var newProjectDir: File = _
+
+  protected def testScalateArchetype(artifactId: String, testConsole: Boolean = false): Unit = {
     // lets try resolve the current project version
     version = findCurrentPomVersion
     logger.info("Looked up version from current pom: " + version)
 
-    testArchetype("org.fusesource.scalate.tooling", artifactId, version)
+    testScalateArchetype("org.fusesource.scalate.tooling", artifactId, version, testConsole)
   }
 
-  protected def testArchetype(groupId: String, artifactId: String, version: String): Unit = {
+  protected def testScalateArchetype(groupId: String, artifactId: String, version: String, testConsole: Boolean): Unit = {
     logger.info("Attempting to create archetype: " + artifactId + " using version: " + version)
 
     // create a temp directory to run the archetype in
     var targetDir: File = new File(baseDir, "target/archetypes/" + artifactId)
     FileUtils.deleteDirectory(targetDir)
     targetDir.mkdirs
-    var createdArtifactId: String = UUID.randomUUID.toString
+    //val createdArtifactId: String = UUID.randomUUID.toString
+    val createdArtifactId: String = "myArtifact"
 
     var props: Properties = new Properties
     props.setProperty("archetypeGroupId", groupId)
@@ -75,9 +78,11 @@ class ArchetypeTestSupport {
     runMaven(request)
 
 
-    var newProjectDir: File = new File(targetDir, createdArtifactId)
+    newProjectDir = new File(targetDir, createdArtifactId)
     logger.info("Now building created archetype in: " + newProjectDir)
 
+    runMaven(mavenRequest(Collections.singletonList("install")))
+/*
     request = new DefaultMavenExecutionRequest
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
     request.setGoals(Collections.singletonList("install"))
@@ -85,6 +90,49 @@ class ArchetypeTestSupport {
     request.setProjectPresent(true)
     request.setPom(new File(newProjectDir, "pom.xml"))
     runMaven(request)
+*/
+
+
+    if (testConsole) {
+      // lets copy the ConsoleTest
+      copyFile(baseDir.getParentFile.getParentFile.getPath +
+              "/scalate-war/src/test/scala/org/fusesource/scalate/console/ConsoleTest.scala",
+        newProjectDir.getPath + "/src/test/scala/org/fusesource/scalate/console/ConsoleTest.scala")
+
+      // lets copy the TestGeneratedConsoleFiles
+      copyFile(baseDir.getPath + "/src/test/scala/org/fusesource/scalate/console/TestGeneratedConsoleFiles.scala",
+        newProjectDir.getPath + "/src/test/scala/org/fusesource/scalate/console/TestGeneratedConsoleFiles.scala")
+
+      System.setProperty("scalate.package.resources", "sample.resources")
+      mavenTest("ConsoleTest")
+      mavenTest("TestGeneratedConsoleFiles")
+    }
+  }
+
+
+  def copyFile(fromFileName: String, toFileName: String): File = {
+    val from  = new File(fromFileName)
+    val to = new File(toFileName)
+    println("copying from: " + from + " to: " + to)
+    copy(from, to)
+    to
+  }
+
+  def mavenTest(test: String): Unit = {
+    val request = mavenRequest(Collections.singletonList("install"))
+    val properties = new Properties()
+    properties.put("test", test)
+    request.setUserProperties(properties)
+    runMaven(request)
+  }
+  def mavenRequest(goals: JList[String]): DefaultMavenExecutionRequest = {
+    val request = new DefaultMavenExecutionRequest
+    request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
+    request.setGoals(goals)
+    request.setBaseDirectory(newProjectDir)
+    request.setProjectPresent(true)
+    request.setPom(new File(newProjectDir, "pom.xml"))
+    request
   }
 
 

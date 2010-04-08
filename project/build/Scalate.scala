@@ -13,9 +13,11 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
 
   // Projects
   lazy val core = project("scalate-core", "Scalate Core", new Core(_))
-  lazy val camel = project("scalate-camel", "Scalate Camel", new Camel(_), core)
-  lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core)
-  lazy val bookstore = project("scalate-bookstore", "Scalate Bookstore Sample Web App", new Bookstore(_), core)
+  lazy val test = project("scalate-test", "Scalate Test", new Test(_))
+  lazy val camel = project("scalate-camel", "Scalate Camel", new Camel(_), core, test)
+  lazy val war = project("scalate-war", "Scalate WAR Overlay", new War(_), core, test)
+  lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core, test, war)
+  lazy val bookstore = project("scalate-bookstore", "Scalate Bookstore Sample Web App", new Bookstore(_), core, test, war)
 
 
   // TODO disable WebbyTest until its in a maven repo
@@ -23,7 +25,13 @@ class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
     println("core project uses " + testScalaSourcePath)
   }
 
+  class Test(info: ProjectInfo) extends DefaultProject(info) {
+  }
+
   class Camel(info: ProjectInfo) extends DefaultProject(info) {
+  }
+
+  class War(info: ProjectInfo) extends DefaultWebProject(info) {
   }
 
   class Sample(info: ProjectInfo) extends DefaultWebProject(info) {

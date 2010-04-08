@@ -76,6 +76,10 @@ object IOUtil {
     }
   }
 
+  def copy(in: File, out: File): Long = {
+    out.getParentFile.mkdirs
+    copy(new FileInputStream(in), new FileOutputStream(out))
+  }
 
   def copy(in: InputStream, out: OutputStream): Long = {
     var bytesCopied: Long = 0

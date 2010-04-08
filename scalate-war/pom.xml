@@ -65,7 +65,11 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-version}</version>
         <configuration>
-          <forkMode>once</forkMode>
+          <systemPropertyVariables>
+            <!-- lets force any generated source to be in the build directory when running archetype tests -->
+            <scalate.generate.src>${basedir}/target/gen-src</scalate.generate.src>
+          </systemPropertyVariables>
+
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->
           <useSystemClassLoader>false</useSystemClassLoader>
           <useManifestOnlyJar>false</useManifestOnlyJar>
@@ -76,6 +80,7 @@
             <exclude>**/QueuesTest.*</exclude>
             <exclude>**/htmlunit/**.*</exclude>
           </excludes>
+
         </configuration>
       </plugin>
 

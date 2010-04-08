@@ -1,5 +1,6 @@
 package org.fusesource.scalate.console
 
+import _root_.java.io.File
 import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
 import com.sun.jersey.api.view.Viewable
@@ -13,7 +14,9 @@ import org.fusesource.scalate.{NoFormParameterException, RenderContext}
 class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets with Logging {
   var _form: Form = _
 
-  var src = "src"
+  var src = System.getProperty("scalate.generate.src", "src")
+  new File(src).mkdirs
+
   var srcMain = src + "/main"
   var srcMainScala = srcMain + "/scala"
   var srcMainJava = srcMain + "/java"

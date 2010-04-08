@@ -33,7 +33,7 @@ class ${className} {
 <%  }
 
     // lets generate a template file too
-    val templateFile = "src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/" + className + ".index.scaml"
+    val templateFile = srcMain + "/webapp/WEB-INF/" + packageName.replace('.', '/') + "/" + className + ".index.scaml"
     createFile(templateFile) {
 %>
 -@ import val it : ${className}

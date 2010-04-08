@@ -2,12 +2,12 @@
 #scalate-console
   - if (!optionEnabled("console"))
     .toggle.show
-      %a(href={enableLink("console")} title="Show the Scalate Console") 
+      %a(href={enableLink("console")} class="consoleLink" title="Show the Scalate Console")
         %img(src="/images/scalate/project-icon-24x24.png")
         %img(src="/images/scalate/plus.png")
   - else
     .toggle.hide
-      %a(href={disableLink("console")} title="Hide the Scalate Console")
+      %a(href={disableLink("console")} class="consoleLink hide" title="Hide the Scalate Console")
         %img(src="/images/scalate/project-icon-24x24.png")
         Scalate Console
         %img(src="/images/scalate/minus.png")

@@ -88,17 +88,27 @@ class JettyServer {
     server.stop
   }
 
-  def findOverlayModuleWebAppDir: String = if (basedir.contains(overlayProject)) {null} else {
-    exists(basedir + overlayProject + "/" + mavenWebAppSubDir, basedir + "../" + overlayProject + "/" + mavenWebAppSubDir) match {
-      case Some(file) => file.getAbsolutePath
-      case _ => null
+  protected def findOverlayModuleWebAppDir: String = if (basedir.contains(overlayProject)) {null} else {
+    findOverlayModuleWebAppDir(basedir)
+  }
+
+  /** Lets walk up the directory tree looking for the overlayProject */
+  protected def findOverlayModuleWebAppDir(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
+    case Some(file) => file.getAbsolutePath
+    case _ => val parent = new File(dir).getParent
+    if (parent == null || parent == dir) {
+      null
+    }
+    else {
+      findOverlayModuleWebAppDir(parent)
     }
   }
+
 
   def rootUrl = "http://localhost:" + localPort + "/"
 
 
   def addFileSeparator(path: String) = if (path == null || path.length == 0) "" else path + "/"
 
-  def exists(names: String*): Option[File] = names.map(new File(_)).find{f => val answer = f.exists; println("file " + f + " = " + answer); answer}
+  def exists(names: String*): Option[File] = names.map(new File(_)).find {f => val answer = f.exists; println("file " + f + " = " + answer); answer}
 }

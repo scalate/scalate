@@ -9,6 +9,7 @@ class ArchetypeGuiceTest extends ArchetypeTestSupport {
 
   @Test
   def testArchetype: Unit = {
-    testScalateArchetype("scalate-archetype-guice");
+    testScalateArchetype("scalate-archetype-guice", true);
   }
+
 }

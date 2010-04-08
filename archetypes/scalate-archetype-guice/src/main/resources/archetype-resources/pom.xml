@@ -208,6 +208,10 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>\${surefire-version}</version>
         <configuration>
+          <systemPropertyVariables>
+            <scalate.package.resources>\${scalate.package.resources}</scalate.package.resources>
+          </systemPropertyVariables>
+
           <forkMode>once</forkMode>
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->
           <useSystemClassLoader>false</useSystemClassLoader>

@@ -1,9 +1,10 @@
 package org.fusesource.scalate.test
 
+import _root_.org.openqa.selenium.WebElement
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import java.lang.String
 import collection.immutable.Map
-import org.scalatest.{FunSuite, Suite, BeforeAndAfterAll}
+import org.scalatest.{FunSuite, BeforeAndAfterAll}
 
 /**
  * A simple trait for testing web pages using Selenium WebDriver
@@ -19,13 +20,13 @@ trait WebDriverMixin extends BeforeAndAfterAll {
 
   override protected def afterAll(configMap: Map[String, Any]) = webDriver.close
 
-/*
-  def pageContains(text: String): Unit = {
-    val source = webDriver.getPageSource
-    assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
-    assume(source.contains(text), "Page does not contain '" + text + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
-  }
-*/
+  /*
+    def pageContains(text: String): Unit = {
+      val source = webDriver.getPageSource
+      assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
+      assume(source.contains(text), "Page does not contain '" + text + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
+    }
+  */
 
   def pageContains(textLines: String*): Unit = {
     val source = webDriver.getPageSource
@@ -54,25 +55,27 @@ trait WebDriverMixin extends BeforeAndAfterAll {
   }
 
   def pageMatches(regex: String): Unit = {
-    val source = webDriver.getPageSource
+    val source = pageSource
     assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
     assume(source.matches(regex), "Page does not match '" + regex + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
   }
 
 
-  def testPageContains(uri: String, textLines:String*) {
+  def pageSource = webDriver.getPageSource
+
+  def testPageContains(uri: String, textLines: String*) {
     testPage(uri) {
-      pageContains(textLines:_*)
-    }
-  }
-  
-  def testPageNotContains(uri: String, textLines:String*) {
-    testPage(uri) {
-      pageNotContains(textLines:_*)
+      pageContains(textLines: _*)
     }
   }
 
-  def testPageMatches(uri: String, matches:String) {
+  def testPageNotContains(uri: String, textLines: String*) {
+    testPage(uri) {
+      pageNotContains(textLines: _*)
+    }
+  }
+
+  def testPageMatches(uri: String, matches: String) {
     testPage(uri) {
       pageMatches(matches)
     }
@@ -88,6 +91,22 @@ trait WebDriverMixin extends BeforeAndAfterAll {
       println("About to run test for: " + fullUri)
       func
       println("Completed test for: " + fullUri)
+    }
+  }
+
+  /**
+   * Returns the XPath selector which can then be used for further navigation
+   */
+  def xpath(selector: String): WebElement = {
+    try {
+      val answer = webDriver.findElementByXPath(selector)
+      assume(answer != null, "xpath " + selector + " returned null!")
+      answer
+    }
+    catch {
+      case e => println("Failed to find xpath: " + selector + " on page due to: " + e)
+      println(pageSource)
+      throw e
     }
   }
 
