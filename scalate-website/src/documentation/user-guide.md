@@ -116,7 +116,9 @@ import org.fusesource.scalate.servlet.ServletRenderContext._
 
 object MySnippets {
   def foo = {
-    // I now have access to the renderContext, request, response, servletContext, servletConfig objects here thanks to the import
+    // thanks to the import I now have access to the renderContext
+    // along with the standard servlet objects:
+    // request, response, servletContext, servletConfig
     request.getParameter("foo") 
   }
 }
