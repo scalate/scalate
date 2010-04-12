@@ -105,6 +105,28 @@ The [Scaml](scaml-reference.html) version is
 {pygmentize}
 
 
+### Accessing request state inside a Scala function
+
+As you write snippet functions for use in your templates you might find yourself needing to access the current HttpServletRequest or HttpServletResponse.
+
+There is a simple helper import you can use...
+
+{pygmentize:: scala}
+import org.fusesource.scalate.servlet.ServletRenderContext._
+
+object MySnippets {
+  def foo = {
+    // thanks to the import I now have access to the renderContext
+    // along with the standard servlet objects:
+    // request, response, servletContext, servletConfig
+    request.getParameter("foo") 
+  }
+}
+{pygmentize}
+
+This helps you keep your snippet functions nice and small.
+
+
 ### Passing a template block to a Scala function
 
 To use the JSP concept of custom tags, you might want to pass a block of template to a function for further processing or transformation.

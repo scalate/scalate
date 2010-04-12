@@ -24,6 +24,10 @@ General questions on the *{project_name:}* project.
 
 Scalate stands for Scala Template Engine hence ScalaTE, though its easier on the eye to just write 'Scalate'
 
+### Why should I use Scalate?
+
+Details of [why you should use Scalate here](why.html)
+
 ### What is the license?
 
 The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)
@@ -54,13 +58,25 @@ For details on how to edit the website and how it works see [How the Site works]
 
 ## The Scalate Approach
 
-### Isn't putting code in views a bad thing?
+### Should I use SSP or Scaml?
 
-Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
+If you know JSP or Erb then you will feel right at home with [SSP](documentation/ssp-reference.html) which has very similar syntax - the main difference is its use of Scala for expressions.
+
+However if you are generating markup, particularly HTML, then we highly recommend you take a look at [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/). Scaml is a little bit of an acquired taste - if you've never used HAML before it might seem a little odd at first; but when you get used to it we're sure you'll really like it.
+
+While [SSP](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) offer the same kinds of features and expressive power, using Scala expressions, iteration, navigation and pattern matching, [Scaml](documentation/scaml-reference.html) really shines for generating HTML and XML markup - its much more concise and DRY. [SSP](documentation/ssp-reference.html) is much better for generating arbitrary textual output such as emails (as Scaml is highly optimised to nested markup and HTML in particular) - or for getting you up to speed quickly on Scalate if you've only used JSP or Erb in the past.
+
+### How does Scalate compare to JSP?
+
+See our [comparison of Scalate to JSP](compare-jsp.html)
 
 ### How does Scalate compare to Lift views?
 
 We [compare approaches here](code-in-view.html), see which is right for you and your team.
+
+### Isn't putting code in views a bad thing?
+
+Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
 
 ## Using Scalate
 
@@ -76,6 +92,23 @@ Your best bet is starting with the [User Guide](documentation/index.html) maybe 
 Scalate itself auto-recompiles and reloads templates on the fly. However if you are changing Scala code which the Scalate templates use then you normally have to stop and restart your web container.
 
 So for a more RAD approach we recommend using [JRebel](jrebel.html) which can hot-reload the Scala code on the fly, leading to a rapid edit &lt;-&gt; browser reload cycle.
+
+### How can I access the Servlet request, response or servletContext
+
+When using Scalate with servlets or [Jog](documentation/jog.html) you might wish to access the current request, response, servletContext or servletConfig objects used by the servlet engine. These variables are all available by default thanks to the
+[ServletRenderContext](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/servlet/ServletRenderContext.html) API which is imported by default.
+
+So your template can refer to these variables if they are required directly - rather like they can be in JSP.
+
+{pygmentize:: jsp}
+<h1>Hello ${someMethod(request, response)}</h1>
+{pygmentize}
+
+where someMethod is a function takes a Servlet request and response parameter.
+
+However if you are using 1.1 or later you can [avoid having to mention these variables in your templates](documentation/user-guide.html#accessing_request_state_inside_a_scala_function); instead your snippet functions can refer to these values directly (or you can write snippet functions that hide these parameters to simplify your templates)
+
+
 
 ### Can I use Scalate with a non file based template?
 

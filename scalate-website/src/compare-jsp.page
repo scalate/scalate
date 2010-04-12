@@ -1,0 +1,53 @@
+---
+title: How does Scalate compare to JSP?
+in_menu: false
+--- name:overview
+
+# How does Scalate compare to JSP?
+So why should I use Scalate if I use JSP?
+
+--- name:content
+
+<div class="left" markdown="1">
+# Simplicity
+</div>
+<div class="right" markdown="1">
+JSP is quite old, has been through many iterations and so has lots of legacy in there making it very complex. To do JSP well you need to grok Java scriplets, the EL, JSTL, JSP tag classes and libraries, JSP Tag files, TLD files and then you'll need to integrate some layout tool like SiteMesh or Tiles in the mix too.
+
+Scalate is much simpler yet way more powerful since Scalate tries to do much less but then delegate to the Scala language for the heavy lifting. The use of Scala for expressions, iteration, object navigation and pattern matching is much more concise and powerful than either JSP's use of Java scriptlets or the very primitive EL expressions. 
+
+For example its very easy to write something [conceptually similar to a custom tag](documentation/user-guide.html#passing_a_template_block_to_a_scala_function) in a simple Scala function. Scalate can also leverage Scala's powerful XML support for creating dynamic markup in a regular Scala function.
+</div>
+
+<div class="left" markdown="1">
+# Statically typed
+</div>
+<div class="right" markdown="1">
+JSP like most other template engines uses introspection at runtime to evaluate EL expressions. This makes it very easy to hide typos in your templates unless you have 100% test coverage of all of your templates.
+
+Scalate however is completely statically typed; so at edit/compile time Scalate knows the types of all expressions so it can spot any typo early.
+
+Plus since Scalate doesn't use reflection/introspection at runtime its very fast.
+</div>
+
+<div class="left" markdown="1">
+# More Features
+</div>
+<div class="right" markdown="1">
+Scalate provides a [Console](documentation/console.html) to make it easy to deal with typos in templates at edit/design time together with making it easy to edit source code, templates and layouts inside your web application.
+
+Scalate has built in support for [layouts](documentation/user-guide.html#layouts) so there's no need to use JSP plus SiteMesh/Tiles.
+</div>
+
+
+<div class="left" markdown="1">
+# Which template language?
+</div>
+<div class="right" markdown="1">
+Scalate supports 2 different template languages. If you know JSP then you will feel right at home with [SSP](documentation/ssp-reference.html)  which has very similar syntax - the main difference being its using Scala expressions rather than Java scriplets or the EL. Plus you can forget all the stuff about JSTL/EL/TLD files and the complexities of writing custom tags; they become a simple Scala function.
+
+However if you are generating markup, particularly HTML, then we highly recommend you take a look at [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/). Scaml is a little bit of an acquired taste - if you've never used HAML before it might seem a little odd at first; but when you get used to it we're sure you'll really like it.
+
+While [SSP](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) offer the same kinds of features and expressive power, using Scala expressions, iteration, navigation and pattern matching, [Scaml](documentation/scaml-reference.html) really shines for generating HTML and XML markup - its much more concise and DRY. [SSP](documentation/ssp-reference.html) is much better for generating arbitrary textual output such as emails - or for getting you up to speed quickly on Scalate if you've only used JSP or Erb in the past. 
+</div>
+

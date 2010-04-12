@@ -1,0 +1,24 @@
+<h2>Implicit parameters test</h2>
+
+<%
+  import org.fusesource.scalate.sample.ViewFunctions._
+  import javax.servlet.http.HttpServletRequest
+
+  implicit val r: HttpServletRequest = request
+%>
+
+<p>
+  Encoding of a string is ${encode("/somePath")}
+</p>
+
+<h2>Import request parameters test</h2>
+
+<p>
+  Encoding of a string is ${encode2("/anotherPath")}
+</p>
+
+<h2>Implicit RenderContext parameter test</h2>
+
+<p>
+  Encoding of a string is ${encode3("/path3")}
+</p>
