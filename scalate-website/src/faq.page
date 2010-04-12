@@ -54,13 +54,25 @@ For details on how to edit the website and how it works see [How the Site works]
 
 ## The Scalate Approach
 
-### Isn't putting code in views a bad thing?
+### Should I use SSP or Scaml?
 
-Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
+If you know JSP or Erb then you will feel right at home with [SSP](documentation/ssp-reference.html) which has very similar syntax - the main difference is its use of Scala for expressions.
+
+However if you are generating markup, particularly HTML, then we highly recommend you take a look at [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/). Scaml is a little bit of an acquired taste - if you've never used HAML before it might seem a little odd at first; but when you get used to it we're sure you'll really like it.
+
+While [SSP](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) offer the same kinds of features and expressive power, using Scala expressions, iteration, navigation and pattern matching, [Scaml](documentation/scaml-reference.html) really shines for generating HTML and XML markup - its much more concise and DRY. [SSP](documentation/ssp-reference.html) is much better for generating arbitrary textual output such as emails as Scaml is highly optimised to nested markup and HTML in particular.
+
+### How does Scalate compare to JSP?
+
+See our [comparison of Scalate to JSP](compare-jsp.html)
 
 ### How does Scalate compare to Lift views?
 
 We [compare approaches here](code-in-view.html), see which is right for you and your team.
+
+### Isn't putting code in views a bad thing?
+
+Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
 
 ## Using Scalate
 
