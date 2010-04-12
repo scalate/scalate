@@ -94,7 +94,7 @@ class PrecompileMojo extends AbstractMojo {
 
 
   protected def createBindings():List[Binding] = {
-    List(Binding("context", classOf[ServletRenderContext].getName, true))
+    List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
   }
 
   protected  def createBindingsForPath(uri:String): List[Binding] = {

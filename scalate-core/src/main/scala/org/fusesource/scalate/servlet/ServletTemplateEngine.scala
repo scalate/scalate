@@ -58,7 +58,8 @@ object ServletTemplateEngine {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
-  bindings = List(Binding("context", classOf[ServletRenderContext].getName, true))
+  bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
+  
   if (useWebInfWorkingDirectory) {
     val path = config.getServletContext.getRealPath("WEB-INF")
     if (path != null) {

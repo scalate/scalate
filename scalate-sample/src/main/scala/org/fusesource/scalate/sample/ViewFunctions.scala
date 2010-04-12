@@ -1,6 +1,7 @@
 package org.fusesource.scalate.sample
 
 import _root_.javax.servlet.http.HttpServletRequest
+import org.fusesource.scalate.servlet.ServletRenderContext
 
 /**
  * @version $Revision : 1.1 $
@@ -16,4 +17,10 @@ object ViewFunctions {
     
     "encoded2 '" + path + "' using request: " + request
   }
+
+  def encode3(path: String)(implicit renderContext: ServletRenderContext): String = {
+    "encoded3 '" + path + "' using renderContext: " + renderContext
+  }
+
+
 }
