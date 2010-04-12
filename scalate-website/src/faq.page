@@ -24,6 +24,10 @@ General questions on the *{project_name:}* project.
 
 Scalate stands for Scala Template Engine hence ScalaTE, though its easier on the eye to just write 'Scalate'
 
+### Why should I use Scalate?
+
+Details of [why you should use Scalate here](why.html)
+
 ### What is the license?
 
 The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)

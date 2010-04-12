@@ -26,21 +26,7 @@ Scalate supports the following template formats
 * [SSP](documentation/ssp-reference.html) which is like JSP/Erb/ASP 
 * [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 
-Why Scalate?
-------------
-
-Most other template engines use runtime introspection to evaluate expressions which is slower and can hide errors in your pages. However all expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. 
-
-Scalate lets you reuse the concise and expressive power of Scala in your templates rather than using a severely limited expression language which is common in most other template engines. So you can easily reuse Scala's powerful functions, expressions and pattern matching as well as invoking Scala methods which can use Scala's XML support to return markup fragments.
-
-Scalate templates generate Scala code which is compiled to fast statically typed bytecode rather than using dynamic dispatch or reflection. Hopefully [IDEs will soon](creating-ide.html) be able to support full completion of all scala expressions within Scalate template files since the templates are statically typed so the types of all variables and expressions are known at edit/compile time.
-
-
-Features
---------
-Scalate provides a [Console](documentation/console.html) to make it easy to deal with typos in templates together with making it easy to edit source code, templates and layouts inside your web application.
-
-[Compared to JSP](compare-jsp.html), Scalate misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, Scalate reuses the [Scala](http://www.scala-lang.org) language which is way more powerful and expressive than the EL in JSP. 
+Still confused? Check out [Why Scalate](why.html)? or how Scalate compares to [JSP](compare-jsp.html) or [Lift](code-in-view.html)
 
 Getting started
 ---------------
