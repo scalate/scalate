@@ -10,3 +10,9 @@
 <p>
   Encoding of a string is ${encode("/somePath")}
 </p>
+
+<h2>Import request parameters test</h2>
+
+<p>
+  Encoding of a string is ${encode2("/anotherPath")}
+</p>

@@ -1,6 +1,5 @@
 package org.fusesource.scalate.servlet
 
-import _root_.org.fusesource.scalate.{AttributeMap, DefaultRenderContext, TemplateEngine}
 import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._
@@ -9,6 +8,31 @@ import java.util.{Locale}
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
+import org.fusesource.scalate.{RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine}
+
+/**
+ * Easy access to servlet request state.
+ *
+ * If you add the following code to your program
+ * <code>import org.fusesource.scalate.servlet.ServletRequestContext._</code>
+ * then you can access the current renderContext, request, response, servletContext
+ */
+object ServletRenderContext {
+  /**
+   * Returns the currently active render context in this thread
+   * @throw IllegalArgumentException if there is no suitable render context available in this thread
+   */
+  def renderContext: ServletRenderContext = RenderContext() match {
+    case s: ServletRenderContext => s
+    case n => throw new IllegalArgumentException("This threads RenderContext is not a ServletRenderContext as it is: " + n)
+  }
+
+  def request: HttpServletRequest = renderContext.request
+
+  def response: HttpServletResponse = renderContext.response
+
+  def servletContext: ServletContext = renderContext.servletContext
+}
 
 /**
  * A template context for use in servlets
@@ -27,13 +51,13 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
     }
 
     def apply(key: String): Any = key match {
-      case "context" => ServletRenderContext.this 
-      case _         => request.getAttribute(key)
+      case "context" => ServletRenderContext.this
+      case _ => request.getAttribute(key)
     }
 
     def update(key: String, value: Any): Unit = value match {
-      case null => request.removeAttribute(key) 
-      case _    => request.setAttribute(key, value)
+      case null => request.removeAttribute(key)
+      case _ => request.setAttribute(key, value)
     }
 
     def remove(key: String) = {
@@ -57,7 +81,7 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
     case servletEngine: ServletTemplateEngine => servletEngine.config
     case _ => throw new IllegalArgumentException("render context not created with ServletTemplateEngine so cannot provide a ServletConfig")
   }
-  
+
   override def locale: Locale = {
     var locale = request.getLocale
     if (locale == null) Locale.getDefault else locale
@@ -67,7 +91,7 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
    * Forwards this request to the given page
    */
   def forward(page: String) {
-    
+
     def requestDispatcher = {
       val dispatcher = request.getRequestDispatcher(page)
       if (dispatcher == null) {
@@ -75,7 +99,7 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
       }
       dispatcher
     }
-    
+
     requestDispatcher.forward(request, response)
   }
 
