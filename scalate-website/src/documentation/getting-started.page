@@ -27,7 +27,7 @@ Lets use one of the Scalate Maven archetypes to create a new [Jog](jog.html) pro
 
 In a command line type this:
 
-    mvn archetype:generate \
+    mvn org.apache.maven.plugins:maven-archetype-plugin:2.0-alpha-4:generate \
       -DarchetypeGroupId=org.fusesource.scalate.tooling \
       -DarchetypeArtifactId=scalate-archetype-guice \
       -DarchetypeVersion=1.0 \
