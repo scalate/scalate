@@ -21,11 +21,11 @@ import Asserts._
 
 class TemplateEngineTest extends FunSuiteSupport {
   val engine = new TemplateEngine
-  engine.workingDirectory = new File("target/test-data/TemplateEngineTest")
+  engine.workingDirectory = new File(baseDir, "target/test-data/TemplateEngineTest")
 
 
   test("load file template") {
-    val template = engine.load(new File("src/test/resources/simple.ssp"))
+    val template = engine.load(new File(baseDir, "src/test/resources/simple.ssp"))
     val output = engine.layout(template).trim
 
     assertContains(output, "1 + 2 = 3")

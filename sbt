@@ -1,3 +1,3 @@
 #!/bin/sh
 mkdir ~/.ivy2 2> /dev/null
-java -Xmx256M -XX:MaxPermSize=250m -jar `dirname $0`/sbt-launch.jar "$@"
+java -Xmx512M -XX:MaxPermSize=350m -jar `dirname $0`/sbt-launch.jar "$@"

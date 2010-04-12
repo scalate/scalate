@@ -1,43 +1,40 @@
 import sbt._
 
-// TODO disable WebbyTest until its in a maven repo
-//import webbytest.HtmlTestsProject
+class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
 
-/**
- * @version $Revision : 1.1 $
- */
-class ScalateProject(info: ProjectInfo) extends ParentProject(info) {
-
-  // use local maven repo
   val mavenLocal = "Local Maven Repository" at "file://" + Path.userHome + "/.m2/repository"
 
   // Projects
-  lazy val core = project("scalate-core", "Scalate Core", new Core(_))
-  lazy val test = project("scalate-test", "Scalate Test", new Test(_))
-  lazy val camel = project("scalate-camel", "Scalate Camel", new Camel(_), core, test)
-  lazy val war = project("scalate-war", "Scalate WAR Overlay", new War(_), core, test)
-  lazy val sample = project("scalate-sample", "Scalate Sample Web App", new Sample(_), core, test, war)
-  lazy val bookstore = project("scalate-bookstore", "Scalate Bookstore Sample Web App", new Bookstore(_), core, test, war)
+  lazy val scalate_core = project("scalate-core", "scalate-core", new ScalateCore(_))
+  lazy val scalate_test = project("scalate-test", "scalate-test", new ScalateTest(_), scalate_core)
+  lazy val scalate_camel = project("scalate-camel", "scalate-camel", new ScalateCamel(_), scalate_core, scalate_test)
+  lazy val scalate_war = project("scalate-war", "scalate-war", new ScalateWar(_), scalate_core, scalate_test)
+  lazy val scalate_sample = project("scalate-sample", "scalate-sample", new ScalateSample(_), scalate_core, scalate_test, scalate_war)
+  lazy val scalate_bookstore = project("scalate-bookstore", "scalate-bookstore", new ScalateBookstore(_), scalate_core, scalate_test, scalate_war)
 
-
-  // TODO disable WebbyTest until its in a maven repo
-  class Core(info: ProjectInfo) extends DefaultProject(info) { // TODO with HtmlTestsProject {
-    println("core project uses " + testScalaSourcePath)
+  class ScalateProject(info: ProjectInfo) extends DefaultProject(info) { 
   }
 
-  class Test(info: ProjectInfo) extends DefaultProject(info) {
+  class ScalateWebProject(info: ProjectInfo) extends DefaultWebProject(info) { 
   }
 
-  class Camel(info: ProjectInfo) extends DefaultProject(info) {
+
+  class ScalateCore(info: ProjectInfo) extends ScalateProject(info) {
   }
 
-  class War(info: ProjectInfo) extends DefaultWebProject(info) {
+  class ScalateTest(info: ProjectInfo) extends ScalateProject(info) {
   }
 
-  class Sample(info: ProjectInfo) extends DefaultWebProject(info) {
+  class ScalateCamel(info: ProjectInfo) extends ScalateProject(info) {
   }
 
-  class Bookstore(info: ProjectInfo) extends DefaultWebProject(info) {
+  class ScalateWar(info: ProjectInfo) extends ScalateWebProject(info) {
+  }
+
+  class ScalateSample(info: ProjectInfo) extends ScalateWebProject(info) {
+  }
+
+  class ScalateBookstore(info: ProjectInfo) extends ScalateWebProject(info) {
   }
 
 }
