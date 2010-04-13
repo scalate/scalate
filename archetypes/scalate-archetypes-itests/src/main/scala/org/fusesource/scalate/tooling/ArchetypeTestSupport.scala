@@ -104,6 +104,7 @@ class ArchetypeTestSupport {
         newProjectDir.getPath + "/src/test/scala/org/fusesource/scalate/console/TestGeneratedConsoleFiles.scala")
 
       System.setProperty("scalate.package.resources", "sample.resources")
+      System.setProperty("scalate.generate.src", new File(newProjectDir, "src").getPath)
       mavenTest("ConsoleTest")
       mavenTest("TestGeneratedConsoleFiles")
     }

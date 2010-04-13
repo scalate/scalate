@@ -13,9 +13,19 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   lazy val scalate_bookstore = project("scalate-bookstore", "scalate-bookstore", new ScalateBookstore(_), scalate_core, scalate_test, scalate_war)
 
   class ScalateProject(info: ProjectInfo) extends DefaultProject(info) { 
+
+    override def testOptions = {
+      super.testOptions ++ 
+      Seq(TestArgument("-Dbasedir=" + ".".absolutePath))
+    }
   }
 
   class ScalateWebProject(info: ProjectInfo) extends DefaultWebProject(info) { 
+
+    override def testOptions = {
+      super.testOptions ++ 
+      Seq(TestArgument("-Dbasedir=" + ".".absolutePath))
+    }
   }
 
 
