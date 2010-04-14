@@ -13,15 +13,12 @@ import org.mortbay.resource.ResourceCollection
 /**
  * @version $Revision : 1.1 $
  */
-
 class JettyServer {
   @transient
   private final val LOG = LogFactory.getLog(classOf[JettyServer])
 
-  val basedir = addFileSeparator(System.getProperty("basedir", ""))
   val mavenWebAppSubDir = "src/main/webapp"
 
-  var defaultWebAppDir: String = basedir + mavenWebAppSubDir
   var defaultDirectory: String = "."
 
   /**
@@ -38,6 +35,11 @@ class JettyServer {
 
 
   def start: Unit = {
+    val basedir = addFileSeparator(Config.baseDir)
+    var defaultWebAppDir: String = basedir + mavenWebAppSubDir
+
+    LOG.info("Using basedir: " + basedir)
+
     // we are typically used in a test so lets define the scalate test dir by default
     if (System.getProperty("scalate.workdir", "").length == 0) {
       System.setProperty("scalate.workdir", basedir + "target/scalate")
@@ -60,7 +62,7 @@ class JettyServer {
       //webAppDir += "," + overlayWebAppDir
     }
     if (overlayWebAppDir == null) {
-      overlayWebAppDir = findOverlayModuleWebAppDir
+      overlayWebAppDir = findOverlayModuleWebAppDir(basedir)
     }
 
     LOG.info("Defaulting the web app dir to: " + webAppDir + " with overlayDir: " + overlayWebAppDir)
@@ -88,25 +90,26 @@ class JettyServer {
     server.stop
   }
 
-  protected def findOverlayModuleWebAppDir: String = if (basedir.contains(overlayProject)) {null} else {
-    findOverlayModuleWebAppDir(basedir)
-  }
-
-  /** Lets walk up the directory tree looking for the overlayProject */
-  protected def findOverlayModuleWebAppDir(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
-    case Some(file) => file.getAbsolutePath
-    case _ => val parent = new File(dir).getParent
-    if (parent == null || parent == dir) {
-      null
+  protected def findOverlayModuleWebAppDir(basedir: String): String = {
+    /**Lets walk up the directory tree looking for the overlayProject */
+    def findOverlayModuleInParent(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
+      case Some(file) => file.getAbsolutePath
+      case _ => val parent = new File(dir).getParent
+      if (parent == null || parent == dir) {
+        null
+      }
+      else {
+        findOverlayModuleInParent(parent)
+      }
     }
-    else {
-      findOverlayModuleWebAppDir(parent)
+
+    if (basedir.contains(overlayProject)) {null} else {
+      findOverlayModuleInParent(basedir)
     }
   }
 
 
   def rootUrl = "http://localhost:" + localPort + "/"
-
 
   def addFileSeparator(path: String) = if (path == null || path.length == 0) "" else path + "/"
 

@@ -96,14 +96,14 @@ object RenderHelper
         case (name,value) =>
         if( value!=null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])) {
           context << " "
-          context << (context.value(name))
-          context << ("=\"")
+          context << name
+          context << "=\""
           if( value.isInstanceOf[Boolean] ) {
-            context << (context.value(name))
+            context << name
           } else {
-            context << (sanitize(context.value(value)))
+            context.escape(value)
           }
-          context << ("\"")
+          context << "\""
         }
       }
     }
@@ -111,6 +111,8 @@ object RenderHelper
   }
 
   def smart_sanitize(context: RenderContext, value: Any): String = {
+    context.value(value)
+/*
     if (value == null) {
       return context.value(value);
     }
@@ -122,7 +124,8 @@ object RenderHelper
         x.map( smart_sanitize(context, _) ).mkString("")
 
       case _ =>
-        sanitize(context.value(value))
+        sanitize(context.value(value, false))
     }
+*/
   }
 }

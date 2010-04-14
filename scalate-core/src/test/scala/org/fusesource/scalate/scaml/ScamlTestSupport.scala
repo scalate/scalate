@@ -32,7 +32,7 @@ class ScamlTestSupport extends FunSuiteSupport {
 
   def testRender(description:String, template:String, result:String) = {
     test(description) {
-      expect(result.trim) { render(template.trim).trim }
+      expect(result.trim) { render(description, template.trim).trim }
     }
   }
 
@@ -44,7 +44,7 @@ class ScamlTestSupport extends FunSuiteSupport {
   def testInvalidSyntaxException(description:String, template:String, error:String) = {
     test(description) {
       try {
-        println(render(template.trim).trim)
+        println(render(description, template.trim).trim)
         fail("Expected InvalidSyntaxException was not thrown")
       } catch {
         case e:TestFailedException=> throw e
@@ -67,7 +67,7 @@ class ScamlTestSupport extends FunSuiteSupport {
   def testCompilerException(description:String, template:String, error:String) = {
     test(description) {
       try {
-        println(render(template.trim).trim)
+        println(render(description, template.trim).trim)
         fail("Expected CompilerException was not thrown")
       } catch {
         case e:TestFailedException=> throw e
@@ -84,7 +84,7 @@ class ScamlTestSupport extends FunSuiteSupport {
   }
 
 
-  def render(content:String): String = {
+  def render(name:String, content:String): String = {
 
     engine.resourceLoader = new FileResourceLoader {
       override def load( uri: String ): String = content
@@ -110,9 +110,38 @@ class ScamlTestSupport extends FunSuiteSupport {
     context.attributes("bean") = Bean("red", 10)
     context.attributes("label") = "Scalate"
 
-    val template = engine.compile("/org/fusesource/scalate/scaml/test" + testIdx +".scaml")
+    val template = engine.compile("/org/fusesource/scalate/scaml/test" + safeName(name) +".scaml")
     template.render(context)
     out.close
     buffer.toString
   }
+
+  protected def safeName( text: String ): String =
+    text.foldLeft( new StringBuffer )( (acc, ch) => safeName( ch, acc ) ).toString
+
+  private def safeName( ch: Char, buffer: StringBuffer ): StringBuffer = {
+    if (ch == '&') {
+      buffer.append("amp_")
+    }
+    else if (ch == '>') {
+      buffer.append("gt_")
+    }
+    else if (ch == '<') {
+      buffer.append("lt_")
+    }
+    else if (ch == '=') {
+      buffer.append("eq_")
+    }
+    else if (ch == '!') {
+      buffer.append("pling_")
+    }
+    else if (Character.isDigit(ch) || Character.isJavaIdentifierPart(ch) || ch == '_' || ch == '.') {
+      buffer.append(ch)
+    }
+    else {
+      buffer.append('_')
+    }
+    buffer
+  }
+
 }

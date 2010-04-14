@@ -13,6 +13,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
     update("context", DefaultRenderContext.this)
   }
+  escapeMarkup = engine.escapeMarkup
 
 
   /**
@@ -28,11 +29,11 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   //////////////////////////////////x///////////////////////////////////
 
   def <<(v: Any): Unit = {
-    out.print(value(v))
+    out.print(value(v, false))
   }
 
   def <<<(v: Any): Unit = {
-    out.print(RenderHelper.sanitize(value(v)))
+    out.print(value(v))
   }
 
 

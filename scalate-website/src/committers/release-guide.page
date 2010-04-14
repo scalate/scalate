@@ -19,6 +19,10 @@ How to create releases of Scalate
 
       mvn release:perform -P release
 
+* push the tag from git
+
+      git push origin scalate-project-{project_version:}
+
 * update the download.page on the wiki
 * edit the **scalate\_website/src/metainf* file and change the **project\_version** value
 * blog about the release by creating an entry in **scalate\_website/src/blog/releases**

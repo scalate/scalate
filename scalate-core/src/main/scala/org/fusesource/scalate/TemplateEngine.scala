@@ -48,6 +48,11 @@ class TemplateEngine extends Logging {
   }
 
   /**
+   * Whether or not markup sensitive characters for HTML/XML elements like &amp; &gt; &lt; are escaped or not
+   */
+  var escapeMarkup = true
+
+  /**
    * Set to false if you don't want the template engine to ever cache any of the compiled templates.
    */
   var allowCaching = true
@@ -290,7 +295,7 @@ class TemplateEngine extends Logging {
   def layout(template: Template, attributes: Map[String,Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(this, out)
+    val context = createRenderContext(out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
     }
@@ -324,7 +329,7 @@ class TemplateEngine extends Logging {
 
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(this, out)
+    val context = createRenderContext(out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
     }
@@ -336,7 +341,11 @@ class TemplateEngine extends Logging {
   def layoutAsNodes(template: Template): NodeSeq = layoutAsNodes(template, Map[String,Any]())
 
 
-
+  /**
+   * Factory method used by the layout helper methods that should be overloaded by template engine implementations
+   * if they wish to customize the render context implementation
+   */
+  protected def createRenderContext(out: PrintWriter): RenderContext = new DefaultRenderContext(this, out)
 
   private def loadPrecompiledEntry(uri:String, extraBindings:List[Binding]) = {
     val className = generator(uri).className(uri)
