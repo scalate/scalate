@@ -6,12 +6,9 @@ import collection.mutable.HashMap
 /**
  * @version $Revision : 1.1 $
  */
-class ParserTest extends FunSuiteSupport {
-  val logging = false
+class ParserTest extends ParserTestSupport {
 
-  implicit def stringToText(x:String) = Text(x)
-
-  test("parse attribute declaration") {
+ test("parse attribute declaration") {
     val lines = assertValid("""<%@ val name: String %>
 <html>
   <%-- comment --%>
@@ -115,43 +112,4 @@ class ParserTest extends FunSuiteSupport {
 """)
   }
 
-  def countTypes(lines: List[PageFragment]): HashMap[Class[_], Int] = {
-    val map = new HashMap[Class[_], Int]
-    for (line <- lines) {
-      val key = line.getClass
-      map(key) = map.getOrElse(key, 0) + 1
-    }
-    map
-  }
-
-
-  def assertAttribute(lines: List[PageFragment], expectedParam: AttributeFragment) = {
-    val attribute = lines.find {
-      case d: AttributeFragment => true
-      case _ => false
-    }
-    expect(Some(expectedParam)) {attribute}
-
-    lines
-  }
-
-  def assertValid(text: String): List[PageFragment] = {
-    log("Parsing...")
-    log(text)
-    log("")
-
-    val lines = (new SspParser).getPageFragments(text)
-    for (line <- lines) {
-      log(line)
-    }
-    log("")
-    lines
-  }
-
-
-  def log(value: AnyRef) {
-    if (logging) {
-      println(value)
-    }
-  }
 }
