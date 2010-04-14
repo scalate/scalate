@@ -13,6 +13,7 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
     update("context", DefaultRenderContext.this)
   }
+  escapeMarkup = engine.escapeMarkup
 
 
   /**
