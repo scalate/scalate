@@ -20,9 +20,7 @@ import Asserts._
 
 import java.io.File
 
-class PerformanceTest extends FunSuiteSupport {
-  val engine = new TemplateEngine
-  engine.workingDirectory = new File("target/test-data/PerformanceTest")
+class PerformanceTest extends TemplateTestSupport {
 
   benchmarkTest("custom text") {
     val template = engine.compileSsp("""<%@ val name: String %>

@@ -16,20 +16,22 @@
  */
 package org.fusesource.scalate
 
+
 import java.io.File
-import Asserts._
 
-class ExtraImportTest extends TemplateTestSupport {
-  engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")
+abstract class TemplateTestSupport extends FunSuiteSupport {
+  val engine = new TemplateEngine
+  engine.workingDirectory = new File("target/test-data/" + getClass.getSimpleName)
 
-  test("test template using custom import") {
-    val template = engine.compileSsp("""
-<%@ val bean: MyBean = null %>
-Hello ${if (bean != null) bean else "no bean"}
-""")
 
-    val output = engine.layout(template).trim
-    assertContains(output, "Hello no bean")
-    debug("template generated: " + output)
+  def assertOutput(expectedOutput: String, templateText: String): Unit = {
+    val template = engine.compileSsp(templateText)
+
+    val output = engine.layout(template)
+    println("output: '" + output + "'")
+
+    expect(expectedOutput) {output}
   }
+
+
 }

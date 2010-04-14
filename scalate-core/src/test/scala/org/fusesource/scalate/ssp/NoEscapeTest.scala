@@ -7,9 +7,7 @@ import java.io.File
 /**
  * @version $Revision : 1.1 $
  */
-class NoEscapeTest extends FunSuiteSupport {
-  val engine = new TemplateEngine
-  engine.workingDirectory = new File(baseDir, "target/test-data/NoEscapeTest")
+class NoEscapeTest extends TemplateTestSupport {
 
   test("disable markup escaping") {
     assertOutput("a = x > 5 && y < 3", """<% escapeMarkup = false %>
@@ -22,12 +20,4 @@ a = ${foo}""")
 b = ${unescape(foo)}""")
   }
 
-  def assertOutput(expectedOutput: String, templateText: String): Unit = {
-    val template = engine.compileSsp(templateText)
-
-    val output = engine.layout(template)
-    println("output: '" + output + "'")
-
-    expect(expectedOutput) { output }
-  }
 }

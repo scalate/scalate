@@ -19,9 +19,8 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
-import java.util.regex.Pattern
-import scala.collection.mutable.HashSet
 import support.{Code, AbstractCodeGenerator}
+import collection.mutable.Stack
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
@@ -107,6 +106,27 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     // Parse the translation unit
     val fragments = (new SspParser).getPageFragments(content)
+
+    // lets check that the syntax is correct
+    val endStack = new Stack[PageFragment]
+    for (f <- fragments) f match {
+      case f: IfFragment => endStack.push(f)
+      case f: ForFragment => endStack.push(f)
+      case f: EndFragment => if (endStack.isEmpty) {
+        throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.code.pos)
+      } else {
+        endStack.pop
+      }
+
+      // TODO check that else within if and no else if after else
+      case _ =>
+    }
+    if (!endStack.isEmpty) {
+      val f = endStack.head
+      // TODO add the name for better debugging...
+      throw new InvalidSyntaxException("Missing #end at ", f.pos)
+    }
+
 
     // Convert the parsed AttributeFragments into Binding objects
     val templateBindings = fragments.flatMap {
