@@ -19,7 +19,6 @@
 package org.fusesource.scalate.ssp
 
 import _root_.org.fusesource.scalate.support.ScalaParseSupport
-import scala.util.parsing.combinator._
 import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.{Positional, CharSequenceReader}
 
@@ -41,11 +40,11 @@ case class ExpressionFragment(code: Text) extends PageFragment
 case class ScriptletFragment(code: Text) extends PageFragment
 case class TextFragment(text: Text) extends PageFragment
 case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends PageFragment
-//case class IfFragment(code: String, children: Seq[PageFragment]) extends PageFragment
-case class IfFragment(code: String) extends PageFragment
-case class EndFragment() extends PageFragment
+case class IfFragment(code: Text) extends PageFragment
+case class ForFragment(code: Text) extends PageFragment
+case class EndFragment(code: Text) extends PageFragment
 
-class SspParser extends RegexParsers with ScalaParseSupport {
+class SspParser extends ScalaParseSupport {
   var skipWhitespaceOn = false
 
   override def skipWhitespace = skipWhitespaceOn
@@ -117,20 +116,28 @@ class SspParser extends RegexParsers with ScalaParseSupport {
   val page_fragments = rep(page_fragment)
 
 
-  def directives = ifExpression | endExpression
+  def directives: Parser[PageFragment]  = ifExpression | forExpression | endExpression
 
-  def ifExpression = (("#if" ~ """\s*""".r ~ "(") ~> scalaExpression <~ ")") ^^ {IfFragment(_)}
+  def ifExpression = (("#if" ~ any_space ~ "(") ~> scalaExpression <~ ")") ^^ {IfFragment(_)}
 
-  def endExpression = "#end" ^^ {case a => EndFragment()}
+  def forExpression = (("#for" ~ opt("each") ~ any_space ~ "(") ~> scalaExpression <~ ")") ^^ {ForFragment(_)}
 
-  def scalaExpression: Parser[String] = {
-     ("""[^\(\)]*""".r ~ opt("(" ~> scalaExpression <~ ")") ~ """[^\(\)]*""".r) ^^ {
-      case a ~ b ~ c => b match {
-        case Some(tb) => a + "(" + tb + ")" + c
-        case _ => a + c
-      }
+  def endExpression = text("#end") ^^ {case a => EndFragment(a)}
+
+  def scalaExpression: Parser[Text] = {
+    text(
+    (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
+      case a ~ b ~ c =>
+        val mid = b match {
+          case Some(tb) => "(" + tb + ")"
+          case tb => ""
+        }
+        a.mkString("") + mid + c.mkString("")
     }
+  )
   }
+
+  val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
 
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
     var x = phrase(p)(new CharSequenceReader(in))
@@ -145,3 +152,4 @@ class SspParser extends RegexParsers with ScalaParseSupport {
   }
 
 }
+

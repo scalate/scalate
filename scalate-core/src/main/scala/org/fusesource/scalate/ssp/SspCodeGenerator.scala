@@ -68,6 +68,21 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << code.pos;
           this << "$_scalate_$_context << " + wrapInParens(code)
         }
+        case IfFragment(code) => {
+          this << code.pos;
+          // TODO indent
+          this << "if (" + code + ") {"
+        }
+        case ForFragment(code) => {
+          this << code.pos;
+          // TODO indent
+          this << "for (" + code + ") {"
+        }
+        case EndFragment(code) => {
+          this << code.pos;
+          // TODO deindent
+          this << "}"
+        }
       }
     }
     
