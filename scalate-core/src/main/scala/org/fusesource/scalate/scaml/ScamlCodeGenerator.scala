@@ -281,7 +281,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               flush_text
               s.sanitize match {
                 case None=>
-                  if( ScamlOptions.escape_html ) {
+                  this << "$_scalate_$_context <<< ( "+part+" );"
+                case Some(true)=>
+                  this << "$_scalate_$_context.escape( "+part+" );"
+                case Some(false)=>
+                  this << "$_scalate_$_context.unescape( "+part+" );"
+              }
+/*
+              s.sanitize match {
+                case None=>
+                  if( ScamlOptions.escape_html && false) {
                     this << "$_scalate_$_context << ( $_scalate_$_smart_sanitize ($_scalate_$_context, "+part+" ));"
                   } else {
                     this << "$_scalate_$_context << ( "+part+" );"
@@ -291,6 +300,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                 case Some(false)=>
                   this << "$_scalate_$_context << ( "+part+" );"
               }
+*/
               literal=true
             }
           }
@@ -315,9 +325,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             suffix = ") " + suffix;
           }
 
+/*
           val takeValue = s.sanitize match {
             case None=>
-              if( ScamlOptions.escape_html ) {
+              if( ScamlOptions.escape_html  && false) {
                 prefix += " $_scalate_$_smart_sanitize ($_scalate_$_context, "
                 suffix = ") " + suffix;
                 false
@@ -331,11 +342,24 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             case Some(false)=>
               true
           }
-
           if( takeValue ) {
             prefix += " $_scalate_$_context.value ("
             suffix = ") " + suffix;
           }
+
+*/
+
+          val method = s.sanitize match {
+            case Some(true)=>
+              "valueEscaped"
+            case Some(false)=>
+              "valueUnescaped"
+            case _=>
+              "value"
+          }
+          prefix += " $_scalate_$_context." + method + "("
+          suffix = ") " + suffix;
+
 
           if( is_line ) {
             write_indent

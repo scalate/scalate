@@ -5,8 +5,8 @@ import java.util.{Locale, Date}
 import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
 import collection.mutable.{ListBuffer, HashMap}
-import util.{XmlHelper, Lazy}
-import xml.{PCData, NodeSeq, NodeBuffer}
+import util.{RenderHelper, XmlHelper, Lazy}
+import xml.{Node, PCData, NodeSeq, NodeBuffer}
 
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
@@ -31,7 +31,12 @@ trait RenderContext {
    * Default string used to output null values
    */
   var nullString = ""
-  
+
+  /**
+   * Whether or not markup sensitive characters for HTML/XML elements like &amp; &gt; &lt; are escaped or not
+   */
+  var escapeMarkup = true
+
   var currentTemplate: String = _
 
   var viewPrefixes = List("")
@@ -40,7 +45,7 @@ trait RenderContext {
   def engine: TemplateEngine
 
   /**
-   * Renders the provided value and inserts it into the final rendered document.
+   * Renders the provided value and inserts it into the final rendered document without sanitizing the value.
    */
   def <<(value: Any): Unit
 
@@ -91,30 +96,54 @@ trait RenderContext {
   // Rendering API
   //
   //////////////////////////////////x///////////////////////////////////
-  def value(value: Any): String = {
-    value match {
+  def value(any: Any, shouldSanitize: Boolean = escapeMarkup): String = {
+    def sanitize(text: String): String = if (shouldSanitize) {RenderHelper.sanitize(text)} else {text}
+
+    any match {
       case u: Unit => ""
-      case null => nullString
-      case v: String => v
-      case v: Date => dateFormat.format(v)
-      case v: Number => numberFormat.format(v)
+      case null => sanitize(nullString)
+      case Unescaped(text) => text
+      case v: String => sanitize(v)
+      case v: Date => sanitize(dateFormat.format(v))
+      case v: Number => sanitize(numberFormat.format(v))
       case f: FilterRequest => {
+        // NOTE assume a filter does the correct sanitizing
         var rc = filter(f.filter, f.content)
         rc
       }
+      // No need to sanitize nodes as they are already sanitized
       case s: NodeBuffer =>
+        // No need to sanitize nodes as they are already sanitized
         (s.foldLeft(new StringBuilder) {
           (rc, x) => x match {
             case cd: PCData => rc.append(cd.data)
             case _ => rc.append(x)
           }
         }).toString
-    
+
+      case n: Node => n.toString
+
+      case x: Traversable[Any] =>
+        x.map( value(_, shouldSanitize) ).mkString("")
+
 
       // TODO for any should we use the renderView?
-      case v: Any => v.toString
+      case v: Any => sanitize(v.toString)
     }
   }
+
+  def valueEscaped(any: Any) = value(any, true)
+  def valueUnescaped(any: Any) = value(any, false)
+
+  /**
+   * Ensures that the string value of the parameter is not markup escaped
+   */
+  def unescape(v: Any): Unit = this << value(v, false)
+
+  /**
+   * Ensures that the string value of the parameter is always markup escaped
+   */
+  def escape(v: Any): Unit = this << value(v, true)
 
   def filter(name: String, content: String): String = {
     engine.filters.get(name) match {
@@ -436,4 +465,10 @@ trait RenderContext {
 
 
   def locale: Locale = Locale.getDefault
+
+
+  /**
+   * Used to represent some text which does not need escaping
+   */
+  case class Unescaped(text: String)
 }
