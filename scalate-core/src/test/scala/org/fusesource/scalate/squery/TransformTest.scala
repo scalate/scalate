@@ -34,14 +34,11 @@ class TransformTest extends FunSuiteSupport {
 
   val transformer: Transformer = PersonTransform
 
-/*
   test("try simple transform") {
     val result = transformer.transform(xml)
 
     println("got result: " + result)
-    
   }
-*/
 
 
   test("selector"){
