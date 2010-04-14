@@ -22,7 +22,9 @@ import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.{Positional, CharSequenceReader}
 
-sealed abstract class PageFragment extends Positional
+sealed abstract class PageFragment extends Positional {
+  def tokenName = toString
+}
 
 case class Text(value: String) extends Positional {
   def +(other: String) = Text(value + other).setPos(pos)
@@ -40,9 +42,20 @@ case class ExpressionFragment(code: Text) extends PageFragment
 case class ScriptletFragment(code: Text) extends PageFragment
 case class TextFragment(text: Text) extends PageFragment
 case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends PageFragment
-case class IfFragment(code: Text) extends PageFragment
-case class ForFragment(code: Text) extends PageFragment
-case class EndFragment(code: Text) extends PageFragment
+
+abstract class Directive(override val tokenName: String) extends PageFragment
+
+case class IfFragment(code: Text) extends Directive("#if")
+case class ElseIfFragment(code: Text) extends Directive("#elseif")
+case class ElseFragment() extends Directive("#else")
+
+case class MatchFragment(code: Text) extends Directive("#match")
+case class CaseFragment(code: Text) extends Directive("#case")
+case class OtherwiseFragment() extends Directive("#otherwise")
+
+case class ForFragment(code: Text) extends Directive("#for")
+case class ImportFragment(code: Text) extends Directive("#import")
+case class EndFragment() extends Directive("#end")
 
 class SspParser extends ScalaParseSupport {
   var skipWhitespaceOn = false
@@ -118,11 +131,28 @@ class SspParser extends ScalaParseSupport {
 
   def directives: Parser[PageFragment]  = ifExpression | forExpression | endExpression
 
-  def ifExpression = (("#if" ~ any_space ~ "(") ~> scalaExpression <~ ")") ^^ {IfFragment(_)}
+  // if / elseif / else
+  def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
+  def elseIfExpression = expressionDirective("elif" | "elseif") ^^ {ElseIfFragment(_)}
+  def elseExpression = emptyDirective("end") ^^ {case a => ElseFragment()}
 
-  def forExpression = (("#for" ~ opt("each") ~ any_space ~ "(") ~> scalaExpression <~ ")") ^^ {ForFragment(_)}
+  // match / case / otherwise
+  def matchExpression = expressionDirective("match") ^^ {MatchFragment(_)}
+  def caseExpression = expressionDirective("case") ^^ {CaseFragment(_)}
+  def otherwiseExpression = expressionDirective("otherwise") ^^ {case a => OtherwiseFragment()}
 
-  def endExpression = text("#end") ^^ {case a => EndFragment(a)}
+
+  def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
+  def importExpression = expressionDirective("import") ^^ {ImportFragment(_)}
+
+  def endExpression = emptyDirective("end") ^^ {case a => EndFragment()}
+
+  def emptyDirective(name: String) = text(("#"+name) | ("#(" + name + ")"))
+
+  // useful for implementing directives
+  def expressionDirective(name: String) =("#" ~ name ~ any_space ~ "(") ~> scalaExpression <~ ")"
+
+  def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ any_space ~ "(") ~> scalaExpression <~ ")"
 
   def scalaExpression: Parser[Text] = {
     text(

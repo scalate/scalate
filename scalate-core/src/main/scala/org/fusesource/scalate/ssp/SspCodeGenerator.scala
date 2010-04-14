@@ -72,12 +72,39 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           // TODO indent
           this << "if (" + code + ") {"
         }
+        case ElseIfFragment(code) => {
+          this << code.pos;
+          // TODO indent
+          this << "} else if (" + code + ") {"
+        }
+        case code: ElseFragment => {
+          this << code.pos;
+          // TODO indent
+          this << "} else {"
+        }
+        case MatchFragment(code) => {
+          this << code.pos;
+          // TODO indent
+          this << "(" + code + ") match {"
+        }
+        case CaseFragment(code) => {
+          this << code.pos;
+          this << "case " + code + " =>"
+        }
+        case code: OtherwiseFragment => {
+          this << code.pos;
+          this << "case _ =>"
+        }
         case ForFragment(code) => {
           this << code.pos;
           // TODO indent
           this << "for (" + code + ") {"
         }
-        case EndFragment(code) => {
+        case ImportFragment(code) => {
+          this << code.pos;
+          this << "import " + code
+        }
+        case code: EndFragment => {
           this << code.pos;
           // TODO deindent
           this << "}"
@@ -109,14 +136,24 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     // lets check that the syntax is correct
     val endStack = new Stack[PageFragment]
+    def expect[T](f: PageFragment, name: String): Unit = if (endStack.isEmpty) {
+        throw new InvalidSyntaxException("Missing " + name, f.pos)
+      } else {
+        if (!endStack.head.isInstanceOf[T]) {
+          throw new InvalidSyntaxException("Should be used within " + name + " not " + f.tokenName, f.pos)
+        }
+      }
+
     for (f <- fragments) f match {
       case f: IfFragment => endStack.push(f)
       case f: ForFragment => endStack.push(f)
       case f: EndFragment => if (endStack.isEmpty) {
-        throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.code.pos)
+        throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.pos)
       } else {
         endStack.pop
       }
+      case f: ElseIfFragment => expect[IfFragment](f, "if")
+      case f: ElseFragment => expect[IfFragment](f, "if")
 
       // TODO check that else within if and no else if after else
       case _ =>
@@ -124,7 +161,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     if (!endStack.isEmpty) {
       val f = endStack.head
       // TODO add the name for better debugging...
-      throw new InvalidSyntaxException("Missing #end at ", f.pos)
+      throw new InvalidSyntaxException("Missing #end", f.pos)
     }
 
 
