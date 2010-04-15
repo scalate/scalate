@@ -10,13 +10,13 @@ import java.io.File
 class NoEscapeTest extends TemplateTestSupport {
 
   test("disable markup escaping") {
-    assertOutput("a = x > 5 && y < 3", """<% escapeMarkup = false %>
+    assertSspOutput("a = x > 5 && y < 3", """<% escapeMarkup = false %>
 <% val foo = "x > 5 && y < 3" %>
 a = ${foo}""")
   }
 
   test("using unescape function") {
-    assertOutput( "b = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
+    assertSspOutput( "b = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
 b = ${unescape(foo)}""")
   }
 

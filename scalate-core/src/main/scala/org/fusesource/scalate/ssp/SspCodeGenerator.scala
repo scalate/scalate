@@ -23,17 +23,16 @@ import support.{Code, AbstractCodeGenerator}
 import collection.mutable.Stack
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
-
   override val stratumName = "SSP"
 
-  implicit def textToString(text:Text) = text.value
-  implicit def textOptionToString(text:Option[Text]):Option[String] = text match {
-    case None=>None
+  implicit def textToString(text: Text) = text.value
+
+  implicit def textOptionToString(text: Option[Text]): Option[String] = text match {
+    case None => None
     case Some(x) => Some(x.value)
   }
 
   private class SourceBuilder extends AbstractSourceBuilder[PageFragment] {
-
     protected def isImportStatementOrCommentOrWhitespace(fragment: PageFragment) = fragment match {
       case s: ScriptletFragment if (s.code.trim.startsWith("import ")) => true
       case s: TextFragment if (s.text.trim.length == 0) => true
@@ -41,11 +40,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       case _ => false
     }
 
-    def generate(fragments: List[PageFragment]):Unit = {
+    def generate(fragments: List[PageFragment]): Unit = {
       fragments.foreach(generate)
     }
 
-    def generate(fragment: PageFragment):Unit = {
+    def generate(fragment: PageFragment): Unit = {
       fragment match {
         case CommentFragment(code) => {
         }
@@ -57,7 +56,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << fragment.pos;
           this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
-        case af:AttributeFragment => {
+        case af: AttributeFragment => {
         }
         case DollarExpressionFragment(code) => {
           this << code.pos;
@@ -111,7 +110,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
       }
     }
-    
+
     protected def wrapInParens(code: String) = if (canWrapInParens(code)) {"( " + code + " )"} else {"" + code + ""}
 
     /**
@@ -134,26 +133,66 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     // Parse the translation unit
     val fragments = (new SspParser).getPageFragments(content)
 
-    // lets check that the syntax is correct
+    checkSyntax(fragments)
+
+    // Convert the parsed AttributeFragments into Binding objects
+    val templateBindings = fragments.flatMap {
+      case p: AttributeFragment => List(Binding(p.name, p.className, p.autoImport, p.defaultValue))
+      case _ => Nil
+    }
+
+    val sb = new SourceBuilder
+    sb.generate(engine, packageName, className, bindings ::: templateBindings, fragments)
+
+    Code(this.className(uri), sb.code, Set(uri), sb.positions)
+  }
+
+  /**
+   * lets check that the syntax is correct
+   */
+  protected def checkSyntax(fragments: List[PageFragment]): Unit = {
     val endStack = new Stack[PageFragment]
-    def expect[T](f: PageFragment, name: String): Unit = if (endStack.isEmpty) {
-        throw new InvalidSyntaxException("Missing " + name, f.pos)
-      } else {
-        if (!endStack.head.isInstanceOf[T]) {
-          throw new InvalidSyntaxException("Should be used within " + name + " not " + f.tokenName, f.pos)
+    var clauseOpen = true
+
+    def open(f: PageFragment): Unit = {
+      endStack.push(f)
+      clauseOpen = true
+    }
+    def expect(f: PageFragment, expectedType: Class[_], name: String, closeName: String, closes: Boolean): Unit = if (endStack.isEmpty) {
+      throw new InvalidSyntaxException("Missing " + name, f.pos)
+    } else {
+      if (closes) {
+        // closing clause like #else
+        if (!clauseOpen) {
+          throw new InvalidSyntaxException("Cannot have more than one " + f.tokenName + " within a single #" + name, f.pos)
+        }
+        clauseOpen = false
+      }
+      else {
+        // non close like #eliseif
+        if (!clauseOpen) {
+          throw new InvalidSyntaxException("The " + f.tokenName + " cannot come after the #" + closeName + " inside the #" + name, f.pos)
         }
       }
+      val head = endStack.head
+      if (!expectedType.isInstance(head)) {
+        throw new InvalidSyntaxException("The " + f.tokenName + " should be nested inside #" + name + " but was inside " + head.tokenName, f.pos)
+      }
+    }
 
     for (f <- fragments) f match {
-      case f: IfFragment => endStack.push(f)
-      case f: ForFragment => endStack.push(f)
+      case f: ForFragment => open(f)
+      case f: IfFragment => open(f)
+      case f: MatchFragment => open(f)
       case f: EndFragment => if (endStack.isEmpty) {
         throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.pos)
       } else {
         endStack.pop
       }
-      case f: ElseIfFragment => expect[IfFragment](f, "if")
-      case f: ElseFragment => expect[IfFragment](f, "if")
+      case f: ElseIfFragment => expect(f, classOf[IfFragment], "if", "else", false)
+      case f: ElseFragment => expect(f, classOf[IfFragment], "if", "else", true)
+      case f: CaseFragment => expect(f, classOf[MatchFragment], "match", "otherwise", false)
+      case f: OtherwiseFragment => expect(f, classOf[MatchFragment], "match", "otherwise", true)
 
       // TODO check that else within if and no else if after else
       case _ =>
@@ -163,19 +202,6 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       // TODO add the name for better debugging...
       throw new InvalidSyntaxException("Missing #end", f.pos)
     }
-
-
-    // Convert the parsed AttributeFragments into Binding objects
-    val templateBindings = fragments.flatMap {
-      case p: AttributeFragment => List(Binding(p.name, p.className, p.autoImport, p.defaultValue))
-      case _ => Nil
-    }
-
-    val sb = new SourceBuilder
-    sb.generate(engine, packageName, className, bindings:::templateBindings, fragments)
-
-    Code(this.className(uri), sb.code, Set(uri), sb.positions)
   }
-
 }
 

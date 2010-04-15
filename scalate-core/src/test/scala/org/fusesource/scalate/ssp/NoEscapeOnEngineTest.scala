@@ -11,7 +11,7 @@ class NoEscapeOnEngineTest extends TemplateTestSupport {
   engine.escapeMarkup = false
 
   test("markup escaping disabled") {
-    assertOutput("a = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
+    assertSspOutput("a = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
 a = ${foo}""")
   }
 }

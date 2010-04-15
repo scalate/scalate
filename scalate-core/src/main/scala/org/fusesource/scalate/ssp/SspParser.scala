@@ -129,42 +129,50 @@ class SspParser extends ScalaParseSupport {
   val page_fragments = rep(page_fragment)
 
 
-  def directives: Parser[PageFragment]  = ifExpression | forExpression | endExpression
+  def directives: Parser[PageFragment] = ifExpression | elseIfExpression | elseExpression |
+          matchExpression | caseExpression | otherwiseExpression |
+          forExpression | importExpression | endExpression
 
   // if / elseif / else
   def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
-  def elseIfExpression = expressionDirective("elif" | "elseif") ^^ {ElseIfFragment(_)}
-  def elseExpression = emptyDirective("end") ^^ {case a => ElseFragment()}
+
+  def elseIfExpression = expressionDirective("elseif" | "elif") ^^ {ElseIfFragment(_)}
+
+  def elseExpression = emptyDirective("else") ^^ {case a => ElseFragment()}
 
   // match / case / otherwise
   def matchExpression = expressionDirective("match") ^^ {MatchFragment(_)}
+
   def caseExpression = expressionDirective("case") ^^ {CaseFragment(_)}
-  def otherwiseExpression = expressionDirective("otherwise") ^^ {case a => OtherwiseFragment()}
+
+  def otherwiseExpression = emptyDirective("otherwise") ^^ {case a => OtherwiseFragment()}
 
 
+  // other directives
   def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
+
   def importExpression = expressionDirective("import") ^^ {ImportFragment(_)}
 
   def endExpression = emptyDirective("end") ^^ {case a => EndFragment()}
 
-  def emptyDirective(name: String) = text(("#"+name) | ("#(" + name + ")"))
-
   // useful for implementing directives
-  def expressionDirective(name: String) =("#" ~ name ~ any_space ~ "(") ~> scalaExpression <~ ")"
+  def emptyDirective(name: String) = text(("#" + name) | ("#(" + name + ")"))
+
+  def expressionDirective(name: String) = ("#" ~ name ~ any_space ~ "(") ~> scalaExpression <~ ")"
 
   def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ any_space ~ "(") ~> scalaExpression <~ ")"
 
   def scalaExpression: Parser[Text] = {
     text(
-    (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
-      case a ~ b ~ c =>
-        val mid = b match {
-          case Some(tb) => "(" + tb + ")"
-          case tb => ""
-        }
-        a.mkString("") + mid + c.mkString("")
-    }
-  )
+      (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
+        case a ~ b ~ c =>
+          val mid = b match {
+            case Some(tb) => "(" + tb + ")"
+            case tb => ""
+          }
+          a.mkString("") + mid + c.mkString("")
+      }
+      )
   }
 
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r

@@ -20,8 +20,11 @@ Making great IDE plugins is a lot of work, but we hope we can cut some corners m
 
 * most IDEs already have a plugin to support JSP or Erb editing and dealing with the syntax of mixing HTML/XML markup with a language (Java/Ruby). So for [Ssp](documentation/ssp-reference.html) its just a case of reusing the core JSP/Erb editor with Scala language instead. JSP is pretty complex; Ssp is probably closer to the simplicity of Erb really
 * for IDEs which support HAML already it should be relatively easy to provide [Scaml](documentation/scaml-reference.html) support by just switching the language from Ruby to Scala for a very quick win (other than the change to Scala the differences are minimal).
-* both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse if you need them.
+* both [Ssp](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse if you need them. Check out the source code for [SspParser](http://github.com/scalate/scalate/blob/master/scalate-core/src/main/scala/org/fusesource/scalate/ssp/SspParser.scala)
+ and [ScamlParser](http://github.com/scalate/scalate/blob/master/scalate-core/src/main/scala/org/fusesource/scalate/scaml/ScamlParser.scala
+ ) 
 * all the clever stuff in a Scalate template is done by the Scala language which already has great IDE support.
+
 
 ## JSR 45 Support
 

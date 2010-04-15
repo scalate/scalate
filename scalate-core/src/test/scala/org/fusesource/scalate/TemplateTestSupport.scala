@@ -22,16 +22,49 @@ import java.io.File
 abstract class TemplateTestSupport extends FunSuiteSupport {
   val engine = new TemplateEngine
   engine.workingDirectory = new File("target/test-data/" + getClass.getSimpleName)
+  var printOutput = false
+  var printExceptions = true
 
+  def compileSsp(text: String) = engine.compileSsp(text)
+  def compileScaml(text: String) = engine.compileScaml(text)
 
-  def assertOutput(expectedOutput: String, templateText: String): Unit = {
+  def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): Unit = assertSspOutput(expectedOutput, templateText, attributes, true)
+
+  def assertTrimOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map()): Unit = assertOutput(expectedOutput, template, attributes, true)
+
+  def assertSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
     val template = engine.compileSsp(templateText)
 
-    val output = engine.layout(template)
-    println("output: '" + output + "'")
+    assertOutput(expectedOutput, template, attributes, trim)
+  }
 
+  def assertOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
+    var output = engine.layout(template, attributes)
+    if (printOutput) {
+      println("output: '" + output + "'")
+    }
+
+    if (trim) {
+      output = output.trim
+    }
     expect(expectedOutput) {output}
   }
 
+  def syntaxException(block: => Unit) = {
+    val e = intercept[InvalidSyntaxException] {
+      block
+    }
+    if (printExceptions) {
+      println("caught: " + e)
+    }
+    e
+  }
 
+  def testSspSyntaxEception(name: String, template: String): Unit = {
+    test(name) {
+      syntaxException {
+        assertSspOutput("xxx", template)
+      }
+    }
+  }
 }
