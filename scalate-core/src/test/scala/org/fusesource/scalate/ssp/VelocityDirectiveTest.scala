@@ -54,8 +54,9 @@ time is: ${new Date()}
   }
 
 
-  // various
+  // #match and #case issues
   testSspSyntaxEception("non whitespace between #match #case", "#match(n) bad #case(5) a #otherwise b #end")
+  testSspSyntaxEception("cannot have other directive between #match #case", "#match(n) #if(5) #case(5) a #otherwise b #end")
 
   // correct use of #end
   testSspSyntaxEception("missing #end", "#for(i <- 1 to 3) blah")

@@ -209,9 +209,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
   protected def transformSyntax(fragments: List[PageFragment]) = {
     var last: PageFragment = null
+    def isMatch = last != null && last.isInstanceOf[MatchFragment]
+
     fragments.filter {
       _ match {
-        case t: TextFragment if (last != null && last.isInstanceOf[MatchFragment]) =>
+        case t: TextFragment if (isMatch) =>
           val trim = t.text.trim
           if (trim.length == 0) {
             false
@@ -221,6 +223,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           }
 
         case p =>
+          if (isMatch) {
+            if (!p.isInstanceOf[CaseFragment] && !p.isInstanceOf[OtherwiseFragment]) {
+              throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found " + p.tokenName, p.pos)
+            }
+          }
           last = p
           true
       }
