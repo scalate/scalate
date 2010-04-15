@@ -18,12 +18,20 @@ package org.fusesource.scalate
 
 
 import java.io.File
+import java.lang.String
+import collection.immutable.Map
 
 abstract class TemplateTestSupport extends FunSuiteSupport {
   val engine = new TemplateEngine
-  engine.workingDirectory = new File("target/test-data/" + getClass.getSimpleName)
+  
   var printOutput = false
   var printExceptions = true
+
+  override protected def beforeAll(configMap: Map[String, Any]) = {
+    super.beforeAll(configMap)
+
+    engine.workingDirectory = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
+  }
 
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): Unit = assertSspOutput(expectedOutput, templateText, attributes, true)
 

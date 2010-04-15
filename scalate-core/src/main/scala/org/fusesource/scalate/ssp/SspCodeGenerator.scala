@@ -132,9 +132,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     val (packageName, className) = extractPackageAndClassNames(uri)
 
     // Parse the translation unit
-    val fragments = (new SspParser).getPageFragments(content)
+    val rawFragments = (new SspParser).getPageFragments(content)
 
-    checkSyntax(fragments)
+    checkSyntax(rawFragments)
+
+    val fragments = transformSyntax(rawFragments)
 
     // Convert the parsed AttributeFragments into Binding objects
     val templateBindings = fragments.flatMap {
@@ -202,6 +204,26 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       val f = endStack.head
       // TODO add the name for better debugging...
       throw new InvalidSyntaxException("Missing #end", f.pos)
+    }
+  }
+
+  protected def transformSyntax(fragments: List[PageFragment]) = {
+    var last: PageFragment = null
+    fragments.filter {
+      _ match {
+        case t: TextFragment if (last != null && last.isInstanceOf[MatchFragment]) =>
+          val trim = t.text.trim
+          if (trim.length == 0) {
+            false
+          }
+          else {
+            throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found '" + trim + "'", t.pos)
+          }
+
+        case p =>
+          last = p
+          true
+      }
     }
   }
 }

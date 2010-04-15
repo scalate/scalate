@@ -7,7 +7,7 @@ import org.fusesource.scalate.{CompilerException, TemplateTestSupport}
  */
 class VelocityDirectiveTest extends TemplateTestSupport {
   test("for loop") {
-    assertSspOutput("xxx", "#for(i <- 1 to 3)x#end")
+    assertSspOutput("1 2 3 ", "#for(i <- 1 to 3)${i} #end")
   }
 
   test("if elseif else") {
@@ -26,8 +26,8 @@ Dunno
     assertTrimOutput("Dunno", template, Map("n" -> "Foo"))
   }
 
-  // TODO test match / case / otherwise
-  ignore("match case otherwise") {
+  
+  test("match case otherwise") {
     val template = compileSsp("match case otherwise", """<%@ val n: String %>
 #match(n)
 #case("James")
@@ -54,6 +54,10 @@ time is: ${new Date()}
   }
 
 
+  // various
+  testSspSyntaxEception("non whitespace between #match #case", "#match(n) bad #case(5) a #otherwise b #end")
+
+  // correct use of #end
   testSspSyntaxEception("missing #end", "#for(i <- 1 to 3) blah")
   testSspSyntaxEception("too many #end", "#for(i <- 1 to 3) blah #end #end")
 
