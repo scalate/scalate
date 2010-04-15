@@ -36,6 +36,10 @@ object IOUtil {
     }
   }
 
+  def loadText(in: InputStream, encoding: String = "UTF-8") = {
+    new String(loadBytes(in), encoding)
+  }
+
   def loadTextFile(path: File, encoding: String = "UTF-8") = {
     new String(loadBinaryFile(path), encoding)
   }
@@ -49,6 +53,16 @@ object IOUtil {
       in.close
     }
 
+    baos.toByteArray
+  }
+
+  def loadBytes(in: InputStream): Array[Byte] = {
+    val baos = new ByteArrayOutputStream
+    try {
+      copy(in, baos)
+    } finally {
+      in.close
+    }
     baos.toByteArray
   }
 
