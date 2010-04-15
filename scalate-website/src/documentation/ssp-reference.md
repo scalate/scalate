@@ -3,9 +3,9 @@
 * Table of contents
 {:toc}
 
-Ssp pages are like JSP/ASP pages in syntax but using Scala code for expressions instead of Java or EL like in JSP.
+Ssp pages are like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails in syntax but using Scala code for expressions instead of Java/EL/Ruby.
 
-If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
+If you know Velocity, JSP or Erb then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
 ## Syntax
 
@@ -13,10 +13,9 @@ A Ssp template consists of plain text, usually an HTML document, which has speci
 portions of the document are rendered dynamically.  Everything outside of a `<% ... %>` and `${ ... }` sequence 
 are considered literal text and are generally passed through to the rendered document unmodified.
 
-### Inserting Scala: `<%= %>` or `${ }`
+### Expressions: `${ }` or `<%= %>`
 
-Code wrapped by `<%=` and `%>` or with '${' and '}' is evaluated and 
-the output is inserted into the document.
+Code wrapped by `<%=` and `%>` or with '${' and '}' is evaluated and  the output is inserted into the document.
 
 For example:
 {pygmentize:: jsp}
@@ -34,7 +33,7 @@ is rendered as:
 </p>
 {pygmentize}
 
-### Running Scala: `<% %>`
+### Scala code: `<% %>`
 
 Code wrapped by `<%` and `%>` is evaluated but *not* inserted into the document.
 
@@ -53,11 +52,12 @@ is rendered as:
 <p>hello there you!</p>
 {pygmentize}
 
-### Binding Variables: `<%@ %>`
+### Attributes: `<%@ %>`
 
 When a Scalate template is rendered, the caller can pass an attribute map
-which the template in charge of rendering. To bind the attribute to a Scala
-variable, a Scaml template uses the following syntax to declare the variable:
+which the template is in charge of rendering. To bind an attribute to a type safe Scala
+variable an SSP template uses the following syntax to declare the attribute:
+
 {pygmentize:: jsp}
 <%@ val foo: MyType %>
 {pygmentize}
@@ -73,7 +73,7 @@ example:
 
 The attribute is now available for use as an expression. 
 
-Its very common to have a template based on a single object who's members are f
+Its very common to have a template based on a single object who's members are
 frequently accessed.  In this cases, it's convenient to import all the object's 
 members.  This can be done by adding the import keyword to the attribute declaration.
 
@@ -97,6 +97,194 @@ Which is the same as:
 <p>Hello ${model.name}, what is the weather like in ${model.city}</p>
 {pygmentize}
 
+### Velocity style directives
+
+To perform logical branching or looping Scalate supports [Velocity](http://velocity.apache.org/) style directives - from version 1.1 onwards.
+
+The velocity style directives all start with a `#` and either take an expression in parens, or don't.
+
+For example `#if` takes an expression, such as `#if (x > 5)`. There can be whitespace between the directive name and the parens if required. So you can use any of these
+
+* `#if(x > 5)`
+* `#if (x > 5)`
+* `#if( x > 5 )`
+
+When a directive doesn't take an expression you can use parens around the directive name to separate it more clearly from text.
+
+For example if you want to generate an if/else in a single line: `#if (x > 5)a#(else)b#end`
+
+#### `#for`
+
+The `#for` directive is used to iterate over expressions in a Scala like way. 
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<ul>
+#for (i <- 1 to 5)
+  <li>${i}</li>
+#end
+</ul>
+-----------------------------
+xml: produces
+-----------------------------
+<ul>
+  <li>1</li>
+  <li>2</li>
+  <li>3</li>
+  <li>4</li>
+  <li>5</li>
+</ul>
+{pygmentize_and_compare}
+
+Just like in the Scala language you can perform multiple nested loops using [sequence comprehensions](http://www.scala-lang.org/node/111).
+
+For example for a nested loop of both x and y...
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<ul>
+#for (x <- 1 to 2; y <- 1 to 2)
+  <li>(${x}, ${y})</li>
+#end
+</ul>
+-----------------------------
+xml: produces
+-----------------------------
+<ul>
+  <li>(1, 1)</li>
+  <li>(1, 2)</li>
+  <li>(1, 1)</li>
+  <li>(2, 1)</li>
+</ul>
+{pygmentize_and_compare}
+
+
+#### `#if`
+
+You can perform if/elseif/else branches using the `#if`, `#elseif` (or `#elif`), `#else` and `#end` directives.
+
+The use of `#elseif` and `#else` are optional. You can just use `#if` and `#end` if you like
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<p>
+#if (customer.type == "Gold")
+  Special stuff...
+#end
+</p>
+-----------------------------
+xml: produces
+-----------------------------
+<p>
+  Special stuff...
+</p>
+{pygmentize_and_compare}
+
+
+Or you can use each directive together, using as many `#elseif` directives as you like
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<p>
+#if (n == "James")
+  Hey James
+#elseif (n == "Hiram")
+  Yo Hiram
+#else
+  Dunno
+#end
+</p>
+-----------------------------
+xml: produces
+-----------------------------
+<p>
+  Hey James
+</p>
+{pygmentize_and_compare}
+
+
+#### `#match`
+
+You can perform Scala style pattern matching using the `#match`, `#case`, `#otherwise` and `#end` directives.
+
+You can think of matching in Scala as being like a Java switch statement only way more powerful. 
+
+The `#match` takes an expression to match on, then each `#case` takes a value, filter or type expression to match on.
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<p>
+#match (customer.type)
+#case("Gold")
+  Great stuff
+#case("Silver")
+  Good stuff
+#otherwise
+  No stuff
+#end
+</p>
+-----------------------------
+xml: produces
+-----------------------------
+<p>
+  Special stuff...
+</p>
+{pygmentize_and_compare}
+
+This example shows how you can use type expressions instead to match on
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+<p>
+#match (person)
+#case(m: Manager)
+  ${m.name} manages ${m.manages.size} people
+#case(p: Person)
+  ${p.name} is not a manager
+#otherwise
+  Not a person
+#end
+</p>
+-----------------------------
+xml: produces
+-----------------------------
+<p>
+  Hey James
+</p>
+{pygmentize_and_compare}
+
+
+#### `#import`
+
+The `#import` directive can be used as an alternative to using `<% import somePackage %>` to import Scala/Java packages, classes or methods.
+
+{pygmentize_and_compare::}
+-----------------------------
+jsp: .ssp file
+-----------------------------
+#import(java.util.Date)
+
+<p>The time is now ${new Date}</p>
+-----------------------------
+xml: produces
+-----------------------------
+<p>The time is now Thu Apr 15 15:19:41 IST 2010</p>
+{pygmentize_and_compare}
+
+
+
 ### Comments: `<%-- --%>`
 
 Ssp comments prevent everything inside the comment markers from being inserted in to the rendered document.
@@ -105,12 +293,12 @@ Ssp comments prevent everything inside the comment markers from being inserted i
 <%-- this is a comment --%>
 {pygmentize}
 
-### Includes `<% include ... %>`
+### Includes `${include(someUri)}`
 
 You can include other scripts in your page using the include method
 
 {pygmentize:: jsp}
-<% include file="relativeOrAbsoluteURL" %>
+${include("relativeOrAbsoluteURL"}
 {pygmentize}
 
 The URL is then evaluated and included in place in your template.

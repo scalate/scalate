@@ -23,7 +23,7 @@ Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wik
 
 Scalate supports the following template formats
 
-* [SSP](documentation/ssp-reference.html) which is like JSP/Erb/ASP 
+* [SSP](documentation/ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
 * [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 
 Still confused? Check out [Why Scalate](why.html)? or how Scalate compares to [JSP](compare-jsp.html) or [Lift](code-in-view.html)
