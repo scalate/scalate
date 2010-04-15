@@ -167,18 +167,19 @@ div.compare div.compare-left { float:left; width:340px; padding:5px; margin-top:
 div.compare div.compare-right { float:right; width:340px; padding:5px; margin-top: 15px; }
 div.compare div h3 {
   margin-left: 15px;
-  padding: 0px 15px;
+  padding: 5px 15px;
   display: inline;
   font-size: .8em;
   color: #666;
-  border-top: 4px double #ccc; -moz-border-top-colors: #ccc white white #e5e5e5;
-  border-left: 4px double #ccc; -moz-border-left-colors: #ccc white white #e5e5e5;
-  border-right: 4px double #ccc;-moz-border-right-colors: #ccc white white #e5e5e5;
+
+  border-top: 1px solid #ccc; -moz-border-top-colors: #ccc white white #e5e5e5;
+  border-left: 1px solid #ccc; -moz-border-left-colors: #ccc white white #e5e5e5;
+  border-right: 1px solid #ccc;-moz-border-right-colors: #ccc white white #e5e5e5;
   border-top-left-radius: 8px; -webkit-border-top-left-radius: 8px;  -moz-border-radius-topleft: 8px;
   border-top-right-radius: 8px; -webkit-border-top-right-radius: 8px; -moz-border-radius-topright: 8px; 
 }
 div.compare div div {
-  margin:0px;
+  margin: 5px 0px 0px 0px;
 }
 
 .clear {
