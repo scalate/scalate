@@ -941,7 +941,7 @@ is the same as:
 {pygmentize:: haml}
 %p
   = List(1,2,3).foldLeft("result: ") { (a,x)=> { a+x } }
-{pygmentize_and_compare}
+{pygmentize}
 
 would be rendered to:
 {pygmentize:: xml}
