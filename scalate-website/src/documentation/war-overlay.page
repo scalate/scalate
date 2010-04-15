@@ -13,7 +13,7 @@ Adding Scalate console to your web application
 # Overview
 </div>
 <div class="right" markdown="1">
-The Scalate War Overlay is a mechanism of the [maven war plugin](http://maven.apache.org/maven-war-plugin/) which allows you to depend on a WAR in your maven dependencies.
+The Scalate War Overlay is a [feature](http://maven.apache.org/plugins/maven-war-plugin/overlays.html) of the [maven war plugin](http://maven.apache.org/plugins/maven-war-plugin/) which allows you to depend on a WAR in your maven dependencies.
 
 The war plugin then copies all the contents of the war overlay into your web application. This saves you copy and pasting various shared resources and templates across web applications.
 
