@@ -6,6 +6,11 @@ import org.fusesource.scalate.{CompilerException, TemplateTestSupport}
  * @version $Revision : 1.1 $
  */
 class VelocityDirectiveTest extends TemplateTestSupport {
+  test("escape of #") {
+    assertSspOutput("""hey # and \# foo""", """hey \# and \\# foo""")
+    assertSspOutput("""#if (foo) blah #end""", """\#if (foo) blah \#end""")
+  }
+
   test("for loop") {
     assertSspOutput("1 2 3 ", "#for(i <- 1 to 3)${i} #end")
   }

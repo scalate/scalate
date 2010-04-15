@@ -57,6 +57,9 @@ case class ForFragment(code: Text) extends Directive("#for")
 case class ImportFragment(code: Text) extends Directive("#import")
 case class EndFragment() extends Directive("#end")
 
+/**
+ * Parser for the SSP template language 
+ */
 class SspParser extends ScalaParseSupport {
   var skipWhitespaceOn = false
 
@@ -104,10 +107,11 @@ class SspParser extends ScalaParseSupport {
   }
 
   val litteral_part: Parser[Text] =
-  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""") ~
+  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""") ~
           opt(
             """\<%""" ~ opt(litteral_part) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
                     """\${""" ~ opt(litteral_part) ^^ {case x ~ y => "${" + y.getOrElse("")} |
+                    """\#""" ~ opt(litteral_part) ^^ {case x ~ y => "#" + y.getOrElse("")} |
                     """\\""" ^^ {s => """\"""}
             ) ^^ {
     case x ~ Some(y) => x + y
