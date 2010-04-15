@@ -6,6 +6,8 @@
 
 <h2>SSP Samples</h2>
 
+The following use JSP style syntax
+
 <ul>
   <li>
     <a href="ssp/simple.ssp">simple</a>
@@ -63,9 +65,23 @@
   </li>
 </ul>
 
+These use the <a href="http://scalate.fusesource.org/documentation/ssp-reference.html#velocity_style_directives">Velocity style</a> directives
+
+<ul>
+  <li>
+    <a href="ssp/velocity/singleLoop.ssp">Single for loop</a>
+  </li>
+  <li>
+    <a href="ssp/velocity/doubleLoop.ssp">double for loop</a>
+  </li>
+  <li>
+    <a href="ssp/velocity/if.ssp">if / else branch</a>
+  </li>
+</ul>
+
 <h2>Scaml Samples</h2>
 
-Scalate also supports version of <a href="http://haml-lang.com/">haml</a> markup called Scaml
+The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> which is very DRY and concise 
 
 <ul>
   <li>

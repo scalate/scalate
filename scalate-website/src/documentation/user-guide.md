@@ -8,16 +8,15 @@ Scalate is a template engine based on the Scala language.
 ## Features
 
 * Supports multiple template syntaxes
-  * Ssp: like JSP/ASP pages in syntax but using Scala code for expressions
-  * Scaml: like [Haml](http://haml-lang.com/) pages in syntax, but again with Scala as the expression language.
-* inbuilt support for layouts
-* Easy to use replacement for JSP's in J2EE web container
-* No hard dependencies on a web container.  It can be used in a standalone application to template things like emails.
-* JAXRS integration so that Scalate template can render JAXRS resouces
+  * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
+* inbuilt support for [layouts](#layouts) together with a powerful [console](console.html) 
+* Works well with a number of [frameworks](frameworks.html)
+* Can be used in any web application or used in a standalone application to template things like emails.
 
 ### Ssp (Scala Server Pages)
 
-If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
+If you know [Velocity](http://velocity.apache.org/), JSP or Erb from Rails then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
 {pygmentize_and_compare::}
 -----------------------------
@@ -25,9 +24,9 @@ jsp: .ssp file
 -----------------------------
 <%@ var user: User %>
 <p>Hi ${user.name},</p>
-<% for(i <- 1 to 3) { %>
-<p><%= i %></p>
-<% } %>
+#for (i <- 1 to 3)
+<p>${i}</p>
+#end
 <p>See, I can count!</p>
 -----------------------------
 xml: produces

@@ -1,0 +1,9 @@
+<%@ val n: String %>
+
+#if (n == "James")
+  Hey James
+#elseif (n == "Hiram")
+  Yo Hiram
+#else
+  Dunno
+#end
