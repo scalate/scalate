@@ -34,12 +34,13 @@ You can download a recent snapshot from the [Snapshot Maven Repository](http://r
 If you build your project using [Maven](http://maven.apache.org/) then just add the following to your *pom.xml*
 </div> 
 <div class="right">
-{coderay:: xml}<dependency>
+{pygmentize:: xml}
+<dependency>
   <groupId>org.fusesource.{project_id:}</groupId>
   <artifactId>{project_id:}-core</artifactId>
   <version>${{project_id:}-version}</version>  
 </dependency>
-{coderay}
+{pygmentize}
 </div>
 
 <div class="right" markdown="1">
@@ -48,7 +49,8 @@ The releases should be synchronized to the [central maven repository](http://rep
 However if a release has not yet made it to the central repository or you want to add a repository for completeness, add the following to your *pom.xml*
 </div>
 <div class="right">
-{pygmentize:: xml}  <repositories>
+{pygmentize:: xml}  
+<repositories>
    <repository>
      <id>fusesource.m2</id>
      <name>FuseSource Public Repository</name>
@@ -70,7 +72,8 @@ However if a release has not yet made it to the central repository or you want t
 If you want to use a **snapshot version** you should ensure you have the Scalate Snapshot Maven repository defined in your *pom.xml*
 </div> 
 <div class="right">
-{pygmentize:: xml}  <repositories>
+{pygmentize:: xml}  
+<repositories>
    <repository>
      <id>fusesource.snapshots</id>
      <name>FuseSource Snapshot Repository</name>
