@@ -122,10 +122,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
   }
 
-  override def generate(engine: TemplateEngine, uri: String, bindings: List[Binding]): Code = {
+  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding]): Code = {
 
     // Load the translation unit
-    val content = engine.resourceLoader.load(uri)
+    val content = source.text
+    val uri = source.uri
 
     // Determine the package and class name to use for the generated class
     val (packageName, className) = extractPackageAndClassNames(uri)

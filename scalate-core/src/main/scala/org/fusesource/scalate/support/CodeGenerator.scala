@@ -16,17 +16,16 @@
 
 package org.fusesource.scalate.support
 
-import _root_.org.fusesource.scalate.{Binding, TemplateEngine}
-import _root_.scala.util.parsing.input.{OffsetPosition, Position}
+import _root_.scala.util.parsing.input.{OffsetPosition}
 import collection.immutable.TreeMap
+import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
 
-case class Code(className:String, source:String, dependencies:Set[String], positions:TreeMap[OffsetPosition,OffsetPosition])
+case class Code(className: String, source: String, dependencies: Set[String], positions: TreeMap[OffsetPosition, OffsetPosition])
 
 trait CodeGenerator {
+  def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding]): Code
 
-  def generate(engine:TemplateEngine, uri:String, bindings:List[Binding]): Code
-
-  def className(uri:String): String
+  def className(uri: String): String
 
   val stratumName: String
 

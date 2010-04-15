@@ -25,72 +25,65 @@ import support.FileResourceLoader
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ScamlTestSupport extends FunSuiteSupport {
-
-  var engine = new TemplateEngine
+class ScamlTestSupport extends TemplateTestSupport {
   val testCounter = new AtomicInteger(1)
 
-  def testRender(description:String, template:String, result:String) = {
+  def testRender(description: String, template: String, result: String) = {
     test(description) {
-      expect(result.trim) { render(description, template.trim).trim }
+      expect(result.trim) {render(description, template.trim).trim}
     }
   }
 
-  def ignoreRender(description:String, template:String, result:String) = {
+  def ignoreRender(description: String, template: String, result: String) = {
     ignore(description) {
     }
   }
 
-  def testInvalidSyntaxException(description:String, template:String, error:String) = {
+  def testInvalidSyntaxException(description: String, template: String, error: String) = {
     test(description) {
       try {
         println(render(description, template.trim).trim)
         fail("Expected InvalidSyntaxException was not thrown")
       } catch {
-        case e:TestFailedException=> throw e
-        case e:InvalidSyntaxException=> {
+        case e: TestFailedException => throw e
+        case e: InvalidSyntaxException => {
           expect(error) {
             e.getMessage
           }
         }
-        case x:Throwable=>
+        case x: Throwable =>
           x.printStackTrace
-          fail("Expected InvalidSyntaxException was not thrown.  Instead got a: "+x)
+          fail("Expected InvalidSyntaxException was not thrown.  Instead got a: " + x)
       }
     }
   }
 
-  def ignoreInvalidSyntaxException(description:String, template:String, error:String) = {
+  def ignoreInvalidSyntaxException(description: String, template: String, error: String) = {
     ignore(description) {
     }
   }
-  def testCompilerException(description:String, template:String, error:String) = {
+
+  def testCompilerException(description: String, template: String, error: String) = {
     test(description) {
       try {
         println(render(description, template.trim).trim)
         fail("Expected CompilerException was not thrown")
       } catch {
-        case e:TestFailedException=> throw e
-        case e:CompilerException=> {
+        case e: TestFailedException => throw e
+        case e: CompilerException => {
           expect(error) {
             e.errors.head.message
           }
         }
-        case x:Throwable=>
+        case x: Throwable =>
           x.printStackTrace
-          fail("Expected CompilerException was not thrown.  Instead got a: "+x)
+          fail("Expected CompilerException was not thrown.  Instead got a: " + x)
       }
     }
   }
 
 
-  def render(name:String, content:String): String = {
-
-    engine.resourceLoader = new FileResourceLoader {
-      override def load( uri: String ): String = content
-      override def lastModified(uri:String): Long = 0
-    }
-
+  def render(name: String, content: String): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     val context = new DefaultRenderContext(engine, out) {
@@ -110,38 +103,9 @@ class ScamlTestSupport extends FunSuiteSupport {
     context.attributes("bean") = Bean("red", 10)
     context.attributes("label") = "Scalate"
 
-    val template = engine.compile("/org/fusesource/scalate/scaml/test" + safeName(name) +".scaml")
+    val template = compileScaml("/org/fusesource/scalate/scaml/test" + name, content)
     template.render(context)
     out.close
     buffer.toString
   }
-
-  protected def safeName( text: String ): String =
-    text.foldLeft( new StringBuffer )( (acc, ch) => safeName( ch, acc ) ).toString
-
-  private def safeName( ch: Char, buffer: StringBuffer ): StringBuffer = {
-    if (ch == '&') {
-      buffer.append("amp_")
-    }
-    else if (ch == '>') {
-      buffer.append("gt_")
-    }
-    else if (ch == '<') {
-      buffer.append("lt_")
-    }
-    else if (ch == '=') {
-      buffer.append("eq_")
-    }
-    else if (ch == '!') {
-      buffer.append("pling_")
-    }
-    else if (Character.isDigit(ch) || Character.isJavaIdentifierPart(ch) || ch == '_' || ch == '.') {
-      buffer.append(ch)
-    }
-    else {
-      buffer.append('_')
-    }
-    buffer
-  }
-
 }

@@ -11,7 +11,7 @@ class VelocityDirectiveTest extends TemplateTestSupport {
   }
 
   test("if elseif else") {
-    val template = compileSsp("""<%@ val n: String %>
+    val template = compileSsp("if elseif else", """<%@ val n: String %>
 #if (n == "James")
 Hey James
 #elseif (n == "Hiram")
@@ -28,7 +28,7 @@ Dunno
 
   // TODO test match / case / otherwise
   ignore("match case otherwise") {
-    val template = compileSsp("""<%@ val n: String %>
+    val template = compileSsp("match case otherwise", """<%@ val n: String %>
 #match(n)
 #case("James")
 Hey James
@@ -44,10 +44,11 @@ Dunno
     assertTrimOutput("Dunno", template, Map("n" -> "Foo"))
   }
 
-  test("import") {
-    val template = compileSsp("""
+  test("import test") {
+    val template = compileSsp("import test", """
 #import(java.util.Date)
-time is: ${new Date()}""")
+time is: ${new Date()}
+""")
     val output = engine.layout(template).trim
     assert(output.startsWith("time is:"))
   }

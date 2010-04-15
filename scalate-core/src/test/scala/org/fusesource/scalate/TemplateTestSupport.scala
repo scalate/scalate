@@ -25,9 +25,6 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
   var printOutput = false
   var printExceptions = true
 
-  def compileSsp(text: String) = engine.compileSsp(text)
-  def compileScaml(text: String) = engine.compileScaml(text)
-
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): Unit = assertSspOutput(expectedOutput, templateText, attributes, true)
 
   def assertTrimOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map()): Unit = assertOutput(expectedOutput, template, attributes, true)
@@ -67,4 +64,41 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
       }
     }
   }
+
+
+  protected def safeName(text: String): String =
+    text.foldLeft(new StringBuffer)((acc, ch) => safeName(ch, acc)).toString
+
+  private def safeName(ch: Char, buffer: StringBuffer): StringBuffer = {
+    if (ch == '&') {
+      buffer.append("amp_")
+    }
+    else if (ch == '>') {
+      buffer.append("gt_")
+    }
+    else if (ch == '<') {
+      buffer.append("lt_")
+    }
+    else if (ch == '=') {
+      buffer.append("eq_")
+    }
+    else if (ch == '!') {
+      buffer.append("pling_")
+    }
+    else if (ch == '/') {
+      buffer.append("/")
+    }
+    else if (Character.isDigit(ch) || Character.isJavaIdentifierPart(ch) || ch == '_' || ch == '.') {
+      buffer.append(ch)
+    }
+    else {
+      buffer.append('_')
+    }
+    buffer
+  }
+
+
+  def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
+
+  def compileSsp(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
 }
