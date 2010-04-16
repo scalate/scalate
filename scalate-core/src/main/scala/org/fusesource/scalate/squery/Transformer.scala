@@ -24,16 +24,16 @@ class Transformer extends Logging {
 
   def $(selector: Selector): RuleFactory = new RuleFactory(selector)
 
-  def transform(nodes: NodeSeq): NodeSeq = {
-    nodes.flatMap(transformNode(_))
+  def transform(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
+    nodes.flatMap(transformNode(_, parents))
   }
 
-  protected def transformNode(node: Node): NodeSeq = {
-    val keys = _rules.filterKeys(_.matches(node))
+  protected def transformNode(node: Node, parents: Seq[Node]): NodeSeq = {
+    val keys = _rules.filterKeys(_.matches(node, parents))
     val size = keys.size
     if (size == 0) {
       node match {
-        case e: Elem => replaceContent(e, transform(e.child))
+        case e: Elem => replaceContent(e, transform(e.child, parents ++ e))
         case d: Document => transform(d.child)
         case n => n
       }
