@@ -16,6 +16,11 @@ object Selector {
       throw new IllegalArgumentException("CSS syntax not supported: " + cssSelector)
     }
   }
+
+  /**
+   * Returns a selector which returns the childen of the given selector
+   */
+  def children(selector: Selector) = ChildrenSelector(selector)
 }
 
 trait Selector {
@@ -23,7 +28,7 @@ trait Selector {
 
 
   protected def attrEquals(e: Elem, name: String, value: String) = e.attribute(name) match {
-    case Some(n) => println("attribute: " + name + " = " + n); n.toString == value
+    case Some(n) => n.toString == value
     case _ => false
   }
 }
@@ -41,6 +46,15 @@ case class IdSelector(className: String) extends Selector {
     case e: Elem =>
       attrEquals(e, "id", className)
     case _ => false
+  }
+}
+
+
+case class ChildrenSelector(selector: Selector) extends Selector {
+  def matches(node: Node) = {
+    // TODO how to get the parent...
+    val parent = node
+    selector.matches(parent)
   }
 }
 

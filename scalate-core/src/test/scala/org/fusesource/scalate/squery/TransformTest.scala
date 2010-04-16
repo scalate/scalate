@@ -5,8 +5,8 @@ import xml.Text
 
 object PersonTransform extends Transformer {
 
-  $(".name").content(() => Text("Hiram"))
-  $(".location").content(() => Text("Tampa"))
+  $(".name").content = "Hiram"
+  $(".location").content = Text("Tampa")
 }
 
 class TransformTest extends FunSuiteSupport {

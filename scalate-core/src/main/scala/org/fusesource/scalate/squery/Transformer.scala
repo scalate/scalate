@@ -1,8 +1,9 @@
 package org.fusesource.scalate.squery
 
 import _root_.org.fusesource.scalate.util.Logging
-import xml.{Elem, Node, NodeSeq}
 import collection.mutable.{HashMap, ListBuffer}
+import text.Document
+import xml.{Text, Elem, Node, NodeSeq}
 
 
 object Transformer {
@@ -28,26 +29,40 @@ class Transformer extends Logging {
   }
 
   protected def transformNode(node: Node): NodeSeq = {
-    println("Transforming node: " + node)
     val keys = _rules.filterKeys(_.matches(node))
     val size = keys.size
     if (size == 0) {
       node match {
         case e: Elem => replaceContent(e, transform(e.child))
-
+        case d: Document => transform(d.child)
+        case n => n
       }
     }
     else {
       if (size > 1) {
         warn("Too many matching rules! " + keys)
       }
-      keys.valuesIterator.next.transform(node)
+      val rule = keys.valuesIterator.next
+      rule.transform(node)
     }
   }
 
   class RuleFactory(selector: Selector) {
-    def content(fn: () => NodeSeq): Unit = {
+    def content: RuleFactory = new RuleFactory(selector)  // TODO use child
+
+    /**
+     * Sets the content of the matching element to the given set of markup 
+     */
+    def content_=(nodes: NodeSeq): Unit = {
+      def fn(): NodeSeq = nodes
       addRule(selector, new ReplaceContentRule(fn))
+    }
+
+    /**
+     * Sets the content of the matching element to the given text
+     */
+    def content_=(text: String): Unit = {
+      content = Text(text)
     }
   }
 
