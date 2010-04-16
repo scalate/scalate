@@ -151,27 +151,42 @@ class TemplateEngine extends Logging {
    */
   def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
     val file = File.createTempFile("scalate", "." + extension)
-    val writer = new FileWriter(file)
-    writer.write(text)
-    writer.close()
-    compile(file.getAbsolutePath, extraBindings)
+    IOUtil.writeText(file, text)
+    compile(TemplateSource.fromFile(file), extraBindings)
   }
 
 
   /**
-   * Compiles a template file/URI without placing it in the template cache. Useful for temporary
+   * Compiles a template source without placing it in the template cache. Useful for temporary
    * templates or dynamically created template
    */
-  def compile(uri: String, extraBindings:List[Binding] = Nil):Template = {
-    compileAndLoad(uri, extraBindings, 0)._1
+  def compile(source: TemplateSource, extraBindings:List[Binding] = Nil):Template = {
+    compileAndLoad(source, extraBindings, 0)._1
   }
 
   /**
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(uri: String, extraBindings:List[Binding] = Nil) = {
-    generator(uri).generate(this, uri, bindings ::: extraBindings)
+  def generateScala(source: TemplateSource, extraBindings:List[Binding] = Nil) = {
+    generator(source.uri).generate(this, source, bindings ::: extraBindings)
+  }
+
+
+  /**
+   * Generates the Scala code for a template.  Useful for generating scala code that
+   * will then be compiled into the application as part of a build process.
+   */
+  def generateScala(uri: String, extraBindings:List[Binding]): Code = {
+    generateScala(uriToSource(uri), extraBindings)
+  }
+
+  /**
+   * Generates the Scala code for a template.  Useful for generating scala code that
+   * will then be compiled into the application as part of a build process.
+   */
+  def generateScala(uri: String): Code = {
+    generateScala(uriToSource(uri))
   }
 
   /**
@@ -181,22 +196,22 @@ class TemplateEngine extends Logging {
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(uri: String, extraBindings:List[Binding]= Nil): Template = {
+  def load(source: TemplateSource, extraBindings:List[Binding]= Nil): Template = {
     templateCache.synchronized {
 
       // Determine whether to build/rebuild the template, load existing .class files from the file system,
       // or reuse an existing template that we've already loaded
-      templateCache.get(uri) match {
+      templateCache.get(source.uri) match {
 
         // Not in the cache..
         case None =>
           try {
             // Try to load a pre-compiled template from the classpath
-              cache(uri, loadPrecompiledEntry(uri, extraBindings))
+              cache(source, loadPrecompiledEntry(source, extraBindings))
           } catch {
             case _: Throwable =>
               // It was not pre-compiled... compile and load it.
-              cache(uri, compileAndLoadEntry(uri, extraBindings))
+              cache(source, compileAndLoadEntry(source, extraBindings))
           }
 
         // It was in the cache..
@@ -204,7 +219,7 @@ class TemplateEngine extends Logging {
           // check for staleness
           if (allowReload && entry.isStale)
             // re-compile it
-            cache(uri, compileAndLoadEntry(uri, extraBindings))
+            cache(source, compileAndLoadEntry(source, extraBindings))
           else
             // Cache entry is valid
             entry.template
@@ -221,7 +236,7 @@ class TemplateEngine extends Logging {
    * it was last compiled.
    */
   def load(file: File, extraBindings: List[Binding]): Template = {
-    load(file.getPath, extraBindings)
+    load(TemplateSource.fromFile(file), extraBindings)
   }
 
 
@@ -233,19 +248,57 @@ class TemplateEngine extends Logging {
    * it was last compiled.
    */
   def load(file: File): Template = {
-    load(file.getPath, Nil)
+    load(TemplateSource.fromFile(file))
+  }
+
+
+  /**
+   * Compiles and then caches the specified template.  If the template
+   * was previously cached, the previously compiled template instance
+   * is returned.  The cache entry in invalidated and then template
+   * is re-compiled if the template file has been updated since
+   * it was last compiled.
+   */
+  def load(uri: String, extraBindings: List[Binding]): Template = {
+    load(uriToSource(uri), extraBindings)
+  }
+
+
+  /**
+   * Compiles and then caches the specified template.  If the template
+   * was previously cached, the previously compiled template instance
+   * is returned.  The cache entry in invalidated and then template
+   * is re-compiled if the template file has been updated since
+   * it was last compiled.
+   */
+  def load(uri: String): Template = {
+    load(uriToSource(uri))
+  }
+
+  /**
+   * Returns true if the URI can be loaded as a template
+   */
+  def canLoad(source: TemplateSource, extraBindings:List[Binding]= Nil): Boolean = {
+    try {
+      load(source, extraBindings) != null
+    } catch {
+      case e: ResourceNotFoundException => false
+    }
   }
 
 
   /**
    * Returns true if the URI can be loaded as a template
    */
-  def canLoad(uri: String, extraBindings:List[Binding]= Nil): Boolean = {
-    try {
-      load(uri, extraBindings) != null
-    } catch {
-      case e: ResourceNotFoundException => false
-    }
+  def canLoad(uri: String): Boolean = {
+    canLoad(uriToSource(uri))
+  }
+
+  /**
+   * Returns true if the URI can be loaded as a template
+   */
+  def canLoad(uri: String, extraBindings:List[Binding]): Boolean = {
+    canLoad(uriToSource(uri), extraBindings)
   }
 
 
@@ -307,6 +360,36 @@ class TemplateEngine extends Logging {
   def layout(uri: String, context: RenderContext): Unit = layout(uri, context, Nil)
   def layout(template: Template): String = layout(template, Map[String,Any]())
 
+  /**
+   *  Renders the given template source using the current layoutStrategy
+   */
+  def layout(source: TemplateSource): String = layout(source, Map[String,Any]())
+  /**
+   *  Renders the given template source using the current layoutStrategy
+   */
+  def layout(source: TemplateSource, attributes: Map[String,Any]): String = {
+    val template = load(source)
+    layout(template, attributes)
+  }
+  /**
+   *  Renders the given template source using the current layoutStrategy
+   */
+  def layout(source: TemplateSource, context: RenderContext, extraBindings:List[Binding]): Unit = {
+    val template = load(source, extraBindings)
+    layout(template, context)
+  }
+
+  /**
+   *  Renders the given template source using the current layoutStrategy
+   */
+  def layout(source: TemplateSource, context: RenderContext): Unit = {
+    val template = load(source)
+    layout(template, context)
+  }
+
+
+
+
 
   // Layout as markup methods
   //-------------------------------------------------------------------------
@@ -347,17 +430,18 @@ class TemplateEngine extends Logging {
    */
   protected def createRenderContext(out: PrintWriter): RenderContext = new DefaultRenderContext(this, out)
 
-  private def loadPrecompiledEntry(uri:String, extraBindings:List[Binding]) = {
+  private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
+    val uri = source.uri
     val className = generator(uri).className(uri)
     val template = loadCompiledTemplate(className);
     if( allowCaching && allowReload) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
-      val code = generateScala(uri, extraBindings);
+      val code = generateScala(source, extraBindings);
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
       if( entry.isStale ) {
         // Throw an exception since we should not load stale pre-compiled classes.
-        throw new StaleCacheEntryException(uri)
+        throw new StaleCacheEntryException(source)
       }
       // Yay the template is not stale.  Lets use it.
       entry
@@ -368,14 +452,14 @@ class TemplateEngine extends Logging {
     }
   }
 
-  private def compileAndLoadEntry(uri:String, extraBindings:List[Binding]) = {
-    val (template, dependencies) = compileAndLoad(uri, extraBindings, 0)
+  private def compileAndLoadEntry(source:TemplateSource, extraBindings:List[Binding]) = {
+    val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
 
-  private def cache(uri:String, ce:CacheEntry) :Template = {
+  private def cache(source: TemplateSource, ce:CacheEntry) :Template = {
     if( allowCaching ) {
-      templateCache += (uri -> ce)
+      templateCache += (source.uri -> ce)
     }
     ce.template
   }
@@ -397,13 +481,14 @@ class TemplateEngine extends Logging {
 
   protected val sourceMapLog = Logging(getClass, "SourceMap")
 
-  private def compileAndLoad(uri: String, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
+  private def compileAndLoad(source: TemplateSource, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     var code: Code = null
     try {
+      val uri = source.uri
 
       // Generate the scala source code from the template
       val g = generator(uri);
-      code = g.generate(this, uri, bindings ::: extraBindings)
+      code = g.generate(this, source, bindings ::: extraBindings)
 
       val sourceFile = sourceFileName(uri)
       sourceFile.getParentFile.mkdirs
@@ -429,7 +514,7 @@ class TemplateEngine extends Logging {
       // go away if you redo
       case e: InstantiationException =>
         if (attempt == 0) {
-          compileAndLoad(uri, extraBindings, 1)
+          compileAndLoad(source, extraBindings, 1)
         } else {
           throw new TemplateException(e.getMessage, e)
         }
@@ -458,6 +543,7 @@ class TemplateEngine extends Logging {
         var newmessage = "Compilation failed:\n"
         val errors = e.errors.map {
           (olderror) =>
+            val uri = source.uri
             val pos =  template_pos(olderror.pos)
             if( pos==null ) {
               newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
@@ -466,13 +552,14 @@ class TemplateEngine extends Logging {
             } else {
               newmessage += uri+":"+pos+" "+olderror.message+"\n"
               newmessage += pos.longString+"\n"
+              // TODO should we pass the source?
               CompilerError(uri, olderror.message, pos, olderror)
             }
         }
         error(e)
         throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
-        e.template = uri
+        e.source = source
         throw e
       case e: TemplateException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
@@ -573,4 +660,10 @@ class TemplateEngine extends Logging {
   protected def storeSourceMap(classFile:File, sourceMap:String) = {
     SourceMapInstaller.store(classFile, sourceMap)
   }
+
+  /**
+   * Creates a {@link TEmplateSource} from a URI
+   */
+  protected def uriToSource(uri: String) = TemplateSource.fromUri(uri, resourceLoader)
+
 }

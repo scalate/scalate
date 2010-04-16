@@ -19,9 +19,7 @@ package org.fusesource.scalate
 import java.io.File
 import Asserts._
 
-class ExtraImportTest extends FunSuiteSupport {
-  val engine = new TemplateEngine
-  engine.workingDirectory = new File("target/test-data/ExtraImportTest")
+class ExtraImportTest extends TemplateTestSupport {
   engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")
 
   test("test template using custom import") {

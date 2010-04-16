@@ -1,5 +1,5 @@
 ---
 entries: [*/**/*.html]
-site_url: http://exmaple.org/blog
-author: MyProject
-title: The MyProject Blog
+site_url: http://scalate.fusesource.org/blog/
+author: Scalate Team
+title: The Scalate Blog

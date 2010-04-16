@@ -29,6 +29,10 @@ module Fuse
     # Highlight the body of the block.
     def call(tag, body, context)
       
+      if param('fuse.pygmentize.eval_tags')
+        body = website.blackboard.invoke(:content_processor, 'tags').call(context.clone(:content => body)).content
+      end
+      
       # figure out the indent level of the tag
       last_line = body.split(/\r?\n/).last
       tag_indent = ""
@@ -61,6 +65,7 @@ module Fuse
   
   Webgen::WebsiteAccess.website.config.fuse.pygmentize.lang('text', :doc => 'The highlighting language', :mandatory => 'default')
   Webgen::WebsiteAccess.website.config.fuse.pygmentize.lines(false, :doc => 'Should line numbers be shown')
+  Webgen::WebsiteAccess.website.config.fuse.pygmentize.eval_tags(true, :doc => 'Should body tags be processed')  
   Webgen::WebsiteAccess.website.config['contentprocessor.tags.map']['pygmentize'] = 'Fuse::Pygmentize'
 
   # Provides syntax highlighting via the pygmentize tool for 2 code sections.. lays them out so they can be compared.
@@ -72,6 +77,10 @@ module Fuse
 
     # Highlight the body of the block.
     def call(tag, body, context)
+      
+      if param('fuse.pygmentize.eval_tags')
+        body = website.blackboard.invoke(:content_processor, 'tags').call(context.clone(:content => body)).content
+      end
       
       # figure out the indent level of the tag
       lines = body.split(/\r?\n/);
@@ -156,6 +165,7 @@ module Fuse
   end
   
   Webgen::WebsiteAccess.website.config.fuse.pygmentize_and_compare.lines(false, :doc => 'Should line numbers be shown')
+  Webgen::WebsiteAccess.website.config.fuse.pygmentize_and_compare.eval_tags(true, :doc => 'Should body tags be processed')
   Webgen::WebsiteAccess.website.config['contentprocessor.tags.map']['pygmentize_and_compare'] = 'Fuse::PygmentizeAndCompare'
 
 

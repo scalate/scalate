@@ -1,5 +1,5 @@
 ---
-title: Blog
+title: Scalate Blog
 in_menu: false
 sort_info: 7
 --- name:head pipeline:tags
@@ -9,7 +9,7 @@ sort_info: 7
 <h1>
 {project_name:} Blog <a href="{relocatable:index.rss}"><img src="{relocatable:/images/rss.gif}"/></a>
 </h1>
-Updates you can't afford to miss!
+The latest greatest news from the Scalate team
 
 --- name:blog pipeline:erb,tags,blocks
 

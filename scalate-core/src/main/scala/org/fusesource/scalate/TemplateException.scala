@@ -35,7 +35,8 @@ class ResourceNotFoundException(resource: String, root: String = "")
     (if (root == "") "]" else "]; are you sure it's within [" + root + "]?"))
 
 class InvalidSyntaxException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos) {
-  var template:String=null;
+  var source:TemplateSource = _
+  def template: String = if (source != null) source.uri else null
 }
 
 class CompilerException(msg:String, val errors:List[CompilerError]) extends TemplateException(msg)
@@ -50,5 +51,5 @@ class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateE
 
 class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.")
 
-class StaleCacheEntryException(uri: String)
-  extends TemplateException("The compiled template for "+uri+" needs to get recompiled") with NoStackTrace
+class StaleCacheEntryException(source: TemplateSource)
+  extends TemplateException("The compiled template for " + source + " needs to get recompiled") with NoStackTrace

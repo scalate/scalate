@@ -7,22 +7,11 @@ import java.io.File
 /**
  * @version $Revision : 1.1 $
  */
-class NoEscapeOnEngineTest extends FunSuiteSupport {
-  val engine = new TemplateEngine
+class NoEscapeOnEngineTest extends TemplateTestSupport {
   engine.escapeMarkup = false
-  engine.workingDirectory = new File(baseDir, "target/test-data/NoEscapeOnEngineTest")
 
   test("markup escaping disabled") {
-    assertOutput("a = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
+    assertSspOutput("a = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
 a = ${foo}""")
-  }
-
-  def assertOutput(expectedOutput: String, templateText: String): Unit = {
-    val template = engine.compileSsp(templateText)
-
-    val output = engine.layout(template)
-    println("output: '" + output + "'")
-
-    expect(expectedOutput) { output }
   }
 }
