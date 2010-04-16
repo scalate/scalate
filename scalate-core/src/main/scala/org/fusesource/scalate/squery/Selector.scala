@@ -10,7 +10,6 @@ import org.w3c.dom.Attr
  * @version $Revision : 1.1 $
  */
 object Selector {
-  
   def apply(selector: String): Selector = {
     val parser = new CssParser
     parser.parseSelector(selector)
@@ -30,14 +29,14 @@ object Selector {
    * itself from right to left on the current node
    */
   def apply(selector: Selector, combinators: Seq[Combinator]): Selector = combinators match {
-    // if we had
-    // a, (c1, b), (c2, c)
-    // then we should create a selector
-    // of c which then uses c2.selector(b, c1.selector(a))
+  // if we had
+  // a, (c1, b), (c2, c)
+  // then we should create a selector
+  // of c which then uses c2.selector(b, c1.selector(a))
 
     case Nil => selector
-    case h :: Nil => h.combinatorSelector(selector) 
-    case h :: xs => apply(h.combinatorSelector(selector), xs) 
+    case h :: Nil => h.combinatorSelector(selector)
+    case h :: xs => apply(h.combinatorSelector(selector), xs)
   }
 
   /**
@@ -47,6 +46,7 @@ object Selector {
 
 
   def pseudoSelector(identifier: String): Selector = throw new IllegalArgumentException("pseudo :" + identifier + " not supported")
+
   def pseudoFunction(expression: AnyRef): Selector = throw new IllegalArgumentException("pseudo expression :" + expression + " not supported")
 
 }
@@ -117,9 +117,64 @@ case class ChildrenSelector(selector: Selector) extends Selector {
 }
 
 case class NotSelector(selector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) =  !selector.matches(node, parents)
+  def matches(node: Node, parents: Seq[Node]) = !selector.matches(node, parents)
 }
 
 object AnySelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) =  true
+  def matches(node: Node, parents: Seq[Node]) = true
+}
+
+case class ParentSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = {
+    !parents.isEmpty && childSelector.matches(node, parents) && parentSelector.matches(parents.head, parents.tail)
+  }
+}
+
+/**
+ * Represents selector: E + F
+ *
+ * See the <a href"http://www.w3.org/TR/css3-selectors/#adjacent-sibling-combinators">description</a>
+ */
+case class AdjacentSiblingSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = {
+    if (!parents.isEmpty && childSelector.matches(node, parents)) {
+      // lets find immediate
+      // lets apply the parentSelector to the immediate parent
+
+      // find the index of node in parents children
+      val h = parents.head
+      val xs = parents.tail
+      val children = h.child
+      val idx = children.indexOf(node)
+      idx > 0 && parentSelector.matches(children(idx - 1), xs)
+    }
+    else {
+      false
+    }
+  }
+}
+
+/**
+ * Represents selector: E ~ F
+ *
+ * See the <a href"http://www.w3.org/TR/css3-selectors/#general-sibling-combinators">description</a>
+ */
+case class GeneralSiblingSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = {
+    if (!parents.isEmpty && childSelector.matches(node, parents)) {
+      // lets find immediate
+      // lets apply the parentSelector to the immediate parent
+
+      // find the index of node in parents children
+      val h = parents.head
+      val xs = parents.tail
+
+      val children = h.child
+      val idx = children.indexOf(node)
+      idx > 0 && children.slice(0, idx).reverse.find(parentSelector.matches(_, xs)).isDefined
+    }
+    else {
+      false
+    }
+  }
 }

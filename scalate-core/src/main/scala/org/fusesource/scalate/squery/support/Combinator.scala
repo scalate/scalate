@@ -1,8 +1,8 @@
 package org.fusesource.scalate.squery.support
 
-import org.fusesource.scalate.squery.Selector
 import collection.Seq
 import xml.Node
+import org.fusesource.scalate.squery.{GeneralSiblingSelector, AdjacentSiblingSelector, ParentSelector, Selector}
 
 /**
  * @version $Revision : 1.1 $
@@ -29,20 +29,7 @@ abstract class Combinator() {
  */
 case class ChildCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector): Selector = new Selector {
-    def matches(node: Node, parents: Seq[Node]) = {
-      if (childSelector.matches(node, parents)) {
-        // lets apply the parentSelector to the immediate parent
-        parents match {
-          case h :: xs => parentSelector.matches(h, xs)
-          case _ => false
-        }
-      }
-      else {
-        false
-      }
-    }
-  }
+  def combinatorSelector(parentSelector: Selector) = new ParentSelector(childSelector, parentSelector)
 }
 
 /**
@@ -52,31 +39,7 @@ case class ChildCombinator(childSelector: Selector) extends Combinator {
  */
 case class AdjacentSiblingdCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector): Selector = new Selector {
-    def matches(node: Node, parents: Seq[Node]) = {
-      if (childSelector.matches(node, parents)) {
-        // lets find immediate
-        // lets apply the parentSelector to the immediate parent
-        parents match {
-          case h :: xs =>
-            // find the index of node in h
-          val children = h.child
-          val idx = children.indexOf(node)
-          if (idx <= 0) {
-            false
-          }
-          else {
-            parentSelector.matches(children(idx - 1), xs)
-          }
-
-          case _ => false
-        }
-      }
-      else {
-        false
-      }
-    }
-  }
+  def combinatorSelector(parentSelector: Selector) = new AdjacentSiblingSelector(childSelector, parentSelector)
 }
 
 /**
@@ -86,29 +49,5 @@ case class AdjacentSiblingdCombinator(childSelector: Selector) extends Combinato
  */
 case class GeneralSiblingCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector): Selector = new Selector {
-    def matches(node: Node, parents: Seq[Node]) = {
-      if (childSelector.matches(node, parents)) {
-        // lets find immediate
-        // lets apply the parentSelector to the immediate parent
-        parents match {
-          case h :: xs =>
-            // find the index of node in h
-          val children = h.child
-          val idx = children.indexOf(node)
-          if (idx <= 0) {
-            false
-          }
-          else {
-            val preceding = children.slice(0, idx).reverse
-            preceding.find(parentSelector.matches(_, xs)).isDefined
-          }
-          case _ => false
-        }
-      }
-      else {
-        false
-      }
-    }
-  }
+  def combinatorSelector(parentSelector: Selector) = new GeneralSiblingSelector(childSelector, parentSelector)
 }
