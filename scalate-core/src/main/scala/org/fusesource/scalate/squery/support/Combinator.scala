@@ -2,7 +2,7 @@ package org.fusesource.scalate.squery.support
 
 import collection.Seq
 import xml.Node
-import org.fusesource.scalate.squery.{GeneralSiblingSelector, AdjacentSiblingSelector, ParentSelector, Selector}
+import org.fusesource.scalate.squery._
 
 /**
  * @version $Revision : 1.1 $
@@ -23,13 +23,23 @@ abstract class Combinator() {
 }
 
 /**
+ * Represents selector: E F
+ *
+ * See the <a href"http://www.w3.org/TR/css3-selectors/#descendant-combinators">description</a>
+ */
+case class DescendantCombinator(childSelector: Selector) extends Combinator {
+
+  def combinatorSelector(parentSelector: Selector) = new DescendantSelector(childSelector, parentSelector)
+}
+
+/**
  * Represents selector: E &gt; F
  *
  * See the <a href"http://www.w3.org/TR/css3-selectors/#child-combinators">description</a>
  */
 case class ChildCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector) = new ParentSelector(childSelector, parentSelector)
+  def combinatorSelector(parentSelector: Selector) = new ChildSelector(childSelector, parentSelector)
 }
 
 /**

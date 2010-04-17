@@ -125,12 +125,13 @@ class CssParser extends CssScanner {
   //    /* combinators can be surrounded by whitespace */
   //    : PLUS S* | GREATER S* | TILDE S* | S+
 
-  def combinator_simple_selector_sequence = ((PLUS | GREATER | TILDE) ~ simple_selector_sequence) ^^ {
+  def combinator_simple_selector_sequence = (opt(PLUS | GREATER | TILDE) ~ simple_selector_sequence) ^^ {
     case c ~ s =>
       c match {
-        case ">" => ChildCombinator(s)
-        case "+" => AdjacentSiblingdCombinator(s)
-        case "~" => GeneralSiblingCombinator(s)
+        case Some(">") => ChildCombinator(s)
+        case Some("+") => AdjacentSiblingdCombinator(s)
+        case Some("~") => GeneralSiblingCombinator(s)
+        case _ => DescendantCombinator(s)
       }
   }
 

@@ -25,6 +25,7 @@ class CssParserTest extends FunSuiteSupport {
 
   // combinators
   assertSelector("tr > td", td1, tr1)
+  assertSelector("tr td", td1, tr1)
 
   def assertSelector(css: String, node: Node, parents: Seq[Node] = Nil, expected: Boolean = true): Unit = {
     test(css) {

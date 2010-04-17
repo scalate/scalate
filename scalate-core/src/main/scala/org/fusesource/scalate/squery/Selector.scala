@@ -124,9 +124,32 @@ object AnySelector extends Selector {
   def matches(node: Node, parents: Seq[Node]) = true
 }
 
-case class ParentSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
+/**
+ * Represents selector: E &gt; F
+ *
+ * See the <a href"http://www.w3.org/TR/css3-selectors/#child-combinators">description</a>
+ */
+case class ChildSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
   def matches(node: Node, parents: Seq[Node]) = {
     !parents.isEmpty && childSelector.matches(node, parents) && parentSelector.matches(parents.head, parents.tail)
+  }
+}
+
+/**
+ * Represents selector: E F
+ *
+ * See the <a href"http://www.w3.org/TR/css3-selectors/#descendant-combinators">description</a>
+ */
+case class DescendantSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = {
+    !parents.isEmpty && childSelector.matches(node, parents) && matchParent(parents.head, parents.tail)
+  }
+
+  /**
+   * recursively match the parent selector until we have no more parents
+   */
+  protected def matchParent(node: Node, parents: Seq[Node]): Boolean = {
+    parentSelector.matches(node, parents) || (!parents.isEmpty && matchParent(parents.head, parents.tail))
   }
 }
 
