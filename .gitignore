@@ -17,5 +17,6 @@ project/boot
 .project
 .classpath
 .settings
+.metadata
 eclipse-classes
 overlays
