@@ -13,8 +13,9 @@ class CssParserTest extends FunSuiteSupport {
     </tr>
   </table>
 
-  val tr1 = (xml \\ "tr") (0)
-  val td1 = (xml \\ "td") (0)
+  val tr1 = (xml \\ "tr")(0)
+  val td1 = (xml \\ "td")(0)
+  val td1Parents = tr1 :: xml :: Nil
 
   // simple stuff
   assertSelector("table", xml)
@@ -26,6 +27,14 @@ class CssParserTest extends FunSuiteSupport {
   // combinators
   assertSelector("tr > td", td1, tr1)
   assertSelector("tr td", td1, tr1)
+  assertSelector("table td", td1, td1Parents)
+  assertSelector("table tr td", td1, td1Parents)
+  assertSelector("table tr .person", td1, td1Parents)
+  assertSelector("table > tr > td", td1, td1Parents)
+  assertSelector("table .person", td1, td1Parents)
+  assertSelector("td.person", td1, td1Parents)
+  assertSelector("tr .person", td1, td1Parents)
+  assertSelector("tr > .person", td1, td1Parents)
 
   def assertSelector(css: String, node: Node, parents: Seq[Node] = Nil, expected: Boolean = true): Unit = {
     test(css) {
@@ -36,5 +45,6 @@ class CssParserTest extends FunSuiteSupport {
   }
 
   protected def summary(node: Node): String = node.label
+
   protected def summary(nodes: NodeSeq): String = nodes.map(summary(_)).mkString(" ")
 }

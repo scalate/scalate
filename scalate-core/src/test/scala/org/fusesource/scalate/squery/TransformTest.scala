@@ -5,7 +5,7 @@ import xml.Text
 
 object PersonTransform extends Transformer {
 
-  $(".name").content = "Hiram"
+  $("tr .name").content = "Hiram"
   $(".location").content = <b>Tampa</b>
 }
 

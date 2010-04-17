@@ -40,8 +40,8 @@ class CssScanner extends RegexParsers {
 
   val S = """\s+""".r
 
-  val repS = """\s*""".r
-  val rep1S = """\s+""".r
+  val repS = """[\s]*""".r
+  val rep1S = """[\s]+""".r
 
   val COMMA = ","
 
@@ -82,6 +82,9 @@ class CssScanner extends RegexParsers {
   def DIMENSION = NUMBER ~ IDENT
 
   def UNICODERANGE = """U\+""" ~ (range.r | append(h, """{1,6}-""", h, """{1,6}""").r)
+
+
+  override def skipWhitespace = false
 }
 
 /**
@@ -125,12 +128,12 @@ class CssParser extends CssScanner {
   //    /* combinators can be surrounded by whitespace */
   //    : PLUS S* | GREATER S* | TILDE S* | S+
 
-  def combinator_simple_selector_sequence = (opt(PLUS | GREATER | TILDE) ~ simple_selector_sequence) ^^ {
+  def combinator_simple_selector_sequence = (((repS ~> (PLUS | GREATER | TILDE) <~ repS) | rep1S) ~ simple_selector_sequence) ^^ {
     case c ~ s =>
       c match {
-        case Some(">") => ChildCombinator(s)
-        case Some("+") => AdjacentSiblingdCombinator(s)
-        case Some("~") => GeneralSiblingCombinator(s)
+        case ">" => ChildCombinator(s)
+        case "+" => AdjacentSiblingdCombinator(s)
+        case "~" => GeneralSiblingCombinator(s)
         case _ => DescendantCombinator(s)
       }
   }
