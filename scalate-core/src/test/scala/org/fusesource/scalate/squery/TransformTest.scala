@@ -5,7 +5,7 @@ import xml.Text
 
 object PersonTransform extends Transformer {
 
-  $("tr .name").content = "Hiram"
+  $("table .name").content = "Hiram"
   $(".location").content = <b>Tampa</b>
 }
 
@@ -38,6 +38,9 @@ class TransformTest extends FunSuiteSupport {
     val result = transformer.transform(xml)
 
     println("got result: " + result)
+
+    expect("Hiram") { (result \\ "td")(0).text }
+    expect("Tampa") { (result \\ "td" \\ "b")(0).text }
   }
 
   test("selector"){
