@@ -241,7 +241,7 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
       floating_point_number |
       symbol
     ) ^^ { s=>eval_string_escapes(s) } |
-    ( tag_ident | "{" ~> upto("}") <~ "}" ) ^^ {
+    ( tag_ident | "{" ~> skip_whitespace(upto("}"),false) <~ "}" ) ^^ {
       x=>EvaluatedText(x, List(), true, Some(true), false)
     }
 
@@ -253,7 +253,7 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
     } |
     (
       tag_ident ~ ("=" ~> tag_ident) |
-      tag_ident ~ ("=" ~"{" ~> upto("}") <~ "}" )
+      tag_ident ~ ("=" ~"{" ~> skip_whitespace(upto("}"),false) <~ "}" )
     ) ^^ {
       case key~value =>
         (key, EvaluatedText(value, List(), true, Some(true), false))

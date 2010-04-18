@@ -125,4 +125,12 @@ Worked!
   engine.escapeMarkup = true;
 })
 
+
+  testRender("SCALATE-72: Spaces stripped in an attribute expression",
+"""
+%p(class={"a b"}) a b
+""","""
+<p class="a b">a b</p>
+""")
+
 }
