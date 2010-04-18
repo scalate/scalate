@@ -68,4 +68,61 @@ Worked!
 <pre class="brush: html">test</pre>
 """)
 
+  testRender("SCALATE-66: Internation characters",
+"""
+%div<
+  1 ?? Hello &
+%div<
+  = "2 ?? Hello &"
+%div<
+  != "3 ?? Hello &"
+%div<
+  &= "4 ?? Hello &"
+%div<
+  ~~ "5 ?? Hello &"
+%div<
+  !~~ "6 ?? Hello &"
+%div<
+  &~~ "7 ?? Hello &"
+""","""
+<div>1 ?? Hello &</div>
+<div>2 ?? Hello &amp;</div>
+<div>3 ?? Hello &</div>
+<div>4 ?? Hello &amp;</div>
+<div>5 ?? Hello &amp;</div>
+<div>6 ?? Hello &</div>
+<div>7 ?? Hello &amp;</div>
+""")
+
+  testRender("SCALATE-66: Internation characters with escapeMarkup=false ",
+"""
+%div<
+  1 ?? Hello &
+%div<
+  = "2 ?? Hello &"
+%div<
+  != "3 ?? Hello &"
+%div<
+  &= "4 ?? Hello &"
+%div<
+  ~~ "5 ?? Hello &"
+%div<
+  !~~ "6 ?? Hello &"
+%div<
+  &~~ "7 ?? Hello &"
+""","""
+<div>1 ?? Hello &</div>
+<div>2 ?? Hello &</div>
+<div>3 ?? Hello &</div>
+<div>4 ?? Hello &amp;</div>
+<div>5 ?? Hello &</div>
+<div>6 ?? Hello &</div>
+<div>7 ?? Hello &amp;</div>
+""",
+()=>{
+  engine.escapeMarkup = false;
+}, ()=>{
+  engine.escapeMarkup = true;
+})
+
 }
