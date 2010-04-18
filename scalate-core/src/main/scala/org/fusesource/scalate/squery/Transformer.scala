@@ -33,7 +33,7 @@ class Transformer extends Logging {
     val size = keys.size
     if (size == 0) {
       node match {
-        case e: Elem => replaceContent(e, transform(e.child, parents :+ e))
+        case e: Elem => replaceContent(e, transform(e.child, e +: parents))
         case d: Document => transform(d.child)
         case n => n
       }
