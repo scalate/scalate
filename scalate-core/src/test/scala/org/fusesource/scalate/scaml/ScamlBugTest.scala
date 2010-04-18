@@ -68,56 +68,56 @@ Worked!
 <pre class="brush: html">test</pre>
 """)
 
-  testRender("SCALATE-66: Internation characters",
+  testRender("SCALATE-71: Internation characters",
 """
 %div<
-  1 ?? Hello &
+  1 한글 Hello &
 %div<
-  = "2 ?? Hello &"
+  = "2 한글 Hello &"
 %div<
-  != "3 ?? Hello &"
+  != "3 한글 Hello &"
 %div<
-  &= "4 ?? Hello &"
+  &= "4 한글 Hello &"
 %div<
-  ~~ "5 ?? Hello &"
+  ~~ "5 한글 Hello &"
 %div<
-  !~~ "6 ?? Hello &"
+  !~~ "6 한글 Hello &"
 %div<
-  &~~ "7 ?? Hello &"
+  &~~ "7 한글 Hello &"
 ""","""
-<div>1 ?? Hello &</div>
-<div>2 ?? Hello &amp;</div>
-<div>3 ?? Hello &</div>
-<div>4 ?? Hello &amp;</div>
-<div>5 ?? Hello &amp;</div>
-<div>6 ?? Hello &</div>
-<div>7 ?? Hello &amp;</div>
+<div>1 한글 Hello &</div>
+<div>2 한글 Hello &amp;</div>
+<div>3 한글 Hello &</div>
+<div>4 한글 Hello &amp;</div>
+<div>5 한글 Hello &amp;</div>
+<div>6 한글 Hello &</div>
+<div>7 한글 Hello &amp;</div>
 """)
 
-  testRender("SCALATE-66: Internation characters with escapeMarkup=false ",
+  testRender("SCALATE-71: Internation characters with escapeMarkup=false ",
 """
 %div<
-  1 ?? Hello &
+  1 한글 Hello &
 %div<
-  = "2 ?? Hello &"
+  = "2 한글 Hello &"
 %div<
-  != "3 ?? Hello &"
+  != "3 한글 Hello &"
 %div<
-  &= "4 ?? Hello &"
+  &= "4 한글 Hello &"
 %div<
-  ~~ "5 ?? Hello &"
+  ~~ "5 한글 Hello &"
 %div<
-  !~~ "6 ?? Hello &"
+  !~~ "6 한글 Hello &"
 %div<
-  &~~ "7 ?? Hello &"
+  &~~ "7 한글 Hello &"
 ""","""
-<div>1 ?? Hello &</div>
-<div>2 ?? Hello &</div>
-<div>3 ?? Hello &</div>
-<div>4 ?? Hello &amp;</div>
-<div>5 ?? Hello &</div>
-<div>6 ?? Hello &</div>
-<div>7 ?? Hello &amp;</div>
+<div>1 한글 Hello &</div>
+<div>2 한글 Hello &</div>
+<div>3 한글 Hello &</div>
+<div>4 한글 Hello &amp;</div>
+<div>5 한글 Hello &</div>
+<div>6 한글 Hello &</div>
+<div>7 한글 Hello &amp;</div>
 """,
 ()=>{
   engine.escapeMarkup = false;
