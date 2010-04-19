@@ -6,52 +6,57 @@ import org.fusesource.scalate.TemplateException
 import org.fusesource.scalate.squery._
 
 class CssScanner extends RegexParsers {
-  protected def append(text: String*) = text.mkString("")
+  override def skipWhitespace = false
 
-  // regex values...
-  private val h = """[0-9a-f]"""
+  //   ident     [-]?{nmstart}{nmchar}*
+  def IDENT = (opt("[-]") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("")}
 
+  // name      {nmchar}+
+  private def name = rep1(nmchar)
 
-  //private val nonasciiRange = """\200-\377]"""
-  private val nonasciiRange = """\xC8-\u0179"""
-  private val nonascii = append("""[""", nonasciiRange, """]""")
-  private val unicode = """(\\""" + h + """{1,6}[ \t\r\n\f]?)"""
-  private val escape = append("""(""", unicode, """|\\[ -~""", nonasciiRange, """])""")
-  private val nmstart = append("""[a-z]|""", nonascii, """|""", escape)
-  private val nmchar = append("""[a-z0-9-]|""", nonascii, """|""", escape)
-  private val string1 = append("""\"([\t !#$%&(-~]|\\""", nl, """|\'|""", nonascii, """|""", escape, """)*\""")
-  private val string2 = append("""\'([\t !#$%&(-~]|\\""", nl, """|\"|""", nonascii, """|""", escape, """)*\'""")
+  // nmstart   [_a-z]|{nonascii}|{escape}
+  private def nmstart = """[_a-zA-Z]""".r | nonascii | escape
 
+  // nonascii  [^\0-\177]
+  private def nonascii = """[^\x00-\xB1]""".r
 
-  private val ident = append("""[-]?""", nmstart, """(""", nmchar, """)*""")
-  private val name = append("""(""", nmchar, """)+""")
+  // unicode   \\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?
+  private def unicode = """\\[0-9a-fA-F]{1,6}(\r\n|[ \n\r\t\f])?""".r
+
+  // escape    {unicode}|
+  private def escape = unicode | """\\[^\n\r\f0-9a-fA-F]""".r
+
+  // nmchar    [_a-z0-9-]|{nonascii}|{escape}
+  private def nmchar = """[_a-zA-Z0-9-]""".r | nonascii | escape
+
+  // num       [0-9]+|[0-9]*\.[0-9]+
   private val num = """[0-9]+|[0-9]*"."[0-9]+"""
-  private val url = append("""([!#$%&*-~]|""", nonascii, """|""", escape, """)*""")
-  private val w = """[ \t\r\n\f]*"""
-  private val nl = """\n|\r\n|\r|\f"""
-  private val range = append("""\?{1,6}|""", h, """(\?{0,5}|""", h, """(\?{0,4}|""", h, """(\?{0,3}|""", h, """(\?{0,2}|""", h, """(\??|""", h, """)))))""")
 
+  // string    {string1}|{string2}
+  def STRING = string1 | string2
 
-  // TODO fix up the regex to be more exact...
-  //val IDENT = ident.r
-  val IDENT = """[-]?[^\s\d\p{Punct}][^\s\.\#\(\[\"\']*""".r
+  // string1   \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*\"
+  private val string1 = "\"" ~ rep("""[^\n\r\f\\"]""".r | nl | nonascii | escape) ~ "\""
 
-  def STRING = string1.r | string2.r
+  // string2   \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*\'
+  private val string2 = "'" ~ rep("""[^\n\r\f\']""".r | nl | nonascii | escape) ~ "'"
+
+  // nl        \n|\r\n|\r|\f
+  private val nl = """\n|\r\n|\r|\f""".r
+
+  // invalid   {invalid1}|{invalid2}
+  // invalid1  \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*
+  // invalid2  \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*
+  // w         [ \t\r\n\f]*
 
   val S = """\s+""".r
-
   val repS = """[\s]*""".r
   val rep1S = """[\s]+""".r
 
   val COMMA = ","
-
-
   val PLUS = """\+""".r
   val GREATER = """>""".r
   val TILDE = """~""".r
-
-  def URI = "url(" ~> S ~> (STRING | url.r) <~ S <~ ")"
-
 
   def FUNCTION = IDENT <~ "("
 
@@ -61,30 +66,8 @@ class CssScanner extends RegexParsers {
   val SUFFIXMATCH = "$="
   val SUBSTRINGMATCH = "*="
 
-
-  val IMPORTANT_SYM = append("""!""", w, """important""").r
-
   val NUMBER = num.r
-  val PERCENTAGE = append(num, """%""").r
-
-  def LENGTH = NUMBER ~ ("px" | "cm" | "mm" | "in" | "pt" | "pc")
-
-  def ANGLE = NUMBER ~ ("deg" | "rad" | "grad")
-
-  def EMS = NUMBER ~ "em"
-
-  def EXS = NUMBER ~ "ex"
-
-  def TIME = NUMBER ~ ("ms" | "s")
-
-  def FREQ = NUMBER ~ ("Hz" | "kHz")
-
   def DIMENSION = NUMBER ~ IDENT
-
-  def UNICODERANGE = """U\+""" ~ (range.r | append(h, """{1,6}-""", h, """{1,6}""").r)
-
-
-  override def skipWhitespace = false
 }
 
 /**
