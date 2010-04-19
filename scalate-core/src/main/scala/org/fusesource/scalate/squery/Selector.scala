@@ -1,7 +1,7 @@
 package org.fusesource.scalate.squery
 
 import support.{CssParser, Combinator}
-import xml.{Elem, Node}
+import xml.{Elem, Node, NodeSeq}
 import org.w3c.dom.Attr
 
 /**
@@ -39,6 +39,10 @@ object Selector {
     case h :: xs => apply(h.combinatorSelector(selector), xs)
   }
 
+  implicit def toSXml(node: Node) = SXml(node)
+
+  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
+
   /**
    * Returns a selector which returns the childen of the given selector
    */
@@ -57,6 +61,29 @@ trait Selector {
   protected def attrEquals(e: Elem, name: String, value: String) = e.attribute(name) match {
     case Some(n) => n.toString == value
     case _ => false
+  }
+}
+
+/**
+ * A helper class to pimp Scala's XML support to add easy SQuery filtering
+ * so that you can perform a CSS3 selector on a {@link Node} or {@link NodeSeq}
+ * via <code>xml.$("someSelector")</code>
+ */
+case class SXml(nodes: NodeSeq) {
+  def $(cssSelector: String): NodeSeq = $(Selector(cssSelector))
+
+  def $(selector: Selector): NodeSeq = {
+    nodes.flatMap(filter(_, Nil, selector))
+  }
+
+  protected def filter(n: Node, parents: Seq[Node], s: Selector): NodeSeq = {
+    if (s.matches(n, parents))
+      {n}
+    else {
+      n.child.flatMap {
+        c => filter(c, n +: parents, s)
+      }
+    }
   }
 }
 

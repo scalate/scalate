@@ -2,6 +2,7 @@ package org.fusesource.scalate.squery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.squery.Selector
+import org.fusesource.scalate.squery.Selector._
 import xml.{Node, NodeSeq}
 
 class CssParserTest extends FunSuiteSupport {
@@ -46,12 +47,25 @@ class CssParserTest extends FunSuiteSupport {
   assertNotMatches("tr > table > td", td1)
   assertNotMatches("td > tr", td1)
 
-  def assertMatches(css: String, node: Node): Unit = assertSelector(css, node, true)
+  assertFilter(".person", td1)
+  assertFilter("table td", td1)
+  assertFilter("table tr td", td1)
 
-  def assertNotMatches(css: String, node: Node): Unit = assertSelector(css, node, false)
+  def assertFilter(selector: String, expected: NodeSeq): Unit = {
+    test("assertFilter: " + selector) {
+      val actual = xml.$(selector)
 
-  def assertSelector(css: String, node: Node, expected: Boolean = true): Unit = {
-    test(css) {
+      println("filtering selector: " + selector + " expected: " + expected + " actual: " + actual)
+      expect(expected) {actual}
+    }
+  }
+
+  def assertMatches(css: String, node: Node): Unit = assertSelector("assertMatches: ", css, node, true)
+
+  def assertNotMatches(css: String, node: Node): Unit = assertSelector("assertNotMatches: " , css, node, false)
+
+  def assertSelector(message: String, css: String, node: Node, expected: Boolean): Unit = {
+    test(message + css) {
       val selector = Selector(css)
       val parents = parentsOf(node)
       println("testing selector: " + selector + " on " + summary(node) + " with parents: " + summary(parents))
