@@ -26,20 +26,21 @@ import java.io.StringWriter
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
-import tools.nsc.io.VirtualFile
 import tools.nsc.util.{OffsetPosition, FakePos, NoPosition, Position}
 import scala.util.parsing.input.OffsetPosition
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
-  val compiler = new Global(settings, null)
+  var _compiler = new Global(settings, null)
 
-  def compile(file:File): Unit = {
-
-
-
+  def compile(file:File, create: Boolean = false): Unit = {
     synchronized {
+      if (create) {
+        _compiler = new Global(settings, null)
+      }
+      
+      val compiler = _compiler;
       val messageCollector = new StringWriter
       val messageCollectorWrapper = new PrintWriter(messageCollector)
 

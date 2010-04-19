@@ -495,7 +495,7 @@ class TemplateEngine extends Logging {
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
       // Compile the generated scala code
-      compiler.compile(sourceFile)
+      compiler.compile(sourceFile, attempt > 0)
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(g.stratumName, uri, sourceFile, code.positions)
@@ -519,45 +519,48 @@ class TemplateEngine extends Logging {
           throw new TemplateException(e.getMessage, e)
         }
 
-      case e:CompilerException=>
-
-        // Translate the scala error location info
-        // to the template locations..
-        def template_pos(pos:Position) = {
-          pos match {
-            case p:OffsetPosition => {
-              val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
-              if( filtered.isEmpty ) {
-                null
-              } else {
-                val (key,value) = filtered.last
-                // TODO: handle the case where the line is different too.
-                val colChange = pos.column - key.column
-                OffsetPosition(value.source, value.offset+colChange)
+      case e: CompilerException =>
+        if (attempt == 0) {
+          compileAndLoad(source, extraBindings, 1)
+        } else {
+          // Translate the scala error location info
+          // to the template locations..
+          def template_pos(pos:Position) = {
+            pos match {
+              case p:OffsetPosition => {
+                val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
+                if( filtered.isEmpty ) {
+                  null
+                } else {
+                  val (key,value) = filtered.last
+                  // TODO: handle the case where the line is different too.
+                  val colChange = pos.column - key.column
+                  OffsetPosition(value.source, value.offset+colChange)
+                }
               }
+              case _=> null
             }
-            case _=> null
           }
-        }
 
-        var newmessage = "Compilation failed:\n"
-        val errors = e.errors.map {
-          (olderror) =>
-            val uri = source.uri
-            val pos =  template_pos(olderror.pos)
-            if( pos==null ) {
-              newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
-              newmessage += olderror.pos.longString+"\n"
-              olderror
-            } else {
-              newmessage += uri+":"+pos+" "+olderror.message+"\n"
-              newmessage += pos.longString+"\n"
-              // TODO should we pass the source?
-              CompilerError(uri, olderror.message, pos, olderror)
-            }
+          var newmessage = "Compilation failed:\n"
+          val errors = e.errors.map {
+            (olderror) =>
+              val uri = source.uri
+              val pos =  template_pos(olderror.pos)
+              if( pos==null ) {
+                newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
+                newmessage += olderror.pos.longString+"\n"
+                olderror
+              } else {
+                newmessage += uri+":"+pos+" "+olderror.message+"\n"
+                newmessage += pos.longString+"\n"
+                // TODO should we pass the source?
+                CompilerError(uri, olderror.message, pos, olderror)
+              }
+          }
+          error(e)
+          throw new CompilerException(newmessage, errors)
         }
-        error(e)
-        throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.source = source
         throw e
