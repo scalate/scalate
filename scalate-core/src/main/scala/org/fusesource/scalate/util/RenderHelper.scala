@@ -55,22 +55,16 @@ object RenderHelper
 
 
   private def sanitize( ch: Char, buffer: StringBuffer ): StringBuffer = {
-    if( ( ch >= 0x20 && ch <= 0x21 ) ||
-        ( ch >= 0x23 && ch <= 0x25 ) ||
-        ( ch >= 0x28 && ch <= 0x3B ) ||
-        ( ch >= 0x3F && ch <= 0x7E ) ||
-          ch == 0x3D || ch == '\'' ||
-          ch == '\r' || ch == '\n') {
-      buffer.append( ch )
-    } else {
-      buffer.append( ch match {
-        case '"' => { "&quot;" }
-        case '&' => { "&amp;" }
-        case '<' => { "&lt;" }
-        case '>' => { "&gt;" }
-        case _   => {  "&#x" + ch.toInt.toHexString + ";" }
-      })
-    }
+    buffer.append( ch match {
+      case '"' => { "&quot;" }
+      case '&' => { "&amp;" }
+      case '<' => { "&lt;" }
+      case '>' => { "&gt;" }
+// Not sure if there are other chars the need sanitization.. but if we do find
+// dome, then the following might work:      
+//    case xxx   => { "&#x" + ch.toInt.toHexString + ";" }
+      case _ => ch
+    })
   }
 
 
