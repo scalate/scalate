@@ -520,6 +520,8 @@ class TemplateEngine extends Logging {
         }
 
       case e: CompilerException =>
+        // TODO: figure out why scala.tools.nsc.Global sometimes returns
+        // false compile errors and requirs to be re-created
         if (attempt == 0) {
           compileAndLoad(source, extraBindings, 1)
         } else {
