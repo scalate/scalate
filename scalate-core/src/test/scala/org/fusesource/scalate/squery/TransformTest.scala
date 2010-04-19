@@ -3,12 +3,6 @@ package org.fusesource.scalate.squery
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.Text
 
-object PersonTransform extends Transformer {
-
-  $("table .name").content = "Hiram"
-  $(".location").content = <b>Tampa</b>
-}
-
 class TransformTest extends FunSuiteSupport {
   val xml = <html>
     <head>
@@ -28,27 +22,24 @@ class TransformTest extends FunSuiteSupport {
           </tr>
         </table>
       </div>
+      <div id="messages"></div>
       <div id="footer">Footer</div>
     </body>
   </html>
 
-  val transformer: Transformer = PersonTransform
-
   test("try simple transform") {
-    val result = transformer.transform(xml)
 
+    object transformer extends Transformer {
+
+      $("table .name").contents = "Hiram"
+      $(".location").contents = <b>Tampa</b>
+    }
+
+    val result = transformer.transform(xml)
     println("got result: " + result)
 
     expect("Hiram") { (result \\ "td")(0).text }
     expect("Tampa") { (result \\ "td" \\ "b")(0).text }
-  }
-
-  test("selector"){
-    val e = <td class="name">hey</td>
-
-    val s = Selector(".name")
-
-    expect(true) { s.matches(e, Nil) }
   }
 
 }

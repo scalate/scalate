@@ -1,13 +1,15 @@
 package org.fusesource.scalate.squery
 
 import _root_.org.fusesource.scalate.util.Logging
+import _root_.org.fusesource.scalate.squery.support._
 import collection.mutable.{HashMap, ListBuffer}
 import text.Document
-import xml.{Text, Elem, Node, NodeSeq}
+import xml.{Attribute, Text, Elem, Node, NodeSeq, Null}
 
 
 object Transformer {
   def replaceContent(e: Elem, content: NodeSeq) = new Elem(e.prefix, e.label, e.attributes, e.scope, content: _*)
+  def setAttribute(e: Elem, name: String, value: String) = new Elem(e.prefix, e.label, e.attributes.append(Attribute(None, name, Text(value), Null)), e.scope, e.child: _*)
 }
 
 import Transformer._
@@ -48,39 +50,65 @@ class Transformer extends Logging {
   }
 
   class RuleFactory(selector: Selector) {
-    def content: RuleFactory = new RuleFactory(selector)  // TODO use child
 
     /**
-     * Sets the content of the matching element to the given set of markup 
+     * Transforms each node found by this selector using the given function
      */
-    def content_=(nodes: NodeSeq): Unit = {
+    def apply(fn: Node => NodeSeq): Unit = {
+      addRule(selector, new ReplaceRule(fn))
+    }
+
+    def contents: RuleFactory = new RuleFactory(selector)  // TODO use child
+
+    /**
+     * Sets the contents of the matching elements to the given set of markup
+     */
+    def contents_=(nodes: NodeSeq): Unit = {
       def fn(): NodeSeq = nodes
-      addRule(selector, new ReplaceContentRule(fn))
+      addRule(selector, ReplaceContentRule(fn))
     }
 
     /**
-     * Sets the content of the matching element to the given text
+     * Sets the contents of the matching elements to the given text
      */
-    def content_=(text: String): Unit = {
-      content = Text(text)
+    def contents_=(text: String): Unit = {
+      contents = Text(text)
+    }
+
+    /**
+     * Sets the given attribute on each matching node found by this selector
+     */
+    def attribute(name: String, value: String): Unit = {
+        def fn(node: Node) = value
+        addRule(selector, SetAttributeRule(name, fn))
+    }
+
+    /**
+     * Adds rules on the named attribute matching the current selections
+     */
+    def attribute(name: String) = new AttributeRuleFactory(name)
+
+
+    class AttributeRuleFactory(name: String) {
+      def value: RuleFactory = new RuleFactory(selector)  // TODO use attribute contents
+
+      def value_=(text: String): Unit = {
+        def fn(node: Node) = text
+        addRule(selector, SetAttributeRule(name, fn))
+      }
+
+      def apply(fn: Node => String): Unit = {
+        addRule(selector, SetAttributeRule(name, fn))
+      }
     }
   }
-
-  trait Rule {
-    def transform(node: Node): NodeSeq
-  }
-
-  class ReplaceContentRule(fn: () => NodeSeq) extends Rule {
-    def transform(node: Node) = node match {
-      case e: Elem =>
-        val content = fn()
-        println("Replacing content = " + content)
-        replaceContent(e, content)
-      //new Elem(e.prefix, e.label, e.attributes, e.scope, content :_*)
-      case n => n
-    }
-  }
-
 
   protected def addRule(selector: Selector, rule: Rule) = _rules(selector) = rule
+}
+
+/**
+ * A helper class to make it easier to write new transformers within loops inside a parent transformer
+ */
+class Transform(nodes: NodeSeq) extends Transformer {
+  implicit def toNodes(): NodeSeq = transform(nodes, Nil)
 }
