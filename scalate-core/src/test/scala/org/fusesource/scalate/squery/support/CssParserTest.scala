@@ -10,11 +10,14 @@ class CssParserTest extends FunSuiteSupport {
   val parser = new CssParser
 
   val cheese = <c:tr xmlns:c="http://apache.org/cheese"><blah/></c:tr>
-  val xml = <table id="t1" class="people">
+  val a = <a href="http://scalate.fusesource.org/" title="Scalate" hreflang="en-US">Awesomeness</a>
+
+  val xml = <table id="t1" class="people" summary="My Summary Notes">
     <tr id="tr1">
       <td class="person">Hey</td>
     </tr>
     {cheese}
+    {a}
   </table>
 
   val tr1 = (xml \\ "tr")(0)
@@ -65,6 +68,64 @@ class CssParserTest extends FunSuiteSupport {
 
   assertMatches("c|tr", cheese)
   assertNotMatches("c|tr", tr1)
+
+
+  // attributes
+  assertMatches("table[summary]", xml)
+  assertMatches("[summary]", xml)
+  assertNotMatches("[summary]", tr1)
+
+  assertMatches("[summary = \"My Summary Notes\"]", xml)
+  assertNotMatches("[summary = \"NotMatch\"]", xml)
+
+  assertMatches("[summary=\"My Summary Notes\"]", xml)
+  
+  // ~= matches whole words
+  assertMatches("[summary ~= \"My\"]", xml)
+  assertMatches("[summary ~= \"Summary\"]", xml)
+  assertMatches("[summary ~= \"Notes\"]", xml)
+  assertNotMatches("[summary ~= \"My Summary\"]", xml) // can only filter on whole words
+
+  assertMatches("[summary~=\"My\"]", xml)
+
+  // |=
+  assertMatches("[hreflang |= \"en\"]", a)
+  assertMatches("[hreflang |= \"en-US\"]", a)
+  assertNotMatches("[hreflang |= \"de\"]", a)
+
+  // TODO regex bug!!!
+  // not sure yet why the parser fails to parse this!
+  //assertMatches("[hreflang|=\"en\"]", a)
+  //assertMatches("[hreflang|=en]", a)
+
+  assertMatches("[hreflang |= en]", a)
+  assertMatches("[hreflang |= en-US]", a)
+
+  // ^=
+  assertMatches("[summary ^= \"My\"]", xml)
+  assertMatches("[summary ^= \"My S\"]", xml)
+  assertNotMatches("[summary ^= \"T\"]", xml)
+
+  assertMatches("[summary^=\"My\"]", xml)
+
+  // $=
+  assertMatches("[summary $= \"Notes\"]", xml)
+  assertMatches("[summary $= \"Summary Notes\"]", xml)
+  assertNotMatches("[summary $= \"Cheese\"]", xml)
+
+  assertMatches("[summary$=\"Notes\"]", xml)
+
+  // *=
+  assertMatches("[summary *= \"Sum\"]", xml)
+  assertMatches("[summary *= \"Summary N\"]", xml)
+  assertNotMatches("[summary *= \"Cheese\"]", xml)
+
+  assertMatches("[summary*=\"Sum\"]", xml)
+
+
+  // :not
+  assertMatches("td:not(.food)", td1)
+  assertNotMatches("td:not(.person)", td1)
 
 
   // filtering using the pimped API on scala Node*

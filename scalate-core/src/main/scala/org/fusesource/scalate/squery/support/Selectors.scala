@@ -27,10 +27,37 @@ case class ElementNameSelector(name: String) extends Selector {
   }
 }
 
-case class AttributeNameSelector(name: String) extends Selector {
+/**
+ * Matches the current element if it has an attribute name
+ */
+case class AttributeNameSelector(name: String, matcher: Matcher) extends Selector {
   def matches(node: Node, parents: Seq[Node]) = node match {
-    case e: Attribute =>
-      e.label == name
+    case e: Elem =>
+      e.attribute(name) match {
+        case Some(ns) => matcher.matches(ns)
+        case _ => false
+      }
+
+    case _ => false
+  }
+}
+/**
+ * Matches the current element if it has a namespaced attribute name
+ */
+case class NamespacedAttributeNameSelector(name: String, prefix: String, matcher: Matcher) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem =>
+      val uri = e.scope.getURI(prefix)
+      if (uri != null) {
+        e.attribute(uri, name) match {
+          case Some(ns) => matcher.matches(ns)
+          case _ => false
+        }
+      }
+    else {
+        false
+      }
+
     case _ => false
   }
 }
@@ -73,6 +100,13 @@ case class NotSelector(selector: Selector) extends Selector {
 
 object AnySelector extends Selector {
   def matches(node: Node, parents: Seq[Node]) = true
+}
+
+object AnyElementSelector extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem => true
+    case _ => false
+  }
 }
 
 /**

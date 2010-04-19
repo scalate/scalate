@@ -9,7 +9,7 @@ class CssScanner extends RegexParsers {
   override def skipWhitespace = false
 
   //   ident     [-]?{nmstart}{nmchar}*
-  def IDENT = (opt("[-]") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("")}
+  def IDENT = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("")}
 
   // name      {nmchar}+
   private def name = rep1(nmchar)
@@ -23,7 +23,7 @@ class CssScanner extends RegexParsers {
   // unicode   \\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?
   private def unicode = """\\[0-9a-fA-F]{1,6}(\r\n|[ \n\r\t\f])?""".r
 
-  // escape    {unicode}|
+  // escape    {unicode}|\\[^\n\r\f0-9a-f]
   private def escape = unicode | """\\[^\n\r\f0-9a-fA-F]""".r
 
   // nmchar    [_a-z0-9-]|{nonascii}|{escape}
@@ -36,13 +36,13 @@ class CssScanner extends RegexParsers {
   def STRING = string1 | string2
 
   // string1   \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*\"
-  private val string1 = "\"" ~ rep("""[^\n\r\f\\"]""".r | nl | nonascii | escape) ~ "\""
+  private val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
 
   // string2   \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*\'
-  private val string2 = "'" ~ rep("""[^\n\r\f\']""".r | nl | nonascii | escape) ~ "'"
+  private val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
 
   // nl        \n|\r\n|\r|\f
-  private val nl = """\n|\r\n|\r|\f""".r
+  private val nl = """\n|\r\n|\r|\f"""
 
   // invalid   {invalid1}|{invalid2}
   // invalid1  \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*
@@ -68,6 +68,15 @@ class CssScanner extends RegexParsers {
 
   val NUMBER = num.r
   def DIMENSION = NUMBER ~ IDENT
+
+  // N         n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
+  def N = """n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n""".r
+
+  // O         o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o
+  def O = """o|\\0{0,4}(4f|6f)(\r\n|[ \t\r\n\f])?|\\o""".r
+
+  // T         t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
+  def T = """t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t""".r
 }
 
 /**
@@ -128,11 +137,11 @@ class CssParser extends CssScanner {
 
   def simple_selector_sequence = simple_selector_sequence_1 | simple_selector_sequence_2
 
-  def simple_selector_sequence_1 = (type_selector | universal) ~ rep(hash | className | attrib | pseudo | negation) ^^ {
+  def simple_selector_sequence_1 = (type_selector | universal) ~ rep(hash | className | attrib | negation | pseudo) ^^ {
     case t ~ l => Selector(t :: l)
   }
 
-  def simple_selector_sequence_2 = rep1(hash | className | attrib | pseudo | negation) ^^ {case l => Selector(l)}
+  def simple_selector_sequence_2 = rep1(hash | className | attrib | negation | pseudo) ^^ {case l => Selector(l)}
 
   //  type_selector
   //    : [ namespace_prefix ]? element_name
@@ -167,7 +176,7 @@ class CssParser extends CssScanner {
   def universal = (opt(namespace_prefix) <~ "*") ^^ {
     case op => op match {
       case Some(p) => p
-      case _ => AnySelector
+      case _ => AnyElementSelector
     }
   }
 
@@ -189,26 +198,33 @@ class CssParser extends CssScanner {
   //          ]? ']'
 
   def attrib = (("[" ~ repS) ~> attribute_name ~ opt(attribute_value) <~ "]") ^^ {
-    case n ~ v =>
-      println("got n: " + n + " v " + v)
-      // TODO add the value thingy...
-      n
-  }
-
-  def attribute_name = (opt(namespace_prefix) ~ IDENT <~ repS) ^^ {
-    case np ~ i =>
-      val attName = AttributeNameSelector(i)
+    case np ~ i ~ v =>
+      val matcher = v match {
+        case Some(v) => v
+        case _ => MatchesAny
+      }
       np match {
-        case Some(p) => Selector(p :: attName :: Nil)
-        case _ => attName
+        case Some(p) => p match {
+          case p: NamespacePrefixSelector => NamespacedAttributeNameSelector(i, p.prefix, matcher)
+          case _ => AttributeNameSelector(i, matcher)
+        }
+        case _ => AttributeNameSelector(i, matcher)
       }
   }
+
+  def attribute_name = opt(namespace_prefix) ~ IDENT <~ repS
 
   def attribute_value = ((PREFIXMATCH | SUFFIXMATCH | SUBSTRINGMATCH | "=" | INCLUDES | DASHMATCH) <~ repS) ~
           ((IDENT | STRING) <~ repS) ^^ {
     case p ~ i =>
-      println("got p " + p + " i " + i)
-      AnySelector
+      p match {
+        case PREFIXMATCH => PrefixMatch(i)
+        case SUFFIXMATCH => SuffixMatch(i)
+        case SUBSTRINGMATCH => SubstringMatch(i)
+        case "=" => EqualsMatch(i)
+        case INCLUDES => IncludesMatch(i)
+        case DASHMATCH => DashMatch(i)
+      }
   }
 
   //  pseudo
@@ -237,7 +253,7 @@ class CssParser extends CssScanner {
 
   //  negation
   //    : NOT S* negation_arg S* ')'
-  def negation = (":NOT(" ~ repS) ~> negation_arg <~ (repS ~ ")") ^^ {case a => NotSelector(a)}
+  def negation = (":" ~ N ~ O ~ T ~ "(" ~ repS) ~> negation_arg <~ (repS ~ ")") ^^ {case a => NotSelector(a)}
 
   //  negation_arg
   //    : type_selector | universal | HASH | class | attrib | pseudo
