@@ -255,7 +255,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       var packages = unsafePackageName.split("\\.")
 
       // lets find the tail of matching package names to use
-      val lastIndex = packages.findLastIndexOf(invalidPackageName(_))
+      val lastIndex = packages.lastIndexWhere(invalidPackageName(_))
       if (lastIndex > 0) {
         packages = packages.drop(lastIndex + 1)
       }

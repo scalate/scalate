@@ -118,7 +118,7 @@ class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with 
    * Returns the current template names used in the current context
    */
   def templates: List[String] = attributes.get("scalateTemplates") match {
-    case Some(list: List[String]) => list.removeDuplicates.sortWith(_ < _)
+    case Some(list: List[String]) => list.distinct.sortWith(_ < _)
     case _ => Nil
   }
 
@@ -126,7 +126,7 @@ class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with 
    * Returns the current layouts used in the current context
    */
   def layouts: List[String] = attributes.get("scalateLayouts") match {
-    case Some(list: List[String]) => list.removeDuplicates.sortWith(_ < _)
+    case Some(list: List[String]) => list.distinct.sortWith(_ < _)
     case _ => Nil
   }
 
