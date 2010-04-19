@@ -147,7 +147,13 @@ class CssParser extends CssScanner {
   //  namespace_prefix
   //    : [ IDENT | '*' ]? '|'
 
-  def namespace_prefix = ((IDENT ^^ {NamespacePrefixSelector(_)}) | ("*" ^^ {case _ => AnySelector})) <~ "|"
+  def namespace_prefix = ((opt(IDENT | "*"))  <~ "|") ^^ {
+    case o => o match {
+      case Some("*") => AnySelector
+      case Some(prefix) => NamespacePrefixSelector(prefix)
+      case _ => NoNamespaceSelector
+    }
+  }
 
   //  element_name
   //    : IDENT

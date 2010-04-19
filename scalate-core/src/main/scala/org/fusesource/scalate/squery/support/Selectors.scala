@@ -36,8 +36,16 @@ case class AttributeNameSelector(name: String) extends Selector {
 }
 
 case class NamespacePrefixSelector(prefix: String) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node.prefix == prefix
+  def matches(node: Node, parents: Seq[Node]) = {
+    // lets not compare prefixes, as we could have many prefixes mapped to the same URI
+    // so lets compare the URI of the node to the URI of the prefix in scope on the node
+    val boundUrl = node.scope.getURI(prefix)
+    boundUrl != null && node.namespace == boundUrl
+  }
+}
 
+object NoNamespaceSelector extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node.namespace == null
 }
 
 case class AnyElementSelector() extends Selector {

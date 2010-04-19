@@ -3,27 +3,33 @@ package org.fusesource.scalate.squery.support
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.squery.Selector
 import org.fusesource.scalate.squery.Selector._
-import xml.{Node, NodeSeq}
+import org.fusesource.scalate.squery.Transformer._
+import xml.{Elem, Node, NodeSeq}
 
 class CssParserTest extends FunSuiteSupport {
   val parser = new CssParser
 
+  val cheese = <c:tr xmlns:c="http://apache.org/cheese"><blah/></c:tr>
   val xml = <table id="t1" class="people">
     <tr id="tr1">
       <td class="person">Hey</td>
     </tr>
+    {cheese}
   </table>
 
   val tr1 = (xml \\ "tr")(0)
   val td1 = (xml \\ "td")(0)
-  val td1Parents = tr1 :: xml :: Nil
-
+  
   // simple stuff
   assertMatches("table", xml)
   assertMatches("table#t1", xml)
   assertMatches("#t1", xml)
   assertMatches(".people", xml)
   assertMatches("table.people", xml)
+
+  assertMatches("*", td1)
+  assertMatches("*.person", td1)
+  assertMatches("*#tr1", tr1)
 
   // combinators
   assertMatches("tr > td", td1)
@@ -47,6 +53,21 @@ class CssParserTest extends FunSuiteSupport {
   assertNotMatches("tr > table > td", td1)
   assertNotMatches("td > tr", td1)
 
+  // namespaces
+  assertMatches("*|*", cheese)
+  assertMatches("*|*", tr1)
+
+  assertMatches("*|tr", cheese)
+  assertMatches("*|tr", tr1)
+
+  assertNotMatches("|tr", cheese)
+  assertMatches("|tr", tr1)
+
+  assertMatches("c|tr", cheese)
+  assertNotMatches("c|tr", tr1)
+
+
+  // filtering using the pimped API on scala Node*
   assertFilter(".person", td1)
   assertFilter("table td", td1)
   assertFilter("table tr td", td1)
@@ -60,12 +81,12 @@ class CssParserTest extends FunSuiteSupport {
     }
   }
 
-  def assertMatches(css: String, node: Node): Unit = assertSelector("assertMatches: ", css, node, true)
+  def assertMatches(css: String, node: Node): Unit = assertSelector("assertMatches ", css, node, true)
 
-  def assertNotMatches(css: String, node: Node): Unit = assertSelector("assertNotMatches: " , css, node, false)
+  def assertNotMatches(css: String, node: Node): Unit = assertSelector("assertNotMatches ", css, node, false)
 
   def assertSelector(message: String, css: String, node: Node, expected: Boolean): Unit = {
-    test(message + css) {
+    test(message + css + " on " + summary(node)) {
       val selector = Selector(css)
       val parents = parentsOf(node)
       println("testing selector: " + selector + " on " + summary(node) + " with parents: " + summary(parents))
@@ -94,7 +115,10 @@ class CssParserTest extends FunSuiteSupport {
     findChild(node, parent).getOrElse(Nil)
   }
 
-  protected def summary(node: Node): String = node.label
+  protected def summary(node: Node): String = node match {
+    case e: Elem => replaceContent(e, Nil).toString
+    case _ => node.toString
+  }
 
   protected def summary(nodes: NodeSeq): String = nodes.map(summary(_)).mkString(" ")
 }
