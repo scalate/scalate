@@ -28,13 +28,22 @@ import support.FileResourceLoader
 class ScamlTestSupport extends TemplateTestSupport {
   val testCounter = new AtomicInteger(1)
 
-  def testRender(description: String, template: String, result: String) = {
+  val NOOP = ()=>{}
+
+  def testRender(description: String, template: String, result: String, before:()=>Unit = NOOP, after:()=>Unit = NOOP ) = {
     test(description) {
-      expect(result.trim) {render(description, template.trim).trim}
+      expect(result.trim) {
+        before()
+        try {
+          render(description, template.trim).trim
+        } finally {
+          after()
+        }
+      }
     }
   }
 
-  def ignoreRender(description: String, template: String, result: String) = {
+  def ignoreRender(description: String, template: String, result: String, before:()=>Unit = NOOP, after:()=>Unit = NOOP) = {
     ignore(description) {
     }
   }
