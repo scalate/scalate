@@ -9,15 +9,15 @@ import org.fusesource.scalate.squery.Transformer._
  * @version $Revision: 1.1 $
  */
 trait Rule {
-  def transform(node: Node): NodeSeq
+  def apply(node: Node): NodeSeq
 }
 
 case class ReplaceRule(fn: (Node) => NodeSeq) extends Rule {
-  def transform(node: Node) = fn(node)
+  def apply(node: Node) = fn(node)
 }
 
 case class ReplaceContentRule(fn: () => NodeSeq) extends Rule {
-  def transform(node: Node) = node match {
+  def apply(node: Node) = node match {
     case e: Elem =>
       val contents = fn()
       println("Replacing content = " + contents)
@@ -27,7 +27,7 @@ case class ReplaceContentRule(fn: () => NodeSeq) extends Rule {
 }
 
 case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
-  def transform(node: Node) = node match {
+  def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
       println("Setting attribute " + name + " to " + value)

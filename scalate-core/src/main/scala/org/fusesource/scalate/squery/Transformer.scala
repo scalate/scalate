@@ -3,12 +3,12 @@ package org.fusesource.scalate.squery
 import _root_.org.fusesource.scalate.util.Logging
 import _root_.org.fusesource.scalate.squery.support._
 import collection.mutable.{HashMap, ListBuffer}
-import text.Document
-import xml.{Attribute, Text, Elem, Node, NodeSeq, Null}
+import xml.{Attribute, Document, Elem, Node, NodeSeq, Null, Text}
 
 
 object Transformer {
   def replaceContent(e: Elem, content: NodeSeq) = new Elem(e.prefix, e.label, e.attributes, e.scope, content: _*)
+
   def setAttribute(e: Elem, name: String, value: String) = new Elem(e.prefix, e.label, e.attributes.append(Attribute(None, name, Text(value), Null)), e.scope, e.child: _*)
 }
 
@@ -26,17 +26,31 @@ class Transformer extends Logging {
 
   def $(selector: Selector): RuleFactory = new RuleFactory(selector)
 
-  def transform(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
+  def apply(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
     nodes.flatMap(transformNode(_, parents))
   }
+
+  /**
+   * Transforms the given nodes passing in a block which is used to configure a new transformer
+   * to transform the nodes. This method is typically used when performing nested transformations such
+   * as transforming one or more nodes when inside a transformation rule itself.
+   */
+  def transform(nodes: NodeSeq, parents: Seq[Node])(rules: TransformerBuilder => Unit): NodeSeq = {
+    // TODO inherit transformer rules?
+    val transformer = new Transformer()
+    rules(TransformerBuilder(transformer))
+    transformer(nodes, parents)
+  }
+
+  def transform(nodes: NodeSeq)(rules: TransformerBuilder => Unit): NodeSeq = transform(nodes, Nil)(rules)
 
   protected def transformNode(node: Node, parents: Seq[Node]): NodeSeq = {
     val keys = _rules.filterKeys(_.matches(node, parents))
     val size = keys.size
     if (size == 0) {
       node match {
-        case e: Elem => replaceContent(e, transform(e.child, e +: parents))
-        case d: Document => transform(d.child)
+        case e: Elem => replaceContent(e, apply(e.child, e +: parents))
+        case d: Document => apply(d.child)
         case n => n
       }
     }
@@ -45,7 +59,7 @@ class Transformer extends Logging {
         warn("Too many matching rules! " + keys)
       }
       val rule = keys.valuesIterator.next
-      rule.transform(node)
+      rule(node)
     }
   }
 
@@ -58,7 +72,7 @@ class Transformer extends Logging {
       addRule(selector, new ReplaceRule(fn))
     }
 
-    def contents: RuleFactory = new RuleFactory(selector)  // TODO use child
+    def contents: RuleFactory = new RuleFactory(selector) // TODO use child
 
     /**
      * Sets the contents of the matching elements to the given set of markup
@@ -79,8 +93,8 @@ class Transformer extends Logging {
      * Sets the given attribute on each matching node found by this selector
      */
     def attribute(name: String, value: String): Unit = {
-        def fn(node: Node) = value
-        addRule(selector, SetAttributeRule(name, fn))
+      def fn(node: Node) = value
+      addRule(selector, SetAttributeRule(name, fn))
     }
 
     /**
@@ -90,7 +104,7 @@ class Transformer extends Logging {
 
 
     class AttributeRuleFactory(name: String) {
-      def value: RuleFactory = new RuleFactory(selector)  // TODO use attribute contents
+      def value: RuleFactory = new RuleFactory(selector) // TODO use attribute contents
 
       def value_=(text: String): Unit = {
         def fn(node: Node) = text
@@ -107,8 +121,11 @@ class Transformer extends Logging {
 }
 
 /**
- * A helper class to make it easier to write new transformers within loops inside a parent transformer
+ * A helper class so that a function object can be used as a transformer
  */
-class Transform(nodes: NodeSeq) extends Transformer {
-  implicit def toNodes(): NodeSeq = transform(nodes, Nil)
+case class TransformerBuilder(transformer: Transformer) {
+  def apply(cssSelector: String) = transformer.$(cssSelector)
+
+  def apply(selector: Selector) = transformer.$(selector)
+
 }

@@ -35,7 +35,7 @@ class TransformTest extends FunSuiteSupport {
       $(".location").contents = <b>Tampa</b>
     }
 
-    val result = transformer.transform(xml)
+    val result = transformer(xml)
     println("got result: " + result)
 
     expect("Hiram") { (result \\ "td")(0).text }

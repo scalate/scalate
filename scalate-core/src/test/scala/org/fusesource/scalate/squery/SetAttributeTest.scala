@@ -31,7 +31,7 @@ class SetAttributeTest extends FunSuiteSupport {
       }
     }
 
-    val result = transformer.transform(xml)
+    val result = transformer(xml)
 
     println("got result: " + result)
 

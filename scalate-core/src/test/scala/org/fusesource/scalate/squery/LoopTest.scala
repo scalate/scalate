@@ -1,6 +1,10 @@
 package org.fusesource.scalate.squery
 
+// Note this import is required so the implicit conversion Transform.toNodes works
+import _root_.org.fusesource.scalate.squery.Transform._
+
 import _root_.org.fusesource.scalate.FunSuiteSupport
+
 case class Person(name: String, location: String)
 
 class LoopTest extends FunSuiteSupport {
@@ -39,8 +43,8 @@ class LoopTest extends FunSuiteSupport {
           new Transformer {
             $(".name").contents = p.name
             $(".location").contents = p.location
-          }.transform(node)
-        }
+          }.apply(node)
+        }                                   
       }
     }
     assertTransformed(transformer)
@@ -50,11 +54,28 @@ class LoopTest extends FunSuiteSupport {
     object transformer extends Transformer {
       $(".person") { node =>
 
+        // Note you must import Transform._ to be able to
+        // miss out the Transform.toNodes method call
+
         people.flatMap { p =>
           new Transform(node) {
             $(".name").contents = p.name
             $(".location").contents = p.location
-          }.toNodes
+          }
+        }
+      }
+    }
+    assertTransformed(transformer)
+  }
+
+  test("loop using transform method on each person") {
+    object transformer extends Transformer {
+      $(".person") { node =>
+        people.flatMap { p =>
+          transform(node) { $ =>
+            $(".name").contents = p.name
+            $(".location").contents = p.location
+          }
         }
       }
     }
@@ -62,7 +83,7 @@ class LoopTest extends FunSuiteSupport {
   }
 
   def assertTransformed(transformer: Transformer): Unit = {
-    val result = transformer.transform(xml)
+    val result = transformer(xml)
 
     println("got result: " + result)
 
