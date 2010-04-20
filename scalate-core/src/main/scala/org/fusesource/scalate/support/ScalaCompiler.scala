@@ -32,15 +32,10 @@ import scala.util.parsing.input.OffsetPosition
 class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
-  var _compiler = new Global(settings, null)
+  val compiler = new Global(settings, null)
 
-  def compile(file:File, create: Boolean = false): Unit = {
+  def compile(file:File): Unit = {
     synchronized {
-      if (create) {
-        _compiler = new Global(settings, null)
-      }
-      
-      val compiler = _compiler;
       val messageCollector = new StringWriter
       val messageCollectorWrapper = new PrintWriter(messageCollector)
 

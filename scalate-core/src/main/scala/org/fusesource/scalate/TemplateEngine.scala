@@ -495,7 +495,7 @@ class TemplateEngine extends Logging {
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
 
       // Compile the generated scala code
-      compiler.compile(sourceFile, attempt > 0)
+      compiler.compile(sourceFile)
       
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(g.stratumName, uri, sourceFile, code.positions)
@@ -521,7 +521,7 @@ class TemplateEngine extends Logging {
 
       case e: CompilerException =>
         // TODO: figure out why scala.tools.nsc.Global sometimes returns
-        // false compile errors and requirs to be re-created
+        // false compile errors that go away if you redo
         if (attempt == 0) {
           compileAndLoad(source, extraBindings, 1)
         } else {
