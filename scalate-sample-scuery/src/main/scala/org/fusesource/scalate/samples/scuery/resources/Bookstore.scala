@@ -12,15 +12,6 @@ import org.fusesource.scalate.scuery.{NestedTransformer, Transformer}
  */
 @Path("/")
 class Bookstore extends ContainerResource[String, Book, BookResource] with ScueryView {
-  val container = new MapContainer[String, Book]() {
-    def key(book: Book) = book.id
-
-    put(Book("item1", "Title1", "Author1"), Book("item2", "Title2", "Author2"))
-  }
-
-  def createChild(e: Book) = new BookResource(e, container)
-
-  def books: Seq[Book] = container.map.valuesIterator.toSeq
 
   @GET
   @Produces(Array("text/html"))
@@ -32,9 +23,6 @@ class Bookstore extends ContainerResource[String, Book, BookResource] with Scuer
 
         books.flatMap {
           book =>
-
-            //println("About to try transform: " + book)
-                  
             transform(li) {
               $ =>
                 $("a").attribute("href", "/id/" + book.id)
@@ -43,4 +31,18 @@ class Bookstore extends ContainerResource[String, Book, BookResource] with Scuer
         }
     }
   })
+
+  // Container implementation
+  //-------------------------------------------------------------------------
+
+  val container = new MapContainer[String, Book]() {
+    def key(book: Book) = book.id
+
+    put(Book("item1", "Title1", "Author1"), Book("item2", "Title2", "Author2"))
+  }
+
+  def createChild(e: Book) = new BookResource(e, container)
+
+  def books: Seq[Book] = container.map.valuesIterator.toSeq
+
 }
