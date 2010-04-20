@@ -13,5 +13,4 @@ class Transform(val nodes: NodeSeq, parents: Seq[Node] = Nil) extends Transforme
   def apply(): NodeSeq = apply(nodes, parents)
 
   implicit def toNodes(): NodeSeq = apply()
-
 }

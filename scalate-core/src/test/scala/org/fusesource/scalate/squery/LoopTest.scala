@@ -4,6 +4,7 @@ package org.fusesource.scalate.squery
 import _root_.org.fusesource.scalate.squery.Transform._
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+import xml.NodeSeq
 
 case class Person(name: String, location: String)
 
@@ -47,7 +48,7 @@ class LoopTest extends FunSuiteSupport {
         }                                   
       }
     }
-    assertTransformed(transformer)
+    assertTransformed(transformer(xml))
   }
 
   test("loop using Transform statement on each person") {
@@ -65,7 +66,7 @@ class LoopTest extends FunSuiteSupport {
         }
       }
     }
-    assertTransformed(transformer)
+    assertTransformed(transformer(xml))
   }
 
   test("loop using transform method on each person") {
@@ -79,12 +80,24 @@ class LoopTest extends FunSuiteSupport {
         }
       }
     }
-    assertTransformed(transformer)
+    assertTransformed(transformer(xml))
   }
 
-  def assertTransformed(transformer: Transformer): Unit = {
-    val result = transformer(xml)
+  test("loop using NestedTransformer") {
+    object transformer extends NestedTransformer {
+      $(".person") { node =>
+        people.flatMap { p =>
+          transform(node) { t => 
+            $(".name").contents = p.name
+            $(".location").contents = p.location
+          }
+        }
+      }
+    }
+    assertTransformed(transformer(xml))
+  }
 
+  def assertTransformed(result: NodeSeq): Unit = {
     println("got result: " + result)
 
     expect("James") {(result \\ "td")(0).text}

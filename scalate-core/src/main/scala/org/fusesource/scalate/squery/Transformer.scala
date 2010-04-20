@@ -36,13 +36,23 @@ class Transformer extends Logging {
    * as transforming one or more nodes when inside a transformation rule itself.
    */
   def transform(nodes: NodeSeq, parents: Seq[Node])(rules: TransformerBuilder => Unit): NodeSeq = {
-    // TODO inherit transformer rules?
-    val transformer = new Transformer()
+    val transformer = createChild
     rules(TransformerBuilder(transformer))
     transformer(nodes, parents)
   }
 
   def transform(nodes: NodeSeq)(rules: TransformerBuilder => Unit): NodeSeq = transform(nodes, Nil)(rules)
+
+
+  /**
+   * Creates a child transformer
+   */
+  def createChild: Transformer = {
+    // TODO inherit transformer rules?
+    val child = new Transformer()
+    //child._rules ++= _rules
+    child
+  }
 
   protected def transformNode(node: Node, parents: Seq[Node]): NodeSeq = {
     val keys = _rules.filterKeys(_.matches(node, parents))
