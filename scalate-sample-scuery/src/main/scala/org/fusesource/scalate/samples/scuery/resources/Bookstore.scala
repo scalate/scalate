@@ -18,12 +18,9 @@ class Bookstore extends ContainerResource[String, Book, BookResource] with Scuer
   def index = render(new Transformer {
     $("ul.books").contents {
       node =>
-        // TODO replace with a simple li:first selector!
-        val li = (node \ "li")(0)
-
         books.flatMap {
           book =>
-            transform(li) {
+            transform(node.$("li:first-child")) {
               $ =>
                 $("a").attribute("href", "/id/" + book.id)
                 $("a.book").contents = book.title

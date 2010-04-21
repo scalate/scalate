@@ -288,8 +288,6 @@ class CssParser extends CssScanner {
     case _ => EvenCounter
   }
 
-  // TODO the odd/even clause!!!
-
   def integer = INTEGER ^^ {Integer.parseInt(_)}
 
   //  negation

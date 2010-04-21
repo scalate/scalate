@@ -1,6 +1,5 @@
 package org.fusesource.scalate.scuery
 
-// TODO how can we avoid this??
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.{NodeSeq, Node}
 

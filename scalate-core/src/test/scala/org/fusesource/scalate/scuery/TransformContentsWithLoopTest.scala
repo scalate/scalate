@@ -21,12 +21,9 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
     object transformer extends Transformer {
       $(".people").contents {
         node =>
-        // TODO replace with a simple li:first selector!
-          val li = (node \ "li")(0)
-
           people.flatMap {
             p =>
-              transform(li) {
+              transform(node.$("li:first-child")) {
                 $ =>
                   $("a.person").contents = p.name
                   $("a.person").attribute("href").value = "http://acme.com/bookstore/" + p.name
