@@ -40,10 +40,6 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
 
     assertPersonLink((result \ "li" \ "a")(0), "James")
     assertPersonLink((result \ "li" \ "a")(1), "Hiram")
-    /*
-        expect("Hiram") {(result \\ "td")(0).text}
-        expect("Tampa") {(result \\ "td" \\ "b")(0).text}
-    */
   }
 
   protected def assertPersonLink(a: Node, name: String): Unit = {

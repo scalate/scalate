@@ -40,7 +40,7 @@ trait ScueryView extends Logging {
 
   protected def findResource(path: String): Option[URL] = {
     val cname = getClass.getName
-    println("Using class name: " + cname)
+    debug("Using class name: " + cname)
     val classDirectory = "/" + cname.replace('.', '/') + "."
 
     var answer: Option[URL] = None

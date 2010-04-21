@@ -58,8 +58,6 @@ class CssScanner extends RegexParsers {
   val GREATER = """>""".r
   val TILDE = """~""".r
 
-  def FUNCTION = IDENT <~ "("
-
   val INCLUDES = "~="
   val DASHMATCH = "|="
   val PREFIXMATCH = "^="
@@ -67,7 +65,15 @@ class CssScanner extends RegexParsers {
   val SUBSTRINGMATCH = "*="
 
   val NUMBER = num.r
+  val INTEGER = """[0-9]""".r
+
   def DIMENSION = NUMBER ~ IDENT
+
+  // D         d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
+  def D = """d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?""".r
+
+  // E         e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?
+  def E = """e|\\0{0,4}(45|65)(\r\n|[ \t\r\n\f])?""".r
 
   // N         n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n
   def N = """n|\\0{0,4}(4e|6e)(\r\n|[ \t\r\n\f])?|\\n""".r
@@ -77,6 +83,9 @@ class CssScanner extends RegexParsers {
 
   // T         t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t
   def T = """t|\\0{0,4}(54|74)(\r\n|[ \t\r\n\f])?|\\t""".r
+
+  //  V         v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
+  def V = """v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v""".r
 }
 
 /**
@@ -234,14 +243,16 @@ class CssParser extends CssScanner {
   //    /* occur only in the last simple_selector_sequence. */
   //    : ':' ':'? [ IDENT | functional_pseudo ]
 
-  def pseudo = (":" ~ opt(":")) ~> (pseudo_ident | functional_pseudo)
+  def pseudo = (":" ~ opt(":")) ~> (functional_nth_pseudo | functional_pseudo | pseudo_ident)
 
   def pseudo_ident = IDENT ^^ {Selector.pseudoSelector(_)}
 
   //  functional_pseudo
   //    : FUNCTION S* expression ')'
 
-  def functional_pseudo = (FUNCTION <~ repS) ~ (expression <~ ")") ^^ {case f ~ e => Selector.pseudoFunction(f)}
+
+  def functional_pseudo = (IDENT <~ ("(" ~ repS)) ~ (expression <~ ")") ^^ {case f ~ e => Selector.pseudoFunction(f)}
+  def functional_nth_pseudo = ("nth-" ~> IDENT <~ ("(" ~ repS)) ~ (repS ~> nth <~ ")") ^^ {case f ~ e => Selector.pseudoFunction("nth-" + f, e)}
 
 
   //  expression
@@ -249,7 +260,37 @@ class CssParser extends CssScanner {
   //    /* or of the form "an+b" */
   //    : [ [ PLUS | '-' | DIMENSION | NUMBER | STRING | IDENT ] S* ]+
 
-  def expression = rep1(("+" | "-" | DIMENSION | NUMBER | STRING | IDENT) <~ repS)
+  def expression = rep1(("+" | "-" | DIMENSION | STRING | IDENT) <~ repS)
+
+  // nth
+  //  : S* [ ['-'|'+']? INTEGER? {N} [ S* ['-'|'+'] S* INTEGER ]? |
+  //         ['-'|'+']? INTEGER | {O}{D}{D} | {E}{V}{E}{N} ] S*
+  def nth = (opt("-" | "+") ~ (opt(integer) <~ N) ~ opt((repS ~> ("-" | "+") <~ repS) ~ integer)) ^^ {
+    case os ~ on ~ on2 =>
+      val a = on match {
+        case Some(n) => if (os == Some("-")) {n * -1} else {n}
+        case _ => 0
+      }
+      val b = on2 match {
+        case Some(s ~ i) =>
+          if (s == "-") {i * -1} else {i}
+        case _ => 0
+      }
+      println("" + a + "n + " + b)
+      NthCounter(a, b)
+  } | (opt("-" | "+") ~ integer) ^^ {
+    case os ~ i =>
+      val b = if (os == Some("-")) {i * -1} else {i}
+      NthCounter(0, b)
+  } | (O ~ D ~ D) ^^ {
+    case _ => OddCounter
+  } | (E ~ V ~ E ~ N) ^^ {
+    case _ => EvenCounter
+  }
+
+  // TODO the odd/even clause!!!
+
+  def integer = INTEGER ^^ {Integer.parseInt(_)}
 
   //  negation
   //    : NOT S* negation_arg S* ')'

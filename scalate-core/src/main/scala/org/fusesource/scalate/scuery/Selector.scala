@@ -39,50 +39,62 @@ object Selector {
     case h :: xs => apply(h.combinatorSelector(selector), xs)
   }
 
-  implicit def toSXml(node: Node) = SXml(node)
-
-  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
-
   /**
    * Returns a selector which returns the childen of the given selector
    */
   def children(selector: Selector) = ChildrenSelector(selector)
 
 
-  def pseudoSelector(identifier: String): Selector = throw new IllegalArgumentException("pseudo :" + identifier + " not supported")
+  def pseudoSelector(identifier: String): Selector = identifier match {
+    case "root" => RootSelector
+    case "first-child" => FirstChildSelector
+    case "last-child" => LastChildSelector
+    case _ => throw new IllegalArgumentException("pseudo :" + identifier + " not supported")
+  }
 
-  def pseudoFunction(expression: AnyRef): Selector = throw new IllegalArgumentException("pseudo expression :" + expression + " not supported")
+  def pseudoFunction(expression: AnyRef): Selector = throw new IllegalArgumentException("pseudo function :" + expression + " not supported")
+
+  def pseudoFunction(name: String, counter: NthCounter): Selector = name match {
+    case "nth-child" => NthChildSelector(counter)
+    case _ => throw new IllegalArgumentException("pseudo function :" + name + " not supported")
+  }
 
 }
 
 trait Selector {
   def matches(node: Node, parents: Seq[Node]): Boolean
 
+  def filter(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
+    nodes.flatMap(filterNode(_, parents))
+  }
+
+  protected def filterNode(n: Node, parents: Seq[Node]): NodeSeq = {
+    if (matches(n, parents))
+      {n}
+    else {
+      n.child.flatMap {
+        c => filterNode(c, n +: parents)
+      }
+    }
+  }
+
   protected def attrEquals(e: Elem, name: String, value: String) = e.attribute(name) match {
     case Some(n) => n.toString == value
     case _ => false
   }
-}
 
-/**
- * A helper class to pimp Scala's XML support to add easy SQuery filtering
- * so that you can perform a CSS3 selector on a {@link Node} or {@link NodeSeq}
- * via <code>xml.$("someSelector")</code>
- */
-case class SXml(nodes: NodeSeq) {
-  def $(cssSelector: String): NodeSeq = $(Selector(cssSelector))
+  /**
+   * Returns the child elements of the given node
+   */
+  protected def childElements(node: Node) = node.child.filter(_.isInstanceOf[Elem])
 
-  def $(selector: Selector): NodeSeq = {
-    nodes.flatMap(filter(_, Nil, selector))
-  }
+  /**
+   * Returns the child elements of the immediate parent
+   */
+  protected def parentChildElements(parents: Seq[Node]) =
+    if (parents.isEmpty)
+      Nil
+    else
+      childElements(parents.head)
 
-  protected def filter(n: Node, parents: Seq[Node], s: Selector): NodeSeq = {
-    if (s.matches(n, parents))
-      {n}
-    else {
-      n.child.flatMap {
-        c => filter(c, n +: parents, s)
-      }
-    }
-  }
 }

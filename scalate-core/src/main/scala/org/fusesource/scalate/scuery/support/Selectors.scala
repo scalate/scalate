@@ -3,10 +3,18 @@ package org.fusesource.scalate.scuery.support
 import org.fusesource.scalate.scuery.Selector
 import xml.{Attribute, Elem, Node, NodeSeq}
 
+/**
+ * Matches if the CSS class attribute contains the given class name word
+ */
 case class ClassSelector(className: String) extends Selector {
+  private val matcher = IncludesMatch(className)
+
   def matches(node: Node, parents: Seq[Node]) = node match {
     case e: Elem =>
-      attrEquals(e, "class", className)
+      e.attribute("class") match {
+        case Some(nodes) => matcher.matches(nodes)
+        case _ => false
+      }
     case _ => false
   }
 }
@@ -109,6 +117,10 @@ object AnyElementSelector extends Selector {
   }
 }
 
+// Combinators
+//-------------------------------------------------------------------------
+
+
 /**
  * Represents selector: E &gt; F
  *
@@ -186,3 +198,70 @@ case class GeneralSiblingSelector(childSelector: Selector, parentSelector: Selec
     }
   }
 }
+
+
+// Pseudo selectors
+//-------------------------------------------------------------------------
+
+
+object RootSelector extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem =>
+      parents.isEmpty
+    case _ => false
+  }
+}
+
+object FirstChildSelector extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem =>
+      parentChildElements(parents).headOption match {
+        case Some(n) => n == e
+        case _ => false
+      }
+    case _ => false
+  }
+}
+
+object LastChildSelector extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem =>
+      parentChildElements(parents).lastOption match {
+        case Some(n) => n == e
+        case _ => false
+      }
+    case _ => false
+  }
+
+}
+
+case class NthChildSelector(counter: NthCounter) extends Selector {
+  def matches(node: Node, parents: Seq[Node]) = node match {
+    case e: Elem =>
+      val idx = parentChildElements(parents).indexOf(node)
+      counter.matches(idx)
+    case _ => false
+  }
+}
+
+/**
+ * Used for the <a href="http://www.w3.org/TR/css3-selectors/#nth-child-pseudo">nth</a>
+ * calculations representing an + b
+ */
+case class NthCounter(a: Int, b: Int) {
+  def matches(idx: Int): Boolean = {
+    if (idx < 0)
+      false
+    else {
+      val oneIdx = idx + 1
+      if (a == 0)
+        oneIdx == b
+      else
+        oneIdx % a == b
+    }
+
+  }
+}
+
+object OddCounter extends NthCounter(2, 1)
+object EvenCounter extends NthCounter(2, 0)

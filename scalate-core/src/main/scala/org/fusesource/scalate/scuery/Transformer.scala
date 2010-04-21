@@ -10,6 +10,10 @@ object Transformer {
   def replaceContent(e: Elem, content: NodeSeq) = new Elem(e.prefix, e.label, e.attributes, e.scope, content: _*)
 
   def setAttribute(e: Elem, name: String, value: String) = new Elem(e.prefix, e.label, e.attributes.append(Attribute(None, name, Text(value), Null)), e.scope, e.child: _*)
+
+  implicit def toSXml(node: Node) = SXml(node)
+
+  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
 }
 
 import Transformer._
@@ -21,6 +25,10 @@ import Transformer._
  */
 class Transformer extends Logging {
   protected val _rules = new HashMap[Selector, Rule]
+
+  implicit def toSXml(node: Node) = SXml(node)
+
+  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
 
   def $(cssSelector: String): RuleFactory = $(Selector(cssSelector))
 
@@ -96,6 +104,14 @@ class Transformer extends Logging {
      * Sets the contents of the matching elements to the given text
      */
     def contents_=(text: String): Unit = {
+      contents = Text(text)
+    }
+
+    /**
+     * Sets the contents of the matching elements to the given number vlaue
+     */
+    def contents_=(number: Number): Unit = {
+      val text = numberToText(number)
       contents = Text(text)
     }
 
@@ -195,14 +211,30 @@ class Transformer extends Logging {
       case _ => rule
     }
   }
+
+  /**
+   * A strategy for converting numbers to text which may wish to use different formatters or Locales
+   */
+  protected def numberToText(number: Number) = number.toString
 }
 
 /**
- * A helper class so that a function object can be used as a transformer
+ *  A helper class so that a function object can be used as a transformer
  */
 case class TransformerBuilder(transformer: Transformer) {
   def apply(cssSelector: String) = transformer.$(cssSelector)
 
   def apply(selector: Selector) = transformer.$(selector)
 
+}
+
+/**
+ * A helper class to pimp Scala's XML support to add easy SQuery filtering
+ * so that you can perform a CSS3 selector on a {@link Node} or {@link NodeSeq}
+ * via <code>xml.$("someSelector")</code>
+ */
+case class SXml(nodes: NodeSeq) {
+  def $(cssSelector: String): NodeSeq = $(Selector(cssSelector))
+
+  def $(selector: Selector): NodeSeq = selector.filter(nodes)
 }
