@@ -1357,8 +1357,84 @@ Only works if [RedCloth](http://redcloth.org) is installed.
 You can also define your own filters. See Haml::Filters for details.
 -->
 
+## Global Scaml Options
+
+There  are several global options you can configure to customize how Scaml renders the
+output.  You will need to configure these before any of your scaml templates are compiled
+as they affect the generated scala template classes.
+
+### `ScamlOptions.indent`
+
+The `ScamlOptions.indent` option is used to control what kind of indenting characters to 
+use in the rendered markup.  It defaults to two spaces but can be set to the tab character
+or set to the empty string to disable indenting alltogether.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: ScamlOptions.indent = ""
+-----------------------------
+%gee
+  %whiz
+    Wow this is cool!
+-----------------------------
+xml: renders to
+-----------------------------
+<gee>
+<whiz>
+Wow this is cool!
+</whiz>
+</gee>
+{pygmentize_and_compare}
+
+### `ScamlOptions.nl`
+
+The `ScamlOptions.nl` option is used to control what kind of new line seperator to 
+use in the rendered markup.  It defaults to `\n`.  Some folks may want to set it and the indent
+to the empty string to reduce the generated document sizes.
+
+For example, if `ScamlOptions.indent = ""` and `ScamlOptions.nl = ""` then:
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%gee
+  %whiz
+    Wow this is cool!
+-----------------------------
+xml: renders to
+-----------------------------
+<gee><whiz>Wow this is cool!</whiz></gee>
+{pygmentize_and_compare}
+
+### `ScamlOptions.ugly`
+
+Enabling the `ScamlOptions.ugly` option makes `=` statements work like `~~` statements.  The dynamic expressions
+will not be indented and they the new line preservation transformation method will not be applied.  Enabling the
+ugly option will significantly reduce the CPU overhead of processing dynamic expressions.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: ScamlOptions.ugly = true
+-----------------------------
+%html
+  %p
+    = "line1\nline2\nline3"
+-----------------------------
+xml: renders to
+-----------------------------
+<html>
+  <p>
+line1
+line2
+line3
+  </p>
+</html>
+{pygmentize_and_compare}
+
 ## Other Resources
 
 * [User Guide](user-guide.html)
 * [Documentation](index.html)
+
 
