@@ -68,36 +68,42 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
         case IfFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "if (" + code + ") {"
+          indentLevel += 1
         }
         case ElseIfFragment(code) => {
           this << code.pos;
-          // TODO indent
+          indentLevel -= 1
           this << "} else if (" + code + ") {"
+          indentLevel += 1
         }
         case code: ElseFragment => {
           this << code.pos;
-          // TODO indent
+          indentLevel -= 1
           this << "} else {"
+          indentLevel += 1
         }
         case MatchFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "(" + code + ") match {"
+          indentLevel += 1
         }
         case CaseFragment(code) => {
           this << code.pos;
+          indentLevel -= 1
           this << "case " + code + " =>"
+          indentLevel += 1
         }
         case code: OtherwiseFragment => {
           this << code.pos;
+          indentLevel -= 1
           this << "case _ =>"
+          indentLevel += 1
         }
         case ForFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "for (" + code + ") {"
+          indentLevel += 1
         }
         case ImportFragment(code) => {
           this << code.pos;
@@ -105,7 +111,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
         case code: EndFragment => {
           this << code.pos;
-          // TODO deindent
+          indentLevel -= 1
           this << "}"
         }
       }

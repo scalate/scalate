@@ -34,14 +34,14 @@ import scala.util.parsing.input.{OffsetPosition, Position}
 abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 {
   abstract class AbstractSourceBuilder[T] {
-    var indent_level = 0
+    var indentLevel = 0
     var code = ""
-    var generated_positions = Map[OffsetPosition, Int]()
+    var generatedPositions = Map[OffsetPosition, Int]()
 
     def <<(): this.type = <<("")
 
     def <<(line: String): this.type = {
-      for (i <- 0 until indent_level) {
+      for (i <- 0 until indentLevel) {
         code += "  ";
       }
       code += line + "\n";
@@ -52,7 +52,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       if( pos!=null ) {
         pos match {
           case p:OffsetPosition =>
-            generated_positions = generated_positions + ( p -> current_position )
+            generatedPositions = generatedPositions + ( p -> current_position )
           case _=>
         }
       }
@@ -60,7 +60,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
     }
 
     def current_position = {
-      code.length + (indent_level*2)
+      code.length + (indentLevel*2)
     }
 
     def positions() = {
@@ -74,14 +74,14 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
           }
         }
       })
-      generated_positions.foreach {
+      generatedPositions.foreach {
         entry=>
           rc = rc + (OffsetPosition(code, entry._2)->entry._1)
       }
       rc
     }
 
-    def indent[T](op: => T): T = {indent_level += 1; val rc = op; indent_level -= 1; rc}
+    def indent[T](op: => T): T = {indentLevel += 1; val rc = op; indentLevel -= 1; rc}
 
     def generate(engine: TemplateEngine, packageName: String, className: String, bindings: List[Binding], statements: List[T]): Unit = {
 
@@ -100,11 +100,11 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
         this << ""
       }
 
-      this << "object " + className + "{"
+      this << "object " + className + " {"
       indent {
         // We prefix the function an variables with $_scalate_$ to avoid namespace pollution which could
         // conflict with definitions declared in the template
-        this << "def $_scalate_$render($_scalate_$_context:_root_.org.fusesource.scalate.RenderContext): Unit = {"
+        this << "def $_scalate_$render($_scalate_$_context: _root_.org.fusesource.scalate.RenderContext): Unit = {"
         indent {
 
           // lets perform all the imports first
@@ -134,7 +134,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       this <<;
       this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
       indent {
-        this << "def render(context:_root_.org.fusesource.scalate.RenderContext): Unit = " + className + ".$_scalate_$render(context);"
+        this << "def render(context: _root_.org.fusesource.scalate.RenderContext): Unit = " + className + ".$_scalate_$render(context);"
       }
       this << "}"
 
@@ -150,13 +150,13 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       bindings.foreach(arg => {
         generateBinding(arg)
         this << "{"
-        indent_level += 1
+        indentLevel += 1
       })
 
       body
 
       bindings.foreach(arg => {
-        indent_level -= 1
+        indentLevel -= 1
         this << "}"
       })
     }
