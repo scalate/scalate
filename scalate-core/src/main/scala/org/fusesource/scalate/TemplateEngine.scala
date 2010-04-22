@@ -194,14 +194,20 @@ class TemplateEngine extends Logging {
   /**
    * The number of times a template was found in the cache.
    */
-  var cache_hit = 0
+  private var _cacheHits = 0
 
   /**
-   * The number of times a template was not found in the cache and had to be loaded
-   * from disk.
+   * The number of times a template load request was serviced from the cache.
    */
-  var cache_miss = 0
+  def cacheHits = templateCache.synchronized { _cacheHits }
 
+  /**
+   * The number of times a template load request could not be serviced from the cache
+   * and was loaded from disk.
+   */
+  private var _cacheMisses = 0
+
+  def cacheMisses = templateCache.synchronized { _cacheMisses }
 
   /**
    * Compiles and then caches the specified template.  If the template
@@ -214,7 +220,7 @@ class TemplateEngine extends Logging {
     templateCache.synchronized {
 
       // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-      if ( cache_hit==0 && cache_miss==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+      if ( _cacheHits==0 && _cacheMisses==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
         // this deletes generated scala and class files.
         invalidateCachedTemplates
       }
@@ -225,7 +231,7 @@ class TemplateEngine extends Logging {
 
         // Not in the cache..
         case None =>
-          cache_miss += 1
+          _cacheMisses += 1
           try {
             // Try to load a pre-compiled template from the classpath
               cache(source, loadPrecompiledEntry(source, extraBindings))
@@ -240,11 +246,11 @@ class TemplateEngine extends Logging {
           // check for staleness
           if (allowReload && entry.isStale) {
             // Cache entry is stale, re-compile it
-            cache_miss += 1
+            _cacheMisses += 1
             cache(source, compileAndLoadEntry(source, extraBindings))
           } else {
             // Cache entry is valid
-            cache_hit += 1
+            _cacheHits += 1
             entry.template
           }
       }
