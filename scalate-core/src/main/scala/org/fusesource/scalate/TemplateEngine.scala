@@ -131,6 +131,8 @@ class TemplateEngine extends Logging {
   var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
 
   private val templateCache = new HashMap[String, CacheEntry]
+  private var _cacheHits = 0
+  private var _cacheMisses = 0
 
 
   /**
@@ -192,21 +194,15 @@ class TemplateEngine extends Logging {
   }
 
   /**
-   * The number of times a template was found in the cache.
-   */
-  private var _cacheHits = 0
-
-  /**
    * The number of times a template load request was serviced from the cache.
    */
   def cacheHits = templateCache.synchronized { _cacheHits }
+
 
   /**
    * The number of times a template load request could not be serviced from the cache
    * and was loaded from disk.
    */
-  private var _cacheMisses = 0
-
   def cacheMisses = templateCache.synchronized { _cacheMisses }
 
   /**
