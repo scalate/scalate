@@ -31,6 +31,7 @@ import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 
+
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
  * The TemplateEngine takes care of setting up the Scala compiler
@@ -58,8 +59,9 @@ class TemplateEngine extends Logging {
   var allowCaching = true
 
   /**
-   * Set to false if you don't want the template engine to see if a previously compiled template needs
-   * to be reloaded due to it being updated.
+   * If true, then the template engine will check to see if the template has been updated since last compiled
+   * so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
+   * the tempaltes should not be changing.
    */
   var allowReload = true
 
@@ -190,6 +192,18 @@ class TemplateEngine extends Logging {
   }
 
   /**
+   * The number of times a template was found in the cache.
+   */
+  var cache_hit = 0
+
+  /**
+   * The number of times a template was not found in the cache and had to be loaded
+   * from disk.
+   */
+  var cache_miss = 0
+
+
+  /**
    * Compiles and then caches the specified template.  If the template
    * was previously cached, the previously compiled template instance
    * is returned.  The cache entry in invalidated and then template
@@ -199,12 +213,19 @@ class TemplateEngine extends Logging {
   def load(source: TemplateSource, extraBindings:List[Binding]= Nil): Template = {
     templateCache.synchronized {
 
+      // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
+      if ( cache_hit==0 && cache_miss==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+        // this deletes generated scala and class files.
+        invalidateCachedTemplates
+      }
+
       // Determine whether to build/rebuild the template, load existing .class files from the file system,
       // or reuse an existing template that we've already loaded
       templateCache.get(source.uri) match {
 
         // Not in the cache..
         case None =>
+          cache_miss += 1
           try {
             // Try to load a pre-compiled template from the classpath
               cache(source, loadPrecompiledEntry(source, extraBindings))
@@ -217,12 +238,15 @@ class TemplateEngine extends Logging {
         // It was in the cache..
         case Some(entry) =>
           // check for staleness
-          if (allowReload && entry.isStale)
-            // re-compile it
+          if (allowReload && entry.isStale) {
+            // Cache entry is stale, re-compile it
+            cache_miss += 1
             cache(source, compileAndLoadEntry(source, extraBindings))
-          else
+          } else {
             // Cache entry is valid
+            cache_hit += 1
             entry.template
+          }
       }
     }
   }
@@ -303,11 +327,15 @@ class TemplateEngine extends Logging {
 
 
   /**
-   *  Invalidates any cached Templates
+   *  Invalidates all cached Templates.
    */
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
       templateCache.clear
+      IOUtil.rdelete(sourceDirectory)
+      IOUtil.rdelete(bytecodeDirectory)
+      sourceDirectory.mkdirs
+      bytecodeDirectory.mkdirs
     }
   }
 
