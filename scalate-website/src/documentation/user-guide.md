@@ -367,6 +367,16 @@ Foo
 <%}%>
 {pygmentize}
 
+Or using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
+
+{pygmentize:: jsp}
+#do( layout("foo.ssp") )
+Foo
+#end
+{pygmentize}
+
+
+
 Both will generate the same response.
 
 Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background. 
