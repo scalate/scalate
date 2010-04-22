@@ -58,6 +58,17 @@ time is: ${new Date()}
     assert(output.startsWith("time is:"))
   }
 
+  test("import using block") {
+    val template = compileSsp("import using block", """
+#{
+  import java.util.Date
+}#
+time is: ${new Date()}
+""")
+    val output = engine.layout(template).trim
+    assert(output.startsWith("time is:"))
+  }
+
   test("do with no expression works ok") {
     val template = compileSsp("do with no expression", """
 start

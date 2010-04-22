@@ -7,10 +7,10 @@
   To be able to capture the output of the body, the implementation uses the imported <b>RenderContext.capture</b> method
 </p>
 
-<%
+#{
   import org.fusesource.scalate.sample.MyTags._
   val name = "James"
-%>
+}#
         
 #do( someLayoutWithImportedCapture )
 hey ${name} this is some body text!

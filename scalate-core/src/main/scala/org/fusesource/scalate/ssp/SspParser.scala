@@ -136,7 +136,7 @@ class SspParser extends ScalaParseSupport {
 
   def directives: Parser[PageFragment] = ifExpression | elseIfExpression | elseExpression |
           matchExpression | caseExpression | otherwiseExpression |
-          forExpression | doExpression | importExpression | endExpression
+          forExpression | doExpression | velocityScriplet | importExpression | endExpression
 
   // if / elseif / else
   def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
@@ -154,6 +154,8 @@ class SspParser extends ScalaParseSupport {
 
 
   // other directives
+  def velocityScriplet = wrapped("#{", "}#") ^^ {ScriptletFragment(_)}
+
   def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
 
   def doExpression = expressionDirective("do") ^^ {DoFragment(_)}

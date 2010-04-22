@@ -295,6 +295,20 @@ xml: produces
 {pygmentize_and_compare}
 
 
+#### `#{` and `}#` scriplets
+
+Sometimes you just want to include a couple of lines of Scala code in a template such as to define a few variables, add a few imports or whatever.
+
+If you don't like the JSP / Erb style `<%` .. `%>` tags you can use velocity style `#{` .. `}#` instead
+
+{pygmentize:: jsp}
+#{
+  import java.util.Date
+  val now = new Date 
+}#
+Hello the time is ${now}
+{pygmentize}
+
 
 ### Comments: `<%-- --%>`
 
