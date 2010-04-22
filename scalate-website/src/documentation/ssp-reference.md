@@ -266,6 +266,17 @@ xml: produces
 {pygmentize_and_compare}
 
 
+#### `#do`
+
+The `#do` directive can be used to invoke a function passing a block of template as an argument such as when you want to apply a specific [layout to a block of template](user-guide.html#explicit_layouts_inside_a_template)
+
+{pygmentize:: jsp}
+#do(layout("someLayout.ssp"))
+ this is some template output...
+#end
+{pygmentize}
+
+
 #### `#import`
 
 The `#import` directive can be used as an alternative to using `<% import somePackage %>` to import Scala/Java packages, classes or methods.
@@ -283,6 +294,20 @@ xml: produces
 <p>The time is now Thu Apr 15 15:19:41 IST 2010</p>
 {pygmentize_and_compare}
 
+
+#### `#{` and `}#` scriplets
+
+Sometimes you just want to include a couple of lines of Scala code in a template such as to define a few variables, add a few imports or whatever.
+
+If you don't like the JSP / Erb style `<%` .. `%>` tags you can use velocity style `#{` .. `}#` instead
+
+{pygmentize:: jsp}
+#{
+  import java.util.Date
+  val now = new Date 
+}#
+Hello the time is ${now}
+{pygmentize}
 
 
 ### Comments: `<%-- --%>`
@@ -303,25 +328,6 @@ ${include("relativeOrAbsoluteURL"}
 
 The URL is then evaluated and included in place in your template.
 
-### Custom tags
-
-In JSP there is a concept of custom tags which can process a block of the 
-template such as for looping or transforming content.
-
-For example if you want to XML escape a block of a template you can just 
-invoke the *xmlEscape* method.
-
-{pygmentize:: jsp}
-<%= xmlEscape {%>
-  I like <strong> cheese & crackers
-<% } %>
-{pygmentize}
-
-is rendered as:
-{pygmentize:: xml}
-I like &lt;strong&gt; cheese &amp; crackers
-{pygmentize}
-      
 ## Other Resources
 
 * [User Guide](user-guide.html)

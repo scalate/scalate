@@ -68,36 +68,52 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
         case IfFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "if (" + code + ") {"
+          indentLevel += 1
+        }
+        case DoFragment(code) => {
+          this << code.pos;
+          if (code.length > 0) {
+            this << "$_scalate_$_context << " + code + " {"
+          }
+          else {
+            this << "{"
+          }
+          indentLevel += 1
         }
         case ElseIfFragment(code) => {
           this << code.pos;
-          // TODO indent
+          indentLevel -= 1
           this << "} else if (" + code + ") {"
+          indentLevel += 1
         }
         case code: ElseFragment => {
           this << code.pos;
-          // TODO indent
+          indentLevel -= 1
           this << "} else {"
+          indentLevel += 1
         }
         case MatchFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "(" + code + ") match {"
+          indentLevel += 1
         }
         case CaseFragment(code) => {
           this << code.pos;
+          indentLevel -= 1
           this << "case " + code + " =>"
+          indentLevel += 1
         }
         case code: OtherwiseFragment => {
           this << code.pos;
+          indentLevel -= 1
           this << "case _ =>"
+          indentLevel += 1
         }
         case ForFragment(code) => {
           this << code.pos;
-          // TODO indent
           this << "for (" + code + ") {"
+          indentLevel += 1
         }
         case ImportFragment(code) => {
           this << code.pos;
@@ -105,7 +121,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         }
         case code: EndFragment => {
           this << code.pos;
-          // TODO deindent
+          indentLevel -= 1
           this << "}"
         }
       }
@@ -185,6 +201,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     for (f <- fragments) f match {
       case f: ForFragment => open(f)
+      case f: DoFragment => open(f)
       case f: IfFragment => open(f)
       case f: MatchFragment => open(f)
       case f: EndFragment => if (endStack.isEmpty) {
@@ -202,8 +219,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
     if (!endStack.isEmpty) {
       val f = endStack.head
-      // TODO add the name for better debugging...
-      throw new InvalidSyntaxException("Missing #end", f.pos)
+      throw new InvalidSyntaxException("Missing #end for " + f.tokenName, f.pos)
     }
   }
 

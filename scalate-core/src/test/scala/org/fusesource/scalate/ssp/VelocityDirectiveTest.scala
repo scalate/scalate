@@ -58,6 +58,29 @@ time is: ${new Date()}
     assert(output.startsWith("time is:"))
   }
 
+  test("import using block") {
+    val template = compileSsp("import using block", """
+#{
+  import java.util.Date
+}#
+time is: ${new Date()}
+""")
+    val output = engine.layout(template).trim
+    assert(output.startsWith("time is:"))
+  }
+
+  test("do with no expression works ok") {
+    val template = compileSsp("do with no expression", """
+start
+#do()
+foo
+#end
+end
+""")
+    val output = engine.layout(template).trim
+    expect(List("start", "foo", "end")) { output.split("\\s+").toList }
+  }
+
 
   // #match and #case issues
   testSspSyntaxEception("non whitespace between #match #case", "#match(n) bad #case(5) a #otherwise b #end")
@@ -76,8 +99,9 @@ time is: ${new Date()}
 
   // check that we don't use #elseif or #case after #otherwise or #else
   testSspSyntaxEception("#else after #elseif", "#if(x > 5) a #else b #elseif(x < 1) c #end")
+  testSspSyntaxEception("#else after #elseelseif", "#if(x > 5) a #else b #else c #end")
   testSspSyntaxEception("#otherwise after #case", "#match(x) #otherwise b #case(5) c #end")
-
+  testSspSyntaxEception("#otherwise after #otherwise", "#match(x) #otherwise b #otherwise c #end")
 
   // check that we don't use multiple #else or #otherwise
   testSspSyntaxEception("too many #else", "#if(x > 5) a #elseif(x < 1) z #else b #else c #end")
