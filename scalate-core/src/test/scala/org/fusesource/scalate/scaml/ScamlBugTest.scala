@@ -21,6 +21,15 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+  testRender("#74: scaml id or class + dynamic attribute produces an error",
+"""
+%div.some(attr1={"value"})
+%div#some(attr1={"value"})
+""","""
+<div class="some" attr1="value"></div>
+<div id="some" attr1="value"></div>
+""")
+
     testRender("SCALATE-44 test1",
 """
 - if (name == "Hiram")
