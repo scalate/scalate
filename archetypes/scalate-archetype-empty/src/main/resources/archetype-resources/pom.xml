@@ -31,6 +31,7 @@
     <scalate-version>${project.version}</scalate-version>
     <servlet-api-version>${servlet-api-version}</servlet-api-version>
     <surefire-version>${surefire-version}</surefire-version>
+    <war-plugin-version>${war-plugin-version}</war-plugin-version>
   </properties>
    
   <dependencies>
@@ -213,6 +214,7 @@
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
+        <version>\${war-plugin-version}</version>
         <configuration>
           <attachClasses>true</attachClasses>
         </configuration>

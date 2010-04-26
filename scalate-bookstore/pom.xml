@@ -89,10 +89,6 @@
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.1-beta-1</version>
-        <configuration>
-          <attachClasses>true</attachClasses>
-        </configuration>
       </plugin>
 
       <plugin>
