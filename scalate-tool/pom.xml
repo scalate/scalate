@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.fusesource.scalate</groupId>
+    <artifactId>scalate-project</artifactId>
+    <version>1.1-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.fusesource.scalate.tooling</groupId>
+  <artifactId>scalate-tool</artifactId>
+  <name>Scalate :: Tool</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-empty</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-guice</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-guice</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+  </dependencies>
+
+
+  <build>
+    <plugins>
+
+<!--
+      <plugin>
+        <groupId>org.fusesource.mvnplugins</groupId>
+        <artifactId>maven-uberize-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals><goal>uberize</goal></goals>
+            <configuration>
+
+              <artifactSet>
+                <excludes>
+                  &lt;!&ndash; the following artifact duplicates stuff in the plexus-container-default-1.2.1-SNAPSHOT.jar &ndash;&gt;
+&lt;!&ndash;
+                  <exclude>org.codehaus.plexus:plexus-component-api</exclude>
+&ndash;&gt;
+                </excludes>
+              </artifactSet>
+
+              <transformers>
+
+                &lt;!&ndash; Merge the plexus component XML files &ndash;&gt;
+                <transformer implementation="org.fusesource.mvnplugins.uberize.transformer.PlexusComponents" />
+
+                &lt;!&ndash; Make an executable jar &ndash;&gt;
+                <transformer implementation="org.fusesource.mvnplugins.uberize.transformer.ManifestEditor">
+                  <manifestEntries>
+                    <Main-Class>org.fusesource.scalate.tool.Scalate</Main-Class>
+                    <Specification-Version>${project.version}</Specification-Version>
+                    <Implementation-Version>${project.version}</Implementation-Version>
+                  </manifestEntries>
+                </transformer>
+
+                &lt;!&ndash; this is here to avoid the logged console warning.. We just want the pick our version which is the first one listed &ndash;&gt;
+                <transformer implementation="org.fusesource.mvnplugins.uberize.transformer.PickResource">
+                  <pick>first</pick>
+                  <includes>
+                    <include>org/apache/maven/repository/legacy/resolver/transform/LatestArtifactTransformation.class</include>
+                  </includes>
+                </transformer>
+
+                &lt;!&ndash; the META-INF/DEPENDENCIES are no longer valid since we are uberizing &ndash;&gt;
+                <transformer implementation="org.fusesource.mvnplugins.uberize.transformer.RemoveResource">
+                  <includes>
+                    <include>META-INF/DEPENDENCIES</include>
+                  </includes>
+                </transformer>
+
+                &lt;!&ndash; Just merge these guys together &ndash;&gt;
+                <transformer implementation="org.fusesource.mvnplugins.uberize.transformer.TextAggregator">
+                  <includes>
+                    <include>META-INF/LICENSE</include>
+                    <include>META-INF/LICENSE.txt</include>
+                    <include>META-INF/NOTICE</include>
+                    <include>META-INF/NOTICE.txt</include>
+                  </includes>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+<!--
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+-->
+              <descriptors>
+                <descriptor>${basedir}/src/main/descriptors/jar.xml</descriptor>
+              </descriptors>
+              <archive>
+                <manifest>
+                  <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <configuration>
+                <archive>
+                  <manifest>
+                    <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
+                  </manifest>
+                </archive>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.dstovall</groupId>
+              <artifactId>onejar-maven-plugin</artifactId>
+              <version>1.4.1</version>
+              <executions>
+                <execution>
+                  <configuration>
+                    &lt;!&ndash; Optional &ndash;&gt;
+                    <onejarVersion>0.96</onejarVersion>
+                    &lt;!&ndash; Optional, default is false &ndash;&gt;
+                    <attachToBuild>true</attachToBuild>
+                    &lt;!&ndash; Optional, default is "onejar" &ndash;&gt;
+                    <classifier></classifier>
+                  </configuration>
+                  <goals>
+                    <goal>one-jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+      -->
+    </plugins>
+  </build>
+
+<!--
+  <pluginRepositories>
+    <pluginRepository>
+      <id>onejar-maven-plugin.googlecode.com</id>
+      <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+    </pluginRepository>
+  </pluginRepositories>
+-->
+
+</project>
