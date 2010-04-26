@@ -21,6 +21,21 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+  testRender("#77: attribute sanitized twice",
+"""
+- val amp = "&"
+%div(attr1="#{amp}")
+""","""
+<div attr1="&amp;"></div>
+""")
+
+  testRender("#78: null class attribute not removed",
+"""
+%div(id={null} attr1={null} class={null})
+""","""
+<div></div>
+""")
+
   testRender("#74: scaml id or class + dynamic attribute produces an error",
 """
 %div.some(attr1={"value"})
