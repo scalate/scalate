@@ -64,7 +64,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def write_indent() = {
       if (pending_newline) {
-        text_buffer.append("\n")
+        text_buffer.append(ScamlOptions.nl)
         pending_newline = false;
       }
       if (suppress_indent) {
@@ -77,7 +77,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def indent_string() = {
       val rc = new StringBuilder
       for (i <- 0 until element_level) {
-        rc.append("  ")
+        rc.append(ScamlOptions.indent)
       }
       rc.toString
     }
@@ -97,7 +97,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def flush_text() = {
       if (pending_newline) {
-        text_buffer.append("\n")
+        text_buffer.append(ScamlOptions.nl)
         pending_newline = false;
       }
       if (text_buffer.length > 0) {
@@ -220,7 +220,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       val interpolate = isEnabled("&") || isEnabled("!")
       val sanitize = interpolate && isEnabled("&")
 
-      var content = statement.body.map {_.value}.mkString("\n")
+      var content = statement.body.map {_.value}.mkString(ScamlOptions.nl)
 
       var text: TextExpression = if (interpolate) {
         val p = new ScamlParser()
@@ -229,14 +229,13 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         LiteralText(List(Text(content)), Some(false))
       }
 
-      write_indent
-      flush_text
-
       var prefix = "$_scalate_$_context << ( "
       var suffix = ");"
 
-      if (preserve) {
-        prefix += "$_scalate_$_preserve (  "
+      if (ScamlOptions.ugly ) {
+        suppress_indent = true
+      } else if (preserve) {
+        prefix += " $_scalate_$_preserve ("
         suffix = ") " + suffix;
       } else {
         prefix += "$_scalate_$_indent ( " + asString(indent_string()) + ", "
@@ -247,6 +246,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         prefix += "$_scalate_$_context.value ( _root_.org.fusesource.scalate.filter.FilterRequest(" + asString(f) + ", "
         suffix = ") ) " + suffix;
       }
+
+      write_indent
+      flush_text
 
       this << prefix + "$_scalate_$_context.capture { "
       indent {
@@ -307,8 +309,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           var prefix = "$_scalate_$_context << ("
           var suffix = ");"
 
-          if (s.preserve) {
-            if (s.ugly) {
+          if (s.preserve || ScamlOptions.ugly ) {
+            if (s.ugly || ScamlOptions.ugly) {
               suppress_indent = true
             } else {
               prefix += " $_scalate_$_preserve ("

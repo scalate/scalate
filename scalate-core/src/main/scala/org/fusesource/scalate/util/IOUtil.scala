@@ -36,6 +36,22 @@ object IOUtil {
     }
   }
 
+  /**
+   * Recursively deletes a file and all of it's children files if it's a directory.
+   */
+  def rdelete(file: File): Boolean = {
+    if( file.isDirectory ) {
+      val children = file.listFiles
+      if( children!=null ) {
+        for( child <- children ) {
+           rdelete(child)
+        }
+      }
+    }
+    return file.delete
+  }
+
+
   def loadText(in: InputStream, encoding: String = "UTF-8") = {
     new String(loadBytes(in), encoding)
   }

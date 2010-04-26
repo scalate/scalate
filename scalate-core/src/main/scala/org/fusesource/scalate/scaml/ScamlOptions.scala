@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009, Progress Software Corporation and/or its
+ *  Copyright (C) 2009, Progress Software Corporation and/or its
  * subsidiaries or affiliates.  All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,14 +28,43 @@ object ScamlOptions {
     val xhtml, html4, html5 = Value
   }
 
-  var format = Format.xhtml
 
-  var autoclose = List(
+  val DEFAULT_FORMAT = Format.xhtml
+  val DEFAULT_AUTOCLOSE = List(
     "meta",
     "img",
     "link",
     "br",
     "hr",
     "input")
-  
+
+  val DEFAULT_INDENT = "  "
+  val DEFAULT_NL = "\n"
+  val DEFAULT_UGLY = false
+
+
+  var format = DEFAULT_FORMAT
+
+  var autoclose = DEFAULT_AUTOCLOSE
+
+  /**
+   * The indent type used in Scaml markup output.  Defaults
+   * to two spaces.
+   */
+  var indent = DEFAULT_INDENT
+
+  /**
+   * The newline separator used in the produced markup output.  Defaults
+   * to <code>"\n"</code>.
+   */
+  var nl = DEFAULT_NL
+
+  /**
+   * Use ugly content rendering by default.  When ugly rendering is
+   * enabled, evaluated content is not re-indented and newline
+   * preservation is not applied either.
+   */
+  var ugly = DEFAULT_UGLY
+
+
 }
