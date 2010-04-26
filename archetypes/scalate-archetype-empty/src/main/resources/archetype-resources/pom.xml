@@ -18,7 +18,7 @@
     <!-- environment settings -->
     <jetty-port>8080</jetty-port>
     <scalateEditor>\${env.SCALATE_EDITOR}</scalateEditor>
-    <scalate.workdir>\${basedir}/target/scalateWorkDir</scalate.workdir>
+    <scalate.workdir>\${basedir}/target/_scalate</scalate.workdir>
     <scalate.package.resources>${package}.resources</scalate.package.resources>
 
     <!-- version info -->
@@ -259,8 +259,8 @@
               <value>\${scalateEditor}</value>
             </systemProperty>
             <systemProperty>
-              <name>scalate.temp.workingdir</name>
-              <value>\${scalate.temp.workingdir}</value>
+              <name>scalate.workdir</name>
+              <value>\${scalate.workdir}</value>
             </systemProperty>
             <systemProperty>
               <name>scalate.package.resources</name>

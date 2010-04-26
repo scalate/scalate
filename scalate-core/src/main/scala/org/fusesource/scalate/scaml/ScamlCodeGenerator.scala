@@ -589,12 +589,20 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             this << s.pos
             this << asString(s)
             case s: LiteralText =>
-              this << "$_scalate_$_context.capture {"
-              indent {
-                generateTextExpression(s, false)
-                flush_text
+              this << s.pos
+              var literal = true;
+              val parts = s.text.map { part =>
+                // alternate between rendering literal and interpolated expression
+                if (literal) {
+                  literal = !literal
+                  asString(part)
+                } else {
+                  literal = !literal
+                  "$_scalate_$_context.value(" + part + ", false)"
+                }
               }
-              this << "}"
+              this << parts.mkString(" + ")
+              flush_text
             case s: EvaluatedText =>
               this << s.code.pos
               if (s.body.isEmpty) {
