@@ -167,6 +167,7 @@
     <module>maven-scalate-plugin</module>
     <module>archetypes</module>
     <module>scalate-tool</module>
+    <module>scalate-tool-commands</module>
   </modules>
 
   <dependencies>
