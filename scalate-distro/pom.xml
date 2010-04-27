@@ -50,7 +50,11 @@
       <artifactId>scalate-tool</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-tool-commands</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <!-- archetypes to include -->
     <dependency>

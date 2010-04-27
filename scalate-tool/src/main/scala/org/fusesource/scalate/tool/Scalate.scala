@@ -1,202 +1,236 @@
+/*
+ * Copyright (C) 2009, Progress Software Corporation and/or its
+ * subsidiaries or affiliates.  All rights reserved.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
 package org.fusesource.scalate.tool
 
-import java.util.{List => JList, Map => JMap}
-import java.util.zip.ZipInputStream
-import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
+import java.io.{FileInputStream, File}
+import java.net.{URLClassLoader, URL}
+import java.util.Properties
 
 /**
- * The command line tool for Scalate
+ * <p>
+ * The extensible command line tool for Scalate.
+ * </p>
+ * <p>
+ * Add new commands by:
+ * <ol>
+ *   <li>Implementing the the {@link Command} trait</li>
+ *   <li>Jar it up and drop it into the <code>${scalate.home}/lib</code> directory.</li>
+ *   <li>Append the class name of the command to the <code>${scalate.home}/lib/commands.manifest</code> file</li>
+ * </ol>
+ * </p>
  *
  * @version $Revision : 1.1 $
  */
 object Scalate {
-  val archetypes = Map("empty" -> "scalate-archetype-empty", "guice" -> "scalate-archetype-guice")
-  var archetypeGroupId = "org.fusesource.scalate.tooling"
-  val userDir = System.getProperty("user.dir", ".")
-  val zipEntryPrefix = "archetype-resources/"
-  var outputDir = userDir
-  var packageName = ""
-  var groupId = ""
-  var artifactId = ""
-  var version = "1.0-SNAPSHOT"
-  var archetypeArtifactId = ""
-  var name = ""
-  var debug = false
+  val scalateVersion = "1.0-SNAPSHOT"
   val homeDir = System.getProperty("scalate.home", "")
+  var debug_enabled = false
 
+  var _commands: List[Command] = null
+
+  def intro() = {
+    println()
+    println("Scalate Tool v. " + scalateVersion + " : http://scalate.fusesource.org/")
+    println()
+  }
+  def usage() = {
+    intro()
+    println("Usage: scalate [options] command [command-args]")
+    println()
+    println("Commands:")
+    println()
+    commands.foreach { command=>
+      println(String.format("  %-12s : %s", command.name, command.summary))
+    }
+    println()
+    println("Options:")
+    println()
+    println("  --debug     : Enables debug logging")
+    println("  --help      : Shows this help screen")
+    println()
+    println("To get help for a command run:")
+    println()
+    println("  scalate command --help")
+    println()
+    println("For more help see http://scalate.fusesource.org/tool.html")
+    println()
+  }
 
   def main(args: Array[String]): Unit = {
-    println()
-    println("Scalate Tool : http://scalate.fusesource.org/")
-    println("Creates your Scalate project fast to get you scalate-ing!")
-    println()
 
-    if (homeDir.length == 0) {
+    if (homeDir.isEmpty) {
       warn("scalate.home system property is not defined!")
     }
     debug("Scalate home dir = " + homeDir)
+    System.exit(process(args.toList))
+  }
 
-    if (args.length < 3) {
-      println("Usage: archetype groupId artifactId [version] [packageName]")
-      println()
-      println("  archetype   : the archetype of project to create. Values are " + archetypeNames)
-      println("  groupId     : the maven group Id of the new project")
-      println("  artifactId  : the maven artifact Id of the new project")
-      println("  version     : the version of the new project (defaults to 1.0-SNAPSHOT)")
-      println("  packageName : the package name of generated scala code")
-      println()
-      println("For more help see http://scalate.fusesource.org/tool.html")
-      println()
+  def process(args: List[String]): Int = {
+
+    args match {
+      case next_arg :: the_rest =>
+        next_arg match {
+          case "--debug" =>
+            this.debug_enabled = true
+            process(the_rest)
+          case "--help" | "-help" | "-?" =>
+            if (the_rest.isEmpty) {
+              usage()
+            } else {
+              command(the_rest.head) match {
+                case Some(command) => command.usage
+                case None => usage();
+              }
+            }
+            return 0
+          case _ =>
+            command(next_arg) match {
+              case Some(command) =>
+                command.process(the_rest)
+              case None =>
+                println("Invalid syntax: unknown command: " + next_arg)
+                println()
+                usage()
+                return -1;
+            }
+        }
+      case Nil =>
+        println("Invalid syntax: command not specified")
+        println()
+        usage()
+        return -1;
     }
-    else {
-      val archetypeName = args(0)
-      val optArchetype = archetypes.get(archetypeName)
-      if (optArchetype.isEmpty) {
-        println("No such archetype '" + archetypeName + "' possible values are " + archetypeNames)
-      }
-      else {
-        archetypeArtifactId = optArchetype.get
-        groupId = args(1)
-        artifactId = args(2)
-        if (args.length > 3) {
-          version = args(3)
-        }
-        if (args.length > 4) {
-          packageName = args(4)
-        }
+  }
 
-        createArchetype()
+  def command(name: String) = {
+    commands.filter(_.name == name).headOption
+  }
+
+  def commands: List[Command] = {
+    if (_commands == null) {
+      debug("loading commands")
+      _commands = discoverCommands
+    }
+    _commands
+  }
+
+
+  def discoverCommands(): List[Command] = {
+    val cl = extensionsClassLoader()
+    Thread.currentThread.setContextClassLoader(cl)
+    discoverCommandClasses().flatMap {
+      name =>
+        try {
+          Some(cl.loadClass(name).newInstance.asInstanceOf[Command])
+        } catch {
+          case e: Exception =>
+            error("Invalid command class: " + name, e)
+            None
+        }
+    }
+  }
+
+  def discoverCommandClasses(): List[String] = {
+    val default = List("org.fusesource.scalate.tool.commands.Create", "org.fusesource.scalate.tool.commands.Run");
+    if (homeDir.isEmpty) {
+      debug("using default commands: " + default)
+      return default
+    }
+
+    val mf = new File(new File(homeDir, "lib"), "commands.manifest");
+    val is: FileInputStream = null
+    try {
+      val p = new Properties()
+      val is = new FileInputStream(mf);
+      p.load(is);
+      val enum = p.keys
+      var rc: List[String] = Nil
+      while (enum.hasMoreElements) {
+        rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
+      }
+      debug("loaded commands: " + default)
+      return rc
+    } catch {
+      case e: Exception =>
+        error("Could not load command list from: " + mf, e)
+        debug("using default commands: " + default)
+        return default;
+    } finally {
+      if (is != null) {
+        is.close()
       }
     }
   }
 
-  def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
+  def extensionsClassLoader(): ClassLoader = {
+    if (homeDir.isEmpty) {
+      getClass.getClassLoader
+    } else {
+      var classLoader = getClass.getClassLoader
+      var urls: List[URL] = Nil
 
-  def createArchetype(): Unit = {
-
-    // lets try find some files from the archetype...
-    val archetypesDir = new File(homeDir + "/archetypes")
-    val file = new File(archetypesDir, archetypeArtifactId + ".jar")
-    if (!file.exists) {
-      println("No such archetype '" + archetypeArtifactId + "' in directory " + archetypesDir)
-    }
-    else {
-      outputDir = userDir + "/" + artifactId
-      val outputFile = new File(outputDir)
-      if (outputFile.exists) {
-        println("Cannot create archetype as " + outputFile.getAbsolutePath + " already exists")
-      }
-      else {
-        if (packageName.length == 0) {
-          packageName = groupId + "." + artifactId
-        }
-
-        println("Creating archetype " + archetypeArtifactId + " using maven groupId: " +
-                groupId + " artifactId: " + artifactId + " version: " + version
-                + " in directory: " + outputDir)
-
-        val zip = new ZipInputStream(new FileInputStream(file))
-        try {
-          var ok = true
-          while (ok) {
-            val entry = zip.getNextEntry
-            if (entry == null) {
-              ok = false
-            }
-            else {
-              val fullName = entry.getName
-              if (!entry.isDirectory && fullName.startsWith(zipEntryPrefix)) {
-                name = fullName.substring(zipEntryPrefix.length)
-                val longSize = entry.getSize
-                val size = longSize.toInt
-                debug("processing resource: " + name)
-                val bos = new ByteArrayOutputStream()
-                val buffer = new Array[Byte](64 * 1024)
-                var bytes = 1
-                while (bytes > 0) {
-                  bytes = zip.read(buffer)
-                  if (bytes > 0) {
-                    bos.write(buffer, 0, bytes)
-                  }
+      val extensionDirs = List(new File(homeDir, "lib"))
+      for (dir <- extensionDirs) {
+        if (dir.isDirectory()) {
+          val files = dir.listFiles();
+          if (files != null) {
+            // Sort the jars so that classpath built is consistently
+            // in the same order. Also allows you to use jar
+            // names to control classpath order.
+            files.sortWith {
+              (x, y) =>
+                x.getName().compareTo(y.getName()) < 0
+            }.foreach {
+              file =>
+                if (file.getName().endsWith(".zip") || file.getName().endsWith(".jar")) {
+                  urls = urls ::: file.toURL() :: Nil
                 }
-                val text = new String(bos.toByteArray)
-                processResource(text)
-              }
-              zip.closeEntry
             }
           }
-
-          println()
-          println("Done. To run the generated project type:")
-          println()
-          println("  cd " + artifactId)
-          println("  mvn jetty:run")
-          println()
-          println("For more help see http://scalate.fusesource.org/documentation/")
-          println()
-
-        } finally {
-          zip.close
         }
       }
+      debug("extension classloader path: " + urls)
+      new URLClassLoader(urls.toArray[URL], classLoader);
     }
   }
 
-
-  protected def processResource(fileContents: String): Unit = {
-    val idx = name.lastIndexOf('/')
-    val dirName = if (packageName.length > 0 && idx > 0 && shouldAppendPackage(name)) {
-      outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
-    }
-    else {
-      outputDir + "/" + name
-    }
-
-    // lets replace properties...
-    val dir = new File(dirName)
-    dir.getParentFile.mkdirs
-    val out = new FileWriter(dir)
-    out.write(transformContents(fileContents))
-    out.close
-  }
-
-  protected def transformContents(fileContents: String): String = {
-
-    var answer = replaceVariable(fileContents, "package", packageName)
-
-    if (name == "pom.xml") {
-      // lets replace groupId and artifactId in pom.xml
-      answer = answer.replaceFirst("""<groupId>.*</groupId>""", """<groupId>""" + groupId + """</groupId>""")
-      answer = answer.replaceFirst("""<artifactId>.*</artifactId>""", """<artifactId>""" + artifactId + """</artifactId>""")
-      answer = answer.replaceFirst("""<version>.*</version>""", """<version>""" + version + """</version>""")
-    }
-    answer
-  }
-
-
-  protected def replaceVariable(text: String, name: String, value: String): String = {
-    text.replaceAll("""([^\\])\$\{""" + name + """\}""", "$1" + value)
-  }
-
-  protected def shouldAppendPackage(name: String) = name.matches("src/(main|test)/(java|scala)/.*")
-
-
-  protected def debug(message: => String): Unit = {
-    if (debug) {
-      println("DEBUG: " + message)
+  def debug(message: => String): Unit = {
+    if (debug_enabled) {
+      System.err.println("DEBUG: " + message)
     }
   }
 
-  protected def warn(message: => String): Unit = {
-    println("WARN: " + message)
+  def info(message: => String = ""): Unit = {
+    println(message)
   }
 
-  protected def error(message: => String): Unit = {
-    println("ERROR: " + message)
+  def warn(message: => String): Unit = {
+    System.err.println("WARN: " + message)
   }
 
-  protected def error(message: => String, exception: Throwable): Unit = {
+  def error(message: => String): Unit = {
+    System.err.println("ERROR: " + message)
+  }
+
+  def error(message: => String, exception: Throwable): Unit = {
     error(message)
-    exception.printStackTrace
+    if (debug_enabled) {
+      exception.printStackTrace
+    }
   }
+
 }
