@@ -33,7 +33,7 @@ To see all of the available commands type this command into a command terminal
 
 Now to create a new project type 
 
-      scalate guice myGroup myArtifact
+      scalate create guice myGroup myArtifact
     
 You might want to change **myGroup** and **myArtifact** to whatever maven groupId and artifactId you want to use. 
 
@@ -43,16 +43,16 @@ Now change directory to the newly created **myArtifact** directory (or whatever 
     
 You should now see a directory tree something like this
 
-      |-src
-      |---main
-      |-----resources
-      |-----scala
-      |-------myGroup
-      |-----webapp
-      |-------WEB-INF
-      |---test
-      |-----scala
-      |-------myGroup
+      src
+      +--main
+      |  |--resources
+      |  +--scala
+      |  |  |--myGroup
+      |  +--webapp
+      |     |--WEB-INF
+      +--test
+         +--scala
+            |--myGroup
 
 If this step didn't work, [let us know](../community.html)!
 
