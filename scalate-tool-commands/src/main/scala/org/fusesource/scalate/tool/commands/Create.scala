@@ -33,6 +33,7 @@ class Create extends Command {
   def summary = "Creates your Scalate project fast to get you scalate-ing!"
 
   def usage() = {
+    intro()
     info("Usage: scalate create [options] archetype groupId artifactId [version] [packageName]")
     info()
     info("  archetype   : the archetype of project to create.")
@@ -50,7 +51,7 @@ class Create extends Command {
     info()
     info("  --help      : Show this help screen")
     info()
-    info("For more help see http://scalate.fusesource.org/tool.html")
+    info("For more help see http://scalate.fusesource.org/documentation/tool.html")
     info()
 
   }
@@ -83,13 +84,11 @@ class Create extends Command {
           val optArchetype = archetypes.get(archetypeName)
           if (optArchetype.isEmpty) {
             info("Invalid syntax: No such archetype '" + archetypeName + "' possible values are " + archetypeNames)
-            info()
             usage()
             return -1
           }
           if( rest.length > 2 ) {
             info("Invalid syntax: too many arguments")
-            info()
             usage()
             return -1
           }
@@ -109,7 +108,6 @@ class Create extends Command {
 
         case _ =>
           info("Invalid syntax: Not enough arguments specified")
-          info()
           usage()
           return -1
       }

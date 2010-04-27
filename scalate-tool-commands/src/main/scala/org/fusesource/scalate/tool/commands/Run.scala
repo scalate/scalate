@@ -35,11 +35,17 @@ class Run extends Command {
   def summary = "Renders a Scalate template file"
 
   def usage() = {
-    info("Usage: scalate run template")
+    intro()
+    info("Usage: scalate run [options] file")
     info()
-    info("  Renders the specified template file")
+    info("Options:")
+    info("  --workdir dir  : Sets the work directory where scalate generates class files to.")
+    info("                   defaults to a temporary directory.")
+    info("  --root dir     : Sets the root of the tempalte search path. ")
+    info("                   defaults to the current directory.")
+    info("  --help         : Shows this help screen")
     info()
-    info("For more help see http://scalate.fusesource.org/tool.html")
+    info("For more help see http://scalate.fusesource.org/documentation/tool.html")
     info()
 
   }
@@ -57,11 +63,16 @@ class Run extends Command {
         case "--help" :: the_rest =>
           usage()
           return 0
+        case "--workdir" :: dir :: the_rest =>
+          this.workdir = new File(dir);
+          return process(the_rest)
+        case "--root" :: dir :: the_rest =>
+          this.root = new File(dir);
+          return process(the_rest)
         case template :: rest =>
           return render(template, rest)
         case _ =>
           info("Invalid syntax: template not specified")
-          info()
           usage()
           return -1
       }
@@ -86,7 +97,8 @@ class Run extends Command {
 
       } catch {
         case e:Exception =>
-          error("failed rendering: "+path, e)
+          error("Could not render: "+path, e)
+          error("Due to: "+e, e)
           return -1
       }
 

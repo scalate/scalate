@@ -16,9 +16,9 @@
  */
 package org.fusesource.scalate.tool
 
-import java.io.{FileInputStream, File}
 import java.net.{URLClassLoader, URL}
 import java.util.Properties
+import java.io.{InputStream, FileInputStream, File}
 
 /**
  * <p>
@@ -36,42 +36,60 @@ import java.util.Properties
  * @version $Revision : 1.1 $
  */
 object Scalate {
-  val scalateVersion = "1.0-SNAPSHOT"
+
+  lazy val scalateVersion = loadScalateVersion
   val homeDir = System.getProperty("scalate.home", "")
   var debug_enabled = false
 
   var _commands: List[Command] = null
 
   def intro() = {
-    println()
-    println("Scalate Tool v. " + scalateVersion + " : http://scalate.fusesource.org/")
-    println()
+    info()
+    if( scalateVersion == None ) {
+      info("Scalate Tool : http://scalate.fusesource.org/")
+    } else {
+      info("Scalate Tool v. " + scalateVersion.get + " : http://scalate.fusesource.org/")
+    }
+    info()
   }
+  
   def usage() = {
     intro()
-    println("Usage: scalate [options] command [command-args]")
-    println()
-    println("Commands:")
-    println()
+    info("Usage: scalate [options] command [command-args]")
+    info()
+    info("Commands:")
+    info()
     commands.foreach { command=>
-      println(String.format("  %-12s : %s", command.name, command.summary))
+      info(String.format("  %-12s : %s", command.name, command.summary))
     }
-    println()
-    println("Options:")
-    println()
-    println("  --debug     : Enables debug logging")
-    println("  --help      : Shows this help screen")
-    println()
-    println("To get help for a command run:")
-    println()
-    println("  scalate command --help")
-    println()
-    println("For more help see http://scalate.fusesource.org/documentation/tool.html")
-    println()
+    info()
+    info("Options:")
+    info()
+    info("  --debug     : Enables debug logging")
+    info("  --help      : Shows this help screen")
+    info()
+    info("To get help for a command run:")
+    info()
+    info("  scalate command --help")
+    info()
+    info("For more help see http://scalate.fusesource.org/documentation/tool.html")
+    info()
+  }
+
+  def loadScalateVersion():Option[String] = {
+    val pomProps = "META-INF/maven/org.fusesource.scalate/scalate-tool/pom.properties"
+    try {
+        val p = loadProperties(getClass.getClassLoader().getResourceAsStream(pomProps));
+        if (p != null) {
+            return Some(p.getProperty("version"));
+        }
+    } catch {
+      case e:Exception=>
+    }
+    return None;
   }
 
   def main(args: Array[String]): Unit = {
-
     if (homeDir.isEmpty) {
       warn("scalate.home system property is not defined!")
     }
@@ -102,15 +120,13 @@ object Scalate {
               case Some(command) =>
                 command.process(the_rest)
               case None =>
-                println("Invalid syntax: unknown command: " + next_arg)
-                println()
+                info("Invalid syntax: unknown command: " + next_arg)
                 usage()
                 return -1;
             }
         }
       case Nil =>
-        println("Invalid syntax: command not specified")
-        println()
+        info("Invalid syntax: command not specified")
         usage()
         return -1;
     }
@@ -152,26 +168,38 @@ object Scalate {
     }
 
     val mf = new File(new File(homeDir, "lib"), "commands.manifest");
-    val is: FileInputStream = null
+    val p = loadProperties(new FileInputStream(mf))
+    if( p==null ) {
+      error("Could not load command list from: " + mf)
+      debug("using default commands: " + default)
+      return default;
+    }
+
+    val enum = p.keys
+    var rc: List[String] = Nil
+    while (enum.hasMoreElements) {
+      rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
+    }
+    debug("loaded commands: " + default)
+    return rc
+  }
+
+  def loadProperties(is:InputStream):Properties = {
+    if( is==null ) {
+      return null;
+    }
     try {
       val p = new Properties()
-      val is = new FileInputStream(mf);
       p.load(is);
-      val enum = p.keys
-      var rc: List[String] = Nil
-      while (enum.hasMoreElements) {
-        rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
-      }
-      debug("loaded commands: " + default)
-      return rc
+      return p
     } catch {
-      case e: Exception =>
-        error("Could not load command list from: " + mf, e)
-        debug("using default commands: " + default)
-        return default;
+      case e:Exception =>
+      return null
     } finally {
-      if (is != null) {
+      try {
         is.close()
+      } catch {
+        case _ =>
       }
     }
   }
