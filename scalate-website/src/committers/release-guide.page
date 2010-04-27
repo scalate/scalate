@@ -24,7 +24,9 @@ How to create releases of Scalate
       git push origin scalate-project-{project_version:}
 
 * update the download.page on the wiki
-* edit the **scalate\_website/src/metainf* file and change the **project\_version** value
+* replace the use of any **project\_new\_version** variables in the website documentation with **project\_version**
+* check the **scalate\_website/src/download.page** and  **scalate\_website/src/tool.page** files are accurate for this release
+* edit the **scalate\_website/src/metainf** file and change the **project\_version** and **project\_new\_version** values
 * blog about the release by creating an entry in **scalate\_website/src/blog/releases**
 * announce the release on the [mailing list](community.html)
 

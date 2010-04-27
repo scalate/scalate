@@ -45,7 +45,7 @@ object Scalate {
       println("  version     : the version of the new project (defaults to 1.0-SNAPSHOT)")
       println("  packageName : the package name of generated scala code")
       println()
-      println("For more help see http://scalate.fusesource.org/tool.html")
+      println("For more help see http://scalate.fusesource.org/documentation/tool.html")
       println()
     }
     else {

@@ -484,7 +484,7 @@ You might want to refer to the [Frameworks Documentation](frameworks.html) to se
 
 Our recommendation is to start with [JOG](jog.html) (Jersey on Guice).
 
-To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html) which uses the [WAR Overlay](war-overlay.html) to include the [Console](console.html) in your web application.
+To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html) which uses the [Scalate Tool](tool.html) and [WAR Overlay](war-overlay.html) to include the [Console](console.html) in your web application.
 
 ### Using Scalate as Servlets in your Web Application
 
