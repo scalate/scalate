@@ -24,6 +24,10 @@ To get started with the Scalate Tool you'll need to download and install it.
 
 [Download a distribution](download.html) such as [1.1-SNAPSHOT zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=tar.gz&c=unix-bin)
 
+The installation step is really just about adding the scalate script to your **PATH** so that its easy to run the tool from any directory you happen to be in. If you know how to do that kind of stuff go right ahead.
+
+You can just run the scalate script directly from your download if you prefer. There follows detailed instructions on how to install the scalate tool to ensure you can run the tool from any directory.
+
 </div>
 
 <div class="left" markdown="1">

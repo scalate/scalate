@@ -113,5 +113,5 @@ class JettyServer {
 
   def addFileSeparator(path: String) = if (path == null || path.length == 0) "" else path + "/"
 
-  def exists(names: String*): Option[File] = names.map(new File(_)).find {f => val answer = f.exists; println("file " + f + " = " + answer); answer}
+  def exists(names: String*): Option[File] = names.map(new File(_)).find {f => f.exists}
 }
