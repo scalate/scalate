@@ -45,5 +45,12 @@
         <include>**/*.scala</include>
       </includes>
     </fileSet>
+    <!-- sbt build -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory>project</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
   </fileSets>
 </archetype-descriptor>

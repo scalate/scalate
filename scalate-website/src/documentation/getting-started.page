@@ -23,54 +23,41 @@ This guide will assume you have a reasonably recent installation of [Maven](http
 # Create a project
 </div>
 <div class="right" markdown="1">
-Lets use one of the Scalate Maven archetypes to create a new [Jog](jog.html) project that we can use as a base on which to build.
+Lets create a new [Jog](jog.html) project that we can use as a base on which to build.
 
-In a command line type this:
+If you have not done so already [install the Scalate Tool](tool.html). If you prefer you can create projects using the [Scalate Maven archetypes via maven](archetypes.html) instead of using Scalate Tool
 
-    mvn org.apache.maven.plugins:maven-archetype-plugin:2.0-alpha-4:generate \
-      -DarchetypeGroupId=org.fusesource.scalate.tooling \
-      -DarchetypeArtifactId=scalate-archetype-guice \
-      -DarchetypeVersion=1.0 \
-      -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/public \
-      -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT
+To see all of the available commands type this command into a command terminal
+
+      scalate
+
+Now to create a new project type 
+
+      scalate guice myGroup myArtifact
     
-You might want to change the last line changing *myGroup* and *myArtifact* to whatever maven groupId and artifactId you want to use.
+You might want to change **myGroup** and **myArtifact** to whatever maven groupId and artifactId you want to use. 
 
-The maven archetype plugin will ask you to hit enter to confirm those settings.
+Now change directory to the newly created **myArtifact** directory (or whatever name you used for the artifactId)  
 
-Now change directory to the new *myArtifact* directory (or whatever name you used for the artifactId)  
-
-    cd myArtifact  
+      cd myArtifact  
     
 You should now see a directory tree something like this
 
-    |-src
-    |---main
-    |-----resources
-    |-----scala
-    |-------myGroup
-    |-----webapp
-    |-------WEB-INF
-    |---test
-    |-----scala
-    |-------myGroup
+      |-src
+      |---main
+      |-----resources
+      |-----scala
+      |-------myGroup
+      |-----webapp
+      |-------WEB-INF
+      |---test
+      |-----scala
+      |-------myGroup
 
 If this step didn't work, [let us know](../community.html)!
 
 Hopefully you now have a base [Jog](jog.html) project using Scalate, Scala, [Jersey](https://jersey.dev.java.net/) and [Guice](http://code.google.com/p/google-guice/).
 
-## Using the latest snapshot
-
-If you want to take advantage of any improvements in the console and archetypes since the {project_version:} release you can use this mechanism of creating the archetype
-
-    mvn archetype:generate \
-      -DarchetypeGroupId=org.fusesource.scalate.tooling \
-      -DarchetypeArtifactId=scalate-archetype-guice \
-      -DarchetypeVersion={project_snapshot_version:} \
-      -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/snapshots \
-      -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT
-
-This will use the latest snapshot of the archetype instead.
 </div>
 
 <div class="left" markdown="1">
@@ -79,7 +66,7 @@ This will use the latest snapshot of the archetype instead.
 <div class="right" markdown="1">
 To run the project run the following command
 
-    mvn jetty:run
+      mvn jetty:run
     
 Now when the application starts up you should be able to point your browser at [http://localhost:8080](http://localhost:8080) to run the application.
 

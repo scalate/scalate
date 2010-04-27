@@ -66,7 +66,7 @@ object Scalate {
     println()
     println("  scalate command --help")
     println()
-    println("For more help see http://scalate.fusesource.org/tool.html")
+    println("For more help see http://scalate.fusesource.org/documentation/tool.html")
     println()
   }
 

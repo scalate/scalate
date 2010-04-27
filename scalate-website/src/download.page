@@ -25,6 +25,8 @@ You can download a recent snapshot from the [Snapshot Maven Repository](http://r
 
 * [1.1-SNAPSHOT zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=1.1-SNAPSHOT&e=tar.gz&c=unix-bin)
 
+You can now [install the Scalate Tool](documentation/tool.html)
+
 </div>
 
 <div class="left" markdown="1">
