@@ -28,8 +28,8 @@ import java.io.{InputStream, FileInputStream, File}
  * Add new commands by:
  * <ol>
  *   <li>Implementing the the {@link Command} trait</li>
- *   <li>Jar it up and drop it into the <code>${scalate.home}/lib</code> directory.</li>
- *   <li>Append the class name of the command to the <code>${scalate.home}/lib/commands.manifest</code> file</li>
+ *   <li>Add the class names of the new commands to a <code>META-INF/services/org.fusesoruce.scalate/commands</code> file in your jar</li>
+ *   <li>Drop your new jar into the <code>${scalate.home}/lib</code> directory.</li>
  * </ol>
  * </p>
  *
@@ -161,26 +161,22 @@ object Scalate {
   }
 
   def discoverCommandClasses(): List[String] = {
-    val default = List("org.fusesource.scalate.tool.commands.Create", "org.fusesource.scalate.tool.commands.Run");
-    if (homeDir.isEmpty) {
-      debug("using default commands: " + default)
-      return default
-    }
-
-    val mf = new File(new File(homeDir, "lib"), "commands.manifest");
-    val p = loadProperties(new FileInputStream(mf))
-    if( p==null ) {
-      error("Could not load command list from: " + mf)
-      debug("using default commands: " + default)
-      return default;
-    }
-
-    val enum = p.keys
     var rc: List[String] = Nil
-    while (enum.hasMoreElements) {
-      rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
+    val resources = extensionsClassLoader.getResources("META-INF/services/org.fusesoruce.scalate/commands")
+    while(resources.hasMoreElements) {
+      val url = resources.nextElement;
+      debug("loaded commands from " + url)
+      val p = loadProperties(url.openStream)
+      if( p==null ) {
+        error("Could not load command list from: " + url)
+      }
+      val enum = p.keys
+      while (enum.hasMoreElements) {
+        rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
+      }
     }
-    debug("loaded commands: " + default)
+    rc = rc.removeDuplicates
+    debug("loaded commands: " + rc)
     return rc
   }
 
