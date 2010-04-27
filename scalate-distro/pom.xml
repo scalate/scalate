@@ -45,6 +45,63 @@
       <artifactId>scalate-test</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-tool</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+    <!-- archetypes to include -->
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-empty</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-guice</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-guice</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     
 
     <!-- TODO include examples

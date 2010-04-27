@@ -1,0 +1,157 @@
+#!/bin/sh
+# ------------------------------------------------------------------------
+# Copyright (C) 2009 Progress Software, Inc. All rights reserved.
+# http://fusesource.com
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ------------------------------------------------------------------------
+
+# load system-wide scalate configuration
+if [ -f "/etc/scalate.conf" ] ; then
+  . /etc/scalate.conf
+fi
+
+# provide default values for people who don't use RPMs
+if [ -z "$usejikes" ] ; then
+  usejikes=false;
+fi
+
+# load user scalate configuration
+if [ -f "$HOME/.scalaterc" ] ; then
+  . "$HOME/.scalaterc"
+fi
+
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false;
+darwin=false;
+case "`uname`" in
+  CYGWIN*) cygwin=true ;;
+  Darwin*) darwin=true
+           if [ -z "$JAVA_HOME" ] ; then
+             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+           fi
+           ;;
+esac
+
+if [ -z "$SCALATE_HOME" ] ; then
+  # try to find SCALATE
+  if [ -d /opt/scalate ] ; then
+    SCALATE_HOME=/opt/scalate
+  fi
+
+  if [ -d "${HOME}/opt/scalate" ] ; then
+    SCALATE_HOME="${HOME}/opt/scalate"
+  fi
+
+  ## resolve links - $0 may be a link to scalate's home
+  PRG="$0"
+  progname=`basename "$0"`
+  saveddir=`pwd`
+
+  # need this for relative symlinks
+  dirname_prg=`dirname "$PRG"`
+  cd "$dirname_prg"
+
+  while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '.*/.*' > /dev/null; then
+    PRG="$link"
+    else
+    PRG=`dirname "$PRG"`"/$link"
+    fi
+  done
+
+  SCALATE_HOME=`dirname "$PRG"`
+
+  cd "$saveddir"
+
+  # make it fully qualified
+  SCALATE_HOME=`cd "$SCALATE_HOME/.." && pwd`
+fi
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if $cygwin ; then
+  [ -n "$SCALATE_HOME" ] &&
+    SCALATE_HOME=`cygpath --unix "$SCALATE_HOME"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
+fi
+
+if [ -z "$JAVACMD" ] ; then
+  if [ -n "$JAVA_HOME"  ] ; then
+    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
+      # IBM's JDK on AIX uses strange locations for the executables
+      JAVACMD="$JAVA_HOME/jre/sh/java"
+    else
+      JAVACMD="$JAVA_HOME/bin/java"
+    fi
+  else
+    JAVACMD=`which java 2> /dev/null `
+    if [ -z "$JAVACMD" ] ; then
+        JAVACMD=java
+    fi
+  fi
+fi
+
+if [ ! -x "$JAVACMD" ] ; then
+  echo "Error: JAVA_HOME is not defined correctly."
+  echo "  We cannot execute $JAVACMD"
+  exit 1
+fi
+
+if [ -z "$SCALATE_BASE" ] ; then
+  SCALATE_BASE="$SCALATE_HOME"
+fi
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  SCALATE_HOME=`cygpath --windows "$SCALATE_HOME"`
+  SCALATE_BASE=`cygpath --windows "$SCALATE_BASE"`
+  SCALATE_CLASSPATH=`cygpath --path --windows "$SCALATE_CLASSPATH"`
+  JAVA_HOME=`cygpath --windows "$JAVA_HOME"`
+  CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  CYGHOME=`cygpath --windows "$HOME"`
+fi
+
+if [ -z "$SCALATE_OPTS" ] ; then
+  SCALATE_OPTS="-Xmx512M"
+fi
+
+if [ -z "$SUNJMX" ] ; then
+  #SUNJMX="-Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+  SUNJMX="-Dcom.sun.management.jmxremote"
+fi
+
+SCALATE_OPTS="$SCALATE_OPTS $SUNJMX"
+
+# Optionally enable YourKit debugging
+if [ "x$YOURKIT_DEBUG" != "x" ]; then
+    SCALATE_DEBUG_OPTS="-agentlib:yjpagent"
+fi
+
+# Optionally enable remote debugging
+if [ "x$SCALATE_DEBUG" != "x" ]; then
+    SCALATE_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
+fi
+
+SCALATE_CLASS="-classpath "${SCALATE_HOME}/lib/scalate-tool-${project.version}.jar:${SCALATE_HOME}/lib/scala-library-${scala-version}.jar" org.fusesource.scalate.tool.Scalate"
+
+if [ -n "$CYGHOME" ]; then
+    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" -Dcygwin.user.home="$CYGHOME" $SCALATE_CLASS $@
+else
+    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" $SCALATE_CLASS $@
+fi
+

@@ -11,10 +11,20 @@
       <directory>src/main/release</directory>
       <outputDirectory>/</outputDirectory>
       <excludes>
-        <!--<exclude>bin/**</exclude>-->
+        <exclude>bin/**</exclude>
       </excludes>
       <lineEnding>dos</lineEnding>
     </fileSet>
+    <fileSet>
+      <directory>src/main/release/bin</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <lineEnding>dos</lineEnding>
+<!--
+      <fileMode>0755</fileMode>
+-->
+      <filtered>true</filtered>
+    </fileSet>
+
     <fileSet>
       <directory>..</directory>
       <outputDirectory>/</outputDirectory>

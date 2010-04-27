@@ -2,7 +2,7 @@ package org.fusesource.scalate.tool
 
 import java.util.{List => JList, Map => JMap}
 import java.util.zip.ZipInputStream
-import java.io.{FileWriter, File, ByteArrayOutputStream}
+import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
 
 /**
  * The command line tool for Scalate
@@ -22,17 +22,30 @@ object Scalate {
   var archetypeArtifactId = ""
   var name = ""
   var debug = false
+  val homeDir = System.getProperty("scalate.home", "")
 
 
   def main(args: Array[String]): Unit = {
+    println()
+    println("Scalate Tool : http://scalate.fusesource.org/")
+    println("Creates your Scalate project fast to get you scalate-ing!")
+    println()
+
+    if (homeDir.length == 0) {
+      warn("scalate.home system property is not defined!")
+    }
+    debug("Scalate home dir = " + homeDir)
+
     if (args.length < 3) {
-      println("Scalate Tool")
+      println("Usage: archetype groupId artifactId [version] [packageName]")
       println()
-      println("Usage: archetype groupId artifactId [version]")
-      println("  archetype  : the archetype of project to create. Values are " + archetypeNames)
-      println("  groupId    : the maven group Id of the new project")
-      println("  artifactId : the maven artifact Id of the new project")
-      println("  version    : the version of the new project (defaults to 1.0-SNAPSHOT)")
+      println("  archetype   : the archetype of project to create. Values are " + archetypeNames)
+      println("  groupId     : the maven group Id of the new project")
+      println("  artifactId  : the maven artifact Id of the new project")
+      println("  version     : the version of the new project (defaults to 1.0-SNAPSHOT)")
+      println("  packageName : the package name of generated scala code")
+      println()
+      println("For more help see http://scalate.fusesource.org/tool.html")
       println()
     }
     else {
@@ -48,21 +61,24 @@ object Scalate {
         if (args.length > 3) {
           version = args(3)
         }
+        if (args.length > 4) {
+          packageName = args(4)
+        }
 
         createArchetype()
       }
     }
   }
 
-  def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _)
+  def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
 
   def createArchetype(): Unit = {
 
     // lets try find some files from the archetype...
-    val path = "archetypes/" + archetypeArtifactId + ".jar"
-    val url = getClass.getClassLoader.getResource(path)
-    if (url == null) {
-      println("No such archetype '" + archetypeArtifactId + "'")
+    val archetypesDir = new File(homeDir + "/archetypes")
+    val file = new File(archetypesDir, archetypeArtifactId + ".jar")
+    if (!file.exists) {
+      println("No such archetype '" + archetypeArtifactId + "' in directory " + archetypesDir)
     }
     else {
       outputDir = userDir + "/" + artifactId
@@ -71,13 +87,15 @@ object Scalate {
         println("Cannot create archetype as " + outputFile.getAbsolutePath + " already exists")
       }
       else {
-        packageName = groupId + "." + artifactId
+        if (packageName.length == 0) {
+          packageName = groupId + "." + artifactId
+        }
 
         println("Creating archetype " + archetypeArtifactId + " using maven groupId: " +
                 groupId + " artifactId: " + artifactId + " version: " + version
                 + " in directory: " + outputDir)
 
-        val zip = new ZipInputStream(url.openStream)
+        val zip = new ZipInputStream(new FileInputStream(file))
         try {
           var ok = true
           while (ok) {
@@ -113,6 +131,8 @@ object Scalate {
           println()
           println("  cd " + artifactId)
           println("  mvn jetty:run")
+          println()
+          println("For more help see http://scalate.fusesource.org/documentation/")
           println()
 
         } finally {
