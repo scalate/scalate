@@ -30,6 +30,15 @@ How to create releases of Scalate
 * blog about the release by creating an entry in **scalate\_website/src/blog/releases**
 * announce the release on the [mailing list](community.html)
 
+## Moving the website generation
+
+* if the release is a major release then deploy the current website in branch scalate-1.0.x to scalate.fusesource.org/version/1.0
+* create a branch for this new release if its a major release. For example if you've just done 1.0 then do this...
+    git co scalate-project-1.0 -b scalate-1.0.x
+    git push scalate-1.0.x origin
+
+* amend the last-release webgen CI build to use the new branch scalate-1.0.x to update the website. That lets us update the documentation for the current release using this branch while master can become new features which don't make it to the public site yet - but are available to surf in the version/1.x-SNAPSHOT area of the site.
+
 ## Using a temporary local repo
 
 To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo...
