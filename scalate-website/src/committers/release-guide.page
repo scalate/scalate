@@ -10,8 +10,18 @@ How to create releases of Scalate
 
 # Release Steps
 
+Various documentation changes first (which should be done before the release is cut)
+
+* update the download.page on the wiki
+* replace the use of any **project\_new\_version** variables in the website documentation with **project\_version**
+* check the **scalate\_website/src/download.page** and  **scalate\_website/src/tool.page** files are accurate for this release
+* edit the **scalate\_website/src/metainf** file and change the **project\_version** and **project\_new\_version** values
+* blog about the release by creating an entry in **scalate\_website/src/blog/releases**
+
+Cutting the release 
+
+* **NOTE** make sure you are using a clone of your local git repository for doing the release! See below on the use of temporary local repo...
 * check your repo is clean and you are on master branch
-* make sure you are using a clone of your usual repo! See below on the use of temporary local repo...
 * until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment/uncomment the snapshot version in the root pom.xml
 * prepare the release
 
@@ -21,21 +31,20 @@ How to create releases of Scalate
 
       mvn release:perform -P release
 
-* push the tag from git
+* open [Nexus Staging](http://repo.fusesource.com/nexus/index.html#staging) and close the Staging release of scalate
+* now Promote the closed release
+* now you'll need to tidy up your local repo (the real clone of github) and push changes back to github
 
+      git rebase --hard
+      git push
       git push origin scalate-project-{project_version:}
 
-* update the download.page on the wiki
-* replace the use of any **project\_new\_version** variables in the website documentation with **project\_version**
-* check the **scalate\_website/src/download.page** and  **scalate\_website/src/tool.page** files are accurate for this release
-* edit the **scalate\_website/src/metainf** file and change the **project\_version** and **project\_new\_version** values
-* blog about the release by creating an entry in **scalate\_website/src/blog/releases**
 * announce the release on the [mailing list](community.html)
 
-## Moving the website generation
+## Switching website generation to the last release branch
 
 * if the release is a major release then deploy the current website in branch scalate-{project_version:}.x to scalate.fusesource.org/version/{project_version:}
-* create a branch for this new release if its a major release. For example if you've just done {project_version:} then do this...
+* create a branch for this new release if its a major release. Typically this will be a branch from master as you'll have made some changes above to update the website to point to the new release etc. For example if you've just done {project_version:} then do this...
 
       git co scalate-project-{project_version:} -b scalate-{project_version:}.x
       git push scalate-{project_version:}.x origin
@@ -47,8 +56,11 @@ How to create releases of Scalate
 To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo...
 
     git clone file:///foo/scalate scalate-release
-    
 
+You probably want to set this property too if you're using git 1.6 or later to avoid your release prepare barfing...
+
+    git config receive.denycurrentbranch warn
+    
 then edit your **~/.m2/settings.xml** file and add this...
 
     <settings>
@@ -63,4 +75,3 @@ then edit your **~/.m2/settings.xml** file and add this...
 
 then perform a release in this new **scala-release** directory. This will then push to your local repo, not the remote one.
 
-    
