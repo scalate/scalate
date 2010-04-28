@@ -11,6 +11,7 @@ How to create releases of Scalate
 # Release Steps
 
 * check your repo is clean and you are on master branch
+* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment/uncomment the snapshot version in the root pom.xml
 * prepare the release
 
       mvn release:prepare -P release
