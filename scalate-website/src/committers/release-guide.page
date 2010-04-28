@@ -11,6 +11,7 @@ How to create releases of Scalate
 # Release Steps
 
 * check your repo is clean and you are on master branch
+* make sure you are using a clone of your usual repo! See below on the use of temporary local repo...
 * until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment/uncomment the snapshot version in the root pom.xml
 * prepare the release
 
@@ -45,7 +46,7 @@ How to create releases of Scalate
 
 To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo...
 
-    git clone file:///foo/scala scala-release
+    git clone file:///foo/scalate scalate-release
     
 
 then edit your **~/.m2/settings.xml** file and add this...
