@@ -32,6 +32,7 @@
 
     <!-- version info -->
     <asm-version>3.1</asm-version>
+    <jar-plugin-version>2.3</jar-plugin-version>
     <jersey-version>1.1.5.1</jersey-version>
     <jetty-version>6.1.22</jetty-version>
     <jetty-plugin-version>7.0.1.v20091125</jetty-plugin-version>
@@ -171,16 +172,6 @@
   </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala-version}</version>
-    </dependency>
   </dependencies>
 
   <dependencyManagement>
@@ -288,7 +279,20 @@
               <!-- arg>-unchecked</arg -->
               <arg>-deprecation</arg>
             </args>
-            <scala-version>${scala-version}</scala-version>
+            <scalaVersion>${scala-version}</scalaVersion>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${jar-plugin-version}</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
           </configuration>
         </plugin>
 

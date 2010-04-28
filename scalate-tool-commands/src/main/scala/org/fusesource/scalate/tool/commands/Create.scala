@@ -33,7 +33,6 @@ class Create extends Command {
   def summary = "Creates your Scalate project fast to get you scalate-ing!"
 
   def usage() = {
-    intro()
     info("Usage: scalate create [options] archetype groupId artifactId [version] [packageName]")
     info()
     info("  archetype   : the archetype of project to create.")

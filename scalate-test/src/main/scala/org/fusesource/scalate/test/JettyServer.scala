@@ -1,7 +1,5 @@
 package org.fusesource.scalate.test
 
-import java.io.File
-
 import org.apache.commons.logging.LogFactory
 import org.mortbay.jetty.Connector
 import org.mortbay.jetty.Handler
@@ -9,6 +7,9 @@ import org.mortbay.jetty.Server
 import org.mortbay.jetty.nio.SelectChannelConnector
 import org.mortbay.jetty.webapp.WebAppContext
 import org.mortbay.resource.ResourceCollection
+import org.fusesource.scalate.util.IOUtil
+import java.io.{FileInputStream, File}
+import java.util.zip.ZipEntry
 
 /**
  * @version $Revision : 1.1 $
@@ -104,7 +105,45 @@ class JettyServer {
     }
 
     if (basedir.contains(overlayProject)) {null} else {
-      findOverlayModuleInParent(basedir)
+      var answer = findOverlayModuleInParent(basedir)
+      if (answer == null) {
+        // lets try find the WAR in the local repo
+        val p = getClass.getPackage
+        if (p == null) {
+          LOG.warn("No package found for class: " + getClass.getName)
+        }
+        else {
+          var version = p.getSpecificationVersion
+          if (version == null) {
+            version = p.getImplementationVersion
+          }
+          if (version == null) {
+            LOG.warn("No version available for " + p)
+          }
+          else {
+            val war = new File(System.getProperty("user.home", "~") + "/.m2/repository/org/fusesource/scalate/scalate-war/" + version + "/scalate-war-" + version + ".war")
+            println("Looking for war at " + war.getAbsolutePath + " exists: " + war.exists)
+            if (war.exists) {
+              // lets extract the war to a temporary directory...
+              // lets not do this if it already exists and the WAR is older than the directory!
+              answer = basedir + "/target/scalate-war-overlay"
+              val warDir = new File(answer)
+              if (warDir.exists && warDir.lastModified <= war.lastModified) {
+                println("Removing old expanded war " + warDir)
+                IOUtil.recursiveDelete(warDir)
+              }
+              if (!warDir.exists) {
+                println("Unpacking " + war + " to " + warDir)
+                IOUtil.unjar(warDir, new FileInputStream(war), (!_.getName.matches("WEB-INF/(lib|_scalate).*")))
+              }
+            }
+            else {
+              LOG.warn("No scalate war found in local repo at " + war.getAbsolutePath)
+            }
+          }
+        }
+      }
+      answer
     }
   }
 

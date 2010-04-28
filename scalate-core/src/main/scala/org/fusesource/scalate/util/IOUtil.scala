@@ -18,8 +18,9 @@
 package org.fusesource.scalate.util
 
 import java.io._
+import java.util.zip.{ZipEntry, ZipInputStream}
 
-object IOUtil {
+object IOUtil extends Logging {
 
   /**
    * Creates any parent directories of the given path if they do not exist
@@ -40,11 +41,11 @@ object IOUtil {
    * Recursively deletes a file and all of it's children files if it's a directory.
    */
   def rdelete(file: File): Boolean = {
-    if( file.isDirectory ) {
+    if (file.isDirectory) {
       val children = file.listFiles
-      if( children!=null ) {
-        for( child <- children ) {
-           rdelete(child)
+      if (children != null) {
+        for (child <- children) {
+          rdelete(child)
         }
       }
     }
@@ -140,4 +141,64 @@ object IOUtil {
     charsCopied
   }
 
+  /**
+   * Unjars the given stream for entries which match the optional filter to the given directory
+   */
+  def unjar(outputDir: File, input: InputStream, filter: ZipEntry => Boolean = allZipEntries): Unit = {
+    val zip = new ZipInputStream(input)
+    try {
+      val buffer = new Array[Byte](64 * 1024)
+      var ok = true
+      while (ok) {
+        val entry = zip.getNextEntry
+        if (entry == null) {
+          ok = false
+        }
+        else {
+          val name = entry.getName
+          if (!entry.isDirectory && filter(entry)) {
+            debug("processing resource: " + name)
+            val file = new File(outputDir.getCanonicalPath + "/" + name)
+            file.getParentFile.mkdirs
+            val bos = new FileOutputStream(file)
+            try {
+              var bytes = 1
+              while (bytes > 0) {
+                bytes = zip.read(buffer)
+                if (bytes > 0) {
+                  bos.write(buffer, 0, bytes)
+                }
+              }
+            } finally {
+              bos.close
+            }
+          }
+          zip.closeEntry
+        }
+      }
+    }
+    finally {
+      zip.close
+    }
+  }
+
+  /**
+   * Recursively deletes the directory and all its children which match the optional filter
+   */
+  def recursiveDelete(file: File, filter: File => Boolean = allFiles): Unit = {
+    if (file.exists) {
+      if (file.isDirectory) {
+        for (c <- file.listFiles) {
+          recursiveDelete(c)
+        }
+      }
+      if (filter(file)) {
+        file.delete
+      }
+    }
+  }
+
+  protected def allZipEntries(entry: ZipEntry): Boolean = true
+
+  protected def allFiles(file: File): Boolean = true
 }
