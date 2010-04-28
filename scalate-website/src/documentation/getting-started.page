@@ -64,10 +64,10 @@ Hopefully you now have a base [Jog](jog.html) project using Scalate, Scala, [Jer
 # Run the new project
 </div>
 <div class="right" markdown="1">
-To run the project run the following command
+To run the project run the following [Maven](http://maven.apache.org/) command
 
       mvn jetty:run
-    
+        
 Now when the application starts up you should be able to point your browser at [http://localhost:8080](http://localhost:8080) to run the application.
 
 Your application is now ready for you to create new JAXRS resource beans (in Scala or Java code) as well as rendering any Scalate templates in the **src/main/webapp** directory.
@@ -87,6 +87,21 @@ The [Scalate Console](console.html) provides nice error messages if you make a t
 
 Please refer to the [Console documentation](console.html) for more detail.
 </div>
+
+<div class="left" markdown="1">
+# Using SBT
+</div>
+<div class="right" markdown="1">
+You can also compile the code with SBT (or [Simple build tool](http://code.google.com/p/simple-build-tool/)) if you prefer instead of Maven. Type the following commands into a terminal (the first command enters the SBT shell)
+
+      sbt
+      update
+      compile
+    
+At the time of writing there are [some issues with WAR overlays and SBT](http://code.google.com/p/simple-build-tool/issues/detail?id=87) so jetty-run might not work correctly.
+</div>
+
+
 
 <div class="left" markdown="1">
 # Diving deeper
