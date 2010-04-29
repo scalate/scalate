@@ -3,7 +3,7 @@
 * Table of contents
 {:toc}
 
-Ssp pages are like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails in syntax but using Scala code for expressions instead of Java/EL/Ruby.
+Ssp pages are like a Scala version of [Velocity](#velocity_style_directives), JSP or Erb from Rails in syntax but using Scala code for expressions instead of Java/EL/Ruby.
 
 If you know Velocity, JSP or Erb then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
@@ -52,6 +52,8 @@ is rendered as:
 <p>hello there you!</p>
 {pygmentize}
 
+If you like to use [Velocity style directives](#velocity_style_directives) you can also use [`#{` `}#`](#_and__scriplets)
+
 ### Attributes: `<%@ %>`
 
 When a Scalate template is rendered, the caller can pass an attribute map
@@ -99,7 +101,7 @@ Which is the same as:
 
 ### Velocity style directives
 
-To perform logical branching or looping Scalate supports [Velocity](http://velocity.apache.org/) style directives - from version 1.1 onwards.
+To perform logical branching or looping Scalate supports [Velocity](http://velocity.apache.org/) style directives.
 
 The velocity style directives all start with a `#` and either take an expression in parens, or don't.
 
