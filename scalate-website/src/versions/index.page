@@ -15,8 +15,8 @@ Documentation Versions
 </div>
 <div class="right" markdown="1">
   
-* [Current Documentation](../index.html)
-* [1.1](1.1/index.html)
+* [Current Release](../index.html)
+* [1.1 Release](http://scalate.fusesource.org/versions/1.1/index.html)
 
 </div>
 
@@ -27,7 +27,7 @@ Documentation Versions
 
 <div class="right" markdown="1">
   
-* [Development Snapshot](snapshot/index.html)
+* [Development Snapshot](http://scalate.fusesource.org/versions/snapshot/index.html) based on {project_snapshot_version:}
 
 </div>
 

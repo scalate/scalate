@@ -4,7 +4,7 @@ in_menu: true
 sort_info: 1
 --- name:overview pipeline:haml,tags
 
-%h1 {project_name:}
+%h1 Scalate {project_version:}
 
 {project_slogan:}
 
