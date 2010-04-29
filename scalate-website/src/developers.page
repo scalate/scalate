@@ -13,9 +13,13 @@ Various links for developers
 # Developer Links
 </div>
 <div class="right" markdown="1">
+  
 * [Building](building.html)
 * [Contributing](contributing.html)
 * [Release Guide](committers/release-guide.html)
+* [Website for Master branch](http://scalate.fusesource.org/versions/snapshot/) (based on {project_snapshot_version:})
+* [Older Versions](http://scalate.fusesource.org/versions/)
+
 </div>
 
 
@@ -36,9 +40,13 @@ Various links for developers
 # Maven reports
 </div>
 <div class="right" markdown="1">
+  
+* [{project_version:} Release](http://scalate.fusesource.org/maven/{project_version:}/)
+* [1.0 Release](http://scalate.fusesource.org/maven/1.0)
+
 ## Snapshots
 
-* [{project_snapshot_version:}](http://scalate.fusesource.org/maven/{project_snapshot_version:}/)
+* [{project_snapshot_version:}](http://scalate.fusesource.org/maven/{project_snapshot_version:}/) | [website](http://scalate.fusesource.org/versions/snapshot/)
 
 <!--
 ## Releases
