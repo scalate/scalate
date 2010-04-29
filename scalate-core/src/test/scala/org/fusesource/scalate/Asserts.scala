@@ -1,5 +1,8 @@
 package org.fusesource.scalate
 
+import scuery.Transformer
+import xml.NodeSeq
+
 /**
  * @version $Revision : 1.1 $
  */

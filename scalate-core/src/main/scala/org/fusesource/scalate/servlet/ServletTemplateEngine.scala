@@ -63,14 +63,13 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   // If the scalate.workingdir is not set, then just configure the working
   // directory under WEB_INF/_scalate
   if ( System.getProperty("scalate.workingdir", "").isEmpty ) {
-
     val path = config.getServletContext.getRealPath("WEB-INF")
     if (path != null) {
       workingDirectory = new File(path, "_scalate")
       workingDirectory.mkdirs
     }
-
   }
+  
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   layoutStrategy = new DefaultLayoutStrategy(this, "/WEB-INF/scalate/layouts/default.scaml", "/WEB-INF/scalate/layouts/default.ssp")
@@ -97,5 +96,4 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
 
     builder.classPath
   }
-
 }

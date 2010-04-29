@@ -39,7 +39,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
   @Consumes(Array("application/x-www-form-urlencoded"))
   def post(form: Form) = {
     _form = form
-    println("Posted: " + form)
+    debug("Posted: " + form)
 
     // TODO - find the post template
     // validate it, if missing parameters, barf and re-render the view with the current values
