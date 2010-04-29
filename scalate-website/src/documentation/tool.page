@@ -69,3 +69,25 @@ Or you can just run the scalate script directly from your download if you prefer
       
 </div>
 
+<div class="left" markdown="1">
+# Mac OS X and Homebrew
+</div>
+<div class="right" markdown="1">
+
+If you use OS X then we highly recommend using [Homebrew](http://mxcl.github.com/homebrew/) to manage installation of tools. If you have not done so already please [Install Homebrew](http://wiki.github.com/mxcl/homebrew/installation).
+
+Note we are waiting for [this isssue to be merged](http://github.com/mxcl/homebrew/issues/issue/1274); until then apply changes in the [scalate fork of homebrew](http://github.com/scalate/homebrew) as follows
+
+      gem install github
+      github pull scalate
+
+Now we can install scalate using Homebrew
+
+      brew install scalate
+      
+The scalate executable should now be available from any terminal. To verify this works try typing
+
+      scalate
+      
+</div>
+
