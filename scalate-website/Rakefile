@@ -91,7 +91,6 @@ Fuse::SitecopyTask.new("forgesite", <<-SITECOPYRC)
   ignore /maven
   ignore /versions
   ignore /repo
-  ignore /versions
   ignore /.htaccess
   exclude /.htaccess
     
