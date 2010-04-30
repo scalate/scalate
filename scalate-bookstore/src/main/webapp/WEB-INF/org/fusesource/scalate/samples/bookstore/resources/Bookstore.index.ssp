@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ val it: Bookstore %>
+<%@ import val it: Bookstore %>
 <html>
 <body>
 <h1>Bookstore</h1>
@@ -10,6 +10,8 @@
   <li><a href="id/item1">Item1</a></li>
   <li><a href="id/item2">Item2</a></li>
 </ul>
+
+<p>The foo service is: <b>${fooService.name}</b></p>
 
 </body>
 </html>

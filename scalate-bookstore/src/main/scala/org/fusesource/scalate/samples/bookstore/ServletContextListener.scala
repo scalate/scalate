@@ -1,8 +1,9 @@
 package org.fusesource.scalate.samples.bookstore
 
-import _root_.com.google.inject.Guice
 import _root_.com.google.inject.servlet.GuiceServletContextListener
 import _root_.org.fusesource.scalate.guice.ScalateModule
+import com.google.inject.{Provides, Guice}
+import service.FooService
 
 /**
  * A servlet context listener which registers
@@ -15,10 +16,10 @@ class ServletContextListener extends GuiceServletContextListener {
 
   def getInjector = Guice.createInjector(new ScalateModule() {
 
-    // TODO add some custom provider methods here
-    // which can then be injected into resources or templates
-    //
-    // @Provides def createSomething = new MyThing()
+    @Provides
+    def foo = new FooService {
+      def name = "MyFoo"
+    }
 
     // lets add any package names which contain JAXRS resources
     // https://jersey.dev.java.net/issues/show_bug.cgi?id=485
