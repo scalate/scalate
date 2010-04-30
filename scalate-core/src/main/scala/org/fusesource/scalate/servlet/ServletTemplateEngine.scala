@@ -62,7 +62,7 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
 
   // If the scalate.workingdir is not set, then just configure the working
   // directory under WEB_INF/_scalate
-  if ( System.getProperty("scalate.workingdir", "").isEmpty ) {
+  if ( System.getProperty("scalate.workingdir", "").length == 0 ) {
     val path = config.getServletContext.getRealPath("WEB-INF")
     if (path != null) {
       workingDirectory = new File(path, "_scalate")
