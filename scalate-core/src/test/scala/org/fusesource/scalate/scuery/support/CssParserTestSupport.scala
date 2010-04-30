@@ -14,7 +14,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     test("assertFilter: " + selector) {
       val actual = xml.$(selector)
 
-      println("filtering selector: " + selector + " expected: " + expected + " actual: " + actual)
+      debug("filtering selector: " + selector + " expected: " + expected + " actual: " + actual)
       expect(expected) {actual}
     }
   }
@@ -27,7 +27,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     test(message + css + " on " + summary(node)) {
       val selector = Selector(css)
       val parents = parentsOf(node)
-      println("testing selector: " + selector + " on " + summary(node) + " with parents: " + summary(parents))
+      debug("testing selector: " + selector + " on " + summary(node) + " with parents: " + summary(parents))
       expect(expected) {selector.matches(node, parents)}
     }
   }

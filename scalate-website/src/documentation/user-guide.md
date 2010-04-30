@@ -260,13 +260,13 @@ This will render a template called *foo.ssp* relative to the current template. Y
 You can also pass parameters into the template if it takes any
 
 {pygmentize:: jsp}
-<% render("/customers/contact.ssp", "customer" -> c, "title" -> "Customer") %>
+<% render("/customers/contact.ssp", Map("customer" -> c, "title" -> "Customer")) %>
 {pygmentize}
 
 When passing attributes you can use the Scala symbol notation for keys if you prefer...
 
 {pygmentize:: jsp}
-<% render("/customers/contact.ssp", 'customer -> c, 'title -> "Customer") %>
+<% render("/customers/contact.ssp", Map('customer -> c, 'title -> "Customer")) %>
 {pygmentize}
 
 If you prefer you can pass in a body to the template using the *layout* method as described in [using explicit layouts inside a template](#explicit_layouts_inside_a_template).
@@ -356,7 +356,7 @@ For example you may want to create a layout as follows in file _foo.ssp_
 Then we can invoke this template passing in the body as follows in [Ssp](ssp-reference.html)
 
 {pygmentize:: jsp}
-<% render("foo.ssp", "body" -> "Foo") %>
+<% render("foo.ssp", Map("body" -> "Foo")) %>
 {pygmentize}
 
 However if you want to pass in the body as a block of template you can use the *layout* method as follows

@@ -4,20 +4,20 @@
 
 <p>This page renders a template passing the body of the current template</p>
 
-<% layout("/WEB-INF/partials/sample.ssp", "name" -> "James") { %>
+<% layout("/WEB-INF/partials/sample.ssp", Map("name" -> "James")) { %>
   location: <b>London</b>
 <%}%>
 
 <h3>Relative Layout</h3>
 
-<% layout("localPartial.ssp", "name" -> "Hiram") { %>
+<% layout("localPartial.ssp", Map("name" -> "Hiram")) { %>
   location: <b>Tampa</b>
 <%}%>
 
 <h3>Relative Render passing body as parameter</h3>
 
-<% render("localPartial.ssp", "body" -> "location: <b>No Location</b>", "name" -> "Matt") %>
+<% render("localPartial.ssp", Map("body" -> "location: <b>No Location</b>", "name" -> "Matt")) %>
 
 <h3>Relative Render using symbols as keys</h3>
 
-<% render("localPartial.ssp", 'body -> "location: <b>USA</b>", 'name -> "Paul") %>
+<% render("localPartial.ssp", Map('body -> "location: <b>USA</b>", 'name -> "Paul")) %>

@@ -43,13 +43,13 @@
     <scala-version>2.8.0.Beta1</scala-version>
     <scala-plugin-version>2.13.1</scala-plugin-version>
 
-    <!-- this release breaks sbt builds - but we must use it for maven releases -->
+    <!-- TODO this release breaks sbt builds - but we must use it for maven releases -->
+    <!--
     <scalatest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalatest-version>
+-->
 
     <!-- until there's a release this version seems the only one to work with sbt -->
-<!--
     <scalatest-version>1.0.1-for-scala-2.8.0.Beta1-with-test-interfaces-0.3-SNAPSHOT</scalatest-version>
--->
 
     <sbt-version>0.7.3</sbt-version>
     <servlet-api-version>2.5</servlet-api-version>

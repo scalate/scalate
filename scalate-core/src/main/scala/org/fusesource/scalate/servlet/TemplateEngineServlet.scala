@@ -68,7 +68,7 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     else {
       template
     }
-    context.layout(actualTemplate)
+    context.include(actualTemplate, true)
   }
 
 }

@@ -5,9 +5,10 @@ import _root_.org.fusesource.scalate.scuery.Transform._
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.NodeSeq
+import org.fusesource.scalate.util.Logging
 
 
-class LoopTest extends FunSuiteSupport {
+class LoopTest extends FunSuiteSupport with Logging {
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
   val xml = <html>
@@ -97,7 +98,7 @@ class LoopTest extends FunSuiteSupport {
   }
 
   def assertTransformed(result: NodeSeq): Unit = {
-    println("got result: " + result)
+    debug("got result: " + result)
 
     expect("James") {(result \\ "td")(0).text}
     expect("Beckington") {(result \\ "td")(1).text}

@@ -91,7 +91,7 @@ class Run extends Command {
         val writer = new PrintWriter(System.out)
         val context = new DefaultRenderContext(engine, writer);
         context.attributes("args") = args
-        context.layout(path)
+        context.include(path, true)
         writer.flush
         return 0;
 

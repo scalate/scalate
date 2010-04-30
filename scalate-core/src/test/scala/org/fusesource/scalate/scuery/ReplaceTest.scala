@@ -25,7 +25,7 @@ class ReplaceTest extends FunSuiteSupport {
 
     val result = transformer(xml)
 
-    println("got result: " + result)
+    debug("got result: " + result)
 
     val a = (result \\ "a")(0)
     expect("http://scalate.fusesource.org/") {a \ "@href"}

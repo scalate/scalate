@@ -33,14 +33,14 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    println("got result: " + result)
+    debug("got result: " + result)
 
     assertPersonLink((result \ "li" \ "a")(0), "James")
     assertPersonLink((result \ "li" \ "a")(1), "Hiram")
   }
 
   protected def assertPersonLink(a: Node, name: String): Unit = {
-    println("Testing " + a + " for name: " + name)
+    debug("Testing " + a + " for name: " + name)
     expect(name) {a.text}
     expect("http://acme.com/bookstore/" + name) {a \ "@href"}
   }

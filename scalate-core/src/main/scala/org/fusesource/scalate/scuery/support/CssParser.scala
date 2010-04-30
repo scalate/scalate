@@ -276,7 +276,6 @@ class CssParser extends CssScanner {
           if (s == "-") {i * -1} else {i}
         case _ => 0
       }
-      println("" + a + "n + " + b)
       NthCounter(a, b)
   } | (opt("-" | "+") ~ integer) ^^ {
     case os ~ i =>

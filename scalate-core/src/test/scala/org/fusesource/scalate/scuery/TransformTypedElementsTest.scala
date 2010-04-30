@@ -68,7 +68,7 @@ class TransformTypedElementsTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    println("got result: " + result)
+    debug("got result: " + result)
 
     assertSize("li.car", result, 2)
     assertSize("li.car img", result, 2)

@@ -4,12 +4,11 @@ import _root_.org.fusesource.scalate.FunSuiteSupport
 import collection.mutable.HashMap
 
 /**
- * @version $Revision: 1.1 $
+ * @version $Revision : 1.1 $
  */
-abstract class ParserTestSupport  extends FunSuiteSupport {
-  var logging = false
+abstract class ParserTestSupport extends FunSuiteSupport {
 
-  implicit def stringToText(x:String) = Text(x)
+  implicit def stringToText(x: String) = Text(x)
 
   def countTypes(lines: List[PageFragment]): HashMap[Class[_], Int] = {
     val map = new HashMap[Class[_], Int]
@@ -32,27 +31,21 @@ abstract class ParserTestSupport  extends FunSuiteSupport {
   }
 
   def assertValid(text: String): List[PageFragment] = {
-    log("Parsing...")
-    log(text)
-    log("")
+    debug("Parsing...")
+    debug(text)
+    debug("")
 
     val lines = (new SspParser).getPageFragments(text)
     for (line <- lines) {
-      log(line)
+      debug("=> " + line)
     }
-    log("")
+    debug("")
     lines
   }
 
 
-    def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
-      assert(anyRef != null, "expected instance of " + expectedClass.getName)
-      expect(expectedClass) {anyRef.getClass}
-    }
-
-  def log(value: AnyRef) {
-    if (logging) {
-      println(value)
-    }
+  def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
+    assert(anyRef != null, "expected instance of " + expectedClass.getName)
+    expect(expectedClass) {anyRef.getClass}
   }
 }

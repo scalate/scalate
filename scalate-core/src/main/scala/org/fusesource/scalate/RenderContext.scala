@@ -152,13 +152,13 @@ trait RenderContext {
     }
   }
 
-  /**
-   * Includes the given template path applying the layout to it before returning
-   */
-  def layout(path: String): Unit = include(path, true)
-
   def include(path: String): Unit = include(path, false)
 
+  /**
+   * Includes the given template path
+   *
+   * @param layout if true then applying the layout the included template
+   */
   def include(path: String, layout: Boolean): Unit = {
     val uri = resolveUri(path)
 
@@ -254,7 +254,7 @@ trait RenderContext {
   /**
    * Renders the given template with optional attributes
    */
-  def render(path: String, attributeMap: Map[String, Any]): Unit = {
+  def render(path: String, attributeMap: Map[String, Any] = Map()): Unit = {
     // TODO should we call engine.layout() instead??
 
     val uri = resolveUri(path)
@@ -268,21 +268,10 @@ trait RenderContext {
   }
 
   /**
-   * Renders the given template with optional attributes
-   */
-  def render(path: String, attributeValues: (String, Any)*): Unit = render(path, Map(attributeValues: _*))
-
-  /**
    * Renders the given template with optional attributes passing the body block as the *body* attribute
    * so that it can be layered out using the template.
    */
-  def layout(path: String, attributeValues: (String, Any)*)(body: => Unit): Unit = layout(path, Map(attributeValues: _*))(body)
-
-  /**
-   * Renders the given template with optional attributes passing the body block as the *body* attribute
-   * so that it can be layered out using the template.
-   */
-  def layout(path: String, attrMap: Map[String, Any])(body: => Unit): Unit = {
+  def layout(path: String, attrMap: Map[String, Any] = Map())(body: => Unit): Unit = {
     val bodyText = capture(body)
     render(path, attrMap + ("body" -> bodyText))
   }

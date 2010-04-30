@@ -2,8 +2,10 @@ package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.Text
+import org.fusesource.scalate.util.Logging
 
-class TransformTest extends FunSuiteSupport {
+class TransformTest extends FunSuiteSupport with Logging {
+  var printOutput = false
   val xml = <html>
     <head>
       <title>My Title</title>
@@ -36,7 +38,7 @@ class TransformTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    println("got result: " + result)
+    debug("got result: " + result)
 
     expect("Hiram") { (result \\ "td")(0).text }
     expect("Tampa") { (result \\ "td" \\ "b")(0).text }

@@ -29,7 +29,7 @@ Cutting the release
 
 * **NOTE** make sure you are using a clone of your local git repository for doing the release! See below on the use of temporary local repo...
 * check your repo is clean and you are on master branch
-* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment/uncomment the snapshot version in the root pom.xml
+* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment the snapshot version in the root pom.xml
 * prepare the release
 
       mvn release:prepare -P release
@@ -62,10 +62,11 @@ If this is a major release...
       remote /forge/dav/#{project_id}
 
 * edit the [scalate last release VCS Root](http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&action=editVcsRoot&cameFromTitle=Edit+Build+Configuration&vcsRootId=45&editingScope=editBuildType%3Abt119) so that it uses the new branch you have just created **scalate-project-{project_version:}**
+* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to uncomment the snapshot version in the root pom.xml
 * ensure that the master branch has its Rakefile to point to the snapshot area
 
-
       remote /forge/dav/#{project_id}/versions/snapshot
+
 
 What all this means is now that you should be able to amend the [website for the current release](http://scalate.fusesource.org/) using the **scalate-project-{project_version:}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.fusesource.org/versions/snapshot/index.html)
 

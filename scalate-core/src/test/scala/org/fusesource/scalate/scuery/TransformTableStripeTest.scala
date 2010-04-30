@@ -49,7 +49,7 @@ class TransformTableStripeTest extends FunSuiteSupport {
   test("stripe table") {
     val transformer = new PersonTransformer(List(Person("James", "Beckington"), Person("Hiram", "Tampa")))
     val result = transformer(xml)
-    println("got result: " + result)
+    debug("got result: " + result)
 
     assertSize("tbody tr", result, 2)
     assertSize("tbody tr.odd", result, 1)
@@ -65,7 +65,7 @@ class TransformTableStripeTest extends FunSuiteSupport {
   test("stripe empty table") {
     val transformer = new PersonTransformer(List())
     val result = transformer(xml)
-    println("got result: " + result)
+    debug("got result: " + result)
 
     assertSize("tbody tr", result, 1)
     assertSize("tbody tr.empty", result, 1)

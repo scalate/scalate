@@ -1,0 +1,12 @@
+<%@ var body: String = "no body" %>
+<%@ var title: String = "default title" %>
+
+<html>
+<head>
+  <title>${title}</title>
+</head>
+
+<body>
+<%= body %>
+</body>
+</html>

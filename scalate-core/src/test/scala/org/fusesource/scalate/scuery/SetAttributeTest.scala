@@ -33,7 +33,7 @@ class SetAttributeTest extends FunSuiteSupport {
 
     val result = transformer(xml)
 
-    println("got result: " + result)
+    debug("got result: " + result)
 
     assertLink((result \\ "a")(0), "http://scalate.fusesource.org/", "foo", "A foo link")
     assertLink((result \\ "a")(1), "http://scalate.fusesource.org/documentation/", "bar", "A bar link")
@@ -41,7 +41,7 @@ class SetAttributeTest extends FunSuiteSupport {
   }
 
   def assertLink(a: Node, href: String, className: String, title: String): Unit = {
-    println("testing link node: " + a)
+    debug("testing link node: " + a)
     expect(href) {a \ "@href"}
     expect(className) {a \ "@class"}
     expect(title) {a \ "@title"}
