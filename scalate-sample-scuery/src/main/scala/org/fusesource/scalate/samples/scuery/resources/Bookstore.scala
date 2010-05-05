@@ -1,21 +1,20 @@
 package org.fusesource.scalate.samples.scuery.resources
 
-import org.fusesource.scalate.jersey.ScueryView
 import org.fusesource.scalate.rest.{MapContainer, ContainerResource}
 import org.fusesource.scalate.samples.scuery.model.Book
 
 import javax.ws.rs.{GET, Path, Produces}
-import org.fusesource.scalate.scuery.{NestedTransformer, Transformer}
+import org.fusesource.scalate.scuery.Transformer
 
 /**
  * @version $Revision : 1.1 $
  */
 @Path("/")
-class Bookstore extends ContainerResource[String, Book, BookResource] with ScueryView {
+class Bookstore extends ContainerResource[String, Book, BookResource] {
 
   @GET
   @Produces(Array("text/html"))
-  def index = render(new Transformer {
+  def index = new Transformer {
     $("ul.books").contents {
       node =>
         books.flatMap {
@@ -27,7 +26,8 @@ class Bookstore extends ContainerResource[String, Book, BookResource] with Scuer
             }
         }
     }
-  })
+  }
+
 
   // Container implementation
   //-------------------------------------------------------------------------

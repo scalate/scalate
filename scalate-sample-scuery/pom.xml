@@ -80,9 +80,8 @@
             <include>**/*Test.*</include>
           </includes>
           <excludes>
-<!--
-            <exclude>**/QueuesTest.*</exclude>
--->
+            <!-- TODO FIXME ASAP -->
+            <exclude>**/SampleTest.*</exclude>
           </excludes>
         </configuration>
       </plugin>
