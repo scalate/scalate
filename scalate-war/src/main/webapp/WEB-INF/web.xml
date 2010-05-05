@@ -32,7 +32,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|/sampleServlet|.+\.(ssp|scaml)|(/(images|css|ssp|scaml)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.(ssp|scaml)|(/(images|css|ssp|scaml)/.*)|.+\.ico</param-value>
     </init-param>
   </filter>
 
