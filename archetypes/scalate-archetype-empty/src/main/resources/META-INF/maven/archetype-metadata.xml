@@ -33,7 +33,7 @@
       </includes>
     </fileSet>
     <!-- place templates -->
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
       <directory>src/main/webapp</directory>
       <includes>
         <include>**/*</include>
