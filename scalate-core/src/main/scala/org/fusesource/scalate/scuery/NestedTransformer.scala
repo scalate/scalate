@@ -18,7 +18,7 @@ class NestedTransformer {
 
   def $(selector: Selector) = transformer.$(selector)
 
-  def apply(nodes: NodeSeq, parents: Seq[Node] = Nil) = transformer(nodes, parents)
+  def apply(nodes: NodeSeq, ancestors: Seq[Node] = Nil) = transformer(nodes, ancestors)
 
   def transformer: Transformer = threadLocal.get
 
@@ -28,13 +28,13 @@ class NestedTransformer {
    * to transform the nodes. This method is typically used when performing nested transformations such
    * as transforming one or more nodes when inside a transformation rule itself.
    */
-  def transform(nodes: NodeSeq, parents: Seq[Node])(rules: Transformer => Unit): NodeSeq = {
+  def transform(nodes: NodeSeq, ancestors: Seq[Node])(rules: Transformer => Unit): NodeSeq = {
     val currentTransform = transformer
     try {
       val childTransform = transformer.createChild
       threadLocal.set(childTransform)
       rules(childTransform)
-      childTransform(nodes, parents)
+      childTransform(nodes, ancestors)
     }
     catch {
       case e => threadLocal.set(currentTransform)

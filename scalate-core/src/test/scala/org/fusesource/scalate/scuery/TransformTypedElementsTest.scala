@@ -1,7 +1,7 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{NodeSeq, Node}
+import xml.{NodeSeq}
 
 case class Car(make: String, model: String, color: String)
 case class Dog(name: String, breed: String, color: String, age: Int)
@@ -88,9 +88,6 @@ class TransformTypedElementsTest extends FunSuiteSupport {
   }
 
   protected def assertCar(selector: String, result: NodeSeq, car: Car): Unit = {
-    // for $ on nodes
-    import Transformer._
-
     val a = result.$(selector)
     expect(false, "nodes for " + selector + " should not be empty!") { a.isEmpty }
 

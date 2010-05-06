@@ -1,10 +1,5 @@
 package org.fusesource.scalate.scuery.support
 
-import _root_.org.fusesource.scalate.FunSuiteSupport
-import org.fusesource.scalate.scuery.Selector
-import org.fusesource.scalate.scuery.Transformer._
-import xml.{Elem, Node, NodeSeq}
-
 class NthPseduoTest extends CssParserTestSupport {
 
   val cheese = <c:tr xmlns:c="http://apache.org/cheese"><blah/></c:tr>

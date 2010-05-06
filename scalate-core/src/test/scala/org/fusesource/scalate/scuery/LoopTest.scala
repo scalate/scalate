@@ -1,8 +1,5 @@
 package org.fusesource.scalate.scuery
 
-// Note this import is required so the implicit conversion Transform.toNodes works
-import _root_.org.fusesource.scalate.scuery.Transform._
-
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.NodeSeq
 import org.fusesource.scalate.util.Logging
@@ -51,13 +48,9 @@ class LoopTest extends FunSuiteSupport with Logging {
     assertTransformed(transformer(xml))
   }
 
-  test("loop using Transform statement on each person") {
+  test("loop using new Transform statement on each person") {
     object transformer extends Transformer {
       $(".person") { node =>
-
-        // Note you must import Transform._ to be able to
-        // miss out the Transform.toNodes method call
-
         people.flatMap { p =>
           new Transform(node) {
             $(".name").contents = p.name
@@ -77,6 +70,21 @@ class LoopTest extends FunSuiteSupport with Logging {
             $(".name").contents = p.name
             $(".location").contents = p.location
           }
+        }
+      }
+    }
+    assertTransformed(transformer(xml))
+  }
+
+  test("loop using transform method with new transformer") {
+    object transformer extends Transformer {
+      $(".person") { node =>
+        people.flatMap { p =>
+          // TODO how to know what the current ancestor is?
+          transform(node, new Transformer {
+            $(".name").contents = p.name
+            $(".location").contents = p.location
+          })
         }
       }
     }

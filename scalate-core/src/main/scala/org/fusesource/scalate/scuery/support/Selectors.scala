@@ -9,7 +9,7 @@ import xml.{Attribute, Elem, Node, NodeSeq}
 case class ClassSelector(className: String) extends Selector {
   private val matcher = IncludesMatch(className)
 
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
       e.attribute("class") match {
         case Some(nodes) => matcher.matches(nodes)
@@ -20,7 +20,7 @@ case class ClassSelector(className: String) extends Selector {
 }
 
 case class IdSelector(className: String) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
       attrEquals(e, "id", className)
     case _ => false
@@ -28,7 +28,7 @@ case class IdSelector(className: String) extends Selector {
 }
 
 case class ElementNameSelector(name: String) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
       e.label == name
     case _ => false
@@ -39,7 +39,7 @@ case class ElementNameSelector(name: String) extends Selector {
  * Matches the current element if it has an attribute name
  */
 case class AttributeNameSelector(name: String, matcher: Matcher) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
       e.attribute(name) match {
         case Some(ns) => matcher.matches(ns)
@@ -53,7 +53,7 @@ case class AttributeNameSelector(name: String, matcher: Matcher) extends Selecto
  * Matches the current element if it has a namespaced attribute name
  */
 case class NamespacedAttributeNameSelector(name: String, prefix: String, matcher: Matcher) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
       val uri = e.scope.getURI(prefix)
       if (uri != null) {
@@ -71,7 +71,7 @@ case class NamespacedAttributeNameSelector(name: String, prefix: String, matcher
 }
 
 case class NamespacePrefixSelector(prefix: String) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = {
+  def matches(node: Node, ancestors: Seq[Node]) = {
     // lets not compare prefixes, as we could have many prefixes mapped to the same URI
     // so lets compare the URI of the node to the URI of the prefix in scope on the node
     val boundUrl = node.scope.getURI(prefix)
@@ -80,38 +80,38 @@ case class NamespacePrefixSelector(prefix: String) extends Selector {
 }
 
 object NoNamespaceSelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node.namespace == null
+  def matches(node: Node, ancestors: Seq[Node]) = node.namespace == null
 }
 
 case class AnyElementSelector() extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem => true
     case _ => false
   }
 }
 
 case class CompositeSelector(selectors: Seq[Selector]) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = selectors.find(!_.matches(node, parents)).isEmpty
+  def matches(node: Node, ancestors: Seq[Node]) = selectors.find(!_.matches(node, ancestors)).isEmpty
 }
 
 case class ChildrenSelector(selector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = parents match {
-    case parent :: xs =>
-      selector.matches(parent, xs)
+  def matches(node: Node, ancestors: Seq[Node]) = ancestors match {
+    case ancestor :: xs =>
+      selector.matches(ancestor, xs)
     case _ => false
   }
 }
 
 case class NotSelector(selector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = !selector.matches(node, parents)
+  def matches(node: Node, ancestors: Seq[Node]) = !selector.matches(node, ancestors)
 }
 
 object AnySelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = true
+  def matches(node: Node, ancestors: Seq[Node]) = true
 }
 
 object AnyElementSelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem => true
     case _ => false
   }
@@ -126,9 +126,9 @@ object AnyElementSelector extends Selector {
  *
  * See the <a href"http://www.w3.org/TR/css3-selectors/#child-combinators">description</a>
  */
-case class ChildSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = {
-    !parents.isEmpty && childSelector.matches(node, parents) && parentSelector.matches(parents.head, parents.tail)
+case class ChildSelector(childSelector: Selector, ancestorSelector: Selector) extends Selector {
+  def matches(node: Node, ancestors: Seq[Node]) = {
+    !ancestors.isEmpty && childSelector.matches(node, ancestors) && ancestorSelector.matches(ancestors.head, ancestors.tail)
   }
 }
 
@@ -137,16 +137,16 @@ case class ChildSelector(childSelector: Selector, parentSelector: Selector) exte
  *
  * See the <a href"http://www.w3.org/TR/css3-selectors/#descendant-combinators">description</a>
  */
-case class DescendantSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = {
-    !parents.isEmpty && childSelector.matches(node, parents) && matchParent(parents.head, parents.tail)
+case class DescendantSelector(childSelector: Selector, ancestorSelector: Selector) extends Selector {
+  def matches(node: Node, ancestors: Seq[Node]) = {
+    !ancestors.isEmpty && childSelector.matches(node, ancestors) && matchAncestor(ancestors.head, ancestors.tail)
   }
 
   /**
-   * recursively match the parent selector until we have no more parents
+   * recursively match the ancestor selector until we have no more ancestors
    */
-  protected def matchParent(node: Node, parents: Seq[Node]): Boolean = {
-    parentSelector.matches(node, parents) || (!parents.isEmpty && matchParent(parents.head, parents.tail))
+  protected def matchAncestor(node: Node, ancestors: Seq[Node]): Boolean = {
+    ancestorSelector.matches(node, ancestors) || (!ancestors.isEmpty && matchAncestor(ancestors.head, ancestors.tail))
   }
 }
 
@@ -155,18 +155,18 @@ case class DescendantSelector(childSelector: Selector, parentSelector: Selector)
  *
  * See the <a href"http://www.w3.org/TR/css3-selectors/#adjacent-sibling-combinators">description</a>
  */
-case class AdjacentSiblingSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = {
-    if (!parents.isEmpty && childSelector.matches(node, parents)) {
+case class AdjacentSiblingSelector(childSelector: Selector, ancestorSelector: Selector) extends Selector {
+  def matches(node: Node, ancestors: Seq[Node]) = {
+    if (!ancestors.isEmpty && childSelector.matches(node, ancestors)) {
       // lets find immediate
-      // lets apply the parentSelector to the immediate parent
+      // lets apply the ancestorSelector to the immediate ancestor
 
-      // find the index of node in parents children
-      val h = parents.head
-      val xs = parents.tail
+      // find the index of node in ancestors children
+      val h = ancestors.head
+      val xs = ancestors.tail
       val children = h.child
       val idx = children.indexOf(node)
-      idx > 0 && parentSelector.matches(children(idx - 1), xs)
+      idx > 0 && ancestorSelector.matches(children(idx - 1), xs)
     }
     else {
       false
@@ -179,19 +179,19 @@ case class AdjacentSiblingSelector(childSelector: Selector, parentSelector: Sele
  *
  * See the <a href"http://www.w3.org/TR/css3-selectors/#general-sibling-combinators">description</a>
  */
-case class GeneralSiblingSelector(childSelector: Selector, parentSelector: Selector) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = {
-    if (!parents.isEmpty && childSelector.matches(node, parents)) {
+case class GeneralSiblingSelector(childSelector: Selector, ancestorSelector: Selector) extends Selector {
+  def matches(node: Node, ancestors: Seq[Node]) = {
+    if (!ancestors.isEmpty && childSelector.matches(node, ancestors)) {
       // lets find immediate
-      // lets apply the parentSelector to the immediate parent
+      // lets apply the ancestorSelector to the immediate ancestor
 
-      // find the index of node in parents children
-      val h = parents.head
-      val xs = parents.tail
+      // find the index of node in ancestors children
+      val h = ancestors.head
+      val xs = ancestors.tail
 
       val children = h.child
       val idx = children.indexOf(node)
-      idx > 0 && children.slice(0, idx).reverse.find(parentSelector.matches(_, xs)).isDefined
+      idx > 0 && children.slice(0, idx).reverse.find(ancestorSelector.matches(_, xs)).isDefined
     }
     else {
       false
@@ -205,17 +205,17 @@ case class GeneralSiblingSelector(childSelector: Selector, parentSelector: Selec
 
 
 object RootSelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
-      parents.isEmpty
+      ancestors.isEmpty
     case _ => false
   }
 }
 
 object FirstChildSelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
-      parentChildElements(parents).headOption match {
+      ancestorChildElements(ancestors).headOption match {
         case Some(n) => n == e
         case _ => false
       }
@@ -224,9 +224,9 @@ object FirstChildSelector extends Selector {
 }
 
 object LastChildSelector extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
-      parentChildElements(parents).lastOption match {
+      ancestorChildElements(ancestors).lastOption match {
         case Some(n) => n == e
         case _ => false
       }
@@ -236,9 +236,9 @@ object LastChildSelector extends Selector {
 }
 
 case class NthChildSelector(counter: NthCounter) extends Selector {
-  def matches(node: Node, parents: Seq[Node]) = node match {
+  def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>
-      val idx = parentChildElements(parents).indexOf(node)
+      val idx = ancestorChildElements(ancestors).indexOf(node)
       counter.matches(idx)
     case _ => false
   }

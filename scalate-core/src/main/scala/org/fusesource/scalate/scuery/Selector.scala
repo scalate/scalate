@@ -62,18 +62,18 @@ object Selector {
 }
 
 trait Selector {
-  def matches(node: Node, parents: Seq[Node]): Boolean
+  def matches(node: Node, ancestors: Seq[Node]): Boolean
 
-  def filter(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
-    nodes.flatMap(filterNode(_, parents))
+  def filter(nodes: NodeSeq, ancestors: Seq[Node] = Nil): NodeSeq = {
+    nodes.flatMap(filterNode(_, ancestors))
   }
 
-  protected def filterNode(n: Node, parents: Seq[Node]): NodeSeq = {
-    if (matches(n, parents))
+  protected def filterNode(n: Node, ancestors: Seq[Node]): NodeSeq = {
+    if (matches(n, ancestors))
       {n}
     else {
       n.child.flatMap {
-        c => filterNode(c, n +: parents)
+        c => filterNode(c, n +: ancestors)
       }
     }
   }
@@ -89,12 +89,12 @@ trait Selector {
   protected def childElements(node: Node) = node.child.filter(_.isInstanceOf[Elem])
 
   /**
-   * Returns the child elements of the immediate parent
+   * Returns the child elements of the immediate ancestor
    */
-  protected def parentChildElements(parents: Seq[Node]) =
-    if (parents.isEmpty)
+  protected def ancestorChildElements(ancestors: Seq[Node]) =
+    if (ancestors.isEmpty)
       Nil
     else
-      childElements(parents.head)
+      childElements(ancestors.head)
 
 }

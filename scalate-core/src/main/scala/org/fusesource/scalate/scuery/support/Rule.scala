@@ -1,7 +1,7 @@
 package org.fusesource.scalate.scuery.support
 
 import xml.{Elem, Node, NodeSeq}
-import org.fusesource.scalate.scuery.Transformer._
+import org.fusesource.scalate.scuery.XmlHelper._
 import org.fusesource.scalate.util.Logging
 
 object Rule {

@@ -2,21 +2,9 @@ package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.util.Logging
 import _root_.org.fusesource.scalate.scuery.support._
-import collection.mutable.{HashMap, ListBuffer}
+import collection.mutable.{HashMap}
 import xml.{Attribute, Document, Elem, Node, NodeSeq, Null, Text}
-
-
-object Transformer {
-  def replaceContent(e: Elem, content: NodeSeq) = new Elem(e.prefix, e.label, e.attributes, e.scope, content: _*)
-
-  def setAttribute(e: Elem, name: String, value: String) = new Elem(e.prefix, e.label, e.attributes.append(Attribute(None, name, Text(value), Null)), e.scope, e.child: _*)
-
-  implicit def toSXml(node: Node) = SXml(node)
-
-  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
-}
-
-import Transformer._
+import XmlHelper._
 
 /**
  * Allows simple XML replacement rules to be registered
@@ -34,22 +22,26 @@ class Transformer extends Logging {
 
   def $(selector: Selector): RuleFactory = new RuleFactory(selector)
 
-  def apply(nodes: NodeSeq, parents: Seq[Node] = Nil): NodeSeq = {
-    nodes.flatMap(transformNode(_, parents))
+  def apply(nodes: NodeSeq, ancestors: Seq[Node] = Nil): NodeSeq = {
+    nodes.flatMap(transformNode(_, ancestors))
   }
+
+  def apply(nodeAndAncestor: NodeAndAncestors): NodeSeq = apply(nodeAndAncestor.node, nodeAndAncestor.ancestors)
 
   /**
    * Transforms the given nodes passing in a block which is used to configure a new transformer
    * to transform the nodes. This method is typically used when performing nested transformations such
    * as transforming one or more nodes when inside a transformation rule itself.
    */
-  def transform(nodes: NodeSeq, parents: Seq[Node])(rules: TransformerBuilder => Unit): NodeSeq = {
+  def transform(nodes: NodeSeq, ancestors: Seq[Node])(rules: TransformerBuilder => Unit): NodeSeq = {
     val transformer = createChild
     rules(TransformerBuilder(transformer))
-    transformer(nodes, parents)
+    transformer(nodes, ancestors)
   }
 
   def transform(nodes: NodeSeq)(rules: TransformerBuilder => Unit): NodeSeq = transform(nodes, Nil)(rules)
+
+  def transform(nodes: NodeSeq, childTransformer: Transformer): NodeSeq = childTransformer.apply(nodes, Nil)
 
 
   /**
@@ -62,12 +54,12 @@ class Transformer extends Logging {
     child
   }
 
-  protected def transformNode(node: Node, parents: Seq[Node]): NodeSeq = {
-    val keys = _rules.filterKeys(_.matches(node, parents))
+  protected def transformNode(node: Node, ancestors: Seq[Node]): NodeSeq = {
+    val keys = _rules.filterKeys(_.matches(node, ancestors))
     val size = keys.size
     if (size == 0) {
       node match {
-        case e: Elem => replaceContent(e, apply(e.child, e +: parents))
+        case e: Elem => replaceContent(e, apply(e.child, e +: ancestors))
         case d: Document => apply(d.child)
         case n => n
       }
@@ -115,19 +107,6 @@ class Transformer extends Logging {
       contents = Text(text)
     }
 
-/*
-    def contents(fn: Node => NodeSeq): Unit = {
-      addRule(selector, ReplaceContentRule(fn))
-    }
-
-    def contents(nodes: NodeSeq): Unit = {
-      contents.update(nodes)
-    }
-
-    def contents(text: String): Unit = {
-      contents.update(text)
-    }
-*/
 
     class ContentsRuleFactory {
 
@@ -237,4 +216,11 @@ case class SXml(nodes: NodeSeq) {
   def $(cssSelector: String): NodeSeq = $(Selector(cssSelector))
 
   def $(selector: Selector): NodeSeq = selector.filter(nodes)
+}
+
+/**
+ * Makes it easy to pass around a node object along with its ancestor
+ */
+case class NodeAndAncestors(node: Node, ancestors: Seq[Node]) {
+  implicit def toNode = node
 }

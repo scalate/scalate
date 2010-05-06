@@ -2,7 +2,7 @@ package org.fusesource.scalate.scuery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.scuery.Selector
-import org.fusesource.scalate.scuery.Transformer._
+import org.fusesource.scalate.scuery.XmlHelper._
 import xml.{Elem, Node, NodeSeq}
 
 abstract class CssParserTestSupport extends FunSuiteSupport {
@@ -26,31 +26,31 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
   def assertSelector(message: String, css: String, node: Node, expected: Boolean): Unit = {
     test(message + css + " on " + summary(node)) {
       val selector = Selector(css)
-      val parents = parentsOf(node)
-      debug("testing selector: " + selector + " on " + summary(node) + " with parents: " + summary(parents))
-      expect(expected) {selector.matches(node, parents)}
+      val ancestors = ancestorsOf(node)
+      debug("testing selector: " + selector + " on " + summary(node) + " with ancestors: " + summary(ancestors))
+      expect(expected) {selector.matches(node, ancestors)}
     }
   }
 
-  def parentsOf(node: Node, parent: Node = xml): Seq[Node] = {
-    def findChild(node: Node, parent: Node): Option[Seq[Node]] = {
-      if (node == parent) {
+  def ancestorsOf(node: Node, ancestor: Node = xml): Seq[Node] = {
+    def findChild(node: Node, ancestor: Node): Option[Seq[Node]] = {
+      if (node == ancestor) {
         Some(Nil)
       }
-      else if (parent.contains(node)) {
-        Some(parent :: Nil)
+      else if (ancestor.contains(node)) {
+        Some(ancestor :: Nil)
       } else {
         var a: Option[Seq[Node]] = None
-        for (c <- parent.child if a.isEmpty) {
+        for (c <- ancestor.child if a.isEmpty) {
           a = findChild(node, c)
         }
         a match {
-          case Some(l) => Some(l ++ parent)
+          case Some(l) => Some(l ++ ancestor)
           case _ => a
         }
       }
     }
-    findChild(node, parent).getOrElse(Nil)
+    findChild(node, ancestor).getOrElse(Nil)
   }
 
   protected def summary(node: Node): String = node match {

@@ -1,10 +1,6 @@
 package org.fusesource.scalate.scuery.support
 
-import _root_.org.fusesource.scalate.FunSuiteSupport
-import org.fusesource.scalate.scuery.Selector
-import org.fusesource.scalate.scuery.Selector._
-import org.fusesource.scalate.scuery.Transformer._
-import xml.{Elem, Node, NodeSeq}
+//import org.fusesource.scalate.scuery.Selector
 
 class CssParserTest extends CssParserTestSupport {
 

@@ -16,10 +16,10 @@ abstract class Combinator() {
   def childSelector: Selector
 
   /**
-   * Creates a selector using this combinator with the given parentSelector
+   * Creates a selector using this combinator with the given ancestorSelector
    * which is on the left hand side of the combinator expression
    */
-  def combinatorSelector(parentSelector: Selector): Selector
+  def combinatorSelector(ancestorSelector: Selector): Selector
 }
 
 /**
@@ -29,7 +29,7 @@ abstract class Combinator() {
  */
 case class DescendantCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector) = new DescendantSelector(childSelector, parentSelector)
+  def combinatorSelector(ancestorSelector: Selector) = new DescendantSelector(childSelector, ancestorSelector)
 }
 
 /**
@@ -39,7 +39,7 @@ case class DescendantCombinator(childSelector: Selector) extends Combinator {
  */
 case class ChildCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector) = new ChildSelector(childSelector, parentSelector)
+  def combinatorSelector(ancestorSelector: Selector) = new ChildSelector(childSelector, ancestorSelector)
 }
 
 /**
@@ -49,7 +49,7 @@ case class ChildCombinator(childSelector: Selector) extends Combinator {
  */
 case class AdjacentSiblingdCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector) = new AdjacentSiblingSelector(childSelector, parentSelector)
+  def combinatorSelector(ancestorSelector: Selector) = new AdjacentSiblingSelector(childSelector, ancestorSelector)
 }
 
 /**
@@ -59,5 +59,5 @@ case class AdjacentSiblingdCombinator(childSelector: Selector) extends Combinato
  */
 case class GeneralSiblingCombinator(childSelector: Selector) extends Combinator {
 
-  def combinatorSelector(parentSelector: Selector) = new GeneralSiblingSelector(childSelector, parentSelector)
+  def combinatorSelector(ancestorSelector: Selector) = new GeneralSiblingSelector(childSelector, ancestorSelector)
 }

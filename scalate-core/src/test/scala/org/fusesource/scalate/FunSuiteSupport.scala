@@ -3,7 +3,7 @@ package org.fusesource.scalate
 import _root_.org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
-import scuery.Transformer
+import scuery.XmlHelper._
 import util.Logging
 import java.io.File
 import java.lang.String
@@ -35,9 +35,6 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
 
 
   def assertSize(selector: String, result: NodeSeq, expected: Int): Unit = {
-    // for $ on nodes
-    import Transformer._
-
     expect(expected, "number of elements matching: " + selector) {result.$(selector).size}
   }
 
@@ -45,9 +42,6 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
    * Asserts that the text value of the given selector matches the expected string
    */
   def assertText(selector: String, result: NodeSeq, expected: String): Unit = {
-    // for $ on nodes
-    import Transformer._
-
     expect(expected, "text of elements matching: " + selector) {result.$(selector).text}
   }
 }
