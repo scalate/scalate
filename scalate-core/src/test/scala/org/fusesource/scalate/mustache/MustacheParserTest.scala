@@ -23,6 +23,17 @@ class MustacheParserTest extends FunSuiteSupport {
       "some text {{&foo}} {{& bar}} more text")
   }
 
+  test("open close tag") {
+    assertParses(List( Text("* "), TagOpen("foo"), Text(" bar "), TagClose("foo"), Text(" *")),
+      "* {{#foo}} bar {{/foo}} *")
+  }
+
+  test("invert variable and partial") {
+    assertParses(List( Text("* "), InvertVariable("foo"), Text(" "), Partial("bar"), Text(" *")),
+      "* {{^foo}} {{>bar} *")
+  }
+
+  // set delimiter
   test("just set directive") {
     assertParses(List(SetDelimiter("<%", "%>")),
       "{{=<% %>=}}")

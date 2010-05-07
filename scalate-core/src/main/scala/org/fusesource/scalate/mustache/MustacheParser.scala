@@ -13,8 +13,6 @@ case class Text(value: String) extends Statement {
   def +(other: Text) = Text(value + other.value).setPos(pos)
 
   def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
-
-  override def toString = value
 }
 
 case class Comment(comment: String) extends Statement
