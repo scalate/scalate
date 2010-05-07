@@ -33,13 +33,13 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("open close tag") {
-    assertParses(List( Text("* "), Tag("foo", List(Text(" bar "))), Text(" *")),
+    assertParses(List( Text("* "), Section("foo", List(Text(" bar "))), Text(" *")),
       "* {{#foo}} bar {{/foo}} *")
   }
 
   test("invert variable and partial") {
-    assertParses(List( Text("* "), InvertVariable("foo"), Text(" "), Partial("bar"), Text(" *")),
-      "* {{^foo}} {{>bar}} *")
+    assertParses(List( Text("* "), InvertSection("foo", List(Text(" "), Partial("bar"), Text(" "))), Text(" *")),
+      "* {{^foo}} {{>bar}} {{/foo}} *")
   }
 
   // set delimiter
