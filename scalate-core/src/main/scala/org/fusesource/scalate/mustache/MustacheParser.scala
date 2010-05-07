@@ -19,8 +19,8 @@ case class Text(value: String) extends Statement {
 
 case class Comment(comment: Text) extends Statement
 case class Variable(name: Text, unescape: Boolean = false) extends Statement
-case class InvertVariable(name: Text) extends Statement
-case class Tag(name: Text, body:List[Statement]) extends Statement
+case class Section(name: Text, body:List[Statement]) extends Statement
+case class InvertSection(name: Text, body:List[Statement]) extends Statement
 case class Partial(name: Text) extends Statement
 case class SetDelimiter(open: Text, close: Text) extends Statement
 
@@ -48,29 +48,28 @@ class MustacheParser extends RegexParsers {
 
   def someText = upto(open)
 
-  def statement =  guarded(open, unescapeVariable | invertVariable | partial | tag | comment | setDelimiter | variable |
+  def statement =  guarded(open, unescapeVariable | partial | section | invert | comment | set_delimiter | variable |
           failure("invalid statement"))
 
   def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
   def unescapeVariableAmp = expression(operation("&") ^^ {Variable(_, true)})
   def unescapeVariableMustash = expression("{"~>trimmed <~ "}" ^^ {Variable(_, true)})
 
-  def tag = expression(operation("#") ^^ {case x=> Text(x.value) })  >> {
-    case name =>
-        mustache <~ expression(trim("/")~>trim(text(name.value))) ^^ {
-        case body=> Tag(name, body)
-      }  | error("Missing end tag '"+open+"/"+name+close+"' for started tag", name.pos)
-  }
+  def section = positioned(nested("#") ^^ {
+    case (name,body) => Section(name, body)
+  })
 
-  def invertVariable = expression(operation("^") ^^ {InvertVariable(_)})
-
+  def invert = positioned(nested("^") ^^ {
+    case (name,body) => InvertSection(name, body)
+  })
+  
   def partial = expression(operation(">") ^^ {Partial(_)})
 
   def comment = expression(operation("!") ^^ {Comment(_)})
 
   def variable = expression(trimmed ^^ {Variable(_, false)})
 
-  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
+  def set_delimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b => SetDelimiter(a, b)
   }) ^^{
     case a =>
@@ -80,11 +79,23 @@ class MustacheParser extends RegexParsers {
       a
   }
 
+
+
   // Helper methods
   //-------------------------------------------------------------------------
-  override def skipWhitespace = false
 
   def operation(prefix:String):Parser[Text] = trim(prefix)~>trimmed
+
+  def nested(prefix:String):Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x=> Text(x.value) })  >> {
+    case name =>
+        mustache <~ expression(trim("/")~>trim(text(name.value))) ^^ {
+        case body=> (name, body)
+      }  | error("Missing end tag '"+open+"/"+name+close+"' for started tag", name.pos)
+  }
+
+
+  override def skipWhitespace = false
+
   def expression[T <: Statement](p:Parser[T]):Parser[T] = positioned(open ~> p <~ close)
 
   def trimmed:Parser[Text] = trim(text("""\w+""".r))
