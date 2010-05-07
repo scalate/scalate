@@ -50,9 +50,16 @@ class MustacheParser extends RegexParsers {
   def someText = upto(expression)
 
   // prefixed(open ~ opt(whiteSpace), (statement) <~ (opt(whiteSpace) ~ close))
-  def expression = (open ~> statement <~ close) | setDelimiter
+  def expression = (open ~> statement <~ close) ^^ {
+    case a: SetDelimiter =>
+      open = a.open
+      close = a.close
+      println("applying new delim '" + a)
+      a
+    case s => s
+  }
 
-  def statement = unescapeVariable | invertVariable | partial | tagOpen | tagClose | comment | variable
+  def statement = unescapeVariable | invertVariable | partial | tagOpen | tagClose | comment | setDelimiter | variable
 
   def unescapeVariable = nameOperation("&") ^^ {Variable(_, true)}
 
@@ -68,12 +75,9 @@ class MustacheParser extends RegexParsers {
 
   def variable = opt(whiteSpace) ~> name <~ opt(whiteSpace) ^^ {Variable(_, false)}
 
-  def setDelimiter = (((open ~ "=") ~> """\S+""".r <~ " ") ~ (upto("=" ~ close) <~ ("=" ~ close))) ^^ {
+  def setDelimiter = ("=" ~> """\S+""".r <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b =>
-      println("setting open '" + a + "' close '" + b + "'")
-      open = a
-      close = b.toString
-      SetDelimiter(open, close)
+      SetDelimiter(a, b.toString)
   }
 
 
@@ -92,24 +96,22 @@ class MustacheParser extends RegexParsers {
     positioned(p1 ^^ {Text(_)})
   }
 
-  def upto[T](p: Parser[T]): Parser[Text] = {
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ {null} |
-              guard(p) ^^ {_ => ""} |
-              rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
-      )
-  }
+  def upto[T](p: Parser[T]): Parser[Text] = text("""\z""".r) ~ failure("end of file") ^^ {null} |
+          guard(p) ^^ {_ => Text("")} |
+          rep1(not(p) ~> ".|\r|\n".r) ^^ {t => Text(t.mkString(""))}
 
   /**Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
   def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
 
   /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
+/*
   def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
 
 
   def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
     prefixed(prefix, upto(postfix) <~ postfix)
   }
+*/
 
 }
 
