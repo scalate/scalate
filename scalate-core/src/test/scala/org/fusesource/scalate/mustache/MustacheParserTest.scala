@@ -7,6 +7,10 @@ import org.fusesource.scalate.{InvalidSyntaxException, FunSuiteSupport}
  */
 
 class MustacheParserTest extends FunSuiteSupport {
+
+  implicit def stringToText(x: String) = Text(x)
+
+  
   test("plain text") {
     assertValid("some text more text")
 
@@ -63,7 +67,11 @@ class MustacheParserTest extends FunSuiteSupport {
   assertFail("text {{}")
   assertFail("text {{}}")
 
-  implicit def stringToText(x: String) = Text(x)
+  test("missing end tag") {
+    expectSyntaxException("Missing end tag '{{/foo}}' for started tag at 1.6") {
+      "* {{#foo}} bar "
+    }
+  }
 
   def assertValid(text: String): List[Statement] = {
     debug("Parsing...")
@@ -99,5 +107,12 @@ class MustacheParserTest extends FunSuiteSupport {
         assertValid(template)
       }
     }
+  }
+
+  def expectSyntaxException(message: String)(block: => String): Unit = {
+    val e = intercept[InvalidSyntaxException] {
+      assertValid(block)
+    }
+    assert(e.getMessage.contains(message), "InvalidSyntaxException message did not contain the text: \n  "+message+"\nInstead got: \n  "+e.getMessage)
   }
 }
