@@ -32,7 +32,8 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
       this << "import _root_.org.fusesource.scalate.mustache._"
       this << ""
       
-      addScope("RenderContextScope")
+      this << "val " + pushScope + " = " + "Scope($_scalate_$_context)"
+
       fragments.foreach(generate)
     }
 
@@ -46,22 +47,34 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case Variable(name, unescape) => {
           this << fragment.pos;
-          this << "" + scopes.head + ".renderVariable($_scalate_$_context, \"" + name + "\", " + unescape + ")"
+          this << "" + scope + ".renderVariable(\"" + name + "\", " + unescape + ")"
         }
-
+        case Tag(name, body) => {
+          this << fragment.pos;
+          this << "" + scope + ".section(\"" + name + "\") { " + pushScope + " =>"
+          indent {
+            body.foreach(generate)
+          }
+          popScope
+          this << "}"
+        }
         case s => {
           println("Unsupported: " + s)
         }
       }
     }
 
-    protected def addScope(expression: String): String = {
+
+    def scope = scopes.head
+
+    protected def pushScope: String = {
       val name = "$_scope_" + scopeIndex
       scopeIndex += 1
       scopes.push(name)
-      this << "val " + name + " = " + expression
       name
     }
+
+    protected def popScope = scopes.pop
   }
 
   override def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding]): Code = {

@@ -11,6 +11,17 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   testMustacheJs("two_in_a_row", Map("name" -> "Joe", "greeting" -> "Welcome"))
 
+  // TODO use case class
+  // TODO need to eat whitespace between section and variable
+  testMustacheJs("reuse_of_enumerables", Map("terms" -> List(
+    Map("name" -> "t1", "index" -> 0),
+    Map("name" -> "t2", "index" -> 1))))
+
+
+
+  // Implementation methods
+  //-------------------------------------------------------------------------
+
   def testMustacheJs(name: String, attributes: Map[String,Any]): Unit = {
     test(name) {
       val template = engine.compile(TemplateSource.fromFile(new File(rootDir, name + ".html")))
