@@ -58,7 +58,7 @@ class MustacheParser extends RegexParsers {
   def statement = unescapeVariable | invertVariable | partial | tag | comment | setDelimiter | variable |
           failure("invalid statement")
 
-  def unescapeVariable = nameOperation("&") ^^ {Variable(_, true)}
+  def unescapeVariable = (nameOperation("&") | (nameOperation("{") <~ "}")) ^^ {Variable(_, true)}
 
   def tag = nameOperation("#") <~ close  >> {
     // The >> method allows us to return subseqent parser based on what was
