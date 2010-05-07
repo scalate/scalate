@@ -87,10 +87,6 @@ class MustacheParser extends RegexParsers {
     case a ~ b => SetDelimiter(a, b)
   }
 
-
-  //def fail = """.+""".r ^^ { t => throw new InvalidSyntaxException(t) }
-  //def badExpression = """.+|\z|$""".r ^^ {t => Text(open + t)}
-
   // Helper methods
   //-------------------------------------------------------------------------
   override def skipWhitespace = false

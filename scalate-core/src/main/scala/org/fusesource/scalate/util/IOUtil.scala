@@ -53,13 +53,9 @@ object IOUtil extends Logging {
   }
 
 
-  def loadText(in: InputStream, encoding: String = "UTF-8") = {
-    new String(loadBytes(in), encoding)
-  }
+  def loadText(in: InputStream, encoding: String = "UTF-8"): String = new String(loadBytes(in), encoding)
 
-  def loadTextFile(path: File, encoding: String = "UTF-8") = {
-    new String(loadBinaryFile(path), encoding)
-  }
+  def loadTextFile(path: File, encoding: String = "UTF-8") = new String(loadBinaryFile(path), encoding)
 
   def loadBinaryFile(path: File): Array[Byte] = {
     val baos = new ByteArrayOutputStream
