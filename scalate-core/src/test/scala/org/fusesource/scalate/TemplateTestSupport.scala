@@ -40,6 +40,13 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
     assertOutput(expectedOutput, template, attributes, trim)
   }
 
+
+  def assertMoustacheOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
+    val template = engine.compileMoustache(templateText)
+
+    assertOutput(expectedOutput, template, attributes, trim)
+  }
+
   def assertOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
     var output = engine.layout(template, attributes)
     debug("output: '" + output + "'")
@@ -132,4 +139,6 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
   def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
 
   def compileSsp(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
+
+  def compileMoustache(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".moustache", templateText))
 }
