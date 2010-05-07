@@ -47,10 +47,9 @@ class MustacheParser extends RegexParsers {
   //-------------------------------------------------------------------------
   def mustache = rep(expression | someText)
 
-  def someText = upto(expression)
+  def someText = upto(open)
 
-  // prefixed(open ~ opt(whiteSpace), (statement) <~ (opt(whiteSpace) ~ close))
-  def expression = (open ~> statement <~ close) ^^ {
+  def expression = prefixed(open, statement <~ close) ^^ {
     case a: SetDelimiter =>
       open = a.open
       close = a.close
@@ -76,8 +75,7 @@ class MustacheParser extends RegexParsers {
   def variable = opt(whiteSpace) ~> name <~ opt(whiteSpace) ^^ {Variable(_, false)}
 
   def setDelimiter = ("=" ~> """\S+""".r <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
-    case a ~ b =>
-      SetDelimiter(a, b.toString)
+    case a ~ b => SetDelimiter(a, b.toString)
   }
 
 
