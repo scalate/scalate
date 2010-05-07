@@ -17,6 +17,7 @@ package org.fusesource.scalate
 
 import filter._
 import layout.{NullLayoutStrategy, LayoutStrategy}
+import mustache.MustacheCodeGenerator
 import scaml.ScamlCodeGenerator
 import ssp.SspCodeGenerator
 import support._
@@ -79,7 +80,7 @@ class TemplateEngine extends Logging {
    *
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "moustache" -> new MustacheCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])
@@ -134,6 +135,13 @@ class TemplateEngine extends Logging {
   private var _cacheHits = 0
   private var _cacheMisses = 0
 
+
+  /**
+   * Compiles the given Moustache template text and returns the template
+   */
+  def compileMoustache(text: String, extraBindings:List[Binding] = Nil):Template = {
+    compileText("moustache", text, extraBindings)
+  }
 
   /**
    * Compiles the given SSP template text and returns the template
