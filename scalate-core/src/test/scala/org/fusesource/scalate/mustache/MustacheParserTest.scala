@@ -24,7 +24,7 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("open close tag") {
-    assertParses(List( Text("* "), TagOpen("foo"), Text(" bar "), TagClose("foo"), Text(" *")),
+    assertParses(List( Text("* "), Tag("foo", List(Text(" bar "))), Text(" *")),
       "* {{#foo}} bar {{/foo}} *")
   }
 

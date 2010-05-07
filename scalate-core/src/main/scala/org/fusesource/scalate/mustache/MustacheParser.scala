@@ -18,8 +18,7 @@ case class Text(value: String) extends Statement {
 case class Comment(comment: String) extends Statement
 case class Variable(name: String, unescape: Boolean = false) extends Statement
 case class InvertVariable(name: String) extends Statement
-case class TagOpen(name: String) extends Statement
-case class TagClose(name: String) extends Statement
+case class Tag(name: String, body:List[Statement]) extends Statement
 case class Partial(name: String) extends Statement
 case class SetDelimiter(open: String, close: String) extends Statement
 
@@ -43,7 +42,7 @@ class MustacheParser extends RegexParsers {
 
   // Grammar
   //-------------------------------------------------------------------------
-  def mustache = rep(expression | someText)
+  def mustache:Parser[List[Statement]] = rep(expression | someText)
 
   def someText = upto(open)
 
@@ -56,14 +55,19 @@ class MustacheParser extends RegexParsers {
     case s => s
   }
 
-  def statement = unescapeVariable | invertVariable | partial | tagOpen | tagClose | comment | setDelimiter | variable |
+  def statement = unescapeVariable | invertVariable | partial | tag | comment | setDelimiter | variable |
           failure("invalid statement")
 
   def unescapeVariable = nameOperation("&") ^^ {Variable(_, true)}
 
-  def tagOpen = nameOperation("#") ^^ {TagOpen(_)}
-
-  def tagClose = nameOperation("/") ^^ {TagClose(_)}
+  def tag = nameOperation("#") <~ close  >> {
+    // The >> method allows us to return subseqent parser based on what was
+    // parsed previously
+    case name =>
+      mustache <~ open ~ nameOperation("/", name) ^^ {
+        case body=> Tag(name, body)
+      }
+  }
 
   def invertVariable = nameOperation("^") ^^ {InvertVariable(_)}
 
@@ -86,6 +90,7 @@ class MustacheParser extends RegexParsers {
   override def skipWhitespace = false
 
   def nameOperation(token: String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> name <~ opt(whiteSpace)
+  def nameOperation(token: String, name:String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> name <~ opt(whiteSpace)
 
   val name = """\w+""".r
 
