@@ -30,7 +30,7 @@ class MustacheParserTest extends FunSuiteSupport {
 
   test("invert variable and partial") {
     assertParses(List( Text("* "), InvertVariable("foo"), Text(" "), Partial("bar"), Text(" *")),
-      "* {{^foo}} {{>bar} *")
+      "* {{^foo}} {{>bar}} *")
   }
 
   // set delimiter
@@ -53,12 +53,10 @@ class MustacheParserTest extends FunSuiteSupport {
 
 
   // test bad syntax
-  test("bad expressions") {
-    badExpression("text {{-}}")
-    badExpression("text {{")
-    badExpression("text {{}")
-    badExpression("text {{}}")
-  }
+  assertFail("text {{-}}")
+  assertFail("text {{")
+  assertFail("text {{}")
+  assertFail("text {{}}")
 
   implicit def stringToText(x: String) = Text(x)
 
@@ -97,12 +95,4 @@ class MustacheParserTest extends FunSuiteSupport {
       }
     }
   }
-
-  /**
-   * lets assume bad expressions just render text instead
-   */
-  def badExpression(template: String): Unit = {
-    assertParses(List(Text(template)), template)  
-  }
-
 }

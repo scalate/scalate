@@ -34,11 +34,17 @@ class ResourceNotFoundException(resource: String, root: String = "")
     "Could not load resource: [" + resource + 
     (if (root == "") "]" else "]; are you sure it's within [" + root + "]?"))
 
+/**
+ * Indicates a syntax error trying to parse the template
+ */
 class InvalidSyntaxException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos) {
   var source:TemplateSource = _
   def template: String = if (source != null) source.uri else null
 }
 
+/**
+ * Indicates a Scala compiler error occurred when converting the template into bytecode
+ */
 class CompilerException(msg:String, val errors:List[CompilerError]) extends TemplateException(msg)
 
 

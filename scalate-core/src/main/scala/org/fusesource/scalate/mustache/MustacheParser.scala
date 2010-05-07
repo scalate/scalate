@@ -2,7 +2,7 @@ package org.fusesource.scalate.mustache
 
 import util.parsing.combinator.RegexParsers
 import util.parsing.input.{Positional, CharSequenceReader, NoPosition, Position}
-import org.fusesource.scalate.{TemplateException}
+import org.fusesource.scalate.{InvalidSyntaxException, TemplateException}
 
 sealed abstract class Statement extends Positional {
 }
@@ -36,7 +36,7 @@ class MustacheParser extends RegexParsers {
   def parse(in: String) = {
     phrase(mustache)(new CharSequenceReader(in)) match {
       case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidTemplateException(message, next.pos);
+      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
@@ -74,7 +74,7 @@ class MustacheParser extends RegexParsers {
   def variable = opt(whiteSpace) ~> name <~ opt(whiteSpace) ^^ {Variable(_, false)}
 
   def setDelimiter = ("=" ~> """\S+""".r <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
-    case a ~ b => SetDelimiter(a, b.toString)
+    case a ~ b => SetDelimiter(a, b.value)
   }
 
 
@@ -97,19 +97,6 @@ class MustacheParser extends RegexParsers {
           guard(p) ^^ {_ => Text("")} |
           rep1(not(p) ~> ".|\r|\n".r) ^^ {t => Text(t.mkString(""))}
 
-  /**Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
+  /** Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
   def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
-
-  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
-/*
-  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
-
-
-  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
-    prefixed(prefix, upto(postfix) <~ postfix)
-  }
-*/
-
 }
-
-class InvalidTemplateException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)
