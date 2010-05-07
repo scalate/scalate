@@ -14,6 +14,7 @@ case class Text(value: String) extends Statement {
   def +(other: String) = Text(value + other).setPos(pos)
   def +(other: Text) = Text(value + other.value).setPos(pos)
   def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
+  def isWhitespace: Boolean = value.trim.length == 0
   override def toString = value
 }
 
@@ -44,7 +45,7 @@ class MustacheParser extends RegexParsers {
 
   // Grammar
   //-------------------------------------------------------------------------
-  def mustache:Parser[List[Statement]] = rep(statement | someText)
+  def mustache:Parser[List[Statement]] = rep(statement | someText) ^^ {s => s} // TODO remove whitespace
 
   def someText = upto(open)
 
@@ -89,7 +90,7 @@ class MustacheParser extends RegexParsers {
   def nested(prefix:String):Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x=> Text(x.value) })  >> {
     case name =>
         mustache <~ expression(trim("/")~>trim(text(name.value))) ^^ {
-        case body=> (name, body)
+        case body=> (name, body.dropWhile(isWhitespace))
       }  | error("Missing end tag '"+open+"/"+name+close+"' for started tag", name.pos)
   }
 
@@ -117,4 +118,8 @@ class MustacheParser extends RegexParsers {
     throw new InvalidSyntaxException(message, pos);
   }
 
+  def isWhitespace(statement: Statement): Boolean = statement match {
+    case t: Text => t.isWhitespace
+    case _ => false
+  }
 }

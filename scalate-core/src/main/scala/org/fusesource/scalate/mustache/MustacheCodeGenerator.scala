@@ -49,7 +49,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << fragment.pos;
           this << "" + scope + ".renderVariable(\"" + name + "\", " + unescape + ")"
         }
-        case Tag(name, body) => {
+        case Section(name, body) => {
           this << fragment.pos;
           this << "" + scope + ".section(\"" + name + "\") { " + pushScope + " =>"
           indent {
