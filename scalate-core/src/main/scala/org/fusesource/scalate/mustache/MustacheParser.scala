@@ -44,61 +44,51 @@ class MustacheParser extends RegexParsers {
 
   // Grammar
   //-------------------------------------------------------------------------
-  def mustache:Parser[List[Statement]] = rep(expression | someText)
+  def mustache:Parser[List[Statement]] = rep(statement | someText)
 
   def someText = upto(open)
 
-  def expression = prefixed(open, statement <~ close) ^^ {
-    case a: SetDelimiter =>
-      open = a.open.value
-      close = a.close.value
-      println("applying new delim '" + a)
-      a
-    case s => s
-  }
+  def statement =  guarded(open, unescapeVariable | invertVariable | partial | tag | comment | setDelimiter | variable |
+          failure("invalid statement"))
 
-  def statement = unescapeVariable | invertVariable | partial | tag | comment | setDelimiter | variable |
-          failure("invalid statement")
+  def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
+  def unescapeVariableAmp = expression(operation("&") ^^ {Variable(_, true)})
+  def unescapeVariableMustash = expression("{"~>trimmed <~ "}" ^^ {Variable(_, true)})
 
-  def unescapeVariable = (nameOperation("&") | (nameOperation("{") <~ "}")) ^^ {Variable(_, true)}
-
-  def tag = nameOperation("#") <~ close  >> {
-    // The >> method allows us to return subseqent parser based on what was
-    // parsed previously
+  def tag = expression(operation("#") ^^ {case x=> Text(x.value) })  >> {
     case name =>
-        mustache <~ prefixed(open, nameOperation("/", name.value)) ^^ {
+        mustache <~ expression(trim("/")~>trim(text(name.value))) ^^ {
         case body=> Tag(name, body)
       }  | error("Missing end tag '"+open+"/"+name+close+"' for started tag", name.pos)
   }
 
-  def error(message:String, pos:Position) = {
-    throw new InvalidSyntaxException(message, pos);
-  }
+  def invertVariable = expression(operation("^") ^^ {InvertVariable(_)})
 
-  def invertVariable = nameOperation("^") ^^ {InvertVariable(_)}
+  def partial = expression(operation(">") ^^ {Partial(_)})
 
-  def partial = nameOperation(">") ^^ {Partial(_)}
+  def comment = expression(operation("!") ^^ {Comment(_)})
 
-  def comment = nameOperation("!") ^^ {Comment(_)}
+  def variable = expression(trimmed ^^ {Variable(_, false)})
 
-  def variable = opt(whiteSpace) ~> name <~ opt(whiteSpace) ^^ {Variable(_, false)}
-
-  def setDelimiter = ("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
+  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b => SetDelimiter(a, b)
+  }) ^^{
+    case a =>
+      open = a.open.value
+      close = a.close.value
+      println("applying new delim '" + a)
+      a
   }
-
-
-  //def fail = """.+""".r ^^ { t => throw new InvalidSyntaxException(t) }
-  //def badExpression = """.+|\z|$""".r ^^ {t => Text(open + t)}
 
   // Helper methods
   //-------------------------------------------------------------------------
   override def skipWhitespace = false
 
-  def nameOperation(token: String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> name <~ opt(whiteSpace)
-  def nameOperation(token: String, name:String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> text(name) <~ opt(whiteSpace)
+  def operation(prefix:String):Parser[Text] = trim(prefix)~>trimmed
+  def expression[T <: Statement](p:Parser[T]):Parser[T] = positioned(open ~> p <~ close)
 
-  val name = text("""\w+""".r)
+  def trimmed:Parser[Text] = trim(text("""\w+""".r))
+  def trim[T](p:Parser[T]=text("""\w+""".r)):Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
 
   def text(p1: Parser[String]): Parser[Text] = {
     positioned(p1 ^^ {Text(_)})
@@ -108,6 +98,12 @@ class MustacheParser extends RegexParsers {
           guard(p) ^^ {_ => Text("")} |
           rep1(not(p) ~> ".|\r|\n".r) ^^ {t => Text(t.mkString(""))}
 
-  /** Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
-  def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
+
+  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
+  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
+
+  def error(message:String, pos:Position) = {
+    throw new InvalidSyntaxException(message, pos);
+  }
+
 }
