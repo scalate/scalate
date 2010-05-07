@@ -75,6 +75,7 @@
 <!--
             <exclude>**/ScamlBugTest.*</exclude>
 -->
+            <exclude>**/MustacheParserTest.*</exclude>
           </excludes>
         </configuration>
       </plugin>

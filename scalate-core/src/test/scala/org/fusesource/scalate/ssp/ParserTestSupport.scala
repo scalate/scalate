@@ -43,9 +43,4 @@ abstract class ParserTestSupport extends FunSuiteSupport {
     lines
   }
 
-
-  def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
-    assert(anyRef != null, "expected instance of " + expectedClass.getName)
-    expect(expectedClass) {anyRef.getClass}
-  }
 }

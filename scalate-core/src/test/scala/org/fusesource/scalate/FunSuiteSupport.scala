@@ -44,4 +44,9 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
   def assertText(selector: String, result: NodeSeq, expected: String): Unit = {
     expect(expected, "text of elements matching: " + selector) {result.$(selector).text}
   }
+
+  def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
+    assert(anyRef != null, "expected instance of " + expectedClass.getName)
+    expect(expectedClass) {anyRef.getClass}
+  }
 }
