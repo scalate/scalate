@@ -59,7 +59,7 @@ class MustacheParser extends RegexParsers {
   def statement = unescapeVariable | invertVariable | partial | tagOpen | tagClose | comment | setDelimiter | variable |
           failure("invalid statement")
 
-  def unescapeVariable = nameOperation("&") ^^ {Variable(_, true)}
+  def unescapeVariable = (nameOperation("&") | (nameOperation("{") <~ "}")) ^^ {Variable(_, true)}
 
   def tagOpen = nameOperation("#") ^^ {TagOpen(_)}
 

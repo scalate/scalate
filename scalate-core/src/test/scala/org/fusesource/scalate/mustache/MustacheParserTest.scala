@@ -23,6 +23,11 @@ class MustacheParserTest extends FunSuiteSupport {
       "some text {{&foo}} {{& bar}} more text")
   }
 
+  test("unescape with treble moustache") {
+    assertParses(List(Text("some text "), Variable("foo", true), Text(" more text")),
+      "some text {{{foo}}} more text")
+  }
+
   test("open close tag") {
     assertParses(List( Text("* "), TagOpen("foo"), Text(" bar "), TagClose("foo"), Text(" *")),
       "* {{#foo}} bar {{/foo}} *")
