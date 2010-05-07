@@ -7,20 +7,22 @@ import org.fusesource.scalate.{InvalidSyntaxException, TemplateException}
 sealed abstract class Statement extends Positional {
 }
 
+/**
+ * Is a String with positioning information
+ */
 case class Text(value: String) extends Statement {
   def +(other: String) = Text(value + other).setPos(pos)
-
   def +(other: Text) = Text(value + other.value).setPos(pos)
-
   def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
+  override def toString = value
 }
 
-case class Comment(comment: String) extends Statement
-case class Variable(name: String, unescape: Boolean = false) extends Statement
-case class InvertVariable(name: String) extends Statement
-case class Tag(name: String, body:List[Statement]) extends Statement
-case class Partial(name: String) extends Statement
-case class SetDelimiter(open: String, close: String) extends Statement
+case class Comment(comment: Text) extends Statement
+case class Variable(name: Text, unescape: Boolean = false) extends Statement
+case class InvertVariable(name: Text) extends Statement
+case class Tag(name: Text, body:List[Statement]) extends Statement
+case class Partial(name: Text) extends Statement
+case class SetDelimiter(open: Text, close: Text) extends Statement
 
 
 /**
@@ -48,8 +50,8 @@ class MustacheParser extends RegexParsers {
 
   def expression = prefixed(open, statement <~ close) ^^ {
     case a: SetDelimiter =>
-      open = a.open
-      close = a.close
+      open = a.open.value
+      close = a.close.value
       println("applying new delim '" + a)
       a
     case s => s
@@ -64,9 +66,13 @@ class MustacheParser extends RegexParsers {
     // The >> method allows us to return subseqent parser based on what was
     // parsed previously
     case name =>
-      mustache <~ open ~ nameOperation("/", name) ^^ {
+        mustache <~ prefixed(open, nameOperation("/", name.value)) ^^ {
         case body=> Tag(name, body)
-      }
+      }  | error("Missing end tag '"+open+"/"+name+close+"' for started tag", name.pos)
+  }
+
+  def error(message:String, pos:Position) = {
+    throw new InvalidSyntaxException(message, pos);
   }
 
   def invertVariable = nameOperation("^") ^^ {InvertVariable(_)}
@@ -77,8 +83,8 @@ class MustacheParser extends RegexParsers {
 
   def variable = opt(whiteSpace) ~> name <~ opt(whiteSpace) ^^ {Variable(_, false)}
 
-  def setDelimiter = ("=" ~> """\S+""".r <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
-    case a ~ b => SetDelimiter(a, b.value)
+  def setDelimiter = ("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
+    case a ~ b => SetDelimiter(a, b)
   }
 
 
@@ -90,9 +96,9 @@ class MustacheParser extends RegexParsers {
   override def skipWhitespace = false
 
   def nameOperation(token: String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> name <~ opt(whiteSpace)
-  def nameOperation(token: String, name:String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> name <~ opt(whiteSpace)
+  def nameOperation(token: String, name:String) = (opt(whiteSpace) ~ token ~ opt(whiteSpace)) ~> text(name) <~ opt(whiteSpace)
 
-  val name = """\w+""".r
+  val name = text("""\w+""".r)
 
   def text(p1: Parser[String]): Parser[Text] = {
     positioned(p1 ^^ {Text(_)})
