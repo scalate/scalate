@@ -66,7 +66,6 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
     val path = config.getServletContext.getRealPath("WEB-INF")
     if (path != null) {
       workingDirectory = new File(path, "_scalate")
-      workingDirectory.mkdirs
     }
   }
   

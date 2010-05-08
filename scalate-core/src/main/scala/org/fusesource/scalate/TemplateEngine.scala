@@ -110,7 +110,6 @@ class TemplateEngine extends Logging {
       val value = System.getProperty("scalate.workdir", "")
       if (value != null && value.length > 0) {
         _workingDirectory = new File(value)
-        _workingDirectory.mkdirs
       }
       else {
         _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
@@ -472,7 +471,7 @@ class TemplateEngine extends Logging {
     val uri = source.uri
     val className = generator(uri).className(uri)
     val template = loadCompiledTemplate(className);
-    if( allowCaching && allowReload) {
+    if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
       val code = generateScala(source, extraBindings);
