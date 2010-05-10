@@ -21,8 +21,8 @@ class MustacheTest extends TemplateTestSupport {
       Map("person?" -> Map("name" -> "James")))
   }
 
-  ignore("non false not a list with simple name") {
-    assertMoustacheOutput("Hi James",
+  test("non false not a list with simple name") {
+    assertMoustacheOutput("Hi James ",
       "{{#person}} Hi {{name}} {{/person}}",
       Map("person" -> Map("name" -> "James")))
   }

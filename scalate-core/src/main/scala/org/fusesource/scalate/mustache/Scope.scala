@@ -2,7 +2,8 @@ package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
 import collection.JavaConversions._
-import java.{ lang => jl, util => ju }
+import _root_.java.{ lang => jl, util => ju }
+import org.fusesource.scalate.util.Logging
 
 object Scope {
   def apply(context: RenderContext) = RenderContextScope(context)
@@ -13,7 +14,7 @@ object Scope {
  *
  * @version $Revision : 1.1 $
  */
-trait Scope {
+trait Scope extends Logging {
   def parent: Option[Scope]
 
   def context: RenderContext
@@ -23,13 +24,14 @@ trait Scope {
    */
   def renderVariable(name: String, unescape: Boolean): Unit = {
     val v = variable(name) match {
-      case Some(v) => v
+      case Some(a) => a
       case None =>
         parent match {
           case Some(p) => p.variable(name)
           case _ => null
         }
     }
+    println("Evaluated " + name + " = " + v + " on " + this)
 
     if (unescape) {
       context.unescape(v)
@@ -67,8 +69,13 @@ trait Scope {
     value match {
       case Some(v) =>
         toTraversable(v) match {
+          // maps and so forth
+          case a: PartialFunction[_,_] =>
+            childScope(name, a)(block)
+
           case s: Traversable[Any] =>
             for (i <- s) {
+              println("Creating traversiable scope for: " + i)
               val scope = createScope(name, i)
               block(scope)
             }
@@ -77,7 +84,8 @@ trait Scope {
           case false =>
           case null =>
 
-          case v => println("Don't understand value: " + v)
+          case a =>
+            childScope(name, a)(block)
         }
       case None => parent match {
         case Some(ps) => ps.section(name)(block)
@@ -86,11 +94,19 @@ trait Scope {
     }
   }
 
+  def childScope(name: String, v: Any)(block: Scope => Unit): Unit = {
+    println("Creating scope for: " + v)
+    val scope = createScope(name, v)
+    block(scope)
+  }
+
   def createScope(name: String, value: Any): Scope = {
     value match {
       case v: Map[String, Any] => new MapScope(this, name, v)
-      case _ => new EmptyScope(this)
-    //case u => throw new IllegalArgumentException("Cannot make Mustache Scope for value " + u)
+      case null => new EmptyScope(this)
+      case _ =>
+        warn("Don't know how to create a scope for " + value)
+        new EmptyScope(this)
     }
   }
 
