@@ -108,8 +108,7 @@ class MustacheParser extends RegexParsers {
 
   def expression[T <: Statement](p: Parser[T]): Parser[T] = positioned(open ~> p <~ close)
 
-  def trimmed: Parser[Text] = trim(text("""\w+""".r))
-  //def trimmed: Parser[Text] = trim(upto(whiteSpace | close))
+  def trimmed = trim(text("""\w[^\s{}]*""".r))
 
   def trim[T](p: Parser[T]): Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
 
