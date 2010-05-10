@@ -57,14 +57,14 @@ class TemplateEngine extends Logging {
   /**
    * Set to false if you don't want the template engine to ever cache any of the compiled templates.
    */
-  var allowCaching = true
+  var allowCaching = "true" == System.getProperty("scalate.allowCaching", "true")
 
   /**
    * If true, then the template engine will check to see if the template has been updated since last compiled
    * so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
    * the tempaltes should not be changing.
    */
-  var allowReload = true
+  var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
 
   /**
    * Whether a custom classpath should be combined with the deduced classpath
