@@ -72,7 +72,7 @@ class MustacheParser extends RegexParsers {
 
   def partial = expression(operation(">") ^^ {Partial(_)})
 
-  def comment = expression(operation("!") ^^ {Comment(_)})
+  def comment = expression((trim("!") ~> upto(close)) ^^ {Comment(_)})
 
   def variable = expression(trimmed ^^ {Variable(_, false)})
 

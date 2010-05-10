@@ -34,6 +34,9 @@ class MustacheJsSystemTest extends TemplateTestSupport {
   // The following are bad test cases that don't seem correct...
   ignore("bad test cases") {
 
+    // TODO shouldn't the comment be eaten?
+    testMustacheJs("comments", Map("title" -> (() => "A Comedy of Errors")))
+
     // TODO should this be escaped?
     testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"),
       "entities" -> "&quot;"))
