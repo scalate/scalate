@@ -24,7 +24,7 @@ object URIs {
    * Combines the URI path, query string with additional query terms which will avoid duplicates
    */
   def uriPlus(path: String, query: String, addQuery: String)= {
-    val newQuery = (splitQuery(query) ++ splitQuery(addQuery)).removeDuplicates
+    val newQuery = (splitQuery(query) ++ splitQuery(addQuery)).toList.removeDuplicates
     uri(path, joinQuery(newQuery))
 
   }
