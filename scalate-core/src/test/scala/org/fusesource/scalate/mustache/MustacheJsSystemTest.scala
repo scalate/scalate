@@ -10,14 +10,30 @@ import org.fusesource.scalate.util.IOUtil
 class MustacheJsSystemTest extends TemplateTestSupport {
   var trimOutputAndTemplate = true
 
+  // Note we had to zap the comments from the sample results - seems bug in mustache.js
+  testMustacheJs("comments", Map("title" -> (() => "A Comedy of Errors")))
+  testMustacheJs("comments_multi_line", Map("title" -> (() => "A Comedy of Errors")))
+
+  testMustacheJs("complex", Map("header" -> (() => "Colors"),
+    "item" -> List(
+      Map("name" -> "red", "current" -> true, "url" -> "#Red"),
+      Map("name" -> "green", "current" -> false, "url" -> "#Green"),
+      Map("name" -> "blue", "current" -> false, "url" -> "#Blue")
+      ),
+    "link" -> (() => true),
+    "list" -> (() => true),
+    "empty" -> (() => false)))
+
   testMustacheJs("empty_template", Map())
   testMustacheJs("error_not_found", Map())
 
-  testMustacheJs("null_string", Map("name" ->  "Elise",
-      "glytch" -> true,
-  "binary" -> false,
-  "value" -> null,
-  "numeric" -> (() => Double.NaN)))
+  testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"), "entities" -> "\""))
+
+  testMustacheJs("null_string", Map("name" -> "Elise",
+    "glytch" -> true,
+    "binary" -> false,
+    "value" -> null,
+    "numeric" -> (() => Double.NaN)))
 
 
   // TODO use case class
@@ -34,13 +50,10 @@ class MustacheJsSystemTest extends TemplateTestSupport {
   // The following are bad test cases that don't seem correct...
   ignore("bad test cases") {
 
-    // TODO shouldn't the comment be eaten?
-    testMustacheJs("comments", Map("title" -> (() => "A Comedy of Errors")))
-
-    // TODO should this be escaped?
-    testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"),
-      "entities" -> "&quot;"))
+    // TODO should &quot; be ignored from quoting?
+    testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"), "entities" -> "&quot;"))
   }
+
 
 
   // Implementation methods
