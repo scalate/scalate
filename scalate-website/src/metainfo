@@ -25,7 +25,7 @@
   project_wiki_url: 'http://wiki.github.com/scalate/scalate/'
   project_logo: "/images/project-logo.png"
   project_version: '1.1'
-  project_snapshot_version: '1.2-SNAPSHOT'
+  project_snapshot_version: '1.2-scala-next-SNAPSHOT'
 
   github_page: http://github.com/scalate/scalate
   git_user_url: git://github.com/scalate/scalate.git
@@ -34,7 +34,7 @@
   # typically the new version is the current version
   # but if we want to document new features that are not yet released we can use this value
   # then after the release we replace project_new_version uses from the documentation
-  project_new_version: '1.2-SNAPSHOT'
+  project_new_version: '1.2-scala-next-SNAPSHOT'
 
   # -------------------------------------------------------------------
   # TODO it would be nice to define these in terms of the project_id variable!
