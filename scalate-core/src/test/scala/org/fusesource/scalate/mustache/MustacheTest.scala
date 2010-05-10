@@ -16,7 +16,7 @@ class MustacheTest extends TemplateTestSupport {
   }
 
   test("non false not a list") {
-    assertMoustacheOutput("Hi James!",
+    assertMoustacheOutput("Hi James! ",
       "{{#person?}} Hi {{name}}! {{/person?}}",
       Map("person?" -> Map("name" -> "James")))
   }
