@@ -31,10 +31,10 @@ trait Scope {
     }
 
     if (unescape) {
-      context.unescape(v)
+      context.unescape(format(v))
     }
     else {
-      context.escape(v)
+      context.escape(format(v))
     }
   }
 
@@ -71,6 +71,10 @@ trait Scope {
     }
   }
 
+  def format(v: Any): Any = v match {
+    case f: Function0[_] => f()
+    case _ => v
+  }
 }
 
 case class RenderContextScope(context: RenderContext) extends Scope {
