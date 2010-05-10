@@ -8,11 +8,11 @@ import org.fusesource.scalate.util.IOUtil
  * Runs the system tests from the mustache.js distro
  */
 class MustacheJsSystemTest extends TemplateTestSupport {
+  var trimOutputAndTemplate = true
 
   testMustacheJs("two_in_a_row", Map("name" -> "Joe", "greeting" -> "Welcome"))
 
   // TODO use case class
-  // TODO need to eat whitespace between section and variable
   testMustacheJs("reuse_of_enumerables", Map("terms" -> List(
     Map("name" -> "t1", "index" -> 0),
     Map("name" -> "t2", "index" -> 1))))
@@ -25,8 +25,13 @@ class MustacheJsSystemTest extends TemplateTestSupport {
   def testMustacheJs(name: String, attributes: Map[String,Any]): Unit = {
     test(name) {
       val template = engine.compile(TemplateSource.fromFile(new File(rootDir, name + ".html")))
-      val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt")).trim
-      assertOutput(expectedOutput, template, attributes)
+      val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt"))
+      if (trimOutputAndTemplate) {
+        assertTrimOutput(expectedOutput.trim, template, attributes)
+      }
+      else {
+        assertOutput(expectedOutput, template, attributes)
+      }
     }
   }
 
