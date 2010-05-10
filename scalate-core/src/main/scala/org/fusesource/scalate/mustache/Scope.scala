@@ -72,7 +72,6 @@ trait Scope {
   }
 
   def format(v: Any): Any = v match {
-    case f: Function0[_] => f()
     case _ => v
   }
 }

@@ -103,10 +103,13 @@ trait RenderContext {
       case u: Unit => ""
       case null => sanitize(nullString)
       case Unescaped(text) => text
+      case f: Function0[_] => value(f(), shouldSanitize)
       case v: String => sanitize(v)
       case v: Date => sanitize(dateFormat.format(v))
       case n: Double if n.isNaN => "NaN"
       case n: Float if n.isNaN => "NaN"
+      case v: Double => sanitize(numberFormat.format(v))
+      case v: Float => sanitize(numberFormat.format(v))
       case v: Number => sanitize(numberFormat.format(v))
       case f: FilterRequest => {
         // NOTE assume a filter does the correct sanitizing
