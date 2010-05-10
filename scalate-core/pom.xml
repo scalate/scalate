@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>scalate-core</artifactId>
@@ -12,6 +12,17 @@
   <description>Scalate Core</description>
 
   <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+    </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -36,7 +47,8 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>optional</scope>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
 
     <!-- testing -->
@@ -63,6 +75,7 @@
 <!--
             <exclude>**/ScamlBugTest.*</exclude>
 -->
+            <exclude>**/MustacheJsSystemTest.*</exclude>
           </excludes>
         </configuration>
       </plugin>

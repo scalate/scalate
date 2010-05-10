@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -34,6 +34,8 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
 
 
@@ -87,9 +89,6 @@
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <attachClasses>true</attachClasses>
-        </configuration>
       </plugin>
 
       <plugin>

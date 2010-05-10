@@ -10,7 +10,26 @@ How to create releases of Scalate
 
 # Release Steps
 
+Various documentation changes first (which should be done before the release is cut)
+
+* update the **scalate\_website/src/download.page** and  **scalate\_website/src/tool.page** pages for this release
+* edit the **scalate\_website/src/metainf** file and change the **project\_version** values
+* blog about the release by creating an entry in **scalate\_website/src/blog/releases** 
+
+If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion
+
+* in the current last-release branch change the Rakefile to generate the website to generate the the last version. For example if the last released version is 0.1 then change the line in the Rakefile to...
+
+      remote /forge/dav/#{project_id}/versions/0.1
+
+* make sure the CI build for [webgen last release](http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&tab=buildTypeStatusDiv) runs so that the website for the previous release is archived into the versions directory.
+* add a link to the versions.page to this old version. 
+
+Cutting the release 
+
+* **NOTE** make sure you are using a clone of your local git repository for doing the release! See below on the use of temporary local repo...
 * check your repo is clean and you are on master branch
+* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment the snapshot version in the root pom.xml
 * prepare the release
 
       mvn release:prepare -P release
@@ -19,22 +38,48 @@ How to create releases of Scalate
 
       mvn release:perform -P release
 
-* push the tag from git
+* open [Nexus Staging](http://repo.fusesource.com/nexus/index.html#staging) and close the Staging release of scalate
+* now Promote the closed release
+* now you'll need to tidy up your local repo (the real clone of github) and push changes back to github
 
+      git rebase --hard
+      git push
       git push origin scalate-project-{project_version:}
 
-* update the download.page on the wiki
-* edit the **scalate\_website/src/metainf* file and change the **project\_version** value
-* blog about the release by creating an entry in **scalate\_website/src/blog/releases**
 * announce the release on the [mailing list](community.html)
+
+## Creating a branch for this release and website changes
+
+If this is a major release...
+
+* create a branch for this new release. For example if you've just done {project_version:} then do this...
+
+      git co scalate-project-{project_version:} -b scalate-{project_version:}.x
+      git push scalate-{project_version:}.x origin
+
+* check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to...
+
+      remote /forge/dav/#{project_id}
+
+* edit the [scalate last release VCS Root](http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&action=editVcsRoot&cameFromTitle=Edit+Build+Configuration&vcsRootId=45&editingScope=editBuildType%3Abt119) so that it uses the new branch you have just created **scalate-project-{project_version:}**
+* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to uncomment the snapshot version in the root pom.xml
+* ensure that the master branch has its Rakefile to point to the snapshot area
+
+      remote /forge/dav/#{project_id}/versions/snapshot
+
+
+What all this means is now that you should be able to amend the [website for the current release](http://scalate.fusesource.org/) using the **scalate-project-{project_version:}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.fusesource.org/versions/snapshot/index.html)
 
 ## Using a temporary local repo
 
 To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo...
 
-    git clone file:///foo/scala scala-release
-    
+    git clone file:///foo/scalate scalate-release
 
+You probably want to set this property too if you're using git 1.6 or later to avoid your release prepare barfing...
+
+    git config receive.denycurrentbranch warn
+    
 then edit your **~/.m2/settings.xml** file and add this...
 
     <settings>
@@ -49,4 +94,3 @@ then edit your **~/.m2/settings.xml** file and add this...
 
 then perform a release in this new **scala-release** directory. This will then push to your local repo, not the remote one.
 
-    

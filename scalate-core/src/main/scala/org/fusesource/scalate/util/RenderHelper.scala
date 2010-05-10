@@ -74,13 +74,24 @@ object RenderHelper
     val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
     var map = LinkedHashMap[Any,Any]( )
 
-    if( !entries_id.isEmpty ) {
-      map += "id" -> entries_id.last._2
+    def isEnabled(value:Any) = value!=null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])
+
+    val flattener = (x:(Any,Any))=>{
+      if( isEnabled(x._2) ) {
+        List(x._2)
+      } else {
+        Nil
+      }
     }
 
-    if( !entries_class.isEmpty ) {
-      val value = entries_class.map(x=>x._2).mkString(" ")
-      map += "class"->value
+    val ids = entries_id.flatMap(flattener)
+    if( !ids.isEmpty ) {
+      map += "id" -> ids.last
+    }
+
+    val classes = entries_class.flatMap(flattener)
+    if( !classes.isEmpty ) {
+      map += "class"->classes.mkString(" ")
     }
 
     entries_rest.foreach{ me => map += me._1 -> me._2 }
@@ -88,7 +99,7 @@ object RenderHelper
     if( !map.isEmpty ) {
       map.foreach {
         case (name,value) =>
-        if( value!=null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])) {
+        if( isEnabled(value) ) {
           context << " "
           context << name
           context << "=\""

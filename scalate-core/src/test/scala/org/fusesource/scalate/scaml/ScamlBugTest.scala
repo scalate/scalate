@@ -21,6 +21,30 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+  testRender("#77: attribute sanitized twice",
+"""
+- val amp = "&"
+%div(attr1="#{amp}")
+""","""
+<div attr1="&amp;"></div>
+""")
+
+  testRender("#78: null class attribute not removed",
+"""
+%div(id={null} attr1={null} class={null})
+""","""
+<div></div>
+""")
+
+  testRender("#74: scaml id or class + dynamic attribute produces an error",
+"""
+%div.some(attr1={"value"})
+%div#some(attr1={"value"})
+""","""
+<div class="some" attr1="value"></div>
+<div id="some" attr1="value"></div>
+""")
+
     testRender("SCALATE-44 test1",
 """
 - if (name == "Hiram")
@@ -124,5 +148,13 @@ Worked!
 }, ()=>{
   engine.escapeMarkup = true;
 })
+
+
+  testRender("SCALATE-72: Spaces stripped in an attribute expression",
+"""
+%p(class={"a b"}) a b
+""","""
+<p class="a b">a b</p>
+""")
 
 }

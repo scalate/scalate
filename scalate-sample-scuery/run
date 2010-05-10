@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+echo
+echo Running the web application with JRebel so we can hot-reload code changes
+echo
+echo In another shell run the following command:
+echo "    mvn scala:cc"
+echo
+echo Using JRebel home directory of $JREBEL_HOME
+MAVEN_OPTS="-noverify -javaagent:$JREBEL_HOME/jrebel.jar" 
+mvn -Dscalate.temp.workingdir=true $* jetty:run
+

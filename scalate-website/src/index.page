@@ -1,10 +1,10 @@
 ---
-title: Scalate
+title: Scalate 1.2-SNAPSHOT
 in_menu: true
 sort_info: 1
 --- name:overview pipeline:haml,tags
 
-%h1 {project_name:}
+%h1 Scalate {project_version:}
 
 {project_slogan:}
 
@@ -23,7 +23,7 @@ Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wik
 
 Scalate supports the following template formats
 
-* [SSP](documentation/ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+* [SSP](documentation/ssp-reference.html) which is like [Velocity](documentation/ssp-reference.html#velocity_style_directives), JSP or Erb from Rails 
 * [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 
 Still confused? Check out [Why Scalate](why.html)? or how Scalate compares to [JSP](compare-jsp.html) or [Lift](code-in-view.html)
@@ -31,5 +31,5 @@ Still confused? Check out [Why Scalate](why.html)? or how Scalate compares to [J
 Getting started
 ---------------
 
-Try reading the [Documentation](documentation/index.html) or jump straight to the [Getting Started Guide](documentation/getting-started.html)
+Try reading the [Documentation](documentation/index.html), check out the [Scalate Blog](blog/index.html) or jump straight to the [Getting Started Guide](documentation/getting-started.html)
 

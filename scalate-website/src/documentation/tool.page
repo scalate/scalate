@@ -1,0 +1,88 @@
+---
+title: Scalate Tool
+in_menu: false
+sort_info: 5
+--- name:overview
+
+# Scalate Tool
+Scalate Tool helps get you scalate-ing faster!
+
+--- name:content pipeline:tags,markdown
+
+<div class="left" markdown="1">
+# Requirements
+</div>
+
+<div class="right" markdown="1">
+Scatate Tool is a handy command line tool for creating new projects using Scalate. 
+
+Scalate Tool has the following requirements
+
+* Scalate requires a [Java development kit](http://java.sun.com/) of version 1.5 or later
+
+To get started with the Scalate Tool you'll need to download and install it.
+
+[Download a distribution](../download.html) such as [{project_version:} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/{project_version:}/scalate-distro-{project_version:}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/{project_version:}/scalate-distro-{project_version:}-unix-bin.tar.gz)
+ 
+The installation step is really just about adding the **bin/scalate** script to your **PATH** so that its easy to run the tool from any directory you happen to be in. If you know how to do that kind of stuff go right ahead. e.g. you could just create a symlink to it in a directory thats already on your path like /usr/local/bin or ~/.bin
+
+Or you can just run the scalate script directly from your download if you prefer. There follows detailed instructions on how to install the scalate tool to ensure you can run the tool from any directory.
+
+</div>
+
+<div class="left" markdown="1">
+# Windows 2000/XP
+</div>
+<div class="right" markdown="1">
+
+* Unzip the distribution archive, i.e. **scalate-{project_version:}-windows-bin.zip** to the directory you wish to install Scalate {project_version:}. These instructions assume you chose **C:\Program Files\Scala**. The subdirectory scalate-{project_version:} will be created from the archive.
+* Add the **C:\Program Files\Scala\scalate-{project_version:}** directory to the **PATH** environment variable by 
+  * Opening up the system properties (WinKey + Pause)
+  * Selecting the "Advanced" tab, and the "Environment Variables" button
+  * Update/create the PATH variable in the user variables prepending the value **C:\Program Files\Scala\scalate-{project_version:}** 
+  * Be sure to omit any quotation marks around the path even if it contains spaces. 
+* In the same dialog, make sure that JAVA\_HOME exists in your user variables or in the system variables and it is set to the location of your JDK, e.g. C:\Program Files\Java\jdk1.5.0\_02 and that %JAVA\_HOME%\bin is in your Path environment variable.
+* Open a new command prompt (Winkey + R then type cmd) and run the following to verify that it is correctly installed.
+
+       scalate
+  
+</div>
+
+<div class="left" markdown="1">
+# Unix-based Operating Systems (Linux, Solaris and Mac OS X)
+</div>
+<div class="right" markdown="1">
+
+* Extract the distribution archive, i.e. **scalate-{project_version:}-unix-bin.tar.gz** to the directory you wish to install Scalate {project_version:}. These instructions assume you chose **/usr/local/scala**. The subdirectory scalate-{project_version:} will be created from the archive.
+* In a command terminal, prepend the **PATH** variable with the bin directory in the scalate release. e.g.
+
+      export PATH=/usr/local/scala/scalate-{project_version:}/bin:$PATH
+    
+* Make sure that **JAVA\_HOME** is set to the location of your JDK and that **$JAVA\_HOME/bin** is in your **PATH** environment variable, e.g. 
+
+      export JAVA_HOME=/usr/java/jdk1.5.0_02
+      export PATH=$JAVA_HOME/bin:$PATH
+    
+* Run the following to verify that it is installed correctly
+
+      scalate
+      
+</div>
+
+<div class="left" markdown="1">
+# Mac OS X and Homebrew
+</div>
+<div class="right" markdown="1">
+
+If you use OS X then we highly recommend using [Homebrew](http://mxcl.github.com/homebrew/) to manage installation of tools. If you have not done so already please [Install Homebrew](http://wiki.github.com/mxcl/homebrew/installation).
+
+Once you have Homebrew installed you can install Scalate via this command
+
+      brew install scalate
+      
+The scalate executable should now be available from any terminal. To verify this works try typing
+
+      scalate
+      
+</div>
+

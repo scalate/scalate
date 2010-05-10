@@ -52,6 +52,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/sampleTag3.ssp", "Wrapped body", "hey Hiram this is some body text!", "End of wrapped body")
   testPageContains("ssp/simple.ssp", "1 + 2 = 3")
   testPageContains("ssp/snippet.ssp", "mmm I like beer")
+  testPageContains("ssp/velocity/sampleTag.ssp",  "Wrapped body", "hey James this is some body text!", "End of wrapped body")
 
   testPageContains("bad", "error: not found: value unknown")
   testPageContains("foo", "Hello from a FooResource!")

@@ -18,7 +18,7 @@
     <!-- environment settings -->
     <jetty-port>8080</jetty-port>
     <scalateEditor>\${env.SCALATE_EDITOR}</scalateEditor>
-    <scalate.workdir>\${basedir}/target/scalateWorkDir</scalate.workdir>
+    <scalate.workdir>\${basedir}/target/_scalate</scalate.workdir>
     <scalate.package.resources>${package}.resources</scalate.package.resources>
 
     <!-- version info -->
@@ -31,6 +31,7 @@
     <scalate-version>${project.version}</scalate-version>
     <servlet-api-version>${servlet-api-version}</servlet-api-version>
     <surefire-version>${surefire-version}</surefire-version>
+    <war-plugin-version>${war-plugin-version}</war-plugin-version>
   </properties>
    
   <dependencies>
@@ -62,6 +63,8 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>\${logback-version}</version>
+      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
 
     <!-- testing -->
@@ -213,6 +216,7 @@
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
+        <version>\${war-plugin-version}</version>
         <configuration>
           <attachClasses>true</attachClasses>
         </configuration>
@@ -257,8 +261,8 @@
               <value>\${scalateEditor}</value>
             </systemProperty>
             <systemProperty>
-              <name>scalate.temp.workingdir</name>
-              <value>\${scalate.temp.workingdir}</value>
+              <name>scalate.workdir</name>
+              <value>\${scalate.workdir}</value>
             </systemProperty>
             <systemProperty>
               <name>scalate.package.resources</name>

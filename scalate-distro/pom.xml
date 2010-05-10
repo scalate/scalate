@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>scalate-distro</artifactId>
@@ -44,6 +44,77 @@
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-test</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-tool</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-tool-commands</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>${slf4j-version}</version>
+    </dependency>
+
+    <!-- archetypes to include -->
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-empty</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-guice</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-guice</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jersey</groupId>
+          <artifactId>jersey-server</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     
 

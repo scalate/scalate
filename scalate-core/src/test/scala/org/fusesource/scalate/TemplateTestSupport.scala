@@ -23,9 +23,6 @@ import collection.immutable.Map
 
 abstract class TemplateTestSupport extends FunSuiteSupport {
   val engine = new TemplateEngine
-  
-  var printOutput = false
-  var printExceptions = true
 
   override protected def beforeAll(configMap: Map[String, Any]) = {
     super.beforeAll(configMap)
@@ -43,11 +40,16 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
     assertOutput(expectedOutput, template, attributes, trim)
   }
 
+
+  def assertMoustacheOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
+    val template = engine.compileMoustache(templateText)
+
+    assertOutput(expectedOutput, template, attributes, trim)
+  }
+
   def assertOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
     var output = engine.layout(template, attributes)
-    if (printOutput) {
-      println("output: '" + output + "'")
-    }
+    debug("output: '" + output + "'")
 
     if (trim) {
       output = output.trim
@@ -55,13 +57,41 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
     expect(expectedOutput) {output}
   }
 
+  def assertOutputContains(source: TemplateSource, expected: String*): Unit = assertOutputContains(source, Map[String, Any](), expected: _*)
+
+  def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): Unit = {
+    val template = engine.compile(source)
+    assertOutputContains(template, attributes, expected: _*)
+  }
+
+  def assertOutputContains(template: Template, expected: String*): Unit = assertOutputContains(template, Map[String, Any](), expected: _*)
+
+  def assertOutputContains(template: Template, attributes: Map[String, Any], expected: String*): Unit = {
+    var output = engine.layout(template, attributes)
+    debug("output: '" + output + "'")
+
+    assertTextContains(output, "template " + template, expected: _*)
+  }
+
+  def assertTextContains(source: String, description: => String, textLines: String*): Unit = {
+    assume(source != null, "text was null for " + description)
+    var index = 0
+    for (text <- textLines if index >= 0) {
+      index = source.indexOf(text, index)
+      if (index >= 0) {
+        index += text.length
+      }
+      else {
+        assume(false, "Text does not contain '" + text + "' for " + description + " when text was:\n" + source)
+      }
+    }
+  }
+
   def syntaxException(block: => Unit) = {
     val e = intercept[InvalidSyntaxException] {
       block
     }
-    if (printExceptions) {
-      println("caught: " + e)
-    }
+    debug("caught: " + e, e)
     e
   }
 
@@ -109,4 +139,6 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
   def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
 
   def compileSsp(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
+
+  def compileMoustache(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".moustache", templateText))
 }

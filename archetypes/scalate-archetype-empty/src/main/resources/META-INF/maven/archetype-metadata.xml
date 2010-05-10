@@ -33,7 +33,7 @@
       </includes>
     </fileSet>
     <!-- place templates -->
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
       <directory>src/main/webapp</directory>
       <includes>
         <include>**/*</include>
@@ -52,6 +52,13 @@
       <includes>
         <include>*.scala</include>
         <include>**/*.scala</include>
+      </includes>
+    </fileSet>
+    <!-- sbt build -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory>project</directory>
+      <includes>
+        <include>**/*</include>
       </includes>
     </fileSet>
   </fileSets>

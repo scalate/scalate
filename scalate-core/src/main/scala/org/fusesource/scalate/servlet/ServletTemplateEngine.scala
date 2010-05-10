@@ -59,14 +59,16 @@ object ServletTemplateEngine {
  */
 class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
-  
-  if (useWebInfWorkingDirectory) {
+
+  // If the scalate.workingdir is not set, then just configure the working
+  // directory under WEB_INF/_scalate
+  if ( System.getProperty("scalate.workingdir", "").length == 0 ) {
     val path = config.getServletContext.getRealPath("WEB-INF")
     if (path != null) {
       workingDirectory = new File(path, "_scalate")
-      workingDirectory.mkdirs
     }
   }
+  
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   layoutStrategy = new DefaultLayoutStrategy(this, "/WEB-INF/scalate/layouts/default.scaml", "/WEB-INF/scalate/layouts/default.ssp")
@@ -92,12 +94,5 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
     builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))
 
     builder.classPath
-  }
-
-  def useWebInfWorkingDirectory = {
-    val customWorkDir = System.getProperty("scalate.workingdir", "")
-    val property = System.getProperty("scalate.temp.workingdir", "")
-    println("using scalate.temp.workingdir: " + property)
-    property.toLowerCase != "true" && customWorkDir.length <= 0
   }
 }

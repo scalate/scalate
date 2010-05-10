@@ -91,7 +91,7 @@ class ScalateModule extends ServletModule {
   /**
    * The regular expression to find web content which should not be processed by the Jersey filter
    */
-  def webPageContentRegex: List[String] = List(".+\\.(ssp|scaml)", "/images/.*", "/css/.*")
+  def webPageContentRegex: List[String] = List(".+\\.(ssp|scaml)", "/images/.*", "/css/.*", ".+\\.ico")
 
   /**
    * Returns a list of package names which are recursively scanned looking for JAXRS resource classes

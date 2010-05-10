@@ -201,6 +201,38 @@ class ScamlTemplateTest extends ScamlTestSupport {
   = title
 </title>
 """)
+  
+  testRender("Indenting can be disabled with the ScamlOptions.indent option",
+"""
+%gee
+  %whiz
+    Wow this is cool!
+""","""
+<gee>
+<whiz>
+Wow this is cool!
+</whiz>
+</gee>
+""", { ()=>
+    ScamlOptions.indent = ""
+  }, { ()=>
+    ScamlOptions.indent = ScamlOptions.DEFAULT_INDENT
+  })
+
+  testRender("Newlines can also be disabled with the ScamlOptions.nl option",
+"""
+%gee
+  %whiz
+    Wow this is cool!
+""","""
+<gee><whiz>Wow this is cool!</whiz></gee>
+""", { ()=>
+    ScamlOptions.indent = ""
+    ScamlOptions.nl = ""
+  }, { ()=>
+    ScamlOptions.indent = ScamlOptions.DEFAULT_INDENT
+    ScamlOptions.nl = ScamlOptions.DEFAULT_NL
+  })
 
 
   /////////////////////////////////////////////////////////////////////
@@ -916,17 +948,12 @@ I like cheese &amp; crackers
 I like cheese &amp; crackers
 """)
 
-  /**
-   * TODO is this test correct???
-   */
-/*
-  testRender("'= expression' is not sanitized by default",
+  testRender("'= expression' is sanitized by default",
 """
 = "I feel <strong>!"
 ""","""
-I feel <strong>!
+I feel &lt;strong&gt;!
 """)
-*/
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1047,6 +1074,25 @@ line3
   </p>
 </html>
 """)
+
+  testRender("If the ScamlOptions.ugly option is enabled, then `=` behaves like `~~`",
+"""
+%html
+  %p
+    = "line1\nline2\nline3"
+""","""
+<html>
+  <p>
+line1
+line2
+line3
+  </p>
+</html>
+""", { ()=>
+    ScamlOptions.ugly = true
+  }, { ()=>
+    ScamlOptions.ugly = ScamlOptions.DEFAULT_UGLY
+  })
 
   /////////////////////////////////////////////////////////////////////
   //

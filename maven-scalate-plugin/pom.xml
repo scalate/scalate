@@ -21,12 +21,12 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>maven-scalate-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Scalate :: Maven Plugin</name>
@@ -45,8 +45,14 @@
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>${slf4j-version}</version>
+    </dependency>
+
 
     <!-- Maven -->
     <dependency>
@@ -66,6 +72,12 @@
 
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
 
     <plugins>
       <plugin>
@@ -78,6 +90,15 @@
           <outputDirectory>target/unused</outputDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+          <escapeString>\</escapeString>
+        </configuration>
+      </plugin>
+      
     </plugins>
 
   </build>

@@ -1,0 +1,17 @@
+<h1>Sample Tag</h1>
+
+<p>
+  This page demonstrates a kinda pseudo custom tag in SSP.
+  Notice how the method we invoke, <b>MyTags.someLayoutWithImportedCapture</b> just takes a function
+  which when invoked returns Unit.
+  To be able to capture the output of the body, the implementation uses the imported <b>RenderContext.capture</b> method
+</p>
+
+#{
+  import org.fusesource.scalate.sample.MyTags._
+  val name = "James"
+}#
+        
+#do( someLayoutWithImportedCapture )
+hey ${name} this is some body text!
+#end
