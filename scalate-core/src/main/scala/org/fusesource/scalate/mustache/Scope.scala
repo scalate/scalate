@@ -23,33 +23,33 @@ trait Scope extends Logging {
    * Renders the given variable name to the context
    */
   def renderVariable(name: String, unescape: Boolean): Unit = {
-    val v = variable(name) match {
+    val v = apply(name) match {
       case Some(a) => a
       case None =>
         parent match {
-          case Some(p) => p.variable(name)
+          case Some(p) => p.apply(name)
           case _ => null
         }
     }
-    println("Evaluated " + name + " = " + v + " on " + this)
+    debug("Evaluated " + name + " = " + v + " on " + this)
 
     if (unescape) {
-      context.unescape(v)
+      context.unescape(format(v))
     }
     else {
-      context.escape(v)
+      context.escape(format(v))
     }
   }
 
   /**
    * Returns the variable of the given name looking in this scope or parent scopes to resolve the variable
    */
-  def variable(name: String): Option[_] = {
+  def apply(name: String): Option[_] = {
     val value = localVariable(name)
     value match {
       case Some(v) => value
       case _ => parent match {
-        case Some(p) => p.variable(name)
+        case Some(p) => p.apply(name)
         case _ => None
       }
     }
@@ -62,42 +62,50 @@ trait Scope extends Logging {
   def localVariable(name: String): Option[_]
 
   def section(name: String)(block: Scope => Unit): Unit = {
-    val value = variable(name)
+    apply(name) match {
+      case Some(t) =>
+        val v = toTraversable(t)
+        debug("Evaluated value " + name + " = " + v + " in " + this)
+        v match {
+          // TODO we have to be really careful to distinguish between collections of things
+          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+          
+          case s: Seq[Any] => foreachScope(name, s)(block)
 
-    println("Evaluated value " + name + " = " + value + " in " + this)
+          // maps and so forth, treat as child scopes
+          case a: PartialFunction[_,_] => childScope(name, a)(block)
 
-    value match {
-      case Some(v) =>
-        toTraversable(v) match {
-          // maps and so forth
-          case a: PartialFunction[_,_] =>
-            childScope(name, a)(block)
-
-          case s: Traversable[Any] =>
-            for (i <- s) {
-              println("Creating traversiable scope for: " + i)
-              val scope = createScope(name, i)
-              block(scope)
-            }
+          // any other traversible treat as a collection
+          case s: Traversable[Any] => foreachScope(name, s)(block)
 
           case true => block(this)
           case false =>
           case null =>
 
-          case a =>
-            childScope(name, a)(block)
+          // lets treat anything as an an object rather than a collection
+          case a => childScope(name, a)(block)
         }
       case None => parent match {
         case Some(ps) => ps.section(name)(block)
         case None => // do nothing, no value
+          debug("No value for " + name +  " in " + this)
+
       }
     }
   }
 
   def childScope(name: String, v: Any)(block: Scope => Unit): Unit = {
-    println("Creating scope for: " + v)
+    debug("Creating scope for: " + v)
     val scope = createScope(name, v)
     block(scope)
+  }
+
+  def foreachScope(name: String, s: Traversable[_])(block: Scope => Unit): Unit = {
+    for (i <- s) {
+      debug("Creating traversiable scope for: " + i)
+      val scope = createScope(name, i)
+      block(scope)
+    }
   }
 
   def createScope(name: String, value: Any): Scope = {
@@ -111,11 +119,28 @@ trait Scope extends Logging {
   }
 
   def toTraversable(v: Any): Any = v match {
+    case t: Seq[_] => t
     case f: Function0[_] => toTraversable(f())
+    case f: Function1[Scope,_] if isParam1(f, classOf[Scope]) => toTraversable(f(this))
     case c: ju.Collection[_] => asIterable(c)
     case i: ju.Iterator[_] => asIterator(i)
     case i: jl.Iterable[_] => asIterable(i)
     case _ => v
+  }
+
+  def format(v: Any): Any = v match {
+    case f: Function1[Scope,_] if isParam1(f, classOf[Scope]) => format(f(this))
+    case _ => v
+  }
+
+  def isParam1[T](f: Function1[T,_], clazz: Class[T]): Boolean = {
+    try {
+      f.getClass.getMethod("apply", clazz)
+      true
+    }
+    catch {
+      case e: NoSuchMethodException => false
+    }
   }
 }
 

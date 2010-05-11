@@ -34,12 +34,12 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("open close section") {
-    assertParses(List(Text("* "), Section("foo", List(Text("bar "))), Text(" *")),
+    assertParses(List(Text("* "), Section("foo", List(Text("bar "))), Text("*")),
       "* {{#foo}} bar {{/foo}} *")
   }
 
   test("invert variable and partial") {
-    assertParses(List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text(" *")),
+    assertParses(List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text("*")),
       "* {{^foo}} {{>bar}}{{/foo}} *")
   }
 
@@ -73,6 +73,11 @@ class MustacheParserTest extends FunSuiteSupport {
       loadTestFile("two_in_a_row.html"))
   }
 
+  ignore("complex whitespace") {
+    assertParses(List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
+      loadTestFile("complex.html"))
+  }
+
 
 
   // test bad syntax
@@ -95,7 +100,6 @@ class MustacheParserTest extends FunSuiteSupport {
     val lines = (new MustacheParser).parse(text)
     for (line <- lines) {
       debug("=> " + line)
-      println("=> " + line)
     }
     debug("")
     lines

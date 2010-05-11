@@ -3,6 +3,7 @@ package org.fusesource.scalate.mustache
 import util.parsing.combinator.RegexParsers
 import util.parsing.input.{Positional, CharSequenceReader, Position}
 import org.fusesource.scalate.{InvalidSyntaxException}
+import org.fusesource.scalate.util.Logging
 
 sealed abstract class Statement extends Positional {
 }
@@ -35,7 +36,7 @@ case class SetDelimiter(open: Text, close: Text) extends Statement
  *
  * @version $Revision : 1.1 $
  */
-class MustacheParser extends RegexParsers {
+class MustacheParser extends RegexParsers with Logging {
   var open: String = "{{"
   var close: String = "}}"
 
@@ -82,7 +83,7 @@ class MustacheParser extends RegexParsers {
     case a =>
       open = a.open.value
       close = a.close.value
-      println("applying new delim '" + a)
+      debug("applying new delim '" + a)
       a
   }
 
@@ -95,16 +96,13 @@ class MustacheParser extends RegexParsers {
 
   def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x => Text(x.value)}) >> {
     case name =>
-      println("Trying to parse tag name: '" + name + "'")
-      opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ optionalSpaceAndNewlines ^^ {
+      opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ {
         case body => (name, body)
       } | error("Missing end tag '" + open + "/" + name + close + "' for started tag", name.pos)
   }
 
 
   override def skipWhitespace = false
-
-  val optionalSpaceAndNewlines = """([ \t]*(\n\r|\r\n|\n|\r|$)+)?""".r
 
   def expression[T <: Statement](p: Parser[T]): Parser[T] = positioned(open ~> p <~ close)
 

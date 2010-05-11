@@ -20,9 +20,9 @@ class MustacheJsSystemTest extends TemplateTestSupport {
       Map("name" -> "green", "current" -> false, "url" -> "#Green"),
       Map("name" -> "blue", "current" -> false, "url" -> "#Blue")
       ),
-    "link" -> (() => true),
-    "list" -> (() => true),
-    "empty" -> (() => false)))
+    "link" -> ((s: Scope) => !(s("current").get.asInstanceOf[Boolean])),
+    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
+    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
 
   testMustacheJs("empty_template", Map())
   testMustacheJs("error_not_found", Map())
