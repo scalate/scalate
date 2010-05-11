@@ -180,7 +180,7 @@ class TemplateEngine extends Logging {
    * will then be compiled into the application as part of a build process.
    */
   def generateScala(source: TemplateSource, extraBindings:List[Binding] = Nil) = {
-    generator(source.uri).generate(this, source, bindings ::: extraBindings)
+    generator(source).generate(this, source, bindings ::: extraBindings)
   }
 
 
@@ -469,7 +469,7 @@ class TemplateEngine extends Logging {
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri
-    val className = generator(uri).className(uri)
+    val className = generator(source).className(uri)
     val template = loadCompiledTemplate(className);
     if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
@@ -524,7 +524,7 @@ class TemplateEngine extends Logging {
       val uri = source.uri
 
       // Generate the scala source code from the template
-      val g = generator(uri);
+      val g = generator(source);
       code = g.generate(this, source, bindings ::: extraBindings)
 
       val sourceFile = sourceFileName(uri)
@@ -613,8 +613,8 @@ class TemplateEngine extends Logging {
    * Gets the code generator to use for the give uri string by looking up the uri's extension
    * in the the codeGenerators map.
    */
-  private def generator(uri: String): CodeGenerator = {
-    extension(uri) match {
+  protected def generator(source: TemplateSource): CodeGenerator = {
+    extension(source) match {
       case Some(ext)=>
         generatorForExtension(ext)
       case None=>
@@ -622,19 +622,16 @@ class TemplateEngine extends Logging {
     }
   }
 
-  private def extension(uri: String): Option[String] = {
-    val t = uri.split("\\.")
-    if (t.length < 2) {
-      None
-    } else {
-      Some(t.last)
-    }
-  }
+  /**
+   * Extracts the extension from the source's uri though derived engines could override this behaviour to
+   * auto default missing extensions or performing custom mappings etc.
+   */
+  protected def extension(source: TemplateSource): Option[String] = source.extension
 
   /**
    * Returns the code generator for the given file extension
    */
-  private def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
+  protected def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
     case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
     case Some(generator) => generator
   }
