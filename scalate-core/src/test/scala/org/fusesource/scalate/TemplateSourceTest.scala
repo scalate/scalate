@@ -20,11 +20,11 @@ package org.fusesource.scalate
 class TemplateSourceTest extends FunSuiteSupport {
   test("extract extension from uri") {
     val source = TemplateSource.fromFile("foo.ssp")
-    expect(Some("ssp")) {source.extension}
+    expect(Some("ssp")) {source.templateType}
   }
 
   test("override extension") {
-    val source = TemplateSource.fromFile("foo.txt").withExtension("mustache")
-    expect(Some("mustache")) {source.extension}
+    val source = TemplateSource.fromFile("foo.txt").templateType("mustache")
+    expect(Some("mustache")) {source.templateType}
   }
 }

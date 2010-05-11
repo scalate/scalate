@@ -73,14 +73,13 @@ trait TemplateSource {
 
 
   /**
-   * Returns the extension of the template which is used to map the template
-   * to the type of template (ssp, scaml, mustache etc).
+   * Returns the type of the template (ssp, scaml, mustache etc).
    *
    * By default the extension is extracted from the uri but custom implementations
    * can override this so that a uri could be "foo.html" but the extension overriden to be "mustache"
    * for example
    */
-  def extension: Option[String] = {
+  def templateType: Option[String] = {
     val t = uri.split("\\.")
     if (t.length < 2) {
       None
@@ -95,9 +94,9 @@ trait TemplateSource {
    * For example this lets you load a TemplateSource then convert it to be
    * of a given fixed type of template as follows:
    *
-   * <code>TemplateSource.fromFile("foo.txt").withExtension("mustache")</code>
+   * <code>TemplateSource.fromFile("foo.txt").templateType("mustache")</code>
    */
-  def withExtension(extension: String) = CustomExtensionTemplateSource(this, extension)
+  def templateType(extension: String) = CustomExtensionTemplateSource(this, extension)
 }
 
 case class StringTemplateSource(uri: String, text: String) extends TemplateSource
@@ -133,5 +132,5 @@ case class CustomExtensionTemplateSource(source: TemplateSource, extensionName: 
 
   def text = source.text
 
-  override def extension = Some(extensionName)
+  override def templateType = Some(extensionName)
 }

@@ -621,7 +621,7 @@ class TemplateEngine extends Logging {
    * Extracts the extension from the source's uri though derived engines could override this behaviour to
    * auto default missing extensions or performing custom mappings etc.
    */
-  protected def extension(source: TemplateSource): Option[String] = source.extension
+  protected def extension(source: TemplateSource): Option[String] = source.templateType
 
   /**
    * Returns the code generator for the given file extension
