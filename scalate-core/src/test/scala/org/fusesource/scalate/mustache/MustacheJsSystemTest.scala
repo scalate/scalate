@@ -61,7 +61,7 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   def testMustacheJs(name: String, attributes: Map[String, Any]): Unit = {
     test(name) {
-      val template = engine.compile(TemplateSource.fromFile(new File(rootDir, name + ".html")))
+      val template = engine.compile(TemplateSource.fromFile(new File(rootDir, name + ".html")).withExtension("mustache"))
       val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt"))
       if (trimOutputAndTemplate) {
         assertTrimOutput(expectedOutput.trim, template, attributes)
@@ -73,9 +73,4 @@ class MustacheJsSystemTest extends TemplateTestSupport {
   }
 
   def rootDir = new File(baseDir, "src/test/resources/moustache/js")
-
-  // lets install html as a moustache extension
-  engine.codeGenerators += "html" -> new MustacheCodeGenerator
-
-
 }
