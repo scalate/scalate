@@ -36,8 +36,8 @@ case class SetDelimiter(open: Text, close: Text) extends Statement
  * @version $Revision : 1.1 $
  */
 class MustacheParser extends RegexParsers {
-  var open: String = "{{"
-  var close: String = "}}"
+  private var _open: String = "{{"
+  private var _close: String = "}}"
 
   def parse(in: String) = {
     phrase(mustache)(new CharSequenceReader(in)) match {
@@ -80,8 +80,8 @@ class MustacheParser extends RegexParsers {
     case a ~ b => SetDelimiter(a, b)
   }) ^^ {
     case a =>
-      open = a.open.value
-      close = a.close.value
+      _open = a.open.value
+      _close = a.close.value
       println("applying new delim '" + a)
       a
   }
@@ -91,6 +91,10 @@ class MustacheParser extends RegexParsers {
   // Helper methods
   //-------------------------------------------------------------------------
 
+  def open = _open
+  
+  def close = _close
+  
   def operation(prefix: String): Parser[Text] = trim(prefix) ~> trimmed
 
   def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x => Text(x.value)}) >> {

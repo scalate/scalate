@@ -45,11 +45,13 @@
 
     <scala-version>2.8.0.RC2</scala-version>
     <scala-plugin-version>2.13.1</scala-plugin-version>
-    <scalatest-version>1.0.1-for-scala-2.8.0.RC1-SNAPSHOT</scalatest-version>
+    <scalatest-version>1.2-for-scala-2.8.0.RC2-SNAPSHOT</scalatest-version>
 
     <!-- TODO this release breaks sbt builds - but we must use it for maven releases -->
     <!--
     <scalatest-version>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</scalatest-version>
+
+    <scalatest-version>1.0.1-for-scala-2.8.0.RC1-SNAPSHOT</scalatest-version>
     -->
     <!-- until there's a release this version seems the only one to work with sbt -->
     <!--
@@ -420,7 +422,7 @@
           <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
           <useSystemClassLoader>false</useSystemClassLoader>
 
-          <!--forkMode>pertest</forkMode-->
+          <forkMode>pertest</forkMode>
           <childDelegation>false</childDelegation>
           <useFile>true</useFile>
           <failIfNoTests>false</failIfNoTests>
