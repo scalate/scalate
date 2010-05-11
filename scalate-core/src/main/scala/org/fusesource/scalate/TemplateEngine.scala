@@ -80,7 +80,7 @@ class TemplateEngine extends Logging {
    *
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "moustache" -> new MustacheCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])
@@ -139,7 +139,7 @@ class TemplateEngine extends Logging {
    * Compiles the given Moustache template text and returns the template
    */
   def compileMoustache(text: String, extraBindings:List[Binding] = Nil):Template = {
-    compileText("moustache", text, extraBindings)
+    compileText("mustache", text, extraBindings)
   }
 
   /**

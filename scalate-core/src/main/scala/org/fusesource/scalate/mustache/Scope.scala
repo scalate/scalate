@@ -1,7 +1,9 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
-import java.lang.String
+import collection.JavaConversions._
+import _root_.java.{ lang => jl, util => ju }
+import org.fusesource.scalate.util.Logging
 
 object Scope {
   def apply(context: RenderContext) = RenderContextScope(context)
@@ -12,7 +14,7 @@ object Scope {
  *
  * @version $Revision : 1.1 $
  */
-trait Scope {
+trait Scope extends Logging {
   def parent: Option[Scope]
 
   def context: RenderContext
@@ -21,40 +23,69 @@ trait Scope {
    * Renders the given variable name to the context
    */
   def renderVariable(name: String, unescape: Boolean): Unit = {
-    val v = evaluateVariable(name) match {
-      case Some(v) => v
+    val v = variable(name) match {
+      case Some(a) => a
       case None =>
         parent match {
-          case Some(p) => p.evaluateVariable(name)
+          case Some(p) => p.variable(name)
           case _ => null
         }
     }
+    println("Evaluated " + name + " = " + v + " on " + this)
 
     if (unescape) {
-      context.unescape(format(v))
+      context.unescape(v)
     }
     else {
-      context.escape(format(v))
+      context.escape(v)
+    }
+  }
+
+  /**
+   * Returns the variable of the given name looking in this scope or parent scopes to resolve the variable
+   */
+  def variable(name: String): Option[_] = {
+    val value = localVariable(name)
+    value match {
+      case Some(v) => value
+      case _ => parent match {
+        case Some(p) => p.variable(name)
+        case _ => None
+      }
     }
   }
 
 
-  def evaluateVariable(name: String): Option[_]
+  /**
+   * Returns the variable in the local scope if it is defined
+   */
+  def localVariable(name: String): Option[_]
 
   def section(name: String)(block: Scope => Unit): Unit = {
-    val value = evaluateVariable(name)
+    val value = variable(name)
 
     println("Evaluated value " + name + " = " + value + " in " + this)
 
     value match {
       case Some(v) =>
-        v match {
-          case s: Seq[Any] =>
+        toTraversable(v) match {
+          // maps and so forth
+          case a: PartialFunction[_,_] =>
+            childScope(name, a)(block)
+
+          case s: Traversable[Any] =>
             for (i <- s) {
+              println("Creating traversiable scope for: " + i)
               val scope = createScope(name, i)
               block(scope)
             }
-          case v => println("Don't understand value: " + v)
+
+          case true => block(this)
+          case false =>
+          case null =>
+
+          case a =>
+            childScope(name, a)(block)
         }
       case None => parent match {
         case Some(ps) => ps.section(name)(block)
@@ -63,22 +94,34 @@ trait Scope {
     }
   }
 
+  def childScope(name: String, v: Any)(block: Scope => Unit): Unit = {
+    println("Creating scope for: " + v)
+    val scope = createScope(name, v)
+    block(scope)
+  }
+
   def createScope(name: String, value: Any): Scope = {
     value match {
       case v: Map[String, Any] => new MapScope(this, name, v)
-      case _ => new EmptyScope(this)
-    //case u => throw new IllegalArgumentException("Cannot make Mustache Scope for value " + u)
+      case null => new EmptyScope(this)
+      case _ =>
+        warn("Don't know how to create a scope for " + value)
+        new EmptyScope(this)
     }
   }
 
-  def format(v: Any): Any = v match {
+  def toTraversable(v: Any): Any = v match {
+    case f: Function0[_] => toTraversable(f())
+    case c: ju.Collection[_] => asIterable(c)
+    case i: ju.Iterator[_] => asIterator(i)
+    case i: jl.Iterable[_] => asIterable(i)
     case _ => v
   }
 }
 
 case class RenderContextScope(context: RenderContext) extends Scope {
   def parent: Option[Scope] = None
-  def evaluateVariable(name: String): Option[_] = context.attributes.get(name)
+  def localVariable(name: String): Option[_] = context.attributes.get(name)
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
@@ -87,9 +130,9 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 }
 
 class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
-  def evaluateVariable(name: String): Option[_] = map.get(name)
+  def localVariable(name: String): Option[_] = map.get(name)
 }
 
 class EmptyScope(parent: Scope) extends ChildScope(parent) {
-  def evaluateVariable(name: String) = None
+  def localVariable(name: String) = None
 }

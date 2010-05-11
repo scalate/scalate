@@ -72,7 +72,7 @@ class MustacheParser extends RegexParsers {
 
   def partial = expression(operation(">") ^^ {Partial(_)})
 
-  def comment = expression(operation("!") ^^ {Comment(_)})
+  def comment = expression((trim("!") ~> upto(close)) ^^ {Comment(_)})
 
   def variable = expression(trimmed ^^ {Variable(_, false)})
 
@@ -99,6 +99,7 @@ class MustacheParser extends RegexParsers {
 
   def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x => Text(x.value)}) >> {
     case name =>
+      println("Trying to parse tag name: '" + name + "'")
       opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ optionalSpaceAndNewlines ^^ {
         case body => (name, body)
       } | error("Missing end tag '" + open + "/" + name + close + "' for started tag", name.pos)
@@ -111,9 +112,9 @@ class MustacheParser extends RegexParsers {
 
   def expression[T <: Statement](p: Parser[T]): Parser[T] = positioned(open ~> p <~ close)
 
-  def trimmed: Parser[Text] = trim(text("""\w+""".r))
+  def trimmed = trim(text("""\w[^\s{}]*""".r))
 
-  def trim[T](p: Parser[T] = text("""\w+""".r)): Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
+  def trim[T](p: Parser[T]): Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
 
   def text(p1: Parser[String]): Parser[Text] = {
     positioned(p1 ^^ {Text(_)})
