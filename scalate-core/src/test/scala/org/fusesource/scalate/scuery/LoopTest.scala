@@ -34,7 +34,7 @@ class LoopTest extends FunSuiteSupport with Logging {
 
 
   test("loop using new transformer on each person") {
-    object transformer extends Transformer {
+    object transformer1 extends Transformer {
       $(".person") { node =>
 
         people.flatMap { p =>
@@ -45,11 +45,11 @@ class LoopTest extends FunSuiteSupport with Logging {
         }                                   
       }
     }
-    assertTransformed(transformer(xml))
+    assertTransformed(transformer1(xml))
   }
 
   test("loop using new Transform statement on each person") {
-    object transformer extends Transformer {
+    object transformer2 extends Transformer {
       $(".person") { node =>
         people.flatMap { p =>
           new Transform(node) {
@@ -59,11 +59,11 @@ class LoopTest extends FunSuiteSupport with Logging {
         }
       }
     }
-    assertTransformed(transformer(xml))
+    assertTransformed(transformer2(xml))
   }
 
   test("loop using transform method on each person") {
-    object transformer extends Transformer {
+    object transformer3 extends Transformer {
       $(".person") { node =>
         people.flatMap { p =>
           transform(node) { $ =>
@@ -73,11 +73,11 @@ class LoopTest extends FunSuiteSupport with Logging {
         }
       }
     }
-    assertTransformed(transformer(xml))
+    assertTransformed(transformer3(xml))
   }
 
   test("loop using transform method with new transformer") {
-    object transformer extends Transformer {
+    object transformer4 extends Transformer {
       $(".person") { node =>
         people.flatMap { p =>
           // TODO how to know what the current ancestor is?
@@ -88,11 +88,11 @@ class LoopTest extends FunSuiteSupport with Logging {
         }
       }
     }
-    assertTransformed(transformer(xml))
+    assertTransformed(transformer4(xml))
   }
 
   test("loop using NestedTransformer") {
-    object transformer extends NestedTransformer {
+    object transformer5 extends NestedTransformer {
       $(".person") { node =>
         people.flatMap { p =>
           transform(node) { t => 
@@ -102,7 +102,7 @@ class LoopTest extends FunSuiteSupport with Logging {
         }
       }
     }
-    assertTransformed(transformer(xml))
+    assertTransformed(transformer5(xml))
   }
 
   def assertTransformed(result: NodeSeq): Unit = {
