@@ -58,10 +58,20 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           popScope
           this << "}"
         }
+        case InvertSection(name, body) => {
+          this << fragment.pos;
+          this << "" + scope + ".invertedSection(\"" + name + "\") { " + pushScope + " =>"
+          indent {
+            body.foreach(generate)
+          }
+          popScope
+          this << "}"
+        }
         case Partial(name) => {
           this << fragment.pos;
           this << "" + scope + ".partial(\"" + name + "\")"
         }
+        case SetDelimiter(open,close) => 
         case s => {
           println("Unsupported: " + s)
         }

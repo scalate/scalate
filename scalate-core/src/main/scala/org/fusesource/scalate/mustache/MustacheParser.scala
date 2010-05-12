@@ -54,7 +54,7 @@ class MustacheParser extends RegexParsers with Logging {
 
   def someText = upto(open)
 
-  def statement = guarded(open, unescapeVariable | partial | section | invert | comment | set_delimiter | variable |
+  def statement = guarded(open, unescapeVariable | partial | section | invert | comment | setDelimiter | variable |
           failure("invalid statement"))
 
   def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
@@ -77,9 +77,9 @@ class MustacheParser extends RegexParsers with Logging {
 
   def variable = expression(trimmed ^^ {Variable(_, false)})
 
-  def set_delimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
+  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b => SetDelimiter(a, b)
-  }) ^^ {
+  }) <~ opt(whiteSpace) ^^ {
     case a =>
       open = a.open.value
       close = a.close.value

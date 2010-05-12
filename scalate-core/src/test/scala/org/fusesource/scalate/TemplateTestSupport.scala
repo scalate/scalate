@@ -20,6 +20,7 @@ package org.fusesource.scalate
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
+import util.IOUtil
 
 abstract class TemplateTestSupport extends FunSuiteSupport {
   var engine: TemplateEngine = _
@@ -28,7 +29,12 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
     super.beforeAll(configMap)
 
     engine = createTemplateEngine
-    engine.workingDirectory = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
+    val workingDir = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
+    if (workingDir.exists) {
+      // lets delete it before we run the tests
+      IOUtil.recursiveDelete(workingDir)
+    }
+    engine.workingDirectory = workingDir
   }
 
   protected def createTemplateEngine = new TemplateEngine

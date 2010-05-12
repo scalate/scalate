@@ -50,14 +50,14 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("text and set directive") {
-    assertParses(List(Text("* "), SetDelimiter("<%", "%>"), Text(" *")),
+    assertParses(List(Text("* "), SetDelimiter("<%", "%>"), Text("*")),
       "* {{=<% %>=}} *")
   }
 
   test("set directive") {
     assertParses(List(Text("* "), Variable("default_tags"), Text(" * "),
-      SetDelimiter("<%", "%>"), Text(" * "), Variable("erb_style_tags"), Text(" * "),
-      SetDelimiter("{{", "}}"), Text(" * "), Variable("default_tags_again")),
+      SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
+      SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
       "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
   }
 

@@ -67,7 +67,7 @@ trait Scope extends Logging {
     apply(name) match {
       case Some(t) =>
         val v = toTraversable(t)
-        debug("Evaluated value " + name + " = " + v + " in " + this)
+        debug("section value " + name + " = " + v + " in " + this)
         v match {
           // TODO we have to be really careful to distinguish between collections of things
           // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
@@ -92,6 +92,37 @@ trait Scope extends Logging {
         case None => // do nothing, no value
           debug("No value for " + name +  " in " + this)
 
+      }
+    }
+  }
+
+  def invertedSection(name: String)(block: Scope => Unit): Unit = {
+    apply(name) match {
+      case Some(t) =>
+        val v = toTraversable(t)
+        debug("invertedSection value " + name + " = " + v + " in " + this)
+        v match {
+          // TODO we have to be really careful to distinguish between collections of things
+          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+
+          case s: Seq[Any] => if (s.isEmpty) block(this)
+
+          // maps and so forth, treat as child scopes
+          case a: PartialFunction[_,_] =>
+
+          // any other traversible treat as a collection
+          case s: Traversable[Any] => if (s.isEmpty) block(this)
+
+          case true =>
+          case false => block(this)
+          case null => block(this)
+
+          // lets treat anything as an an object rather than a collection
+          case a =>
+        }
+      case None => parent match {
+        case Some(ps) => ps.invertedSection(name)(block)
+        case None => block(this)
       }
     }
   }
