@@ -84,12 +84,16 @@ trait Scope extends Logging {
         debug("section value " + name + " = " + v + " in " + this)
         v match {
 
-        // TODO we have to be really careful to distinguish between collections of things
-        // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+          // TODO we have to be really careful to distinguish between collections of things
+          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
 
           case FunctionResult(r) => renderValue(r)
 
           case s: Seq[Any] => foreachScope(name, s)(block)
+
+          // lets treat empty maps as being empty collections
+          // due to bug in JSON parser returning Map() for JSON expression []
+          case s: Map[_,_] => if (!s.isEmpty) childScope(name, s)(block)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
@@ -120,12 +124,14 @@ trait Scope extends Logging {
         debug("invertedSection value " + name + " = " + v + " in " + this)
         v match {
 
-        // TODO we have to be really careful to distinguish between collections of things
-        // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+          // TODO we have to be really careful to distinguish between collections of things
+          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
 
           case FunctionResult(r) =>
 
-          case s: Seq[Any] => if (s.isEmpty) block(this)
+          case s: Seq[_] => if (s.isEmpty) block(this)
+
+          case s: Map[_,_] => if (s.isEmpty) block(this)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] =>
