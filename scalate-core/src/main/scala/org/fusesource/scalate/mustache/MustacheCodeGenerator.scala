@@ -71,9 +71,16 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << fragment.pos;
           this << "" + scope + ".partial(\"" + name + "\")"
         }
-        case SetDelimiter(open,close) => 
+        case ImplicitIterator(name) => {
+          this << fragment.pos;
+          this << "" + scope + ".implicitIterator = Some(\"" + name + "\")"
+        }
+        case Pragma(name, options) =>
+          this << fragment.pos;
+          this << "$_scalate_$_context << \"ERROR: This implementation of mustache doesn't understand the '" + name + "' pragma\""
+        case SetDelimiter(open,close) =>
         case s => {
-          println("Unsupported: " + s)
+          warn("Unsupported statement: " + s)
         }
       }
     }

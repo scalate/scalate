@@ -21,6 +21,8 @@ trait Scope extends Logging {
 
   def context: RenderContext
 
+  var implicitIterator: Option[String] = Some(".")
+
   /**
    * Renders the given variable name to the context
    */
@@ -52,13 +54,23 @@ trait Scope extends Logging {
     val value = localVariable(name)
     value match {
       case Some(v) => value
-      case _ => parent match {
-        case Some(p) => p.apply(name)
-        case _ => None
-      }
+      case _ =>
+        if (implicitIterator.isDefined && implicitIterator.get == name) {
+          iteratorObject
+        }
+        else {
+          parent match {
+            case Some(p) => p.apply(name)
+            case _ => None
+          }
+        }
     }
   }
 
+  /**
+   * Returns the current implicit iterator object
+   */
+  def iteratorObject: Option[_] = None
 
   /**
    * Returns the variable in the local scope if it is defined
@@ -72,8 +84,8 @@ trait Scope extends Logging {
         debug("section value " + name + " = " + v + " in " + this)
         v match {
 
-          // TODO we have to be really careful to distinguish between collections of things
-          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+        // TODO we have to be really careful to distinguish between collections of things
+        // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
 
           case FunctionResult(r) => renderValue(r)
 
@@ -108,8 +120,8 @@ trait Scope extends Logging {
         debug("invertedSection value " + name + " = " + v + " in " + this)
         v match {
 
-          // TODO we have to be really careful to distinguish between collections of things
-          // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
+        // TODO we have to be really careful to distinguish between collections of things
+        // such as Seq from objects / products / Maps / partial functions which act as something to lookup names
 
           case FunctionResult(r) =>
 
@@ -160,9 +172,8 @@ trait Scope extends Logging {
     value match {
       case v: Map[String, Any] => new MapScope(this, name, v)
       case null => new EmptyScope(this)
-      case _ =>
-        warn("Don't know how to create a scope for " + value)
-        new EmptyScope(this)
+      case None => new EmptyScope(this)
+      case v => new ObjectScope(this, v)
     }
   }
 
@@ -214,6 +225,8 @@ case class RenderContextScope(context: RenderContext) extends Scope {
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
+  implicitIterator = parentScope.implicitIterator
+
   def parent = Some(parentScope)
 
   def context = parentScope.context
@@ -221,10 +234,19 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 
 class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
   def localVariable(name: String): Option[_] = map.get(name)
+
+
 }
 
 class EmptyScope(parent: Scope) extends ChildScope(parent) {
   def localVariable(name: String) = None
+}
+
+class ObjectScope(parent: Scope, value: Any) extends ChildScope(parent) {
+  // TODO use reflection here!
+  def localVariable(name: String) = None
+
+  override def iteratorObject = Some(value)
 }
 
 case class FunctionResult(value: Any)

@@ -29,6 +29,8 @@ case class Section(name: Text, body: List[Statement]) extends Statement
 case class InvertSection(name: Text, body: List[Statement]) extends Statement
 case class Partial(name: Text) extends Statement
 case class SetDelimiter(open: Text, close: Text) extends Statement
+case class ImplicitIterator(name: String) extends Statement
+case class Pragma(name: Text, options: Map[String, String]) extends Statement
 
 
 /**
@@ -54,7 +56,7 @@ class MustacheParser extends RegexParsers with Logging {
 
   def someText = upto(open)
 
-  def statement = guarded(open, unescapeVariable | partial | section | invert | comment | setDelimiter | variable |
+  def statement = guarded(open, unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
           failure("invalid statement"))
 
   def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
@@ -72,6 +74,20 @@ class MustacheParser extends RegexParsers with Logging {
   })
 
   def partial = expression(operation(">") ^^ {Partial(_)})
+
+  def pragma = expression(operation("%") ~ rep(option) ^^ {
+    case p ~ o =>
+      val options = Map(o: _*)
+      p match {
+        case Text("IMPLICIT-ITERATOR") =>
+          val name = options.getOrElse("iterator", ".")
+          ImplicitIterator(name)
+        case _ =>
+          Pragma(p, options)
+      }
+  })
+
+  def option = trimmed ~ ("=" ~> trimmed) ^^ {case n ~ v => n.value -> v.value}
 
   def comment = expression((trim("!") ~> upto(close)) ^^ {Comment(_)})
 
@@ -106,7 +122,7 @@ class MustacheParser extends RegexParsers with Logging {
 
   def expression[T <: Statement](p: Parser[T]): Parser[T] = positioned(open ~> p <~ close)
 
-  def trimmed = trim(text("""\w[^\s{}]*""".r))
+  def trimmed = trim(text("""(\w|\.)[^\s={}]*""".r))
 
   def trim[T](p: Parser[T]): Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
 

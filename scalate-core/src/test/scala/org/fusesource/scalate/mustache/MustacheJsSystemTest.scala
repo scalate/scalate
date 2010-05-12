@@ -12,6 +12,9 @@ import collection.immutable.Map
 class MustacheJsSystemTest extends TemplateTestSupport {
   var trimOutputAndTemplate = true
 
+  testMustacheJs("array_of_strings", Map("array_of_strings" -> List("hello", "world")))
+  testMustacheJs("array_of_strings_options", Map("array_of_strings_options" -> List("hello", "world")))
+
   // Note we had to zap the comments from the sample results - seems bug in mustache.js
   testMustacheJs("comments", Map("title" -> (() => "A Comedy of Errors")))
   testMustacheJs("comments_multi_line", Map("title" -> (() => "A Comedy of Errors")))
@@ -120,6 +123,7 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   testMustacheJs("unescaped", Map("title" -> (() => "Bear > Shark")))
   testMustacheJs("utf8", Map("test" -> "中文"))
+  testMustacheJs("unknown_pragma", Map())
 
 
   // Implementation methods

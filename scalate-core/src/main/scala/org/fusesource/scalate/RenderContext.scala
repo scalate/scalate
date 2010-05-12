@@ -33,6 +33,11 @@ trait RenderContext {
   var nullString = ""
 
   /**
+   * Default string used to output None values
+   */
+  var noneString = ""
+
+  /**
    * Whether or not markup sensitive characters for HTML/XML elements like &amp; &gt; &lt; are escaped or not
    */
   var escapeMarkup = true
@@ -102,6 +107,7 @@ trait RenderContext {
     any match {
       case u: Unit => ""
       case null => sanitize(nullString)
+      case None => sanitize(noneString)
       case Unescaped(text) => text
       case f: Function0[_] => value(f(), shouldSanitize)
       case v: String => sanitize(v)
