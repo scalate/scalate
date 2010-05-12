@@ -67,6 +67,12 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   testMustacheJs("error_not_found", Map())
 
+  // TODO allow a Scope to be passed as well, plus allow a function that returns a string to be invoked too
+  testMustacheJs("higher_order_sections", Map(
+    "name" -> "Tater",
+    "helper" -> "To tinker?",
+    "bolder" -> ((text: String) => <b>{text}</b> :: Text(" To tinker?") :: Nil)))
+
   testMustacheJs("inverted_section", Map("repo" -> List()))
 
   testMustacheJs("null_string", Map("name" -> "Elise",
@@ -90,6 +96,13 @@ class MustacheJsSystemTest extends TemplateTestSupport {
     Map("name" -> "t1", "index" -> 0),
     Map("name" -> "t2", "index" -> 1))))
 
+  testMustacheJs("section_as_context", Map("a_object" -> Map(
+    "title" -> "this is an object",
+    "description" -> "one of its attributes is a list",
+    "a_list" -> List(
+      Map("label" -> "listitem1"),
+      Map("label" -> "listitem2")))))
+
   // Note we use internationalisation by default, so commas introduced in the 1000s in these numbers
   testMustacheJs("simple", Map(
     "name" -> "Chris",
@@ -107,7 +120,6 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   testMustacheJs("unescaped", Map("title" -> (() => "Bear > Shark")))
   testMustacheJs("utf8", Map("test" -> "中文"))
-
 
 
   // Implementation methods
