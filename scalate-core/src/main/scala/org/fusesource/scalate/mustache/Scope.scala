@@ -6,7 +6,9 @@ import _root_.java.{ lang => jl, util => ju }
 import org.fusesource.scalate.util.Logging
 
 object Scope {
-  def apply(context: RenderContext) = RenderContextScope(context)
+  def apply(context: RenderContext) = {
+    context.attributeOrElse[Scope]("scope", RenderContextScope(context))
+  }
 }
 
 /**
@@ -93,6 +95,14 @@ trait Scope extends Logging {
       }
     }
   }
+
+  def partial(name: String): Unit = {
+    context.withAttributes(Map("scope" -> this)) {
+      // TODO allow the extension to be overloaded
+      context.include(name + ".mustache")
+    }
+  }
+
 
   def childScope(name: String, v: Any)(block: Scope => Unit): Unit = {
     debug("Creating scope for: " + v)

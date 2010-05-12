@@ -41,7 +41,7 @@ trait ResourceLoader {
 
 }
 
-class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader with Logging {
+case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoader with Logging {
 
   override def exists(uri: String): Boolean = {
     var answer = false
@@ -81,7 +81,7 @@ class FileResourceLoader(val root:Option[File]=None) extends ResourceLoader with
   }
 
   protected def toFile(uri:String):File = {
-    root match {
+    rootDir match {
       case Some(dir)=> new File(dir, uri);
       case None=> new File(uri)
     }

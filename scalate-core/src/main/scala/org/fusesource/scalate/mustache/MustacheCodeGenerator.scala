@@ -58,6 +58,10 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           popScope
           this << "}"
         }
+        case Partial(name) => {
+          this << fragment.pos;
+          this << "" + scope + ".partial(\"" + name + "\")"
+        }
         case s => {
           println("Unsupported: " + s)
         }

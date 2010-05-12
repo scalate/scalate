@@ -1,8 +1,10 @@
 package org.fusesource.scalate.mustache
 
 import java.io.File
-import org.fusesource.scalate.{TemplateSource, TemplateTestSupport}
+import org.fusesource.scalate.{TemplateEngine, TemplateSource, TemplateTestSupport}
 import org.fusesource.scalate.util.IOUtil
+import java.lang.String
+import collection.immutable.Map
 
 /**
  * Runs the system tests from the mustache.js distro
@@ -24,10 +26,14 @@ class MustacheJsSystemTest extends TemplateTestSupport {
     "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
     "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
 
+  testMustacheJs("double_section", Map("t" -> true, "two" -> "second"))
+  
   testMustacheJs("empty_template", Map())
-  testMustacheJs("error_not_found", Map())
 
-  testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"), "entities" -> "\""))
+  // Note that mustache.ruby quotes the &quot; which we follow unlike the mustache.js test case
+  testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"), "entities" -> "&quot;"))
+
+  testMustacheJs("error_not_found", Map())
 
   testMustacheJs("null_string", Map("name" -> "Elise",
     "glytch" -> true,
@@ -41,18 +47,13 @@ class MustacheJsSystemTest extends TemplateTestSupport {
     Map("name" -> "t1", "index" -> 0),
     Map("name" -> "t2", "index" -> 1))))
 
+  // Note used the result from mustache.ruby
+  testMustacheJs("template_partial", Map("title" -> (() => "Welcome")))
+  //testMustacheJs("template_partial", Map("title" -> (() => "Welcome"), "partial" -> Map("again" -> "Goodbye")))
+
   testMustacheJs("two_in_a_row", Map("name" -> "Joe", "greeting" -> "Welcome"))
 
   testMustacheJs("unescaped", Map("title" -> (() => "Bear > Shark")))
-
-
-
-  // The following are bad test cases that don't seem correct...
-  ignore("bad test cases") {
-
-    // TODO should &quot; be ignored from quoting?
-    testMustacheJs("escaped", Map("title" -> (() => "Bear > Shark"), "entities" -> "&quot;"))
-  }
 
 
 
@@ -61,7 +62,9 @@ class MustacheJsSystemTest extends TemplateTestSupport {
 
   def testMustacheJs(name: String, attributes: Map[String, Any]): Unit = {
     test(name) {
-      val template = engine.compile(TemplateSource.fromFile(new File(rootDir, name + ".html")).templateType("mustache"))
+      debug("Using template reasource loader: " + engine.resourceLoader)
+      
+      val template = engine.load(engine.source(name + ".html", "mustache"))
       val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt"))
       if (trimOutputAndTemplate) {
         assertTrimOutput(expectedOutput.trim, template, attributes)
@@ -72,5 +75,11 @@ class MustacheJsSystemTest extends TemplateTestSupport {
     }
   }
 
+
+  override protected def createTemplateEngine = {
+    debug("Using rootDir: " + rootDir)
+    new TemplateEngine(Some(rootDir))
+  }
+  
   def rootDir = new File(baseDir, "src/test/resources/moustache/js")
 }

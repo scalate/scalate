@@ -20,8 +20,6 @@ import java.io.File
 import Asserts._
 
 class ExtraImportTest extends TemplateTestSupport {
-  engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")
-
   test("test template using custom import") {
     val template = engine.compileSsp("""
 <%@ val bean: MyBean = null %>
@@ -31,5 +29,12 @@ Hello ${if (bean != null) bean else "no bean"}
     val output = engine.layout(template).trim
     assertContains(output, "Hello no bean")
     debug("template generated: " + output)
+  }
+
+
+  override protected def createTemplateEngine = {
+    val engine = super.createTemplateEngine
+    engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")
+    engine
   }
 }

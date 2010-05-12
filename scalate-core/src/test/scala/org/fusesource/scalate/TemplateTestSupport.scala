@@ -22,13 +22,16 @@ import java.lang.String
 import collection.immutable.Map
 
 abstract class TemplateTestSupport extends FunSuiteSupport {
-  val engine = new TemplateEngine
+  var engine: TemplateEngine = _
 
   override protected def beforeAll(configMap: Map[String, Any]) = {
     super.beforeAll(configMap)
 
+    engine = createTemplateEngine
     engine.workingDirectory = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
   }
+
+  protected def createTemplateEngine = new TemplateEngine
 
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): Unit = assertSspOutput(expectedOutput, templateText, attributes, true)
 

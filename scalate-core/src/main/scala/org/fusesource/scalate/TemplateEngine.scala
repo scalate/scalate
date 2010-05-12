@@ -41,7 +41,7 @@ import xml.NodeSeq
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine extends Logging {
+class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -76,10 +76,11 @@ class TemplateEngine extends Logging {
    */
   var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._")
 
+
   /**
    *
    */
-  var resourceLoader: ResourceLoader = new FileResourceLoader
+  var resourceLoader: ResourceLoader = new FileResourceLoader(rootDir)
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
@@ -307,6 +308,16 @@ class TemplateEngine extends Logging {
   def load(uri: String): Template = {
     load(uriToSource(uri))
   }
+
+  /**
+   * Returns a template source for the given URI and current resourceLoader
+   */
+  def source(uri: String): TemplateSource = TemplateSource.fromUri(uri, resourceLoader)
+
+  /**
+   * Returns a template source of the given type of template for the given URI and current resourceLoader 
+   */
+  def source(uri: String, templateType: String): TemplateSource = source(uri).templateType(templateType)
 
   /**
    * Returns true if the URI can be loaded as a template
