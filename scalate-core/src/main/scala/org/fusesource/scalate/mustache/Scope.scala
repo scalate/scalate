@@ -4,6 +4,7 @@ import org.fusesource.scalate.RenderContext
 import collection.JavaConversions._
 import _root_.java.{lang => jl, util => ju}
 import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.introspector.Introspector
 
 object Scope {
   def apply(context: RenderContext) = {
@@ -179,7 +180,10 @@ trait Scope extends Logging {
       case v: Map[String, Any] => new MapScope(this, name, v)
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
-      case v => new ObjectScope(this, v)
+      case v: AnyRef => new ObjectScope(this, v)
+      case v =>
+        warn("Unable to process value: " + v)
+        new EmptyScope(this)
     }
   }
 
@@ -224,8 +228,17 @@ trait Scope extends Logging {
 
 }
 
-case class RenderContextScope(context: RenderContext) extends Scope {
-  def parent: Option[Scope] = None
+case class RenderContextScope(context: RenderContext, defaultObjectName: Option[String] = Some("it")) extends Scope {
+  // lets create a parent scope which is the defaultObject scope so we look there last
+  val _parent: Option[Scope] = defaultObjectName match {
+    case Some(name) => apply(name) match {
+      case Some(value) => Some(createScope(name, value))
+      case _ => None
+    }
+    case _ => None
+  }
+
+  def parent: Option[Scope] = _parent
 
   def localVariable(name: String): Option[_] = context.attributes.get(name)
 }
@@ -241,16 +254,19 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
   def localVariable(name: String): Option[_] = map.get(name)
 
-
 }
 
 class EmptyScope(parent: Scope) extends ChildScope(parent) {
   def localVariable(name: String) = None
 }
 
-class ObjectScope(parent: Scope, value: Any) extends ChildScope(parent) {
-  // TODO use reflection here!
-  def localVariable(name: String) = None
+/**
+ * Constructs a scope for a non-null and not None value
+ */
+class ObjectScope(parent: Scope, value: AnyRef) extends ChildScope(parent) {
+  val introspector = Introspector(value.getClass)
+
+  def localVariable(name: String) = introspector.get(name, value)
 
   override def iteratorObject = Some(value)
 }

@@ -4,6 +4,19 @@ import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.util.IOUtil
 import collection.immutable.Map
 
+case class Item(name: String, current: Boolean, url: String) {
+  def link = !current
+}
+
+case class Complex(header: String, item: List[Item]) {
+  def list = !empty
+  def empty = item.isEmpty
+}
+
+case class HigherOrder(name: String, helper: String) {
+  def bolder(text: String) = <b>{text}</b> :: Text(" " + helper) :: Nil
+}
+
 /**
  * Runs the system tests from the mustache.js distro
  */
@@ -16,7 +29,7 @@ class MustacheJsSystemTest extends MustacheTestSupport {
   mustacheTest("comments", Map("title" -> (() => "A Comedy of Errors")))
   mustacheTest("comments_multi_line", Map("title" -> (() => "A Comedy of Errors")))
 
-  mustacheTest("complex", Map(
+  mustacheTest("complex", "map", Map(
     "header" -> (() => "Colors"),
     "item" -> List(
       Map("name" -> "red", "current" -> true, "url" -> "#Red"),
@@ -26,6 +39,23 @@ class MustacheJsSystemTest extends MustacheTestSupport {
     "link" -> ((s: Scope) => !(s("current").get.asInstanceOf[Boolean])),
     "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
     "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
+
+  mustacheTest("complex", "case class", Map(
+    "header" -> (() => "Colors"),
+    "item" -> List(
+      Item("red", true, "#Red"),
+      Item("green", false, "#Green"),
+      Item("blue", false, "#Blue")),
+    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
+    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
+
+
+  mustacheTest("complex", "nested case class", Map(
+    "it" -> Complex("Colors", List(
+      Item("red", true, "#Red"),
+      Item("green", false, "#Green"),
+      Item("blue", false, "#Blue")))))
+
 
   mustacheTest("crazy_recursive", Map(
     "top_nodes" -> Map(
@@ -67,11 +97,13 @@ class MustacheJsSystemTest extends MustacheTestSupport {
 
   mustacheTest("error_not_found", Map())
 
-  // TODO allow a Scope to be passed as well, plus allow a function that returns a string to be invoked too
-  mustacheTest("higher_order_sections", Map(
+  mustacheTest("higher_order_sections", "map", Map(
     "name" -> "Tater",
     "helper" -> "To tinker?",
     "bolder" -> ((text: String) => <b>{text}</b> :: Text(" To tinker?") :: Nil)))
+
+  mustacheTest("higher_order_sections", "case class with string functor", Map(
+    "it" -> HigherOrder("Tater", "To tinker?")))
 
   mustacheTest("inverted_section", Map("repo" -> List()))
 
@@ -82,7 +114,6 @@ class MustacheJsSystemTest extends MustacheTestSupport {
     "numeric" -> (() => Double.NaN)))
 
 
-  // TODO use case class
   mustacheTest("recursive", Map("show" -> false))
 
   mustacheTest("recursion_with_same_names", Map(
