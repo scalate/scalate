@@ -87,7 +87,7 @@ class MustacheParserTest extends FunSuiteSupport {
   assertFail("text {{}}")
 
   test("missing end tag") {
-    expectSyntaxException("Missing end tag '{{/foo}}' for started tag at 1.3") {
+    expectSyntaxException("Missing section end '{{/foo}}' for section beginning at 1.3") {
       "* {{#foo}} bar "
     }
   }

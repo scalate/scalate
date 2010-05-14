@@ -114,7 +114,7 @@ class MustacheParser extends RegexParsers with Logging {
     case name =>
       opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ {
         case body => (name, body)
-      } | error("Missing end tag '" + open + "/" + name + close + "' for started tag", name.pos)
+      } | error("Missing section end '" + open + "/" + name + close + "' for section beginning", name.pos)
   }
 
 
