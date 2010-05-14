@@ -1,6 +1,5 @@
 package org.fusesource.scalate.jersey
 
-import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
@@ -12,6 +11,8 @@ import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import org.fusesource.scalate.util.Logging
 import com.sun.jersey.api.container.ContainerException
 import javax.ws.rs.core.Context
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -33,11 +34,9 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     case _            => ""
   }
 
-  // TODO it would be nice to be able to slurp these out of the web.xml or Servlet 3 configuration
-  // so that they reused whatever the web app was setup to use...
-  var errorUris: List[String] = List("/WEB-INF/scalate/errors/500.scaml", "/WEB-INF/scalate/errors/500.ssp")
-
-  var templateSuffixes = List("", ".ssp", ".scaml")
+  var templateTypes: List[String] = TemplateEngine.templateTypes
+  var errorUris: List[String] = ServletHelper.errorUris()
+  var templateSuffixes: List[String] = templateTypes.map(s => "." + s) :+ ""
   var templateDirectories = List("/WEB-INF", "")
 
   def resolve(requestPath: String): String = {

@@ -7,14 +7,16 @@ import org.fusesource.scalate.util.Logging
  * The default implementation of <code>LayoutStrategy</code>.
  * 
  * <p>This implementation will first try to load a layout by using
- * the "layout" attribute of the given template. If the attribute
- * is not found then the "WEB-INF/layouts/default.ssp" and the
- * "WEB-INF/layouts/default.scaml" layouts are tried in that order.</p> 
- * 
+ * the "layout" attribute of the given template.
+ *
+ * If the attribute is not found then these files will be searched
+ *   * "WEB-INF/layouts/default.mustache"
+ *   * "WEB-INF/layouts/default.scaml"
+ *   * "WEB-INF/layouts/default.ssp"
+ *
  * @version $Revision : 1.1 $
  */
-class
-DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
+class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
 
   def layout(template: Template, context: RenderContext) {
     

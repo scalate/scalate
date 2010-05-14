@@ -32,6 +32,13 @@ import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 
+object TemplateEngine {
+  /**
+   * The default template types available in Scalate
+   */
+  val templateTypes: List[String] = List("mustache", "ssp", "scaml")
+
+}
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.

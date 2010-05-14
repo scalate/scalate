@@ -11,8 +11,9 @@ import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 
-import org.fusesource.scalate.servlet.TemplateEngineServlet
 import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scuery transformer
@@ -35,12 +36,10 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
     case _            => ""
   }
 
-  // TODO it would be nice to be able to slurp these out of the web.xml or Servlet 3 configuration
-  // so that they reused whatever the web app was setup to use...
-  var errorUris: List[String] = List("/WEB-INF/scalate/errors/500.scaml", "/WEB-INF/scalate/errors/500.ssp")
+  var errorUris: List[String] = ServletHelper.errorUris()
+  var templateDirectories = ServletHelper.templateDirectories
 
   var templateSuffixes = List("", ".html", ".htm")
-  var templateDirectories = List("/WEB-INF", "")
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
@@ -48,7 +47,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
       return null
     }
 
-    println("Request path: " + requestPath)
+    debug("Request path: " + requestPath)
     try {
       val path = if (basePath.length > 0) basePath + requestPath else requestPath
 
@@ -96,7 +95,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
     try {
 
-      println("Attempt to find '" + resolvedPath + "'")
+      debug("Attempt to find '" + resolvedPath + "'")
 
       //servletContext.getResourceAsStream(resolvedPath)
 

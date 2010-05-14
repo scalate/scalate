@@ -9,7 +9,6 @@ import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
 
 import org.fusesource.scalate.scuery.Transformer
 import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.servlet.TemplateEngineServlet
 import org.fusesource.scalate.util.Logging
 
 import com.sun.jersey.api.core.ExtendedUriInfo
@@ -20,6 +19,7 @@ import xml.{XML, NodeSeq}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import java.lang.{String, Class}
 import java.lang.annotation.Annotation
+import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
 
 /**
  * Converts an Scuery  { @link Transformer } to output
@@ -37,8 +37,8 @@ class TransformerWriter extends MessageBodyWriter[Transformer] with Logging {
   @Context
   protected var response: HttpServletResponse = _
 
-  protected var templateDirectories = List("/WEB-INF", "")
-  protected var errorUris: List[String] = List("/WEB-INF/scalate/errors/500.scaml", "/WEB-INF/scalate/errors/500.ssp")
+  protected var errorUris: List[String] = ServletHelper.errorUris()
+  protected var templateDirectories = ServletHelper.templateDirectories
 
 
   def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
@@ -73,8 +73,8 @@ class TransformerWriter extends MessageBodyWriter[Transformer] with Logging {
       if (!resources.isEmpty) {
         val resource = resources.head
         val className = resource.getClass.getName
-        println("resource class: " + className)
-        println("viewName: " + viewName)
+        debug("resource class: " + className)
+        debug("viewName: " + viewName)
 
 
         try {

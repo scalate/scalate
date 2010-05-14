@@ -32,7 +32,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|/sampleServlet|.+\.(ssp|scaml)|(/(images|css|ssp|scaml)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.(mustache|scaml|ssp)|(/(images|css|mustache|scaml|ssp)/.*)</param-value>
     </init-param>
   </filter>
 
@@ -51,11 +51,15 @@
 
   <servlet-mapping>
     <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
+    <url-pattern>*.mustache</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>TemplateEngineServlet</servlet-name>
     <url-pattern>*.scaml</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <url-pattern>*.ssp</url-pattern>
   </servlet-mapping>
   <!-- END: SSP and HAML config -->
 
