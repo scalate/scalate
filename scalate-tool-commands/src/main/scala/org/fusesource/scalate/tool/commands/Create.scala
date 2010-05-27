@@ -186,12 +186,15 @@ class Create extends Command {
       }
     }
 
-    val webInfResources = "src/main/webapp/WEB-INF/resources"
+    protected val webInfResources = "src/main/webapp/WEB-INF/resources"
+    protected val sourcePathRegexPattern = "(src/(main|test)/(java|scala)/)(.*)".r.pattern
 
     protected def processResource(fileContents: String): Unit = {
       val idx = name.lastIndexOf('/')
-      val dirName = if (packageName.length > 0 && idx > 0 && shouldAppendPackage(name)) {
-        outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
+      val matcher = sourcePathRegexPattern.matcher(name)
+      val dirName = if (packageName.length > 0 && idx > 0 && matcher.matches) {
+        val prefix = matcher.group(1)
+        outputDir + "/" + prefix + packageName.replace('.', '/') + "/" + name.substring(prefix.length)
       }
       else if (packageName.length > 0 && name.startsWith(webInfResources)) {
         outputDir + "/src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/resources" + name.substring(webInfResources.length)
@@ -225,8 +228,5 @@ class Create extends Command {
     protected def replaceVariable(text: String, name: String, value: String): String = {
       text.replaceAll("""([^\\])\$\{""" + name + """\}""", "$1" + value)
     }
-
-    protected def shouldAppendPackage(name: String) = name.matches("src/(main|test)/(java|scala)/.*")
-
   }
 }
