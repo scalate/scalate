@@ -37,8 +37,11 @@
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
       <directory>src/main/webapp/WEB-INF</directory>
       <includes>
-        <include>resources/**/*</include>
+        <include>**/*</include>
       </includes>
+      <excludes>
+        <exclude>web.xml</exclude>
+      </excludes>
     </fileSet>
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
