@@ -192,6 +192,9 @@ class Create extends Command {
       val dirName = if (packageName.length > 0 && idx > 0 && shouldAppendPackage(name)) {
         outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
       }
+      else if (packageName.length > 0 && name.startsWith("")) {
+        outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
+      }
       else {
         outputDir + "/" + name
       }
