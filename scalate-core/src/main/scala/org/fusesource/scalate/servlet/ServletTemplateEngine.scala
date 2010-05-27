@@ -71,7 +71,7 @@ class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
   
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
-  layoutStrategy = new DefaultLayoutStrategy(this, "/WEB-INF/scalate/layouts/default.scaml", "/WEB-INF/scalate/layouts/default.ssp")
+  layoutStrategy = new DefaultLayoutStrategy(this, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
 
   private def buildClassPath(): String = {
 

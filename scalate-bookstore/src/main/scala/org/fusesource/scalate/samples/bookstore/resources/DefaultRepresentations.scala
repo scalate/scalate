@@ -2,7 +2,6 @@ package org.fusesource.scalate.samples.bookstore.resources
 
 import com.sun.jersey.api.view.ImplicitProduces
 import javax.ws.rs.Produces
-import javax.ws.rs.core.MediaType
 
 /**
  * Defines the default representations to be used on resources

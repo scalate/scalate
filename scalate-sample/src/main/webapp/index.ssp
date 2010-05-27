@@ -132,6 +132,9 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   <li>
     <a href="foo/def">Item DEF</a> a child resource
   </li>
+  <li>
+    <a href="mustache">MustacheResource</a> using a Mustache template
+  </li>
 </ul>
 
 <h2>Error Messages</h2>
@@ -148,6 +151,9 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   </li>
   <li>
     <a href="scaml/errors/runtimeException.scaml">An Exception thrown at Runtime while rendering a template</a>
+  </li>
+  <li>
+    <a href="mustache/errors/templateCompileError.mustache">Typo in a Mustache template</a>
   </li>
 </ul>
 

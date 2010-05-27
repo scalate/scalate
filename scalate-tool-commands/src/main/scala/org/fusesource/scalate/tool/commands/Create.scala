@@ -186,7 +186,6 @@ class Create extends Command {
       }
     }
 
-
     protected def processResource(fileContents: String): Unit = {
       val idx = name.lastIndexOf('/')
       val dirName = if (packageName.length > 0 && idx > 0 && shouldAppendPackage(name)) {

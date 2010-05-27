@@ -3,6 +3,7 @@ package org.fusesource.scalate.mustache
 import util.parsing.combinator.RegexParsers
 import util.parsing.input.{Positional, CharSequenceReader, Position}
 import org.fusesource.scalate.{InvalidSyntaxException}
+import org.fusesource.scalate.util.Logging
 
 sealed abstract class Statement extends Positional {
 }
@@ -28,6 +29,8 @@ case class Section(name: Text, body: List[Statement]) extends Statement
 case class InvertSection(name: Text, body: List[Statement]) extends Statement
 case class Partial(name: Text) extends Statement
 case class SetDelimiter(open: Text, close: Text) extends Statement
+case class ImplicitIterator(name: String) extends Statement
+case class Pragma(name: Text, options: Map[String, String]) extends Statement
 
 
 /**
@@ -35,7 +38,7 @@ case class SetDelimiter(open: Text, close: Text) extends Statement
  *
  * @version $Revision : 1.1 $
  */
-class MustacheParser extends RegexParsers {
+class MustacheParser extends RegexParsers with Logging {
   private var _open: String = "{{"
   private var _close: String = "}}"
 
@@ -53,7 +56,7 @@ class MustacheParser extends RegexParsers {
 
   def someText = upto(open)
 
-  def statement = guarded(open, unescapeVariable | partial | section | invert | comment | set_delimiter | variable |
+  def statement = guarded(open, unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
           failure("invalid statement"))
 
   def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
@@ -72,17 +75,31 @@ class MustacheParser extends RegexParsers {
 
   def partial = expression(operation(">") ^^ {Partial(_)})
 
+  def pragma = expression(operation("%") ~ rep(option) ^^ {
+    case p ~ o =>
+      val options = Map(o: _*)
+      p match {
+        case Text("IMPLICIT-ITERATOR") =>
+          val name = options.getOrElse("iterator", ".")
+          ImplicitIterator(name)
+        case _ =>
+          Pragma(p, options)
+      }
+  })
+
+  def option = trimmed ~ ("=" ~> trimmed) ^^ {case n ~ v => n.value -> v.value}
+
   def comment = expression((trim("!") ~> upto(close)) ^^ {Comment(_)})
 
   def variable = expression(trimmed ^^ {Variable(_, false)})
 
-  def set_delimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
+  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b => SetDelimiter(a, b)
-  }) ^^ {
+  }) <~ opt(whiteSpace) ^^ {
     case a =>
       _open = a.open.value
       _close = a.close.value
-      println("applying new delim '" + a)
+      debug("applying new delim '" + a)
       a
   }
 
@@ -99,20 +116,17 @@ class MustacheParser extends RegexParsers {
 
   def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ {case x => Text(x.value)}) >> {
     case name =>
-      println("Trying to parse tag name: '" + name + "'")
-      opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ optionalSpaceAndNewlines ^^ {
+      opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ {
         case body => (name, body)
-      } | error("Missing end tag '" + open + "/" + name + close + "' for started tag", name.pos)
+      } | error("Missing section end '" + open + "/" + name + close + "' for section beginning", name.pos)
   }
 
 
   override def skipWhitespace = false
 
-  val optionalSpaceAndNewlines = """([ \t]*(\n\r|\r\n|\n|\r|$)+)?""".r
-
   def expression[T <: Statement](p: Parser[T]): Parser[T] = positioned(open ~> p <~ close)
 
-  def trimmed = trim(text("""\w[^\s{}]*""".r))
+  def trimmed = trim(text("""(\w|\.)[^\s={}]*""".r))
 
   def trim[T](p: Parser[T]): Parser[T] = opt(whiteSpace) ~> p <~ opt(whiteSpace)
 

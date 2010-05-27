@@ -21,13 +21,5 @@ class ServletContextListener extends GuiceServletContextListener {
 
     // lets add any package names which contain JAXRS resources
     override def resourcePackageNames = "${package}.resources" :: super.resourcePackageNames
-    
-
-    // Note lets explicitly allow / to be served using a scaml template for now, remove this if you want a JAXRS
-    // resource mapped to /
-    //
-    // TODO - we can remove this stuff when this Jersey issue is released
-    // https://jersey.dev.java.net/issues/show_bug.cgi?id=485
-    override def webPageContentRegex = "/" :: super.webPageContentRegex
   })
 }

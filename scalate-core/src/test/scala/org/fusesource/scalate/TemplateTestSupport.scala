@@ -20,15 +20,24 @@ package org.fusesource.scalate
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
+import util.IOUtil
 
 abstract class TemplateTestSupport extends FunSuiteSupport {
-  val engine = new TemplateEngine
+  var engine: TemplateEngine = _
 
   override protected def beforeAll(configMap: Map[String, Any]) = {
     super.beforeAll(configMap)
 
-    engine.workingDirectory = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
+    engine = createTemplateEngine
+    val workingDir = new File(baseDir, "target/test-data/" + getClass.getSimpleName)
+    if (workingDir.exists) {
+      // lets delete it before we run the tests
+      IOUtil.recursiveDelete(workingDir)
+    }
+    engine.workingDirectory = workingDir
   }
+
+  protected def createTemplateEngine = new TemplateEngine
 
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): Unit = assertSspOutput(expectedOutput, templateText, attributes, true)
 
