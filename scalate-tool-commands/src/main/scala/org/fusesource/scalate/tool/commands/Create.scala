@@ -186,14 +186,15 @@ class Create extends Command {
       }
     }
 
+    val webInfResources = "src/main/webapp/WEB-INF/resources"
 
     protected def processResource(fileContents: String): Unit = {
       val idx = name.lastIndexOf('/')
       val dirName = if (packageName.length > 0 && idx > 0 && shouldAppendPackage(name)) {
         outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
       }
-      else if (packageName.length > 0 && name.startsWith("")) {
-        outputDir + "/" + name.substring(0, idx) + "/" + packageName.replace('.', '/') + name.substring(idx)
+      else if (packageName.length > 0 && name.startsWith(webInfResources)) {
+        outputDir + "/src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/resources" + name.substring(webInfResources.length)
       }
       else {
         outputDir + "/" + name
