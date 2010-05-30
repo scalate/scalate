@@ -8,6 +8,7 @@ import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.javax.servlet.http.HttpServlet
 import _root_.java.{ util => ju}
 import _root_.scala.collection.JavaConversions._
+import org.fusesource.scalate.TemplateEngine
 
 /**
  * A default Guice  {@link ServletModule} which registers Jersey and the Scalate servlets
@@ -29,8 +30,7 @@ class ScalateModule extends ServletModule {
     applyJerseyFilter
   }
 
-  // TODO these could come from the TemplateEngine?
-  var scalateServletUris = List("*.ssp", "*.scaml")
+  var scalateServletUris: List[String] = TemplateEngine.templateTypes.map(s => "*." + s)
 
   /**
    * Registers the Scalate servlets
@@ -91,7 +91,7 @@ class ScalateModule extends ServletModule {
   /**
    * The regular expression to find web content which should not be processed by the Jersey filter
    */
-  def webPageContentRegex: List[String] = List(".+\\.(ssp|scaml)", "/images/.*", "/css/.*", ".+\\.ico")
+  def webPageContentRegex: List[String] = List(".+\\." + templateExtensions.mkString("(", "|", ")"), "/images/.*", "/css/.*", ".+\\.ico")
 
   /**
    * Returns a list of package names which are recursively scanned looking for JAXRS resource classes
@@ -103,4 +103,10 @@ class ScalateModule extends ServletModule {
    * when using `with` or the RichBuilder (which uses `with`) inside a loop
    */
   protected def serveWith[T <: HttpServlet](urlPattern: String, aClass: Class[T]): Unit = serve(urlPattern).`with`(aClass)
+
+  /**
+   * Returns the default list of template extensions which are rendered directly with Scalate
+   * rather than going through the Jersey filter
+   */
+  protected def templateExtensions: List[String] = TemplateEngine.templateTypes
 }

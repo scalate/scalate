@@ -69,7 +69,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
 
       val variableMap = ExchangeHelper.createVariableMap(exchange)
       for ((key, value) <- variableMap) {
-        println("setting " + key + " = " + value)
+        debug("setting " + key + " = " + value)
         context.attributes(key) = value
       }
       context.attributes("context") = context
@@ -78,7 +78,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
       val out = exchange.getOut()
       val response = buffer.toString()
 
-      println("Eval of " + this + " = " + response)
+      debug("Eval of " + this + " = " + response)
       out.setBody(response)
 
 

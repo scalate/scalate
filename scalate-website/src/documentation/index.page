@@ -39,14 +39,21 @@ How to use Scalate with popular web frameworks
 </div>
 
 <div class="left" markdown="1">
+# [Mustache](mustache-reference.html) </div>
+<div class="right" markdown="1">
+Reference for the [Mustache](http://mustache.github.com/) template language.
+
+Mustache provides logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js) - so ideal for HTML templates which your designers own.
+</div>
+
+<div class="left" markdown="1">
 # [Scaml](scaml-reference.html)
 </div>
 <div class="right" markdown="1">
 Reference for the Scaml template language. 
 
-Scaml is a Scala version of [Haml](http://haml-lang.com/) and its very DRY for generating markup, XML, HTML.
+Scaml is a Scala version of [Haml](http://haml-lang.com/) and is the most DRY template engine for generating HTML
 </div>
-
 
 <div class="left" markdown="1">
 # [SSP](ssp-reference.html)

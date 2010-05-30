@@ -17,7 +17,7 @@ class ClassPathBuilder {
   def addJar(jar: String): ClassPathBuilder = addEntry(jar)
   
   def addEntry(path: String): ClassPathBuilder = {
-    if (path != null && !path.isEmpty)
+    if (path != null && path.length > 0)
       classpath += path
     this
   }

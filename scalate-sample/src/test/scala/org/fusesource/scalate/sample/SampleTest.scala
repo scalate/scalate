@@ -19,6 +19,9 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("Scalate")
   }
 
+  testPageContains("mustache", "Scala", "Great", "Java", "Crufty")
+  testPageContains("mustache/errors/templateCompileError.mustache", "Missing", "'{{/items}}'", "near line 8")
+
   testPageContains("sampleServlet", "The foo is: Foo(")
 
   testPageContains("ssp/capture.ssp", "Hello James", "Sample 2", "Hello James")

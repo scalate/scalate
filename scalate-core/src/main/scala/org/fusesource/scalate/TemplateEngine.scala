@@ -32,6 +32,13 @@ import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 
+object TemplateEngine {
+  /**
+   * The default template types available in Scalate
+   */
+  val templateTypes: List[String] = List("mustache", "ssp", "scaml")
+
+}
 
 /**
  * A TemplateEngine is used to compile and load Scalate templates.
@@ -41,7 +48,7 @@ import xml.NodeSeq
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine extends Logging {
+class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -76,11 +83,12 @@ class TemplateEngine extends Logging {
    */
   var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._")
 
+
   /**
    *
    */
-  var resourceLoader: ResourceLoader = new FileResourceLoader
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "moustache" -> new MustacheCodeGenerator)
+  var resourceLoader: ResourceLoader = new FileResourceLoader(rootDir)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])
@@ -139,7 +147,7 @@ class TemplateEngine extends Logging {
    * Compiles the given Moustache template text and returns the template
    */
   def compileMoustache(text: String, extraBindings:List[Binding] = Nil):Template = {
-    compileText("moustache", text, extraBindings)
+    compileText("mustache", text, extraBindings)
   }
 
   /**
@@ -180,7 +188,7 @@ class TemplateEngine extends Logging {
    * will then be compiled into the application as part of a build process.
    */
   def generateScala(source: TemplateSource, extraBindings:List[Binding] = Nil) = {
-    generator(source.uri).generate(this, source, bindings ::: extraBindings)
+    generator(source).generate(this, source, bindings ::: extraBindings)
   }
 
 
@@ -307,6 +315,16 @@ class TemplateEngine extends Logging {
   def load(uri: String): Template = {
     load(uriToSource(uri))
   }
+
+  /**
+   * Returns a template source for the given URI and current resourceLoader
+   */
+  def source(uri: String): TemplateSource = TemplateSource.fromUri(uri, resourceLoader)
+
+  /**
+   * Returns a template source of the given type of template for the given URI and current resourceLoader 
+   */
+  def source(uri: String, templateType: String): TemplateSource = source(uri).templateType(templateType)
 
   /**
    * Returns true if the URI can be loaded as a template
@@ -469,7 +487,7 @@ class TemplateEngine extends Logging {
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri
-    val className = generator(uri).className(uri)
+    val className = generator(source).className(uri)
     val template = loadCompiledTemplate(className);
     if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
@@ -524,7 +542,7 @@ class TemplateEngine extends Logging {
       val uri = source.uri
 
       // Generate the scala source code from the template
-      val g = generator(uri);
+      val g = generator(source);
       code = g.generate(this, source, bindings ::: extraBindings)
 
       val sourceFile = sourceFileName(uri)
@@ -608,8 +626,8 @@ class TemplateEngine extends Logging {
    * Gets the code generator to use for the give uri string by looking up the uri's extension
    * in the the codeGenerators map.
    */
-  private def generator(uri: String): CodeGenerator = {
-    extension(uri) match {
+  protected def generator(source: TemplateSource): CodeGenerator = {
+    extension(source) match {
       case Some(ext)=>
         generatorForExtension(ext)
       case None=>
@@ -617,19 +635,16 @@ class TemplateEngine extends Logging {
     }
   }
 
-  private def extension(uri: String): Option[String] = {
-    val t = uri.split("\\.")
-    if (t.length < 2) {
-      None
-    } else {
-      Some(t.last)
-    }
-  }
+  /**
+   * Extracts the extension from the source's uri though derived engines could override this behaviour to
+   * auto default missing extensions or performing custom mappings etc.
+   */
+  protected def extension(source: TemplateSource): Option[String] = source.templateType
 
   /**
    * Returns the code generator for the given file extension
    */
-  private def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
+  protected def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
     case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
     case Some(generator) => generator
   }

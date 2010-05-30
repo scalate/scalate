@@ -29,6 +29,19 @@
       <includes>
         <include>**/*</include>
       </includes>
+      <excludes>
+        <exclude>WEB-INF/resources</exclude>
+        <exclude>WEB-INF/resources/**</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+      <excludes>
+        <exclude>web.xml</exclude>
+      </excludes>
     </fileSet>
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">

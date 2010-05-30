@@ -1,16 +1,17 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.{InvalidSyntaxException, FunSuiteSupport}
+import org.fusesource.scalate.util.IOUtil
+import java.io.File
 
 /**
  * @version $Revision : 1.1 $
  */
 
 class MustacheParserTest extends FunSuiteSupport {
-
   implicit def stringToText(x: String) = Text(x)
 
-  
+
   test("plain text") {
     assertValid("some text more text")
 
@@ -32,14 +33,14 @@ class MustacheParserTest extends FunSuiteSupport {
       "some text {{{foo}}} more text")
   }
 
-  test("open close tag") {
-    assertParses(List( Text("* "), Section("foo", List(Text(" bar "))), Text(" *")),
+  test("open close section") {
+    assertParses(List(Text("* "), Section("foo", List(Text("bar "))), Text("*")),
       "* {{#foo}} bar {{/foo}} *")
   }
 
   test("invert variable and partial") {
-    assertParses(List( Text("* "), InvertSection("foo", List(Text(" "), Partial("bar"), Text(" "))), Text(" *")),
-      "* {{^foo}} {{>bar}} {{/foo}} *")
+    assertParses(List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text("*")),
+      "* {{^foo}} {{>bar}}{{/foo}} *")
   }
 
   // set delimiter
@@ -49,16 +50,34 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("text and set directive") {
-    assertParses(List( Text("* "), SetDelimiter("<%", "%>"), Text(" *")),
+    assertParses(List(Text("* "), SetDelimiter("<%", "%>"), Text("*")),
       "* {{=<% %>=}} *")
   }
 
   test("set directive") {
     assertParses(List(Text("* "), Variable("default_tags"), Text(" * "),
-      SetDelimiter("<%", "%>"), Text(" * "), Variable("erb_style_tags"), Text(" * "),
-      SetDelimiter("{{", "}}"), Text(" * "), Variable("default_tags_again")),
+      SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
+      SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
       "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
   }
+
+  test("whitespace with sections") {
+    assertParses(List(Section("terms", List(Variable("name"), Text("\n  "),
+      Variable("index"), Text("\n"))),
+      Section("terms", List(Variable("name"), Text("\n  "), Variable("index"), Text("\n")))),
+      loadTestFile("reuse_of_enumerables.html"))
+  }
+
+  test("newline after expression") {
+    assertParses(List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
+      loadTestFile("two_in_a_row.html"))
+  }
+
+  ignore("complex whitespace") {
+    assertParses(List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
+      loadTestFile("complex.html"))
+  }
+
 
 
   // test bad syntax
@@ -68,7 +87,7 @@ class MustacheParserTest extends FunSuiteSupport {
   assertFail("text {{}}")
 
   test("missing end tag") {
-    expectSyntaxException("Missing end tag '{{/foo}}' for started tag at 1.3") {
+    expectSyntaxException("Missing section end '{{/foo}}' for section beginning at 1.3") {
       "* {{#foo}} bar "
     }
   }
@@ -81,7 +100,6 @@ class MustacheParserTest extends FunSuiteSupport {
     val lines = (new MustacheParser).parse(text)
     for (line <- lines) {
       debug("=> " + line)
-      println("=> " + line)
     }
     debug("")
     lines
@@ -113,6 +131,8 @@ class MustacheParserTest extends FunSuiteSupport {
     val e = intercept[InvalidSyntaxException] {
       assertValid(block)
     }
-    assert(e.getMessage.contains(message), "InvalidSyntaxException message did not contain the text: \n  "+message+"\nInstead got: \n  "+e.getMessage)
+    assert(e.getMessage.contains(message), "InvalidSyntaxException message did not contain the text: \n  " + message + "\nInstead got: \n  " + e.getMessage)
   }
+
+  protected def loadTestFile(name: String) =       IOUtil.loadTextFile(new File(baseDir, "src/test/resources/moustache/js/" + name))
 }

@@ -22,7 +22,7 @@ object RenderContext {
 
 /**
  * Provides helper methods for rendering templates and values and for working with attributes.
- * 
+ *
  * @see DefaultRenderContext
  * @see org.fusesource.scalate.servlet.ServletRenderContext
  */
@@ -31,6 +31,11 @@ trait RenderContext {
    * Default string used to output null values
    */
   var nullString = ""
+
+  /**
+   * Default string used to output None values
+   */
+  var noneString = ""
 
   /**
    * Whether or not markup sensitive characters for HTML/XML elements like &amp; &gt; &lt; are escaped or not
@@ -58,21 +63,21 @@ trait RenderContext {
   /**
    * Access the attributes available in this context
    */
-  def attributes : AttributeMap[String,Any]
+  def attributes: AttributeMap[String, Any]
 
 
   /**
    * Sorted list of attribute keys
    */
-  def attributeKeys = attributes.keySet.toList.sortWith(_<_)
-  
+  def attributeKeys = attributes.keySet.toList.sortWith(_ < _)
+
   /**
-   * Returns the attribute of the given type or a {@link NoValueSetException} exception is thrown
+   * Returns the attribute of the given type or a  { @link NoValueSetException } exception is thrown
    */
   def attribute[T](name: String): T = {
     attributes.get(name)
-              .getOrElse(throw new NoValueSetException(name))
-              .asInstanceOf[T]
+            .getOrElse(throw new NoValueSetException(name))
+            .asInstanceOf[T]
   }
 
   /**
@@ -80,14 +85,14 @@ trait RenderContext {
    */
   def attributeOrElse[T](name: String, defaultValue: T): T = {
     attributes.get(name)
-              .getOrElse(defaultValue)
-              .asInstanceOf[T]
+            .getOrElse(defaultValue)
+            .asInstanceOf[T]
   }
 
   def setAttribute(name: String, value: Option[Any]) {
     value match {
       case Some(v) => attributes(name) = v
-      case None    => attributes.remove(name)
+      case None => attributes.remove(name)
     }
   }
 
@@ -102,9 +107,15 @@ trait RenderContext {
     any match {
       case u: Unit => ""
       case null => sanitize(nullString)
+      case None => sanitize(noneString)
       case Unescaped(text) => text
+      case f: Function0[_] => value(f(), shouldSanitize)
       case v: String => sanitize(v)
       case v: Date => sanitize(dateFormat.format(v))
+      case n: Double if n.isNaN => "NaN"
+      case n: Float if n.isNaN => "NaN"
+      case v: Double => sanitize(numberFormat.format(v))
+      case v: Float => sanitize(numberFormat.format(v))
       case v: Number => sanitize(numberFormat.format(v))
       case f: FilterRequest => {
         // NOTE assume a filter does the correct sanitizing
@@ -124,8 +135,7 @@ trait RenderContext {
       case n: Node => n.toString
 
       case x: Traversable[Any] =>
-        x.map( value(_, shouldSanitize) ).mkString("")
-
+        x.map(value(_, shouldSanitize)).mkString("")
 
       // TODO for any should we use the renderView?
       case v: Any => sanitize(v.toString)
@@ -133,6 +143,7 @@ trait RenderContext {
   }
 
   def valueEscaped(any: Any) = value(any, true)
+
   def valueUnescaped(any: Any) = value(any, false)
 
   /**
@@ -246,10 +257,10 @@ trait RenderContext {
   }
 
   /**
-   * Allows a symbol to be used with arguments to the  {@link render} or {@link layout} method such as
-   * <code>render("foo.ssp", 'foo -> 123, 'bar -> 456)  {...}
+   * Allows a symbol to be used with arguments to the   { @link render } or  { @link layout } method such as
+   * <code>render("foo.ssp", 'foo -> 123, 'bar -> 456)   {...}
    */
-  implicit def toStringPair(entry: (Symbol,Any)): (String,Any) = (entry._1.name, entry._2)
+  implicit def toStringPair(entry: (Symbol, Any)): (String, Any) = (entry._1.name, entry._2)
 
   /**
    * Renders the given template with optional attributes
@@ -314,7 +325,7 @@ trait RenderContext {
       currentTemplate = uri
 
       // lets keep track of the templates
-      attributes("scalateTemplates") = uri :: attributeOrElse[List[String]]("scalateTemplates", List()) 
+      attributes("scalateTemplates") = uri :: attributeOrElse[List[String]]("scalateTemplates", List())
 
       block
     } finally {
@@ -362,27 +373,27 @@ trait RenderContext {
    */
   def captureNodeSeq(template: Template): NodeSeq = XmlHelper.textToNodeSeq(capture(template))
 
-/*
-  Note due to the implicit conversions being applied to => Unit only taking the last
-  statement of the block as per this discussion:
-  http://old.nabble.com/-scala--is-this-a-compiler-bug-or-just-a-surprising-language-quirk-%28or-newbie--lack-of-understanding-%3A%29-ts27917276.html
+  /*
+    Note due to the implicit conversions being applied to => Unit only taking the last
+    statement of the block as per this discussion:
+    http://old.nabble.com/-scala--is-this-a-compiler-bug-or-just-a-surprising-language-quirk-%28or-newbie--lack-of-understanding-%3A%29-ts27917276.html
 
-  then we can no longer support this approach which is a shame.
+    then we can no longer support this approach which is a shame.
 
-  So tags must take => Unit as a parameter - then either take Rendercontext as the first parameter block
-  or use the RenderContext() to get the current active context for capturing.
+    So tags must take => Unit as a parameter - then either take Rendercontext as the first parameter block
+    or use the RenderContext() to get the current active context for capturing.
 
-  implicit def bodyToStringFunction(body: => Unit): () => String = {
-    () => {
-      println("capturing the body....")
-      val answer = capture(body)
-      println("captured body: " + answer)
-      answer
+    implicit def bodyToStringFunction(body: => Unit): () => String = {
+      () => {
+        println("capturing the body....")
+        val answer = capture(body)
+        println("captured body: " + answer)
+        answer
+      }
     }
-  }
 
-  implicit def toBody(body: => Unit): Body = new Body(this, body)
-*/
+    implicit def toBody(body: => Unit): Body = new Body(this, body)
+  */
 
 
   /////////////////////////////////////////////////////////////////////
@@ -403,7 +414,7 @@ trait RenderContext {
   private var resourceBeanAttribute = "it"
 
   /**
-   *  Returns the JAXRS resource bean of the given type or a  { @link NoValueSetException } exception is thrown
+   *  Returns the JAXRS resource bean of the given type or a   { @link NoValueSetException } exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)

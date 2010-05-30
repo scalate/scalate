@@ -63,8 +63,8 @@ class TransformTableStripeTest extends FunSuiteSupport {
 
 
   test("stripe empty table") {
-    val transformer = new PersonTransformer(List())
-    val result = transformer(xml)
+    val striper = new PersonTransformer(List())
+    val result = striper(xml)
     debug("got result: " + result)
 
     assertSize("tbody tr", result, 1)

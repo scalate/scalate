@@ -24,13 +24,9 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <welcome-file-list>
-    <welcome-file>index.scaml</welcome-file>
-  </welcome-file-list>
-
   <error-page>
     <error-code>500</error-code>
-    <location>/WEB-INF/errors/scalate/500.scaml</location>
+    <location>/WEB-INF/scalate/errors/500.scaml</location>
   </error-page>
 
 </web-app>

@@ -21,6 +21,7 @@ import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import org.fusesource.scalate.TemplateEngine
 
 object TemplateEngineServlet {
   protected var singleton: TemplateEngineServlet = _
@@ -57,18 +58,23 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     val servletContext = getServletContext
     val context = new ServletRenderContext(templateEngine, request, response, servletContext)
 
-    // lets try find an index page if we are given an empty URI which sometimes happens
-    // with jersey filter and guice servlet
-    val actualTemplate = if (template == null || template.length == 0 || template == "/") {
-      List("index.scaml", "index.ssp").find(u => servletContext.getRealPath(u) != null) match {
-        case Some(name) => debug("asked to resolve uri: " + template + " so delegating to: " + name); name
-        case _ => template
+    if (template == null || template.length == 0 || template == "/") {
+      // lets try find an index page if we are given an empty URI which sometimes happens
+      // with jersey filter and guice servlet
+      TemplateEngine.templateTypes.map("index." + _).find(u => servletContext.getResource(u) != null) match {
+        case Some(name) =>
+          log("asked to resolve uri: " + template + " so delegating to: " + name)
+          servletContext.getRequestDispatcher(name).forward(request, response)
+          //context.include(name, true)
+
+        case _ =>
+          warn("No template available")
+          response.setStatus(HttpServletResponse.SC_NOT_FOUND)
       }
     }
     else {
-      template
+      context.include(template, true)
     }
-    context.include(actualTemplate, true)
   }
 
 }
