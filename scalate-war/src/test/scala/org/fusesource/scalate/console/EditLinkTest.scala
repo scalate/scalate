@@ -27,10 +27,9 @@ class EditLinkTest extends FunSuite with Logging {
   def editLink(name: String) = {
 
     // lets put a render context in scope
-    RenderContext() = new DefaultRenderContext(new TemplateEngine(), new PrintWriter(new OutputStreamWriter(System.out)))
-    
-    val link = EditLink.editLink(file)("Edit file")
-
-    println(name + " link = " + link)
+    RenderContext.using( new DefaultRenderContext(new TemplateEngine(), new PrintWriter(new OutputStreamWriter(System.out))) ) {
+      val link = EditLink.editLink(file)("Edit file")
+      println(name + " link = " + link)
+    }
   }
 }

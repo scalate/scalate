@@ -384,8 +384,9 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
    * Renders the given template using the current layoutStrategy
    */
   def layout(template: Template, context: RenderContext): Unit = {
-    RenderContext.update(context)
-    layoutStrategy.layout(template, context)
+    RenderContext.using(context) {
+      layoutStrategy.layout(template, context)
+    }
   }
 
 
