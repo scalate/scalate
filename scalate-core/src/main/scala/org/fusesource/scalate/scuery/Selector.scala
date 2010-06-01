@@ -65,7 +65,12 @@ trait Selector {
   def matches(node: Node, ancestors: Seq[Node]): Boolean
 
   def filter(nodes: NodeSeq, ancestors: Seq[Node] = Nil): NodeSeq = {
-    nodes.flatMap(filterNode(_, ancestors))
+    val rc = nodes.flatMap(filterNode(_, ancestors))
+    if( rc.size==1 && rc.head.isInstanceOf[Elem] ) {
+      rc.head.asInstanceOf[Elem]
+    } else {
+      rc
+    }
   }
 
   protected def filterNode(n: Node, ancestors: Seq[Node]): NodeSeq = {
