@@ -42,8 +42,8 @@ class SetAttributeTest extends FunSuiteSupport {
 
   def assertLink(a: Node, href: String, className: String, title: String): Unit = {
     debug("testing link node: " + a)
-    expect(href) {a \ "@href"}
-    expect(className) {a \ "@class"}
-    expect(title) {a \ "@title"}
+    expect(href) {(a \ "@href").toString}
+    expect(className) {(a \ "@class").toString}
+    expect(title) {(a \ "@title").toString}
   }
 }
