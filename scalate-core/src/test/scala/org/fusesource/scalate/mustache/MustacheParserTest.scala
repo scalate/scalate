@@ -60,7 +60,6 @@ class MustacheParserTest extends FunSuiteSupport {
       "* {{=<% %>=}} *")
   }
 
-
   test("whitespace with sections") {
     assertParses(List(Section("terms", List(Variable("name"), Text("\n  "),
       Variable("index"), Text("\n"))),
