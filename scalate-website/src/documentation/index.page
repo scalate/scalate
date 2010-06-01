@@ -39,7 +39,7 @@ How to use Scalate with popular web frameworks
 </div>
 
 <div class="left" markdown="1">
-# [Mustache](mustache-reference.html) </div>
+# [Mustache](mustache.html) </div>
 <div class="right" markdown="1">
 Reference for the [Mustache](http://mustache.github.com/) template language.
 

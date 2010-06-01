@@ -47,4 +47,4 @@
 
 blog/*/**/*:
   template: /styles/impact/blog.template
-  output_path_style: [:parent, :year, /, :month, /, :cnbase, [., :lang], :ext]
+  output_path_style: [:parent, :year, /, :month, /, :basename, [., :lang], :ext]

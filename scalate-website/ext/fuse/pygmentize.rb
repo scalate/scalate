@@ -59,7 +59,7 @@ module Fuse
       result = "#{tag_indent}<div class=\"syntax\">#{result}</div>\n"
       
     rescue Exception => e
-      raise RuntimeError, "Error processing the pygmentize tag <#{context.ref_node.absolute_lcn}>: #{e.message}\n#{e.backtrace.join("\n")}"
+      raise RuntimeError, "Error processing the pygmentize tag <#{context.ref_node.alcn}>: #{e.message}\n#{e.backtrace.join("\n")}"
     end 
   end
   
@@ -160,7 +160,7 @@ module Fuse
       result = "#{tag_indent}<div class=\"compare\"><div class=\"compare-left\"><h3>#{leftheading}</h3><div class=\"syntax\">#{leftresult}</div></div><div class=\"compare-right\"><h3>#{rightheading}</h3><div class=\"syntax\">#{rightresult}</div></div><br class=\"clear\"/></div>\n"
       
     rescue Exception => e
-      raise RuntimeError, "Error processing the pygmentize_and_compare tag <#{context.ref_node.absolute_lcn}>: #{e.message}\n#{e.backtrace.join("\n")}"
+      raise RuntimeError, "Error processing the pygmentize_and_compare tag <#{context.ref_node.alcn}>: #{e.message}\n#{e.backtrace.join("\n")}"
     end 
   end
   
