@@ -11,7 +11,13 @@ import java.io.File
 class MustacheParserTest extends FunSuiteSupport {
   implicit def stringToText(x: String) = Text(x)
 
-
+  test("set directive") {
+    assertParses(List(Text("* "), Variable("default_tags"), Text(" * "),
+      SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
+      SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
+      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
+  }
+  
   test("plain text") {
     assertValid("some text more text")
 
@@ -54,12 +60,6 @@ class MustacheParserTest extends FunSuiteSupport {
       "* {{=<% %>=}} *")
   }
 
-  test("set directive") {
-    assertParses(List(Text("* "), Variable("default_tags"), Text(" * "),
-      SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
-      SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
-      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
-  }
 
   test("whitespace with sections") {
     assertParses(List(Section("terms", List(Variable("name"), Text("\n  "),
