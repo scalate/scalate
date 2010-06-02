@@ -14,11 +14,11 @@ This page tries to help guide you towards the template engine thats right for yo
 
 ## Quick Start?
 
-If you already know JSP, Erb or Velocity and want to get started quickly on using an expressive template engine with static typing reusing the powerful Scala programming language which detects errors in your templates on each save you might find  [SSP](documentation/ssp-reference.html) to be the simplest to get started.
+If you already know JSP, Erb or Velocity and want to get started quickly on using an expressive template engine with static typing using the powerful Scala programming language, which detects errors in your templates on each save along with a nice [error console](documentation/console.html) in development mode you might find  [SSP](documentation/ssp-reference.html) to be the simplest to get started.
 
 ## Who edits the templates?
  
-The make up of your team and the people who own or edit the templates can affect which style of template engine is the most suitable for your use case. 
+The make up of your team and the people who own or edit the templates can affect which style of template engine is the most suitable. 
 
 You may even choose to use a mixture of template engines based on the split of who edits the templates across designers and developers.
 
