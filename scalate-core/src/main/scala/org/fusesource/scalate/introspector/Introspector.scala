@@ -124,8 +124,11 @@ trait Property[T] extends Expression[T] {
 
   def propertyType: Class[_]
 
-  // TODO look for an annotation on the model - or a viewModel?
-  def label: String = name
+  def label: String
+  def description: String
+
+  def readOnly: Boolean
+  def optional: Boolean
 }
 
 class BeanIntrospector(val elementType: Class[_]) extends Introspector {
@@ -147,6 +150,15 @@ case class BeanProperty[T](descriptor: PropertyDescriptor) extends Property[T] {
 
   def propertyType = descriptor.getPropertyType
 
+  def readOnly = descriptor.getWriteMethod == null
+
+  def optional = descriptor.getWriteMethod != null && !propertyType.isPrimitive
+
+  // TODO use annotations to find description / label?
+  def label = descriptor.getDisplayName
+
+  def description = descriptor.getShortDescription
+
   def evaluate(instance: T) = descriptor.getReadMethod.invoke(instance)
 
   override def toString = "BeanProperty(" + name + ": " + propertyType.getName + ")"
@@ -166,6 +178,14 @@ class MethodProperty[T](method: Method) extends Property[T] {
   def name = method.getName
 
   def propertyType = method.getReturnType
+
+  def readOnly = true
+
+  def optional = false
+
+  def label = name
+
+  def description = name
 
   def evaluate(instance: T) = method.invoke(instance)
 

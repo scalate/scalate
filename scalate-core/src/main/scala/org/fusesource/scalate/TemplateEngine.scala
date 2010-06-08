@@ -617,7 +617,12 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
               }
           }
           error(e)
-          throw new CompilerException(newmessage, errors)
+          if (e.errors.isEmpty) {
+            throw e
+          }
+          else {
+            throw new CompilerException(newmessage, errors)
+          }
         }
       case e: InvalidSyntaxException =>
         e.source = source
