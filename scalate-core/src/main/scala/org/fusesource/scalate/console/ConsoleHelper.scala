@@ -148,35 +148,24 @@ class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with 
 
 
   /**
-   * Retrieves a chunk fo lines either side of the given error line
+   * Retrieves a chunk of lines either side of the given error line
    */
   def lines(template: String, errorLine: Int, chunk: Int): Seq[SourceLine] = {
     val file = realPath(template)
     if (file != null) {
-      val source = Source.fromPath(file)
+      val source = Source.fromFile(file)
       val start = (errorLine - chunk).min(0)
       val end = start + chunk
 
       val list = new ListBuffer[SourceLine]
+      val lines = source.getLines().toIndexedSeq
       for (i <- 1.to(end)) {
-        val code = source.getLine(1)
+        val code = lines(i)
         if (i >= start) {
           list += SourceLine(i, code)
         }
       }
       list
-      /*
-            // lets strip the head and tail blank items (TODO there must be an easier way??)
-            val from = seq.indexWhere(_.nonBlank) - 1
-            if (from > 0) {
-              seq = seq.drop(from)
-            }
-            val to = seq.lastIndexWhere(_.nonBlank) + 1
-            if (to > 0) {
-              seq = seq.take(to)
-            }
-      seq
-      */
     }
     else {
       Nil

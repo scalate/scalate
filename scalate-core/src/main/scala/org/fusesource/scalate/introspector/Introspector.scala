@@ -129,6 +129,12 @@ trait Property[T] extends Expression[T] {
 
   def readOnly: Boolean
   def optional: Boolean
+  
+  def apply(instance: T): Any = evaluate(instance)
+
+  def evaluate(instance: T): Any
+
+  def set(instance: T, value: AnyRef): Unit
 }
 
 class BeanIntrospector(val elementType: Class[_]) extends Introspector {
@@ -161,6 +167,8 @@ case class BeanProperty[T](descriptor: PropertyDescriptor) extends Property[T] {
 
   def evaluate(instance: T) = descriptor.getReadMethod.invoke(instance)
 
+  def set(instance: T, value: AnyRef) = descriptor.getWriteMethod.invoke(instance, value)
+
   override def toString = "BeanProperty(" + name + ": " + propertyType.getName + ")"
 }
 
@@ -188,6 +196,8 @@ class MethodProperty[T](method: Method) extends Property[T] {
   def description = name
 
   def evaluate(instance: T) = method.invoke(instance)
+
+  def set(instance: T, value: AnyRef) = throw new UnsupportedOperationException("Cannot set " + this)
 
   override def toString = "MethodProperty(" + name + ": " + propertyType.getName + ")"
 }

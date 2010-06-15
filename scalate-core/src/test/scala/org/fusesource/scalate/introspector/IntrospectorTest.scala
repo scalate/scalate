@@ -1,6 +1,7 @@
 package org.fusesource.scalate.introspector
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+
 case class MyProduct(name: String, age: Int) {
   // should be a value which returns a function
   def bold(text: String) = "<b>" + text + "</b>"
@@ -24,7 +25,6 @@ class MyBean {
 
   // should be a value which returns a function
   def bold(text: String) = "<b>" + text + "</b>"
-
 
   override def toString = "MyBean(" + getName + ")"
 }
@@ -80,6 +80,12 @@ class IntrospectorTest extends FunSuiteSupport {
     expect(Some("bar")) {introspector.get("foo", v)}
 
     assertStringFunctor(introspector, v, "bold", "bean", "<b>bean</b>")
+  }
+
+  test("bean set") {
+    val v = new MyBean
+
+    val introspector = Introspector(v.getClass)
   }
 
   def dump(introspector: Introspector): Unit = {
