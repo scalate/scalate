@@ -11,22 +11,23 @@ object Introspector {
    * The global caching strategy for introspection which by default uses a weak hash map
    * to avoid keeping around cached data for classes which are garbage collected
    */
-  var cache: Option[Map[Class[_], Introspector]] = Some(new WeakHashMap[Class[_], Introspector])
+  var cache: Option[Map[Class[_], Introspector[_]]] = Some(new WeakHashMap[Class[_], Introspector[_]])
 
   /**
    * Returns the Introspector for the given type using the current cache if it is defined
    */
-  def apply(aType: Class[_]): Introspector = {
-    cache match {
+  def apply[T](aType: Class[T]): Introspector[T] = {
+    val answer = cache match {
       case Some(m) => m.getOrElseUpdate(aType, createIntrospector(aType))
       case _ => createIntrospector(aType)
     }
+    answer.asInstanceOf[Introspector[T]]
   }
 
   /**
    * Creates a new introspector
    */
-  def createIntrospector(aType: Class[_]): Introspector = {
+  def createIntrospector(aType: Class[_]): Introspector[_] = {
     if (classOf[Product].isAssignableFrom(aType)) {
       new ProductIntrospector(aType)
     }
@@ -39,17 +40,21 @@ object Introspector {
 /**
  * @version $Revision : 1.1 $
  */
-trait Introspector {
+trait Introspector[T] {
   private lazy val _expressions = createExpressions
 
-  def elementType: Class[_]
+  def elementType: Class[T]
 
   /**
    * Returns the CSS style name of the introspection type
    */
   def typeStyleName: String = decapitalize(elementType.getSimpleName)
 
-  def properties: Seq[Property[_]]
+  def properties: Seq[Property[T]]
+
+  lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p): _*)
+
+  def property(name: String): Option[Property[T]] = propertyMap.get(name)
 
   /**
    * Returns the value by name on the given instance.
@@ -58,9 +63,10 @@ trait Introspector {
    * If no property or method with zero arguments is available then a suitable function is searched for
    * such as a function which takes a String parameter if using higher order functions or tags on objects.
    */
-  def get(name: String, instance: Any): Option[_] = {
+  def get(name: String, instance: T): Option[Any] = {
     expressions.get(name) match {
-      case Some(e: Expression[_]) => Some(e.evaluate(instance))
+      case Some(e: Expression[T]) =>
+        Some(e.evaluate(instance))
       case _ => None
     }
   }
@@ -68,10 +74,10 @@ trait Introspector {
   /**
    * Returns all the expressions available for the given type
    */
-  def expressions: Map[String, Expression[_]] = _expressions
+  def expressions: Map[String, Expression[T]] = _expressions
 
-  protected def createExpressions: Map[String, Expression[_]] = {
-    val answer = new HashMap[String, Expression[_]]
+  protected def createExpressions: Map[String, Expression[T]] = {
+    val answer = new HashMap[String, Expression[T]]
     for (p <- properties) {
       answer += p.name -> p
     }
@@ -81,7 +87,7 @@ trait Introspector {
      * and the bean property style name of the method if it has not already
      * been added
      */
-    def add(method: Method, property: => Property[_]): Unit = {
+    def add(method: Method, property: => Property[T]): Unit = {
       val name = method.getName
       answer.getOrElseUpdate(name, property)
       if (name.matches("get\\p{javaUpperCase}.*")) {
@@ -134,10 +140,10 @@ trait Property[T] extends Expression[T] {
 
   def evaluate(instance: T): Any
 
-  def set(instance: T, value: AnyRef): Unit
+  def set(instance: T, value: Any): Unit
 }
 
-class BeanIntrospector(val elementType: Class[_]) extends Introspector {
+class BeanIntrospector[T](val elementType: Class[T]) extends Introspector[T] {
   val beanInfo = BeanInt.getBeanInfo(elementType)
   val _properties = beanInfo.getPropertyDescriptors.filter(p => p.getReadMethod != null && p.getName != "class").map(createProperty(_))
 
@@ -145,7 +151,7 @@ class BeanIntrospector(val elementType: Class[_]) extends Introspector {
     _properties
   }
 
-  protected def createProperty(descriptor: PropertyDescriptor) = new BeanProperty(descriptor)
+  protected def createProperty(descriptor: PropertyDescriptor) = new BeanProperty[T](descriptor)
 }
 
 /**
@@ -167,15 +173,15 @@ case class BeanProperty[T](descriptor: PropertyDescriptor) extends Property[T] {
 
   def evaluate(instance: T) = descriptor.getReadMethod.invoke(instance)
 
-  def set(instance: T, value: AnyRef) = descriptor.getWriteMethod.invoke(instance, value)
+  def set(instance: T, value: Any) = descriptor.getWriteMethod.invoke(instance, value.asInstanceOf[AnyRef])
 
   override def toString = "BeanProperty(" + name + ": " + propertyType.getName + ")"
 }
 
-class ProductIntrospector(val elementType: Class[_]) extends Introspector {
+class ProductIntrospector[T](val elementType: Class[T]) extends Introspector[T] {
   def properties = ProductReflector.accessorMethods(elementType).map(createProperty(_))
 
-  protected def createProperty(method: Method) = new MethodProperty(method)
+  protected def createProperty(method: Method) = new MethodProperty[T](method)
 }
 
 
@@ -197,7 +203,7 @@ class MethodProperty[T](method: Method) extends Property[T] {
 
   def evaluate(instance: T) = method.invoke(instance)
 
-  def set(instance: T, value: AnyRef) = throw new UnsupportedOperationException("Cannot set " + this)
+  def set(instance: T, value: Any) = throw new UnsupportedOperationException("Cannot set " + this)
 
   override def toString = "MethodProperty(" + name + ": " + propertyType.getName + ")"
 }

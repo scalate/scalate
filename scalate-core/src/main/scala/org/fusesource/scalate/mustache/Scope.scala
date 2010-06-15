@@ -51,7 +51,7 @@ trait Scope extends Logging {
   /**
    * Returns the variable of the given name looking in this scope or parent scopes to resolve the variable
    */
-  def apply(name: String): Option[_] = {
+  def apply(name: String): Option[Any] = {
     val value = localVariable(name)
     value match {
       case Some(v) => value
@@ -71,12 +71,12 @@ trait Scope extends Logging {
   /**
    * Returns the current implicit iterator object
    */
-  def iteratorObject: Option[_] = None
+  def iteratorObject: Option[Any] = None
 
   /**
    * Returns the variable in the local scope if it is defined
    */
-  def localVariable(name: String): Option[_]
+  def localVariable(name: String): Option[Any]
 
   def section(name: String)(block: Scope => Unit): Unit = {
     apply(name) match {
@@ -240,7 +240,7 @@ case class RenderContextScope(context: RenderContext, defaultObjectName: Option[
 
   def parent: Option[Scope] = _parent
 
-  def localVariable(name: String): Option[_] = context.attributes.get(name)
+  def localVariable(name: String): Option[Any] = context.attributes.get(name)
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
@@ -252,7 +252,7 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 }
 
 class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
-  def localVariable(name: String): Option[_] = map.get(name)
+  def localVariable(name: String): Option[Any] = map.get(name)
 
 }
 
@@ -263,8 +263,8 @@ class EmptyScope(parent: Scope) extends ChildScope(parent) {
 /**
  * Constructs a scope for a non-null and not None value
  */
-class ObjectScope(parent: Scope, value: AnyRef) extends ChildScope(parent) {
-  val introspector = Introspector(value.getClass)
+class ObjectScope[T <: AnyRef](parent: Scope, value: T) extends ChildScope(parent) {
+  val introspector = Introspector[T](value.getClass.asInstanceOf[Class[T]])
 
   def localVariable(name: String) = introspector.get(name, value)
 

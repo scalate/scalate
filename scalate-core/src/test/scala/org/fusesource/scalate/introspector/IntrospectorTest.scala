@@ -26,7 +26,7 @@ class MyBean {
   // should be a value which returns a function
   def bold(text: String) = "<b>" + text + "</b>"
 
-  override def toString = "MyBean(" + getName + ")"
+  override def toString = "MyBean(" + getName + ", " + getAge + ")"
 }
 
 class IntrospectorTest extends FunSuiteSupport {
@@ -55,7 +55,7 @@ class IntrospectorTest extends FunSuiteSupport {
 
   test("product get") {
     val v = MyProduct("James", 40)
-    val introspector = Introspector(v.getClass)
+    val introspector = Introspector(classOf[MyProduct])
     dump(introspector)
 
     expect(Some("James")) {introspector.get("name", v)}
@@ -70,7 +70,7 @@ class IntrospectorTest extends FunSuiteSupport {
     v.setName("Hiram")
     v.setAge(30)
 
-    val introspector = Introspector(v.getClass)
+    val introspector = Introspector(classOf[MyBean])
     dump(introspector)
 
     expect(Some("Hiram")) {introspector.get("name", v)}
@@ -85,10 +85,21 @@ class IntrospectorTest extends FunSuiteSupport {
   test("bean set") {
     val v = new MyBean
 
-    val introspector = Introspector(v.getClass)
+    val introspector = Introspector(classOf[MyBean])
+    val name = introspector.property("name").get
+    val age = introspector.property("age").get
+
+    name.set(v, "James")
+    expect("James"){ name(v) }
+
+    age.set(v, 30)
+    expect(30){ age(v) }
+
+    debug("created bean: " + v)
+    // TODO....
   }
 
-  def dump(introspector: Introspector): Unit = {
+  def dump[T](introspector: Introspector[T]): Unit = {
     debug("Introspector for " + introspector.elementType.getName)
     val expressions = introspector.expressions
     for (k <- expressions.keysIterator.toSeq.sortWith(_ < _)) {
@@ -96,7 +107,7 @@ class IntrospectorTest extends FunSuiteSupport {
     }
   }
 
-  def assertStringFunctor(introspector: Introspector, instance: Any, name: String, arg: String, expected: Any): Unit = {
+  def assertStringFunctor[T](introspector: Introspector[T], instance: T, name: String, arg: String, expected: Any): Unit = {
     introspector.get(name, instance) match {
       case Some(f: Function1[String, _]) =>
         debug("calling function " + f + " named " + name + " on " + instance + " = " + f(arg))
