@@ -180,17 +180,18 @@ trait RenderContext {
   }
 
   def include(path: String): Unit = include(path, false)
+  def include(path: String, layout: Boolean): Unit = include(path, layout, Nil)
 
   /**
    * Includes the given template path
    *
    * @param layout if true then applying the layout the included template
    */
-  def include(path: String, layout: Boolean): Unit = {
+  def include(path: String, layout: Boolean, extraBindings: List[Binding]): Unit = {
     val uri = resolveUri(path)
 
     withUri(uri) {
-      val template = engine.load(uri)
+      val template = engine.load(uri, extraBindings)
       if (layout) {
         engine.layout(template, this);
       }
