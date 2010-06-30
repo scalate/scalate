@@ -41,7 +41,23 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
 
     def generate(fragments: List[PageFragment]): Unit = {
-      fragments.foreach(generate)
+      var remaining = fragments
+      while( remaining != Nil ) {
+        val fragment = remaining.head
+        remaining = remaining.drop(1)
+
+        fragment match {
+
+          case p: AttributeFragment =>
+            generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue))) {
+              generate(remaining)
+            }
+            remaining = Nil
+
+          case _ =>
+            generate(fragment)
+        }
+      }
     }
 
     def generate(fragment: PageFragment): Unit = {
@@ -154,14 +170,8 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     val fragments = transformSyntax(rawFragments)
 
-    // Convert the parsed AttributeFragments into Binding objects
-    val templateBindings = fragments.flatMap {
-      case p: AttributeFragment => List(Binding(p.name, p.className, p.autoImport, p.defaultValue))
-      case _ => Nil
-    }
-
     val sb = new SourceBuilder
-    sb.generate(engine, packageName, className, bindings ::: templateBindings, fragments)
+    sb.generate(engine, packageName, className, bindings, fragments)
 
     Code(this.className(uri), sb.code, Set(uri), sb.positions)
   }

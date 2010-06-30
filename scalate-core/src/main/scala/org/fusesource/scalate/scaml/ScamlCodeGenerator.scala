@@ -121,16 +121,23 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate_no_flush(statements: List[Statement]): Unit = {
 
-      val bindings = statements.flatMap {
-        case attribute: Attribute => List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue))
-        case _ => Nil
+      var remaining = statements
+      while( remaining != Nil ) {
+        val fragment = remaining.head
+        remaining = remaining.drop(1)
+
+        fragment match {
+          case attribute: Attribute =>
+            generateBindings(List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue))) {
+              generate(remaining)
+            }
+            remaining = Nil
+
+          case _ =>
+            generate(fragment)
+        }
       }
 
-      generateBindings(bindings) {
-        statements.foreach(statement => {
-          generate(statement)
-        })
-      }
     }
 
     def generate(statement: Statement): Unit = {

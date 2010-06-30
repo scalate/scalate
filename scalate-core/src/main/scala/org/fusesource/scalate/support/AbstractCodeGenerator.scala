@@ -106,23 +106,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
         // conflict with definitions declared in the template
         this << "def $_scalate_$render($_scalate_$_context: _root_.org.fusesource.scalate.RenderContext): Unit = {"
         indent {
-
-          // lets perform all the imports first
-
-          val (imports, otherStatements) = {
-            val firstNonImport = statements.findIndexOf(!isImportStatementOrCommentOrWhitespace(_))
-            if (firstNonImport > 0) {
-              statements.splitAt(firstNonImport)
-            }
-            else {
-              (Nil, statements)
-            }
-          }
-
           generateInitialImports
-          generate(imports)
           generateBindings(bindings) {
-            generate(otherStatements)
+            generate(statements)
           }
         }
         this << "}"
@@ -148,9 +134,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 
     def generateBindings(bindings: List[Binding])(body: => Unit): Unit = {
       bindings.foreach(arg => {
-        generateBinding(arg)
         this << "{"
         indentLevel += 1
+        generateBinding(arg)
       })
 
       body
