@@ -10,15 +10,15 @@ import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import org.fusesource.scalate.util.Logging
 import com.sun.jersey.api.container.ContainerException
-import org.fusesource.scalate.TemplateEngine
 import java.lang.{String, Class}
-import javax.ws.rs.core.{MultivaluedMap, MediaType, Context}
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
-import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
 import org.fusesource.scalate.support.ResourceLoader
 import javax.ws.rs.ext.{Provider, MessageBodyWriter, MessageBodyReader}
 import javax.ws.rs.Produces
+import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import javax.ws.rs.core.{UriInfo, MultivaluedMap, MediaType, Context}
+import org.fusesource.scalate.{Binding, TemplateEngine}
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -27,7 +27,7 @@ import javax.ws.rs.Produces
  * @version $Revision : 1.1 $
  */
 @Provider
-class ScalateTemplateProvider(@Context resourceConfig: ResourceConfig) extends MessageBodyWriter[AnyRef] with Logging {
+class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
 
   @Context
   var servletContext: ServletContext = _
@@ -35,6 +35,8 @@ class ScalateTemplateProvider(@Context resourceConfig: ResourceConfig) extends M
   var request: HttpServletRequest = _
   @Context
   var response: HttpServletResponse = _
+  @Context
+  var uriInfo:UriInfo = _
 
   var templateDirectories = List("/WEB-INF", "")
 
@@ -70,12 +72,18 @@ class ScalateTemplateProvider(@Context resourceConfig: ResourceConfig) extends M
 
     val servlet = TemplateEngineServlet()
     val path = resolve(servlet.templateEngine.resourceLoader, argType)
-    path != null
-
-    request.setAttribute("it", arg)
 
     try {
-      servlet.render(path, request, response)
+
+      assert(path != null)
+
+      request.setAttribute("uri_info", uriInfo)
+      request.setAttribute("it", arg)
+
+      val context = new ServletRenderContext(servlet.templateEngine, request, response, servletContext)
+      context.include(path, true, List(Binding("it", argType.getName, false, None, "val",  true )))
+
+
     } catch {
       case e: Exception =>
         // lets forward to the error handler
