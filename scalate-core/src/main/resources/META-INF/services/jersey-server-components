@@ -1,6 +1,7 @@
 org.fusesource.scalate.rest.NodeWriter
 org.fusesource.scalate.rest.TransformerWriter
 org.fusesource.scalate.jersey.ScalateTemplateProcessor
+org.fusesource.scalate.jersey.ScalateTemplateProvider
 
 # TODO only really needed for implicit view style use with scuery
 #org.fusesource.scalate.jersey.ScueryTemplateProcessor
