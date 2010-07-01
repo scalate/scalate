@@ -1,0 +1,5 @@
+<h2>Dummy Page</h2>
+
+<p>
+  Welcome to Scalate: ${new java.util.Date}
+</p>
