@@ -380,6 +380,7 @@
             -->
             <webAppConfig>
               <contextPath>/</contextPath>
+              <resourceBase>${basedir}/src/main/webapp</resourceBase>
             </webAppConfig>
 
             <systemProperties>
