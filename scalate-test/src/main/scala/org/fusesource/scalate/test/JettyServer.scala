@@ -1,15 +1,15 @@
 package org.fusesource.scalate.test
 
 import org.apache.commons.logging.LogFactory
-import org.mortbay.jetty.Connector
-import org.mortbay.jetty.Handler
-import org.mortbay.jetty.Server
-import org.mortbay.jetty.nio.SelectChannelConnector
-import org.mortbay.jetty.webapp.WebAppContext
-import org.mortbay.resource.ResourceCollection
+import org.eclipse.jetty.server.Connector
+import org.eclipse.jetty.server.Handler
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.nio.SelectChannelConnector
+import org.eclipse.jetty.webapp.WebAppContext
+import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
 import java.io.{FileInputStream, File}
-import java.util.zip.ZipEntry
+import java.lang.String
 
 /**
  * @version $Revision : 1.1 $
@@ -69,13 +69,16 @@ class JettyServer {
     LOG.info("Defaulting the web app dir to: " + webAppDir + " with overlayDir: " + overlayWebAppDir)
     context.setContextPath(webAppContext)
     if (overlayWebAppDir != null) {
-      context.setBaseResource(new ResourceCollection(Array(webAppDir, overlayWebAppDir)))
+      def toUriString(name: String) = new File(name).getCanonicalFile.toURL.toString
+      val array: Array[String] = Array(toUriString(webAppDir), toUriString(overlayWebAppDir))
+      println("Using base resource URIs: " + array.mkString(" | "))
+      context.setBaseResource(new ResourceCollection(array))
     }
     else {
       context.setResourceBase(webAppDir)
     }
     context.setServer(server)
-    server.setHandlers(Array[Handler](context))
+    server.setHandler(context)
     server.setConnectors(Array[Connector](connector))
     server.start
 

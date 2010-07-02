@@ -42,8 +42,6 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <scope>runtime</scope>
-      <optional>true</optional>
     </dependency>
 
 
@@ -111,6 +109,22 @@
         <artifactId>jetty-maven-plugin</artifactId>
       </plugin>
 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <classpathScope>test</classpathScope>
+          <mainClass>org.fusesource.scalate.test.Main</mainClass>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
