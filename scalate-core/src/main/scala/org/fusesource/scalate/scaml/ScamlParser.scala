@@ -294,7 +294,7 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
   def element_statement:Parser[Element] = guarded("%"|"."|"#"~css_name, full_element_statement)
 
   def haml_comment_statement = prefixed("-#", opt(dot)<~nl) ~ rep(indent(opt_dot<~nl)) ^^ { case text~body=> ScamlComment(text,body) }
-  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(opt_space~>dot)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
+  def html_comment_statement = prefixed("/", opt(prefixed("[", upto("]") <~"]")) ~ opt(dot)<~nl ) ~ statement_block ^^ { case conditional~text~body=> HtmlComment(conditional,text,body) }
 
   def evaluated_fragment:Parser[List[Text]]  = wrapped("#{", "}") ~ opt(litteral_fragment) ^^ {
     case code~Some(text)=>{ code :: text }

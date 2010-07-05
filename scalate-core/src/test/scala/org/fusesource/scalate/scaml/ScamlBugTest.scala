@@ -21,6 +21,13 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+  testRender("#99: error if a comment containing just one space is used",
+"-#\n-# \ntest\n/\n/ \ntest\n","""
+test
+<!--  -->
+<!--  -->
+test
+""")
 
   testRender("#98: Error with a statement followed by an attribute declaration",
 """

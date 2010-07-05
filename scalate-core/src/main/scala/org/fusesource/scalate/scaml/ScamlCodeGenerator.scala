@@ -436,7 +436,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << statement.pos;
           write_text(prefix + " ")
           if (text.isDefined) {
-            write_text(text.get)
+            write_text(text.get.trim)
           }
           write_text(" " + suffix)
           write_nl
