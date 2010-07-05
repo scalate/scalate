@@ -21,6 +21,16 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+
+  testRender("#98: Error with a statement followed by an attribute declaration",
+"""
+- attributes("title") = "foo"
+-@ import val title: String
+= length
+""","""
+3
+""")
+
   testRender("#77: attribute sanitized twice",
 """
 - val amp = "&"

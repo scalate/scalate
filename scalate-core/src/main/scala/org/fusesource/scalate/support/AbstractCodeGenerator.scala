@@ -130,11 +130,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 
     def generate(statements: List[T]): Unit
 
-    protected def isImportStatementOrCommentOrWhitespace(statement: T): Boolean
-
     def generateBindings(bindings: List[Binding])(body: => Unit): Unit = {
       bindings.foreach(arg => {
-        this << "{"
+        this << ";{"
         indentLevel += 1
         generateBinding(arg)
       })

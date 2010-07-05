@@ -45,14 +45,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     var suppress_indent = false
     var in_html_comment = false
 
-    protected def isImportStatementOrCommentOrWhitespace(fragment: Statement) = fragment match {
-      case s: Executed if (s.code.mkString(";").trim.startsWith("import ")) => true
-      case s: LiteralText if (s.isStatic) => true
-      case s: Doctype => true
-      case s: ScamlComment => true
-      case _ => false
-    }
-
     override def current_position = {
       if (text_buffer.length == 0) {
         super.current_position

@@ -33,12 +33,6 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
   }
 
   private class SourceBuilder extends AbstractSourceBuilder[PageFragment] {
-    protected def isImportStatementOrCommentOrWhitespace(fragment: PageFragment) = fragment match {
-      case s: ScriptletFragment if (s.code.trim.startsWith("import ")) => true
-      case s: TextFragment if (s.text.trim.length == 0) => true
-      case s: CommentFragment => true
-      case _ => false
-    }
 
     def generate(fragments: List[PageFragment]): Unit = {
       var remaining = fragments
