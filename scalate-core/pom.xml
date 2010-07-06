@@ -70,6 +70,7 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
+          <useFile>true</useFile>
           <forkMode>pertest</forkMode>
           <excludes>
 <!--
