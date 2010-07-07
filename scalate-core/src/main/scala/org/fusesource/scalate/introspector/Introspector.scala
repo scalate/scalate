@@ -58,7 +58,7 @@ trait Introspector[T] {
     case s: Some[Property[T]] => s
     case _ =>
       // lets allow bad case to find the property if it finds exactly one match
-      val found = properties.find(_.name.equalsIgnoreCase(name))
+      val found = properties.filter(_.name.equalsIgnoreCase(name))
       if (found.size == 1) {
         Some(found.head)
       } else {
