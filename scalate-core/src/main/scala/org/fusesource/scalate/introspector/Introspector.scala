@@ -56,7 +56,6 @@ trait Introspector[T] {
 
   def property(name: String): Option[Property[T]] = propertyMap.get(name) match {
     case s: Some[Property[T]] => s
-            //Some(p) => Some(p)
     case _ =>
       // lets allow bad case to find the property if it finds exactly one match
       val found = properties.find(_.name.equalsIgnoreCase(name))
