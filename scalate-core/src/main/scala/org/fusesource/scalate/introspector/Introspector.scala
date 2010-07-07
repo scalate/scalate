@@ -54,7 +54,18 @@ trait Introspector[T] {
 
   lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p): _*)
 
-  def property(name: String): Option[Property[T]] = propertyMap.get(name)
+  def property(name: String): Option[Property[T]] = propertyMap.get(name) match {
+    case s: Some[Property[T]] => s
+            //Some(p) => Some(p)
+    case _ =>
+      // lets allow bad case to find the property if it finds exactly one match
+      val found = properties.find(_.name.equalsIgnoreCase(name))
+      if (found.size == 1) {
+        Some(found.head)
+      } else {
+        None
+      }
+  }
 
   /**
    * Returns the value by name on the given instance.
@@ -131,11 +142,13 @@ trait Property[T] extends Expression[T] {
   def propertyType: Class[_]
 
   def label: String
+
   def description: String
 
   def readOnly: Boolean
+
   def optional: Boolean
-  
+
   def apply(instance: T): Any = evaluate(instance)
 
   def evaluate(instance: T): Any
@@ -214,7 +227,6 @@ class MethodProperty[T](method: Method) extends Property[T] {
  * method on the given object
  */
 class StringFunctorProperty[T](method: Method) extends MethodProperty[T](method) {
-
   override def evaluate(instance: T) = {
     def f(arg: String) = method.invoke(instance, arg)
     f _
