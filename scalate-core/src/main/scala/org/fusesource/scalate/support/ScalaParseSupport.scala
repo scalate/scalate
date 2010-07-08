@@ -9,7 +9,9 @@ import Integer._
  * @version $Revision : 1.1 $
  */
 trait ScalaParseSupport extends RegexParsers {
-  val scalaType = """[a-zA-Z0-9\$_\[\]\.\(\)\#\:\<\>\+\-]+""".r
+
+  val scalaTypeChar = """a-zA-Z0-9\$_\[\]\.\(\)\#\:\<\>\+\-"""
+  val scalaType = ("[" + scalaTypeChar + """]+([ \t\,]+[""" + scalaTypeChar + """]+)*""").r
 
 
   val EofCh = CharArrayReader.EofCh
