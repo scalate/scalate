@@ -18,12 +18,12 @@ package org.fusesource.scalate.servlet
 
 ;
 
-import _root_.javax.servlet.{ServletContext, ServletConfig}
 import _root_.org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
 import java.io.File
-import scala.tools.nsc.Global;
+import scala.tools.nsc.Global
+import javax.servlet.{FilterConfig, ServletContext, ServletConfig};
 
 object ServletTemplateEngine {
   val templateEngineKey = classOf[ServletTemplateEngine].getName
@@ -53,11 +53,11 @@ object ServletTemplateEngine {
 }
 
 /**
- * A TemplateEngine which initializes itself using a ServletConfig
+ * A TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletTemplateEngine(var config: ServletConfig) extends TemplateEngine {
+class ServletTemplateEngine(val config: Config) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
 
   // If the scalate.workingdir is not set, then just configure the working

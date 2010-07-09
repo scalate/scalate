@@ -77,7 +77,14 @@ class ServletRenderContext(engine: TemplateEngine, val request: HttpServletReque
     override def toString = keySet.map(k => "" + k + " -> " + apply(k)).mkString("{", ", ", "}")
   }
 
-  def servletConfig: ServletConfig = engine match {
+  /**
+   * Named servletConfig for historical reasons; actually returns a Config, which presents  a unified view of either a
+   * ServletConfig or a FilterConfig.
+   *
+   * @return a Config, if the servlet engine is a ServletTemplateEngine
+   * @throws IllegalStateException if the servlet engine is not a ServletTemplateEngine
+   */
+  def servletConfig: Config = engine match {
     case servletEngine: ServletTemplateEngine => servletEngine.config
     case _ => throw new IllegalArgumentException("render context not created with ServletTemplateEngine so cannot provide a ServletConfig")
   }
