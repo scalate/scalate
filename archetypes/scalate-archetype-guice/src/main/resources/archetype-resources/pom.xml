@@ -249,6 +249,7 @@
           -->
           <webAppConfig>
             <contextPath>/</contextPath>
+            <unpackOverlays>true</unpackOverlays>
           </webAppConfig>
 
           <systemProperties>
