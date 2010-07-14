@@ -12,14 +12,21 @@
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
-  <logger name="org.fusesource.scalate" level="INFO" />
+  <logger name="org.fusesource.scalate" level="DEBUG"/>
 
-  <root level="info">
-    <appender-ref ref="FILE" />
+<!--
+  <logger name="org.fusesource.scalate.mustache" level="DEBUG"/>
+-->
+
+  <root level="INFO">
+    <appender-ref ref="FILE"/>
+<!--
+    <appender-ref ref="STDOUT"/>
+-->
   </root>
 
 </configuration>

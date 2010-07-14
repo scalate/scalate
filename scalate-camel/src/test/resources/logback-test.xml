@@ -1,19 +1,19 @@
-<configuration>
+<configuration debug="false">
 
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <File>target/tests.log</File>
     <Append>true</Append>
 
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>%-4relative [%thread] %-5level %logger{40} - %msg%n</Pattern>
-    </layout>
+    <encoder>
+      <pattern>%-4relative [%thread] %-5level %logger{40} - %msg%n</pattern>
+    </encoder>
   </appender>
   
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</Pattern>
-    </layout>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n</pattern>
+    </encoder>
   </appender>
 
   <logger name="org.fusesource.scalate" level="INFO" />

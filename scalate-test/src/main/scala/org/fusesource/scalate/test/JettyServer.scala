@@ -73,6 +73,7 @@ class JettyServer {
       val array: Array[String] = Array(toUriString(webAppDir), toUriString(overlayWebAppDir))
       println("Using base resource URIs: " + array.mkString(" | "))
       context.setBaseResource(new ResourceCollection(array))
+      context.setExtractWAR(true)
     }
     else {
       context.setResourceBase(webAppDir)
