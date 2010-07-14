@@ -35,16 +35,6 @@
     <jar-plugin-version>2.3</jar-plugin-version>
     <jersey-version>1.3</jersey-version>
     <jetty-version>7.1.5.v20100705</jetty-version>
-<!--
-    <jetty-plugin-version>7.1.4.v20100610</jetty-plugin-version>
--->
-    
-    <!-- TODO this is the last version of the plugin which seems to work with overlays
-      and jetty:run reusing content in WEB-INF outside of classes and lib directories
-      See: http://jira.codehaus.org/browse/JETTY-1243
-      -->
-    <!--<jetty-plugin-version>7.0.1.v20091125</jetty-plugin-version>
-    -->
     <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
     <junit-version>4.5</junit-version>
     <logback-version>0.9.24</logback-version>
