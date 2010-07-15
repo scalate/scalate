@@ -74,9 +74,8 @@
           <forkMode>pertest</forkMode>
           <excludes>
 <!--
-            <exclude>**/ScamlBugTest.*</exclude>
--->
             <exclude>**/MustacheJsSystemTest.*</exclude>
+-->
           </excludes>
         </configuration>
       </plugin>
