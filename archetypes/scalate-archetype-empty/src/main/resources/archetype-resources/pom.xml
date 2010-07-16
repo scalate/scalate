@@ -135,7 +135,7 @@
     <repository>
       <id>scala</id>
       <name>Scala Tools</name>
-      <url>http://scala-tools.org/repo-releases/</url>
+      <url>http://scala-tools.org/repo-releases</url>
       <releases>
         <enabled>true</enabled>
       </releases>
