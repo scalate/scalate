@@ -99,7 +99,7 @@
     <connection>scm:git:git://github.com/scalate/scalate.git</connection>
     <!-- Work around for issue: http://jira.codehaus.org/browse/SCM-444 -->
     <developerConnection>${release-altGitURL}</developerConnection>
-    <url>http://github.com/scalate/scalate</url>
+    <url>http://github.com/scalate/scalate/tree/master</url>
   </scm>
 
   <issueManagement>
@@ -697,6 +697,12 @@
             <enabled>true</enabled>
           </snapshots>
         </repository>
+        
+        <repository>
+          <id>fluido-skin</id>
+          <url>http://fluido-skin.googlecode.com/svn/repo/</url>
+        </repository>
+        
       </repositories>
 
       <pluginRepositories>
@@ -800,33 +806,22 @@
             </executions>
           </plugin>
 
-          <!-- temporary work around until scala doc works with 2.8:  Generate empty javadoc artifacts -->
+          <!-- Generate the Scala Docs so that they can be included in the javadoc artifact -->
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            
-            <!-- copied dependency from scalate-website as this plugin might zap it -->
-            <dependencies>
-              <dependency>
-                <groupId>org.markdownj</groupId>
-                <artifactId>markdownj</artifactId>
-                <version>${markdownj-version}</version>
-              </dependency>
-            </dependencies>
-            
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <version>${scala-plugin-version}</version>
             <executions>
               <execution>
-                <id>javadoc-work-around</id>
-                <phase>compile</phase>
-                <configuration>
-                  <tasks>
-                    <mkdir dir="${project.build.directory}/apidocs" />
-                    <echo file="${project.build.directory}/apidocs/readme.txt" message="comming soon." />
-                  </tasks>
-                </configuration>
+                <id>doc</id>
+                <phase>process-classes</phase>
                 <goals>
-                  <goal>run</goal>
+                  <goal>doc</goal>
                 </goals>
+                <configuration>
+                  <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+                  <outputDirectory>apidocs</outputDirectory>
+                </configuration>                
               </execution>
             </executions>
           </plugin>
