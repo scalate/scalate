@@ -79,17 +79,19 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
     val pathSeparator = File.pathSeparator
 
-    var useCP = if (classpath != null && !combineClasspath) {
-      classpath
+    val classPathFromClassLoader = (new ClassPathBuilder).addPathFromContextClassLoader()
+            .addPathFrom(classOf[Product])
+            .addPathFrom(classOf[Global])
+            .addPathFrom(getClass)
+            .addPathFromSystemClassLoader()
+            .addEntry(classpath)
+            .addJavaPath()
+            .classPath
+
+    var useCP = if (classpath != null && combineClasspath) {
+      classpath + pathSeparator + classPathFromClassLoader
     } else {
-      (new ClassPathBuilder).addPathFromContextClassLoader()
-                            .addPathFrom(classOf[Product])
-                            .addPathFrom(classOf[Global])
-                            .addPathFrom(getClass)
-                            .addPathFromSystemClassLoader()
-                            .addEntry(classpath)
-                            .addJavaPath()
-                            .classPath
+      classPathFromClassLoader
     }
 
     debug("using classpath: " + useCP)
