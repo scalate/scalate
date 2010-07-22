@@ -72,9 +72,10 @@ case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoad
       }
 
       // lets try the ClassLoader
-      var url = Thread.currentThread.getContextClassLoader.getResource(uri)
+      val relativeUri = uri.stripPrefix("/")
+      var url = Thread.currentThread.getContextClassLoader.getResource(relativeUri)
       if (url == null) {
-        url = getClass.getClassLoader.getResource(uri)
+        url = getClass.getClassLoader.getResource(relativeUri)
       }
       if (url != null) {
         return Some(fromURL(url))
