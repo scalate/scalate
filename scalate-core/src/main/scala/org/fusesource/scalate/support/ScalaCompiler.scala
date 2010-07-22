@@ -100,7 +100,13 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     settings.classpath.value = useCP
     settings.outdir.value = bytecodeDirectory.toString
     settings.deprecation.value = true
-    settings.unchecked.value = true
+    //settings.unchecked.value = true
+
+    // from play-scalate
+    settings.debuginfo.value = "vars"
+    settings.dependenciesFile.value = "none"
+    settings.debug.value = false
+
     // TODO not sure if these changes make much difference?
     //settings.make.value = "transitivenocp"
     settings
