@@ -16,8 +16,6 @@
  */
 package org.fusesource.scalate.servlet
 
-;
-
 import _root_.org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
@@ -31,7 +29,7 @@ object ServletTemplateEngine {
   /**
    * Gets the current template engine
    *
-   * @throw IllegalArgumentException if no template engine has been registered with the {@link ServletContext}
+   * @throws IllegalArgumentException if no template engine has been registered with the [[javax.servlet.ServletContext]]
    */
   def apply(servletContext: ServletContext): ServletTemplateEngine = {
     val answer = servletContext.getAttribute(templateEngineKey)
@@ -45,7 +43,7 @@ object ServletTemplateEngine {
   }
 
   /**
-   * Updates the current template engine - called on initialisation of the {@link TemplateEngineServlet}
+   * Updates the current template engine - called on initialisation of the [[org.fusesource.scalate.TemplateEngineServlet]]
    */
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
     servletContext.setAttribute(templateEngineKey, templateEngine)

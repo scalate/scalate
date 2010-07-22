@@ -22,7 +22,7 @@ import java.lang.annotation.Annotation
 import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
 
 /**
- * Converts an Scuery  { @link Transformer } to output
+ * Converts an Scuery [[org.fusesource.scalate.scuery.Transformer]] to output
  *
  * @version $Revision : 1.1 $
  */

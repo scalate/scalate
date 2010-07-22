@@ -27,7 +27,7 @@ import java.io.{InputStream, FileInputStream, File}
  * <p>
  * Add new commands by:
  * <ol>
- *   <li>Implementing the the {@link Command} trait</li>
+ *   <li>Implementing the the [[org.fusesource.scalate.tool.Command]] trait</li>
  *   <li>Add the class names of the new commands to a <code>META-INF/services/org.fusesoruce.scalate/commands</code> file in your jar</li>
  *   <li>Drop your new jar into the <code>${scalate.home}/lib</code> directory.</li>
  * </ol>

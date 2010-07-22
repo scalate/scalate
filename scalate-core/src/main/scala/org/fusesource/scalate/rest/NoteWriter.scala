@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 import scala.xml.NodeSeq
 
 /**
- * Converts a Scala {@link NodeSeq} to a String for rendering nodes as HTML, XML, XHTML etc
+ * Converts a Scala [[scala.xml.NodeSeq]] to a String for rendering nodes as HTML, XML, XHTML etc
  *
  * @version $Revision: 1.1 $
  */

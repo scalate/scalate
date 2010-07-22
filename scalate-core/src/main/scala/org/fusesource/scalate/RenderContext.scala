@@ -88,7 +88,7 @@ trait RenderContext {
   def attributeKeys = attributes.keySet.toList.sortWith(_ < _)
 
   /**
-   * Returns the attribute of the given type or a  { @link NoValueSetException } exception is thrown
+   * Returns the attribute of the given type or a [[org.fussesource.scalate.NoValueSetException]] exception is thrown
    */
   def attribute[T](name: String): T = {
     attributes.get(name)
@@ -431,7 +431,8 @@ trait RenderContext {
   private var resourceBeanAttribute = "it"
 
   /**
-   *  Returns the JAXRS resource bean of the given type or a   { @link NoValueSetException } exception is thrown
+   * Returns the JAXRS resource bean of the given type or a  [[org.fusesource.scalate.NoValueSetException]]
+   * exception is thrown
    */
   def resource[T]: T = {
     attribute[T](resourceBeanAttribute)

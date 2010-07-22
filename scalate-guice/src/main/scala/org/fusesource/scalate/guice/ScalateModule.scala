@@ -11,7 +11,7 @@ import _root_.scala.collection.JavaConversions._
 import org.fusesource.scalate.TemplateEngine
 
 /**
- * A default Guice  {@link ServletModule} which registers Jersey and the Scalate servlets
+ * A default Guice [[com.google.inject.servlet.ServletModule]] which registers Jersey and the Scalate servlets
  *
  * @version $Revision : 1.1 $
  */
@@ -50,7 +50,7 @@ class ScalateModule extends ServletModule {
   protected def applyJerseyFilter = filter("/*").through(classOf[GuiceContainer])
 
   /**
-   * Creates the {@link GuiceContainer} to configure Jersey
+   * Creates the [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]] to configure Jersey
    */
   @Provides @Singleton
   def createGuiceContainer(injector: Injector): GuiceContainer = {
@@ -59,7 +59,7 @@ class ScalateModule extends ServletModule {
   }
 
   /**
-   * Creates the resource configuration for the Jersey {@link GuiceContainer}
+   * Creates the resource configuration for the Jersey [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]]
    */
   @Provides @Singleton
   def createResourceConfig: ResourceConfig = {
@@ -72,7 +72,7 @@ class ScalateModule extends ServletModule {
   }
 
   /**
-   * Creates the properties used to configure the {@link GuiceContainer}'s resource config in
+   * Creates the properties used to configure the [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]]'s resource config in
    * {@link #createResourceConfig} for Jersey
    */
   @Provides @Singleton

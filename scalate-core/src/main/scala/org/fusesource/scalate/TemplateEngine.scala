@@ -725,7 +725,7 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
   }
 
   /**
-   * Creates a {@link TEmplateSource} from a URI
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a URI
    */
   protected def uriToSource(uri: String) = TemplateSource.fromUri(uri, resourceLoader)
 

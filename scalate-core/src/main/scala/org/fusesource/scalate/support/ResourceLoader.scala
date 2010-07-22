@@ -18,94 +18,76 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.util.{Logging, IOUtil}
+import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.support.Resource._
 import java.net.URI
-import java.io.{File, FileInputStream, StringWriter, InputStreamReader}
+import java.io.File
 
 /**
- * Used by the template engine to load the content of templates.
+ * A strategy for loading [[Resource]] instances
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait ResourceLoader {
-
+trait ResourceLoader extends Logging {
   val pageFileEncoding = "UTF-8"
 
-  def load( uri: String ): String
-  
-  def lastModified(uri:String): Long
-  
-  def resolve( base: String, path: String ): String
+  def resource(uri: String): Option[Resource]
 
-  def exists(uri: String): Boolean
+  def exists(uri: String): Boolean = resource(uri).isDefined
 
+  def load(uri: String): String = resourceOrFail(uri).text
+
+  def lastModified(uri: String): Long = resourceOrFail(uri).lastModified
+
+  def resolve(base: String, path: String): String = {
+    if (path.startsWith("/"))
+      path
+    else
+      new URI(base).resolve(path).toString
+  }
+
+  def resourceOrFail(uri: String): Resource = resource(uri) match {
+    case Some(r) =>
+      debug("found resource: " + r)
+      r
+    case _ =>
+      throw createNotFoundException(uri)
+  }
+
+  protected def createNotFoundException(uri: String) = new ResourceNotFoundException(uri)
 }
 
-case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoader with Logging {
+case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoader {
+  def resource(uri: String): Option[Resource] = {
+    debug("Trying to load uri: " + uri)
 
-  override def exists(uri: String): Boolean = {
     var answer = false
     if (uri != null) {
       val file = toFile(uri)
       if (file != null && file.exists) {
-        answer = true
+        if (!file.canRead) {
+          throw new ResourceNotFoundException(uri, description = "Could not read from " + file.getAbsolutePath)
+        }
+        return Some(fromFile(file))
       }
-    }
-    answer
-  }
-  
-  override def load(uri: String): String = {
-    debug("Trying to load uri: " + uri)
 
-    val file = toFileOrFail(uri);
-
-    debug("Found file: " + file)
-
-    val reader = new InputStreamReader(new FileInputStream(file), pageFileEncoding)
-    val writer = new StringWriter(file.length.asInstanceOf[Int]);
-    try {
-      IOUtil.copy(reader, writer)
-      writer.toString
-    } finally {
-      reader.close
-    }
-  }
-
-  override def lastModified(uri:String) = toFileOrFail(uri).lastModified
-
-  override def resolve( base: String, path: String ): String = {
-    if( path.startsWith( "/" ) )
-      path
-    else
-      new URI( base ).resolve( path ).toString
-  }
-
-  protected def toFile(uri:String):File = {
-    rootDir match {
-      case Some(dir)=> new File(dir, uri);
-      case None=> new File(uri)
-    }
-  }
-
-  protected def toFileOrFail(uri:String):File = {
-    var file = toFile(uri)
-    if (!file.canRead) {
       // lets try the ClassLoader
       var url = Thread.currentThread.getContextClassLoader.getResource(uri)
       if (url == null) {
         url = getClass.getClassLoader.getResource(uri)
       }
       if (url != null) {
-        val fileName = url.getFile
-        if (fileName != null) {
-          file = new File(fileName)
-        }
+        return Some(fromURL(url))
       }
     }
-    if (!file.canRead) {
-      throw new ResourceNotFoundException(uri)
+    None
+  }
+
+  protected def toFile(uri: String): File = {
+    rootDir match {
+      case Some(dir) => new File(dir, uri);
+      case None => new File(uri)
     }
-    file
   }
 }
 

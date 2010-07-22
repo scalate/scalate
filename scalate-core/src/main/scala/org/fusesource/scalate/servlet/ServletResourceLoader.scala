@@ -15,10 +15,12 @@
  */
 package org.fusesource.scalate.servlet
 
-import org.fusesource.scalate.support.FileResourceLoader
 import java.io.File
 import javax.servlet.ServletContext
 import org.fusesource.scalate.ResourceNotFoundException
+import org.fusesource.scalate.support.Resource._
+import java.lang.String
+import org.fusesource.scalate.support.{ResourceLoader, FileResourceLoader}
 
 object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context)
@@ -28,31 +30,43 @@ object ServletResourceLoader {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletResourceLoader(context: ServletContext) extends FileResourceLoader {
-  override protected def toFile(uri: String) = {
-    realFile(uri)
-  }
+class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = new FileResourceLoader()) extends ResourceLoader {
 
-  override protected def toFileOrFail(uri: String): File = {
-    val file = realFile(uri)
-    if (file == null) {
-      throw new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+  override def resource(uri: String) = {
+    val file = realPath(uri)
+    if (file != null) {
+      Some(fromFile(file))
     }
-    file
+    else {
+      val url = context.getResource(uri)
+      if (url != null) {
+        Some(fromURL(url))
+      }
+      else {
+        delegate.resource(uri)
+      }
+    }
   }
 
   /**
-   * Returns the real path for the given uri
+   * Returns the real path for the given uri.
    */
   def realPath(uri: String): String = {
+    // TODO should ideally use the Resource API as then we could try figure out
+    // the actual file for URL based resources not using getRealPath
+    // (which has issues sometimes with unexpanded WARs and overlays)
+
     val file = realFile(uri)
     if (file != null) file.getPath else null
   }
 
+
+  override protected def createNotFoundException(uri: String) =  new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+
   /**
    * Returns the File for the given uri
    */
-  def realFile(uri: String): File = {
+  protected def realFile(uri: String): File = {
     def findFile(uri: String): File = {
       val path = context.getRealPath(uri)
       debug("realPath for: " + uri + " is: " + path)

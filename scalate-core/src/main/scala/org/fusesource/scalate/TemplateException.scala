@@ -29,10 +29,11 @@ class TemplateException(message: String, cause: Throwable) extends RuntimeExcept
   }
 }
 
-class ResourceNotFoundException(resource: String, root: String = "")
+class ResourceNotFoundException(resource: String, root: String = "", description: String = "")
   extends TemplateException(
     "Could not load resource: [" + resource + 
-    (if (root == "") "]" else "]; are you sure it's within [" + root + "]?"))
+    (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
+    (if (description == "") "" else ". " + description))
 
 /**
  * Indicates a syntax error trying to parse the template

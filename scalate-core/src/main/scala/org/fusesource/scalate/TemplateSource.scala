@@ -1,75 +1,16 @@
 package org.fusesource.scalate
 
-import support.ResourceLoader
 import java.io.File
-import util.IOUtil
-import java.net.{URL}
+import support._
+import java.net.URL
 import io.Source
-
-/**
- * Helper methods to create a  { @link TemplateSource } from various sources
- */
-object TemplateSource {
-
-  /**
-   * Creates a  { @link TemplateSource } from the actual String contents using the given
-   * URI.
-   *
-   * The URI is used to determine the package name to put the template in along with
-   * the template kind (using the extension of the URI)
-   */
-  def fromText(uri: String, templateText: String) = StringTemplateSource(uri, templateText)
-
-  /**
-   * Creates a  { @link TemplateSource } from a local URI such as in a web application using the
-   * class loader to resolve URIs to actual resources
-   */
-  def fromUri(uri: String, resourceLoader: ResourceLoader) = UriTemplateSource(uri, resourceLoader)
-
-  /**
-   * Creates a  { @link TemplateSource } from a file
-   */
-  def fromFile(file: File): FileTemplateSource = FileTemplateSource(file)
-
-  /**
-   * Creates a  { @link TemplateSource } from a file name
-   */
-  def fromFile(fileName: String): FileTemplateSource = fromFile(new File(fileName))
-
-  /**
-   * Creates a  { @link TemplateSource } from a URL
-   */
-  def fromURL(url: URL): URLTemplateSource = URLTemplateSource(url)
-
-  /**
-   * Creates a  { @link TemplateSource } from a URL
-   */
-  def fromURL(url: String): URLTemplateSource = fromURL(new URL(url))
-
-  /**
-   * Creates a  { @link TemplateSource } from the  { @link Source } and the given URI.
-   *
-   * The URI is used to determine the package name to put the template in along with
-   * the template kind (using the extension of the URI)
-   */
-  def fromSource(uri: String, source: Source) = SourceTemplateSource(uri, source)
-}
 
 /**
  * Represents the source of a template
  *
  * @version $Revision : 1.1 $
  */
-trait TemplateSource {
-  /**
-   * Returns the URI of the template
-   */
-  def uri: String
-
-  /**
-   * Returns the template source
-   */
-  def text: String
+trait TemplateSource extends Resource {
 
 
   /**
@@ -96,41 +37,54 @@ trait TemplateSource {
    *
    * <code>TemplateSource.fromFile("foo.txt").templateType("mustache")</code>
    */
-  def templateType(extension: String) = CustomExtensionTemplateSource(this, extension)
+  def templateType(extension: String) = new CustomExtensionTemplateSource(this, extension)
 }
 
-case class StringTemplateSource(uri: String, text: String) extends TemplateSource
+/**
+ * Helper methods to create a [[org.fusesource.scalate.TemplateSource]] from various sources
+ */
+object TemplateSource {
 
-case class UriTemplateSource(uri: String, resourceLoader: ResourceLoader) extends TemplateSource {
-  def text = resourceLoader.load(uri)
-}
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from the actual String contents using the given
+   * URI.
+   *
+   * The URI is used to determine the package name to put the template in along with
+   * the template kind (using the extension of the URI)
+   */
+  def fromText(uri: String, templateText: String) = new StringTemplateSource(uri, templateText)
 
-case class FileTemplateSource(file: File) extends TemplateSource {
-  def uri = file.getPath
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a local URI such as in a web application using the
+   * class loader to resolve URIs to actual resources
+   */
+  def fromUri(uri: String, resourceLoader: ResourceLoader) = new UriTemplateSource(uri, resourceLoader)
 
-  def text = IOUtil.loadTextFile(file)
-}
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a file
+   */
+  def fromFile(file: File): FileTemplateSource = new FileTemplateSource(file)
 
-case class URLTemplateSource(url: URL) extends TemplateSource {
-  def uri = url.toExternalForm
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a file name
+   */
+  def fromFile(fileName: String): FileTemplateSource = fromFile(new File(fileName))
 
-  def text = IOUtil.loadText(url.openStream)
-}
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a URL
+   */
+  def fromURL(url: URL): URLTemplateSource = new URLTemplateSource(url)
 
-case class SourceTemplateSource(uri: String, source: Source) extends TemplateSource {
-  def text = {
-    val builder = new StringBuilder
-    for (c <- source) {
-      builder.append(c)
-    }
-    builder.toString
-  }
-}
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from a URL
+   */
+  def fromURL(url: String): URLTemplateSource = fromURL(new URL(url))
 
-case class CustomExtensionTemplateSource(source: TemplateSource, extensionName: String) extends TemplateSource {
-  def uri = source.uri
-
-  def text = source.text
-
-  override def templateType = Some(extensionName)
+  /**
+   * Creates a [[org.fusesource.scalate.TemplateSource]] from the [[scala.io.Source]] and the given URI.
+   *
+   * The URI is used to determine the package name to put the template in along with
+   * the template kind (using the extension of the URI)
+   */
+  def fromSource(uri: String, source: Source) = new SourceTemplateSource(uri, source)
 }

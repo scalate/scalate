@@ -209,7 +209,7 @@ case class TransformerBuilder(transformer: Transformer) {
 
 /**
  * A helper class to pimp Scala's XML support to add easy SQuery filtering
- * so that you can perform a CSS3 selector on a {@link Node} or {@link NodeSeq}
+ * so that you can perform a CSS3 selector on a [[scala.xml.Node]] or [[scala.xml.NodeSeq]]
  * via <code>xml.$("someSelector")</code>
  */
 case class SXml(nodes: NodeSeq) {

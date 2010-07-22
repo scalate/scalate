@@ -20,7 +20,7 @@ import org.fusesource.scalate.{RenderContext, AttributeMap, DefaultRenderContext
 object ServletRenderContext {
   /**
    * Returns the currently active render context in this thread
-   * @throw IllegalArgumentException if there is no suitable render context available in this thread
+   * @throws IllegalArgumentException if there is no suitable render context available in this thread
    */
   def renderContext: ServletRenderContext = RenderContext() match {
     case s: ServletRenderContext => s

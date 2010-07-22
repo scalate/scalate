@@ -457,6 +457,7 @@
           <jvmArgs>
             <jvmArg>-Xmx850M</jvmArg>
           </jvmArgs>
+          <verbose>true</verbose>
         </configuration>
       </plugin>
 

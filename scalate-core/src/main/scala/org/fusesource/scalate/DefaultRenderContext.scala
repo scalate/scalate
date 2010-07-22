@@ -6,7 +6,7 @@ import java.io._
 import collection.mutable.Stack
 
 /**
- * Default implementation of {@link RenderContext}
+ * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext with Logging {
 
