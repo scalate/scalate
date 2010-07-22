@@ -175,7 +175,7 @@ object Scalate {
         rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
       }
     }
-    rc = rc.removeDuplicates
+    rc = rc.distinct
     debug("loaded commands: " + rc)
     return rc
   }
