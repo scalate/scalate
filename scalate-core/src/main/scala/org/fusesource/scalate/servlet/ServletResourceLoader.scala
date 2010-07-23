@@ -33,7 +33,7 @@ object ServletResourceLoader {
 class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = new FileResourceLoader()) extends ResourceLoader {
 
   override def resource(uri: String) = {
-    val file = realPath(uri)
+    val file = realFile(uri)
     if (file != null) {
       Some(fromFile(file))
     }
@@ -55,7 +55,9 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
     // TODO should ideally use the Resource API as then we could try figure out
     // the actual file for URL based resources not using getRealPath
     // (which has issues sometimes with unexpanded WARs and overlays)
-
+    for (r <- resource(uri); f <- r.toFile if f != null) {
+      return f.getPath
+    }
     val file = realFile(uri)
     if (file != null) file.getPath else null
   }

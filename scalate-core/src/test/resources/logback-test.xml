@@ -16,9 +16,9 @@
     </encoder>
   </appender>
 
+  <!--
   <logger name="org.fusesource.scalate" level="DEBUG"/>
 
-<!--
   <logger name="org.fusesource.scalate.mustache" level="DEBUG"/>
 -->
 

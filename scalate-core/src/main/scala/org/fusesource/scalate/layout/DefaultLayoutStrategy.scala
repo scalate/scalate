@@ -1,11 +1,11 @@
 package org.fusesource.scalate.layout
 
-import org.fusesource.scalate.{ResourceNotFoundException, RenderContext, Template, TemplateEngine }
+import org.fusesource.scalate.{ResourceNotFoundException, RenderContext, Template, TemplateEngine}
 import org.fusesource.scalate.util.Logging
 
 /**
  * The default implementation of <code>LayoutStrategy</code>.
- * 
+ *
  * <p>This implementation will first try to load a layout by using
  * the "layout" attribute of the given template.
  *
@@ -17,11 +17,12 @@ import org.fusesource.scalate.util.Logging
  * @version $Revision : 1.1 $
  */
 class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
-
   def layout(template: Template, context: RenderContext) {
-    
+
+    info("Before layout the layouts are: " + context.attributes("scalateLayouts"))
+
     def isLayoutDisabled(layout: String) = layout.trim.isEmpty
-    
+
     // lets capture the body to be used for the layout
     val body = context.capture(template)
 
@@ -31,7 +32,9 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
         if (isLayoutDisabled(layout))
           noLayout(body, context)
         else
-          renderLayout(layout, body, context)
+        if (!tryLayout(layout, body, context)) {
+          noLayout(body, context)
+        }
 
       case _ =>
         val layoutName = defaultLayouts.find(tryLayout(_, body, context))
@@ -40,24 +43,29 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
         }
     }
   }
-  
-  private def renderLayout(layoutTemplate: String, body: String, context: RenderContext) {
-      debug("Attempting to load layout: " + layoutTemplate)
-      context.attributes("body") = body
-      context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List()) 
 
-      engine.load(layoutTemplate).render(context)
-      debug("layout completed of: " + layoutTemplate)
-  }
-  
   private def tryLayout(layoutTemplate: String, body: String, context: RenderContext): Boolean = {
+    def removeLayout = {
+      context.attributes("scalateLayouts") = context.attributeOrElse[List[String]]("scalateLayouts", List()).filterNot(_ == layoutTemplate)
+    }
+
     try {
-      renderLayout(layoutTemplate, body, context)
+      debug("Attempting to load layout: " + layoutTemplate)
+
+      context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List())
+      context.attributes("body") = body
+      engine.load(layoutTemplate).render(context)
+
+      debug("layout completed of: " + layoutTemplate)
       true
     } catch {
-      case e: ResourceNotFoundException => debug("Caught: " + e, e)
+      case e: ResourceNotFoundException =>
+        removeLayout
+        debug("No layout for: " + layoutTemplate + ". Exception: " + e, e)
         false
-      case e: Exception => error("Unhandled: " + e, e)
+      case e: Exception =>
+        removeLayout
+        error("Unhandled: " + e, e)
         throw e
     }
   }

@@ -1,14 +1,14 @@
 package org.fusesource.scalate.support
 
 import io.Source
-import java.net.URL
 import java.io._
-import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.util.{IOUtil, Logging}
+import java.net.{URISyntaxException, URL}
 
 /**
  * Represents a string, file or URI based resource
  */
-trait Resource {
+trait Resource extends Logging {
 
   /**
    * Returns the URI of the resource
@@ -34,10 +34,11 @@ trait Resource {
    * Returns the last modified time of the resource
    */
   def lastModified: Long
+
+  def toFile: Option[File] = None
 }
 
 abstract class TextResource extends Resource {
-
   override def reader = new StringReader(text)
 
   def inputStream = new ByteArrayInputStream(text.getBytes)
@@ -46,7 +47,7 @@ abstract class TextResource extends Resource {
   def lastModified: Long = System.currentTimeMillis
 }
 
-case class StringResource(uri: String, override val text: String) extends TextResource 
+case class StringResource(uri: String, override val text: String) extends TextResource
 
 case class UriResource(override val uri: String, resourceLoader: ResourceLoader) extends DelegateResource {
   protected def delegate = resourceLoader.resourceOrFail(uri)
@@ -62,6 +63,8 @@ case class FileResource(file: File) extends Resource {
   def inputStream = new FileInputStream(file)
 
   def lastModified = file.lastModified
+
+  override def toFile = Some(file)
 }
 
 case class URLResource(url: URL) extends Resource {
@@ -72,6 +75,26 @@ case class URLResource(url: URL) extends Resource {
   def lastModified = {
     val con = url.openConnection
     con.getLastModified
+  }
+
+  override def toFile: Option[File] = {
+    var f: File = null
+    if (url.getProtocol == "file") {
+      try {
+        try {
+          f = new File(url.toURI)
+        } catch {
+          case e: URISyntaxException => f = new File(url.getPath)
+        }
+      } catch {
+        case e => debug("While converting " + url + " to a File I caught: " + e, e)
+      }
+    }
+    if (f != null && f.exists) {
+      Some(f)
+    } else {
+      None
+    }
   }
 }
 
