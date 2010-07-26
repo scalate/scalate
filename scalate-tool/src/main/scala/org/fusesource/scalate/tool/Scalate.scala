@@ -164,7 +164,7 @@ object Scalate {
 
   def discoverCommandClasses(): List[String] = {
     var rc: List[String] = Nil
-    val resources = extensionsClassLoader.getResources("META-INF/services/org.fusesoruce.scalate/commands")
+    val resources = extensionsClassLoader.getResources("META-INF/services/org.fusesoruce.scalate/commands.index")
     while(resources.hasMoreElements) {
       val url = resources.nextElement;
       debug("loaded commands from " + url)
