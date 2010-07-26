@@ -55,6 +55,25 @@
         <include>*.html</include>
       </includes>
     </fileSet>
-    
+
+    <!-- scaladocs -->
+    <fileSet>
+      <directory>${basedir}/../scalate-core/target/apidocs</directory>
+      <outputDirectory>/docs/apidocs/scalate-core</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../scalate-camel/target/apidocs</directory>
+      <outputDirectory>/docs/apidocs/scalate-camel</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../scalate-test/target/apidocs</directory>
+      <outputDirectory>/docs/apidocs/scalate-test</outputDirectory>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../scalate-test-commands/target/apidocs</directory>
+      <outputDirectory>/docs/apidocs/scalate-test-commands</outputDirectory>
+    </fileSet>
+
   </fileSets>
+
 </component>
