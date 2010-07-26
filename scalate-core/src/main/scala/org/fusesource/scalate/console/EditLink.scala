@@ -3,7 +3,7 @@ package org.fusesource.scalate.console
 import _root_.org.fusesource.scalate.util.{SourceMap}
 import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
-import xml.{Elem, NodeSeq}
+import xml.{Text, Elem, NodeSeq}
 
 /**
  * @version $Revision : 1.1 $
@@ -15,16 +15,21 @@ object EditLink {
   def editLink(file: String)(body: => Unit): NodeSeq = editLink(file, None, None)(body)
 
   def editLink(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
-    System.getProperty("scalate.editor", "") match {
-      case "textmate" => editLinkTextMate(file, line, col)(body)
-      case "ide" => editLinkIdePlugin(file, line, col)(body)
-      case "file" => editLinkFileScheme(file, line, col)(body)
-      case _ =>
-        if (isMacOsx && hasTextMate)
-          editLinkTextMate(file, line, col)(body)
-        else {
-          editLinkFileScheme(file, line, col)(body)
-        }
+    if (file == null) {
+      Nil
+    }
+    else {
+      System.getProperty("scalate.editor", "") match {
+        case "textmate" => editLinkTextMate(file, line, col)(body)
+        case "ide" => editLinkIdePlugin(file, line, col)(body)
+        case "file" => editLinkFileScheme(file, line, col)(body)
+        case _ =>
+          if (isMacOsx && hasTextMate)
+            editLinkTextMate(file, line, col)(body)
+          else {
+            editLinkFileScheme(file, line, col)(body)
+          }
+      }
     }
   }
 

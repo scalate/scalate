@@ -47,9 +47,11 @@
         %p Templates
         %ul
           - for (template <- templates)
-            %li
-              = editLink(template)
-                = template.stripPrefix("/")
+            - val link = editLink(template)
+              = template.stripPrefix("/")
+            - if (!link.isEmpty)
+              %li
+                = link
 
     - if (!layouts.isEmpty)
       .layouts

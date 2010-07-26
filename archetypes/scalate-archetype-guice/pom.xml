@@ -78,6 +78,7 @@
               </includes>
               <excludes>
                 <exclude>.gitignore</exclude>
+                <exclude>WEB-INF/.gitignore</exclude>
                 <exclude>WEB-INF/web.xml</exclude>
                 <exclude>index.scaml</exclude>
                 <exclude>WEB-INF/resources/**/*</exclude>
