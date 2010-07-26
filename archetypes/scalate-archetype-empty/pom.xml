@@ -71,7 +71,7 @@
                     from elsewhere we could remove this crap
                  -->
 
-                <copy todir="src/main/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
+                <copy todir="${basedir}/src/main/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../scalate-war/src/main/webapp">
                     <exclude name="WEB-INF/web.xml"/>
                     <exclude name="index.*"/>

@@ -59,6 +59,7 @@
 
       <plugin>  
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.4</version>
         <dependencies>
           <dependency>
             <groupId>org.markdownj</groupId>
@@ -74,7 +75,7 @@
               <tasks>
 
                 <!-- lets transform the readme to HTML -->
-                <copy file="../readme.md" tofile="target/readme.html">
+                <copy file="${basedir}/../readme.md" tofile="${basedir}/target/readme.html">
                   <filterchain>
                     <filterreader classname="com.petebevin.markdown.MarkdownFilter">
                     </filterreader>
