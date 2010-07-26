@@ -38,6 +38,15 @@
       <includes>
         <include>**/*</include>
       </includes>
+      <excludes>
+        <exclude>images/**/*</exclude>
+      </excludes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>images/**/*</include>
+      </includes>
     </fileSet>
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="false" packaged="false">

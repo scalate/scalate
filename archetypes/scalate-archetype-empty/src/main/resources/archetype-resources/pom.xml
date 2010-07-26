@@ -35,14 +35,6 @@
   </properties>
    
   <dependencies>
-    <!-- war overlay to get the Scalate console and error pages -->
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-war</artifactId>
-      <version>\${scalate-version}</version>
-      <type>war</type>
-    </dependency>
-
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -248,7 +240,6 @@
           -->
           <webAppConfig>
             <contextPath>/</contextPath>
-            <unpackOverlays>true</unpackOverlays>
           </webAppConfig>
 
           <systemProperties>
