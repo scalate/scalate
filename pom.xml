@@ -896,10 +896,12 @@
                   <include>**/pom.xml</include>
               </includes>
               <excludes>
-                <!-- can remove once http://code.google.com/p/maven-license-plugin/issues/detail?id=72 is resolved -->
-                <exclude>**/LICENSE.txt</exclude>
-                <exclude>**/LICENSE</exclude>
                 <exclude>**/.git/**</exclude>
+                <exclude>**/src/test/resources/moustache/**</exclude>
+                <exclude>**/src/test/resources/test-lib/fake-jar</exclude>
+                <exclude>**/src/main/resources/META-INF/services/jersey-server-components</exclude>
+                <exclude>**/WEB-INF/_scalate/**</exclude>
+                
             
                 <!-- ignore files produced during a build -->
                 <exclude>**/target/**</exclude>
@@ -913,9 +915,10 @@
               </excludes>
               <useDefaultExcludes>false</useDefaultExcludes>
               <mapping>
+                  <ssp>DYNASCRIPT_STYLE</ssp>
                   <jj>JAVADOC_STYLE</jj>
-                  <proto>DOUBLESLASH_STYLE</proto>
                   <index>SCRIPT_STYLE</index>
+                  <jersey-server-components>SCRIPT_STYLE</jersey-server-components>
               </mapping>
             </configuration>
             <executions>
