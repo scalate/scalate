@@ -37,8 +37,6 @@ import org.fusesource.scalate.util.Logging
 class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
   def layout(template: Template, context: RenderContext) {
 
-    info("Before layout the layouts are: " + context.attributes("scalateLayouts"))
-
     def isLayoutDisabled(layout: String) = layout.trim.isEmpty
 
     // lets capture the body to be used for the layout
