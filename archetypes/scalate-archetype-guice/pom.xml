@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>org.fusesource.scalate.tooling</groupId>
     <artifactId>archetypes</artifactId>
@@ -34,6 +35,59 @@
         <version>2.0-alpha-4</version>
         <extensions>true</extensions>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <configuration>
+              <tasks>
+
+                <!--
+                    TODO if ever the maven archetype plugin could actually include resources
+                    from elsewhere we could remove this crap
+                 -->
+
+                <copy todir="src/main/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
+                  <fileset dir="${basedir}/../../scalate-war/src/main/webapp">
+                    <exclude name="WEB-INF/web.xml"/>
+                    <exclude name="index.*"/>
+                    <exclude name="WEB-INF/_scalate"/>
+                    <exclude name="WEB-INF/_scalate/**"/>
+                  </fileset>
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/main/resources/archetype-resources/src/main/webapp</directory>
+              <includes>
+                <include>**/*</include>
+              </includes>
+              <excludes>
+                <exclude>.gitignore</exclude>
+                <exclude>WEB-INF/web.xml</exclude>
+                <exclude>index.scaml</exclude>
+                <exclude>WEB-INF/resources/**/*</exclude>
+              </excludes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 

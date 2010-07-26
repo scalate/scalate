@@ -30,9 +30,16 @@
         <include>**/*</include>
       </includes>
       <excludes>
+        <exclude>images/**/*</exclude>
         <exclude>WEB-INF/resources</exclude>
         <exclude>WEB-INF/resources/**</exclude>
       </excludes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>images/**/*</include>
+      </includes>
     </fileSet>
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
       <directory>src/main/webapp/WEB-INF</directory>
