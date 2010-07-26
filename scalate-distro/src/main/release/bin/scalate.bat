@@ -28,7 +28,7 @@ set DEFAULT_SCALATE_HOME=
 :doneStart
 rem find SCALATE_HOME if it does not exist due to either an invalid value passed
 rem by the user or the %0 problem on Windows 9x
-if exist "%SCALATE_HOME%\ReadMe.html" goto checkJava
+if exist "%SCALATE_HOME%\readme.html" goto checkJava
 
 rem check for scalate in Program Files on system drive
 if not exist "%SystemDrive%\Program Files\scalate" goto checkSystemDrive
@@ -37,13 +37,13 @@ goto checkJava
 
 :checkSystemDrive
 rem check for scalate in root directory of system drive
-if not exist %SystemDrive%\scalate\ReadMe.html goto checkCDrive
+if not exist %SystemDrive%\scalate\readme.html goto checkCDrive
 set SCALATE_HOME=%SystemDrive%\scalate
 goto checkJava
 
 :checkCDrive
 rem check for scalate in C:\scalate for Win9X users
-if not exist C:\scalate\ReadMe.html goto noMopHome
+if not exist C:\scalate\readme.html goto noMopHome
 set SCALATE_HOME=C:\scalate
 goto checkJava
 

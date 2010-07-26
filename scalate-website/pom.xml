@@ -53,8 +53,8 @@
             <configuration>
               <tasks>
 
-                <!-- lets transform the ReadMe to HTML -->
-                <copy file="../ReadMe.md" tofile="target/ReadMe.html">
+                <!-- lets transform the readme to HTML -->
+                <copy file="../readme.md" tofile="target/readme.html">
                   <filterchain>
                     <filterreader classname="com.petebevin.markdown.MarkdownFilter">
                     </filterreader>
