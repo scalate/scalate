@@ -54,6 +54,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
   testPageContains("ssp/matchExpression.ssp", "i = 1", "i is 1", "i = 2", "i is 2", "i = 3", "i is something")
   testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
+  testPageContains("ssp/missingInclude.ssp", "Could not load resource")
 
   testPage("ssp/noLayout.ssp") {
     pageContains("No Layout", "This page has no separate layout")
@@ -85,6 +86,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("scaml/errors/scalaCompileError.scaml", "error: not found: value unknown", "- for (i &lt;-")
   testPageContains("scaml/locale.scaml", "22.0 / 7 = 3.143")
   testPageContains("scaml/missingAttribute.scaml", "The value for 'name' was not set")
+  testPageContains("scaml/missingInclude.scaml", "Could not load resource")
   testPageContains("scaml/optionTest.scaml", "no foo")
   testPageContains("scaml/renderObject.scaml", "Strachan")
   testPageContains("scaml/renderCaseClass.scaml", "Strachan", "<hr/>", "Chirino")

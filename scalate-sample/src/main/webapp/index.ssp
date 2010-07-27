@@ -175,5 +175,8 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   <li>
     <a href="mustache/errors/templateCompileError.mustache">Typo in a Mustache template</a>
   </li>
+  <li>
+    <a href="ssp/missingInclude.ssp">Missing include SSP template</a> or the <a href="scaml/missingInclude.scaml">scaml version</a>
+  </li>
 </ul>
 
