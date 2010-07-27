@@ -43,6 +43,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         fragment match {
 
           case p: AttributeFragment =>
+            this << p.pos;
             generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue))) {
               generate(remaining)
             }
