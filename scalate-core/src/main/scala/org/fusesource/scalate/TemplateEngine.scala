@@ -388,7 +388,13 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
    */
   def layout(template: Template, context: RenderContext): Unit = {
     RenderContext.using(context) {
-      context.withUri(template.source.uri) {
+      val source = template.source
+      if (source != null && source.uri != null) {
+        context.withUri(source.uri) {
+          layoutStrategy.layout(template, context)
+        }
+      }
+      else {
         layoutStrategy.layout(template, context)
       }
     }
