@@ -25,7 +25,7 @@ import java.util.regex.Pattern
 import java.net.URI
 import java.io.File
 import scala.collection.immutable.TreeMap
-import scala.util.parsing.input.{OffsetPosition, Position}
+import util.parsing.input.{Positional, OffsetPosition, Position}
 
 /**
  * Provides a common base class for CodeGenerator implementations.
@@ -46,6 +46,19 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
         code += "  ";
       }
       code += line + "\n";
+      this
+    }
+
+    def <<(list: List[_]): this.type = {
+      for (i <- 0 until indentLevel) {
+        code += "  ";
+      }
+      for (value <- list) value match {
+        case text: Positional => this << text.pos << text.toString
+        case pos: Position => this << pos
+        case _ => code += value.toString
+      }
+      code += "\n";
       this
     }
 

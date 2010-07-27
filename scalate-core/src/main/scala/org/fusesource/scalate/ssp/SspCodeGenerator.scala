@@ -60,8 +60,8 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         case CommentFragment(code) => {
         }
         case ScriptletFragment(code) => {
-          this << code.pos;
-          this << code
+          //this << code.pos;
+          this << code :: Nil
         }
         case TextFragment(text) => {
           this << fragment.pos;
@@ -70,12 +70,10 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         case af: AttributeFragment => {
         }
         case DollarExpressionFragment(code) => {
-          this << code.pos;
-          this << "$_scalate_$_context <<< " + wrapInParens(code)
+          this << "$_scalate_$_context << " :: wrapInParens(code)
         }
         case ExpressionFragment(code) => {
-          this << code.pos;
-          this << "$_scalate_$_context << " + wrapInParens(code)
+          this << "$_scalate_$_context << " :: wrapInParens(code)
         }
         case IfFragment(code) => {
           this << code.pos;
@@ -83,19 +81,18 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           indentLevel += 1
         }
         case DoFragment(code) => {
-          this << code.pos;
           if (code.length > 0) {
-            this << "$_scalate_$_context << " + code + " {"
+            this << "$_scalate_$_context << " :: code :: " {" :: Nil
           }
           else {
+            this << code.pos;
             this << "{"
           }
           indentLevel += 1
         }
         case ElseIfFragment(code) => {
-          this << code.pos;
           indentLevel -= 1
-          this << "} else if (" + code + ") {"
+          this << "} else if (" :: code :: ") {" :: Nil
           indentLevel += 1
         }
         case code: ElseFragment => {
@@ -105,14 +102,12 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           indentLevel += 1
         }
         case MatchFragment(code) => {
-          this << code.pos;
-          this << "(" + code + ") match {"
+          this << "(" :: code :: ") match {" :: Nil
           indentLevel += 1
         }
         case CaseFragment(code) => {
-          this << code.pos;
           indentLevel -= 1
-          this << "case " + code + " =>"
+          this << "case " :: code :: " =>" :: Nil
           indentLevel += 1
         }
         case code: OtherwiseFragment => {
@@ -122,13 +117,11 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           indentLevel += 1
         }
         case ForFragment(code) => {
-          this << code.pos;
-          this << "for (" + code + ") {"
+          this << "for (" :: code :: ") {" :: Nil
           indentLevel += 1
         }
         case ImportFragment(code) => {
-          this << code.pos;
-          this << "import " + code
+          this << "import " :: code :: Nil
         }
         case code: EndFragment => {
           this << code.pos;
@@ -138,7 +131,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       }
     }
 
-    protected def wrapInParens(code: String) = if (canWrapInParens(code)) {"( " + code + " )"} else {"" + code + ""}
+    protected def wrapInParens(code: Text): List[_] = if (canWrapInParens(code)) {List("( ", code, " );")} else {List(code)}
 
     /**
      * Returns true if the code expression can be safely wrapped in parens
