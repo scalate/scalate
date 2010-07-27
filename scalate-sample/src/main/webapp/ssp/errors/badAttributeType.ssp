@@ -1,0 +1,8 @@
+<%@ var name: StringF = "James" %>
+<% attributes("title") = "This is the custom title" %>
+<%--
+<%@ var user2: Str ng %>
+<%@ var userlist: List[String] %>
+--%>
+
+<h1>Hello ${name}!!!!</h1>
