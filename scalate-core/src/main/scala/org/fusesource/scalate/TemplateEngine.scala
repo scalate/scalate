@@ -388,7 +388,9 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
    */
   def layout(template: Template, context: RenderContext): Unit = {
     RenderContext.using(context) {
-      layoutStrategy.layout(template, context)
+      context.withUri(template.source.uri) {
+        layoutStrategy.layout(template, context)
+      }
     }
   }
 
@@ -566,6 +568,7 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
+      template.source = source
 
       (template, code.dependencies)
     } catch {

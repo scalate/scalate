@@ -25,5 +25,7 @@ package org.fusesource.scalate
  * @version $Revision : 1.1 $
  */
 trait Template {
+  var source: TemplateSource = _
+
   def render(context: RenderContext): Unit
 }

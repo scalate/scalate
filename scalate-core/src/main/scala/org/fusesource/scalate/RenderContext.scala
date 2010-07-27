@@ -354,13 +354,13 @@ trait RenderContext {
    */
   protected def removeOldAttributes = true
 
-  protected def withUri(uri: String)(block: => Unit): Unit = {
+  def withUri(uri: String)(block: => Unit): Unit = {
     val original = currentTemplate
     try {
       currentTemplate = uri
 
       // lets keep track of the templates
-      attributes("scalateTemplates") = uri :: attributeOrElse[List[String]]("scalateTemplates", List())
+      attributes("scalateTemplates") = uri :: attributeOrElse[List[String]]("scalateTemplates", List()).distinct
 
       block
     } finally {
