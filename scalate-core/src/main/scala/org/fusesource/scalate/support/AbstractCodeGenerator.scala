@@ -121,7 +121,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
       this <<;
       this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
       indent {
-        this << "def render(context: _root_.org.fusesource.scalate.RenderContext): Unit = " + className + ".$_scalate_$render(context);"
+        this << "def render(context: _root_.org.fusesource.scalate.RenderContext): Unit = " + className + ".$_scalate_$render(context)"
       }
       this << "}"
 
@@ -148,20 +148,31 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
 
     def generateBinding(binding: Binding): Unit = {
       def generateImplicit = if (binding.isImplicit) "implicit " else ""
-      
-      this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes.get(" + asString(binding.name) + ") match {"
-      indent {
-        //this << "case Some(value: "+binding.className+") => value"
-        this << "case Some(value) => value.asInstanceOf[" + binding.className + "]"
-        if (binding.defaultValue.isEmpty) {
-          this << "case None => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
-        } else {
-          this << "case None => " + binding.defaultValue.get
-        }
+
+      def resourceMethod: String = if (binding.defaultValue.isEmpty) {
+        "attribute(" + asString(binding.name) + ")"
+      } else {
+        "attributeOrElse(" + asString(binding.name) + ", " + binding.defaultValue.get + ")"
       }
-      this << "});"
+
+      this << generateImplicit + binding.kind + " " + binding.name + ": " + binding.className + " = $_scalate_$_context." + resourceMethod
+
+      /*
+            this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes.get(" + asString(binding.name) + ") match {"
+            indent {
+              //this << "case Some(value: "+binding.className+") => value"
+              this << "case Some(value) => value.asInstanceOf[" + binding.className + "]"
+              if (binding.defaultValue.isEmpty) {
+                this << "case None => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
+              } else {
+                this << "case None => " + binding.defaultValue.get
+              }
+            }
+            this << "});"
+      */
+
       if (binding.importMembers) {
-        this << "import " + binding.name + "._;";
+        this << "import " + binding.name + "._";
       }
     }
 
