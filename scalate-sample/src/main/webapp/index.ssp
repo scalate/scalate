@@ -83,6 +83,9 @@ The following use JSP style syntax
   <li>
     <a href="ssp/sampleTag3.ssp">custom tag 3</a> the scala function body uses a RenderContext variable
   </li>
+  <li>
+    <a href="ssp/withTrait.ssp">using a helpers in a trait</a>
+  </li>
 </ul>
 
 These use the <a href="http://scalate.fusesource.org/documentation/ssp-reference.html#velocity_style_directives">Velocity style</a> directives
@@ -136,6 +139,9 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   </li>
   <li>
     <a href="scaml/sampleTag3.scaml">custom tag 3</a> the scala function body uses a RenderContext variable
+  </li>
+  <li>
+    <a href="scaml/withTrait.scaml">using a helpers in a trait</a>
   </li>
 </ul>
 
