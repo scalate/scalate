@@ -1,0 +1,7 @@
+<% attributes("title") = "This is the custom title" %>
+<%@ var whatever: Int = 5 %>
+<%@ var name: String = "James" %>
+
+<h1>Hello ${nameX}!!!!</h1>
+
+<p>Number is ${whatever}!</p>
