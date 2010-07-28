@@ -73,6 +73,8 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine {
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   layoutStrategy = new DefaultLayoutStrategy(this, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
 
+  info("Scalate template engine using working directory: " + workingDirectory)
+  
   private def buildClassPath(): String = {
 
     val builder = new ClassPathBuilder
