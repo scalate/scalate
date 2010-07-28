@@ -235,17 +235,6 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>\${basedir}/src/main/webapp/WEB-INF/_scalate</directory>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>\${jetty-plugin-version}</version>
@@ -287,4 +276,27 @@
 
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>precompile</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>maven-scalate-plugin</artifactId>
+            <version>\${scalate-version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>precompile</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

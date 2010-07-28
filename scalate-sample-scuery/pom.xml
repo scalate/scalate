@@ -114,19 +114,6 @@
           <attachClasses>true</attachClasses>
         </configuration>
       </plugin>
-
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}/src/main/webapp/WEB-INF/_scalate</directory>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-
-
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
