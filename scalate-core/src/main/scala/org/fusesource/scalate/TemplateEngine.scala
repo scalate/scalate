@@ -74,10 +74,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    * so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
    * the tempaltes should not be changing.
    */
-  var allowReload = {
-    val value = System.getProperty("scalate.allowReload", "")
-    value == "true" || value == "" && isDevelopmentMode
-  }
+  var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
 
   /**
    * Whether a custom classpath should be combined with the deduced classpath
