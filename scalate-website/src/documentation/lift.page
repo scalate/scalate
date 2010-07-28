@@ -15,7 +15,7 @@ Using Scalate with Lift
 <div class="right" markdown="1">
 Lift is a popular Scala based web framework with particularly powerful Comet support.
 
-Support for Scalate has been added to Lift in the Scala 2.8.0 branch. For more details see [ticket 475](https://liftweb.assembla.com/spaces/liftweb/tickets/475)).
+Support for Scalate has been added to Lift in the Scala 2.8.0 branch. For more details see [ticket 475](https://liftweb.assembla.com/spaces/liftweb/tickets/475).
 </div>
 
 <div class="left" markdown="1">
