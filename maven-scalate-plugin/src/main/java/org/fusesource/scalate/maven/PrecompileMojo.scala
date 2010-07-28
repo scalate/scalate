@@ -31,6 +31,7 @@ import org.apache.maven.project.MavenProject;
 import org.fusesource.scalate.servlet.ServletRenderContext;
 import org.fusesource.scalate.support.FileResourceLoader
 import org.fusesource.scalate.util.IOUtil
+import org.scala_tools.maven.mojo.annotations._
 
 
 /**
@@ -38,15 +39,33 @@ import org.fusesource.scalate.util.IOUtil
  * as Scala source files that be included in your standard
  * build. 
  *
- * @goal precompile
- * @phase generate -sources
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
+@goal("precompile")
+@phase("generate-sources")
+@requiresProject
 class PrecompileMojo extends AbstractMojo {
-  var project: MavenProject = null
-  var warSourceDirectory: File = null
-  var resourcesSourceDirectory: File = null
-  var targetDirectory: File = null
+
+  @parameter
+  @expression("${project}")
+  @readOnly
+  @required
+  var project: MavenProject = _
+
+  @parameter
+  @description("The directory where the templates files are located.")
+  @expression("${basedir}/src/main/webapp")
+  var warSourceDirectory: File = _
+
+  @parameter
+  @description("The directory where resources are located.")
+  @expression("${basedir}/src/main/resources")
+  var resourcesSourceDirectory: File = _
+
+  @parameter
+  @description("The directory where the scala code will be generated into.")
+  @expression("${project.build.directory}/generated-sources/scalate")
+  var targetDirectory: File = _
 
   def execute() = {
     targetDirectory.mkdirs();
