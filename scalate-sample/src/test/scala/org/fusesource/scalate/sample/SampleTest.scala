@@ -48,13 +48,22 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("ssp/exampleIncludes.ssp", "included from /includes/something.jsp",
     "included from /ssp/child/foo.ssp", "included from /includes/something.jsp", "Finished including!")
 
+  testPageContains("ssp/errors/badAttributeType.ssp",
+    "error: not found: type StringF",
+    "in /ssp/errors/badAttributeType.ssp near line 3 col 13")
+  
+  testPageContains("ssp/errors/badExpression.ssp",
+    "error: not found: value nameX",
+    "in /ssp/errors/badExpression.ssp near line 5 col 13")
+
+  testPageContains("ssp/errors/missingAttribute.ssp", "The value for 'name' was not set")
+  testPageContains("ssp/errors/missingInclude.ssp", "Could not load resource")
+  
   testPageContains("ssp/ifExpression.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/ifExpression2.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/implicitParamTest.ssp", "encoded '/somePath'", "encoded2 '/anotherPath'", "encoded3 '/path3'")
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
   testPageContains("ssp/matchExpression.ssp", "i = 1", "i is 1", "i = 2", "i is 2", "i = 3", "i is something")
-  testPageContains("ssp/missingAttribute.ssp", "The value for 'name' was not set")
-  testPageContains("ssp/missingInclude.ssp", "Could not load resource")
 
   testPage("ssp/noLayout.ssp") {
     pageContains("No Layout", "This page has no separate layout")
@@ -82,11 +91,30 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("foo/def", "The item id is", "def")
 
   testPageContains("scaml/defaultAttribute.scaml", "James")
-  testPageContains("scaml/errors/templateCompileError.scaml", "Inconsistent indent level detected: intended too shallow", "%h1 Template Compiler Error")
-  testPageContains("scaml/errors/scalaCompileError.scaml", "error: not found: value unknown", "- for (i &lt;-")
+
+  testPageContains("scaml/errors/badAttributeType.scaml",
+    "error: not found: type StringT",
+    "in /scaml/errors/badAttributeType.scaml near line 19 col 13")
+
+  testPageContains("scaml/errors/badExpression.scaml",
+    "error: not found: value nameX",
+    "in /scaml/errors/badExpression.scaml near line 24 col 11")
+
+  testPageContains("scaml/errors/missingAttribute.scaml", "The value for 'name' was not set")
+  testPageContains("scaml/errors/missingInclude.scaml", "Could not load resource")
+
+  testPageContains("scaml/errors/scalaCompileError.scaml",
+    "error: not found: value unknown",
+    "in /scaml/errors/scalaCompileError.scaml near line 25 col 17",
+    "- for (i &lt;-")
+
+  testPageContains("scaml/errors/templateCompileError.scaml",
+    "Inconsistent indent level detected: intended too shallow",
+    "in /scaml/errors/templateCompileError.scaml near line 23 col 4",
+    "%h1 Template Compiler Error")
+
+
   testPageContains("scaml/locale.scaml", "22.0 / 7 = 3.143")
-  testPageContains("scaml/missingAttribute.scaml", "The value for 'name' was not set")
-  testPageContains("scaml/missingInclude.scaml", "Could not load resource")
   testPageContains("scaml/optionTest.scaml", "no foo")
   testPageContains("scaml/renderObject.scaml", "Strachan")
   testPageContains("scaml/renderCaseClass.scaml", "Strachan", "<hr/>", "Chirino")

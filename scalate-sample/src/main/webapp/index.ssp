@@ -60,9 +60,6 @@ The following use JSP style syntax
     <a href="ssp/defaultAttribute.ssp">an SSP with an attribute using a default value</a>
   </li>
   <li>
-    <a href="ssp/missingAttribute.ssp">try an SSP with missing attributes</a> (which should generate an error)
-  </li>
-  <li>
     <a href="ssp/renderTemplate.ssp">render a partial template</a>
   </li>
   <li>
@@ -118,9 +115,6 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   </li>
   <li>
     <a href="scaml/defaultAttribute.scaml">an Scaml with an attribute using a default value</a>
-  </li>
-  <li>
-    <a href="scaml/missingAttribute.scaml">try an Scaml with missing attributes</a> (which should generate an error)
   </li>
   <li>
     <a href="scaml/renderObject.scaml">render an object using its default template</a>
@@ -182,7 +176,10 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
     <a href="mustache/errors/templateCompileError.mustache">Typo in a Mustache template</a>
   </li>
   <li>
-    <a href="ssp/missingInclude.ssp">Missing include SSP template</a> or the <a href="scaml/missingInclude.scaml">scaml version</a>
+    <a href="ssp/errors/missingAttribute.ssp">Missing attribute in SSP</a> or the <a href="scaml/errors/missingAttribute.scaml">scaml version</a> 
+  </li>
+  <li>
+    <a href="ssp/errors/missingInclude.ssp">Missing include SSP template</a> or the <a href="scaml/errors/missingInclude.scaml">scaml version</a>
   </li>
 </ul>
 
