@@ -1,4 +1,4 @@
-Scalate (Scala Template Engine)
+![Scalate][logo]
 ===============================
 
 Scalate is a [Scala](http://www.scala-lang.org) based template engine which supports HAML, Mustache and JSP, Erb and Velocity style syntaxes.
@@ -20,3 +20,4 @@ Links
 * [Documentation](http://scalate.fusesource.org/documentation/)
 * [Issue Tracker](http://scalate.assembla.com/spaces/scalate/tickets)
 
+[logo]: http://scalate.fusesource.org/images/project-logo.png "Scalate"

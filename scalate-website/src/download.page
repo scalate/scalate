@@ -17,6 +17,7 @@ You can download **Scalate** from the [Maven Repository](http://repo.fusesource.
 
 Download a distribution:
 
+* [1.2 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.2/scalate-distro-1.2-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.2/scalate-distro-1.2-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/07/release-1-2.html)
 * [1.1 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/04/release-1-1.html)
 * [1.0 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/04/release-1-0.html)
 
