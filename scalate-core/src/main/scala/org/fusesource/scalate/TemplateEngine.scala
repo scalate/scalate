@@ -36,11 +36,11 @@ import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 
 object TemplateEngine {
+
   /**
    * The default template types available in Scalate
    */
   val templateTypes: List[String] = List("mustache", "ssp", "scaml")
-
 }
 
 /**
@@ -88,9 +88,13 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
 
 
   /**
-   *
+   * Loads resources such as the templates based on URIs
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader(rootDir)
+
+  /**
+   * The supported template engines and their default extensions
+   */
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
@@ -105,7 +109,6 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
-
   lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath, combinedClassPath)
 
   def sourceDirectory = new File(workingDirectory, "src")
@@ -114,6 +117,29 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
   var classpath: String = null
   
   private var _workingDirectory: File = null
+
+  var classLoader = this.getClass.getClassLoader
+
+  /**
+   * Hy default lets bind the context so we get to reuse its methods in a template
+   */
+  var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
+
+  /**
+   * The application mode - whether its development, testing or production. We may do certain things in development mode
+   * which we don't do in production etc.
+   */
+  var mode: String = System.getProperty("scalate.mode", "production")
+  
+  private val templateCache = new HashMap[String, CacheEntry]
+  private var _cacheHits = 0
+  private var _cacheMisses = 0
+
+
+  /**
+   * Returns true if this template engine is being used in development mode.
+   */
+  def isDevelopmentMode = mode.toLowerCase.startsWith("d")
 
   def workingDirectory: File = {
     // Use a temp working directory if none is configured.
@@ -132,18 +158,6 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
   def workingDirectory_=(value:File) = {
     this._workingDirectory = value
   }
-
-
-  var classLoader = this.getClass.getClassLoader
-
-  /**
-   * Hy default lets bind the context so we get to reuse its methods in a template
-   */
-  var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
-
-  private val templateCache = new HashMap[String, CacheEntry]
-  private var _cacheHits = 0
-  private var _cacheMisses = 0
 
 
   /**
