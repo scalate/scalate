@@ -122,7 +122,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         fragment match {
           case attribute: Attribute =>
             this << attribute.pos;
-            generateBindings(List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue))) {
+            generateBindings(List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue,
+              classNamePositional = Some(attribute.className), defaultValuePositional = attribute.defaultValue))) {
               generate(remaining)
             }
             remaining = Nil

@@ -44,7 +44,8 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
           case p: AttributeFragment =>
             this << p.pos;
-            generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue))) {
+            generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue,
+              classNamePositional = Some(p.className), defaultValuePositional = p.defaultValue))) {
               generate(remaining)
             }
             remaining = Nil

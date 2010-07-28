@@ -18,27 +18,40 @@
 
 package org.fusesource.scalate
 
+import scala.util.parsing.input.Positional
+
 /**
  * Describes a variable binding that a Scalate template defines.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 case class Binding(
-  name: String,
-  className: String = "Any",
-  importMembers: Boolean = false,
-  defaultValue: Option[String] = None,
-  kind: String = "val",
-  isImplicit: Boolean = false) { 
+        name: String,
+        className: String = "Any",
+        importMembers: Boolean = false,
+        defaultValue: Option[String] = None,
+        kind: String = "val",
+        isImplicit: Boolean = false,
+        classNamePositional: Option[Positional] = None,
+        defaultValuePositional: Option[Positional] = None) {
+  
+  def classNamePositionalOrText = classNamePositional match {
+    case Some(positional) => positional
+    case _ => className
+  }
+
+  def defaultValuePositionalOrText = defaultValuePositional match {
+    case Some(positional) => positional
+    case _ => defaultValue
+  }
 }
 
 object Binding {
-  
   def of[T](
-    name: String,
-    importMembers: Boolean = false,
-    defaultValue: Option[String] = None,
-    kind: String = "val",
-    isImplicit: Boolean = false)(implicit m: Manifest[T]) =
-      new Binding(name, m.erasure.getName, importMembers, defaultValue, kind, isImplicit)
+          name: String,
+          importMembers: Boolean = false,
+          defaultValue: Option[String] = None,
+          kind: String = "val",
+          isImplicit: Boolean = false)(implicit m: Manifest[T]) =
+    new Binding(name, m.erasure.getName, importMembers, defaultValue, kind, isImplicit)
 }

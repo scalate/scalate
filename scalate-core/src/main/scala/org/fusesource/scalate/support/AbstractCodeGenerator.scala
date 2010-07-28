@@ -162,13 +162,13 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
     def generateBinding(binding: Binding): Unit = {
       def generateImplicit = if (binding.isImplicit) "implicit " else ""
 
-      def resourceMethod: String = if (binding.defaultValue.isEmpty) {
-        "attribute(" + asString(binding.name) + ")"
+      def attributeMethodCall: List[_] = if (binding.defaultValue.isEmpty) {
+        "attribute(" :: asString(binding.name) :: ")" :: Nil
       } else {
-        "attributeOrElse(" + asString(binding.name) + ", " + binding.defaultValue.get + ")"
+        "attributeOrElse(" :: asString(binding.name) :: ", " :: binding.defaultValuePositionalOrText :: ")" :: Nil
       }
 
-      this << generateImplicit + binding.kind + " " + binding.name + ": " + binding.className + " = $_scalate_$_context." + resourceMethod
+      this << generateImplicit :: binding.kind :: " " :: binding.name :: ": " + binding.classNamePositionalOrText :: " = $_scalate_$_context." :: attributeMethodCall
 
       /*
             this << generateImplicit + binding.kind + " " + binding.name + ":" + binding.className + " = ($_scalate_$_context.attributes.get(" + asString(binding.name) + ") match {"
