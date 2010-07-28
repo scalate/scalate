@@ -51,7 +51,7 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
+class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -74,7 +74,10 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
    * so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
    * the tempaltes should not be changing.
    */
-  var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
+  var allowReload = {
+    val value = System.getProperty("scalate.allowReload", "")
+    value == "true" || value == "" && isDevelopmentMode
+  }
 
   /**
    * Whether a custom classpath should be combined with the deduced classpath
@@ -124,12 +127,6 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
    * Hy default lets bind the context so we get to reuse its methods in a template
    */
   var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
-
-  /**
-   * The application mode - whether its development, testing or production. We may do certain things in development mode
-   * which we don't do in production etc.
-   */
-  var mode: String = System.getProperty("scalate.mode", "production")
   
   private val templateCache = new HashMap[String, CacheEntry]
   private var _cacheHits = 0
@@ -139,7 +136,7 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
   /**
    * Returns true if this template engine is being used in development mode.
    */
-  def isDevelopmentMode = mode.toLowerCase.startsWith("d")
+  def isDevelopmentMode = mode != null && mode.toLowerCase.startsWith("d")
 
   def workingDirectory: File = {
     // Use a temp working directory if none is configured.
@@ -149,7 +146,17 @@ class TemplateEngine(val rootDir: Option[File] = None) extends Logging {
         _workingDirectory = new File(value)
       }
       else {
-        _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+        val f = File.createTempFile("scalate-", "-workdir")
+        // now lets delete the file so we can make a new directory there instead
+        f.delete
+        if (f.mkdirs) {
+          _workingDirectory = f
+          f.deleteOnExit
+        }
+        else {
+          warn("Could not delete file " + f + " so we could create a temp directory")
+          _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+        }
       }
     }
     _workingDirectory
