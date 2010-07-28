@@ -18,7 +18,7 @@
 
 --%>
 
-<img src="/images/scalate/project-logo.png"/>
+<img src="images/scalate/project-logo.png"/>
 
 <p>
   Welcome to Scalate: the Scala Template Engine. Try surfing some of the examples below

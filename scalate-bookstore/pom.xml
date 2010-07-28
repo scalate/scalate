@@ -119,28 +119,5 @@
 
     </plugins>
   </build>
-  
-  <profiles>
-    <profile>
-      <id>precompile</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin</artifactId>
-            <version>${project.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>precompile</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles> 
-   
 </project>
 
