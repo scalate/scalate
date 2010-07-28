@@ -254,7 +254,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       this << prefix + "$_scalate_$_context.capture { "
       indent {
-        this << statement.pos;
         generateTextExpression(text, false)
         flush_text
       }
@@ -285,20 +284,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                 case Some(false) =>
                   this << "$_scalate_$_context.unescape( " :: part :: " );" :: Nil
               }
-              /*
-                            s.sanitize match {
-                              case None=>
-                                if( ScamlOptions.escape_html && false) {
-                                  this << "$_scalate_$_context << ( $_scalate_$_smart_sanitize ($_scalate_$_context, "+part+" ));"
-                                } else {
-                                  this << "$_scalate_$_context << ( "+part+" );"
-                                }
-                              case Some(true)=>
-                                this << "$_scalate_$_context <<< ( "+part+" );"
-                              case Some(false)=>
-                                this << "$_scalate_$_context << ( "+part+" );"
-                            }
-              */
               literal = true
             }
           }
@@ -323,30 +308,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             suffix = ") " + suffix;
           }
 
-          /*
-                    val takeValue = s.sanitize match {
-                      case None=>
-                        if( ScamlOptions.escape_html  && false) {
-                          prefix += " $_scalate_$_smart_sanitize ($_scalate_$_context, "
-                          suffix = ") " + suffix;
-                          false
-                        } else {
-                          true
-                        }
-                      case Some(true)=>
-                        prefix += " $_scalate_$_sanitize ( "
-                        suffix = ") " + suffix;
-                        true
-                      case Some(false)=>
-                        true
-                    }
-                    if( takeValue ) {
-                      prefix += " $_scalate_$_context.value ("
-                      suffix = ") " + suffix;
-                    }
-
-          */
-
           val method = s.sanitize match {
             case Some(true) =>
               "valueEscaped"
@@ -366,15 +327,13 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           if (s.body.isEmpty) {
             this << prefix
             indent {
-              this << s.code.pos
               this << s.code
             }
             this << suffix
           } else {
             this << prefix
             indent {
-              this << s.code.pos
-              this << s.code + " {"
+              this << s.code :: " {" :: Nil
               indent {
                 generate_with_flush(s.body)
               }
@@ -394,17 +353,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       if (statement.body.isEmpty) {
         statement.code.foreach {
           (line) =>
-            this << line.pos
-            this << line.value
+            this << line :: Nil
         }
       } else {
         statement.code.foreach {
           (line) =>
-            this << line.pos
             if (line ne statement.code.last) {
-              this << line.value
+              this << line :: Nil
             } else {
-              this << line.value + "{"
+              this << line :: "{" :: Nil
             }
         }
         indent {
@@ -436,9 +393,10 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       statement match {
         case HtmlComment(_, text, List()) => {
           write_indent
-          this << statement.pos;
+          this << statement.pos
           write_text(prefix + " ")
           if (text.isDefined) {
+            this << text.get.pos
             write_text(text.get.trim)
           }
           write_text(" " + suffix)
@@ -471,12 +429,12 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       this << statement.pos;
       statement match {
         case ScamlComment(text, List()) => {
-          this << "//" + text.getOrElse("")
+          this << "//" :: text.getOrElse("") :: Nil
         }
         case ScamlComment(text, list) => {
-          this << "/*" + text.getOrElse("")
+          this << "/*" :: text.getOrElse("") :: Nil
           list.foreach(x => {
-            this << " * " + x
+            this << " * " :: x :: Nil
           })
           this << " */"
         }
@@ -597,20 +555,24 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                 // alternate between rendering literal and interpolated expression
                 if (literal) {
                   literal = !literal
-                  asString(part)
+                  asString(part) :: Nil
                 } else {
                   literal = !literal
-                  "$_scalate_$_context.value(" + part + ", false)"
+                  List[AnyRef]("$_scalate_$_context.value(", part, ", false)")
                 }
               }
-              this << parts.mkString(" + ")
+              this << parts.foldRight(List[AnyRef]()) { case (prev, sum)=>
+                sum match {
+                  case List() => prev
+                  case _ => prev ::: " + " :: sum
+                }
+              }
               flush_text
             case s: EvaluatedText =>
-              this << s.code.pos
               if (s.body.isEmpty) {
-                this << s.code
+                this << s.code :: Nil
               } else {
-                this << s.code + " {"
+                this << s.code :: " {" :: Nil
                 indent {
                   generate_with_flush(s.body)
                 }
