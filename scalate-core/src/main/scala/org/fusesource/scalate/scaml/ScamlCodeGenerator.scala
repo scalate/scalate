@@ -278,11 +278,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               flush_text
               s.sanitize match {
                 case None =>
-                  this << "$_scalate_$_context <<< ( " + part + " );"
+                  this << "$_scalate_$_context <<< ( " :: part :: " );" :: Nil
                 case Some(true) =>
-                  this << "$_scalate_$_context.escape( " + part + " );"
+                  this << "$_scalate_$_context.escape( " :: part :: " );" :: Nil
                 case Some(false) =>
-                  this << "$_scalate_$_context.unescape( " + part + " );"
+                  this << "$_scalate_$_context.unescape( " :: part :: " );" :: Nil
               }
               /*
                             s.sanitize match {
