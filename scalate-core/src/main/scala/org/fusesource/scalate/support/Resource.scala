@@ -71,9 +71,7 @@ case class UriResource(override val uri: String, resourceLoader: ResourceLoader)
   protected def delegate = resourceLoader.resourceOrFail(uri)
 }
 
-case class FileResource(file: File) extends Resource {
-  def uri = file.getPath
-
+case class FileResource(file: File, uri: String) extends Resource {
   override def text = IOUtil.loadTextFile(file)
 
   override def reader = new FileReader(file)
@@ -163,7 +161,9 @@ object Resource {
   /**
    * Creates a [[org.fusesource.scalate.support.Resource]] from a file
    */
-  def fromFile(file: File): FileResource = FileResource(file)
+  def fromFile(file: File): FileResource = fromFile(file, file.getPath)
+  
+  def fromFile(file: File, uri: String): FileResource = FileResource(file, uri)
 
   /**
    * Creates a [[org.fusesource.scalate.support.Resource]] from a file name

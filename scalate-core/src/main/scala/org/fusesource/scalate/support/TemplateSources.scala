@@ -28,7 +28,7 @@ class StringTemplateSource(uri: String, text: String) extends StringResource(uri
 
 class UriTemplateSource(uri: String, resourceLoader: ResourceLoader) extends UriResource(uri, resourceLoader) with TemplateSource
 
-class FileTemplateSource(file: File) extends FileResource(file) with TemplateSource
+class FileTemplateSource(file: File, uri: String) extends FileResource(file, uri) with TemplateSource
 
 class URLTemplateSource(url: URL) extends URLResource(url) with TemplateSource
 

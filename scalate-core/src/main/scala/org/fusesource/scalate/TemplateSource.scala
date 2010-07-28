@@ -81,7 +81,9 @@ object TemplateSource {
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from a file
    */
-  def fromFile(file: File): FileTemplateSource = new FileTemplateSource(file)
+  def fromFile(file: File): FileTemplateSource = fromFile(file, file.getPath)
+
+  def fromFile(file: File, uri: String): FileTemplateSource = new FileTemplateSource(file, uri)
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from a file name

@@ -21,12 +21,13 @@ package org.fusesource.scalate.maven
 ;
 
 import java.io.File
-import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.AbstractMojo
+import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine};
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-import org.fusesource.scalate.Binding;
-import org.fusesource.scalate.TemplateEngine;
+
+
 import org.fusesource.scalate.servlet.ServletRenderContext;
 import org.fusesource.scalate.support.FileResourceLoader
 import org.fusesource.scalate.util.IOUtil
@@ -44,10 +45,15 @@ import org.fusesource.scalate.util.IOUtil
 class PrecompileMojo extends AbstractMojo {
   var project: MavenProject = null
   var warSourceDirectory: File = null
+  var resourcesSourceDirectory: File = null
   var targetDirectory: File = null
 
   def execute() = {
     targetDirectory.mkdirs();
+
+    getLog.debug("targetDirectory: " + targetDirectory)
+    getLog.debug("warSourceDirectory: " + warSourceDirectory)
+    getLog.debug("resourcesSourceDirectory: " + resourcesSourceDirectory)
 
     // TODO: need to customize bindings
     var engine = new TemplateEngine();
@@ -55,16 +61,20 @@ class PrecompileMojo extends AbstractMojo {
 
     engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory));
 
+    val sourceDirs = List(warSourceDirectory, resourcesSourceDirectory)
     var paths = List[String]()
-    for (extension <- engine.codeGenerators.keysIterator) {
-      paths = collectUrisWithExtension(warSourceDirectory, "", "." + extension) ::: paths;
+    for (extension <- engine.codeGenerators.keysIterator; sd <- sourceDirs if sd.exists) {
+      paths = collectUrisWithExtension(sd, "", "." + extension) ::: paths;
     }
 
-    getLog().info("Precompiling Scalate Templates into Scala classes...");
+    getLog.info("Precompiling Scalate Templates into Scala classes...");
 
     for (uri <- paths) {
-      getLog().info("   processing: " + uri);
-      val code = engine.generateScala(uri, createBindingsForPath(uri));
+      // TODO it would be easier to just generate Source + URI pairs maybe rather than searching again for the source file???
+      val file = sourceDirs.map(new File(_, uri)).find(_.exists).getOrElse(throw new Exception("Could not find " + uri + " in any paths " + sourceDirs))
+      getLog.info("    processing " + file)
+
+      val code = engine.generateScala(TemplateSource.fromFile(file, uri), createBindingsForPath(uri));
       val sourceFile = new File(targetDirectory, uri.replace(':', '_') + ".scala")
       sourceFile.getParentFile.mkdirs
       IOUtil.writeBinaryFile(sourceFile, code.source.getBytes("UTF-8"))
