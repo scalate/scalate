@@ -156,3 +156,6 @@ expect("hello James") {output}
 
 To see more examples try the [TemplateEngineTest.scala test case](http://github.com/scalate/scalate/blob/master/scalate-core/src/test/scala/org/fusesource/scalate/TemplateEngineTest.scala)
 
+### How can I precompile my templates
+
+See the section on [precompiling templates](documentation/user-guide.html#precompiling_templates) in the [user guide](documentation/user-guide.html)

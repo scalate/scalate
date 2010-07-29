@@ -12,7 +12,11 @@ Scalate is a template engine based on the Scala language.
   * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
 * Support for [layouts](#layouts) together with a powerful [console](console.html) 
 * Works well with a number of [frameworks](frameworks.html)
-* Can be used in any web application or used in a standalone application to template things like emails.
+* Can be used in any web application or used in a standalone application to generate things like emails or source code.
+
+## Template Languages
+
+Scalate supports a number of different template languages as template languages have various different sweet spots depending on your requirements.
 
 ### Ssp (Scala Server Pages)
 
@@ -558,15 +562,77 @@ Scalate does not have any hard dependencies on a web framework or even HTTP.  It
 rendering engine in your application.  For more information on how to embed in your application, please reference the 
 [Scalate Embedding Guide](scalate-embedding-guide.html)
 
+### Working Directory, Caching, Reloading
+
+Scalate uses a *working directory* to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) using the **workingDirectory** property. If no configuration is made Scalate will use the *scalate.workdir* system property by default.
+
+The [archetypes](archetypes.html) or projects created by the [scalate tool](tool.html) or the modules in the [scalate source](../source.html) all set the **scalate.workdir** to be the maven property of the same name; which defaults to *target/\_scalate*
+
+If you wanted to run a web application using a different directory, such as _/tmp_ you could do
+
+    mvn -Dscalate.workdir=/tmp jetty:run
+
+In production settings you can disable the caching and reloading of templates if you wish using the **allowCaching** and **allowReload** properties on [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) which default to **scalate.allowCaching** and **scalate.allowReload** respectively.
+
+
+### Precompiling Templates
+
+Scalate currently lazily compiles templates on the fly, then it will cache the compiled template and only recompile it if it detects the source template has changed.
+
+In production you probably want all your templates to be precompiled so that
+
+* you can detect at build time any typos in your templates, particularly if you are using [Scaml](scaml-reference.html) or [Ssp](ssp-reference.html) which use static type checking for all expressions in your template. 
+* all your templates are immediately available as a fast, compiled JVM .class file rather than taking the overhead of the first request causing a compile phase
+
+To do this you just need to include the *maven-scalate-plugin* into your project.
+
+When using the current [scalate build](../building./html) you can precompile any project using the *precompile* profile. e.g.
+
+    cd scalate-war
+    mvn install -Pprecompile
+    
+Using a maven profile helps you avoid precompiling in development mode, unless you are happy to take the speed hit - but you can include that when you do a release.
+
+The [archetypes](archetypes.html) created by the [scalate tool](tool.html) come with this profile enabled already.
+
+Otherwise you can just add this to your pom.xml
+
+{pygmentize:: xml}
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>maven-scalate-plugin</artifactId>
+      <version>${scalate-version}</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>precompile</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+{pygmentize}
+
 ### Possible Gotchas
 
-- Scalate works with expanded WARs - or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing. This is due to the Scala compiler requiring a full expended classloader path rather than taking an actual ClassLoader object.
+#### Class Loaders
 
-- Assumes template source files are all UTF-8-encoded.
+Scalate can sometimes struggle with ClassLoaders. This is due to the Scala compiler requiring an explicit class path to be specified as a String of names rather than taking an actual ClassLoader object. 
 
-- Assumes template output is all UTF-8-encoded.
+So Scalate works fine with expanded WARs, or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing or the Play Framework. But you might be able to find some application server that doens't provide an easy-to-diagnose ClassLoader object which may require an explicitly configured class path for compiling. 
 
-- No support for pre-compiled templates (e.g., via a custom Ant task).
+A work around is to precompile your templates with the maven plugin (see the section above).
+
+#### Character Encoding
+
+Scalate currently assumes that
+
+- template source files are all UTF-8-encoded.
+
+- template output is all UTF-8-encoded.
 
 
 ## IDE plugins

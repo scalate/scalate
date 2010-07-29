@@ -49,6 +49,10 @@ object TemplateEngine {
  * and caching compiled templates for quicker subsequent loads
  * of a requested template.
  *
+ * The TemplateEngine uses a ''workingDirectory'' to store the generated scala source code and the bytecode. By default
+ * this uses a dynamically generated directory. You can configure this yourself to use whatever directory you wish.
+ * Or you can use the ''scalate.workdir'' system property to specify the workingDirectory 
+ *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
@@ -66,13 +70,17 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
 
   /**
    * Set to false if you don't want the template engine to ever cache any of the compiled templates.
+   *
+   * If not explicitly configured this property can be configured using the ''scalate.allowCaching'' system property
    */
   var allowCaching = "true" == System.getProperty("scalate.allowCaching", "true")
 
   /**
    * If true, then the template engine will check to see if the template has been updated since last compiled
    * so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
-   * the tempaltes should not be changing.
+   * the templates should not be changing.
+   *
+   * If not explicitly configured this property can be configured using the ''scalate.allowReload'' system property
    */
   var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
 
@@ -135,6 +143,10 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    */
   def isDevelopmentMode = mode != null && mode.toLowerCase.startsWith("d")
 
+  /**
+   * If not explicitly configured this will default to using the ''scalate.workdir'' system property to specify the
+   * directory used for generating the scala source code and compiled bytecode - otherwise a temporary directory is used
+   */
   def workingDirectory: File = {
     // Use a temp working directory if none is configured.
     if( _workingDirectory == null ) {

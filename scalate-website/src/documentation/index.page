@@ -32,36 +32,50 @@ A detailed walk through Scalate and how to use it.
 </div>
 
 <div class="left" markdown="1">
+# Templates
+</div>
+
+<div class="right" markdown="1">
+
+<table cellspacing="20">
+<tr>
+  <td cellvalign="middle">
+# [Mustache](mustache.html) 
+  </td>
+  <td>
+Reference for the [Mustache](http://mustache.github.com/) template language.
+
+Mustache provides logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js) - so ideal for HTML templates   </td>
+</tr>
+<tr>
+  <td cellvalign="middle">
+# [Scaml](scaml-reference.html)
+  </td>
+  <td>
+Reference for the Scaml template language. 
+
+Scaml is a Scala version of [Haml](http://haml-lang.com/) and is the most DRY template engine for generating HTML
+</td>
+</tr>
+<tr>
+  <td cellvalign="middle">
+# [SSP](ssp-reference.html)
+  </td>
+  <td>
+Reference for the SSP template language. 
+
+SSP is a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails so its easy to pick up if you've used one of those and can be used to generate any textual output.
+</td>
+</tr>
+</table>
+
+</div>
+
+<div class="left" markdown="1">
 # [Frameworks](frameworks.html)
 </div>
 <div class="right" markdown="1">
 How to use Scalate with popular web frameworks
-</div>
-
-<div class="left" markdown="1">
-# [Mustache](mustache.html) </div>
-<div class="right" markdown="1">
-Reference for the [Mustache](http://mustache.github.com/) template language.
-
-Mustache provides logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js) - so ideal for HTML templates which your designers own.
-</div>
-
-<div class="left" markdown="1">
-# [Scaml](scaml-reference.html)
-</div>
-<div class="right" markdown="1">
-Reference for the Scaml template language. 
-
-Scaml is a Scala version of [Haml](http://haml-lang.com/) and is the most DRY template engine for generating HTML
-</div>
-
-<div class="left" markdown="1">
-# [SSP](ssp-reference.html)
-</div>
-<div class="right" markdown="1">
-Reference for the SSP template language. 
-
-SSP is a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails so its easy to pick up if you've used one of those and can be used to generate any textual output.
 </div>
 
 <div class="left" markdown="1">
