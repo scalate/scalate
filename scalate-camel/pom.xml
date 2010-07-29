@@ -32,7 +32,7 @@
   <description>Camel component for scalate</description>
 
   <properties>
-    <camelVersion>2.2.0</camelVersion>
+    <camelVersion>2.4.0</camelVersion>
   </properties>
 
   <dependencies>
