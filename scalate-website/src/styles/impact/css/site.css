@@ -16,12 +16,11 @@ h1, h2, h3, h4, h5, h6 {
     color: #993333;
 }
 
-/*
-h1 {
-	margin-top: 0em;
-    margin-bottom: 2em;
+h2 {
+  border-top: 4px solid #E0E0E0 !important;
+  margin-top: 1.5em !important;
+  padding-top: 0.5em !important;
 }
-*/
 
 p { margin-bottom:0px; }
 
