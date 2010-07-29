@@ -1,7 +1,7 @@
 ![Scalate][logo]
 ===============================
 
-[Scalate 1.2](http://scalate.fusesource.org/blog/releases/2010/07/release-1-2.html), released 2010-07-28
+[Scalate 1.2](http://scalate.fusesource.org/blog/releases/2010/07/release-1-2.html), released 2010-07-29
 ----
 
 * Scalate now supports the [Mustache](http://scalate.fusesource.org/documentation/mustache.html) template language which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, [JAXRS](http://scalate.fusesource.org/documentation/jog.html), [Lift](http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) and [Apache Camel](http://camel.apache.org/scalate.html)
