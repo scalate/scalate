@@ -121,7 +121,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   var classLoader = this.getClass.getClassLoader
 
   /**
-   * Hy default lets bind the context so we get to reuse its methods in a template
+   * By default lets bind the context so we get to reuse its methods in a template
    */
   var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
   
