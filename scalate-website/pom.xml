@@ -29,6 +29,7 @@
 
   <artifactId>scalate-website</artifactId>
   <name>Scalate :: Website</name>
+  <packaging>pom</packaging>
 
   <build>
     <resources>
