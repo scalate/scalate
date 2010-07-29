@@ -71,9 +71,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.scala-tools</groupId>
+      <groupId>org.fusesource.mvnplugins</groupId>
       <artifactId>scala-mojo-support</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>1.10</version>
     </dependency>
             
   </dependencies>
@@ -96,9 +96,9 @@
         <version>2.4.3</version>
         <dependencies>
           <dependency>
-            <groupId>org.scala-tools</groupId>
+            <groupId>org.fusesource.mvnplugins</groupId>
             <artifactId>scala-mojo-support</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>1.10</version>
           </dependency>
         </dependencies>
       </plugin>
