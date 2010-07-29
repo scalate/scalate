@@ -74,6 +74,44 @@ xml: produces
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
+### Mustache
+
+The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](http://mustache.github.com/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). 
+
+Mustache is logic-less, using simple tags which can be used to represent loops, expressions or logical branching.
+
+Given the following attributes:
+
+{pygmentize:: scala}
+Map(
+  "name" -> "Chris",
+  "value" -> 10000,
+  "taxed_value" -> 10000 - (10000 * 0.4),
+  "in_ca" -> true
+  )
+{pygmentize}
+
+Then the following mustache file will generate
+
+{pygmentize_and_compare::}
+-----------------------------
+text: .mustache file
+-----------------------------
+Hello {{name}}
+You have just won ${{value}}!
+{{#in_ca}}
+Well, ${{taxed_value}}, after taxes.
+{{/in_ca}}
+-----------------------------
+text: produces
+-----------------------------
+Hello Chris
+You have just won $10000!
+Well, $6000.0, after taxes.
+{pygmentize_and_compare}
+
+For more detail see the [Mustache Reference](mustache.html)
+
 ## Calling Scala functions
 
 Its very simple to invoke any scala function inside Scalate. By default if the function you call returns NodeSeq then the output will already be properly XML encoded; so things output nicely without any possible cross scripting hacks etc.

@@ -9,9 +9,15 @@ Using SBT (Simple Build Tool) to build fast
 
 ## Building with SBT
 
-You can use [sbt](http://code.google.com/p/simple-build-tool/) as a build tool - its particularly well suited to rapid edit-compile-test cycles.
+You can use [sbt](http://code.google.com/p/simple-build-tool/) to build Scalate - its particularly well suited to rapid edit-compile-test cycles.
 
 ### Setting up SBT
+
+We use the maven pom.xml to describe dependencies between modules and to describe the various remote maven repositories used to download jars.  The SBT build then uses the dependencies downloaded in your local maven repository. This saves us having to maintain duplicate information for dependency versions and repositories across both both the Maven and SBT builds. 
+
+One day it would be nice for SBT to just be able to parse the pom.xml and find that information for itself, so folks won't have to do a Maven build first. Until then you first need to perform a maven build as [described here](building.html) to download all the dependencies to your local maven repository before you can use SBT:
+
+    mvn install -Pdownload
 
 The first time you run *sbt* you need to tell it to update its dependencies from the maven pom.xml files. So type
 
@@ -43,6 +49,12 @@ To sit in incremental mode, re-running all the test cases as you edit code
 Or to just re-run failed test cases interactively
 
     ~ test-quick
+    
+If you want to experiment with a single test case, type
+
+    ~ test-only *FooTest
+    
+Then as you edit source code, SBT will incrementally rebuild your code and on each successful build it will rerun the FooTest class (in whatever package it can find it).
     
 ### See Also
 

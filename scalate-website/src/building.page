@@ -9,9 +9,9 @@ The way most developers get started contributing to a project.
 
 ## Building with Maven
 
-{project_name:} uses [Maven](http://maven.apache.org/) as its build tool. If you don't fancy using Maven you can use your IDE directly or [Download](download.html) a distribution or JAR.
+Scalate uses [Maven](http://maven.apache.org/) as its primary build tool for performing releases and uses the pom.xml to describe dependencies between modules. 
 
-Alternatively you can try using [sbt](sbt.html) which is particularly good for rapid edit-compile-test cycles
+If you don't fancy using Maven you can try using [sbt](sbt.html) which is particularly good for rapid edit-compile-test cycles or use your IDE directly or [Download](download.html) a distribution or JAR.
 
 ### Prequisites
 
@@ -56,18 +56,8 @@ You can also get Maven to do this for you:
 
     mvn eclipse:add-maven-repo -Declipse.workspace=/path/to/the/workspace/ 
 
-
-## Building with SBT
-
-We currently support both a [Maven](http://maven.apache.org/) and [SBT](http://code.google.com/p/simple-build-tool/) build. We tend to use Maven for doing signed releases and reporting and SBT for incremental compiling and testing when in development.
-
-If you want to just use SBT then you first need to perform a maven build as described above to download all the dependencies
-
-    mvn install -Pdownload
-
-The SBT build then uses the dependencies downloaded in your local maven repository. This saves us having to maintain duplicate information for dependency versions and repositories across both builds; the SBT build just reuses the dependencies and repositories from Maven. One day it would be nice for SBT to just be able to parse the pom.xml and find that information for itself, so folks won't have to do a Maven build first.
-
 ### See Also
 
+* [Building with SBT](sbt.html)
 * [Source](source.html)
 * [Developer Links](developers.html)
