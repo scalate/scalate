@@ -154,6 +154,14 @@ val output = engine.layout(template, Map("name" -> "James"))
 expect("hello James") {output} 
 {pygmentize}
 
+Or you can use the [TemplateSource companion object](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html) helper methods...
+
+{pygmentize:: scala}
+// can use fromString, fromUri etc
+val source = TemplateSource.fromFile("foo.ssp")
+val output = engine.layout(source, Map("name" -> "James")) 
+{pygmentize}
+
 To see more examples try the [TemplateEngineTest.scala test case](http://github.com/scalate/scalate/blob/master/scalate-core/src/test/scala/org/fusesource/scalate/TemplateEngineTest.scala)
 
 ### How can I precompile my templates

@@ -67,6 +67,14 @@ Reference for the SSP template language.
 SSP is a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails so its easy to pick up if you've used one of those and can be used to generate any textual output.
 </td>
 </tr>
+<tr>
+  <td cellvalign="middle">
+# [Scuery](scuery.html)
+  </td>
+  <td>
+Not really a template language but Scuery provides a way to transform HTML using CSS3 selectors rather like jQuery which can be useful for transforming layouts or pages owned by a designer using a Scala DSL. 
+</td>
+</tr>
 </table>
 
 </div>
