@@ -51,8 +51,17 @@
       <param-value>org.fusesource.scalate.sample.resources;org.fusesource.scalate.console</param-value>
     </init-param>
     <init-param>
+      <param-name>com.sun.jersey.config.feature.FilterForwardOn404</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <!--
+       TODO when this issue is released and we move to that jersey version
+       see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
+       we can scrap the WebPageContentRegex stuff
+    -->
+    <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-      <param-value>/|/sampleServlet|.+\.(mustache|scaml|ssp|ico)|(/(images|css|mustache|scaml|ssp)/.*)</param-value>
+      <param-value>/|/sampleServlet|.+\.(mustache|scaml|ssp|ico|js|css)|(/(images|css|mustache|scaml|ssp)/.*)</param-value>
     </init-param>
   </filter>
 

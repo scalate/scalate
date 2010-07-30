@@ -76,6 +76,9 @@ class TemplateEngineServlet extends HttpServlet with Logging {
     }
     else {
       context.include(template, true)
+      // we should set the OK here as we might be forwarded from the Jersey
+      // filter after it detected a 404 and found that there's no JAXRS resource at / or foo.ssp or something
+      response.setStatus(HttpServletResponse.SC_OK)
     }
   }
 

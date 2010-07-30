@@ -20,9 +20,9 @@
 -->
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	version="2.5">
+         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
 
   <display-name>Scalate Base WebApp</display-name>
 
@@ -50,6 +50,15 @@
       <param-name>com.sun.jersey.config.property.packages</param-name>
       <param-value>org.fusesource.scalate.console</param-value>
     </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.feature.FilterForwardOn404</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <!--
+       TODO when this issue is released and we move to that jersey version
+       see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
+       we can scrap the WebPageContentRegex stuff
+    -->
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
       <param-value>/|/sampleServlet|.+\.(mustache|scaml|ssp)|(/(images|css)/.*)|.+\.ico</param-value>
