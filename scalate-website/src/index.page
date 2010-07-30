@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 title: Scalate 1.3-SNAPSHOT
+=======
+title: Scalate 1.2
+>>>>>>> 4b44a8e7b2418da046eb933ab0db5a18f3d07c4f
 in_menu: true
 sort_info: 1
 --- name:overview pipeline:haml,tags
