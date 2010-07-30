@@ -564,7 +564,7 @@ rendering engine in your application.  For more information on how to embed in y
 
 ### Working Directory, Caching, Reloading
 
-Scalate uses a *working directory* to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) using the **workingDirectory** property. If no configuration is made Scalate will use the *scalate.workdir* system property by default.
+Scalate uses a *working directory* to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) using the **workingDirectory** property. If no configuration is made Scalate will use the *scalate.workdir* system property by default.
 
 The [archetypes](archetypes.html) or projects created by the [scalate tool](tool.html) or the modules in the [scalate source](../source.html) all set the **scalate.workdir** to be the maven property of the same name; which defaults to *target/\_scalate*
 
@@ -572,7 +572,7 @@ If you wanted to run a web application using a different directory, such as _/tm
 
     mvn -Dscalate.workdir=/tmp jetty:run
 
-In production settings you can disable the caching and reloading of templates if you wish using the **allowCaching** and **allowReload** properties on [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) which default to **scalate.allowCaching** and **scalate.allowReload** respectively.
+In production settings you can disable the caching and reloading of templates if you wish using the **allowCaching** and **allowReload** properties on [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) which default to **scalate.allowCaching** and **scalate.allowReload** respectively.
 
 
 ### Precompiling Templates
