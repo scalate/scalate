@@ -96,7 +96,17 @@ class ScalateModule extends ServletModule {
   @Provides @Singleton
   def createResourceConfigProperties: Map[String, AnyRef] = Map(
     "com.sun.jersey.config.property.packages" -> resourcePackageNames.mkString(";"),
+
+
+/*
+       TODO when this issue is released and we move to that jersey version
+       see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
+       we can scrap the WebPageContentRegex stuff
+*/
+
+    "com.sun.jersey.config.feature.FilterForwardOn404" -> "true",
     "com.sun.jersey.config.property.WebPageContentRegex" -> webPageContentRegex.mkString("|"),
+
     "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
     "com.sun.jersey.config.feature.Redirect" -> "true",
     "com.sun.jersey.config.feature.Trace" -> "true"
@@ -107,9 +117,14 @@ class ScalateModule extends ServletModule {
 
 
   /**
-   * The regular expression to find web content which should not be processed by the Jersey filter
+   * The regular expression to find web content which should not be processed by the Jersey filter.
+   * This is only required until we can get the FilterForwardOn404 issue resolved.
+   * See: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
    */
-  def webPageContentRegex: List[String] = List(".+\\." + templateExtensions.mkString("(", "|", ")"), "/images/.*", "/css/.*", ".+\\.ico")
+  def webPageContentRegex: List[String] = {
+    val extensions = templateExtensions ::: fileExtensionsExcludedFromJersey
+    List(".+\\." + extensions.mkString("(", "|", ")"), "/images/.*", "/css/.*")
+  }
 
   /**
    * Returns a list of package names which are recursively scanned looking for JAXRS resource classes
@@ -121,6 +136,13 @@ class ScalateModule extends ServletModule {
    * when using `with` or the RichBuilder (which uses `with`) inside a loop
    */
   protected def serveWith[T <: HttpServlet](urlPattern: String, aClass: Class[T]): Unit = serve(urlPattern).`with`(aClass)
+
+  /**
+   * Returns the list of file types which should be excluded from the Jersey filter
+   * (until we can get the FilterForwardOn404 setting working) so that they are rendered correctly
+   * using the servlet engine
+   */
+  protected def fileExtensionsExcludedFromJersey: List[String] = List("ico", "jpg", "jpeg", "gif", "png", "css", "js", "jscon")
 
   /**
    * Returns the default list of template extensions which are rendered directly with Scalate
