@@ -19,12 +19,11 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>org.fusesource.scalate.tooling</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -73,10 +72,10 @@
 
                 <copy todir="${basedir}/src/main/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../scalate-war/src/main/webapp">
-                    <exclude name="WEB-INF/web.xml"/>
-                    <exclude name="index.*"/>
-                    <exclude name="WEB-INF/_scalate"/>
-                    <exclude name="WEB-INF/_scalate/**"/>
+                    <exclude name="WEB-INF/web.xml" />
+                    <exclude name="index.*" />
+                    <exclude name="WEB-INF/_scalate" />
+                    <exclude name="WEB-INF/_scalate/**" />
                   </fileset>
                 </copy>
               </tasks>

@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
   </parent>
 
   <artifactId>scalate-website</artifactId>
@@ -60,25 +60,25 @@
             <configuration>
               <tasks>
                 
-                <!-- <exec executable="webgen" dir="${basedir}"/> -->
+                <!-- <exec executable="webgen" dir="${basedir}" /> -->
                 
-                <mkdir dir="${basedir}/target"/>
+                <mkdir dir="${basedir}/target" />
                 <exec executable="maruku">
-                  <arg file="${basedir}/../changelog.md"/>
-                  <arg value="-o"/>
-                  <arg file="${basedir}/target/changelog.html"/>
+                  <arg file="${basedir}/../changelog.md" />
+                  <arg value="-o" />
+                  <arg file="${basedir}/target/changelog.html" />
                 </exec>
                 <exec executable="maruku">
-                  <arg file="${basedir}/../notice.md"/>
-                  <arg value="-o"/>
-                  <arg file="${basedir}/target/notice.html"/>
+                  <arg file="${basedir}/../notice.md" />
+                  <arg value="-o" />
+                  <arg file="${basedir}/target/notice.html" />
                 </exec>
                 
                 
                 <!-- 
                 <copy todir="${basedir}/target">
-                  <fileset dir="${basedir}/.."/>
-                  <globmapper from="*.md" to="*.html"/>
+                  <fileset dir="${basedir}/.." />
+                  <globmapper from="*.md" to="*.html" />
                   <filterchain>
                     <filterreader classname="com.petebevin.markdown.MarkdownFilter">
                     </filterreader>
