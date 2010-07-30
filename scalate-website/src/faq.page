@@ -122,7 +122,7 @@ So for a more RAD approach we recommend using [JRebel](jrebel.html) which can ho
 ### How can I access the Servlet request, response or servletContext
 
 When using Scalate with servlets or [Jog](documentation/jog.html) you might wish to access the current request, response, servletContext or servletConfig objects used by the servlet engine. These variables are all available by default thanks to the
-[ServletRenderContext](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/servlet/ServletRenderContext.html) API which is imported by default.
+[ServletRenderContext](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/servlet/ServletRenderContext.html) API which is imported by default.
 
 So your template can refer to these variables if they are required directly - rather like they can be in JSP.
 
@@ -138,9 +138,9 @@ However if you are using 1.1 or later you can [avoid having to mention these var
 
 ### Can I use Scalate with a non file based template?
 
-You can configure the [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html)  to provide a *resourceLoader* to resolve URIs for templates. See the [Custom Template Loading in the Embedding Guide](documentation/scalate-embedding-guide.html#custom_template_loading).
+You can configure the [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html)  to provide a *resourceLoader* to resolve URIs for templates. See the [Custom Template Loading in the Embedding Guide](documentation/scalate-embedding-guide.html#custom_template_loading).
 
-Or if you are using the Scalate API directly there are methods on [TemplateEngine](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) API for loading a [Template](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/Template.html) by supplying the source of the template as a String. So you can create the template content however you wish, then compile and render the template.
+Or if you are using the Scalate API directly there are methods on [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) API for loading a [Template](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/Template.html) by supplying the source of the template as a String. So you can create the template content however you wish, then compile and render the template.
 
 For example
 {pygmentize:: scala}
@@ -154,7 +154,7 @@ val output = engine.layout(template, Map("name" -> "James"))
 expect("hello James") {output} 
 {pygmentize}
 
-Or you can use the [TemplateSource companion object](http://scalate.fusesource.org/maven/{project_snapshot_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html) helper methods...
+Or you can use the [TemplateSource companion object](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html) helper methods...
 
 {pygmentize:: scala}
 // can use fromString, fromUri etc
