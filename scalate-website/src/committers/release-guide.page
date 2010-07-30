@@ -47,7 +47,9 @@ Cutting the release
       git push
       git push origin scalate-project-{project_version:}
 
+* update the website (see below on making a branch)
 * announce the release on the [mailing list](community.html)
+* drink beers!
 
 ## Creating a branch for this release and website changes
 
@@ -56,18 +58,20 @@ If this is a major release...
 * create a branch for this new release. For example if you've just done {project_version:} then do this...
 
       git co scalate-project-{project_version:} -b scalate-{project_version:}.x
-      git push scalate-{project_version:}.x origin
+      git push origin scalate-{project_version:}.x 
 
 * check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to...
 
       remote /forge/dav/#{project_id}
 
 * edit the [scalate last release VCS Root](http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&action=editVcsRoot&cameFromTitle=Edit+Build+Configuration&vcsRootId=45&editingScope=editBuildType%3Abt119) so that it uses the new branch you have just created **scalate-project-{project_version:}**
-* until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to uncomment the snapshot version in the root pom.xml
 * ensure that the master branch has its Rakefile to point to the snapshot area
 
       remote /forge/dav/#{project_id}/versions/snapshot
 
+* kick off the TeamCity CI build for the [scalate last release](http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&tab=buildTypeStatusDiv) project
+* check the new version appears on the [home page](http://scalate.fusesource.org/)
+* you might also want to check that the [central maven repo](http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/{project_version:}/) has sync'd before announcing
 
 What all this means is now that you should be able to amend the [website for the current release](http://scalate.fusesource.org/) using the **scalate-project-{project_version:}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.fusesource.org/versions/snapshot/index.html)
 
