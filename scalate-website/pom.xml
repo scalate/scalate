@@ -76,7 +76,9 @@
               <tasks>
 
                 <!-- lets transform the readme to HTML -->
-                <copy file="${basedir}/../readme.md" tofile="${basedir}/target/readme.html">
+                <copy todir="${basedir}/target">
+                  <fileset dir="${basedir}/.."/>
+                  <globmapper from="*.md" to="*.html"/>
                   <filterchain>
                     <filterreader classname="com.petebevin.markdown.MarkdownFilter">
                     </filterreader>
