@@ -21,6 +21,9 @@
       <lineEnding>unix</lineEnding>
       <fileMode>0755</fileMode>
       <filtered>true</filtered>
+      <excludes>
+        <exclude>*.bat</exclude>
+      </excludes>
     </fileSet>
 
     <fileSet>
@@ -33,35 +36,17 @@
     </fileSet>
 
     <!-- copy the examples -->
-<!--
     <fileSet>
-      <directory>../examples</directory>
-      <outputDirectory>/examples</outputDirectory>
-      <excludes>
-        &lt;!&ndash; disable build, IDEA and Eclipse files &ndash;&gt;
-        <exclude>**/*.i*</exclude>
-        <exclude>**/eclipse-classes/**</exclude>
-        <exclude>**/.project</exclude>
-        <exclude>**/.classpath</exclude>
-        <exclude>**/target/</exclude>
-        <exclude>**/target/*</exclude>
-        <exclude>**/*.ser</exclude>
-        <exclude>**/*.log</exclude>
-      </excludes>
+      <directory>../scalate-sample</directory>
+      <outputDirectory>/examples/scalate-sample</outputDirectory>
+      <includes>
+        <include>pom.xml</include>
+        <include>run</include>
+        <include>src/**</include>
+      </includes>
       <lineEnding>unix</lineEnding>
     </fileSet>
--->
 
-   <!-- copy the java docs -->
-<!--
-   <fileSet>
-    <directory>${basedir}/scalate-core/target/javadoc/</directory>
-      <outputDirectory>/doc/javadoc</outputDirectory>
-      <includes>
-        <include>**/**</include>
-      </includes>
-    </fileSet>
--->
   </fileSets>
 
   <componentDescriptors>
