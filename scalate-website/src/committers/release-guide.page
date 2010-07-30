@@ -64,16 +64,37 @@ If this is a major release...
 
       remote /forge/dav/#{project_id}
 
+* check that index.page and metainfo have at the correct release number
+
 * edit the [scalate last release VCS Root](http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&action=editVcsRoot&cameFromTitle=Edit+Build+Configuration&vcsRootId=45&editingScope=editBuildType%3Abt119) so that it uses the new branch you have just created **scalate-project-{project_version:}**
 * ensure that the master branch has its Rakefile to point to the snapshot area
 
       remote /forge/dav/#{project_id}/versions/snapshot
+
+* ensure also that index.page has the new snapshot version number in it
 
 * kick off the TeamCity CI build for the [scalate last release](http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&tab=buildTypeStatusDiv) project
 * check the new version appears on the [home page](http://scalate.fusesource.org/)
 * you might also want to check that the [central maven repo](http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/{project_version:}/) has sync'd before announcing
 
 What all this means is now that you should be able to amend the [website for the current release](http://scalate.fusesource.org/) using the **scalate-project-{project_version:}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.fusesource.org/versions/snapshot/index.html)
+
+
+## Update the Homebrew formula
+
+* clone the [scalate homebrew repo](http://github.com/scalate/homebrew) if you've not done so yet
+* hack the Library/Formula/scalate.rb file in the [usual homebrew way](http://wiki.github.com/mxcl/homebrew/formula-cookbook)
+  * zap the md5 from /usr/local/Library/Formula/scalate.rb 
+  * edit the version number in the formula
+  * run the following command
+     
+     brew install -i scalate         
+
+  * fill in the md5
+  * check the install worked
+  * copy the scalate.rb into your Library/Formula of your homebrew clone
+* push your changes to homebrew.git
+* create an issue [like this one](http://github.com/mxcl/homebrew/issues/issue/2023)
 
 ## Using a temporary local repo
 
