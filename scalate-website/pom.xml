@@ -39,43 +39,43 @@
     </resources>
 
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <id>build-webgen</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>webgen</executable>
-              <workingDirectory>${basedir}</workingDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>  
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.4</version>
+        
+        <!-- 
         <dependencies>
           <dependency>
             <groupId>org.markdownj</groupId>
             <artifactId>markdownj</artifactId>
             <version>${markdownj-version}</version>
           </dependency>
-        </dependencies>
+        </dependencies> 
+        -->
 
         <executions>
           <execution>
             <phase>compile</phase>
             <configuration>
               <tasks>
-
-                <!-- lets transform the readme to HTML -->
+                
+                <!-- <exec executable="webgen" dir="${basedir}"/> -->
+                
+                <mkdir dir="${basedir}/target"/>
+                <exec executable="maruku">
+                  <arg file="${basedir}/../changelog.md"/>
+                  <arg value="-o"/>
+                  <arg file="${basedir}/target/changelog.html"/>
+                </exec>
+                <exec executable="maruku">
+                  <arg file="${basedir}/../notice.md"/>
+                  <arg value="-o"/>
+                  <arg file="${basedir}/target/notice.html"/>
+                </exec>
+                
+                
+                <!-- 
                 <copy todir="${basedir}/target">
                   <fileset dir="${basedir}/.."/>
                   <globmapper from="*.md" to="*.html"/>
@@ -83,7 +83,9 @@
                     <filterreader classname="com.petebevin.markdown.MarkdownFilter">
                     </filterreader>
                   </filterchain>
-                </copy>
+                </copy> 
+                -->
+                
               </tasks>
             </configuration>
             <goals>
@@ -91,7 +93,9 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin> 
+      
+      
     </plugins>
   </build>
 
