@@ -27,10 +27,8 @@ import org.fusesource.scalate.util.Logging
  * <p>This implementation will first try to load a layout by using
  * the "layout" attribute of the given template.
  *
- * If the attribute is not found then these files will be searched
- *   * "WEB-INF/layouts/default.mustache"
- *   * "WEB-INF/layouts/default.scaml"
- *   * "WEB-INF/layouts/default.ssp"
+ * If the attribute is not found then the defaultLayouts passed to the
+ * constructor will be searched in order.
  *
  * @version $Revision : 1.1 $
  */

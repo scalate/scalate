@@ -320,7 +320,7 @@ Its quite common to want to style all pages in a similar way; such as adding a h
 
 You can achieve this using the layout support in Scalate.
 
-All you need to do is create a layout template in _/WEB-INF/layouts/default.ssp_ (or _/WEB-INF/layouts/default.scaml_ if you prefer). Here is a simple example layout which lays out the body and lets the title be customized on a per page basis.
+All you need to do is create a layout template in _/WEB-INF/scalate/layouts/default.ssp_ (or _/WEB-INF/scalate/layouts/default.scaml_ if you prefer). Here is a simple example layout which lays out the body and lets the title be customized on a per page basis.
 
 {pygmentize:: jsp}
 <%@ var body: String %>
