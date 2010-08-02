@@ -2,6 +2,7 @@ package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.TemplateException
 import util.parsing.input.{Positional, CharSequenceReader, NoPosition, Position}
+import org.fusesource.scalate.support.Text
 
 sealed abstract class PageFragment extends Positional {
 }
@@ -11,18 +12,6 @@ case class QualifiedName(prefix: String, name: String) extends Positional {
 
   override def toString = qualifiedName
 
-}
-
-case class Text(value: String) extends Positional {
-  def +(other: String) = Text(value + other).setPos(pos)
-
-  def +(other: Text) = Text(value + other.value).setPos(pos)
-
-  def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
-
-  def isEmpty = value.length == 0
-  
-  override def toString = value
 }
 
 case class Attribute(name: String, value: String) extends Positional
@@ -58,17 +47,6 @@ class JspParser extends MarkupScanner {
     phraseOrFail(page, in)
   }
 
-  def text(p1: Parser[String]): Parser[Text] = {
-    positioned(p1 ^^ {Text(_)})
-  }
-
-  def upto[T](p: Parser[T]): Parser[Text] = {
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ {null} |
-      guard(p) ^^ {_ => ""} |
-      rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
-    )
-  }
 
   def some_upto[T](p: Parser[T]): Parser[Text] = {
     text(
@@ -84,7 +62,6 @@ class JspParser extends MarkupScanner {
 
   val textFragment = upto(markup) ^^ {TextFragment(_)}
 
-  // TODO not including child markup!!
   def elementTextContent = some_upto(closeElement | markup) ^^ { TextFragment(_) }
 
   def elementContent: Parser[List[PageFragment]] =

@@ -20,7 +20,7 @@ package org.fusesource.scalate.scaml
 
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
-import support.{Code, AbstractCodeGenerator}
+import support.{Text, Code, AbstractCodeGenerator}
 import util.RenderHelper
 import collection.immutable.List
 

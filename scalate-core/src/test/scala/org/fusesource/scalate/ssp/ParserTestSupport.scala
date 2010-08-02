@@ -20,6 +20,7 @@ package org.fusesource.scalate.ssp
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import collection.mutable.HashMap
+import org.fusesource.scalate.support.Text
 
 /**
  * @version $Revision : 1.1 $

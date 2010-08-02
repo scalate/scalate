@@ -18,22 +18,12 @@
 
 package org.fusesource.scalate.ssp
 
-import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.{Positional, CharSequenceReader}
+import org.fusesource.scalate.support.{Text, ScalaParseSupport}
 
 sealed abstract class PageFragment extends Positional {
   def tokenName = toString
-}
-
-case class Text(value: String) extends Positional {
-  def +(other: String) = Text(value + other).setPos(pos)
-
-  def +(other: Text) = Text(value + other.value).setPos(pos)
-
-  def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
-
-  override def toString = value
 }
 
 case class CommentFragment(comment: Text) extends PageFragment
@@ -74,10 +64,6 @@ class SspParser extends ScalaParseSupport {
       result
   }
 
-  def text(p1: Parser[String]): Parser[Text] = {
-    positioned(p1 ^^ {Text(_)})
-  }
-
   val anySpace = text("""[ \t]*""".r)
   val identifier = text("""[a-zA-Z0-9\$_]+""".r)
   val typeName = text(scalaType)
@@ -87,28 +73,8 @@ class SspParser extends ScalaParseSupport {
     case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
-  /**Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
-  def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
-
-  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
-  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
-
-  def upto[T](p1: Parser[T]): Parser[Text] = {
-    val p = p1 | directives
-
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ {null} |
-              guard(p) ^^ {_ => ""} |
-              rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
-      )
-  }
-
-  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
-    prefixed(prefix, upto(postfix) <~ postfix)
-  }
-
   val literalPart: Parser[Text] =
-  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""") ~
+  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
           opt(
             """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
                     """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |

@@ -19,8 +19,8 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
-import support.{Code, AbstractCodeGenerator}
 import collection.mutable.Stack
+import support.{Text, Code, AbstractCodeGenerator}
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
   override val stratumName = "SSP"
