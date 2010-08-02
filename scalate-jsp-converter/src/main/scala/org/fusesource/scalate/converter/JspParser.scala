@@ -78,16 +78,15 @@ class JspParser extends MarkupScanner {
   val textFragment = upto(markup) ^^ {TextFragment(_)}
 
   // TODO not including child markup!!
+/*
   def elementTextContent = upto(closeElement) ^^ {TextFragment(_)}
   def elementContent = upto(closeElement) ^^ {case t => if (t.isEmpty) Nil else List(TextFragment(t))}
+*/
 
-/*
-  def elementTextContent = upto(closeElement | markup) ^^ {TextFragment(_)}
+  def elementTextContent = upto(closeElement | markup) ^^ {t => List(TextFragment(t))}
 
   def elementContent: Parser[List[PageFragment]] = (rep(markup) ~ elementTextContent ~
-          ((markup ~ rep(elementContent)) | guard(closeElement))) ^^
-          {case m ~ t ~ m2 ~ e2 ~ ce => m :: t :: om :: oe :: Nil }
-*/
+          ((markup ~ rep1(elementContent)) | guard(closeElement)) ^^ {case x => Nil})
 
   def markup: Parser[PageFragment] = element | emptyElement
 
