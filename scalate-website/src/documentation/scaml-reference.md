@@ -3,15 +3,11 @@
 * Table of contents
 {:toc}
 
-Scaml is a markup language
-that's used to cleanly and simply describe the XHTML of any web document,
-without the use of inline code.  It is Scala version of
-[Haml](http://haml-lang.com/).
-Scaml functions as a replacement
-for inline page templating systems such as PHP, ERB, and ASP.
-However, Scaml avoids the need for explicitly coding XHTML into the template,
-because it is actually an abstract description of the XHTML,
-with some code to generate dynamic content.
+Scaml is a very DRY way of writing XHTML templates.  It is Scala
+version of [Haml](http://haml-lang.com/). Scaml functions as a replacement
+for inline page templating systems such as PHP, ERB, and ASP. However,
+Scaml avoids the need for explicitly coding XHTML into the template,
+because it uses a very concise white space active XHMLT notation.
 
 ## Features
 
@@ -20,15 +16,62 @@ with some code to generate dynamic content.
 * DRY
 * Follows CSS conventions
 * Integrates Scala code
-* Implements templates with the .scaml extension
+* [Haml](http://haml-lang.com/) or [Jade](http://jade-lang.com/) style 
+  notation
 
+## Haml vs Jade Notation
+
+Scaml supports both the original [Haml](http://haml-lang.com/) notation and a
+newer [Jade](http://jade-lang.com/) notation. The Jade dialect of Haml
+recognizes that Haml based notations are best used for rendering structured
+XHTML markup and that content is best rendered using something like markdown.
+It therefore, simplifies the element notation in exchange for complicating the
+plain content notation.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: An example .scaml file
+-----------------------------
+%html
+  %body
+    The quick brown fox jumps 
+    over the lazy dog
+-----------------------------
+text: An equivalent .jade file
+-----------------------------
+html
+  body
+    | The quick brown fox jumps 
+    | over the lazy dog
+{pygmentize_and_compare}
+
+Both examples above will render to the following:
+
+{pygmentize:: xml}
+<html>
+  <body>
+    The quick brown fox jumps 
+    over the lazy dog
+  </whiz>
+</gee>
+{pygmentize}
+
+The only difference between the Haml and Jade notation styles
+are that in the Jade notation style:
+
+* Elements do not get prefixed with `%`
+* Plain text sections must be prefixed with `|`
+
+The rest of this document will assume you are using the Haml notation
+style.  All the examples will work with the Jade notation provided
+you apply the differences listed above.
 
 ## Plain Text
 
-A substantial portion of any HTML document is its content,
-which is plain old text.
-Any Scaml line that's not interpreted as something else
-is taken to be plain text, and passed through unmodified.
+A substantial portion of any HTML document is its content, which is plain old
+text. Any Scaml line that's not interpreted as something else is taken to be
+plain text, and passed through unmodified.
+
 For example:
 
 {pygmentize_and_compare::}

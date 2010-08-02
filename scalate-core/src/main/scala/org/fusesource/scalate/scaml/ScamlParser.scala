@@ -337,8 +337,8 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
   def statement:Parser[Statement] = positioned(
       haml_comment_statement |
       html_comment_statement |
-      element_statement |
       evaluated_statement |
+      element_statement |
       attribute_statement |
       executed_statement |
       doctype_statement |

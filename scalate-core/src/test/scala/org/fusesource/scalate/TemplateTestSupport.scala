@@ -149,6 +149,8 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
 
   def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
 
+  def compileJade(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".jade", templateText))
+
   def compileSsp(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
 
   def compileMoustache(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".moustache", templateText))
