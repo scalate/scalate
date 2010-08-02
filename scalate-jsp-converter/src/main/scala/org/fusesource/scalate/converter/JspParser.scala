@@ -11,7 +11,6 @@ case class QualifiedName(prefix: String, name: String) extends Positional {
   val qualifiedName = prefix + ":" + name
 
   override def toString = qualifiedName
-
 }
 
 case class Attribute(name: String, value: String) extends Positional
@@ -64,17 +63,13 @@ class JspParser extends MarkupScanner {
 
   def elementTextContent = some_upto(closeElement | markup) ^^ { TextFragment(_) }
 
-  def elementContent: Parser[List[PageFragment]] =
-    rep(markup | elementTextContent) <~ guard(closeElement)
-
-
   def markup: Parser[PageFragment] = element | emptyElement
 
   def emptyElement = (openElement("/>")) ^^ {
     case q ~ al => Element(q, al, Nil)
   }
 
-  def element = (openElement(">") ~ elementContent ~ closeElement) ^^{
+  def element = (openElement(">") ~ rep(markup | elementTextContent) ~ closeElement) ^^{
     case (q ~ al) ~ b ~ q2 =>
       if (q != q2) throw new InvalidJspException("Expected close element of " + q + " but found " + q2, q2.pos)
       Element(q, al, b)}
