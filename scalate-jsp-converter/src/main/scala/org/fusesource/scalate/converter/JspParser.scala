@@ -48,44 +48,42 @@ class JspParser extends MarkupScanner {
   }
 
 
-  def page: Parser[List[PageFragment]] = rep(pageFragment)
+  def some_upto[T](p: Parser[T]): Parser[Text] = {
+    text(
+      text("""\z""".r) ~ failure("end of file") ^^ {null} |
+      guard(p) ~ failure("expected any text before "+p) ^^ {null} |
+      rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
+    )
+  }
+
+  def page = rep(pageFragment)
 
   val pageFragment: Parser[PageFragment] = positioned(markup | textFragment)
 
   val textFragment = upto(markup) ^^ {TextFragment(_)}
 
-  // TODO not including child markup!!
-  def elementTextContent = upto(closeElement) ^^ {TextFragment(_)}
+  def elementTextContent = some_upto(closeElement | markup) ^^ { TextFragment(_) }
 
-  def elementContent = upto(closeElement) ^^ {case t => if (t.isEmpty) Nil else List(TextFragment(t))}
+  def elementContent: Parser[List[PageFragment]] =
+    rep(markup | elementTextContent) <~ guard(closeElement)
 
-  /*
-    def elementTextContent = upto(closeElement | markup) ^^ {TextFragment(_)}
-
-    def elementContent: Parser[List[PageFragment]] = rep(markup) ~ elementTextContent ~
-            ((markup ~ rep1(elementContent)) | (guard(closeElement))) ^^ {
-      case a ~ b ~ c => println("a: " + a + " b: " + b + " c: " + c)
-        a ::: (b :: Nil)
-    }
-  */
 
   def markup: Parser[PageFragment] = element | emptyElement
 
-  def emptyElement = (openElement <~ "/>") ^^
-          {case q ~ al => Element(q, al, Nil)}
+  def emptyElement = (openElement("/>")) ^^ {
+    case q ~ al => Element(q, al, Nil)
+  }
 
-  def element = ((openElement <~ (repS ~ ">")) ~ elementContent ~ closeElement) ^^
-          {
-            case q ~ al ~ b ~ q2 =>
-              if (q != q2) throw new InvalidJspException("Expected close element of " + q + " but found " + q2, q2.pos)
-              Element(q, al, b)
-          }
+  def element = (openElement(">") ~ elementContent ~ closeElement) ^^{
+    case (q ~ al) ~ b ~ q2 =>
+      if (q != q2) throw new InvalidJspException("Expected close element of " + q + " but found " + q2, q2.pos)
+      Element(q, al, b)}
 
   def qualifiedName = positioned(((IDENT <~ ":") ~ IDENT) ^^ {case p ~ n => QualifiedName(p, n)})
 
-  def openElement = ("<" ~> qualifiedName) ~ attributeList
+  def openElement(end:String) = "<" ~> qualifiedName ~ attributeList <~ end
 
-  def closeElement: Parser[QualifiedName] = ("</" ~> qualifiedName) <~ ">"
+  def closeElement: Parser[QualifiedName] = ("</" ~> qualifiedName) <~ repS ~ ">"
 
   def attributeList = rep(attribute)
 
