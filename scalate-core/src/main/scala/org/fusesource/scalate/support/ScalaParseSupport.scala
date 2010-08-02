@@ -19,9 +19,34 @@
 package org.fusesource.scalate.support
 
 import util.parsing.combinator.RegexParsers
-import util.parsing.input.CharArrayReader
 import CharData._
 import Integer._
+import util.parsing.input.{Positional, CharArrayReader}
+
+
+/**
+ * Is a String with positioning information
+ */
+case class Text(value: String) extends Positional {
+  def +(other: String) = Text(value + other).setPos(pos)
+
+  def +(other: Text) = Text(value + other.value).setPos(pos)
+
+  def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
+
+  def isEmpty = value.length == 0
+
+  def isWhitespace: Boolean = value.trim.length == 0
+
+  override def equals(obj: Any) = obj match {
+    case t: Text => t.value == value
+    case _ => false
+  }
+
+  override def hashCode = value.hashCode
+
+  override def toString = value
+}
 
 /**
  * @version $Revision : 1.1 $
@@ -59,6 +84,29 @@ trait ScalaParseSupport extends RegexParsers {
   def dquoted[T](p: Parser[T]): Parser[T] = surround('"', p)
 
   def tquoted[T](p: Parser[T]): Parser[T] = surround(tripleQuote, p)
+
+  /**Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2 */
+  def prefixed[T, U](p1: Parser[T], p2: Parser[U]) = p1.~!(p2) ^^ {case _ ~ x => x}
+
+  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
+  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
+
+
+  def text(p1:Parser[String]): Parser[Text] = {
+    positioned(p1 ^^ { Text(_) })
+  }
+
+  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[Text] = {
+    prefixed( prefix, upto(postfix) <~ postfix )
+  }
+
+  def upto[T](p: Parser[T]): Parser[Text] = {
+    text(
+      text("""\z""".r) ~ failure("end of file") ^^ {null} |
+              guard(p) ^^ {_ => ""} |
+              rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
+      )
+  }
 
   lazy val octalDigit: Parser[Char] = accept("octalDigit", isOctalDigit)
   lazy val hexDigit: Parser[Char] = accept("hexDigit", isHexDigit)

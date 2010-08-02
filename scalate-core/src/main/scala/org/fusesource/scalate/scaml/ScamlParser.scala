@@ -18,7 +18,6 @@
 
 package org.fusesource.scalate.scaml
 
-import _root_.org.fusesource.scalate.support.ScalaParseSupport
 import annotation.tailrec
 import _root_.org.fusesource.scalate.{InvalidSyntaxException}
 import scala.util.parsing.combinator._
@@ -28,6 +27,7 @@ import collection.mutable.ListBuffer
 import java.util.regex.Pattern
 import java.io.File
 import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.support.{Text, ScalaParseSupport}
 
 /**
  * Base class for parsers which use indentation to define
@@ -139,21 +139,6 @@ object Trim extends Enumeration {
 sealed trait Statement extends Positional
 sealed trait TextExpression extends Statement
 
-case class Text(value:String) extends Positional {
-  def +(other:String) = Text(value+other).setPos(pos)
-  def +(other:Text) = Text(value+other.value).setPos(pos)
-  def replaceAll(x:String, y:String) = Text(value.replaceAll(x,y)).setPos(pos)
-
-  override def equals(obj: Any) = if ( obj!=null && obj.isInstanceOf[Text] ) {
-    obj.asInstanceOf[Text].value.equals(value)
-  } else {
-    false
-  }
-
-  override def hashCode = value.hashCode
-
-  override def toString = value
-}
 case class Newline(skip:Boolean=true) extends Statement
 case class EvaluatedText(code:Text, body:List[Statement], preserve:Boolean, sanitize:Option[Boolean], ugly:Boolean) extends TextExpression
 case class LiteralText(text:List[Text], sanitize:Option[Boolean]) extends TextExpression {
@@ -175,25 +160,12 @@ case class Doctype(line:List[Text]) extends Statement
  */
 class ScamlParser extends IndentedParser() with ScalaParseSupport  {
 
-  /** once p1 is matched, disable backtracking.  Comsumes p1. Yeilds the result of p2 */
-  def prefixed[T, U]( p1:Parser[T], p2:Parser[U] ) = p1.~!(p2) ^^ { case _~x => x }
-  /** once p1 is matched, disable backtracking.  Does not comsume p1. Yeilds the result of p2 */
-  def guarded[T, U]( p1:Parser[T], p2:Parser[U] ) = guard(p1)~!p2 ^^ { case _~x => x }
-  
-  def upto[T](p1: Parser[T]): Parser[Text] = {
+  override def upto[T](p1: Parser[T]): Parser[Text] = {
     text(
       text("""\z""".r) ~ failure("end of file") ^^{ null } |
       guard(p1) ^^ { _ => "" } |
       rep1(not(p1) ~> ".".r) ^^ { _.mkString("") }
     )
-  }
-
-  def text(p1:Parser[String]): Parser[Text] = {
-    positioned(p1 ^^ { Text(_) })
-  }
-
-  def wrapped[T,U](prefix:Parser[T], postfix:Parser[U]):Parser[Text] = {
-    prefixed( prefix, upto(postfix) <~ postfix )
   }
 
   val dot                     = text(""".+""".r)
