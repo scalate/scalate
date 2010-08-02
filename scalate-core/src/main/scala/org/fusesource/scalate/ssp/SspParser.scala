@@ -107,12 +107,12 @@ class SspParser extends ScalaParseSupport {
     prefixed(prefix, upto(postfix) <~ postfix)
   }
 
-  val litteralPart: Parser[Text] =
+  val literalPart: Parser[Text] =
   upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""") ~
           opt(
-            """\<%""" ~ opt(litteralPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
-                    """\${""" ~ opt(litteralPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
-                    """\#""" ~ opt(litteralPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
+            """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
+                    """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
+                    """\#""" ~ opt(literalPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
                     """\\""" ^^ {s => """\"""}
             ) ^^ {
     case x ~ Some(y) => x + y
@@ -125,7 +125,7 @@ class SspParser extends ScalaParseSupport {
   val expressionFragment = wrapped("<%=", tagEnding) ^^ {ExpressionFragment(_)}
   val attributeFragement = prefixed("<%@", attribute <~ anySpace ~ tagEnding)
   val scriptletFragment = wrapped("<%", tagEnding) ^^ {ScriptletFragment(_)}
-  val textFragment = litteralPart ^^ {TextFragment(_)}
+  val textFragment = literalPart ^^ {TextFragment(_)}
 
   val pageFragment: Parser[PageFragment] = positioned(directives | commentFragment | dollarExpressionFragment |
           attributeFragement | expressionFragment | scriptletFragment |
