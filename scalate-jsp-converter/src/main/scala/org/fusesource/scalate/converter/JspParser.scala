@@ -13,7 +13,7 @@ case class QualifiedName(prefix: String, name: String) extends Positional {
   override def toString = qualifiedName
 }
 
-case class Attribute(name: String, value: String) extends Positional
+case class Attribute(name: String, value: Expression) extends Positional
 
 case class CommentFragment(comment: Text) extends PageFragment
 case class DollarExpressionFragment(code: Text) extends PageFragment
@@ -24,7 +24,7 @@ case class TextFragment(text: Text) extends PageFragment {
 
 case class Element(qname: QualifiedName, attributes: List[Attribute], body: List[PageFragment]) extends PageFragment {
   val qualifiedName = qname.qualifiedName
-  lazy val attributeMap: Map[String, String] = Map(attributes.map(a => a.name -> a.value): _*)
+  lazy val attributeMap: Map[String, Expression] = Map(attributes.map(a => a.name -> a.value): _*)
 }
 
 
@@ -34,6 +34,8 @@ case class Element(qname: QualifiedName, attributes: List[Attribute], body: List
  * @version $Revision : 1.1 $
  */
 class JspParser extends MarkupScanner {
+  protected val expressionParser = new ExpressionParser
+  
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
@@ -47,21 +49,13 @@ class JspParser extends MarkupScanner {
   }
 
 
-  def some_upto[T](p: Parser[T]): Parser[Text] = {
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ {null} |
-      guard(p) ~ failure("expected any text before "+p) ^^ {null} |
-      rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
-    )
-  }
-
   def page = rep(pageFragment)
 
   val pageFragment: Parser[PageFragment] = positioned(markup | textFragment)
 
   val textFragment = upto(markup) ^^ {TextFragment(_)}
 
-  def elementTextContent = some_upto(closeElement | markup) ^^ { TextFragment(_) }
+  def elementTextContent = someUpto(closeElement | markup) ^^ { TextFragment(_) }
 
   def markup: Parser[PageFragment] = element | emptyElement
 
@@ -82,7 +76,9 @@ class JspParser extends MarkupScanner {
 
   def attributeList = rep(attribute)
 
-  def attribute = ((S ~> IDENT <~ repS <~ "=" <~ repS) ~ STRING) ^^ {case n ~ v => Attribute(n, v)}
+  def attribute = ((S ~> IDENT <~ repS <~ "=" <~ repS) ~ STRING) ^^ {case n ~ v => Attribute(n, toExpression(v))}
+
+  def toExpression(text: String) = expressionParser.parseExpression(text)
 }
 
 class InvalidJspException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)

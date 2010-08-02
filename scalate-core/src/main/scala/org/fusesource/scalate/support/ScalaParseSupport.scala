@@ -108,6 +108,14 @@ trait ScalaParseSupport extends RegexParsers {
       )
   }
 
+  def someUpto[T](p: Parser[T]): Parser[Text] = {
+    text(
+      text("""\z""".r) ~ failure("end of file") ^^ {null} |
+      guard(p) ~ failure("expected any text before "+p) ^^ {null} |
+      rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
+    )
+  }
+
   lazy val octalDigit: Parser[Char] = accept("octalDigit", isOctalDigit)
   lazy val hexDigit: Parser[Char] = accept("hexDigit", isHexDigit)
 

@@ -49,12 +49,9 @@ class ConvertJspTest extends FunSuite {
     """<a href="${uri("/foo")}">body</a>""")
 
   assertConvert(
-    """foo <c:if test='foo'> a <c:if test='bar'> b </c:if> c </c:if> whatnot""",
+    """foo <c:if test='${foo}'> a <c:if test='${bar}'> b </c:if> c </c:if> whatnot""",
     """foo #if(foo) a #if(bar) b #end c #end whatnot""")
 
-
-  if (false) {
-    // TODO need to parse expressions in attribute values
 
   assertConvert(
     """foo <c:if test='${foo}'> bar </c:if> whatnot""",
@@ -74,7 +71,6 @@ foo
 #end
 whatnot""")
 
-  }
 
 
   def assertJustText(jsp: String): String = {
