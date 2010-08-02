@@ -8,6 +8,7 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   lazy val scalate_core = project("scalate-core", "scalate-core", new ScalateCore(_))
   lazy val scalate_test = project("scalate-test", "scalate-test", new ScalateTest(_), scalate_core)
   lazy val scalate_camel = project("scalate-camel", "scalate-camel", new ScalateCamel(_), scalate_core, scalate_test)
+  lazy val scalate_jsp_converter = project("scalate-jsp-converter", "scalate-jsp-converter", new ScalateJspConverter(_), scalate_core)
   lazy val scalate_war = project("scalate-war", "scalate-war", new ScalateWar(_), scalate_core, scalate_test)
   lazy val scalate_sample = project("scalate-sample", "scalate-sample", new ScalateSample(_), scalate_core, scalate_test, scalate_war)
   lazy val scalate_bookstore = project("scalate-bookstore", "scalate-bookstore", new ScalateBookstore(_), scalate_core, scalate_test, scalate_war)
@@ -36,6 +37,9 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   }
 
   class ScalateCamel(info: ProjectInfo) extends ScalateProject(info) {
+  }
+
+  class ScalateJspConverter(info: ProjectInfo) extends ScalateProject(info) {
   }
 
   class ScalateWar(info: ProjectInfo) extends ScalateWebProject(info) {
