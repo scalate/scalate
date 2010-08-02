@@ -23,6 +23,7 @@ import layout.{NullLayoutStrategy, LayoutStrategy}
 import mustache.MustacheCodeGenerator
 import scaml.ScamlCodeGenerator
 import ssp.SspCodeGenerator
+import jade.JadeCodeGenerator
 import support._
 import util._
 
@@ -103,7 +104,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   /**
    * The supported template engines and their default extensions
    */
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
   var filters: Map[String, Filter] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])

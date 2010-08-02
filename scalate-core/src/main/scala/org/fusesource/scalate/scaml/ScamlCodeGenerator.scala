@@ -39,7 +39,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     case Some(x) => Some(x.value)
   }
 
-  private class SourceBuilder extends AbstractSourceBuilder[Statement] {
+  protected class SourceBuilder extends AbstractSourceBuilder[Statement] {
     val text_buffer = new StringBuffer
     var element_level = 0
     var pending_newline = false
