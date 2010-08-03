@@ -58,6 +58,18 @@ class ConvertJspTest extends FunSuite {
     """something ${foo} or other""")
 
   assertConvert(
+    """something <c:out value="${foo}" escapeXml="true"/> or other""",
+    """something ${escape(foo)} or other""")
+
+  assertConvert(
+    """something <c:out value="${foo}" escapeXml="false"/> or other""",
+    """something ${unescape(foo)} or other""")
+
+  assertConvert(
+    """something <c:out value="${foo}" escapeXml="x"/> or other""",
+    """something ${value(foo, x)} or other""")
+
+  assertConvert(
     """foo <c:if test='${foo}'> a <c:if test='${bar}'> b </c:if> c </c:if> whatnot""",
     """foo #if(foo) a #if(bar) b #end c #end whatnot""")
 
@@ -67,19 +79,23 @@ class ConvertJspTest extends FunSuite {
     """foo #{ var x = foo }# whatnot""")
 
   assertConvert(
+    """foo <c:if test="${it.language eq 'Cheese'}"> bar </c:if> whatnot""",
+    """foo #if(it.getLanguage == "Cheese") bar #end whatnot""")
+
+  assertConvert(
     """foo <c:if test='${foo}'> bar </c:if> whatnot""",
     """foo #if(foo) bar #end whatnot""")
 
   assertConvert(
     """
 foo
-<c:if test="${x == 5}">
+<c:if test="${x.y == 5}">
   bar
 </c:if>
 whatnot""",
     """
 foo
-#if(x == 5)
+#if(x.getY == 5)
   bar
 #end
 whatnot""")
@@ -93,8 +109,8 @@ foo
 whatnot""",
     """
 foo
-#for(foo <- something.whatnot)
- blah ${foo.bar}
+#for(foo <- something.getWhatnot)
+ blah ${foo.getBar}
 #end
 whatnot""")
 
@@ -183,10 +199,4 @@ whatnot""")
     result
   }
 
-  def assertParse(jsp: String, ssp: String): Unit = {
-    val parser = new JspParser
-    val result = parser.parsePage(jsp)
-
-    println(jsp + " => " + result)
-  }
 }

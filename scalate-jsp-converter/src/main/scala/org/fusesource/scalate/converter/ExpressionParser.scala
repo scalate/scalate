@@ -1,21 +1,113 @@
 package org.fusesource.scalate.converter
 
 import util.parsing.input.{Positional, CharSequenceReader}
-import org.fusesource.scalate.support.{Text, ScalaParseSupport}
+import org.fusesource.scalate.support.Text
 import org.fusesource.scalate.InvalidSyntaxException
 
+object ExpressionLanguage {
+  protected val operators = Map("eq" -> "==", "ne" -> "!=",
+    "gt" -> ">", "ge" -> ">=",
+    "lt" -> "<", "le" -> "<=")
+
+  def asScala(el: String): String = {
+    // lets switch the EL style indexing to Scala parens and switch single quotes to doubles
+    var text = el.replace('[', '(').
+            replace(']', ')').
+            replace('\'', '\"')
+    for ((a, b) <- operators) {
+      text = text.replaceAll("\\s" + a + "\\s", " " + b + " ")
+    }
+    // lets convert the foo.bar into foo.getBar
+    var first = true
+    text.split('.').map(s =>
+      if (!first && s.length > 0 && s(0).isUnicodeIdentifierStart) {
+        "get" + s.capitalize
+      } else {
+        first = false
+        s
+      }).mkString(".")
+  }
+}
 sealed abstract class Expression extends Positional {
+
+  /**
+   * Returns the text of an expression as a numeric method parameter
+   */
+  def asUnquotedParam: String
+
+  /**
+   * Returns the text of an expression as a method parameter quoting String values
+   */
+  def asParam: String
+
+  /**
+   * Returns the text of an expression as a method parameter
+   */
+  def asJsp: String
+
 }
 
-case class TextExpression(text: Text) extends Expression
+case class TextExpression(text: Text) extends Expression {
+  def asUnquotedParam = text.toString
 
-case class CompositeExpression(list: List[Expression]) extends Expression
-case class DollarExpression(code: Text) extends Expression
+  def asParam = "\"" + text + "\""
+
+  def asJsp = text.toString
+
+}
+
+case class CompositeExpression(list: List[Expression]) extends Expression {
+  def asUnquotedParam = list.map(_.asUnquotedParam).mkString(" + ")
+
+  def asParam = list.map(_.asParam).mkString(" + ")
+
+  def asJsp = list.map(_.asJsp).mkString(" + ")
+}
+
+case class DollarExpression(code: Text) extends Expression {
+  val toScala = ExpressionLanguage.asScala(code.toString)
+
+  def asUnquotedParam = toScala
+
+  def asParam = toScala
+
+  def asJsp = "${" + toScala + "}"
+}
+
+/*
+case class DollarExpression(list: List[ExpressionNode]) extends Expression {
+  def code = list.map(_.toScala).mkString(" ")
+
+  def asUnquotedParam = code
+
+  def asParam = code
+
+  def asJsp = "${" + code + "}"
+
+}
+
+sealed abstract class ExpressionNode {
+  def toScala: String
+}
+
+case class TextNode(text: Text) extends ExpressionNode {
+  def toScala = text.toString
+}
+
+case class ArrayNode(list: List[ExpressionNode]) extends ExpressionNode {
+  def toScala = list.mkString("(", " ", ")")
+}
+
+case class PathNode(variable: String, name: String) extends ExpressionNode {
+  def toScala = variable + "." + name
+}
+*/
+
 
 /**
- * Parser for the KS  { E: expressions
+ * Parser for the JSTL EL expressions
  */
-class ExpressionParser extends ScalaParseSupport {
+class ExpressionParser extends MarkupScanner {
   override def skipWhitespace = false
 
 
@@ -38,7 +130,7 @@ class ExpressionParser extends ScalaParseSupport {
 
   // grammar
   //-------------------------------------------------------------------------
-  
+
   def expressionList = rep(dollarExpression | staticText)
 
   def staticText = someUpto("${") ^^ {TextExpression(_)}
@@ -46,124 +138,16 @@ class ExpressionParser extends ScalaParseSupport {
   val dollarExpression = wrapped("${", "}") ^^ {DollarExpression(_)}
 
   /*
+    val dollarExpression = ("${" ~> expression("}") <~ "}") ^^ {DollarExpression(_)}
 
-  
-  def text(p1: Parser[String]): Parser[Text] = {
-    positioned(p1 ^^ {Text(_)})
-  }
+    def expression(term: String): Parser[List[ExpressionNode]] = rep(log(path | arrayAccess | word(term))("expression"))
 
+    def word(term: String) = someUpto(term) ^^ {TextNode(_)}
 
-  def upto[T](p1: Parser[T]): Parser[Text] = {
-    val p = p1 | directives
+    def path = (IDENT ~ ("." ~> IDENT)) ^^ {case a ~ b => PathNode(a, b)}
 
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ {null} |
-              guard(p) ^^ {_ => ""} |
-              rep1(not(p) ~> ".|\r|\n".r) ^^ {_.mkString("")}
-      )
-  }
+    def arrayAccess = "[" ~> expression("]") <~ "]" ^^ {ArrayNode(_)}
 
-  def wrapped[T, U](prefix: Parser[T], postfix: Parser[U]): Parser[Text] = {
-    prefixed(prefix, upto(postfix) <~ postfix)
-  }
-
-  val anySpace = text("""[ \t]*""".r)
-  val identifier = text("""[a-zA-Z0-9\$_]+""".r)
-  val typeName = text(scalaType)
-  val someText = text(""".+""".r)
-
-  val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
-    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
-  }
-
-  val literalPart: Parser[Text] =
-  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""") ~
-          opt(
-            """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
-                    """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
-                    """\#""" ~ opt(literalPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
-                    """\\""" ^^ {s => """\"""}
-            ) ^^ {
-    case x ~ Some(y) => x + y
-    case x ~ None => x
-  }
-
-  val tagEnding = "+%>" | """%>[ \t]*\r?\n?""".r
-  val commentFragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
-  val expressionFragment = wrapped("<%=", tagEnding) ^^ {ExpressionFragment(_)}
-  val attributeFragement = prefixed("<%@", attribute <~ anySpace ~ tagEnding)
-  val scriptletFragment = wrapped("<%", tagEnding) ^^ {ScriptletFragment(_)}
-  val textFragment = literalPart ^^ {TextFragment(_)}
-
-  val pageFragment: Parser[PageFragment] = positioned(directives | commentFragment | dollarExpressionFragment |
-          attributeFragement | expressionFragment | scriptletFragment |
-          textFragment)
-
-  val pageFragments = rep(pageFragment)
-
-
-  def directives: Parser[PageFragment] = ifExpression | elseIfExpression | elseExpression |
-          matchExpression | caseExpression | otherwiseExpression |
-          forExpression | doExpression | velocityScriplet | importExpression | endExpression
-
-  // if / elseif / else
-  def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
-
-  def elseIfExpression = expressionDirective("elseif" | "elif") ^^ {ElseIfFragment(_)}
-
-  def elseExpression = emptyDirective("else") ^^ {case a => ElseFragment()}
-
-  // match / case / otherwise
-  def matchExpression = expressionDirective("match") ^^ {MatchFragment(_)}
-
-  def caseExpression = expressionDirective("case") ^^ {CaseFragment(_)}
-
-  def otherwiseExpression = emptyDirective("otherwise") ^^ {case a => OtherwiseFragment()}
-
-
-  // other directives
-  def velocityScriplet = wrapped("#{", "}#") ^^ {ScriptletFragment(_)}
-
-  def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
-
-  def doExpression = expressionDirective("do") ^^ {DoFragment(_)}
-
-  def importExpression = expressionDirective("import") ^^ {ImportFragment(_)}
-
-  def endExpression = emptyDirective("end") ^^ {case a => EndFragment()}
-
-  // useful for implementing directives
-  def emptyDirective(name: String) = text(("#" + name) | ("#(" + name + ")"))
-
-  def expressionDirective(name: String) = ("#" ~ name ~ anySpace ~ "(") ~> scalaExpression <~ ")"
-
-  def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ anySpace ~ "(") ~> scalaExpression <~ ")"
-
-  def scalaExpression: Parser[Text] = {
-    text(
-      (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
-        case a ~ b ~ c =>
-          val mid = b match {
-            case Some(tb) => "(" + tb + ")"
-            case tb => ""
-          }
-          a.mkString("") + mid + c.mkString("")
-      })
-  }
-
-  val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
-
-  private def phraseOrFail[T](p: Parser[T], in: String): T = {
-    var x = phrase(p)(new CharSequenceReader(in))
-    x match {
-      case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
-    }
-  }
-
-  def getPageFragments(in: String): List[PageFragment] = {
-    phraseOrFail(pageFragments, in)
-  }
   */
 }
 

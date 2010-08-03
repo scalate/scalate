@@ -102,7 +102,15 @@ class JspConverter extends IndentWriter with Logging {
 
           case "out" =>
             val exp = e.attribute("value")
-            print("${" + asParam(exp) + "}")
+            print("${")
+            e.attributeMap.get("escapeXml") match {
+              case Some(TextExpression(Text("true"))) => print("escape(" + asParam(exp) + ")")
+              case Some(TextExpression(Text("false"))) => print("unescape(" + asParam(exp) + ")")
+              case Some(e) => print("value(" + asParam(exp) + ", " + asUnquotedParam(e) + ")")
+              case _ => print(asParam(exp))
+            }
+            print("}")
+
 
           case "set" =>
             val exp = e.attribute("value")
@@ -140,28 +148,15 @@ class JspConverter extends IndentWriter with Logging {
   /**
    * Returns the text of an expression as a numeric method parameter
    */
-  protected def asUnquotedParam(exp: Expression): String = exp match {
-    case t: TextExpression => t.text.toString
-    case d: DollarExpression => d.code.toString
-    case CompositeExpression(list) => list.map(asUnquotedParam(_)).mkString(" + ")
-  }
+  protected def asUnquotedParam(exp: Expression): String = exp.asUnquotedParam
 
   /**
    * Returns the text of an expression as a method parameter
    */
-  protected def asParam(exp: Expression): String = exp match {
-    case t: TextExpression => "\"" + t.text + "\""
-    case d: DollarExpression => d.code.toString
-    case CompositeExpression(list) => list.map(asParam(_)).mkString(" + ")
-  }
-
+  protected def asParam(exp: Expression): String = exp.asParam
   /**
    * Returns the text of an expression as a method parameter
    */
-  protected def asJsp(exp: Expression): String = exp match {
-    case t: TextExpression => t.text.toString
-    case d: DollarExpression => "${" + d.code + "}"
-    case CompositeExpression(list) => list.map(asJsp(_)).mkString("")
-  }
+  protected def asJsp(exp: Expression): String = exp.asJsp
 
 }

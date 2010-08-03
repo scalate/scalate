@@ -16,7 +16,12 @@ case class QualifiedName(prefix: String, name: String) extends Positional {
 case class Attribute(name: String, value: Expression) extends Positional
 
 case class CommentFragment(comment: Text) extends PageFragment
-case class DollarExpressionFragment(code: Text) extends PageFragment
+
+case class DollarExpressionFragment(code: Text) extends PageFragment {
+  val toScala = ExpressionLanguage.asScala(code.toString)
+
+  override def toString = "${" + toScala + "}"
+}
 
 case class TextFragment(text: Text) extends PageFragment {
   override def toString = text.toString
@@ -44,7 +49,7 @@ case class Element(qname: QualifiedName, attributes: List[Attribute], body: List
  */
 class JspParser extends MarkupScanner {
   protected val expressionParser = new ExpressionParser
-  
+
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
     var x = phrase(p)(new CharSequenceReader(in))
     x match {
@@ -60,11 +65,11 @@ class JspParser extends MarkupScanner {
 
   def page = rep(pageFragment)
 
-  val pageFragment: Parser[PageFragment] = positioned(markup | textFragment)
+  val pageFragment: Parser[PageFragment] = positioned(markup | expression | textFragment)
 
-  val textFragment = upto(markup) ^^ {TextFragment(_)}
+  val textFragment = upto(markup | expression) ^^ {TextFragment(_)}
 
-  def elementTextContent = someUpto(closeElement | markup) ^^ { TextFragment(_) }
+  def elementTextContent = someUpto(closeElement | markup | expression) ^^ {TextFragment(_)}
 
   def markup: Parser[PageFragment] = element | emptyElement
 
@@ -72,20 +77,23 @@ class JspParser extends MarkupScanner {
     case q ~ al => Element(q, al, Nil)
   }
 
-  def element = (openElement(">") ~ rep(markup | elementTextContent) ~ closeElement) ^^{
+  def element = (openElement(">") ~ rep(markup | expression | elementTextContent) ~ closeElement) ^^ {
     case (q ~ al) ~ b ~ q2 =>
       if (q != q2) throw new InvalidJspException("Expected close element of " + q + " but found " + q2, q2.pos)
-      Element(q, al, b)}
+      Element(q, al, b)
+  }
 
   def qualifiedName = positioned(((IDENT <~ ":") ~ IDENT) ^^ {case p ~ n => QualifiedName(p, n)})
 
-  def openElement(end:String) = "<" ~> qualifiedName ~ attributeList <~ end
+  def openElement(end: String) = "<" ~> qualifiedName ~ attributeList <~ end
 
   def closeElement: Parser[QualifiedName] = ("</" ~> qualifiedName) <~ repS ~ ">"
 
   def attributeList = rep(attribute)
 
   def attribute = ((S ~> IDENT <~ repS <~ "=" <~ repS) ~ STRING) ^^ {case n ~ v => Attribute(n, toExpression(v))}
+
+  val expression = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
 
   def toExpression(text: String) = expressionParser.parseExpression(text)
 }
