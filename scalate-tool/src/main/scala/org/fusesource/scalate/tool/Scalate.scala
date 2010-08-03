@@ -30,7 +30,7 @@ import java.io.{InputStream, FileInputStream, File}
  * Add new commands by:
  * <ol>
  *   <li>Implementing the the [[org.fusesource.scalate.tool.Command]] trait</li>
- *   <li>Add the class names of the new commands to a <code>META-INF/services/org.fusesoruce.scalate/commands</code> file in your jar</li>
+ *   <li>Add the class names of the new commands to a <code>META-INF/services/org.fusesource.scalate/commands</code> file in your jar</li>
  *   <li>Drop your new jar into the <code>${scalate.home}/lib</code> directory.</li>
  * </ol>
  * </p>
@@ -164,7 +164,7 @@ object Scalate {
 
   def discoverCommandClasses(): List[String] = {
     var rc: List[String] = Nil
-    val resources = extensionsClassLoader.getResources("META-INF/services/org.fusesoruce.scalate/commands.index")
+    val resources = extensionsClassLoader.getResources("META-INF/services/org.fusesource.scalate/commands.index")
     while(resources.hasMoreElements) {
       val url = resources.nextElement;
       debug("loaded commands from " + url)
