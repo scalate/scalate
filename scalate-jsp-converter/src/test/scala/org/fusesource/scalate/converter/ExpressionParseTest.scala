@@ -32,12 +32,12 @@ import _root_.org.fusesource.scalate._
 class ExpressionParseTest extends FunSuite {
 
   
-  assertConvert("${foo.bar}", "foo.bar")
+  assertConvert("${foo.bar}", "foo.getBar")
   assertConvert("${foo[123]}", "foo(123)")
-  assertConvert("${foo.bar[123]}", "foo.bar(123)")
-  assertConvert("${foo.bar lt 5}", "foo.bar < 5")
-  assertConvert("${foo.bar eq 5}", "foo.bar == 5")
-  assertConvert("${it.language eq 'foo'}", "it.language == \"foo\"")
+  assertConvert("${foo.bar[123]}", "foo.getBar(123)")
+  assertConvert("${foo.bar lt 5}", "foo.getBar < 5")
+  assertConvert("${foo.bar eq 5}", "foo.getBar == 5")
+  assertConvert("${it.language eq 'foo'}", "it.getLanguage == \"foo\"")
   
 
 
