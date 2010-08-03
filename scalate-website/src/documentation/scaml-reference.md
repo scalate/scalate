@@ -52,8 +52,8 @@ Both examples above will render to the following:
   <body>
     The quick brown fox jumps 
     over the lazy dog
-  </whiz>
-</gee>
+  </body>
+</html>
 {pygmentize}
 
 The only difference between the Haml and Jade notation styles
