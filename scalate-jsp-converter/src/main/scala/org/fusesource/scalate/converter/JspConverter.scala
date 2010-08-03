@@ -1,6 +1,7 @@
 package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.support.Text
+import org.fusesource.scalate.util.Logging
 
 trait IndentWriter {
   var out = new StringBuilder
@@ -32,7 +33,7 @@ trait IndentWriter {
   def text = out.toString
 }
 
-class JspConverter extends IndentWriter {
+class JspConverter extends IndentWriter with Logging {
   var coreLibraryPrefix: String = "c"
 
   def convert(jsp: String): String = {
@@ -71,7 +72,9 @@ class JspConverter extends IndentWriter {
             val exp = e.attributeMap.getOrElse("value", TextExpression(Text("")))
             print("${uri(" + asParam(exp) + ")}")
 
-          case _ => print(e)
+          case _ =>
+            warn("No converter available for tag <" + coreLibraryPrefix + ":" + name + ">: " + e)
+            print(e)
         }
       case _ => print(e)
     }

@@ -45,6 +45,11 @@ class ConvertJspTest extends FunSuite {
 
 
   assertConvert(
+    """blah <c:url value='/foo/${x}/bar/${y}'/> blah""",
+    """blah ${uri("/foo/" + x + "/bar/" + y)} blah""")
+
+
+  assertConvert(
     """<a href="<c:url value='/foo'/>">body</a>""",
     """<a href="${uri("/foo")}">body</a>""")
 
