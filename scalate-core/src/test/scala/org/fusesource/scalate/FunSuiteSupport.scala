@@ -38,9 +38,7 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
   /**
    * Returns the base directory of the current project
    */
-  def baseDir = {
-    new File(_basedir)
-  }
+  def baseDir = new File(_basedir)
 
 
   override protected def beforeAll(map: Map[String, Any]): Unit = {

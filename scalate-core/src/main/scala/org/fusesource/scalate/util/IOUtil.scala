@@ -21,8 +21,15 @@ package org.fusesource.scalate.util
 
 import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
+import org.fusesource.scalate.support.FileResource
 
 object IOUtil extends Logging {
+
+  /**
+   * Allows a File to be converted to a FileResource which also provides a Rich API for files
+   */
+  implicit def toResource(file: File) = new FileResource(file, file.getPath)
+  implicit def toFile(resource: FileResource): File = resource.asFile
 
   /**
    * Creates any parent directories of the given path if they do not exist

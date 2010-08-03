@@ -80,6 +80,13 @@ case class FileResource(file: File, uri: String) extends Resource {
 
   def lastModified = file.lastModified
 
+  /**
+   * Create a child file
+   */
+  def /(name: String) = new FileResource(new File(file, name), uri + "/" + name)
+
+  implicit def asFile: File = file
+
   override def toFile = Some(file)
 }
 
