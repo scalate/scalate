@@ -18,12 +18,12 @@
 
 package org.fusesource.scalate.servlet
 
-import _root_.org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.util.Logging
 import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import org.fusesource.scalate.TemplateEngine
 
 object TemplateEngineServlet {
   protected var singleton: TemplateEngineServlet = _

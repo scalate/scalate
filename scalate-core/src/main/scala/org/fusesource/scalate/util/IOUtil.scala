@@ -91,15 +91,17 @@ object IOUtil extends Logging {
 
   def writeText(path: String, text: String): Unit = writeText(new File(path), text)
 
-  def writeText(path: File, text: String): Unit = {
-    val out = new FileWriter(path)
+  def writeText(path: File, text: String): Unit = writeText(new FileWriter(path), text)
+
+  def writeText(stream: OutputStream, text: String): Unit = writeText(new OutputStreamWriter(stream), text)
+
+  def writeText(out: Writer, text: String): Unit = {
     try {
       out.write(text)
     } finally {
       out.close
     }
   }
-
 
   def writeBinaryFile(path: String, contents: Array[Byte]): Unit = writeBinaryFile(new File(path), contents)
 

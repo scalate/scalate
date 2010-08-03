@@ -56,6 +56,27 @@ trait Resource extends Logging {
   def toFile: Option[File] = None
 }
 
+/**
+ * Not all resources are writeable so this optional trait is for those
+ */
+trait WriteableResource extends Resource {
+  /**
+   * Writes text to the resource replacing its previous content
+   */
+  def text_=(value: String): Unit = IOUtil.writeText(outputStream, value)
+
+  /**
+   * Returns the output stream of the resource
+   */
+  def outputStream: OutputStream
+
+  /**
+   * Returns the writer to the content of the resource
+   */
+  def writer: Writer = new OutputStreamWriter(outputStream)
+
+}
+
 abstract class TextResource extends Resource {
   override def reader = new StringReader(text)
 
@@ -71,12 +92,14 @@ case class UriResource(override val uri: String, resourceLoader: ResourceLoader)
   protected def delegate = resourceLoader.resourceOrFail(uri)
 }
 
-case class FileResource(file: File, uri: String) extends Resource {
+case class FileResource(file: File, uri: String) extends WriteableResource {
   override def text = IOUtil.loadTextFile(file)
 
   override def reader = new FileReader(file)
 
   def inputStream = new FileInputStream(file)
+
+  def outputStream = new FileOutputStream(file)
 
   def lastModified = file.lastModified
 
@@ -90,10 +113,14 @@ case class FileResource(file: File, uri: String) extends Resource {
   override def toFile = Some(file)
 }
 
-case class URLResource(url: URL) extends Resource {
+case class URLResource(url: URL) extends WriteableResource {
   def uri = url.toExternalForm
 
-  def inputStream = url.openStream
+  lazy val connection = url.openConnection
+
+  def inputStream = connection.getInputStream
+
+  def outputStream = connection.getOutputStream
 
   def lastModified = {
     val con = url.openConnection

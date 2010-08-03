@@ -34,7 +34,7 @@ class FileTest extends FunSuiteSupport {
     val f2: File = classes
     expect(true) {f2.exists}
 
-    println("created file: " + classes.file)
+    info("created file: " + classes.file)
   }
 
   test("getting text of a file") {
@@ -43,6 +43,6 @@ class FileTest extends FunSuiteSupport {
     val t = file.text.trim
     expect("hello world!"){t}
 
-    println("Loaded file: " + file + " as text: " + t)
+    info("Loaded file: " + file + " as text: " + t)
   }
 }
