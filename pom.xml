@@ -48,6 +48,7 @@
     <jetty-port>8080</jetty-port>
     <scalate.editor>${env.SCALATE_EDITOR}</scalate.editor>
     <scalate.workdir>${basedir}/target/_scalate</scalate.workdir>
+    <test.useFile>false</test.useFile>
 
 
     <!-- version info -->
@@ -440,9 +441,9 @@
           <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
           <useSystemClassLoader>false</useSystemClassLoader>
 
-          <forkMode>pertest</forkMode>
+          <forkMode>once</forkMode>
           <childDelegation>false</childDelegation>
-          <useFile>true</useFile>
+          <useFile>${test.useFile}</useFile>
           <failIfNoTests>false</failIfNoTests>
         </configuration>
       </plugin>
