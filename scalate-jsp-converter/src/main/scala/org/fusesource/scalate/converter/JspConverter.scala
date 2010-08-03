@@ -1,5 +1,8 @@
 package org.fusesource.scalate.converter
 
+import org.fusesource.scalate.support.Text
+import org.fusesource.scalate.util.Logging
+
 trait IndentWriter {
   var out = new StringBuilder
   var indentLevel: Int = 0
@@ -30,7 +33,7 @@ trait IndentWriter {
   def text = out.toString
 }
 
-class JspConverter extends IndentWriter {
+class JspConverter extends IndentWriter with Logging {
   var coreLibraryPrefix: String = "c"
 
   def convert(jsp: String): String = {
@@ -60,16 +63,18 @@ class JspConverter extends IndentWriter {
       case Element(QualifiedName(coreLibraryPrefix, name), attributes, body) =>
         name match {
           case "if" =>
-            val exp = e.attributeMap.getOrElse("test", "true")
-            print("#if(" + exp + ")")
+            val exp = e.attributeMap.getOrElse("test", TextExpression(Text("true")))
+            print("#if(" + asParam(exp) + ")")
             convert(body)
             print("#end")
 
           case "url" =>
-            val exp = e.attributeMap.getOrElse("value", "")
-            print("${uri(\"" + exp + "\")}")
+            val exp = e.attributeMap.getOrElse("value", TextExpression(Text("")))
+            print("${uri(" + asParam(exp) + ")}")
 
-          case _ => print(e)
+          case _ =>
+            warn("No converter available for tag <" + coreLibraryPrefix + ":" + name + ">: " + e)
+            print(e)
         }
       case _ => print(e)
     }
@@ -82,4 +87,14 @@ class JspConverter extends IndentWriter {
     }
     print("/>")
   }
+
+  /**
+   * Returns the text of an expression as a method parameter
+   */
+  def asParam(exp: Expression): String = exp match {
+    case t: TextExpression => "\"" + t.text + "\""
+    case d: DollarExpression => d.code.toString
+    case CompositeExpression(list) => list.map(asParam(_)).mkString(" + ")
+  }
+
 }

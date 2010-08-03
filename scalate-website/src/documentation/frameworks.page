@@ -32,6 +32,13 @@ Jog stands for JAXRS/[Jersey](https://jersey.dev.java.net/) on [Guice](http://co
 Scalate with the [Lift framework](http://liftweb.net/).  Lift is a popular Scala based web framework with particularly powerful Comet support.
 </div>
 
+<div class="left" markdown="1">
+# [Scalatra](scalatra.html)
+</div>
+<div class="right" markdown="1">
+[Scalatra](scalatra.html) is a tiny, [Sinatra](http://www.sinatrarb.com/)-like web framework for Scala
+</div>
+
 
 <div class="left" markdown="1">
 # [Other](scalate-embedding-guide.html)

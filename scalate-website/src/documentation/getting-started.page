@@ -17,6 +17,7 @@ Lets try and get you up to speed using Scalate as quickly as possible.
 
 This guide will assume you have a reasonably recent installation of [Maven](http://maven.apache.org), say version 2.0.9 or later. If you don't, please [install one now](http://maven.apache.org/download.html).
 
+Note that if you hit any issues during this guide you might want to check out the [FAQ](../faq.html).
 </div>
 
 <div class="left" markdown="1">
@@ -109,6 +110,7 @@ At the time of writing there are [some issues with WAR overlays and SBT](http://
 <div class="right" markdown="1">
 Once you have the application working and you've played with the [Console](console.html) you might want to dive deeper into Scalate and understand how it works.
 
+* [FAQ](../faq.html) if you hit any issues along the way
 * [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
 * [Scalate Console](console.html)
 * [Documentation](documentation.html) for further information on user guides and template references

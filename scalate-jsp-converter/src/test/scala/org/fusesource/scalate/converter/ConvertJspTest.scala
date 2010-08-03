@@ -45,19 +45,18 @@ class ConvertJspTest extends FunSuite {
 
 
   assertConvert(
+    """blah <c:url value='/foo/${x}/bar/${y}'/> blah""",
+    """blah ${uri("/foo/" + x + "/bar/" + y)} blah""")
+
+
+  assertConvert(
     """<a href="<c:url value='/foo'/>">body</a>""",
     """<a href="${uri("/foo")}">body</a>""")
 
-  // TODO nested XML not working yet!
-  if (false) {
   assertConvert(
-    """foo <c:if test='foo'> a <c:if test='bar'> b </c:if> c </c:if> whatnot""",
-    """foo #if(foo) a #if (bar) b #end c #end whatnot""")
-  }
+    """foo <c:if test='${foo}'> a <c:if test='${bar}'> b </c:if> c </c:if> whatnot""",
+    """foo #if(foo) a #if(bar) b #end c #end whatnot""")
 
-
-  if (false) {
-    // TODO need to parse expressions in attribute values
 
   assertConvert(
     """foo <c:if test='${foo}'> bar </c:if> whatnot""",
@@ -77,7 +76,6 @@ foo
 #end
 whatnot""")
 
-  }
 
 
   def assertJustText(jsp: String): String = {
