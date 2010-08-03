@@ -54,9 +54,17 @@ class ConvertJspTest extends FunSuite {
     """<a href="${uri("/foo")}">body</a>""")
 
   assertConvert(
+    """something <c:out value="${foo}"/> or other""",
+    """something ${foo} or other""")
+
+  assertConvert(
     """foo <c:if test='${foo}'> a <c:if test='${bar}'> b </c:if> c </c:if> whatnot""",
     """foo #if(foo) a #if(bar) b #end c #end whatnot""")
 
+
+  assertConvert(
+    """foo <c:set var="x" value='${foo}'/> whatnot""",
+    """foo #{ var x = foo }# whatnot""")
 
   assertConvert(
     """foo <c:if test='${foo}'> bar </c:if> whatnot""",
@@ -73,6 +81,79 @@ whatnot""",
 foo
 #if(x == 5)
   bar
+#end
+whatnot""")
+
+  assertConvert(
+    """
+foo
+<c:forEach var="foo" items="${something.whatnot}">
+ blah ${foo.bar}
+</c:forEach>
+whatnot""",
+    """
+foo
+#for(foo <- something.whatnot)
+ blah ${foo.bar}
+#end
+whatnot""")
+
+  assertConvert(
+    """
+foo
+<c:forEach var="i" begin="1" end="10">
+ blah ${i}
+</c:forEach>
+whatnot""",
+    """
+foo
+#for(i <- 1.to(10))
+ blah ${i}
+#end
+whatnot""")
+
+  assertConvert(
+    """
+foo
+<c:forEach var="i" begin="1" end="10" step="3">
+ blah ${i}
+</c:forEach>
+whatnot""",
+    """
+foo
+#for(i <- 1.to(10, 3))
+ blah ${i}
+#end
+whatnot""")
+
+
+  assertConvert(
+    """
+foo
+<c:choose>
+<c:when test="${x == 5}">
+five
+</c:when>
+<c:when test="${x == 6}">
+six
+</c:when>
+<c:otherwise>
+default
+</c:otherwise>
+</c:choose>
+whatnot""",
+    """
+foo
+
+#if(x == 5)
+five
+
+#elseif(x == 6)
+six
+
+#else
+default
+
 #end
 whatnot""")
 

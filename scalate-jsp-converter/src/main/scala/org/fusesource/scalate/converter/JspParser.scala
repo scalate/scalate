@@ -24,7 +24,16 @@ case class TextFragment(text: Text) extends PageFragment {
 
 case class Element(qname: QualifiedName, attributes: List[Attribute], body: List[PageFragment]) extends PageFragment {
   val qualifiedName = qname.qualifiedName
+
   lazy val attributeMap: Map[String, Expression] = Map(attributes.map(a => a.name -> a.value): _*)
+
+  /**
+   * Returns the mandatory expression for the given attribute name or throw an expression if its not found
+   */
+  def attribute(name: String): Expression = attributeMap.get(name) match {
+    case Some(e) => e
+    case _ => throw new IllegalArgumentException("No '" + name + "' attribute on tag " + this)
+  }
 }
 
 

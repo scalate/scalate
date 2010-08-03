@@ -35,7 +35,8 @@ trait IndentWriter {
 
 class JspConverter extends IndentWriter with Logging {
   var coreLibraryPrefix: String = "c"
-
+  var whenCount = 0
+      
   def convert(jsp: String): String = {
     reset
 
@@ -59,17 +60,63 @@ class JspConverter extends IndentWriter with Logging {
   def transform(e: Element): Unit = {
     e match {
 
-      // core JSTL library
+    // core JSTL library
       case Element(QualifiedName(coreLibraryPrefix, name), attributes, body) =>
         name match {
+          case "choose" =>
+            whenCount = 0
+            convert(body)
+            print("#end")
+
+          case "forEach" =>
+            val varExp = e.attributeMap.getOrElse("var", textExpression("i"))
+            print("#for(" + asUnquotedParam(varExp) + " <- ")
+
+            e.attributeMap.get("items") match {
+              case Some(exp) =>
+                print(asParam(exp) + ")")
+
+              case _ =>
+                val begin = e.attribute("begin")
+                val end = e.attribute("end")
+                print(asUnquotedParam(begin) + ".to(" + asUnquotedParam(end))
+
+                e.attributeMap.get("step") match {
+                  case Some(step) => print(", " + asUnquotedParam(step))
+                  case _ =>
+                }
+                print("))")
+            }
+            convert(body)
+            print("#end")
+
           case "if" =>
-            val exp = e.attributeMap.getOrElse("test", TextExpression(Text("true")))
+            val exp = e.attribute("test")
             print("#if(" + asParam(exp) + ")")
             convert(body)
             print("#end")
 
+          case "otherwise" =>
+            print("#else")
+            convert(body)
+
+          case "out" =>
+            val exp = e.attribute("value")
+            print("${" + asParam(exp) + "}")
+
+          case "set" =>
+            val exp = e.attribute("value")
+            val name = e.attribute("var")
+            print("#{ var " + asUnquotedParam(name) + " = " + asParam(exp) + " }#")
+
+          case "when" =>
+            val exp = e.attribute("test")
+            print("#" + (if (whenCount == 0) "if" else "elseif") + "(" + asParam(exp) + ")")
+            whenCount +=1
+            convert(body)
+
           case "url" =>
-            val exp = e.attributeMap.getOrElse("value", TextExpression(Text("")))
+            val exp = e.attribute("value")
             print("${uri(" + asParam(exp) + ")}")
 
           case _ =>
@@ -83,18 +130,38 @@ class JspConverter extends IndentWriter with Logging {
   def print(e: Element): Unit = {
     print("<" + e.qualifiedName)
     for (a <- e.attributes) {
-      print(" " + a.name + "=\"" + a.value + "\"")
+      print(" " + a.name + "=\"" + asParam(a.value) + "\"")
     }
     print("/>")
+  }
+
+  protected def textExpression(s: String) = TextExpression(Text(s))
+
+  /**
+   * Returns the text of an expression as a numeric method parameter
+   */
+  protected def asUnquotedParam(exp: Expression): String = exp match {
+    case t: TextExpression => t.text.toString
+    case d: DollarExpression => d.code.toString
+    case CompositeExpression(list) => list.map(asUnquotedParam(_)).mkString(" + ")
   }
 
   /**
    * Returns the text of an expression as a method parameter
    */
-  def asParam(exp: Expression): String = exp match {
+  protected def asParam(exp: Expression): String = exp match {
     case t: TextExpression => "\"" + t.text + "\""
     case d: DollarExpression => d.code.toString
     case CompositeExpression(list) => list.map(asParam(_)).mkString(" + ")
+  }
+
+  /**
+   * Returns the text of an expression as a method parameter
+   */
+  protected def asJsp(exp: Expression): String = exp match {
+    case t: TextExpression => t.text.toString
+    case d: DollarExpression => "${" + d.code + "}"
+    case CompositeExpression(list) => list.map(asJsp(_)).mkString("")
   }
 
 }
