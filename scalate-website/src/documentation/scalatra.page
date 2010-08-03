@@ -1,0 +1,17 @@
+---
+title: Scalatra
+in_menu: false
+sort_info: 2
+--- name:overview
+# Scalatra
+
+
+--- name:content
+
+Scalatra
+========
+
+[Scalatra](http://scalatra.org/) is a tiny, [Sinatra](http://www.sinatrarb.com/)-like web framework for Scala
+
+There is a [good tutorial](http://www.chengin.com/tutorials/ScalatraScalate/) on getting started with Scalatra
+
