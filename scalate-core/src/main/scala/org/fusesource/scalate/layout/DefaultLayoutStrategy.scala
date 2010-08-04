@@ -24,13 +24,11 @@ import org.fusesource.scalate.util.Logging
 /**
  * The default implementation of <code>LayoutStrategy</code>.
  *
- * <p>This implementation will first try to load a layout by using
- * the "layout" attribute of the given template.
+ * This implementation will first try to load a layout by using
+ * the "layout" attribute of the given template. If that is not specified then the defaultLayouts value is used.
  *
- * If the attribute is not found then these files will be searched
- *   * "WEB-INF/scalate/layouts/default.mustache"
- *   * "WEB-INF/scalate/layouts/default.scaml"
- *   * "WEB-INF/scalate/layouts/default.ssp"
+ * Different template engines will configure the defaultLayouts in different ways. For example see
+ * [[org.fusesource.scalate.servlet.ServletTemplateEngine]] for its defaults.
  *
  * @version $Revision : 1.1 $
  */

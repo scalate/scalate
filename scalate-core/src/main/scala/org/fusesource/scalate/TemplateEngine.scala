@@ -41,7 +41,7 @@ object TemplateEngine {
   /**
    * The default template types available in Scalate
    */
-  val templateTypes: List[String] = List("mustache", "ssp", "scaml")
+  val templateTypes: List[String] = List("mustache", "ssp", "scaml", "jade")
 }
 
 /**
@@ -104,7 +104,9 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   /**
    * The supported template engines and their default extensions
    */
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator, "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator,
+    "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
+  
   var filters: Map[String, Filter] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])

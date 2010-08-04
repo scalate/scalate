@@ -53,8 +53,14 @@ object ServletTemplateEngine {
 }
 
 /**
- * A TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
+ * A Sevlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
  *
+ * The default layout files searched if no layout attribute is defined by a template are:
+ *   * "WEB-INF/scalate/layouts/default.jade"
+ *   * "WEB-INF/scalate/layouts/default.mustache"
+ *   * "WEB-INF/scalate/layouts/default.scaml"
+ *   * "WEB-INF/scalate/layouts/default.ssp"
+ *  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletTemplateEngine(val config: Config) extends TemplateEngine {
