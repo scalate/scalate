@@ -638,7 +638,11 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
                   val (key,value) = filtered.last
                   // TODO: handle the case where the line is different too.
                   val colChange = pos.column - key.column
-                  OffsetPosition(value.source, value.offset+colChange)
+                  if( colChange >=0 ) {
+                    OffsetPosition(value.source, value.offset+colChange)
+                  } else {
+                    pos
+                  }
                 }
               }
               case _=> null
