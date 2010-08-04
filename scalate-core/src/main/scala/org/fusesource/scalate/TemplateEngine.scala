@@ -93,7 +93,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   /**
    * Sets the import statements used in each generated template class
    */
-  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._")
+  var importStatements: List[String] = List("import scala.collection.JavaConversions._", "import org.fusesource.scalate.util.TemplateConversions._")
 
 
   /**

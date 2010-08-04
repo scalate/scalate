@@ -21,30 +21,6 @@ import util.parsing.input.{Positional, CharSequenceReader}
 import org.fusesource.scalate.support.Text
 import org.fusesource.scalate.InvalidSyntaxException
 
-object ExpressionLanguage {
-  protected val operators = Map("eq" -> "==", "ne" -> "!=",
-    "gt" -> ">", "ge" -> ">=",
-    "lt" -> "<", "le" -> "<=")
-
-  def asScala(el: String): String = {
-    // lets switch the EL style indexing to Scala parens and switch single quotes to doubles
-    var text = el.replace('[', '(').
-            replace(']', ')').
-            replace('\'', '\"')
-    for ((a, b) <- operators) {
-      text = text.replaceAll("\\s" + a + "\\s", " " + b + " ")
-    }
-    // lets convert the foo.bar into foo.getBar
-    var first = true
-    text.split('.').map(s =>
-      if (!first && s.length > 0 && s(0).isUnicodeIdentifierStart) {
-        "get" + s.capitalize
-      } else {
-        first = false
-        s
-      }).mkString(".")
-  }
-}
 sealed abstract class Expression extends Positional {
 
   /**
