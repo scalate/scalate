@@ -153,7 +153,21 @@ object Scalate {
     discoverCommandClasses().flatMap {
       name =>
         try {
-          Some(cl.loadClass(name).newInstance.asInstanceOf[Command])
+          val clazz = cl.loadClass(name)
+          try {
+            Some(clazz.newInstance.asInstanceOf[Command])
+          } catch {
+            case e: Exception =>
+            // It may be a scala object.. check for a module class
+            try {
+                val moduleField = cl.loadClass(name+"$").getDeclaredField("MODULE$")
+                Some(moduleField.get(null).asInstanceOf[Command])
+            } catch {
+              case e2: Exception =>
+                // throw the original error...
+                throw e
+            }
+          }
         } catch {
           case e: Exception =>
             error("Invalid command class: " + name, e)
