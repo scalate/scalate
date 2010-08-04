@@ -26,3 +26,12 @@ package org.fusesource.scalate.support
 class Elvis(val defaultValue: Any) {
   def ?:(value: Any) = if (value != null) value else defaultValue
 }
+
+/**
+ * A helper class useful for implicit conversions when legacy code iterates over a Map without explicitly
+ * decomposing the iterator value to a tuple
+ */
+case class MapEntry[A,B](key: A, value: B) {
+  def getKey = key
+  def getValue = value
+}

@@ -19,7 +19,7 @@
 package org.fusesource.scalate
 
 import _root_.org.fusesource.scalate.util.{RenderHelper, Logging}
-import _root_.org.fusesource.scalate.support.{AttributesHashMap, Elvis}
+import _root_.org.fusesource.scalate.support.{AttributesHashMap}
 import java.io._
 import collection.mutable.Stack
 
@@ -32,12 +32,6 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     update("context", DefaultRenderContext.this)
   }
   escapeMarkup = engine.escapeMarkup
-
-
-  /**
-   * Provide access to the elvis operator so that we can use it to provide null handling nicely
-   */
-  implicit def anyToElvis(value: Any): Elvis = new Elvis(value)
 
 
   /////////////////////////////////////////////////////////////////////
