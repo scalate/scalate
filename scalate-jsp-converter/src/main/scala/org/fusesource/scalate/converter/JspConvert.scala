@@ -2,18 +2,59 @@ package org.fusesource.scalate.converter
 
 import java.io.File
 import org.fusesource.scalate.util.IOUtil._
+import org.fusesource.scalate.tool.Command
+import com.beust.jcommander.{JCommander, Parameter}
+
+object JspConvertCommand extends Command {
+
+  def name = "jsp2ssp"
+
+  def summary = "Converts JSP files to SSP files"
+
+  def usage() = {
+    val commander = JCommanderHelper.create(new JspConvert, new HelpSettings)
+    // the next release of JCommander will allows setting the main program name
+    commander.usage
+  }
+
+  def process(args:List[String]) = {
+    main( args.toArray )
+    0
+  }
+
+  def main(args:Array[String]) = {
+    val converter = new JspConvert
+    val help = new HelpSettings
+    JCommanderHelper.create(converter, help).parse(args: _*)
+    if( help.help ) {
+      usage
+    } else {
+      converter.run
+    }
+  }
+
+}
+
+class HelpSettings {
+  @Parameter(names=Array("--help"), description="Displays this usage screen.")
+  var help = false
+}
 
 /**
  * Converts JSP files into SSP files
  */
 class JspConvert extends Runnable {
+
+  @Parameter(names=Array("--directory"), description="Root of the directory containing the JSP files.")
   var dir: File = new File(".")
+  @Parameter(names=Array("--extension"), description="Extension for output files")
+  var outputExtension = ".ssp"
+  @Parameter(names=Array("--recursion"), description="The number of directroy levels to recusively scan file input files.")
+  var recursionDepth = -1
+
+  var converter = new JspConverter
   var matchesFile: File => Boolean = isJsp
   var outputFile: File => File = toSsp
-  var outputExtension = ".ssp"
-  var recursionDepth = -1
-  var converter = new JspConverter
-
 
   /**
    * Recurses down the
