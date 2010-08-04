@@ -39,7 +39,13 @@ class ExpressionParseTest extends FunSuite {
   assertConvert("${foo.bar eq 5}", "foo.getBar == 5")
   assertConvert("${it.language eq 'foo'}", "it.getLanguage == \"foo\"")
   
+  assertConvert("${empty foo.bar}", "foo.getBar isEmpty")
+  assertConvert("${x && empty foo.bar}", "x && foo.getBar isEmpty")
 
+  assertConvert("${not empty foo.bar}", "!(foo.getBar isEmpty)")
+  assertConvert("${x && not empty foo.bar}", "x && !(foo.getBar isEmpty)")
+
+  assertConvert("${fn:length(foo.bar)}", "foo.getBar.size")
 
 
   def assertConvert(el: String, ssp: String): String = {

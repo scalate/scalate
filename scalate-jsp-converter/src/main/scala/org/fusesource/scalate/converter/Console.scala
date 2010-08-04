@@ -27,7 +27,7 @@ import org.fusesource.scalate.converter._
 object Console {
   def main(args: Array[String]) {
 
-    MainGenericRunner.main(args ++ Array("-i", "src/test/scala/ConsoleImports.scala"))
+    MainGenericRunner.main(args ++ Array("-i", "src/test/console/ConsoleImports.scala"))
     exit(0)
   }
 }
