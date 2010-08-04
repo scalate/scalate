@@ -50,6 +50,8 @@ class ScalateModule extends ServletModule {
 
   var scalateServletUris: List[String] = TemplateEngine.templateTypes.map(s => "*." + s)
 
+  var useJerseyUriRegex: Boolean = false
+
   /**
    * Registers the Scalate servlets
    */
@@ -93,24 +95,28 @@ class ScalateModule extends ServletModule {
    * Creates the properties used to configure the [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]]'s resource config in
    * {@link #createResourceConfig} for Jersey
    */
-  @Provides @Singleton
-  def createResourceConfigProperties: Map[String, AnyRef] = Map(
-    "com.sun.jersey.config.property.packages" -> resourcePackageNames.mkString(";"),
+  @Provides@Singleton
+  def createResourceConfigProperties: Map[String, AnyRef] = {
+    val answer = Map(
+      "com.sun.jersey.config.property.packages" -> resourcePackageNames.mkString(";"),
 
 
-/*
-       TODO when this issue is released and we move to that jersey version
-       see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
-       we can scrap the WebPageContentRegex stuff
-*/
+      "com.sun.jersey.config.feature.FilterForwardOn404" -> "true",
 
-    "com.sun.jersey.config.feature.FilterForwardOn404" -> "true",
-    "com.sun.jersey.config.property.WebPageContentRegex" -> webPageContentRegex.mkString("|"),
+      "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
+      "com.sun.jersey.config.feature.Redirect" -> "true",
+      "com.sun.jersey.config.feature.Trace" -> "true"
+      )
 
-    "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
-    "com.sun.jersey.config.feature.Redirect" -> "true",
-    "com.sun.jersey.config.feature.Trace" -> "true"
-  )
+    // as of Jersey 1.1.4-ea05 we don't need to mess with a regex
+    // see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
+    if (useJerseyUriRegex) {
+      answer ++ Map("com.sun.jersey.config.property.WebPageContentRegex" -> webPageContentRegex.mkString("|"))
+    } else {
+      answer
+    }
+  }
+
 
 
   // TODO demonstrate injection of the TemplateEngine??
