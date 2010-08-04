@@ -27,6 +27,7 @@ import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 import org.fusesource.scalate.{RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine}
+import java.io.PrintWriter
 
 /**
  * Easy access to servlet request state.
@@ -57,7 +58,10 @@ object ServletRenderContext {
  *
  * @version $Revision : 1.1 $
  */
-class ServletRenderContext(engine: TemplateEngine, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, response.getWriter) {
+class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, out) {
+  
+  def this(engine: TemplateEngine, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) = this(engine, response.getWriter, request, response, servletContext)
+
   viewPrefixes = List("WEB-INF", "")
 
   override val attributes = new AttributeMap[String, Any] {
