@@ -71,6 +71,10 @@
 
   <servlet-mapping>
     <servlet-name>TemplateEngineServlet</servlet-name>
+    <url-pattern>*.jade</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TemplateEngineServlet</servlet-name>
     <url-pattern>*.mustache</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -84,6 +88,8 @@
   <!-- END: SSP and HAML config -->
 
   <welcome-file-list>
+    <welcome-file>index.jade</welcome-file>
+    <welcome-file>index.mustache</welcome-file>
     <welcome-file>index.scaml</welcome-file>
     <welcome-file>index.ssp</welcome-file>
   </welcome-file-list>
