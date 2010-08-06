@@ -534,7 +534,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
     val uri = source.uri
     val className = generator(source).className(uri)
     val template = loadCompiledTemplate(className, allowCaching);
-    if( allowReload && resourceLoader.exists(source.uri) ) {
+    if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
       val code = generateScala(source, extraBindings);
