@@ -7,6 +7,9 @@ import java.{util => ju}
 import scala.collection.JavaConversions._
 import org.fusesource.scalate.util.TemplateConversions._
 
+case class Address(city: String, country: String)
+case class Person(name: String, address: Address)
+
 class TemplateConversionsTest extends FunSuiteSupport {
 
   test("iterate over maps using Map.Entry like object") {
@@ -25,6 +28,22 @@ class TemplateConversionsTest extends FunSuiteSupport {
     val a: String = null
 
     val answer = a ?: "default"
+    println("got answer: " + answer)
+    expect("default"){answer}
+  }
+
+  test("orElse method") {
+    val a: String = null
+
+    val answer = orElse(a, "default")
+    println("got answer: " + answer)
+    expect("default"){answer}
+  }
+
+  test("orElse with null pointer exception") {
+    val person = Person("James", null)
+
+    val answer = orElse(person.address.city, "default")
     println("got answer: " + answer)
     expect("default"){answer}
   }

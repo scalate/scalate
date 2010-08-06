@@ -5,7 +5,7 @@ import org.fusesource.scalate.support.{Elvis, MapEntry}
 /**
  * A number of helper implicit conversions for use in templates
  */
-object TemplateConversions {
+object TemplateConversions extends Logging {
 
 
   /**
@@ -16,6 +16,29 @@ object TemplateConversions {
   /**
    * Provide easy coercion from a Tuple2 returned when iterating over Java Maps to a Map.Entry type object
    */
-  implicit def tuple2ToMapEntry[A,B](value: Tuple2[A,B]) = MapEntry[A,B](value._1, value._2)
+  implicit def tuple2ToMapEntry[A, B](value: Tuple2[A, B]) = MapEntry[A, B](value._1, value._2)
+
+
+  /**
+   * A helper method for dealing with null pointers and also NullPointerException when navigating object expressions.
+   *
+   * If you are unsure if a value is null or a navigation through some object path is null then this function will
+   * evaluate the expression, catch any NullPointerExceptions caused and return the default value.
+   */
+  def orElse[T](expression: => T, defaultValue: T) = {
+    try {
+      if (expression != null) {
+        expression
+      }
+      else {
+        defaultValue
+      }
+    } catch {
+      case e: NullPointerException =>
+        debug("Handling null pointer " + e, e)
+        defaultValue
+    }
+  }
+
 
 }
