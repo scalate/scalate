@@ -16,10 +16,14 @@
 -# limitations under the License.
 -#
 
-!!! Basic
 -@ var body: String
 -@ var title : String = "Scalate Sample"
-- response.setContentType("text/html") 
+- response.setContentType("text/html")
+
+-# Only include the console if it's available and the engine is in dev mode.
+- val include_console = engine.isDevelopmentMode && engine.resourceLoader.exists("/org/fusesource/scalate/console/console_head.scaml")
+
+!!! Basic
 %html(lang="en")
   %head
     %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
@@ -27,10 +31,14 @@
     %meta(name="keywords" content="keywords,goes,here")
     %meta(name="author" content="Your Name")
 
-    = include("/org/fusesource/scalate/console/console_head.scaml")
+    - if (include_console)
+      = include("/org/fusesource/scalate/console/console_head.scaml")
 
     %link(href={uri("/css/style.css")} rel="stylesheet" type="text/css")
-    %link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
+
+    - if (include_console)
+      %link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
+
     %title
       = title
   
@@ -39,13 +47,13 @@
       .wrapper
         %ul
           - if (requestURI.startsWith("/index."))
-            %li(class="webgen-menu-level1 webgen-menu-item-selected")
+            %li
               %span Home
           - else
-            %li(class="webgen-menu-level1 webgen-menu-submenu")
+            %li
               %a(href={uri("/")}) 
                 Home
-          %li(class="webgen-menu-level1 webgen-menu-submenu")
+          %li
             %a(href="http://scalate.fusesource.org/")
               Documentation
 
@@ -56,5 +64,6 @@
     #footer
       .wrapper
         %hr
-        = include("/org/fusesource/scalate/console/console.scaml")
+        - if (include_console)
+          = include("/org/fusesource/scalate/console/console.scaml")
         

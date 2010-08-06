@@ -40,6 +40,7 @@
     <scalateEditor>\${env.SCALATE_EDITOR}</scalateEditor>
     <scalate.workdir>\${basedir}/target/_scalate</scalate.workdir>
     <scalate.package.resources>${package}.resources</scalate.package.resources>
+    <scalate.mode>development</scalate.mode>
 
     <!-- version info -->
     <jersey-version>${jersey-version}</jersey-version>
@@ -268,6 +269,10 @@
             <systemProperty>
               <name>scalate.package.resources</name>
               <value>\${scalate.package.resources}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>scalate.mode</name>
+              <value>${scalate.mode}</value>
             </systemProperty>
           </systemProperties>
           <scanIntervalSeconds>0</scanIntervalSeconds>

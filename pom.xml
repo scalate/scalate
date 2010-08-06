@@ -47,6 +47,7 @@
     <!-- environment settings -->
     <jetty-port>8080</jetty-port>
     <scalate.editor>${env.SCALATE_EDITOR}</scalate.editor>
+    <scalate.mode>development</scalate.mode>
     <scalate.workdir>${basedir}/target/_scalate</scalate.workdir>
     <test.useFile>false</test.useFile>
 
@@ -429,6 +430,10 @@
               <systemProperty>
                 <name>scalate.workdir</name>
                 <value>${scalate.workdir}</value>
+              </systemProperty>
+              <systemProperty>
+                <name>scalate.mode</name>
+                <value>${scalate.mode}</value>
               </systemProperty>
             </systemProperties>
             <scanIntervalSeconds>0</scanIntervalSeconds>
