@@ -54,14 +54,7 @@
     <!-- version info -->
     <asm-version>3.1</asm-version>
     <jar-plugin-version>2.3</jar-plugin-version>
-<!--
-    TODO when this issue is released and we move to that jersey version
-    see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
-    we can scrap the WebPageContentRegex stuff
-    
     <jersey-version>1.4-ea05</jersey-version>
--->
-    <jersey-version>1.4-SNAPSHOT</jersey-version>
 
     <jetty-version>7.1.5.v20100705</jetty-version>
     <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
