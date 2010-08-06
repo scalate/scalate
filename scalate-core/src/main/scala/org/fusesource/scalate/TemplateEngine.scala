@@ -533,8 +533,8 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri
     val className = generator(source).className(uri)
-    val template = loadCompiledTemplate(className);
-    if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
+    val template = loadCompiledTemplate(className, allowCaching);
+    if( allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
       val code = generateScala(source, extraBindings);
@@ -709,8 +709,12 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
     case Some(generator) => generator
   }
 
-  private def loadCompiledTemplate(className:String) = {
-    val cl = new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
+  private def loadCompiledTemplate(className:String, from_cache:Boolean=true) = {
+    val cl = if(from_cache) {
+      new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
+    } else {
+      classLoader
+    }
     val clazz = cl.loadClass(className)
     clazz.asInstanceOf[Class[Template]].newInstance
   }
