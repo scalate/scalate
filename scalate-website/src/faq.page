@@ -36,10 +36,6 @@ See [which template engine you should use](which.html)
 
 The license is [Apache 2 License](http://www.apache.org/licenses/LICENSE-2.0)
 
-### How do I get started?
-
-Try the [Getting Started Guide](documentation/getting-started.html) which should have you *scalating* nicely really quickly!
-
 ### How do I get support?
 
 See the [support guide](support.html) for more details.
@@ -84,13 +80,15 @@ For details on how to edit the website and how it works see [How the Site works]
 
 ## The Scalate Approach
 
-### Should I use SSP or Scaml?
+### Which template language should I use?
 
-If you know [Velocity](http://velocity.apache.org/), JSP or Erb then you will feel right at home with [SSP](documentation/ssp-reference.html) which has very similar syntax - the main difference is its use of Scala for expressions.
+See the [how to choose which template language](which.html)
 
-However if you are generating markup, particularly HTML, then we highly recommend you take a look at [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/). Scaml is a little bit of an acquired taste - if you've never used HAML before it might seem a little odd at first; but when you get used to it we're sure you'll really like it.
+### Is putting code in views a bad thing?
 
-While [SSP](documentation/ssp-reference.html) and [Scaml](documentation/scaml-reference.html) offer the same kinds of features and expressive power, using Scala expressions, iteration, navigation and pattern matching, [Scaml](documentation/scaml-reference.html) really shines for generating HTML and XML markup - its much more concise and DRY. [SSP](documentation/ssp-reference.html) is much better for generating arbitrary textual output such as emails (as Scaml is highly optimised to nested markup and HTML in particular) - or for getting you up to speed quickly on Scalate if you've only used JSP or Erb in the past.
+Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject. 
+
+If you don't like to put any code in a view then maybe start with the [mustache](documentation/mustache.html) template language.
 
 ### How does Scalate compare to JSP?
 
@@ -100,18 +98,18 @@ See our [comparison of Scalate to JSP](compare-jsp.html)
 
 We [compare approaches here](code-in-view.html), see which is right for you and your team.
 
-### Isn't putting code in views a bad thing?
-
-Well it all depends really; see [this article](code-in-view.html) for a more in depth debate on the subject.
-
 ## Using Scalate
 
 ### How do I get started?
 
-Your best bet is starting with the [User Guide](documentation/index.html) maybe starting by [running the samples](http://scalate.fusesource.org/documentation/index.html#running_the_samples) then for more detail reading either of the template references 
+Try the [Getting Started Guide](documentation/getting-started.html) which should have you *scalating* nicely really quickly!
 
-* [Ssp Reference](documentation/ssp-reference.html) 
-* [Scaml Reference](documentation/scaml-reference.html) 
+### How do I disable layouts?
+
+If you want to disable layouts, just set the **layoutStrategy** property on the [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) to be the [NullLayoutStrategy](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/layout/NullLayoutStrategy$.html)
+
+Or you can just create an empty layout. For example if you are using servlets or JAXRS, just create a template in */WEB-INF/scalate/layouts/default.ssp* which just includes the body and does not perform any actual layout.
+
 
 ### How can I use Scalate and Scala in a RAD way?
 

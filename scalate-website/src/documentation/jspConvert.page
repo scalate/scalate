@@ -1,0 +1,70 @@
+---
+title: JSP Converter
+in_menu: false
+sort_info: 2
+--- name:overview
+# JSP Convert
+
+Ditch that crappy JSP pronto!
+
+--- name:content
+
+<div class="left" markdown="1">
+# Overview
+</div>
+<div class="right" markdown="1">
+JSP Converter is a little tool for converting your legacy JSP / JSTL / JSP EL stuff into Scalate.
+</div>
+
+<div class="left" markdown="1">
+# Known issues
+</div>
+<div class="right">
+
+<p>
+  Note that JSP Converter is not totally perfect; there are going to be JSP files that need a little bit of of manual tweaking. We've done our best to cover most of the common things to try reduce as much manual intervention as possible.
+</p>
+
+<ul>
+  <li>
+    Any unknown custom tag (xml prefixed element) is listed on the console as a warning. Its easy to hack the JspConvert class if you want to add support for more JSTL or common custom tags. Most of the common JSTL tags are covered but we love <a href="../contributing.html">contributions</a> if you want to add more.    
+  </li>
+  <li>
+When converting expressions like <i>foo.bar</i> to the scala equivalent <i>foo.getBar</i> (since Scala is typesafe and doesn't use runtime reflection), we cannot detect boolean properties easily from JSP, so you might get some compile errors where <i>foo.getBar</i> needs to be changed to <i>foo.isBar</i>
+  </li>
+</ul>
+
+</div>
+
+<div class="left" markdown="1">
+# Notes
+</div>
+
+<div class="right">
+
+<p>
+  Iterating over maps tends to be different in scala. In JSTL / EL you tend to iterate over a map which returns a Map.Entry object. In Scala you get a tuple of key and value. So instead of this...    
+</p>
+
+{pygmentize:: jsp}
+#for (entry <- someMap)
+  ${entry.getKey} = ${entry.getValue}
+#end
+{pygmentize}
+
+<p>
+  A more idiomatic scala way would be
+</p>
+
+{pygmentize:: jsp}
+#for ((key, value) <- someMap)
+  ${key} = ${value}
+#end
+{pygmentize}
+
+<p>
+  Though we support the former JSTL/EL style by using an implicit conversion of a tuple to a MapEntry object which has a getKey and getValue method.The implicit conversion comes from the <b>org.fusesource.scalate.util.TemplateConversions</b> companion object.
+</p>
+
+    
+</div>

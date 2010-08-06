@@ -119,6 +119,8 @@ object IOUtil extends Logging {
     copy(new FileInputStream(in), new FileOutputStream(out))
   }
 
+  def copy(file: File, out: OutputStream): Long = copy(new BufferedInputStream(new FileInputStream(file)), out)
+
   def copy(in: InputStream, out: OutputStream): Long = {
     var bytesCopied: Long = 0
     val buffer = new Array[Byte](8192)
