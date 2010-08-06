@@ -47,12 +47,14 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
           noLayout(body, context)
         else
         if (!tryLayout(layout, body, context)) {
+          debug("Could not load layout resource: " + layout)
           noLayout(body, context)
         }
 
       case _ =>
         val layoutName = defaultLayouts.find(tryLayout(_, body, context))
         if (layoutName.isEmpty) {
+          debug("Could not load any of the default layout resource: " + defaultLayouts)
           noLayout(body, context)
         }
     }
@@ -75,7 +77,6 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
     } catch {
       case e: ResourceNotFoundException =>
         removeLayout
-        debug("No layout for: " + layoutTemplate + ". Exception: " + e, e)
         false
       case e: Exception =>
         removeLayout
