@@ -58,6 +58,7 @@ class ConsoleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
 
   override protected def beforeAll(configMap: Map[String, Any]) = {
+    System.setProperty("scalate.mode", "development")
     super.beforeAll(configMap)
 
     // lets force generated files into a new temporary directory
