@@ -1,0 +1,9 @@
+<h1>Servlet Include</h1>
+
+<p>Scalate Start</p>
+
+<blockquote>
+  <% servlet("/includes/foo.txt") %>
+</blockquote>
+
+<p>Scalate End</p>

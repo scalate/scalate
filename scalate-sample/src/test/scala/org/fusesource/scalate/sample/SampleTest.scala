@@ -66,6 +66,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   
   testPageContains("ssp/ifExpression.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/ifExpression2.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
+  testPageContains("ssp/includeServlet.ssp", "Scalate Start", "Hello World!", "Scalate End")
   testPageContains("ssp/implicitParamTest.ssp", "encoded '/somePath'", "encoded2 '/anotherPath'", "encoded3 '/path3'")
   testPageContains("ssp/locale.ssp", "22.0 / 7 = 3.143")
   testPageContains("ssp/matchExpression.ssp", "i = 1", "i is 1", "i = 2", "i is 2", "i = 3", "i is something")

@@ -19,7 +19,6 @@
 package org.fusesource.scalate.servlet
 
 import _root_.org.fusesource.scalate.util.URIs._
-import javax.servlet.{ServletConfig, ServletContext, ServletException}
 import javax.servlet.http._
 import java.lang.String
 import java.util.{Locale}
@@ -27,7 +26,8 @@ import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 import org.fusesource.scalate.{RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine}
-import java.io.PrintWriter
+import java.io._
+import javax.servlet.{ServletOutputStream, ServletConfig, ServletContext, ServletException}
 
 /**
  * Easy access to servlet request state.
@@ -119,12 +119,20 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   /**
    * Forwards this request to the given page
    */
-  def forward(page: String) = requestDispatcher(page).forward(request, response)
+  def forward(page: String, escape: Boolean = false) = {
+    val newResponse = wrappedResponse
+    requestDispatcher(page).forward(wrappedRequest, newResponse)
+    newResponse.output(this, escape)
+  }
 
   /**
    * Includes the given servlet page
    */
-  def servlet(page: String) = requestDispatcher(page).include(request, response)
+  def servlet(page: String, escape: Boolean = false) = {
+    val newResponse = wrappedResponse
+    requestDispatcher(page).include(wrappedRequest, newResponse)
+    newResponse.output(this, escape)
+  }
 
   /**
    * Creates a URI which if the uri starts with / then the link is prefixed with the web applications context
@@ -195,6 +203,13 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
     case _ => request.getContextPath
   }
 
+
+  protected def wrappedRequest = new HttpServletRequestWrapper(request) {
+    override def getMethod = "GET"
+  }
+
+  protected def wrappedResponse = new WrappedResponse(response)
+
   protected def requestDispatcher(page: String) = {
     // lets flush first to avoid missing current output
     flush
@@ -206,3 +221,24 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
     dispatcher
   }
 }
+
+class WrappedResponse(response: HttpServletResponse) extends HttpServletResponseWrapper(response) {
+    private val bos = new ByteArrayOutputStream()
+    private val sos = new ServletOutputStream {
+      def write(b: Int) = bos.write(b)
+    }
+    private val writer = new PrintWriter(new OutputStreamWriter(bos))
+
+    override def getWriter = writer
+
+    override def getOutputStream = sos
+
+    def text = {
+      writer.flush
+      new String(bos.toByteArray)
+    }
+
+    def output(context: RenderContext, escape: Boolean = false): Unit = {
+      context << context.value(text, escape)
+    }
+  }
