@@ -17,131 +17,132 @@
 -#
 
 -@ import val consoleHelper: ConsoleHelper = new ConsoleHelper(context) 
-#scalate-console
-  - if (!optionEnabled("console"))
-    .toggle.show
-      %a(href={enableLink("console")} class="consoleLink" title="Show the Scalate Console")
-        %img(src="/images/scalate/project-icon-24x24.png")
-        %img(src="/images/scalate/plus.png")
-  - else
-    .toggle.hide
-      %a(href={disableLink("console")} class="consoleLink hide" title="Hide the Scalate Console")
-        %img(src="/images/scalate/project-icon-24x24.png")
-        Scalate Console
-        %img(src="/images/scalate/minus.png")
-
-    .archetypes
-      %p Create
-      = render("/WEB-INF/scalate/archetypes/menu.scaml")
-
-    -#
-      - if (newTemplateName.isDefined && resourceClassName.isDefined)
-        - val newName = newTemplateName.get
-        %h3 Create New Custom Template
-        %p Create a new template called #{newName} from archetype
-        %ul
-          - for (a <- archetypes)
-            %li
-              %form(action={uri("/scalate/createTemplate")} method="post")
-                %input(type="hidden" name="archetype" value={a.archetype})
-                %input(type="hidden" name="newTemplateName" value={newName})
-                %input(type="hidden" name="resourceClass" value={resourceClassName.get})
-                %input(type="submit" value={a.name})
-
-
-    - val sourceFile = resourceSourceFile
-    - if (sourceFile.isDefined)
-      .resources
-        %p Resources
-        - val file = resourceSourceFile.get
-        %ul
-          %li
-            - println("Found file: " + file)
-            = editFileLink(file.getAbsolutePath)
-              = shorten(file)
-
-    - if (!templates.isEmpty)
-      .templates
-        %p Templates
-        %ul
-          - for (template <- templates)
-            - val link = editLink(template)
-              = template.stripPrefix("/")
-            - if (!link.isEmpty)
-              %li
-                = link
-
-    - if (!layouts.isEmpty)
-      .layouts
-        %p Layouts
-        %ul
-          - for (layout <- layouts)
-            %li
-              = editLink(layout)
-                = layout.stripPrefix("/")
-
-    %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
-      %input(type="submit" value="Clear Cache")
-
-    - if (!optionEnabled("attributes"))
+- if (isDevelopmentMode)
+  #scalate-console
+    - if (!optionEnabled("console"))
       .toggle.show
-        %a(href={enableLink("attributes")} title="Show the Attributes") 
-          Attributes
+        %a(href={enableLink("console")} class="consoleLink" title="Show the Scalate Console")
+          %img(src="/images/scalate/project-icon-24x24.png")
           %img(src="/images/scalate/plus.png")
-    - else 
+    - else
       .toggle.hide
-        %a(href={disableLink("attributes")} title="Hide the Attributes") 
-          Attributes
+        %a(href={disableLink("console")} class="consoleLink hide" title="Hide the Scalate Console")
+          %img(src="/images/scalate/project-icon-24x24.png")
+          Scalate Console
           %img(src="/images/scalate/minus.png")
-      .attributes
-        %table#attributes
-          %tr
-            %th Name
-            %th Value
-          - for (k <- attributeKeys)
-            - if (k != "body")
+
+      .archetypes
+        %p Create
+        = render("/WEB-INF/scalate/archetypes/menu.scaml")
+
+      -#
+        - if (newTemplateName.isDefined && resourceClassName.isDefined)
+          - val newName = newTemplateName.get
+          %h3 Create New Custom Template
+          %p Create a new template called #{newName} from archetype
+          %ul
+            - for (a <- archetypes)
+              %li
+                %form(action={uri("/scalate/createTemplate")} method="post")
+                  %input(type="hidden" name="archetype" value={a.archetype})
+                  %input(type="hidden" name="newTemplateName" value={newName})
+                  %input(type="hidden" name="resourceClass" value={resourceClassName.get})
+                  %input(type="submit" value={a.name})
+
+
+      - val sourceFile = resourceSourceFile
+      - if (sourceFile.isDefined)
+        .resources
+          %p Resources
+          - val file = resourceSourceFile.get
+          %ul
+            %li
+              - println("Found file: " + file)
+              = editFileLink(file.getAbsolutePath)
+                = shorten(file)
+
+      - if (!templates.isEmpty)
+        .templates
+          %p Templates
+          %ul
+            - for (template <- templates)
+              - val link = editLink(template)
+                = template.stripPrefix("/")
+              - if (!link.isEmpty)
+                %li
+                  = link
+
+      - if (!layouts.isEmpty)
+        .layouts
+          %p Layouts
+          %ul
+            - for (layout <- layouts)
+              %li
+                = editLink(layout)
+                  = layout.stripPrefix("/")
+
+      %form(action={uri("/scalate/invalidateCachedTemplates")} method="post")
+        %input(type="submit" value="Clear Cache")
+
+      - if (!optionEnabled("attributes"))
+        .toggle.show
+          %a(href={enableLink("attributes")} title="Show the Attributes")
+            Attributes
+            %img(src="/images/scalate/plus.png")
+      - else
+        .toggle.hide
+          %a(href={disableLink("attributes")} title="Hide the Attributes")
+            Attributes
+            %img(src="/images/scalate/minus.png")
+        .attributes
+          %table#attributes
+            %tr
+              %th Name
+              %th Value
+            - for (k <- attributeKeys)
+              - if (k != "body")
+                %tr
+                  %td#name
+                    = k
+                  %td#value
+                    = attributes(k)
+
+      - if( attributes("body")!=null )
+        - if (!optionEnabled("body"))
+          .toggle.show
+            %a(href={enableLink("body")} title="Show the Body")
+              Body
+              %img(src="/images/scalate/plus.png")
+        - else
+          .toggle.hide
+            %a(href={disableLink("body")} title="Hide the Body")
+              Body
+              %img(src="/images/scalate/minus.png")
+          .body
+            %pre(class="brush: html")<
+              &~ attributes("body")
+            :javascript
+              SyntaxHighlighter.all()
+
+      - if (!optionEnabled("sysProp"))
+        .toggle.show
+          %a(href={enableLink("sysProp")} title="Show the System Properties")
+            System Properties
+            %img(src="/images/scalate/plus.png")
+      - else
+        .toggle.hide
+          %a(href={disableLink("sysProp")} title="Hide the System Properties")
+            System Properties
+            %img(src="/images/scalate/minus.png")
+        .systemProperties
+          %table#systemProperties
+            %tr
+              %th Name
+              %th Value
+            - for ((k,v) <- systemProperties)
               %tr
                 %td#name
                   = k
                 %td#value
-                  = attributes(k)
-
-    - if( attributes("body")!=null )
-      - if (!optionEnabled("body"))
-        .toggle.show
-          %a(href={enableLink("body")} title="Show the Body") 
-            Body
-            %img(src="/images/scalate/plus.png")
-      - else
-        .toggle.hide
-          %a(href={disableLink("body")} title="Hide the Body") 
-            Body
-            %img(src="/images/scalate/minus.png")
-        .body
-          %pre(class="brush: html")<
-            &~ attributes("body")
-          :javascript
-            SyntaxHighlighter.all()
-
-    - if (!optionEnabled("sysProp"))
-      .toggle.show
-        %a(href={enableLink("sysProp")} title="Show the System Properties") 
-          System Properties
-          %img(src="/images/scalate/plus.png")
-    - else 
-      .toggle.hide
-        %a(href={disableLink("sysProp")} title="Hide the System Properties") 
-          System Properties
-          %img(src="/images/scalate/minus.png")
-      .systemProperties
-        %table#systemProperties
-          %tr
-            %th Name
-            %th Value
-          - for ((k,v) <- systemProperties)
-            %tr
-              %td#name
-                = k
-              %td#value
-                = v
+                  = v
 

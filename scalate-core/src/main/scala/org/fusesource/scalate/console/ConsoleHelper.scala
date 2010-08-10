@@ -81,6 +81,7 @@ class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with 
     case _ => None
   }
 
+  def isDevelopmentMode = context.engine.isDevelopmentMode
 
   /**
    * Returns an attempt at finding the source file for the current resource.
