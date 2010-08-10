@@ -84,4 +84,5 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
     }
   }
 
+  def flush = out.flush
 }

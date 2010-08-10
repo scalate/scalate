@@ -119,18 +119,12 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   /**
    * Forwards this request to the given page
    */
-  def forward(page: String) {
+  def forward(page: String) = requestDispatcher(page).forward(request, response)
 
-    def requestDispatcher = {
-      val dispatcher = request.getRequestDispatcher(page)
-      if (dispatcher == null) {
-        throw new ServletException("No dispatcher available for path: " + page)
-      }
-      dispatcher
-    }
-
-    requestDispatcher.forward(request, response)
-  }
+  /**
+   * Includes the given servlet page
+   */
+  def servlet(page: String) = requestDispatcher(page).include(request, response)
 
   /**
    * Creates a URI which if the uri starts with / then the link is prefixed with the web applications context
@@ -201,4 +195,14 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
     case _ => request.getContextPath
   }
 
+  protected def requestDispatcher(page: String) = {
+    // lets flush first to avoid missing current output
+    flush
+    
+    val dispatcher = request.getRequestDispatcher(page)
+    if (dispatcher == null) {
+      throw new ServletException("No dispatcher available for path: " + page)
+    }
+    dispatcher
+  }
 }
