@@ -94,7 +94,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
       context.attributes("context") = context
       template.render(context)
 
-      val out = exchange.getOut()
+      val out = if (exchange.getPattern.isOutCapable) exchange.getOut() else exchange.getIn
       val response = buffer.toString()
 
       debug("Eval of " + this + " = " + response)
