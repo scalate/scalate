@@ -26,6 +26,7 @@ import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
 import impl.ProcessorEndpoint
 import java.io._
 import collection.JavaConversions._
+import java.{util => ju}
 import java.util.concurrent.atomic.AtomicInteger
 import org.apache.commons.logging.{LogFactory, Log}
 
@@ -99,16 +100,14 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
       debug("Eval of " + this + " = " + response)
       out.setBody(response)
 
-
-      /*
-
-      // now lets output the results to the exchange
-
-      Map<String, Object> headers = (Map<String, Object>) variables.get("headers")
-      for (String key : headers.keySet()) {
-          out.setHeader(key, headers.get(key))
+      // now lets output the headers to the exchange
+      variableMap.get("headers") match {
+        case map: ju.Map[String,AnyRef] =>
+          for ((key, value) <- map) {
+            out.setHeader(key, value)
+          }
+        case _ =>
       }
-      */
     }
   }
 

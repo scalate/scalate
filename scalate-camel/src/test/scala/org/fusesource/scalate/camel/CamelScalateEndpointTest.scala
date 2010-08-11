@@ -85,6 +85,9 @@ class CamelScalateEndpointTest extends FunSuite {
           expect(expectedResult) {
             out.getBody(classOf[String]).trim()
           }
+          expect(headerValue) {
+            out.getHeader("cheese", classOf[String])
+          }
       }
     }
   }
