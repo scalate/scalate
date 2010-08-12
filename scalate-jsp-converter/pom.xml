@@ -47,11 +47,6 @@
       <artifactId>scalate-tool</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.beust</groupId>
-      <artifactId>jcommander</artifactId>
-      <version>${jcommander-version}</version>
-    </dependency>
 
     <!-- testing -->
     <dependency>
@@ -67,6 +62,12 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-tool-commands</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -85,9 +86,34 @@
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
         <configuration>
-          <mainConsole>org.fusesource.scalate.converter.Console</mainConsole>
+          <mainConsole>org.fusesource.scalate.converter.ReplConsole</mainConsole>
         </configuration>
+      </plugin>
 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
+          <classpathScope>test</classpathScope>
+        </configuration>
+<!--
+        <configuration>
+          <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
+          <classpathScope>test</classpathScope>
+          <arguments>
+            <argument>jsp2ssp</argument>
+          </arguments>
+        </configuration>
+-->
       </plugin>
     </plugins>
   </build>

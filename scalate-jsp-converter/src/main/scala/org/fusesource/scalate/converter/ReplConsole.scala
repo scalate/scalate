@@ -24,10 +24,10 @@ import org.fusesource.scalate.converter._
 /**
  * A console which comes with a sample convert tool created
  */
-object Console {
+object ReplConsole {
   def main(args: Array[String]) {
 
-    MainGenericRunner.main(args ++ Array("-i", "src/test/console/ConsoleImports.scala"))
+    MainGenericRunner.main(args ++ Array("-i", "src/test/repl/ConsoleImports.scala"))
     exit(0)
   }
 }

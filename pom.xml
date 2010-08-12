@@ -55,6 +55,7 @@
     <!-- version info -->
     <asm-version>3.1</asm-version>
     <jar-plugin-version>2.3</jar-plugin-version>
+    <jcommander-version>1.6-SNAPSHOT</jcommander-version>
     <jersey-version>1.4-ea05</jersey-version>
 
     <jetty-version>7.1.5.v20100705</jetty-version>
@@ -62,7 +63,6 @@
     <junit-version>4.5</junit-version>
     <logback-version>0.9.24</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
-    <jcommander-version>1.4</jcommander-version>
 
     <scala-version>2.8.0</scala-version>
 <!--

@@ -41,6 +41,14 @@
       <artifactId>scala-compiler</artifactId>
       <version>${scala-version}</version>
     </dependency>
+    <dependency>
+<!--
+      <groupId>com.beust</groupId>
+-->
+      <groupId>org.fusesource.jcommander</groupId>
+      <artifactId>jcommander</artifactId>
+      <version>${jcommander-version}</version>
+    </dependency>
   </dependencies>
 
 </project>

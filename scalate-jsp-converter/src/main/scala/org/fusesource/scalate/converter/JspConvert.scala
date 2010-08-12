@@ -19,49 +19,17 @@ package org.fusesource.scalate.converter
 
 import java.io.File
 import org.fusesource.scalate.util.IOUtil._
-import org.fusesource.scalate.tool.Command
-import com.beust.jcommander.Parameter
-
-object JspConvertCommand extends Command {
-  def name = "jsp2ssp"
-
-  def summary = "Converts JSP files to SSP files"
-
-  def usage() = {
-    val commander = JCommanderHelper.create(new JspConvert, new HelpSettings)
-    // the next release of JCommander will allows setting the main program name
-    commander.usage
-  }
-
-  def process(args: List[String]) = {
-    main(args.toArray)
-    0
-  }
-
-  def main(args: Array[String]) = {
-    val converter = new JspConvert
-    val help = new HelpSettings
-    JCommanderHelper.create(converter, help).parse(args: _*)
-    if (help.help) {
-      usage
-    } else {
-      converter.run
-    }
-  }
-
-}
-
-class HelpSettings {
-  @Parameter(names = Array("--help"), description = "Displays this usage screen.")
-  var help = false
-}
+import org.fusesource.scalate.tool.CommandRunner
+import com.beust.jcommander.{Argument, Command, Parameter}
 
 /**
  * Converts JSP files into SSP files
  */
-class JspConvert extends Runnable {
-  @Parameter(names = Array("--directory"), description = "Root of the directory containing the JSP files.")
+@Command(description = "Converts JSP files to SSP files")
+class JspConvert extends CommandRunner {
+  @Argument(index = 0, description = "Root of the directory containing the JSP files.", required = false)
   var dir: File = new File(".")
+
   @Parameter(names = Array("--extension"), description = "Extension for output files")
   var outputExtension = ".ssp"
   @Parameter(names = Array("--recursion"), description = "The number of directroy levels to recusively scan file input files.")
@@ -75,13 +43,19 @@ class JspConvert extends Runnable {
   var matchesFile: File => Boolean = isJsp
   var outputFile: File => File = toSsp
 
+  def commandName = "jsp2ssp"
+
   /**
-   * Recurses down the
+   * Runs the command given the command line arguments
    */
-  def run: Unit = {
+  def run: Int = {
     run(dir)
+    0
   }
 
+  /**
+   * Recurses down the di
+   */
   def run(file: File, level: Int = 0): Unit = {
     if (file.exists) {
       if (file.isDirectory) {

@@ -18,17 +18,22 @@
 
 package org.fusesource.scalate.tool
 
+import com.beust.jcommander.JCommander
+
 /**
- * <p>
- * </p>
+ * Core trait of all commands used by the Scalate console
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait Command {
+trait CommandRunner {
 
-  def name: String
-  def summary: String
-  def usage():Unit
-  def process(args:List[String]):Int
-  
+  var commander: JCommander = _
+
+  def commandName: String
+
+  /**
+   * Runs the command returning the error code if any or zero for success
+   */
+  def run: Int
+
 }
