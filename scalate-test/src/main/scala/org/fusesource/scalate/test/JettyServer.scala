@@ -50,7 +50,7 @@ class JettyServer {
   var port: Int = 0
   var localPort: Int = 0
   var webAppDir: String = _
-  var webAppContext: String = "/"
+  var webAppContext: String = "/myContext"
 
 
   def start: Unit = {
@@ -170,7 +170,7 @@ class JettyServer {
   }
 
 
-  def rootUrl = "http://localhost:" + localPort + "/"
+  def rootUrl = "http://localhost:" + localPort + webAppContext + (if (webAppContext == "/") "" else "/")
 
   def addFileSeparator(path: String) = if (path == null || path.length == 0) "" else path + "/"
 

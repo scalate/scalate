@@ -18,11 +18,12 @@
 
 package org.fusesource.scalate.test
 
-import _root_.org.openqa.selenium.WebElement
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import java.lang.String
 import collection.immutable.Map
 import org.scalatest.{FunSuite, BeforeAndAfterAll}
+import org.openqa.selenium.{WebDriver, WebElement}
+import org.openqa.selenium.internal.FindsByXPath
 
 /**
  * A simple trait for testing web pages using Selenium WebDriver
@@ -34,7 +35,9 @@ trait WebDriverMixin extends BeforeAndAfterAll {
 
   def rootUrl: String
 
-  val webDriver = new HtmlUnitDriver
+  var webDriver: WebDriver = new HtmlUnitDriver
+
+  def xpathDriver = webDriver.asInstanceOf[FindsByXPath]
 
   override protected def afterAll(configMap: Map[String, Any]) = webDriver.close
 
@@ -117,7 +120,7 @@ trait WebDriverMixin extends BeforeAndAfterAll {
    */
   def xpath(selector: String): WebElement = {
     try {
-      val answer = webDriver.findElementByXPath(selector)
+      val answer = xpathDriver.findElementByXPath(selector)
       assume(answer != null, "xpath " + selector + " returned null!")
       answer
     }
