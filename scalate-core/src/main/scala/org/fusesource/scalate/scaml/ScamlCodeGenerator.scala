@@ -23,6 +23,7 @@ import collection.mutable.LinkedHashMap
 import support.{Text, Code, AbstractCodeGenerator}
 import util.RenderHelper
 import collection.immutable.List
+import scala.util.parsing.input.OffsetPosition
 
 /**
  * Generates a scala class given a HAML document
@@ -226,7 +227,14 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       var text: TextExpression = if (interpolate) {
         val p = new ScamlParser()
-        p.parse(p.literal_text(Some(sanitize)), content)
+        try {
+          p.parse(p.literal_text(Some(sanitize)), content)
+        }
+        catch {
+          case e:InvalidSyntaxException =>
+            val pos = statement.body.head.pos.asInstanceOf[OffsetPosition]
+            throw new InvalidSyntaxException(e.brief, OffsetPosition(pos.source, pos.offset+e.pos.column))
+        }
       } else {
         LiteralText(List(Text(content)), Some(false))
       }
