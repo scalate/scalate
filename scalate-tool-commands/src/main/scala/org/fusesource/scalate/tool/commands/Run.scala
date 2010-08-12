@@ -30,7 +30,7 @@ import com.beust.jcommander.{JCommander, Command, Argument, Parameter}
 object Run extends CommandFactory {
 
   def name = "run"
-  def create = JCommander.newInstance(new Create())
+  def create = create(new Run())
 
 }
 

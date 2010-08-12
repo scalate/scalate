@@ -60,7 +60,7 @@ object Scalate {
       if (help.help) {
         jc.usage()
       } else {
-        tool.run()
+        tool.run(jc)
       }
     } catch {
       case e: ParameterException =>
@@ -154,32 +154,15 @@ class ScalateMain extends Shell {
 
   override def getShellName() = "scalate"
 
-  override def getDisplayedCommands() = commands.map(_.name).toArray
+  override def getDisplayedCommands() =  commands.map(_.name).toArray
 
-  override def createSubCommand(name: String) = {
-    if (name == "help" || name == "?") {
-      JCommander.newInstance(new Runnable() {
-        def run() = {
-          val sb = new StringBuilder();
-          usage(sb);
-          info(sb.toString);
-        }
-      });
-    } else {
-      command(name).map(_.create).orNull
-    }
-  }
-
+  override def createSubCommand(name: String) = command(name).map(_.create).orNull
 
   override def usage(out: StringBuilder) = {
-    super.usage(out);
     def info(v: String) = {
       out.append(v + "\n");
     }
-    info("")
-    info("To get help for a command run:")
-    info("")
-    info("  scalate command --help")
+    super.usage(out);
     info("")
     info("For more help see http://scalate.fusesource.org/documentation/tool.html")
     info("")

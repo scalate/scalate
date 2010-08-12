@@ -29,7 +29,7 @@ import java.lang.StringBuilder
 object Create extends CommandFactory {
 
   def name = "create"
-  def create = JCommander.newInstance(new Create())
+  def create = create(new Create())
   
 }
 

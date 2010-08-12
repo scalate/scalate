@@ -16,25 +16,35 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.tool
+package org.fusesource.scalate.tool.commands
 
-import com.beust.jcommander.JCommander
+import java.{util => ju}
+import org.fusesource.scalate.tool.CommandFactory
+import com.beust.jcommander.Command
+import com.beust.jcommander.shell.Shell
+import com.beust.jcommander.shell.Shell.CloseShellException
+
+object Exit extends CommandFactory {
+
+  def name = "exit"
+
+  def create = {
+    if(Shell.getCurrentSession !=null ) {
+      create(new Exit)
+    } else {
+      null
+    }
+  }
+}
 
 /**
- * Core trait of all commands used by the Scalate console
+ * The 'scalate exit' sub command.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait CommandFactory {
+@Command(description = "Exits the shell")
+class Exit extends Runnable {
 
-  protected def create(value:AnyRef) = {
-    val rc = JCommander.newInstance(value)
-    rc.setProgramName(name)
-    rc
-  }
-
-  def create: JCommander
-
-  def name: String
+  def run = throw new CloseShellException();
 
 }

@@ -25,7 +25,7 @@ import com.beust.jcommander.{JCommander, Argument, Command, Parameter}
 object JspConvert extends CommandFactory {
 
   def name = "jsp2ssp" 
-  def create = JCommander.newInstance(new JspConvert)
+  def create = create(new JspConvert)
 
 }
 
