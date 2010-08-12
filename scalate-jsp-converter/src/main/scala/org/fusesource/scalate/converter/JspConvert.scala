@@ -19,14 +19,21 @@ package org.fusesource.scalate.converter
 
 import java.io.File
 import org.fusesource.scalate.util.IOUtil._
-import org.fusesource.scalate.tool.CommandRunner
-import com.beust.jcommander.{Argument, Command, Parameter}
+import org.fusesource.scalate.tool.CommandFactory
+import com.beust.jcommander.{JCommander, Argument, Command, Parameter}
+
+object JspConvert extends CommandFactory {
+
+  def name = "jsp2ssp" 
+  def create = JCommander.newInstance(new JspConvert)
+
+}
 
 /**
  * Converts JSP files into SSP files
  */
 @Command(description = "Converts JSP files to SSP files")
-class JspConvert extends CommandRunner {
+class JspConvert extends Runnable {
   @Argument(index = 0, description = "Root of the directory containing the JSP files.", required = false)
   var dir: File = new File(".")
 
@@ -43,15 +50,10 @@ class JspConvert extends CommandRunner {
   var matchesFile: File => Boolean = isJsp
   var outputFile: File => File = toSsp
 
-  def commandName = "jsp2ssp"
-
   /**
    * Runs the command given the command line arguments
    */
-  def run: Int = {
-    run(dir)
-    0
-  }
+  def run = run(dir)
 
   /**
    * Recurses down the di

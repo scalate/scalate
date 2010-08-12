@@ -21,25 +21,26 @@ package org.fusesource.scalate.tool.commands
 import java.util.{List => JList, Map => JMap}
 import java.util.zip.ZipInputStream
 import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
-import org.fusesource.scalate.tool.CommandRunner
+import org.fusesource.scalate.tool.CommandFactory
 import org.fusesource.scalate.tool.Scalate._
-import com.beust.jcommander.{Parameter, Argument, Command}
+import com.beust.jcommander._
+import java.lang.StringBuilder
+
+object Create extends CommandFactory {
+
+  def name = "create"
+  def create = JCommander.newInstance(new Create())
+  
+}
 
 /**
  * The 'scalate create' sub command.
  */
 @Command(description = "Creates your Scalate project fast to get you scalate-ing!")
-class Create extends CommandRunner {
-  def commandName = "create"
+class Create extends Runnable with UsageReporter {
 
   // TODO need way to show archetypes!
 
-  /*
-    info("Archetypes:")
-    info()
-    info("  empty       : Creates a basic Scalate module")
-    info("  guice       : Creates a Guice based Scalate module")
-  */
 
   @Argument(index = 0, description = "Archetype to create")
   // TODO rename to archetype
@@ -65,9 +66,16 @@ class Create extends CommandRunner {
   var name = ""
 
 
-  def run: Int = {
-    createArchetype
-    0
+  def run = createArchetype
+
+  def usage(out: StringBuilder) = {
+    def info(v: String) = {
+      out.append(v + "\n");
+    }
+    info("Archetypes:")
+    info("")
+    info("  empty       : Creates a basic Scalate module")
+    info("  guice       : Creates a Guice based Scalate module")
   }
 
   def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
@@ -139,7 +147,6 @@ class Create extends CommandRunner {
           info("  cd " + artifactId)
           info("  mvn jetty:run")
           info()
-          summary
 
         } finally {
           zip.close
@@ -189,4 +196,5 @@ class Create extends CommandRunner {
   protected def replaceVariable(text: String, name: String, value: String): String = {
     text.replaceAll("""([^\\])\$\{""" + name + """\}""", "$1" + value)
   }
+
 }

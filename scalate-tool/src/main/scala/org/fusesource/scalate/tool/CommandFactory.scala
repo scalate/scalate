@@ -25,15 +25,10 @@ import com.beust.jcommander.JCommander
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait CommandRunner {
+trait CommandFactory {
 
-  var commander: JCommander = _
+  def create: JCommander
 
-  def commandName: String
-
-  /**
-   * Runs the command returning the error code if any or zero for success
-   */
-  def run: Int
+  def name: String
 
 }

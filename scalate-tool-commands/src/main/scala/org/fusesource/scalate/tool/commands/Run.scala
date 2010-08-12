@@ -23,9 +23,16 @@ import java.io.{File, PrintWriter}
 import collection.JavaConversions._
 import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext}
 import org.fusesource.scalate.tool.Scalate._
-import org.fusesource.scalate.tool.CommandRunner
+import org.fusesource.scalate.tool.CommandFactory
 import org.fusesource.scalate.support.FileResourceLoader
-import com.beust.jcommander.{Command, Argument, Parameter}
+import com.beust.jcommander.{JCommander, Command, Argument, Parameter}
+
+object Run extends CommandFactory {
+
+  def name = "run"
+  def create = JCommander.newInstance(new Create())
+
+}
 
 /**
  * The 'scalate run' sub command.
@@ -33,7 +40,8 @@ import com.beust.jcommander.{Command, Argument, Parameter}
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @Command(description = "Renders a Scalate template file")
-class Run extends CommandRunner {
+class Run extends Runnable {
+
   @Parameter(names = Array("--root"), description = "Sets the root of the tempalte search path.")
   var root = new File(".")
 
@@ -46,12 +54,7 @@ class Run extends CommandRunner {
   @Parameter(description = "arguments", required = true)
   var args: ju.List[String] = new ju.ArrayList[String]
 
-  def commandName = "run"
-
-  def run: Int = {
-    render(template, args.toList)
-    0
-  }
+  def run = render(template, args.toList)
 
   def render(path: String, args: List[String]): Int = {
     //    val buffer = new StringWriter()

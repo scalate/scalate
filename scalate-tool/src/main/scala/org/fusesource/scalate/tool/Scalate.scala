@@ -24,6 +24,8 @@ import java.{util => ju}
 import java.io.{File, InputStream}
 import java.util.Properties
 import com.beust.jcommander._
+import java.lang.{StringBuilder, String}
+import shell.{Help, Shell}
 
 /**
  * <p>
@@ -34,67 +36,40 @@ import com.beust.jcommander._
  * <ol>
  *   <li>Implementing the the [[org.fusesource.scalate.tool.Command]] trait</li>
  *   <li>Add the class names of the new commands to a <code>META-INF/services/org.fusesource.scalate/commands</code> file in your jar</li>
- *   <li>Drop your new jar into the <code>$   { scalate.home } /lib</code> directory.</li>
+ *   <li>Drop your new jar into the <code>$    { scalate.home } /lib</code> directory.</li>
  * </ol>
  * </p>
  *
  * @version $Revision : 1.1 $
  */
-
-
 object Scalate {
   val homeDir = System.getProperty("scalate.home", "")
 
   lazy val scalateVersion = loadScalateVersion
   var debug_enabled = false
 
-  def main(args: Array[String]): Int = {
-    intro();
-
+  def main(args: Array[String]) = {
+    intro
     val tool = new ScalateMain()
-    //val jc = JCommanderFactory.newInstance(tool)
-    val jc = JCommander.newInstance(tool)
-    jc.setProgramName("scalate")
+    val help = new Help();
+    val jc = JCommander.newInstance(Array(tool, help))
+    jc.setProgramName(tool.getShellName)
 
-    def usage: Int = {
-      jc.usage
-      summary
-      -1
-    }
-
-    var map = Map[String, CommandRunner]("help" -> new Help)
-    for (c <- tool.commands) {
-      map += (c.commandName -> c)
-    }
-    for ((name, c) <- map) {
-      c.commander = jc
-      jc.addCommand(name, c)
-    }
     try {
-      val list = args.toList
-      if (list.size == 0) {
-        usage
+      jc.parse(args:_*);
+      if (help.help) {
+        jc.usage()
+      } else {
+        tool.run()
       }
-      else {
-        jc.parse(list: _*)
-        val command = jc.getParsedCommand
-        map.get(command) match {
-          case Some(c) =>
-            c.run
-          case _ =>
-            usage
-        }
-      }
-    }
-    catch {
+    } catch {
       case e: ParameterException =>
         println(e.getMessage)
         println
-        usage
+        jc.usage
       case e =>
         println("Failed: " + e)
         e.printStackTrace
-        -2
     }
   }
 
@@ -134,12 +109,6 @@ object Scalate {
     }
   }
 
-  def summary: Unit = {
-    info()
-    info("For more help see http://scalate.fusesource.org/documentation/tool.html")
-  }
-
-
   protected def loadScalateVersion(): Option[String] = {
     val pomProps = "META-INF/maven/org.fusesource.scalate/scalate-tool/pom.properties"
     try {
@@ -177,85 +146,50 @@ object Scalate {
 
 import Scalate._
 
-class ScalateMain {
-  var _commands: List[CommandRunner] = null
+class ScalateMain extends Shell {
 
-  def usage() = {
-    intro()
+  var _commands: List[CommandFactory] = null
 
-    info("Usage: scalate [options] command [command-args]")
-    info()
-    info("Commands:")
-    info()
-    /*
-        commands.foreach {command =>
-          info(String.format("  %-12s : %s", command.name, command.summary))
+  prompt = "\u001B[1m" + getShellName + ">\u001B[0m "
+
+  override def getShellName() = "scalate"
+
+  override def getDisplayedCommands() = commands.map(_.name).toArray
+
+  override def createSubCommand(name: String) = {
+    if (name == "help" || name == "?") {
+      JCommander.newInstance(new Runnable() {
+        def run() = {
+          val sb = new StringBuilder();
+          usage(sb);
+          info(sb.toString);
         }
-    */
-    info()
-    info("Options:")
-    info()
-    info("  --debug     : Enables debug logging")
-    info("  --help      : Shows this help screen")
-    info()
+      });
+    } else {
+      command(name).map(_.create).orNull
+    }
+  }
+
+
+  override def usage(out: StringBuilder) = {
+    super.usage(out);
+    def info(v: String) = {
+      out.append(v + "\n");
+    }
+    info("")
     info("To get help for a command run:")
-    info()
+    info("")
     info("  scalate command --help")
-    info()
+    info("")
     info("For more help see http://scalate.fusesource.org/documentation/tool.html")
-    info()
+    info("")
   }
 
-  /*
-    def main(args: Array[String]): Unit = {
-      if (homeDir.isEmpty) {
-        warn("scalate.home system property is not defined!")
-      }
-      debug("Scalate home dir = " + homeDir)
-      System.exit(process(args.toList))
-    }
-
-    def process(args: List[String]): Int = {
-
-      args match {
-        case next_arg :: the_rest =>
-          next_arg match {
-            case "--debug" =>
-              this.debug_enabled = true
-              process(the_rest)
-            case "--help" | "-help" | "-?" =>
-              if (the_rest.isEmpty) {
-                usage()
-              } else {
-                command(the_rest.head) match {
-                  case Some(command) => command.usage
-                  case None => usage();
-                }
-              }
-              return 0
-            case _ =>
-              command(next_arg) match {
-                case Some(command) =>
-                  command.process(the_rest)
-                case None =>
-                  info("Invalid syntax: unknown command: " + next_arg)
-                  usage()
-                  return -1;
-              }
-          }
-        case Nil =>
-          info("Invalid syntax: command not specified")
-          usage()
-          return -1;
-      }
-    }
-
-  */
   def command(name: String) = {
-    commands.filter(_.commandName == name).headOption
+    commands.filter(_.name == name).headOption
   }
 
-  def commands: List[CommandRunner] = {
+  def commands: List[CommandFactory] = {
     if (_commands == null) {
       debug("loading commands")
       _commands = discoverCommands
@@ -264,7 +198,7 @@ class ScalateMain {
   }
 
 
-  def discoverCommands(): List[CommandRunner] = {
+  def discoverCommands(): List[CommandFactory] = {
     val cl = extensionsClassLoader()
     Thread.currentThread.setContextClassLoader(cl)
     discoverCommandClasses().flatMap {
@@ -272,13 +206,13 @@ class ScalateMain {
         try {
           val clazz = cl.loadClass(name)
           try {
-            Some(clazz.newInstance.asInstanceOf[CommandRunner])
+            Some(clazz.newInstance.asInstanceOf[CommandFactory])
           } catch {
             case e: Exception =>
               // It may be a scala object.. check for a module class
               try {
                 val moduleField = cl.loadClass(name + "$").getDeclaredField("MODULE$")
-                Some(moduleField.get(null).asInstanceOf[CommandRunner])
+                Some(moduleField.get(null).asInstanceOf[CommandFactory])
               } catch {
                 case e2: Exception =>
                   // throw the original error...
@@ -346,22 +280,3 @@ class ScalateMain {
   }
 
 }
-
-@Command(description = "Display help and command line options")
-class Help extends CommandRunner {
-  def commandName = "help"
-
-  @Argument(index = 0, description = "The name of the sub command to provide help for")
-  var command: String = _
-
-  def run: Int = {
-    if (command == null) {
-      commander.usage
-    }
-    else {
-      commander.usage(command)
-    }
-    0
-  }
-}
-

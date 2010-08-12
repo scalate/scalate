@@ -116,6 +116,12 @@ if [ -z "$SCALATE_BASE" ] ; then
   SCALATE_BASE="$SCALATE_HOME"
 fi
 
+CLASSPATH="${SCALATE_HOME}/lib/scalate-tool-${project.version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jcommander-${jcommander-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jline-${jline-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jansi-${jansi-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/scala-library-${scala-version}.jar"
+
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
   SCALATE_HOME=`cygpath --windows "$SCALATE_HOME"`
@@ -147,11 +153,11 @@ if [ "x$SCALATE_DEBUG" != "x" ]; then
     SCALATE_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
 fi
 
-SCALATE_CLASS="-classpath "${SCALATE_HOME}/lib/scalate-tool-${project.version}.jar:${SCALATE_HOME}/lib/scala-library-${scala-version}.jar" org.fusesource.scalate.tool.Scalate"
+SCALATE_CLASS="org.fusesource.scalate.tool.Scalate"
 
 if [ -n "$CYGHOME" ]; then
-    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" -Dcygwin.user.home="$CYGHOME" $SCALATE_CLASS $@
+    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -classpath "${CLASSPATH}" -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" -Dcygwin.user.home="$CYGHOME" $SCALATE_CLASS $@
 else
-    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" $SCALATE_CLASS $@
+    exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -classpath "${CLASSPATH}" -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" $SCALATE_CLASS $@
 fi
 

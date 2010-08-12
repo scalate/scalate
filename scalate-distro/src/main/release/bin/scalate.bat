@@ -80,7 +80,13 @@ REM SET SCALATE_DEBUG_OPTS="-agentlib:yjpagent"
 REM Uncomment to enable remote debugging
 REM SET SCALATE_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
 
-"%_JAVACMD%" %SCALATE_DEBUG_OPTS% %SUNJMX% %SCALATE_OPTS% -Dscalate.classpath="%SCALATE_CLASSPATH%" -Dscalate.home="%SCALATE_HOME%" -Dscalate.base="%SCALATE_BASE%"  -classpath "%SCALATE_HOME%\lib\scalate-tool-${project.version}.jar;%SCALATE_HOME%\lib\scala-library-${scala-version}.jar" org.fusesource.scalate.tool.Scalate  %*
+SET CLASSPATH=%SCALATE_HOME%\lib\scalate-tool-${project.version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\jcommander-${jcommander-version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\jline-${jline-version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\jansi-${jansi-version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\scala-library-${scala-version}.jar
+
+"%_JAVACMD%" %SCALATE_DEBUG_OPTS% %SUNJMX% %SCALATE_OPTS% -classpath "%CLASSPATH%" -Dscalate.classpath="%SCALATE_CLASSPATH%" -Dscalate.home="%SCALATE_HOME%" -Dscalate.base="%SCALATE_BASE%" org.fusesource.scalate.tool.Scalate %*
 
 goto end
 
