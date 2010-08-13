@@ -43,16 +43,18 @@ import shell.{Help, Shell}
  * @version $Revision : 1.1 $
  */
 object Scalate {
-  val homeDir = System.getProperty("scalate.home", "")
 
+  val homeDir = System.getProperty("scalate.home", "")
   lazy val scalateVersion = loadScalateVersion
+
+  @Parameter(names=Array("--debug"), description="Enable debug logging")
   var debug_enabled = false
 
   def main(args: Array[String]) = {
     intro
     val tool = new ScalateMain()
     val help = new Help();
-    val jc = JCommander.newInstance(Array(tool, help))
+    val jc = JCommander.newInstance(Array(tool, help, Scalate))
     jc.setProgramName(tool.getShellName)
 
     try {
@@ -64,50 +66,11 @@ object Scalate {
       }
     } catch {
       case e: ParameterException =>
-        println(e.getMessage)
+        tool.displayFailure(null, e)
         println
         jc.usage
       case e =>
-        println("Failed: " + e)
-        e.printStackTrace
-    }
-  }
-
-  def intro() = {
-    val is = scala.io.Source.fromInputStream(getClass.getResourceAsStream("banner.txt"))
-    is.getLines().foreach(x=>info(x))
-    info()
-    if (scalateVersion == None) {
-      info("Scalate Tool : http://scalate.fusesource.org/")
-    } else {
-      info("Scalate Tool v. " + scalateVersion.get + " : http://scalate.fusesource.org/")
-    }
-    info()
-  }
-
-
-  def debug(message: => String): Unit = {
-    if (debug_enabled) {
-      System.err.println("DEBUG: " + message)
-    }
-  }
-
-  def info(message: => String = ""): Unit = {
-    println(message)
-  }
-
-  def warn(message: => String): Unit = {
-    System.err.println("WARN: " + message)
-  }
-
-  def error(message: => String): Unit = {
-    System.err.println("ERROR: " + message)
-  }
-
-  def error(message: => String, exception: Throwable): Unit = {
-    error(message)
-    if (debug_enabled) {
-      exception.printStackTrace
+        tool.displayFailure(null, e)
     }
   }
 
@@ -144,6 +107,43 @@ object Scalate {
       }
     }
   }
+
+  def intro() = {
+    val is = scala.io.Source.fromInputStream(getClass.getResourceAsStream("banner.txt"))
+    is.getLines().foreach(x=>info(x))
+    info()
+    if (scalateVersion == None) {
+      info("Scalate Tool : http://scalate.fusesource.org/")
+    } else {
+      info("Scalate Tool v. " + scalateVersion.get + " : http://scalate.fusesource.org/")
+    }
+    info()
+  }
+
+  def debug(message: => String): Unit = {
+    if (debug_enabled) {
+      System.err.println("DEBUG: " + message)
+    }
+  }
+
+  def info(message: => String = ""): Unit = {
+    println(message)
+  }
+
+  def warn(message: => String): Unit = {
+    System.err.println("WARN: " + message)
+  }
+
+  def error(message: => String): Unit = {
+    System.err.println("ERROR: " + message)
+  }
+
+  def error(message: => String, exception: Throwable): Unit = {
+    error(message)
+    if (debug_enabled) {
+      exception.printStackTrace
+    }
+  }
 }
 
 import Scalate._
@@ -168,6 +168,12 @@ class ScalateMain extends Shell {
     info("")
     info("For more help see http://scalate.fusesource.org/documentation/tool.html")
     info("")
+  }
+
+
+  override def run = {
+    printStackTraces = debug_enabled
+    super.run
   }
 
   def command(name: String) = {
