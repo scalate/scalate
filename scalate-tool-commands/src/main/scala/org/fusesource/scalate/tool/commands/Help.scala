@@ -26,7 +26,13 @@ import com.beust.jcommander.{JCommander, Parameter, Command}
 object Help extends CommandFactory {
 
   def name = "help"
-  def create = create(new Help)
+  def create = {
+    if( Shell.getCurrentSession !=null ) {
+      create(new Help)
+    } else {
+      null
+    }
+  }
   
 }
 
