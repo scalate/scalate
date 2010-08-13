@@ -54,6 +54,7 @@
 
     <!-- version info -->
     <asm-version>3.1</asm-version>
+    <jansi-version>1.4</jansi-version>
     <jar-plugin-version>2.3</jar-plugin-version>
     <jcommander-version>1.6-SNAPSHOT</jcommander-version>
     <jersey-version>1.4-ea05</jersey-version>
@@ -64,7 +65,6 @@
     <logback-version>0.9.24</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
 
-    <jansi-version>1.2</jansi-version>
     <jline-version>0.9.95.20100209</jline-version>
 
 
@@ -661,6 +661,18 @@
           <id>fusesource.m2-snapshot</id>
           <name>FuseSource Community Snapshot Repository</name>
           <url>http://repo.fusesource.com/maven2-snapshot</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </repository>
+        <!-- TODO only required until we move to a real JCommander release -->
+        <repository>
+          <id>fusesource-nexus-snapshot</id>
+          <name>FuseSource Nexus Snapshot Repository</name>
+          <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
