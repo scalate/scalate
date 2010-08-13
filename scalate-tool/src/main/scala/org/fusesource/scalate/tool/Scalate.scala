@@ -74,6 +74,8 @@ object Scalate {
   }
 
   def intro() = {
+    val is = scala.io.Source.fromInputStream(getClass.getResourceAsStream("banner.txt"))
+    is.getLines().foreach(x=>info(x))
     info()
     if (scalateVersion == None) {
       info("Scalate Tool : http://scalate.fusesource.org/")
