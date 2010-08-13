@@ -72,10 +72,10 @@ class Create extends Runnable with UsageReporter {
     def info(v: String) = {
       out.append(v + "\n");
     }
-    info("Archetypes:")
     info("")
-    info("  empty       : Creates a basic Scalate module")
-    info("  guice       : Creates a Guice based Scalate module")
+    info("  Archetypes:")
+    info("    empty  Basic Scalate project")
+    info("    guice  Guice based Scalate project")
   }
 
   def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
