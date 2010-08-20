@@ -85,6 +85,10 @@
     <servlet-name>TemplateEngineServlet</servlet-name>
     <url-pattern>*.ssp</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TemplateEngineServlet</servlet-name>
+    <url-pattern>*.md</url-pattern>
+  </servlet-mapping>
   <!-- END: SSP and HAML config -->
 
   <!-- START: Sample servlets -->

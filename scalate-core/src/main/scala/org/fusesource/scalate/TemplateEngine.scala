@@ -109,6 +109,8 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   
   var filters: Map[String, Filter] = Map()
 
+  var pipelines: Map[String, List[Filter]] = Map()
+
   private val attempt = Exception.ignoring(classOf[Throwable])
   
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
@@ -116,7 +118,12 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   attempt( filters += "plain" -> PlainFilter )
   attempt( filters += "javascript"-> JavascriptFilter )
   attempt( filters += "escaped"->EscapedFilter )
-  attempt( filters += "markdown"->MarkdownFilter )
+  attempt{
+    filters += "markdown"->MarkdownFilter
+    pipelines += "md"->List(MarkdownFilter)
+    pipelines += "markdown"->List(MarkdownFilter) 
+  }
+
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
@@ -586,8 +593,28 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
     try {
       val uri = source.uri
 
-      // Generate the scala source code from the template
+
+      // Can we use a pipeline to process the request?
+      pipeline(source) match {
+        case Some(p)=>
+          val text = source.text
+          println(text)
+
+          // Implements a template which uses a pipeline of filters for the implementation.
+          return (new Template() {
+            def render(context: RenderContext) = {
+              var rc = text
+              p.foreach{ f=>
+                rc = f.filter(rc)
+              }
+              context << rc;
+            }
+          }, Set(uri))
+        case None=>
+      }
+
       val g = generator(source);
+      // Generate the scala source code from the template
       code = g.generate(this, source, bindings ::: extraBindings)
 
       val sourceFile = sourceFileName(uri)
@@ -596,7 +623,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
 
       // Compile the generated scala code
       compiler.compile(sourceFile)
-      
+
       // Write the source map information to the class file
       val sourceMap = buildSourceMap(g.stratumName, uri, sourceFile, code.positions)
 
@@ -610,6 +637,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
       template.source = source
 
       (template, code.dependencies)
+
     } catch {
       // TODO: figure out why we sometimes get these InstantiationException errors that
       // go away if you redo
@@ -681,6 +709,11 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
     }
   }
 
+  /**
+   * Gets a pipeline to use for the give uri string by looking up the uri's extension
+   * in the the pipelines map.
+   */
+  protected def pipeline(source: TemplateSource) = extension(source).flatMap(pipelines.get(_) )
 
   /**
    * Gets the code generator to use for the give uri string by looking up the uri's extension
@@ -705,7 +738,9 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    * Returns the code generator for the given file extension
    */
   protected def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
-    case None => throw new TemplateException("Not a template file extension (" + codeGenerators.keysIterator.mkString("|") + "), you requested: " + extension);
+    case None =>
+      val extensions = pipelines.keySet.toList :::  codeGenerators.keySet.toList
+      throw new TemplateException("Not a template file extension (" + extensions.mkString(" | ") + "), you requested: " + extension);
     case Some(generator) => generator
   }
 
