@@ -23,6 +23,7 @@ import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
 import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import xml.XML
+import org.fusesource.scalate.{TemplateEngineAddOn, TemplateEngine}
 
 abstract class WikiTextFilter extends Filter {
   def filter(content: String): String = {
@@ -40,6 +41,16 @@ abstract class WikiTextFilter extends Filter {
 /**
  * Renders a Confluence filter
  */
-class ConfluenceFilter extends WikiTextFilter {
+object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
   def markupLanguage = new ConfluenceLanguage
+
+
+  /**
+   * Add the markdown filter tot he template engine.
+   */
+  def apply(te: TemplateEngine) = {
+    te.filters += "conf"->ConfluenceFilter
+    te.pipelines += "conf"->List(ConfluenceFilter)
+  }
+
 }

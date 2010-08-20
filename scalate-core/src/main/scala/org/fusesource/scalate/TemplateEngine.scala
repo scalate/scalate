@@ -118,12 +118,6 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   attempt( filters += "plain" -> PlainFilter )
   attempt( filters += "javascript"-> JavascriptFilter )
   attempt( filters += "escaped"->EscapedFilter )
-  attempt{
-    filters += "markdown"->MarkdownFilter
-    pipelines += "md"->List(MarkdownFilter)
-    pipelines += "markdown"->List(MarkdownFilter) 
-  }
-
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
@@ -147,6 +141,10 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   private var _cacheHits = 0
   private var _cacheMisses = 0
 
+  // Discover bits that can enhance the default template engine configuration. (like filters)
+  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn=>
+    addOn(this)
+  }
 
   /**
    * Returns true if this template engine is being used in development mode.
@@ -598,8 +596,6 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
       pipeline(source) match {
         case Some(p)=>
           val text = source.text
-          println(text)
-
           // Implements a template which uses a pipeline of filters for the implementation.
           return (new Template() {
             def render(context: RenderContext) = {

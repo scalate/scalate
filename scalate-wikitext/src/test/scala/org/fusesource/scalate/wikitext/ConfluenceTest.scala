@@ -21,7 +21,7 @@ package org.fusesource.scalate.wikitext
 import org.fusesource.scalate.test.FunSuiteSupport
 
 class ConfluenceTest extends FunSuiteSupport {
-  val filter = new ConfluenceFilter
+  val filter = ConfluenceFilter
 
   test("parse confluence wiki") {
     assertFilter(
