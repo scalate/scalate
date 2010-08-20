@@ -26,6 +26,7 @@ import java.util.Properties
 import com.beust.jcommander._
 import java.lang.{StringBuilder, String}
 import shell.{Help, Shell}
+import org.fusesource.jansi.AnsiConsole
 
 /**
  * <p>
@@ -51,13 +52,14 @@ object Scalate {
   var debug_enabled = false
 
   def main(args: Array[String]) = {
-    intro
-    val tool = new ScalateMain()
-    val help = new Help();
-    val jc = JCommander.newInstance(Array(tool, help, Scalate))
-    jc.setProgramName(tool.getShellName)
-
+    AnsiConsole.systemInstall
     try {
+      intro
+      val tool = new ScalateMain()
+      val help = new Help();
+      val jc = JCommander.newInstance(Array(tool, help, Scalate))
+      jc.setProgramName(tool.getShellName)
+
       jc.parse(args:_*);
       if (help.help) {
         jc.usage()
@@ -71,6 +73,8 @@ object Scalate {
         jc.usage
       case e =>
         tool.displayFailure(null, e)
+    } finally {
+      AnsiConsole.systemUninstall
     }
   }
 
