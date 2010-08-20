@@ -192,9 +192,11 @@
   <modules>
     <module>scalate-core</module>
     <module>scalate-test</module>
+    <module>scalate-wikitext</module>
     <module>scalate-guice</module>
     <module>scalate-war</module>
     <module>scalate-sample</module>
+    <module>scalate-sample-wiki</module>
     <module>scalate-sample-scuery</module>
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
