@@ -28,17 +28,10 @@ abstract class WikiTextFilter extends Filter {
   def filter(content: String): String = {
     val parser = new MarkupParser
     parser.setMarkupLanguage(markupLanguage)
-    val xmlText = parser.parseToHtml(content)
-    val idx = xmlText.indexOf("<body>")
-    if (idx > 0) {
-      xmlText.substring(idx + 6).stripSuffix("</body></html>")
+    parser.parseToHtml(content).split("<body>") match {
+      case Array(head, rest) => rest.stripSuffix("</body></html>")
+      case Array(text) => text
     }
-    else {
-      xmlText
-    }
-/*
-    val xml = XML.loadString(xmlText)
-*/
   }
 
   def markupLanguage: MarkupLanguage
