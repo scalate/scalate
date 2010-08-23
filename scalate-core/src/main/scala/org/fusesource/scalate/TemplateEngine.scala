@@ -114,10 +114,10 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   private val attempt = Exception.ignoring(classOf[Throwable])
 
   /**
-   * Returns the file extensions understood by Scalate; all the template engines, filters and pipelines including
+   * Returns the file extensions understood by Scalate; all the template engines and pipelines including
    * the wiki markup languages. 
    */
-  def extensions = codeGenerators.keySet ++ filters.keySet ++ pipelines.keySet
+  def extensions = codeGenerators.keySet ++ pipelines.keySet
 
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
