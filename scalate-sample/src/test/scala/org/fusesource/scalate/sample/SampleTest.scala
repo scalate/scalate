@@ -131,5 +131,6 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   testPageContains("scaml/simple.scaml", "Scaml is a Scala version of", "Haml")
   testPageContains("scaml/snippet.scaml", "mmm I like beer")
   testPageContains("scaml/standalone.scaml", "1 + 2 = 3")
+  testPageContains("filtered.html", "This AWESOME page is rendered by the filter.")
 
 }
