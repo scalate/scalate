@@ -68,7 +68,22 @@ class TemplateEngineFilter extends Filter with Logging {
     (req, res) match {
       case (req: HttpServletRequest, res: HttpServletResponse) =>
 
-        def appendedExtension(reqPath:String=req.getRequestURI):Option[String] = {
+        // Is the uri a direct path to a template??
+        // i.e: /path/page.jade -> /path/page.jade
+        def find_direct(reqPath:String=req.getRequestURI):Option[String] = {
+          val uri = reqPath.substring(req.getContextPath.length)
+          for( base <-templateDirectories) {
+            val path = base + uri
+            if( engine.resourceLoader.exists(path) ) {
+              return Some(path)
+            }
+          }
+          return None
+        }
+
+        // Lets try to find the template by appending a template extension to the path
+        // i.e: /path/page.html -> /path/page.html.jade
+        def find_appended(reqPath:String=req.getRequestURI):Option[String] = {
           val uri = reqPath.substring(req.getContextPath.length)
           for( base <-templateDirectories; ext <- extensions) {
             val path = base + uri + "." + ext
@@ -79,11 +94,13 @@ class TemplateEngineFilter extends Filter with Logging {
           return None
         }
 
-        def replacedExtension():Option[String] = {
+        // Lets try to find the template by replacing the extension
+        // i.e: /path/page.html -> /path/page.jade
+        def find_replaced():Option[String] = {
           val uri = req.getRequestURI
           replacedExtensions.foreach{ ext=>
             if( uri.endsWith(ext) ) {
-              val rc = appendedExtension(uri.stripSuffix(ext))
+              val rc = find_appended(uri.stripSuffix(ext))
               if( rc != None )
                 return rc
             }
@@ -91,41 +108,18 @@ class TemplateEngineFilter extends Filter with Logging {
           None
         }
 
-        // Lets try to find the template by appending a template extension to the path
-        // i.e: /path/page.html -> /path/page.html.jade
-        appendedExtension match {
-          case Some(template)=>
-            info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
+        find_direct().orElse(find_appended().orElse(find_replaced())).foreach{ template=>
 
-            val context = new ServletRenderContext(engine, req, res, config.getServletContext)
-            res.setStatus(HttpServletResponse.SC_OK)
-            context.include(template, true)
+          info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
 
-            return
+          val context = new ServletRenderContext(engine, req, res, config.getServletContext)
+          res.setStatus(HttpServletResponse.SC_OK)
+          context.include(template, true)
 
-          case _ =>
-
-            // Lets try to find the template by replacing the extension
-            // i.e. page.html -> page.ssp
-            replacedExtension match {
-              case Some(template)=>
-                info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
-
-                val context = new ServletRenderContext(engine, req, res, config.getServletContext)
-                res.setStatus(HttpServletResponse.SC_OK)
-                context.include(template, true)
-
-                return
-
-              case _ =>
-
-            }
-
+          return
         }
+
       case _ =>
-
-
-
     }
     chain.doFilter(req, res)
   }
