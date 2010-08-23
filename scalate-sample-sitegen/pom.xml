@@ -27,9 +27,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   
-  <artifactId>scalate-sample-wiki</artifactId>
-  <name>Scalate :: Sample Local Wiki</name>
-  <description>Scalate Sample Local Wiki Web Application</description>
+  <artifactId>scalate-sample-sitegen</artifactId>
+  <name>Scalate :: Sample Site Generation</name>
+  <description>Scalate Sample Site Generation Web Application</description>
   <packaging>war</packaging>
 
   <properties>
