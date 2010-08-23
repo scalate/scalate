@@ -18,12 +18,12 @@
 
 package org.fusesource.scalate.servlet
 
-import _root_.org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.util.ClassPathBuilder
 import java.io.File
 import scala.tools.nsc.Global
-import javax.servlet.{FilterConfig, ServletContext, ServletConfig};
+import javax.servlet.{FilterConfig, ServletContext, ServletConfig}
+import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy};
 
 object ServletTemplateEngine {
   val templateEngineKey = classOf[ServletTemplateEngine].getName
@@ -50,10 +50,24 @@ object ServletTemplateEngine {
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
     servletContext.setAttribute(templateEngineKey, templateEngine)
   }
+
+  /**
+   * Configures the given TemplateEngine to use the default servlet style layout strategy.
+   *
+   * The default layout files searched if no layout attribute is defined by a template are:
+   *   * "WEB-INF/scalate/layouts/default.jade"
+   *   * "WEB-INF/scalate/layouts/default.mustache"
+   *   * "WEB-INF/scalate/layouts/default.scaml"
+   *   * "WEB-INF/scalate/layouts/default.ssp"
+   */
+  def setLayoutStrategy(engine: TemplateEngine): LayoutStrategy = {
+    engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
+    engine.layoutStrategy
+  }
 }
 
 /**
- * A Sevlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
+ * A Servlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
  *
  * The default layout files searched if no layout attribute is defined by a template are:
  *   * "WEB-INF/scalate/layouts/default.jade"
@@ -67,7 +81,7 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
-  layoutStrategy = new DefaultLayoutStrategy(this, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
+  ServletTemplateEngine.setLayoutStrategy(this)
 
   info("Scalate template engine using working directory: " + workingDirectory)
   

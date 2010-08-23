@@ -94,6 +94,19 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.fusesource.scalate</groupId>
+        <artifactId>maven-scalate-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sitegen</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>

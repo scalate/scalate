@@ -59,7 +59,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
   }
 
   def assertOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map(), trim: Boolean = false): Unit = {
-    var output = engine.layout(template, attributes)
+    var output = engine.layout("dummy.ssp", template, attributes)
     debug("output: '" + output + "'")
 
     if (trim) {
@@ -78,7 +78,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
   def assertOutputContains(template: Template, expected: String*): Unit = assertOutputContains(template, Map[String, Any](), expected: _*)
 
   def assertOutputContains(template: Template, attributes: Map[String, Any], expected: String*): Unit = {
-    var output = engine.layout(template, attributes)
+    var output = engine.layout("dummy.ssp", template, attributes)
     debug("output: '" + output + "'")
 
     assertTextContains(output, "template " + template, expected: _*)

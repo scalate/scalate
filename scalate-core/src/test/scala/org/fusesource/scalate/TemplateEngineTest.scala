@@ -28,7 +28,7 @@ class TemplateEngineTest extends FunSuiteSupport {
 
   test("load file template") {
     val template = engine.load(new File(baseDir, "src/test/resources/simple.ssp"))
-    val output = engine.layout(template).trim
+    val output = engine.layout("foo0.ssp", template).trim
 
     assertContains(output, "1 + 2 = 3")
   }
@@ -36,7 +36,7 @@ class TemplateEngineTest extends FunSuiteSupport {
   test("string template with custom bindings") {
     val source = "hello ${name}"
     val template = engine.compileSsp(source, List(Binding("name", "String")))
-    val output = engine.layout(template, Map("name" -> "James"))
+    val output = engine.layout("foo1.ssp", template, Map("name" -> "James"))
 
     expect("hello James") {output}
   }
@@ -46,7 +46,7 @@ class TemplateEngineTest extends FunSuiteSupport {
     val source = "<%@ val name: String %> hello ${name}"
 
     val template = engine.compileSsp(source)
-    val output = engine.layout(template, Map("name" -> "Hiram"))
+    val output = engine.layout("foo2.ssp", template, Map("name" -> "Hiram"))
 
     expect("hello Hiram") {output.trim}
   }
@@ -57,7 +57,7 @@ class TemplateEngineTest extends FunSuiteSupport {
 Hello ${name}!
 """)
 
-    val output = engine.layout(template, Map("name" -> "James")).trim
+    val output = engine.layout("foo3.ssp", template, Map("name" -> "James")).trim
     assertContains(output, "Hello James")
     debug("template generated: " + output)
   }
@@ -75,7 +75,7 @@ Hello ${name}!
 <p>hello \${${name}} how are you?</p>
 """
     val template = engine.compileSsp(templateText)
-    val output = engine.layout(template, Map("t" -> classOf[String])).trim
+    val output = engine.layout("foo4.ssp", template, Map("t" -> classOf[String])).trim
     val lines = output.split('\n')
 
     for (line <- lines) {
