@@ -34,6 +34,7 @@ class TemplateEngineFilter extends Filter with Logging {
   var config: FilterConfig = _
   var engine: ServletTemplateEngine = _
   var templateDirectories = List("/WEB-INF", "")
+  var replacedExtensions = List(".html", ".htm")
 
   /**
    * Place your application initialization code here.
@@ -42,6 +43,11 @@ class TemplateEngineFilter extends Filter with Logging {
   def init(filterConfig: FilterConfig) = {
     config = filterConfig
     engine = new ServletTemplateEngine(config)
+    filterConfig.getInitParameter("replaced-extensions") match {
+      case null =>
+      case x =>
+        replacedExtensions = x.split(":+").toList
+    }
   }
 
   /**
@@ -56,20 +62,14 @@ class TemplateEngineFilter extends Filter with Logging {
   }
 
   /**
-   * Instantiates a `CircumflexContext` object, binds it to current request,
-   * consults `isProcessed, whether the request should be processed
-   * and delegates to high-level equivalent
-   * `doFilter(CircumflexContext, FilterChain)`
-   * if necessary.
+   * 
    */
   def doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain): Unit = {
     (req, res) match {
       case (req: HttpServletRequest, res: HttpServletResponse) =>
-        def findTemplate():Option[String] = {
 
-          val uri = req.getRequestURI.substring(req.getContextPath.length)
-
-
+        def appendedExtension(reqPath:String=req.getRequestURI):Option[String] = {
+          val uri = reqPath.substring(req.getContextPath.length)
           for( base <-templateDirectories; ext <- extensions) {
             val path = base + uri + "." + ext
             if( engine.resourceLoader.exists(path) ) {
@@ -79,7 +79,21 @@ class TemplateEngineFilter extends Filter with Logging {
           return None
         }
 
-        findTemplate match {
+        def replacedExtension():Option[String] = {
+          val uri = req.getRequestURI
+          replacedExtensions.foreach{ ext=>
+            if( uri.endsWith(ext) ) {
+              val rc = appendedExtension(uri.stripSuffix(ext))
+              if( rc != None )
+                return rc
+            }
+          }
+          None
+        }
+
+        // Lets try to find the template by appending a template extension to the path
+        // i.e: /path/page.html -> /path/page.html.jade
+        appendedExtension match {
           case Some(template)=>
             info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
 
@@ -90,8 +104,28 @@ class TemplateEngineFilter extends Filter with Logging {
             return
 
           case _ =>
+
+            // Lets try to find the template by replacing the extension
+            // i.e. page.html -> page.ssp
+            replacedExtension match {
+              case Some(template)=>
+                info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
+
+                val context = new ServletRenderContext(engine, req, res, config.getServletContext)
+                res.setStatus(HttpServletResponse.SC_OK)
+                context.include(template, true)
+
+                return
+
+              case _ =>
+
+            }
+
         }
       case _ =>
+
+
+
     }
     chain.doFilter(req, res)
   }
