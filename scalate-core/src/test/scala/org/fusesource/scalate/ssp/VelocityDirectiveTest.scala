@@ -72,7 +72,7 @@ Dunno
 #import(java.util.Date)
 time is: ${new Date()}
 """)
-    val output = engine.layout(template).trim
+    val output = engine.layout("foo1.ssp", template).trim
     assert(output.startsWith("time is:"))
   }
 
@@ -83,7 +83,7 @@ time is: ${new Date()}
 }#
 time is: ${new Date()}
 """)
-    val output = engine.layout(template).trim
+    val output = engine.layout("foo2.ssp", template).trim
     assert(output.startsWith("time is:"))
   }
 
@@ -95,7 +95,7 @@ foo
 #end
 end
 """)
-    val output = engine.layout(template).trim
+    val output = engine.layout("foo3.ssp", template).trim
     expect(List("start", "foo", "end")) { output.split("\\s+").toList }
   }
 

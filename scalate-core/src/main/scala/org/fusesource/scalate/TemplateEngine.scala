@@ -112,7 +112,13 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   var pipelines: Map[String, List[Filter]] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])
-  
+
+  /**
+   * Returns the file extensions understood by Scalate; all the template engines, filters and pipelines including
+   * the wiki markup languages. 
+   */
+  def extensions = codeGenerators.keySet ++ filters.keySet ++ pipelines.keySet
+
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
   attempt( filters += "plain" -> PlainFilter )
@@ -444,16 +450,16 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    */
   def layout(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): String = {
     val template = load(uri, extraBindings)
-    layout(template, attributes)
+    layout(uri, template, attributes)
   }
 
   /**
    * Renders the given template returning the output
    */
-  def layout(template: Template, attributes: Map[String,Any]): String = {
+  def layout(uri: String, template: Template, attributes: Map[String,Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = createRenderContext(out)
+    val context = createRenderContext(uri, out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
     }
@@ -463,7 +469,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
 
   // can't use multiple methods with default arguments so lets manually expand them here...
   def layout(uri: String, context: RenderContext): Unit = layout(uri, context, Nil)
-  def layout(template: Template): String = layout(template, Map[String,Any]())
+  def layout(uri: String, template: Template): String = layout(uri, template, Map[String,Any]())
 
   /**
    *  Renders the given template source using the current layoutStrategy
@@ -474,7 +480,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    */
   def layout(source: TemplateSource, attributes: Map[String,Any]): String = {
     val template = load(source)
-    layout(template, attributes)
+    layout(source.uri, template, attributes)
   }
   /**
    *  Renders the given template source using the current layoutStrategy
@@ -504,20 +510,20 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    */
   def layoutAsNodes(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): NodeSeq = {
     val template = load(uri, extraBindings)
-    layoutAsNodes(template, attributes)
+    layoutAsNodes(uri, template, attributes)
   }
 
   /**
    * Renders the given template returning the output
    */
-  def layoutAsNodes(template: Template, attributes: Map[String,Any]): NodeSeq = {
+  def layoutAsNodes(uri: String, template: Template, attributes: Map[String,Any]): NodeSeq = {
     // TODO there is a much better way of doing this by adding native NodeSeq
     // support into the generated templates - especially for Scaml!
     // for now lets do it a crappy way...
 
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = createRenderContext(out)
+    val context = createRenderContext(uri, out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
     }
@@ -526,14 +532,14 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   }
 
   // can't use multiple methods with default arguments so lets manually expand them here...
-  def layoutAsNodes(template: Template): NodeSeq = layoutAsNodes(template, Map[String,Any]())
+  def layoutAsNodes(uri: String, template: Template): NodeSeq = layoutAsNodes(uri, template, Map[String,Any]())
 
 
   /**
    * Factory method used by the layout helper methods that should be overloaded by template engine implementations
    * if they wish to customize the render context implementation
    */
-  protected def createRenderContext(out: PrintWriter): RenderContext = new DefaultRenderContext(this, out)
+  protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(this, out)
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri

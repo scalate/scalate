@@ -35,14 +35,14 @@ case class Binding(
         classNamePositional: Option[Positional] = None,
         defaultValuePositional: Option[Positional] = None) {
   
-  def classNamePositionalOrText = classNamePositional match {
-    case Some(positional) => positional
+  def classNamePositionalOrText: String = classNamePositional match {
+    case Some(positional) => positional.toString
     case _ => className
   }
 
-  def defaultValuePositionalOrText = defaultValuePositional match {
-    case Some(positional) => positional
-    case _ => defaultValue
+  def defaultValuePositionalOrText: String = defaultValuePositional match {
+    case Some(positional) => positional.toString
+    case _ => defaultValue.get
   }
 }
 

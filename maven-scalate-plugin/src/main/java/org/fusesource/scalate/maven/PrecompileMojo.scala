@@ -18,8 +18,6 @@
 
 package org.fusesource.scalate.maven
 
-;
-
 import java.io.File
 import org.apache.maven.plugin.AbstractMojo
 import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine};

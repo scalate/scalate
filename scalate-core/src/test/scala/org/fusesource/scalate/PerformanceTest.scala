@@ -29,7 +29,7 @@ class PerformanceTest extends TemplateTestSupport {
 Hello ${name}!
 """)
 
-    val output = engine.layout(template, Map("name" -> "James")).trim
+    val output = engine.layout("foo.ssp", template, Map("name" -> "James")).trim
     assertContains(output, "Hello James")
   }
 

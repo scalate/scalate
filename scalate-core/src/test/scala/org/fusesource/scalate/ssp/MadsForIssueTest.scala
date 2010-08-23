@@ -85,7 +85,7 @@ class ${name} extends LongKeyedMapper[${name}] with IdPK {
 object ${name} extends ${name} with LongKeyedMetaMapper[${name}]    
 """)
 
-    val output = engine.layout(template, attributes)
+    val output = engine.layout("dummy.ssp", template, attributes)
     debug("Output:")
     debug(output)
   }

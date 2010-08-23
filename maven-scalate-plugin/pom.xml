@@ -49,7 +49,17 @@
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
-      <version>1.3-SNAPSHOT</version>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+    <!-- TODO ideally we'd not have to use this but for some reason classloader issues with mojo -->
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-wikitext</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
