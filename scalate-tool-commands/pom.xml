@@ -19,7 +19,8 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
@@ -44,6 +45,22 @@
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/filtered-resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -56,16 +73,16 @@
             </goals>
           </execution>
         </executions>
-<!--
-        <configuration>
-          <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
-          <classpathScope>test</classpathScope>
-        </configuration>
-        <configuration>
-          <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
-          <classpathScope>test</classpathScope>
-        </configuration>
--->
+        <!--
+                <configuration>
+                  <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
+                  <classpathScope>test</classpathScope>
+                </configuration>
+                <configuration>
+                  <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
+                  <classpathScope>test</classpathScope>
+                </configuration>
+        -->
         <configuration>
           <mainClass>org.apache.karaf.shell.console.Main</mainClass>
           <classpathScope>test</classpathScope>
