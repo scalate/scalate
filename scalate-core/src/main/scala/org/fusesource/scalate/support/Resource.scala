@@ -140,7 +140,7 @@ case class URLResource(url: URL) extends WriteableResource {
         case e => debug("While converting " + url + " to a File I caught: " + e, e)
       }
     }
-    if (f != null && f.exists) {
+    if (f != null && f.exists && f.isFile) {
       Some(f)
     } else {
       None

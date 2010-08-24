@@ -38,18 +38,23 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
   override def resource(uri: String) = {
     val file = realFile(uri)
     if (file != null) {
-      Some(fromFile(file))
+      if( file.isFile )
+        Some(fromFile(file))
+      else
+        None
     }
     else {
       val url = context.getResource(uri)
-      if (url != null) {
-        Some(fromURL(url))
-      }
-      else {
+      if (url!=null) {
+        val resource = fromURL(url)
+        println(resource.text)
+        Some(resource)
+      } else {
         delegate.resource(uri)
       }
     }
   }
+
 
   /**
    * Returns the real path for the given uri.

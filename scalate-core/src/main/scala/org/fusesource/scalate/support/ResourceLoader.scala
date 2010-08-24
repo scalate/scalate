@@ -65,7 +65,7 @@ case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoad
     var answer = false
     if (uri != null) {
       val file = toFile(uri)
-      if (file != null && file.exists) {
+      if (file != null && file.exists && file.isFile) {
         if (!file.canRead) {
           throw new ResourceNotFoundException(uri, description = "Could not read from " + file.getAbsolutePath)
         }
