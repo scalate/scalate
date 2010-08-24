@@ -44,13 +44,20 @@ class TemplateEngineServlet extends HttpServlet with Logging {
   override def init(config: ServletConfig) {
     super.init(config)
 
-    templateEngine = new ServletTemplateEngine(config)
+    templateEngine = createTemplateEngine(config)
 
     // register the template engine and servlet so they can be easily resolved
     TemplateEngineServlet() = this
     ServletTemplateEngine(getServletContext) = templateEngine
   }
 
+
+  /**
+   * Allow derived servlets to override and customize the template engine from the configuration
+   */
+  protected def createTemplateEngine(config: ServletConfig): ServletTemplateEngine = {
+    new ServletTemplateEngine(config)
+  }
 
   override def service(request: HttpServletRequest, response: HttpServletResponse) {
     render(request.getServletPath, request, response)
