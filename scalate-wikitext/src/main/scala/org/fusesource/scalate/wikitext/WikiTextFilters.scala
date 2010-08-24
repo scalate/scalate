@@ -42,7 +42,7 @@ abstract class WikiTextFilter extends Filter {
  * Renders a Confluence filter
  */
 object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
-  def markupLanguage = new ConfluenceLanguage
+  def markupLanguage = new PygementsConfluenceLanguage
 
 
   /**

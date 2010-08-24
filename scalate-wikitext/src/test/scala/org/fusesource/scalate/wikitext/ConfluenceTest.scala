@@ -40,4 +40,23 @@ Hello
     println("Created: " + actual)
     expect(expected) {actual}
   }
+
+    test("pygmentize macro") {
+    assertFilter(
+"""
+START
+
+  {pygmentize:xml}
+  <ul>
+    <li>one</li>
+    <li>two</li>
+  </ul>
+  {pygmentize}
+
+END
+""",
+
+"""<p>START</p><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
+  }
+
 }
