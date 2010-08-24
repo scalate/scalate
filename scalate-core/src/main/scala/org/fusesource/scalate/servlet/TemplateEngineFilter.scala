@@ -18,8 +18,9 @@
 package org.fusesource.scalate.servlet
 
 import javax.servlet._
-import http.{HttpServletResponse, HttpServletRequest}
+import http.{HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest}
 import org.fusesource.scalate.util.Logging
+import java.lang.String
 
 /**
  * <p>
@@ -35,7 +36,8 @@ class TemplateEngineFilter extends Filter with Logging {
   var engine: ServletTemplateEngine = _
   var templateDirectories = List("/WEB-INF", "")
   var replacedExtensions = List(".html", ".htm")
-
+  var errorUris: List[String] = ServletHelper.errorUris()
+  
   /**
    * Place your application initialization code here.
    * Does nothing by default.
@@ -61,67 +63,127 @@ class TemplateEngineFilter extends Filter with Logging {
     (engine.pipelines.keys.toList ::: engine.codeGenerators.keys.toList).distinct
   }
 
+
+  def find_template(path:String) = {
+
+    // Is the uri a direct path to a template??
+    // i.e: /path/page.jade -> /path/page.jade
+    def find_direct(uri:String=path):Option[String] = {
+      for( base <-templateDirectories; ext <- extensions) {
+        val path = base + uri
+        if( path.endsWith(ext) && engine.resourceLoader.exists(path) ) {
+          return Some(path)
+        }
+      }
+      return None
+    }
+
+    // Lets try to find the template by appending a template extension to the path
+    // i.e: /path/page.html -> /path/page.html.jade
+    def find_appended(uri:String=path):Option[String] = {
+      for( base <-templateDirectories; ext <- extensions) {
+        val path = base + uri + "." + ext
+        if( engine.resourceLoader.exists(path) ) {
+          return Some(path)
+        }
+      }
+      return None
+    }
+
+    // Lets try to find the template by replacing the extension
+    // i.e: /path/page.html -> /path/page.jade
+    def find_replaced():Option[String] = {
+      replacedExtensions.foreach{ ext=>
+        if( path.endsWith(ext) ) {
+          val rc = find_appended(path.stripSuffix(ext))
+          if( rc != None )
+            return rc
+        }
+      }
+      None
+    }
+
+    find_direct().orElse(find_appended().orElse(find_replaced()))
+
+  }
+
+
   /**
    * 
    */
-  def doFilter(req: ServletRequest, res: ServletResponse, chain: FilterChain): Unit = {
-    (req, res) match {
-      case (req: HttpServletRequest, res: HttpServletResponse) =>
+  def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
+    (request,response) match {
+      case (request: HttpServletRequest, response: HttpServletResponse) =>
+        val request_wrapper = wrap(request)
 
-        // Is the uri a direct path to a template??
-        // i.e: /path/page.jade -> /path/page.jade
-        def find_direct(reqPath:String=req.getRequestURI):Option[String] = {
-          val uri = reqPath.substring(req.getContextPath.length)
-          for( base <-templateDirectories) {
-            val path = base + uri
-            if( engine.resourceLoader.exists(path) ) {
-              return Some(path)
+        info("Checking '%s'".format(request.getRequestURI))
+        find_template(request.getRequestURI.substring(request.getContextPath.length)) match {
+          case Some(template)=>
+
+            info("Rendering '%s' using template '%s'".format(request.getRequestURI, template))
+            val context = new ServletRenderContext(engine, request_wrapper, response, config.getServletContext)
+
+            try {
+              context.include(template, true)
+            } catch {
+              case e:Throwable => showErrorPage(request_wrapper, response, e)
             }
-          }
-          return None
+
+          case None=>
+            chain.doFilter(request_wrapper, response)
         }
-
-        // Lets try to find the template by appending a template extension to the path
-        // i.e: /path/page.html -> /path/page.html.jade
-        def find_appended(reqPath:String=req.getRequestURI):Option[String] = {
-          val uri = reqPath.substring(req.getContextPath.length)
-          for( base <-templateDirectories; ext <- extensions) {
-            val path = base + uri + "." + ext
-            if( engine.resourceLoader.exists(path) ) {
-              return Some(path)
-            }
-          }
-          return None
-        }
-
-        // Lets try to find the template by replacing the extension
-        // i.e: /path/page.html -> /path/page.jade
-        def find_replaced():Option[String] = {
-          val uri = req.getRequestURI
-          replacedExtensions.foreach{ ext=>
-            if( uri.endsWith(ext) ) {
-              val rc = find_appended(uri.stripSuffix(ext))
-              if( rc != None )
-                return rc
-            }
-          }
-          None
-        }
-
-        find_direct().orElse(find_appended().orElse(find_replaced())).foreach{ template=>
-
-          info("Rendering '%s' using template '%s'".format(req.getRequestURI, template))
-
-          val context = new ServletRenderContext(engine, req, res, config.getServletContext)
-          res.setStatus(HttpServletResponse.SC_OK)
-          context.include(template, true)
-
-          return
-        }
-
+      
       case _ =>
+        chain.doFilter(request, response)
     }
-    chain.doFilter(req, res)
+  }
+
+  def showErrorPage(request: HttpServletRequest, response: HttpServletResponse, e:Throwable):Unit = {
+
+    info("failure",e)
+
+    // we need to expose all the errors property here...
+    request.setAttribute("javax.servlet.error.exception", e)
+    request.setAttribute("javax.servlet.error.exception_type", e.getClass)
+    request.setAttribute("javax.servlet.error.message", e.getMessage)
+    request.setAttribute("javax.servlet.error.request_uri", request.getRequestURI)
+    request.setAttribute("javax.servlet.error.servlet_name", request.getServerName)
+    request.setAttribute("javax.servlet.error.status_code", 500)
+    response.setStatus(500)
+
+    errorUris.find( x=>find_template(x).isDefined ) match {
+      case Some(template)=>
+        val context = new ServletRenderContext(engine, request, response, config.getServletContext)
+        try {
+          context.include(template, true)
+        } catch {
+          case _ =>
+            throw e;
+        }
+      case None =>
+        throw e;
+    }
+  }
+
+  def wrap(request: HttpServletRequest) = new ScalateServletRequestWrapper(request) 
+
+  class ScalateServletRequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
+    override def getRequestDispatcher(path: String) = {
+      find_template(path).map( new ScalateRequestDispatcher(_) ).getOrElse( request.getRequestDispatcher(path) )
+    }
+  }
+
+  class ScalateRequestDispatcher(template:String) extends RequestDispatcher {
+    def forward(request: ServletRequest, response: ServletResponse):Unit = include(request, response)
+    def include(request: ServletRequest, response: ServletResponse):Unit = {
+      (request,response) match {
+        case (request: HttpServletRequest, response: HttpServletResponse) =>
+          val context = new ServletRenderContext(engine, wrap(request), response, config.getServletContext)
+          context.include(template, true)
+        case _ =>
+          None
+      }
+    }
   }
 
 }
