@@ -23,9 +23,8 @@ import org.fusesource.scalate.util.Logging
 import java.lang.String
 
 /**
- * <p>
  * Servlet filter which auto routes to the scalate engines for paths which have a scalate template
- * defined.</p>
+ * defined.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
@@ -39,12 +38,11 @@ class TemplateEngineFilter extends Filter with Logging {
   var errorUris: List[String] = ServletHelper.errorUris()
   
   /**
-   * Place your application initialization code here.
-   * Does nothing by default.
+   * Called by the servlet engine to create the template engine and configure this filter
    */
   def init(filterConfig: FilterConfig) = {
     config = filterConfig
-    engine = new ServletTemplateEngine(config)
+    engine = createTemplateEngine
     filterConfig.getInitParameter("replaced-extensions") match {
       case null =>
       case x =>
@@ -53,10 +51,16 @@ class TemplateEngineFilter extends Filter with Logging {
   }
 
   /**
-   * Place your application shutdown code here.
-   * Does nothing by default.
+   * Called by the servlet engine on shut down.
    */
   def destroy = {
+  }
+
+  /**
+   * Allow derived filters to override and customize the template engine from the configuration
+   */
+  protected def createTemplateEngine: ServletTemplateEngine = {
+    new ServletTemplateEngine(config)
   }
 
   lazy val extensions:List[String] = {
