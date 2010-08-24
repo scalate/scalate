@@ -80,7 +80,9 @@ REM SET SCALATE_DEBUG_OPTS="-agentlib:yjpagent"
 REM Uncomment to enable remote debugging
 REM SET SCALATE_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
 
-SET CLASSPATH=%SCALATE_HOME%\lib\scalate-tool-${project.version}.jar
+SET CLASSPATH=%SCALATE_HOME%\lib\scalate-core-${project.version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\scalate-jsp-converter-${project.version}.jar
+SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\scalate-tool-commands-${project.version}.jar
 SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\jorg.apache.karaf.shell.console-${karaf-version}.jar
 SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\scala-library-${scala-version}.jar
 SET CLASSPATH=%CLASSPATH%;%SCALATE_HOME%\lib\slf4j-api-${slf4j-version}.jar
