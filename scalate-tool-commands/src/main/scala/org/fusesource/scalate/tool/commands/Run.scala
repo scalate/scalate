@@ -18,47 +18,37 @@
 
 package org.fusesource.scalate.tool.commands
 
-import java.{util => ju}
-import java.io.{File, PrintWriter}
+import java.{util => ju, lang => jl}
+import java.io.File
 import collection.JavaConversions._
-import org.fusesource.scalate.{TemplateEngine, DefaultRenderContext}
-import org.fusesource.scalate.tool.Scalate._
-import org.fusesource.scalate.tool.CommandFactory
+import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.support.FileResourceLoader
-import com.beust.jcommander.{JCommander, Command, Argument, Parameter}
+import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.osgi.service.command.CommandSession
 
-object Run extends CommandFactory {
 
-  def name = "run"
-  def create = create(new Run())
-
-}
 
 /**
  * The 'scalate run' sub command.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@Command(description = "Renders a Scalate template file")
-class Run extends Runnable {
+@command(scope = "scalate", name = "run", description = "Renders a Scalate template file")
+class Run extends Action {
 
-  @Parameter(names = Array("--root"), description = "Sets the root of the tempalte search path.")
-  var root = new File(".")
-
-  @Parameter(names = Array("--workdir"), description = "Sets the work directory where scalate generates class files to. Defaults to a temporary directory.")
-  var workdir: File = _
-
-  @Argument(index = 0, description = "Name of the template to render")
+  @argument(required = true, name = "template", description = "Name of the template to render")
   var template: String = _
 
-  @Parameter(description = "arguments", required = true)
+  @argument(index = 1, multiValued = true, name = "args", description = "Arguments to the template")
   var args: ju.List[String] = new ju.ArrayList[String]
 
-  def run = render(template, args.toList)
+  @option(name = "--root", description = "Sets the root of the template search path.")
+  var root = new File(".")
 
-  def render(path: String, args: List[String]): Int = {
-    //    val buffer = new StringWriter()
-    //    val out = new PrintWriter(buffer)
+  @option(name = "--workdir", description = "Sets the work directory where scalate generates class files to. Defaults to a temporary directory.")
+  var workdir: File = _
+
+  def execute(session: CommandSession) = {
     try {
       val engine = new TemplateEngine
       if (workdir != null) {
@@ -66,18 +56,11 @@ class Run extends Runnable {
       }
       engine.resourceLoader = new FileResourceLoader(Some(root))
 
-      val writer = new PrintWriter(System.out)
-      val context = new DefaultRenderContext(engine, writer);
-      context.attributes("args") = args
-      context.include(path, true)
-      writer.flush
-      return 0;
-
+      val attributes = Map("args" -> args.toList)
+      engine.layout(template, attributes)
     } catch {
       case e: Exception =>
-        error("Could not render: " + path, e)
-        error("Due to: " + e, e)
-        return -1
+        "Error: Could not render: " + template + ". Due to: " + e
     }
   }
 }

@@ -18,37 +18,38 @@
 package org.fusesource.scalate.converter
 
 import java.io.File
+import java.{util => ju, lang => jl}
 import org.fusesource.scalate.util.IOUtil._
-import org.fusesource.scalate.tool.CommandFactory
-import com.beust.jcommander.{JCommander, Argument, Command, Parameter}
 
-object JspConvert extends CommandFactory {
-
-  def name = "jsp2ssp" 
-  def create = create(new JspConvert)
-
-}
+import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.osgi.service.command.CommandSession
 
 /**
  * Converts JSP files into SSP files
  */
-@Command(description = "Converts JSP files to SSP files")
-class JspConvert extends Runnable {
-  @Argument(index = 0, description = "Root of the directory containing the JSP files.", required = false)
+@command(scope = "scalate", name = "jsp2ssp", description = "Converts JSP files to SSP files")
+class JspConvert extends Runnable with Action {
+  @argument(index = 0, name = "dir", description = "Root of the directory containing the JSP files.")
   var dir: File = new File(".")
 
-  @Parameter(names = Array("--extension"), description = "Extension for output files")
+  @option(name = "--extension", description = "Extension for output files")
   var outputExtension = ".ssp"
-  @Parameter(names = Array("--recursion"), description = "The number of directroy levels to recusively scan file input files.")
+  @option(name = "--recursion", description = "The number of directroy levels to recusively scan file input files.")
   var recursionDepth = -1
-  @Parameter(names = Array("--jaxrs"), description = "If in JAXRS mode we will add the 'it' attribute if a template looks like its a resource template.")
+  @option(name = "--jaxrs", description = "If in JAXRS mode we will add the 'it' attribute if a template looks like its a resource template.")
   var jaxrs = false
-  @Parameter(names = Array("--conciseTemplates"), description = "If using JAXRS templates should we put templates in teh same directory as the package (rather than a directory per controller).")
+  @option(name = "--conciseTemplates", description = "If using JAXRS templates should we put templates in teh same directory as the package (rather than a directory per controller).")
   var conciseJaxrsTemplates = true
 
   var converter = new JspConverter
   var matchesFile: File => Boolean = isJsp
   var outputFile: File => File = toSsp
+
+
+  /**
+   * Runs the command given the command line arguments
+   */
+  def execute(session: CommandSession): jl.Integer = run(dir)
 
   /**
    * Runs the command given the command line arguments
@@ -58,22 +59,25 @@ class JspConvert extends Runnable {
   /**
    * Recurses down the di
    */
-  def run(file: File, level: Int = 0): Unit = {
+  def run(file: File, level: Int = 0): Int = {
+    var count = 0
     if (file.exists) {
       if (file.isDirectory) {
         if (recursionDepth < 0 || level < recursionDepth) {
           val nextLevel = level + 1
           for (f <- file.listFiles) {
-            run(f, nextLevel)
+            count += run(f, nextLevel)
           }
         }
       }
       else {
         if (matchesFile(file)) {
           convert(file)
+          count += 1
         }
       }
     }
+    count
   }
 
   def convert(file: File): Unit = {

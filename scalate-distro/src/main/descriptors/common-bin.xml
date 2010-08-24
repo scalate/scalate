@@ -11,16 +11,20 @@
         <include>org.fusesource.scalate:scalate-camel</include>
         <include>org.fusesource.scalate:scalate-core</include>
         <include>org.fusesource.scalate:scalate-test</include>
+<!--
         <include>org.fusesource.scalate:scalate-tool</include>
+-->
         <include>org.fusesource.scalate:scalate-tool-commands</include>
         <include>org.fusesource.scalate:scalate-jsp-converter</include>
         <include>org.scala-lang:scala-library</include>
         <include>org.scala-lang:scala-compiler</include>
         <include>org.slf4j:slf4j-api</include>
         <include>org.slf4j:slf4j-nop</include>
-        <include>org.fusesource.jcommander:jcommander</include>
+        <include>org.apache.karaf.shell:org.apache.karaf.shell.console</include>
+<!--
         <include>jline:jline</include>
         <include>org.fusesource.jansi:jansi</include>
+-->
       </includes>
     </dependencySet>
     <dependencySet>

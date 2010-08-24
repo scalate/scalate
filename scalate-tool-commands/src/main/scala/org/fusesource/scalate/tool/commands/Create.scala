@@ -18,45 +18,42 @@
 
 package org.fusesource.scalate.tool.commands
 
-import java.util.{List => JList, Map => JMap}
+import java.{util => ju, lang => jl}
 import java.util.zip.ZipInputStream
 import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
-import org.fusesource.scalate.tool.CommandFactory
-import org.fusesource.scalate.tool.Scalate._
-import com.beust.jcommander._
 import java.lang.StringBuilder
+import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.osgi.service.command.CommandSession
 
-object Create extends CommandFactory {
-
-  def name = "create"
-  def create = create(new Create())
-  
-}
 
 /**
  * The 'scalate create' sub command.
  */
-@Command(description = "Creates your Scalate project fast to get you scalate-ing!")
-class Create extends Runnable with UsageReporter {
+@command(scope = "scalate", name = "create", description = "Creates your Scalate project fast to get you scalate-ing!")
+class Create extends Action {
 
   // TODO need way to show archetypes!
 
 
-  @Argument(index = 0, description = "Archetype to create")
+  @argument(index = 0, required = true, name = "archetype", description = "Archetype to create")
   // TODO rename to archetype
   var archetype: String = _
-  @Argument(index = 1, description = "Maven group Id of the new project")
+  @argument(index = 1, required = true, name = "groupId", description = "Maven group Id of the new project")
   var groupId = ""
-  @Argument(index = 2, description = "Maven artifact Id of the new project")
+  @argument(index = 2, required = true, name = "artifactId", description = "Maven artifact Id of the new project")
   var artifactId: String = _
-  @Argument(index = 3, description = "Maven Version of the new project", required = false)
+  @argument(index = 3, name = "version", description = "Maven Version of the new project")
   var version = "1.0-SNAPSHOT"
-  @Argument(index = 4, description = "Package name of generated scala code (defaults to 'groupId.artifactId')", required = false)
+  @argument(index = 4, name = "package", description = "Package name of generated scala code (defaults to 'groupId.artifactId')")
   var packageName: String = _
 
-  @Parameter(names = Array("--outputDir", "-o"), description = "Output directory")
+  @option(name = "--outputDir", description = "Output directory")
   var outputDir = userDir
-
+  @option(name = "--verbose", description = "Verbose output")
+  var verbose: Boolean = false
+  @option(name = "--home", description = "Scalate install directory")
+  var homeDir = System.getProperty("scalate.home", "")
+  
   val archetypes = Map("empty" -> "scalate-archetype-empty", "guice" -> "scalate-archetype-guice")
 
   var archetypeGroupId = "org.fusesource.scalate.tooling"
@@ -66,7 +63,10 @@ class Create extends Runnable with UsageReporter {
   var name = ""
 
 
-  def run = createArchetype
+
+
+/*
+  TODO
 
   def usage(out: StringBuilder) = {
     def info(v: String) = {
@@ -77,10 +77,14 @@ class Create extends Runnable with UsageReporter {
     info("    empty  Basic Scalate project")
     info("    guice  Guice based Scalate project")
   }
+*/
 
   def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
 
-  def createArchetype(): Int = {
+  def execute(session: CommandSession): jl.Integer = {
+    def info(s: => String = "") = session.getConsole.println(s)
+    def debug(s: => String) = if (verbose) session.getConsole.println(s)
+
     val optArchetype = archetypes.get(archetype)
     if (optArchetype.isEmpty) {
       info("No such archetype '" + archetype + "' possible values are " + archetypeNames)
