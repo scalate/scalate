@@ -28,8 +28,8 @@ import org.fusesource.scalate.util.IOUtil
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, OutputStream, InputStream}
 
 /**
- * <p>
- * </p>
+ * <p>Adds support for a 'pygmentize' macro to the Confluence language</p>
+ * <p>The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
@@ -37,93 +37,91 @@ class PygementsConfluenceLanguage extends ConfluenceLanguage {
 
   override def addStandardBlocks(blocks: List[Block], paragraphBreakingBlocks: List[Block]) = {
     super.addStandardBlocks(blocks, paragraphBreakingBlocks)
-    blocks.add(new PygementsCodeBlock)
-    paragraphBreakingBlocks.add(new PygementsCodeBlock)
+    blocks.add(new PygementsBlock)
+    paragraphBreakingBlocks.add(new PygementsBlock)
+  }
+}
+
+class PygementsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
+
+  var language:String = _
+  var lines:Boolean = false
+
+  var content = ListBuffer[String]()
+
+  override def beginBlock() = {
+    val attributes = new Attributes();
+    attributes.setCssClass("syntax");
+    builder.beginBlock(BlockType.DIV, attributes);
   }
 
-  class PygementsCodeBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
 
-	  var language:String = _
-    var lines:Boolean = false
-
-    var content = ListBuffer[String]()
-
-    override def beginBlock() = {
-      val attributes = new Attributes();
-      attributes.setCssClass("syntax");
-      builder.beginBlock(BlockType.DIV, attributes);
-    }
-
-
-    override def handleBlockContent(value:String) = {
-      // collect all the content lines..
-      content += value
-    }
-
-    override def endBlock() = {
-
-      // To support indenting the macro.. we figure out the indent level of the
-      // code block by looking at the indent of the last line
-      val indent_re = """^([ \t]+)$""".r
-      content.lastOption match {
-        case Some(indent_re(indent)) =>
-          // strip off those indents.
-          content = content.map( _.replaceFirst("""^[ \t]{"""+indent.size+"""}""", "") )
-        case _ =>
-      }
-
-      builder.charactersUnescaped(pygmentize(content.mkString("\n")));
-      content.clear
-      builder.endBlock();
-    }
-
-    override def setOption(option: String) = {
-      language = option.toLowerCase();
-    }
-
-    override def setOption(key: String, value:String) = {
-      key match {
-        case "lines" => lines = value=="true"
-        case "lang" => language = value
-      }
-    }
-
-    def pygmentize(body:String) = {
-      var options = "style=colorful"
-      if( lines ) {
-        options += ",linenos=1"
-      }
-
-      var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", language))
-      thread("pygmetize err handler") {
-        IOUtil.copy(process.getErrorStream, System.err)
-      }
-
-      val out = new ByteArrayOutputStream()
-      thread("pygmetize out handler") {
-        IOUtil.copy(process.getInputStream, out)
-      }
-
-      IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
-      process.getOutputStream.close
-
-      process.waitFor
-      if( process.exitValue != 0 ) {
-        throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
-      }
-
-      new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
-    }
-
-    def thread(name:String)(func: =>Unit){
-      new Thread(name) {
-        override def run = {
-          func
-        }
-      }.start()
-    }
-
+  override def handleBlockContent(value:String) = {
+    // collect all the content lines..
+    content += value
   }
 
+  override def endBlock() = {
+
+    // To support indenting the macro.. we figure out the indent level of the
+    // code block by looking at the indent of the last line
+    val indent_re = """^([ \t]+)$""".r
+    content.lastOption match {
+      case Some(indent_re(indent)) =>
+        // strip off those indents.
+        content = content.map( _.replaceFirst("""^[ \t]{"""+indent.size+"""}""", "") )
+      case _ =>
+    }
+
+    builder.charactersUnescaped(pygmentize(content.mkString("\n")));
+    content.clear
+    builder.endBlock();
+  }
+
+  override def setOption(option: String) = {
+    language = option.toLowerCase();
+  }
+
+  override def setOption(key: String, value:String) = {
+    key match {
+      case "lines" => lines = value=="true"
+      case "lang" => language = value
+    }
+  }
+
+  def pygmentize(body:String) = {
+    var options = "style=colorful"
+    if( lines ) {
+      options += ",linenos=1"
+    }
+
+    var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", language))
+    thread("pygmetize err handler") {
+      IOUtil.copy(process.getErrorStream, System.err)
+    }
+
+    val out = new ByteArrayOutputStream()
+    thread("pygmetize out handler") {
+      IOUtil.copy(process.getInputStream, out)
+    }
+
+    IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
+    process.getOutputStream.close
+
+    process.waitFor
+    if( process.exitValue != 0 ) {
+      throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
+    }
+
+    new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
+  }
+
+  def thread(name:String)(func: =>Unit){
+    new Thread(name) {
+      override def run = {
+        func
+      }
+    }.start()
+  }
 
 }
