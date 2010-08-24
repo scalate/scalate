@@ -117,10 +117,10 @@ if [ -z "$SCALATE_BASE" ] ; then
 fi
 
 CLASSPATH="${SCALATE_HOME}/lib/scalate-tool-${project.version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jcommander-${jcommander-version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jline-${jline-version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/jansi-${jansi-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/org.apache.karaf.shell.console-${karaf-version}.jar"
 CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/scala-library-${scala-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/slf4j-api-${slf4j-version}.jar"
+CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/slf4j-nop-${slf4j-version}.jar"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
@@ -153,7 +153,7 @@ if [ "x$SCALATE_DEBUG" != "x" ]; then
     SCALATE_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
 fi
 
-SCALATE_CLASS="org.fusesource.scalate.tool.Scalate"
+SCALATE_CLASS="org.apache.karaf.shell.console.Main"
 
 if [ -n "$CYGHOME" ]; then
     exec "$JAVACMD" $SCALATE_DEBUG_OPTS $SCALATE_OPTS -classpath "${CLASSPATH}" -Dscalate.classpath="${SCALATE_CLASSPATH}" -Dscalate.home="${SCALATE_HOME}" -Dscalate.base="${SCALATE_BASE}" -Dcygwin.user.home="$CYGHOME" $SCALATE_CLASS $@

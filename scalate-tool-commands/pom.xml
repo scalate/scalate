@@ -33,14 +33,48 @@
   <dependencies>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-tool</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.shell</groupId>
+      <artifactId>org.apache.karaf.shell.console</artifactId>
+      <version>${karaf-version}</version>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+<!--
+        <configuration>
+          <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
+          <classpathScope>test</classpathScope>
+        </configuration>
+        <configuration>
+          <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
+          <classpathScope>test</classpathScope>
+        </configuration>
+-->
+        <configuration>
+          <mainClass>org.apache.karaf.shell.console.Main</mainClass>
+          <classpathScope>test</classpathScope>
+          <arguments>
+            <argument>create --help</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

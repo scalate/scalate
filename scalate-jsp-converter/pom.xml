@@ -43,9 +43,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-tool</artifactId>
-      <version>${project.version}</version>
+      <groupId>org.apache.karaf.shell</groupId>
+      <artifactId>org.apache.karaf.shell.console</artifactId>
+      <version>${karaf-version}</version>
     </dependency>
 
     <!-- testing -->
@@ -106,11 +106,19 @@
           <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
           <classpathScope>test</classpathScope>
         </configuration>
--->
         <configuration>
           <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
           <classpathScope>test</classpathScope>
         </configuration>
+-->
+        <configuration>
+          <mainClass>org.apache.karaf.shell.console.Main</mainClass>
+          <classpathScope>test</classpathScope>
+          <arguments>
+            <argument>jsp2ssp --help</argument>
+          </arguments>
+        </configuration>
+
       </plugin>
     </plugins>
   </build>
