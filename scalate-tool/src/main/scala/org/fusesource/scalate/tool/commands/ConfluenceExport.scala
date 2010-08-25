@@ -58,7 +58,7 @@ class ConfluenceExport extends Action {
     val children = ListBuffer[Node]()
   }
 
-  def execute(session: CommandSession) = {
+  def execute(session: CommandSession): jl.Integer = {
 
     def println(value:Any) = session.getConsole.println(value)
 
