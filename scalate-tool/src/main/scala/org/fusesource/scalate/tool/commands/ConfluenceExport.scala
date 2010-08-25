@@ -33,13 +33,13 @@ import org.fusesource.scalate.util.IOUtil
  * <p>
  * Adding a tool that allows you to export confluence sites.  Example usage:
  *
- * <code>confexport --user user --password https://cwiki.apache.org/confluence/rpc/xmlrpc SM ./out</code>
+ * <code>confexport --user user --password pass https://cwiki.apache.org/confluence/rpc/xmlrpc SM ./out</code>
  * 
  * </p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@command(scope = "scalate", name = "confexport", description = "Exports a confluence space")
+@command(scope = "scalate", name = "confexport", description = "Exports a confluence space.")
 class ConfluenceExport extends Action {
 
   @argument(index = 0, required = true, name = "url", description = "URL to confluence RPC service")
@@ -58,12 +58,13 @@ class ConfluenceExport extends Action {
     val children = ListBuffer[Node]()
   }
 
-  def execute(session: CommandSession) = {
+  def execute(session: CommandSession): jl.Integer = {
 
     def println(value:Any) = session.getConsole.println(value)
 
     import JavaConversions._
 
+    println("downloading space index...")
     val confluence = new Confluence(url);
     if( user!=null && password!=null ) {
       confluence.login(user, password);
@@ -87,7 +88,7 @@ class ConfluenceExport extends Action {
       nodes.foreach { node=>
         val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
         val file = new File(dir, santized_title + ".conf")
-        println("downloading: \u001B[1;37m"+file+"\u001B[0m")
+        println("downloading: \u001B[1;32m"+file+"\u001B[0m")
         IOUtil.writeText(file, confluence.getPage(node.summary.getId).getContent)
         rc += 1
         if( !node.children.isEmpty ) {
@@ -98,8 +99,10 @@ class ConfluenceExport extends Action {
     }
 
     val total = export(target, rootNodes);
-    println("Exported \u001B[1;37m%d\u001B[0m pages".format(total));
+    println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
     0
   }
+
+
 
 }
