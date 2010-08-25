@@ -64,6 +64,7 @@ class ConfluenceExport extends Action {
 
     import JavaConversions._
 
+    println("downloading space index...")
     val confluence = new Confluence(url);
     if( user!=null && password!=null ) {
       confluence.login(user, password);
@@ -87,7 +88,7 @@ class ConfluenceExport extends Action {
       nodes.foreach { node=>
         val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
         val file = new File(dir, santized_title + ".conf")
-        println("downloading: \u001B[1;37m"+file+"\u001B[0m")
+        println("downloading: \u001B[1;32m"+file+"\u001B[0m")
         IOUtil.writeText(file, confluence.getPage(node.summary.getId).getContent)
         rc += 1
         if( !node.children.isEmpty ) {
@@ -98,7 +99,7 @@ class ConfluenceExport extends Action {
     }
 
     val total = export(target, rootNodes);
-    println("Exported \u001B[1;37m%d\u001B[0m pages".format(total));
+    println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
     0
   }
 
