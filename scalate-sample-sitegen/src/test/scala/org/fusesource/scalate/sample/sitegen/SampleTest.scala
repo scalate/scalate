@@ -16,24 +16,32 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.sample
+package org.fusesource.scalate.sample.sitegen
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{FunSuite}
+import org.scalatest.FunSuite
 
 import org.fusesource.scalate.test._
+import org.fusesource.scalate.wikitext.Pygmentize
+import org.fusesource.scalate.util.Logging
 
 /**
- * @version $Revision: 1.1 $
+ * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
-
+class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin with Logging {
   override protected def beforeAll(configMap: Map[String, Any]) = {
     System.setProperty("scalate.mode", "development")
     super.beforeAll(configMap)
   }
 
   testPageContains("index.conf", "Sample WebSite")
+  testPageContains("code.conf", "Java code sample")
+
+  if (Pygmentize.isInstalled) {
+    testPageContains("pygmentize.conf", "Pygmentize sample")
+  } else {
+    warn("Pygmentize not installed so ignoring the tests")
+  }
 }

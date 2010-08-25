@@ -30,7 +30,7 @@ Hello
 * one
 * two
 """,
-    
+
 """<h1 id="Title">Title</h1><p>Hello</p><ul><li>one</li><li>two</li></ul>""")
   }
 
@@ -41,6 +41,7 @@ Hello
     expect(expected) {actual}
   }
 
+  if (Pygmentize.isInstalled) {
     test("pygmentize macro") {
     assertFilter(
 """
@@ -57,6 +58,9 @@ END
 """,
 
 """<p>START</p><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
-  }
 
+    }
+  } else {
+    warn("Pygmentize not installed so ignoring the tests")
+  }
 }
