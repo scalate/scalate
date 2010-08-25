@@ -1,0 +1,32 @@
+---
+blog_post: false
+title: Scalate 1.3 Released
+author: James Strachan
+author_url: http://macstrac.blogspot.com
+created_at: 2010-09-05 12:06:40.000000 -00:00
+--- 
+
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.3. 
+
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> which can be used stand alone, with servlets or web frameworks like [JAXRS](http://scalate.fusesource.org/documentation/jog.html), [Lift]((http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) or in integration frameworks like [Apache Camel](http://camel.apache.org/scalate.html).
+
+The following template languages are supported through the same common API:
+
+* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+
+All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)  and [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
+
+
+**Scalate 1.3 Highlights**
+
+* Scalate now has a much more powerful [Servlet Filter](http://scalate.fusesource.org/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) which allows more flexible mapping of templates in a web application. For example you can map the request "/foo.xml" to "/foo.xml.ssp" letting you easily implement most URIs with a view without requiring a controller. 
+* [JSP Converter](http://scalate.fusesource.org/documentation/jspConvert.html) lets you migrate your existing JSP web application across to Scalate
+
+For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3)
+
+[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+
+
+
