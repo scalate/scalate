@@ -62,36 +62,19 @@
   </filter-mapping>
   <!-- END: JAX RS config -->
 
-  <!-- START: SSP and Scaml config -->
-  <servlet>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.jade</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.mustache</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.scaml</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
-  </servlet-mapping>
-  <!-- END: SSP and HAML config -->
+  <!-- START: Scalate config -->
+  <filter>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- END: Scalate config -->
 
   <welcome-file-list>
-    <welcome-file>index.jade</welcome-file>
-    <welcome-file>index.mustache</welcome-file>
-    <welcome-file>index.scaml</welcome-file>
-    <welcome-file>index.ssp</welcome-file>
+    <welcome-file>index</welcome-file>
   </welcome-file-list>
 
   <error-page>
