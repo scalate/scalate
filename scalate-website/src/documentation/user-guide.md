@@ -528,25 +528,19 @@ Our recommendation is to start with [JOG](jog.html) (Jersey on Guice).
 
 To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html) which uses the [Scalate Tool](tool.html) and [WAR Overlay](war-overlay.html) to include the [Console](console.html) in your web application.
 
-### Using Scalate as Servlets in your Web Application
+### Using Scalate as Servlet filter in your Web Application
 
-* Add something like the following to your web.xml file to support Ssp and Scaml pages:
+* Add something like the following to your web.xml file to support Scalate templates:
 
   {pygmentize:: {lang: xml, lines: true}}
-  <servlet>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.scaml</url-pattern>
-  </servlet-mapping>
+  <filter>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   {pygmentize}
 
 *  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
@@ -555,6 +549,16 @@ To get up to speed quickly with JOG try the [Getting Started Guide](getting-star
     * scalate-core.jar
 
 You could add one or more of the above to your servlet container's server-wide configuration if you prefer
+The Scalate template filter looks for templates in several locations to satisfy a request.  
+For example, if requested URI is `/path/file.html`, then it will for templates in this order:
+
+1. `/path/file.html.${ext}`
+2. `/WEB-INF/path/file.html.${ext}`
+3. `/path/file.${ext}`
+4. `/WEB-INF/path/file.${ext}`
+
+Where `${ext}` gets replaced with all the template extensions supported by the Template Engine.  If the requested
+URI already ends with template extension then it would get looked up in the root and under the `/WEB-INF` directory.
 
 ### Embedding Scalate in your Application or Framework
 

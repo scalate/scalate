@@ -60,7 +60,9 @@
     <filter-name>Jersey Filter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <!-- END: JAX RS config -->
 
+  <!-- START: Scalate config -->
   <filter>
     <filter-name>TemplateEngineFilter</filter-name>
     <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
@@ -69,8 +71,7 @@
     <filter-name>TemplateEngineFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
-  <!-- END: JAX RS config -->
+  <!-- END: Scalate config -->
   
   <!-- START: Sample servlets -->
   <servlet>
