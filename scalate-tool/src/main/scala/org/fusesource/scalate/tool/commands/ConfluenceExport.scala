@@ -31,12 +31,16 @@ import org.fusesource.scalate.util.IOUtil
 
 /**
  * <p>
+ * Adding a tool that allows you to export confluence sites.  Example usage:
+ *
+ * <code>confexport --user user --password https://cwiki.apache.org/confluence/rpc/xmlrpc SM ./out</code>
+ * 
  * </p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @command(scope = "scalate", name = "confexport", description = "Exports a confluence space")
-object ConfluenceExport {
+class ConfluenceExport extends Action {
 
   @argument(index = 0, required = true, name = "url", description = "URL to confluence RPC service")
   var url: String = "https://cwiki.apache.org/confluence/rpc/xmlrpc"
@@ -54,7 +58,10 @@ object ConfluenceExport {
     val children = ListBuffer[Node]()
   }
 
-  def main(args:Array[String]) = {
+  def execute(session: CommandSession) = {
+
+    def println(value:Any) = session.getConsole.println(value)
+
     import JavaConversions._
 
     val confluence = new Confluence(url);
@@ -79,10 +86,9 @@ object ConfluenceExport {
       dir.mkdirs
       nodes.foreach { node=>
         val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
-        val page = confluence.getPage(node.summary.getId);
         val file = new File(dir, santized_title + ".conf")
-        println("writing: "+file)
-        IOUtil.writeText(file, page.getContent)
+        println("downloading: \u001B[1;37m"+file+"\u001B[0m")
+        IOUtil.writeText(file, confluence.getPage(node.summary.getId).getContent)
         rc += 1
         if( !node.children.isEmpty ) {
           rc += export(new File(dir, santized_title), node.children)
@@ -92,7 +98,8 @@ object ConfluenceExport {
     }
 
     val total = export(target, rootNodes);
-    println("Exported %d pages".format(total));
+    println("Exported \u001B[1;37m%d\u001B[0m pages".format(total));
+    0
   }
 
 }
