@@ -1,0 +1,35 @@
+---
+title: Site Generator
+in_menu: false
+sort_info: 2
+--- name:overview
+# Site Generator
+
+Create that static website with Scalate
+
+--- name:content
+
+<div class="left" markdown="1">
+# Overview
+</div>
+<div class="right" markdown="1">
+Scalate can be used to create a static website reusing all of the various Scalate template languages, filters, wiki markups and pipelines. 
+
+First you need to install the [Scalate tool](tool.html)
+</div>
+
+<div class="left" markdown="1">
+# Exporting Confluence Wikis
+</div>
+<div class="right" markdown="1">
+  
+If you have a legacy site you want to port over from Confluence you can run the following command.
+  
+For example if your Confluence space is called FOO at Apache then the following command will dump its content as wiki text files...
+
+    scalate confexport --user user --password pass \
+      https://cwiki.apache.org/confluence/rpc/xmlrpc FOO ./out
+
+</div>
+
+

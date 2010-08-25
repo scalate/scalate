@@ -14,6 +14,21 @@ Ditch that crappy JSP pronto!
 </div>
 <div class="right" markdown="1">
 JSP Converter is a little tool for converting your legacy JSP / JSTL / JSP EL stuff into Scalate.
+
+To use jsp2ssp you need to install the [Scalate tool](tool.html)
+</div>
+
+<div class="left" markdown="1">
+# Using jsp2ssp
+</div>
+<div class="right" markdown="1">
+
+To convert the JSP files in a directory foo just type
+
+    scalate foo
+    
+You should see lots of ssp files generated.
+    
 </div>
 
 <div class="left" markdown="1">
