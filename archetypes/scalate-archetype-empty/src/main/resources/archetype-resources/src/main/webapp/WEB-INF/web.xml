@@ -62,24 +62,14 @@
   </filter-mapping>
 
   <!-- Scalate config -->
-  <servlet>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <servlet-class>org.fusesource.scalate.servlet.TemplateEngineServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.mustache</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.scaml</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>TemplateEngineServlet</servlet-name>
-    <url-pattern>*.ssp</url-pattern>
-  </servlet-mapping>
+  <filter>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <welcome-file-list>
     <welcome-file>index.scaml</welcome-file>
