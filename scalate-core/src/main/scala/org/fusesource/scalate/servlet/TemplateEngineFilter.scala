@@ -67,12 +67,6 @@ class TemplateEngineFilter extends Filter with Logging {
   }
 
   lazy val extensions = engine.extensions
-/*
-  lazy val extensions:List[String] = {
-    (engine.pipelines.keys.toList ::: engine.codeGenerators.keys.toList).distinct
-  }
-*/
-
 
   def find_template(path:String) = {
 
