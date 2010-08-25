@@ -21,6 +21,7 @@ import javax.servlet._
 import http.{HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest}
 import org.fusesource.scalate.util.Logging
 import java.lang.String
+import org.fusesource.scalate.support.TemplateFinder
 
 /**
  * Servlet filter which auto routes to the scalate engines for paths which have a scalate template
@@ -30,11 +31,9 @@ import java.lang.String
  */
 class TemplateEngineFilter extends Filter with Logging {
 
-
   var config: FilterConfig = _
   var engine: ServletTemplateEngine = _
-  var templateDirectories = List("/WEB-INF", "")
-  var replacedExtensions = List(".html", ".htm")
+  var finder: TemplateFinder = _
   var errorUris: List[String] = ServletHelper.errorUris()
   
   /**
@@ -43,10 +42,12 @@ class TemplateEngineFilter extends Filter with Logging {
   def init(filterConfig: FilterConfig) = {
     config = filterConfig
     engine = createTemplateEngine(config)
+    finder = new TemplateFinder(engine, ServletHelper.templateDirectories)
+
     filterConfig.getInitParameter("replaced-extensions") match {
       case null =>
       case x =>
-        replacedExtensions = x.split(":+").toList
+        finder.replacedExtensions = x.split(":+").toList
     }
 
     // register the template engine so they can be easily resolved from elsewhere
@@ -60,60 +61,7 @@ class TemplateEngineFilter extends Filter with Logging {
   }
 
   /**
-   * Allow derived filters to override and customize the template engine from the configuration
-   */
-  protected def createTemplateEngine(config: FilterConfig): ServletTemplateEngine = {
-    new ServletTemplateEngine(config)
-  }
-
-  lazy val extensions = engine.extensions
-
-  def find_template(path:String) = {
-
-    // Is the uri a direct path to a template??
-    // i.e: /path/page.jade -> /path/page.jade
-    def find_direct(uri:String=path):Option[String] = {
-      for( base <-templateDirectories; ext <- extensions) {
-        val path = base + uri
-        if( path.endsWith(ext) && engine.resourceLoader.exists(path) ) {
-          return Some(path)
-        }
-      }
-      return None
-    }
-
-    // Lets try to find the template by appending a template extension to the path
-    // i.e: /path/page.html -> /path/page.html.jade
-    def find_appended(uri:String=path):Option[String] = {
-      for( base <-templateDirectories; ext <- extensions) {
-        val path = base + uri + "." + ext
-        if( engine.resourceLoader.exists(path) ) {
-          return Some(path)
-        }
-      }
-      return None
-    }
-
-    // Lets try to find the template by replacing the extension
-    // i.e: /path/page.html -> /path/page.jade
-    def find_replaced():Option[String] = {
-      replacedExtensions.foreach{ ext=>
-        if( path.endsWith(ext) ) {
-          val rc = find_appended(path.stripSuffix(ext))
-          if( rc != None )
-            return rc
-        }
-      }
-      None
-    }
-
-    find_direct().orElse(find_appended().orElse(find_replaced()))
-
-  }
-
-
-  /**
-   * 
+   * Performs the actual filter
    */
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
     (request,response) match {
@@ -121,9 +69,8 @@ class TemplateEngineFilter extends Filter with Logging {
         val request_wrapper = wrap(request)
 
         debug("Checking '%s'".format(request.getRequestURI))
-        find_template(request.getRequestURI.substring(request.getContextPath.length)) match {
+        findTemplate(request.getRequestURI.substring(request.getContextPath.length)) match {
           case Some(template)=>
-
             debug("Rendering '%s' using template '%s'".format(request.getRequestURI, template))
             val context = new ServletRenderContext(engine, request_wrapper, response, config.getServletContext)
 
@@ -155,7 +102,7 @@ class TemplateEngineFilter extends Filter with Logging {
     request.setAttribute("javax.servlet.error.status_code", 500)
     response.setStatus(500)
 
-    errorUris.find( x=>find_template(x).isDefined ) match {
+    errorUris.find( x=>findTemplate(x).isDefined ) match {
       case Some(template)=>
         val context = new ServletRenderContext(engine, request, response, config.getServletContext)
         try {
@@ -169,11 +116,21 @@ class TemplateEngineFilter extends Filter with Logging {
     }
   }
 
+  /**
+   * Allow derived filters to override and customize the template engine from the configuration
+   */
+  protected def createTemplateEngine(config: FilterConfig): ServletTemplateEngine = {
+    new ServletTemplateEngine(config)
+  }
+
+  protected def findTemplate(name: String) = finder.findTemplate(name)
+
+
   def wrap(request: HttpServletRequest) = new ScalateServletRequestWrapper(request) 
 
   class ScalateServletRequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
     override def getRequestDispatcher(path: String) = {
-      find_template(path).map( new ScalateRequestDispatcher(_) ).getOrElse( request.getRequestDispatcher(path) )
+      findTemplate(path).map( new ScalateRequestDispatcher(_) ).getOrElse( request.getRequestDispatcher(path) )
     }
   }
 

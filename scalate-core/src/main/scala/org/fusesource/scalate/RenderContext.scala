@@ -354,7 +354,7 @@ trait RenderContext {
    */
   protected def removeOldAttributes = true
 
-  def withUri(uri: String)(block: => Unit): Unit = {
+  def withUri[T](uri: String)(block: => T): T = {
     val original = currentTemplate
     try {
       currentTemplate = uri

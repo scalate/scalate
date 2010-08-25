@@ -20,15 +20,23 @@ package org.fusesource.scalate.util
 
 import java.io.File
 import java.net.{URI, URLClassLoader}
+import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
+import java.util.{Properties, jar => juj}
+import java.util.jar.{Attributes, JarFile}
 
 
-class ClassPathBuilder {
+class ClassPathBuilder extends Logging {
   import ClassPathBuilder._
 
   private val classpath = new ArrayBuffer[String]
   
-  def classPath = Sequences.removeDuplicates(classpath).mkString(File.pathSeparator)
+  def classPath = {
+    val cp = Sequences.removeDuplicates(classpath)
+    // lets transform to the canonical path to remove duplicates
+    val all = (cp ++ findManifestEntries(cp)).map {s => val f = new File(s); if (f.exists) f.getCanonicalPath else s }
+    Sequences.removeDuplicates(all).mkString(File.pathSeparator)
+  }
   
   def addClassesDir(dir: String): ClassPathBuilder = addEntry(dir)
   
@@ -77,6 +85,34 @@ class ClassPathBuilder {
   def addJavaPath(): ClassPathBuilder = {
     classpath ++= javaClassPath
     this
+  }
+
+  protected def findManifestEntries(cp: Seq[String]): Seq[String] = cp.flatMap { p =>
+    var answer: Seq[String] = Nil
+    val f = new File(p)
+    if (f.exists && f.isFile) {
+      val parent = f.getParentFile
+      try {
+        val jar = new JarFile(f)
+        val m = jar.getManifest
+        if (m != null) {
+          val attrs = m.getMainAttributes
+          val v = attrs.get(Attributes.Name.CLASS_PATH)
+          if (v != null) {
+            answer =  v.toString.trim.split("\\s+").map{ n =>
+              // classpath entries are usually relative to the jar
+              if (new File(n).exists) n else new File(parent, n).getPath
+            }
+            debug("Found manifest classpath values " + answer + " in " + f)
+          }
+        }
+      }
+      catch {
+        case e => // ignore any errors probably due to non-jar
+          debug("Ignoring exception trying to open jar file: " + f + " " + e)
+      }
+    }
+    answer
   }
 }
 

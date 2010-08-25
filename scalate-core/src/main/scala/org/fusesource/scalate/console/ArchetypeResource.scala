@@ -21,10 +21,13 @@ package org.fusesource.scalate.console
 import _root_.java.io.File
 import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
-import com.sun.jersey.api.view.Viewable
 import javax.ws.rs._
 import org.fusesource.scalate.util.{Logging, IOUtil}
 import org.fusesource.scalate.{NoFormParameterException, RenderContext}
+import org.fusesource.scalate.support.TemplateFinder
+import com.sun.jersey.api.view.Viewable
+import org.fusesource.scalate.servlet.{WrappedResponse, WrappedRequest, ServletRenderContext, ServletHelper}
+import org.fusesource.scalate.rest.View
 
 /**
  * @version $Revision : 1.1 $
@@ -40,18 +43,23 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
   var srcMainJava = srcMain + "/java"
   var templatePrefix = "/WEB-INF/scalate/archetypes/"
 
+  // START: ugly code that can be removed when Jersey supports nice injection in sub resources
   def renderContext = console.renderContext
+
   def servletContext: ServletContext = console.servletContext
+
+  def request = console.request
+
+  def response = console.response
+  // END: ugly code that can be removed when Jersey supports nice injection in sub resources
 
   @Path("{name}")
   def child(@PathParam("name") childName: String) = new ArchetypeResource(console, name + "/" + childName)
 
+
   @GET
   @Produces(Array("text/html;qs=5"))
-  def get = {
-    val view = templatePrefix + name + ".index"
-    new Viewable(view, this)
-  }
+  def get = render(templatePrefix + name + ".index")
 
   @POST
   @Consumes(Array("application/x-www-form-urlencoded"))
@@ -64,7 +72,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
     // and any validation errors added...
 
     val view = templatePrefix + name + ".post"
-    new Viewable(view, this)
+    render(view)
   }
 
 
@@ -85,7 +93,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
    */
   def createFile(fileName: String)(body: => Unit): Unit = {
     info("archetype creating file:" + fileName)
-    
+
     val text = RenderContext.capture(body)
 
     // lets make the parent directories
@@ -104,4 +112,5 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
    */
   def javaSourceFileName(className: String): String = srcMainJava + "/" + className.replace('.', '/') + ".java"
 
+  protected def render(view: String) = new View(view, Some(this))
 }

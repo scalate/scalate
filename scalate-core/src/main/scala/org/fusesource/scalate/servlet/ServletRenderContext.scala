@@ -204,9 +204,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   }
 
 
-  protected def wrappedRequest = new HttpServletRequestWrapper(request) {
-    override def getMethod = "GET"
-  }
+  protected def wrappedRequest = new WrappedRequest(request)
 
   protected def wrappedResponse = new WrappedResponse(response)
 
@@ -222,6 +220,10 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   }
 }
 
+class WrappedRequest(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
+  override def getMethod = "GET"
+}
+
 class WrappedResponse(response: HttpServletResponse) extends HttpServletResponseWrapper(response) {
     private val bos = new ByteArrayOutputStream()
     private val sos = new ServletOutputStream {
@@ -233,9 +235,13 @@ class WrappedResponse(response: HttpServletResponse) extends HttpServletResponse
 
     override def getOutputStream = sos
 
-    def text = {
+    def bytes = {
       writer.flush
-      new String(bos.toByteArray)
+      bos.toByteArray
+    }
+
+    def text = {
+      new String(bytes)
     }
 
     def output(context: RenderContext, escape: Boolean = false): Unit = {

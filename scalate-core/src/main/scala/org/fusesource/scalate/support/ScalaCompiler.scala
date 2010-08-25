@@ -97,6 +97,9 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     }
 
     debug("using classpath: " + useCP)
+    debug("system class loader: " + ClassLoader.getSystemClassLoader)
+    debug("context class loader: " + Thread.currentThread.getContextClassLoader)
+    debug("scalate class loader: " + getClass.getClassLoader)
 
     val settings = new Settings(errorHandler)
     settings.classpath.value = useCP

@@ -24,30 +24,36 @@ import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{AbstractConflu
 import java.lang.String
 import java.util.List
 import collection.mutable.ListBuffer
-import org.fusesource.scalate.util.IOUtil
 import org.fusesource.scalate.util.Threads._
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, OutputStream, InputStream}
+import org.fusesource.scalate.util.{Logging, IOUtil}
 
-object Pygmentize {
+object Pygmentize extends Logging {
   def isInstalled: Boolean = {
-    var process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
-    thread("pygmetize err handler") {
-      IOUtil.copy(process.getErrorStream, System.err)
-    }
+    try {
+      var process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
+      thread("pygmetize err handler") {
+        IOUtil.copy(process.getErrorStream, System.err)
+      }
 
-    val out = new ByteArrayOutputStream()
-    thread("pygmetize out handler") {
-      IOUtil.copy(process.getInputStream, out)
-    }
+      val out = new ByteArrayOutputStream()
+      thread("pygmetize out handler") {
+        IOUtil.copy(process.getInputStream, out)
+      }
 
-    process.waitFor
-    if( process.exitValue != 0 ) {
-      return false;
-    }
+      process.waitFor
+      if (process.exitValue != 0) {
+        return false;
+      }
 
-    val output = new String(out.toByteArray).trim
-    println("Pygmentize installed: " + output)
-    true
+      val output = new String(out.toByteArray).trim
+      println("Pygmentize installed: " + output)
+      true
+    }
+    catch {
+      case e => debug("Failed to start pygmetize: " + e)
+      false
+    }
   }
 }
 /**
