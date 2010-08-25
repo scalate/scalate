@@ -18,15 +18,38 @@ package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
-import java.util.List
 import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{AbstractConfluenceDelimitedBlock, CodeBlock}
 import java.lang.String
+import java.util.List
 import collection.mutable.ListBuffer
 import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.util.Threads._
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, OutputStream, InputStream}
 
+object Pygmentize {
+  def isInstalled: Boolean = {
+    var process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
+    thread("pygmetize err handler") {
+      IOUtil.copy(process.getErrorStream, System.err)
+    }
+
+    val out = new ByteArrayOutputStream()
+    thread("pygmetize out handler") {
+      IOUtil.copy(process.getInputStream, out)
+    }
+
+    process.waitFor
+    if( process.exitValue != 0 ) {
+      return false;
+    }
+
+    val output = new String(out.toByteArray).trim
+    println("Pygmentize installed: " + output)
+    true
+  }
+}
 /**
  * <p>Adds support for a 'pygmentize' macro to the Confluence language</p>
  * <p>The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block</p>
@@ -114,14 +137,6 @@ class PygementsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
     }
 
     new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
-  }
-
-  def thread(name:String)(func: =>Unit){
-    new Thread(name) {
-      override def run = {
-        func
-      }
-    }.start()
   }
 
 }

@@ -66,10 +66,7 @@ class TemplateEngineFilter extends Filter with Logging {
     new ServletTemplateEngine(config)
   }
 
-  lazy val extensions:List[String] = {
-    (engine.pipelines.keys.toList ::: engine.codeGenerators.keys.toList).distinct
-  }
-
+  lazy val extensions = engine.extensions
 
   def find_template(path:String) = {
 
@@ -123,11 +120,11 @@ class TemplateEngineFilter extends Filter with Logging {
       case (request: HttpServletRequest, response: HttpServletResponse) =>
         val request_wrapper = wrap(request)
 
-        info("Checking '%s'".format(request.getRequestURI))
+        debug("Checking '%s'".format(request.getRequestURI))
         find_template(request.getRequestURI.substring(request.getContextPath.length)) match {
           case Some(template)=>
 
-            info("Rendering '%s' using template '%s'".format(request.getRequestURI, template))
+            debug("Rendering '%s' using template '%s'".format(request.getRequestURI, template))
             val context = new ServletRenderContext(engine, request_wrapper, response, config.getServletContext)
 
             try {
