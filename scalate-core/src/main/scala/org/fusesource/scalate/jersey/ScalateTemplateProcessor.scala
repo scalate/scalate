@@ -30,7 +30,7 @@ import org.fusesource.scalate.util.Logging
 import com.sun.jersey.api.container.ContainerException
 import javax.ws.rs.core.Context
 import org.fusesource.scalate.TemplateEngine
-import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -114,27 +114,30 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     // Ensure headers are committed
     out.flush()
 
-    val servlet = TemplateEngineServlet()
-    if (servlet == null) {
+    val engine = if (servletContext != null) ServletTemplateEngine(servletContext) else null
+    if (engine == null) {
       // we have not been initialised yet so lets use the request dispatcher
       writeToUsingRequestDispatcher(resolvedPath, viewable, out)
     }
     else {
-      writeToUsingServlet(servlet, resolvedPath, viewable, out)
+      writeToUsingServletTemplateEngine(engine, resolvedPath, viewable, out)
     }
   }
 
   /**
-   * Renders the template using the servlet instance directly as its a little more efficient
-   * plus it avoids issues with using jersey with guice-servlet not correctly dispatching to the servlet
+   * Renders the template using the template engine registered with the servlet context directly as its a
+   * little more efficient plus it avoids issues with using jersey with
+   * guice-servlet not correctly dispatching to the servlet
    */
-  def writeToUsingServlet(servlet: TemplateEngineServlet, resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+  def writeToUsingServletTemplateEngine(engine: TemplateEngine, resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     // lets use the singleton servlet as its a bit more efficient and avoids issues with
     // using jersey with guice-servlet not correctly dispatching to the servlet
     request.setAttribute("it", viewable.getModel)
 
+    def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
+
     try {
-      servlet.render(resolvedPath, request, response)
+      render(resolvedPath)
     } catch {
       case e: Exception =>
         // lets forward to the error handler
@@ -154,7 +157,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
             request.setAttribute("javax.servlet.error.status_code", status)
 
             request.setAttribute("it", e)
-            servlet.render(uri, request, response)
+            render(uri)
             notFound = false
           }
         }

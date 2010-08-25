@@ -42,12 +42,15 @@ class TemplateEngineFilter extends Filter with Logging {
    */
   def init(filterConfig: FilterConfig) = {
     config = filterConfig
-    engine = createTemplateEngine
+    engine = createTemplateEngine(config)
     filterConfig.getInitParameter("replaced-extensions") match {
       case null =>
       case x =>
         replacedExtensions = x.split(":+").toList
     }
+
+    // register the template engine so they can be easily resolved from elsewhere
+    ServletTemplateEngine(filterConfig.getServletContext) = engine
   }
 
   /**
@@ -59,7 +62,7 @@ class TemplateEngineFilter extends Filter with Logging {
   /**
    * Allow derived filters to override and customize the template engine from the configuration
    */
-  protected def createTemplateEngine: ServletTemplateEngine = {
+  protected def createTemplateEngine(config: FilterConfig): ServletTemplateEngine = {
     new ServletTemplateEngine(config)
   }
 

@@ -30,15 +30,6 @@
     Scalate Sample
   </description>
 
-  <filter>
-    <filter-name>TemplateEngineFilter</filter-name>
-    <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>TemplateEngineFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-
   <!-- START: JAX RS config -->
   <filter>
     <filter-name>Jersey Filter</filter-name>
@@ -69,6 +60,16 @@
     <filter-name>Jersey Filter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <filter>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>TemplateEngineFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <!-- END: JAX RS config -->
   
   <!-- START: Sample servlets -->

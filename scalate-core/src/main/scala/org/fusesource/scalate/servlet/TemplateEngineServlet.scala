@@ -20,10 +20,10 @@ package org.fusesource.scalate.servlet
 
 import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.util.Logging
-import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import javax.servlet.{ServletContext, ServletConfig}
 
 object TemplateEngineServlet {
   protected var singleton: TemplateEngineServlet = _
@@ -31,6 +31,32 @@ object TemplateEngineServlet {
   def apply(): TemplateEngineServlet = singleton
 
   def update(servlet: TemplateEngineServlet): Unit = singleton = servlet
+
+
+  def render(template: String, templateEngine: TemplateEngine, servletContext: ServletContext, request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    val context = new ServletRenderContext(templateEngine, request, response, servletContext)
+
+    if (template == null || template.length == 0 || template == "/") {
+      // lets try find an index page if we are given an empty URI which sometimes happens
+      // with jersey filter and guice servlet
+      TemplateEngine.templateTypes.map("index." + _).find(u => servletContext.getResource(u) != null) match {
+        case Some(name) =>
+          servletContext.log("asked to resolve uri: " + template + " so delegating to: " + name)
+          servletContext.getRequestDispatcher(name).forward(request, response)
+        //context.include(name, true)
+
+        case _ =>
+          servletContext.log("No template available for: " + template)
+          response.setStatus(HttpServletResponse.SC_NOT_FOUND)
+      }
+    }
+    else {
+      context.include(template, true)
+      // we should set the OK here as we might be forwarded from the Jersey
+      // filter after it detected a 404 and found that there's no JAXRS resource at / or foo.ssp or something
+      response.setStatus(HttpServletResponse.SC_OK)
+    }
+  }
 }
 
 /**
@@ -64,29 +90,7 @@ class TemplateEngineServlet extends HttpServlet with Logging {
   }
 
   def render(template: String, request: HttpServletRequest, response: HttpServletResponse): Unit = {
-    val servletContext = getServletContext
-    val context = new ServletRenderContext(templateEngine, request, response, servletContext)
-
-    if (template == null || template.length == 0 || template == "/") {
-      // lets try find an index page if we are given an empty URI which sometimes happens
-      // with jersey filter and guice servlet
-      TemplateEngine.templateTypes.map("index." + _).find(u => servletContext.getResource(u) != null) match {
-        case Some(name) =>
-          log("asked to resolve uri: " + template + " so delegating to: " + name)
-          servletContext.getRequestDispatcher(name).forward(request, response)
-          //context.include(name, true)
-
-        case _ =>
-          warn("No template available")
-          response.setStatus(HttpServletResponse.SC_NOT_FOUND)
-      }
-    }
-    else {
-      context.include(template, true)
-      // we should set the OK here as we might be forwarded from the Jersey
-      // filter after it detected a 404 and found that there's no JAXRS resource at / or foo.ssp or something
-      response.setStatus(HttpServletResponse.SC_OK)
-    }
+    TemplateEngineServlet.render(template, templateEngine, getServletContext, request, response)
   }
 
 }

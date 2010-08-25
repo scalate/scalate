@@ -103,10 +103,6 @@
         </executions>
 <!--
         <configuration>
-          <mainClass>org.fusesource.scalate.converter.DummyShell</mainClass>
-          <classpathScope>test</classpathScope>
-        </configuration>
-        <configuration>
           <mainClass>org.fusesource.scalate.tool.Scalate</mainClass>
           <classpathScope>test</classpathScope>
         </configuration>
