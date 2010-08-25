@@ -1,0 +1,98 @@
+/**
+ * Copyright (C) 2009-2010 the original author or authors.
+ * See the notice.md file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.fusesource.scalate.tool.commands
+
+import collection.JavaConversions
+
+import java.{util => ju, lang => jl}
+import java.util.zip.ZipInputStream
+import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
+import java.lang.StringBuilder
+import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.osgi.service.command.CommandSession
+import org.codehaus.swizzle.confluence.{Page, PageSummary, Confluence}
+import collection.mutable.{HashMap, ListBuffer}
+import org.fusesource.scalate.util.IOUtil
+
+/**
+ * <p>
+ * </p>
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
+@command(scope = "scalate", name = "confexport", description = "Exports a confluence space")
+object ConfluenceExport {
+
+  @argument(index = 0, required = true, name = "url", description = "URL to confluence RPC service")
+  var url: String = "https://cwiki.apache.org/confluence/rpc/xmlrpc"
+  @argument(index = 1, required = true, name = "space", description = "The confluence space key")
+  var space: String = "SM"
+  @argument(index = 2, required = false, name = "target", description = "The target directory")
+  var target: File = new File(".")
+
+  @option(name = "--user", description = "Login user id")
+  var user: String = _
+  @option(name = "--password", description = "Login password")
+  var password: String = _
+
+  case class Node(summary:PageSummary) {
+    val children = ListBuffer[Node]()
+  }
+
+  def main(args:Array[String]) = {
+    import JavaConversions._
+
+    val confluence = new Confluence(url);
+    if( user!=null && password!=null ) {
+      confluence.login(user, password);
+    }
+    val pageList = confluence.getPages(space).asInstanceOf[java.util.List[PageSummary]]
+
+    var pageMap = Map( pageList.map(x=> (x.getId, Node(x))) : _ * )
+    val rootNodes = ListBuffer[Node]()
+
+    // add each node to the appropriate child collection.
+    for( (key,node) <- pageMap ) {
+      node.summary.getParentId match {
+        case "0" => rootNodes += node
+        case parentId => pageMap.get(parentId).foreach( _.children += node )
+      }
+    }
+
+    def export(dir:File, nodes:ListBuffer[Node]):Int = {
+      var rc = 0
+      dir.mkdirs
+      nodes.foreach { node=>
+        val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
+        val page = confluence.getPage(node.summary.getId);
+        val file = new File(dir, santized_title + ".conf")
+        println("writing: "+file)
+        IOUtil.writeText(file, page.getContent)
+        rc += 1
+        if( !node.children.isEmpty ) {
+          rc += export(new File(dir, santized_title), node.children)
+        }
+      }
+      rc
+    }
+
+    val total = export(target, rootNodes);
+    println("Exported %d pages".format(total));
+  }
+
+}
