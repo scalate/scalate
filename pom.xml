@@ -196,7 +196,6 @@
     <module>scalate-guice</module>
     <module>scalate-war</module>
     <module>scalate-sample</module>
-    <module>scalate-sample-sitegen</module>
     <module>scalate-sample-scuery</module>
     <module>scalate-bookstore</module>
     <module>scalate-camel</module>
@@ -879,6 +878,15 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- requires pygmentize to be installed -->
+    <profile>
+      <id>pygmentize</id>
+      <modules>
+        <module>scalate-sample-sitegen</module>
+      </modules>
+    </profile>
+
 
     <profile>
       <id>release</id>
