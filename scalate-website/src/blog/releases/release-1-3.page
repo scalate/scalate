@@ -23,6 +23,7 @@ All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-ref
 
 * Scalate now has a much more powerful [Servlet Filter](http://scalate.fusesource.org/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) which allows more flexible mapping of templates in a web application. For example you can map the request "/foo.xml" to "/foo.xml.ssp" letting you easily implement most URIs with a view without requiring a controller. 
 * [JSP Converter](http://scalate.fusesource.org/documentation/jspConvert.html) lets you migrate your existing JSP web application across to Scalate
+* [Site Generator](http://scalate.fusesource.org/documentation/siteGen.html) lets you generate static or dynamic websites using wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository.
 
 For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3)
 

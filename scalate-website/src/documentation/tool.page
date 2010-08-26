@@ -90,3 +90,30 @@ The scalate executable should now be available from any terminal. To verify this
       
 </div>
 
+<div class="left" markdown="1">
+# Using the Scalate Tool
+</div>
+<div class="right" markdown="1">
+
+Once you have installed the Scalate Tool via one of the above methods, you should be able to use the **scalate** executable on the command line.
+
+The scalate tool supports a number of sub commands rather like **git** or **svn**. You can invoke a sub command directly such as
+
+    scalate run myTemplate.ssp
+
+you can get a list of all the available sub commands via
+
+    scalate help
+
+or to get help on a specific command you can type
+
+    scalate --help
+    
+or enter the Scalate interactive shell via
+
+    scalate
+    
+Once in the shell help will apppear to help guide you through the available commands. The shell supports tab completion rather like bash to help you execute the commands easily.
+      
+</div>
+
