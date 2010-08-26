@@ -18,7 +18,7 @@ Scatate Tool is a handy command line tool for working with Scalate. It provides 
 
 * [Creating new projects using Scalate](getting-started.html)
 * [Converting existing JSP files over to Scalate](jspConvert.html)
-* [Generating static websites](sitegen.html) 
+* [Generating static websites](siteGen.html) 
 
 Scalate Tool has the following requirements
 
