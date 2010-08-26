@@ -181,9 +181,8 @@ method is expected to file path to an actual template file.  If you want to load
 Here's simple example that loads a dynamically generated template:
 {pygmentize:: scala}
 engine.resourceLoader = new FileResourceLoader {
-    override def load( uri: String ): String = 
-        "<%@ var name:String %><p>Hello ${name}</p>"
-    override def lastModified(uri:String): Long = 0
+  override def resource(uri: String): Option[Resource] =
+    Some(Resource.fromText(uri, "Some text"))
 }
 {pygmentize}
 
