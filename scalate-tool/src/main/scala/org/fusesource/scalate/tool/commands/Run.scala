@@ -48,7 +48,7 @@ class Run extends Action {
   @option(name = "--workdir", description = "Sets the work directory where scalate generates class files to. Defaults to a temporary directory.")
   var workdir: File = _
 
-  def execute(session: CommandSession) = {
+  def execute(session: CommandSession): AnyRef = {
     try {
       val engine = new TemplateEngine
       if (workdir != null) {

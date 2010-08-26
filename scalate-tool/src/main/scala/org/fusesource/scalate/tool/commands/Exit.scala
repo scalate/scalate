@@ -29,7 +29,7 @@ import org.apache.karaf.shell.console.CloseShellException
 @command(scope = "scalate", name = "exit", description = "exit the shell")
 class Exit extends Action {
 
-  def execute(session: CommandSession): jl.Integer = {
+  def execute(session: CommandSession): AnyRef = {
     throw new CloseShellException
   }
 

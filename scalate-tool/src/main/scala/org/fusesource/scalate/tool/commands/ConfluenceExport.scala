@@ -58,7 +58,7 @@ class ConfluenceExport extends Action {
     val children = ListBuffer[Node]()
   }
 
-  def execute(session: CommandSession): jl.Integer = {
+  def execute(session: CommandSession): AnyRef = {
 
     def println(value:Any) = session.getConsole.println(value)
 
@@ -100,7 +100,7 @@ class ConfluenceExport extends Action {
 
     val total = export(target, rootNodes);
     println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
-    0
+    null
   }
 
 
