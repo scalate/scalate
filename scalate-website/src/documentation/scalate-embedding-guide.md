@@ -27,7 +27,7 @@ you and watches the original source files for updates so it pick up changes.  Th
 recommended that you `load` the template each time you before you use it.
 
 The next step is to render the template.  To do this you first need to create a `RenderContext`.
-The `RenderContext` is used to supply the template with data collect the render results.  `RenderContext`
+The `RenderContext` is used to supply the template with data and collect the render results.  `RenderContext`
 is just an interface in case you want to use a custom implementation, but the supplied 
 `DefaultRenderContext` implementation should be suitable for most needs.
 
