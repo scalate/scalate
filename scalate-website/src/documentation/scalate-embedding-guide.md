@@ -27,7 +27,7 @@ you and watches the original source files for updates so it pick up changes.  Th
 recommended that you `load` the template each time you before you use it.
 
 The next step is to render the template.  To do this you first need to create a `RenderContext`.
-The `RenderContext` is used to supply the template with data collect the render results.  `RenderContext`
+The `RenderContext` is used to supply the template with data and collect the render results.  `RenderContext`
 is just an interface in case you want to use a custom implementation, but the supplied 
 `DefaultRenderContext` implementation should be suitable for most needs.
 
@@ -181,9 +181,8 @@ method is expected to file path to an actual template file.  If you want to load
 Here's simple example that loads a dynamically generated template:
 {pygmentize:: scala}
 engine.resourceLoader = new FileResourceLoader {
-    override def load( uri: String ): String = 
-        "<%@ var name:String %><p>Hello ${name}</p>"
-    override def lastModified(uri:String): Long = 0
+  override def resource(uri: String): Option[Resource] =
+    Some(Resource.fromText(uri, "Some text"))
 }
 {pygmentize}
 

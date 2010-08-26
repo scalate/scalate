@@ -9,10 +9,13 @@ Scalate is a template engine based on the Scala language.
 
 * Supports multiple template syntaxes
   * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/)
-* Support for [layouts](#layouts) together with a powerful [console](console.html) 
-* Works well with a number of [frameworks](frameworks.html)
-* Can be used in any web application or used in a standalone application to generate things like emails or source code.
+  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](scaml-reference.html#haml_vs_jade_notation)
+  * [Mustache](mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+
+* Support for [layouts](#layouts) of templates and wiki markup
+* Has a powerful [console](console.html) and [command line shell](tool.html)
+* Works well with a number of [frameworks](frameworks.html) or easily [embed into your application](scalate-embedding-guide.html)
+* Can be used in any web application or used in a standalone application to generate things like emails or source code or even used to generate your [static or semi-static website](siteGen.html).
 
 ## Template Languages
 
@@ -522,12 +525,6 @@ For more information see the [sbt building instructions](http://scalate.fusesour
 
 You might want to refer to the [Frameworks Documentation](frameworks.html) to see if there is some specific instructions on using Scalate with your favourite web framework.
 
-### Using Scalate with JAXRS/Jersey
-
-Our recommendation is to start with [JOG](jog.html) (Jersey on Guice).
-
-To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html) which uses the [Scalate Tool](tool.html) and [WAR Overlay](war-overlay.html) to include the [Console](console.html) in your web application.
-
 ### Using Scalate as Servlet filter in your Web Application
 
 * Add something like the following to your web.xml file to support Scalate templates:
@@ -548,7 +545,10 @@ To get up to speed quickly with JOG try the [Getting Started Guide](getting-star
     * scala-library.jar
     * scalate-core.jar
 
-You could add one or more of the above to your servlet container's server-wide configuration if you prefer
+You could add one or more of the above to your servlet container's server-wide configuration if you prefer.
+
+#### Mapping URIs to templates with the Filter
+
 The Scalate template filter looks for templates in several locations to satisfy a request.  
 For example, if requested URI is `/path/file.html`, then it will for templates in this order:
 
@@ -559,6 +559,12 @@ For example, if requested URI is `/path/file.html`, then it will for templates i
 
 Where `${ext}` gets replaced with all the template extensions supported by the Template Engine.  If the requested
 URI already ends with template extension then it would get looked up in the root and under the `/WEB-INF` directory.
+
+### Using Scalate with JAXRS/Jersey
+
+Our recommendation is to start with [JOG](jog.html) (Jersey on Guice).
+
+To get up to speed quickly with JOG try the [Getting Started Guide](getting-started.html) which uses the [Scalate Tool](tool.html) and [WAR Overlay](war-overlay.html) to include the [Console](console.html) in your web application.
 
 ### Embedding Scalate in your Application or Framework
 
