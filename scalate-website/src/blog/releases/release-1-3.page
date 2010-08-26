@@ -13,7 +13,7 @@ Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wik
 The following template languages are supported through the same common API:
 
 * [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
+* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup along with the [Jade](http://scalate.fusesource.org/documentation/scaml-reference.html#haml_vs_jade_notation) syntax
 * [Mustache](http://scalate.fusesource.org/documentation/mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
 All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)  and [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
@@ -21,9 +21,12 @@ All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-ref
 
 **Scalate 1.3 Highlights**
 
-* Scalate now has a much more powerful [Servlet Filter](http://scalate.fusesource.org/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) which allows more flexible mapping of templates in a web application. For example you can map the request "/foo.xml" to "/foo.xml.ssp" letting you easily implement most URIs with a view without requiring a controller. 
+* [Jade](http://scalate.fusesource.org/documentation/scaml-reference.html#haml_vs_jade_notation) template syntax is now supported which is a dialect of [Haml](http://haml-lang.com/) or [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+* New [Servlet Filter](http://scalate.fusesource.org/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) which allows more flexible mapping of templates in a web application. For example you can have the request */foo.xml* automatically bound to */foo.xml.ssp* if the template exists letting you easily implement views requiring a controller or explicit routing in your MVC layer. 
 * [JSP Converter](http://scalate.fusesource.org/documentation/jspConvert.html) lets you migrate your existing JSP web application across to Scalate
 * [Site Generator](http://scalate.fusesource.org/documentation/siteGen.html) lets you generate static or dynamic websites using wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository.
+* More filters and pipelines supported such as confluence as well as the existing markdown which are particularly useful for website generation (static or semi-static).
+* The [Scalate Tool](http://scalate.fusesource.org/documentation/tool.html) now comes with a full interactive shell with full tab completion to make it easier to use the tool either for one off or interactive use.
 
 For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3)
 
