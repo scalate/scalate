@@ -27,6 +27,7 @@ import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import com.sun.jersey.api.container.ContainerException
+import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 
 import org.fusesource.scalate.util.Logging
@@ -106,6 +107,12 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
   }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+    if (hc.isTracingEnabled()) {
+        hc.trace("forwarding view to Scuery template: \"%s\", it = %s".format(
+                resolvedPath,
+                ReflectionHelper.objectToString(viewable.getModel())));
+    }
+
     // Ensure headers are committed
     out.flush()
 

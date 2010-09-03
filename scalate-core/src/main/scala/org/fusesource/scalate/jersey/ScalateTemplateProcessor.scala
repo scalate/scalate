@@ -22,6 +22,7 @@ import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
 import com.sun.jersey.api.view.Viewable
+import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
@@ -111,6 +112,12 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
 
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+    if (hc.isTracingEnabled()) {
+        hc.trace("forwarding view to Scalate template: \"%s\", it = %s".format(
+                resolvedPath,
+                ReflectionHelper.objectToString(viewable.getModel())));
+    }
+
     // Ensure headers are committed
     out.flush()
 
