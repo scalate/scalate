@@ -626,6 +626,10 @@ Otherwise you can just add this to your pom.xml
 </build>
 {pygmentize}
 
+#### Precompiling templates with SBT
+
+You could try the [sbt-scalate-plugin](http://github.com/Yasushi/sbt-scalate-plugin) if you use SBT as your main build tool.
+
 ### Possible Gotchas
 
 #### Class Loaders
