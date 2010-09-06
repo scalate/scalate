@@ -63,7 +63,7 @@ class SiteGenMojo extends AbstractMojo {
   var resourcesSourceDirectory: File = _
 
   @parameter
-  @description("The directory where the scala code will be generated into.")
+  @description("The directory where the website will be generated into.")
   @expression("${project.build.directory}/sitegen")
   var targetDirectory: File = _
 
