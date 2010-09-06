@@ -16,8 +16,6 @@
  */
 package org.fusesource.scalate.wikitext
 
-import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
-import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{AbstractConfluenceDelimitedBlock, CodeBlock}
@@ -56,20 +54,7 @@ object Pygmentize extends Logging {
     }
   }
 }
-/**
- * <p>Adds support for a 'pygmentize' macro to the Confluence language</p>
- * <p>The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block</p>
- *
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
- */
-class PygementsConfluenceLanguage extends ConfluenceLanguage {
 
-  override def addStandardBlocks(blocks: List[Block], paragraphBreakingBlocks: List[Block]) = {
-    super.addStandardBlocks(blocks, paragraphBreakingBlocks)
-    blocks.add(new PygementsBlock)
-    paragraphBreakingBlocks.add(new PygementsBlock)
-  }
-}
 
 class PygementsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
 

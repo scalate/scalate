@@ -19,10 +19,11 @@
 package org.fusesource.scalate.wikitext
 
 import org.fusesource.scalate.filter.Filter
-import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
-import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
-import xml.XML
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
+import org.eclipse.mylyn.wikitext.core.parser.markup.{Block, MarkupLanguage}
+import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
+import java.{util => ju}
 import org.fusesource.scalate.{TemplateEngineAddOn, TemplateEngine}
 
 abstract class WikiTextFilter extends Filter {
@@ -42,7 +43,7 @@ abstract class WikiTextFilter extends Filter {
  * Renders a Confluence filter
  */
 object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
-  def markupLanguage = new PygementsConfluenceLanguage
+  def markupLanguage = new ScalateConfluenceLanguage
 
 
   /**
@@ -53,4 +54,20 @@ object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
     te.pipelines += "conf"->List(ConfluenceFilter)
   }
 
+}
+
+/**
+ * Adds extendsions to the Confluence language such as support for a 'pygmentize' macro
+ *
+ * The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block
+ *
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ */
+class ScalateConfluenceLanguage extends ConfluenceLanguage {
+
+  override def addStandardBlocks(blocks: ju.List[Block], paragraphBreakingBlocks: ju.List[Block]) = {
+    super.addStandardBlocks(blocks, paragraphBreakingBlocks)
+    blocks.add(new PygementsBlock)
+    paragraphBreakingBlocks.add(new PygementsBlock)
+  }
 }
