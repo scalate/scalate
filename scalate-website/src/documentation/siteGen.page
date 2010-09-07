@@ -92,6 +92,34 @@ mvn scalate:deploy
 
 </div>
 
+
+<div class="left" markdown="1">
+# Link Checking
+</div>
+<div class="right">
+
+<p>
+  Its easy to make a mistake in your wiki files and create a bad link. So we have a linkcheck report you can add to your pom.xml if you want to generate a report of any bad links that are created as part of your statically generated HTML. 
+</p>
+
+<p>
+  Just add the following to your <b>pom.xml</b> and you'll get a nice LinkCheck report.
+</p>
+
+{pygmentize:: xml}
+<reporting>
+  <plugins>
+    <plugin>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>maven-scalate-plugin</artifactId>
+      <version>{project_version:}</version>
+    </plugin>
+  </plugins>
+</reporting>
+{pygmentize}
+
+</div>
+
 <div class="left" markdown="1">
 # Using LiveReload
 </div>
