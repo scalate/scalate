@@ -110,18 +110,18 @@ class PygementsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
     }
 
     var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", language))
+
     thread("pygmetize err handler") {
       IOUtil.copy(process.getErrorStream, System.err)
     }
 
-    val out = new ByteArrayOutputStream()
-    thread("pygmetize out handler") {
-      IOUtil.copy(process.getInputStream, out)
+    thread("pygmetize in handler") {
+      IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
+      process.getOutputStream.close
     }
 
-    IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
-    process.getOutputStream.close
-
+    val out = new ByteArrayOutputStream()
+    IOUtil.copy(process.getInputStream, out)
     process.waitFor
     if( process.exitValue != 0 ) {
       throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
