@@ -19,6 +19,7 @@
 package org.fusesource.scalate
 
 import scala.util.parsing.input.Positional
+import ssp.SspParser
 
 /**
  * Describes a variable binding that a Scalate template defines.
@@ -47,6 +48,12 @@ case class Binding(
 }
 
 object Binding {
+
+  def apply(expr:String):Binding = {
+    val a = (new SspParser).getAttribute(expr)
+    Binding(a.name.value, a.className.value, a.autoImport, a.defaultValue.map(_.value), a.kind.value, false)
+  }
+
   def of[T](
           name: String,
           importMembers: Boolean = false,

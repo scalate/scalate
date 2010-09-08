@@ -163,5 +163,9 @@ class SspParser extends ScalaParseSupport {
     phraseOrFail(pageFragments, in)
   }
 
+  def getAttribute(in: String): AttributeFragment = {
+    phraseOrFail(attribute, in)
+  }
+
 }
 
