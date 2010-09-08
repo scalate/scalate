@@ -29,8 +29,9 @@ class ScalateMain extends Main with Action {
 
   override def getDiscoveryResource = "META-INF/services/org.fusesource.scalate/commands.index"
 
-    protected override def createConsole(commandProcessor: CommandShellImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal) = {
-    new Console(commandProcessor, in, out, err, terminal, null) {
+
+  protected override def createConsole(commandProcessor: CommandShellImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal, completer: Completer)  = {
+    new Console(commandProcessor, in, out, err, terminal, completer, null) {
       protected override def getPrompt = BOLD+"scalate> "+RESET
       protected override def isPrintStackTraces = debug
       protected override def welcome = {
