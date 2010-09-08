@@ -110,7 +110,7 @@ class SiteGenMojo extends AbstractMojo {
             val html = engine.layout(TemplateSource.fromFile(file, uri))
             val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
             sourceFile.getParentFile.mkdirs
-            IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
+            IOUtil.writeBinaryFile(sourceFile, transformHtml(html).getBytes("UTF-8"))
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
 
@@ -129,6 +129,35 @@ class SiteGenMojo extends AbstractMojo {
 
     //this.project.add(targetDirectory.getCanonicalPath);
   }
+
+  /**
+   * Lets fix up any links which are local and do notcontain a file extension
+   */
+  def transformHtml(html: String): String = linkRegex.replaceAllIn(html, {m =>
+    // for some reason we don't just get the captured group - no idea why. Instead we get...
+    //
+    //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
+    //   m.group(1) == "linkUri"
+    //
+    // so lets replace the link URI in the matched text to just change the contents of the link
+
+    val link = m.group(1)
+    val matched = m.matched
+    matched.dropRight(link.size + 1) + transformLink(link) + matched.last
+  })
+
+  /**
+   * If a link is absolute or includes a dot then assume its OK, otherwise append html extension
+   */
+  def transformLink(link: String) = {
+    if (link.matches("""[^:\.]*""")) {
+      link + ".html"
+    } else {
+      link
+    }
+  }
+
+  protected val linkRegex = "<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
 }
 
 class DummyTemplateEngine extends TemplateEngine {

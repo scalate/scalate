@@ -151,6 +151,15 @@
       <artifactId>plexus-utils</artifactId>
       <version>1.5.6</version>
     </dependency>
+
+
+    <!-- testing -->
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
