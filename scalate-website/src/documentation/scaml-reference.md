@@ -422,6 +422,39 @@ xml: renders to
 </div>
 {pygmentize_and_compare}
 
+### Weird Element Names: `'`element`'`
+
+Sometimes you have to generate markup with weird element names.  Element names
+like `<funny.element/>`.  Since Scaml interprets the period as a class name for the 
+element, the following example:
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%funny.element
+-----------------------------
+xml: renders to
+-----------------------------
+<funny class="element"/>
+{pygmentize_and_compare}
+
+does not give you the desired result of `<funny.element/>`.  In these cases you must single
+quote the element name. 
+
+Example:
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: example
+-----------------------------
+%'funny.element'
+-----------------------------
+xml: renders to
+-----------------------------
+<funny.element/>
+{pygmentize_and_compare}
+
 #### Implicit Div Elements
 
 Because divs are used so often, they're the default elements.

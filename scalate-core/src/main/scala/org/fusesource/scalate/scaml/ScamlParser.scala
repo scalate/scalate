@@ -175,7 +175,8 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
 
   val nl                      = text("""\r?\n""".r)
   val any_space_then_nl       = text("""[ \t]*\r?\n""".r)
-  val tag_ident               = text("""[a-zA-Z_0-9][\:a-zA-Z_0-9-]*""".r)
+  val xml_ident               = text("""[a-zA-Z_0-9][\:a-zA-Z_0-9-]*""".r)
+  val tag_ident               = xml_ident | "'" ~> upto("'") <~ "'"
   val css_name                = text("""[a-zA-Z_0-9][a-zA-Z_0-9-]*""".r)
 
 
@@ -215,24 +216,24 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
       floating_point_number |
       symbol
     ) ^^ { s=>eval_string_escapes(s) } |
-    ( tag_ident | "{" ~> skip_whitespace(upto("}"),false) <~ "}" ) ^^ {
+    ( xml_ident | "{" ~> skip_whitespace(upto("}"),false) <~ "}" ) ^^ {
       x=>EvaluatedText(x, List(), true, Some(true), false)
     }
 
   def html_style_attributes = prefixed("(", skip_whitespace(rep(html_attribute_entry))) <~ opt_space~")"
   def html_attribute_entry: Parser[(Any, Any)] =
-    tag_ident ~ ("=" ~> string_literal) ^^ {
+    xml_ident ~ ("=" ~> string_literal) ^^ {
       case key~value =>
         (key, parse(skip_whitespace(literal_text(Some(true)), false), value.value))
     } |
     (
-      tag_ident ~ ("=" ~> tag_ident) |
-      tag_ident ~ ("=" ~"{" ~> skip_whitespace(upto("}"),false) <~ "}" )
+      xml_ident ~ ("=" ~> xml_ident) |
+      xml_ident ~ ("=" ~"{" ~> skip_whitespace(upto("}"),false) <~ "}" )
     ) ^^ {
       case key~value =>
         (key, EvaluatedText(value, List(), true, Some(true), false))
     } |
-    tag_ident ^^ {
+    xml_ident ^^ {
       case key =>
         (key, EvaluatedText(Text("true").setPos(key.pos), List(), true, Some(true), false))
     }
@@ -256,6 +257,7 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
     prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None, false)) } |
     opt_space ~ nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
+
 
   def full_element_statement:Parser[Element] =
     opt("%"~>tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! opt_space ~ nl ) ^^ {

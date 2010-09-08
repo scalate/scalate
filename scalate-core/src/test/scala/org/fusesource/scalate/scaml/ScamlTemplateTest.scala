@@ -281,6 +281,16 @@ Wow this is cool!
 </html>
 """)
 
+  testRender("single quoted tags can contain special characters",
+"""
+%'funny.element'.test
+  hi
+""","""
+<funny.element class="test">
+  hi
+</funny.element>
+""")
+
 
   /////////////////////////////////////////////////////////////////////
   //
