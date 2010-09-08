@@ -18,10 +18,9 @@
 
 package org.fusesource.scalate.wikitext
 
-import org.fusesource.scalate.test.FunSuiteSupport
+import java.io.File
 
-class ConfluenceTest extends FunSuiteSupport {
-  val filter = ConfluenceFilter
+class ConfluenceTest extends AbstractConfluenceTest {
 
   test("parse confluence wiki") {
     assertFilter(
@@ -32,13 +31,6 @@ Hello
 """,
 
 """<h1 id="Title">Title</h1><p>Hello</p><ul><li>one</li><li>two</li></ul>""")
-  }
-
-  protected def assertFilter(source: String, expected: String): Unit = {
-    println("Converting: " + source)
-    val actual = filter.filter(source)
-    println("Created: " + actual)
-    expect(expected) {actual}
   }
 
   if (Pygmentize.isInstalled) {
@@ -63,4 +55,5 @@ END
   } else {
     warn("Pygmentize not installed so ignoring the tests")
   }
+
 }
