@@ -3,13 +3,13 @@ package org.fusesource.scalate.wikitext
 import collection.mutable.HashMap
 import java.net.URI
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
-import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
 import org.fusesource.scalate.util.IOUtil
 import io.Source
 import compat.Platform
 import scala.Option
 import java.io.{FileInputStream, File, InputStream}
+import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
 
 /**
  * Helper class to access file containing snippets of code:
@@ -62,14 +62,22 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
 
   var lang:Option[String] = None
   var url: String = _
-  var id:Option[String] = None 
+  var id:Option[String] = None
+  var pygmentize : Boolean = false
 
-  override def beginBlock() = {
-    builder.beginBlock(BlockType.DIV, cssClass("snippet"))
-    builder.beginBlock(BlockType.PREFORMATTED, cssClass(language));
-    builder.characters(Platform.EOL)
+  lazy val handler : SnippetHandler = {
+    if (pygmentize) {
+      val block = new PygementsBlock
+      block.setState(state)
+      block.setParser(parser)
+      block.setOption("lang", language)
+      PygmentizeSnippetHandler(block)
+    } else {
+      DefaultSnippetHandler(builder, language)
+    }
   }
 
+  override def beginBlock() = handler.begin
 
   override def handleBlockContent(value:String) = {
     // graciously do nothing 
@@ -77,11 +85,10 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
 
   override def endBlock() = {
     for (line <- getSnippet) {
-      builder.characters(line + Platform.EOL)
+      handler.addLine(line)
     }
 
-    builder.endBlock();  // </pre>
-    builder.endBlock();  // </div>
+    handler.done
   }
 
   /**
@@ -102,16 +109,8 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
       case "id" => id = Some(value)
       case "url" => url = value
       case "lang" => lang = Some(value)
+      case "pygmentize" => pygmentize = value.toBoolean
     }
-  }
-
-  /**
-   * Create attributes instance containing the CSS class
-   */
-  def cssClass(cssClass: String) = {
-    val attributes = new Attributes
-    attributes.setCssClass(cssClass)
-    attributes
   }
 
   /**
@@ -134,4 +133,57 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
       ""
     }
   }
+}
+
+/**
+ * Trait to define a {snippet} handler
+ */
+trait SnippetHandler {
+
+  def begin
+  def addLine(line: String)
+  def done
+
+}
+
+/**
+ * Default handler for the {snippet} code (renders a <div class="snippet"><pre class="<language>">
+ */
+case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: String) extends SnippetHandler {
+
+  def begin = {
+    builder.beginBlock(BlockType.DIV, cssClass("snippet"))
+    builder.beginBlock(BlockType.PREFORMATTED, cssClass(language));
+    builder.characters(Platform.EOL)
+  }
+
+  def addLine(line: String) = {
+    builder.characters(line + Platform.EOL)
+  }
+
+  def done = {
+    builder.endBlock();  // </pre>
+    builder.endBlock();  // </div>          
+  }
+
+  /**
+   * Create attributes instance containing the CSS class
+   */
+  def cssClass(cssClass: String) = {
+    val attributes = new Attributes
+    attributes.setCssClass(cssClass)
+    attributes
+  }
+  
+}
+
+/**
+ * Uses pygmentize to handles syntax coloring for the {snippet}'s code
+ */
+case class PygmentizeSnippetHandler(val block: PygementsBlock) extends SnippetHandler {
+
+  def begin = block.beginBlock
+  def addLine(line: String) = block.handleBlockContent(line)
+  def done = block.endBlock
+
 }
