@@ -451,7 +451,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def isAutoClosed(statement: Element) = {
       statement.text == None && statement.body.isEmpty &&
-              statement.tag.isDefined && ScamlOptions.autoclose.contains(statement.tag.get.value)
+              statement.tag.isDefined && ( ScamlOptions.autoclose==null || ScamlOptions.autoclose.contains(statement.tag.get.value) )
     }
 
     def generate(statement: Element): Unit = {

@@ -47,6 +47,9 @@ object ScamlOptions {
 
   var format = DEFAULT_FORMAT
 
+  /**
+   * If this is set to null, then all elements is be autoclosed.
+   */
   var autoclose = DEFAULT_AUTOCLOSE
 
   /**
