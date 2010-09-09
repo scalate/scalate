@@ -9,11 +9,11 @@ Scalate is a template engine based on the Scala language.
 
 * Supports multiple template syntaxes
   * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](scaml-reference.html#haml_vs_jade_notation)
+  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](scaml-reference.html#jade)
   * [Mustache](mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
 * Support for [layouts](#layouts) of templates and wiki markup
-* Has a powerful [console](console.html) and [command line shell](tool.html)
+* Has a powerful [console](console.html) and [command line shell](tool.html) with Scalate converters for [JSP](jspConvert.html) or [HTML](htmlConvert.html)
 * Works well with a number of [frameworks](frameworks.html) or easily [embed into your application](scalate-embedding-guide.html)
 * Can be used in any web application or used in a standalone application to generate things like emails or source code or even used to generate your [static or semi-static website](siteGen.html).
 
@@ -81,6 +81,31 @@ xml: produces
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
+### Jade 
+
+The [Jade syntax](scaml-reference.html#jade) is similar to [Scaml](scaml-reference.html), its a [modified dialect](http://jade-lang.com/) of [Haml](http://haml-lang.com/) where element names do not require a leading % symbol which can make it a little easier to read.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: .jade file
+-----------------------------
+-@ var user: User
+p Hi #{user.name},
+- for(i <- 1 to 3)
+  p= i
+p See, I can count!
+-----------------------------
+xml: produces
+-----------------------------
+<p>Hi James,</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>See, I can count!</p>
+{pygmentize_and_compare}
+
+For more details see the [Jade reference](scaml-reference.html#jade) 
+ 
 ### Mustache
 
 The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](http://mustache.github.com/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). 
@@ -458,6 +483,47 @@ The [Scaml](scaml-reference.html) version of this is a bit more concise
 ...
 = foo
 {pygmentize}
+
+
+## {#dry} Making templates more DRY
+
+When you create a number of templates in a directory you might find you are repeating the same sets of imports across many templates. This doesn't feel terribly DRY. Scala 2.8 supports [package objects](http://programming-scala.labs.oreilly.com/ch07.html#PackageObjects) which allows you to define types, variables and methods at the package scope to be reused inside classes and traits defined inside the package.
+
+So Scalate supports a similar feature for templates which are code generated like [SSP](ssp-reference.html), [Scaml](scaml-reference.html) and [Jade](scaml-reference.html#jade).
+
+The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package. If a ScalatePackage class is found then its **header** method is invoked to generate any shared imports, variables or methods across templates.
+
+For example you could use this scala file to add some default imports you want to share across a number of templates in a directory...
+
+{pygmentize:: scala}
+package foo
+
+import org.fusesource.scalate.TemplateSource
+import org.fusesource.scalate.support.TemplatePackage
+
+
+/**
+ * Defines some common imports, attributes and methods across templates in package foo and below
+ */
+class ScalatePackage extends TemplatePackage {
+
+  /** Returns the Scala code to add to the top of the generated template method */
+  def header(template: TemplateSource) = """
+
+// some shared imports
+import com.acme._
+import com.acme.something.MyHelper._
+
+// some helper methods
+// would be better being imported from a helper class like MyHelper above
+def time = new java.util.Date()
+
+  """
+}
+
+{pygmentize}
+
+You can then use the usual expressive composition features of Scala to use inheritance, traits, delegation and so forth to decide how to spread this code across your templates. You might find moving templates into functional directories makes it easier to reuse common boilerplate imports, values and methods across templates.
 
 
 ## Scalate Samples

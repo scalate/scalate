@@ -38,6 +38,16 @@ A detailed walk through Scalate and how to use it.
 <div class="right" markdown="1">
 
 <table cellspacing="20">
+  <tr>
+    <td cellvalign="middle">
+  # [Jade](scaml-reference.html#jade)
+    </td>
+    <td>
+  Reference for the Jade template language. 
+
+  Jade is a modified dialect of [Haml](http://haml-lang.com/) and is a very DRY template engine for generating HTML; its even a little DRYer than [Scaml](scaml-reference.html)
+  </td>
+  </tr>
 <tr>
   <td cellvalign="middle">
 # [Mustache](mustache.html) 

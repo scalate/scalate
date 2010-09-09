@@ -1,0 +1,38 @@
+---
+title: JSP Converter
+in_menu: false
+sort_info: 2
+--- name:overview
+# HTML Convert
+
+Lets get that HTML markup nice and DRY!
+
+--- name:content
+
+<div class="left" markdown="1">
+# Overview
+</div>
+<div class="right" markdown="1">
+HTML Converter is a little tool for converting your HTML into the nice DRY form using either [Jade](scaml-reference.html#jade) or [Scaml](scaml-reference.html) syntax.
+
+First you need to install the [Scalate tool](tool.html)
+</div>
+
+<div class="left" markdown="1">
+# Using HTML Converter
+</div>
+<div class="right" markdown="1">
+
+To convert the HTML files in a directory just type
+
+    scalate tojade foo.html bar.jade
+    
+To convert a HTML file to the [Jade](scaml-reference.html#jade) syntax or use 
+
+    scalate toscaml foo.html bar.scaml
+
+To convert to [Scaml](scaml-reference.html) syntax.
+
+For more details refer to the [Scalate tool](tool.html)
+</div>
+    

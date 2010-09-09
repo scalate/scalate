@@ -19,7 +19,7 @@ because it uses a very concise white space active XHMLT notation.
 * [Haml](http://haml-lang.com/) or [Jade](http://jade-lang.com/) style 
   notation
 
-## Haml vs Jade Notation
+## {#jade} Haml vs Jade Notation
 
 Scaml supports both the original [Haml](http://haml-lang.com/) notation and a
 newer [Jade](http://jade-lang.com/) notation. The Jade dialect of Haml
