@@ -154,4 +154,14 @@ For example if your Confluence space is called FOO at Apache then the following 
 
 </div>
 
+<div class="left" markdown="1">
+  <h1 id="bootstrapping">Bootstrapping</h1>
+</div>
+<div class="right" markdown="1">
+  
+When generating static sites you often need a little bit of bootstrap code to configure things such that you can configure some filters (for example the **{snippet}** macros inside Confluence wiki files) which are then setup and used whether you run Scalate using "mvn jetty:run" for the live website or use "mvn scalate:sitegen" to generate the static site.
+
+Thankfully there's a really simple way to add in any custom initialisation code in Scalate. Just add a class called **scalate.Boot** which should be a class with a method called **run()** which can then do whatever you need to configure things before the template engine starts to render your templates and wiki files.
+</div>
+
 
