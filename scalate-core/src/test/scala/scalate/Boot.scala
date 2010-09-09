@@ -16,14 +16,19 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.util
+package scalate
 
-object Threads {
-  def thread(name: String)(func: => Unit) {
-    new Thread(name) {
-      override def run = {
-        func
-      }
-    }.start()
+import org.fusesource.scalate.MockBootstrap
+import org.fusesource.scalate.util.Logging
+
+/**
+ * A simple boot strap mechanism to act as a simple place to host initialisation code which can then be shared across
+ * web apps or static site gen
+ */
+class Boot extends Logging {
+
+  def run: Unit = {
+    info("scalate bootstrap starting...")
+    MockBootstrap.initialised = true
   }
 }

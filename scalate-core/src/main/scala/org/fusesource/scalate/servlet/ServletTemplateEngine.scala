@@ -19,13 +19,13 @@
 package org.fusesource.scalate.servlet
 
 import org.fusesource.scalate.{Binding, TemplateEngine}
-import org.fusesource.scalate.util.ClassPathBuilder
-import java.io.File
-import scala.tools.nsc.Global
-import javax.servlet.{FilterConfig, ServletContext, ServletConfig}
-import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy};
+import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy}
+import org.fusesource.scalate.util.{Logging, ClassLoaders, ClassPathBuilder};
 
-object ServletTemplateEngine {
+import scala.tools.nsc.Global
+import javax.servlet.{ServletException, ServletContext, ServletConfig}
+
+object ServletTemplateEngine extends Logging {
   val templateEngineKey = classOf[ServletTemplateEngine].getName
 
   /**
@@ -49,6 +49,9 @@ object ServletTemplateEngine {
    */
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
     servletContext.setAttribute(templateEngineKey, templateEngine)
+
+    // now lets fire the bootstrap code
+    runBoot()
   }
 
   /**
@@ -63,6 +66,25 @@ object ServletTemplateEngine {
   def setLayoutStrategy(engine: TemplateEngine): LayoutStrategy = {
     engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
     engine.layoutStrategy
+  }
+
+  def runBoot(classLoaders: Traversable[ClassLoader] = ClassLoaders.defaultClassLoaders): Unit = {
+    val className = "scalate.Boot"
+    ClassLoaders.findClass(className, classLoaders) match {
+      case Some(clazz) =>
+        try {
+          val o = clazz.newInstance
+          debug("About to invoke run() on bootstrap " + o)
+          val m = clazz.getMethod("run")
+          m.invoke(o)
+        }
+        catch {
+          case e => throw new ServletException("Failed to invoke "+ className + ".run() : " + e, e)
+        }
+
+      case _ =>
+        debug("No bootstrap class " + className + " found on classloaders: " + classLoaders)
+    }
   }
 }
 

@@ -16,14 +16,22 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.util
+package org.fusesource.scalate.boot
 
-object Threads {
-  def thread(name: String)(func: => Unit) {
-    new Thread(name) {
-      override def run = {
-        func
-      }
-    }.start()
+import org.fusesource.scalate.util.Logging
+
+/**
+ * Helper class to help test that we can write custom bootstrap code
+ * using the ScalatePackage mechanism
+ */
+object BootSample extends Logging {
+  var initialised = false
+
+  def boot: Unit = {
+    if (!initialised) {
+      info("Startup up template package bootstrap!")
+      println("Startup up template package bootstrap!")
+      initialised = true
+    }
   }
 }

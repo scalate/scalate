@@ -18,12 +18,10 @@
 
 package org.fusesource.scalate.util
 
-object Threads {
-  def thread(name: String)(func: => Unit) {
-    new Thread(name) {
-      override def run = {
-        func
-      }
-    }.start()
-  }
+object Strings {
+
+  /**
+   * Avoid using the Java 6 specific String.isEmpty method
+   */
+  def isEmpty(text: String) = text == null || text.length == 0
 }
