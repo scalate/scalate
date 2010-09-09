@@ -35,12 +35,11 @@ class JadeCodeGenerator extends ScamlCodeGenerator {
 
     val uri = source.uri
     val jadeSource = source.text
-    val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new JadeParser).parse(jadeSource)
 
     val builder = new SourceBuilder()
-    builder.generate(engine, packageName, className, bindings, statements)
-    Code(this.className(uri), builder.code, Set(uri), builder.positions)
+    builder.generate(engine, source, bindings, statements)
+    Code(source.className, builder.code, Set(uri), builder.positions)
   }
 
 }

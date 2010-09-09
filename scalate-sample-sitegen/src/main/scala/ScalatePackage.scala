@@ -16,17 +16,17 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.support
+import org.fusesource.scalate.TemplateSource
+import org.fusesource.scalate.support.TemplatePackage
 
-import _root_.scala.util.parsing.input.{OffsetPosition}
-import collection.immutable.TreeMap
-import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
 
-case class Code(className: String, source: String, dependencies: Set[String], positions: TreeMap[OffsetPosition, OffsetPosition])
+/**
+ * Defines the template package of reusable imports, attributes and methods across templates
+ */
+class ScalatePackage extends TemplatePackage {
+  def header(template: TemplateSource) = """
 
-trait CodeGenerator {
-  def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding]): Code
+    // common imports go here
 
-  val stratumName: String
-
+  """
 }

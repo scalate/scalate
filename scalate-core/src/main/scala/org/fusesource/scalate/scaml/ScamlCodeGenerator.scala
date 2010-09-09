@@ -667,12 +667,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val uri = source.uri
     val hamlSource = source.text
-    val (packageName, className) = extractPackageAndClassNames(uri)
     val statements = (new ScamlParser).parse(hamlSource)
 
     val builder = new SourceBuilder()
-    builder.generate(engine, packageName, className, bindings, statements)
-    Code(this.className(uri), builder.code, Set(uri), builder.positions)
+    builder.generate(engine, source, bindings, statements)
+    Code(source.className, builder.code, Set(uri), builder.positions)
   }
 
 

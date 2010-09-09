@@ -19,16 +19,18 @@
 package org.fusesource.scalate.maven
 
 import org.apache.maven.plugin.AbstractMojo
-import org.fusesource.scalate.{DefaultRenderContext, TemplateSource, Binding, TemplateEngine}
-import java.io.{PrintWriter, File};
-import org.fusesource.scalate.servlet.ServletTemplateEngine
-import org.fusesource.scalate.support.FileResourceLoader
-import org.fusesource.scalate.util.IOUtil
-
 import org.apache.maven.project.MavenProject
-
 import org.scala_tools.maven.mojo.annotations._
 
+import org.fusesource.scalate.{DefaultRenderContext, TemplateSource, Binding, TemplateEngine}
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import org.fusesource.scalate.support.FileResourceLoader
+import org.fusesource.scalate.util.{ClassLoaders, IOUtil}
+import java.{util => ju}
+import java.io.{PrintWriter, File}
+import java.net.{URLClassLoader, URL}
+
+import scala.collection.JavaConversions._
 
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups
@@ -67,6 +69,11 @@ class SiteGenMojo extends AbstractMojo {
   @expression("${project.build.directory}/sitegen")
   var targetDirectory: File = _
 
+  @parameter
+  @description("The test project classpath elements.")
+  @expression("${project.testClasspathElements}")
+  var testClassPathElements: ju.List[_] = _
+
   def execute() = {
     targetDirectory.mkdirs();
 
@@ -76,8 +83,21 @@ class SiteGenMojo extends AbstractMojo {
     getLog.debug("warSourceDirectory: " + warSourceDirectory)
     getLog.debug("resourcesSourceDirectory: " + resourcesSourceDirectory)
 
-    // TODO: need to customize bindings
+    val urls: Array[URL] = testClassPathElements.map {
+      d =>
+        new File(d.toString).toURI.toURL
+    }.toArray
+
+    getLog.debug("Found project class loader URLs: " + urls.toList)
+
+    val projectClassLoader = new URLClassLoader(urls, Thread.currentThread.getContextClassLoader)
+
+    // lets invoke the bootstrap as we want to configure things like confluence snippet macros
+    // which are outside of the ScalatePackage extension mechanism as there's no scala code gen for those filters
+    ServletTemplateEngine.runBoot(List(projectClassLoader, getClass.getClassLoader))
+
     var engine = new DummyTemplateEngine()
+    engine.classLoader = projectClassLoader
     engine.workingDirectory = scalateWorkDir
     engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory))
 
@@ -107,10 +127,12 @@ class SiteGenMojo extends AbstractMojo {
           if (extensions.contains(ext)) {
             getLog.info("    processing " + file + " with uri: " + uri)
 
-            val html = engine.layout(TemplateSource.fromFile(file, uri))
-            val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
-            sourceFile.getParentFile.mkdirs
-            IOUtil.writeBinaryFile(sourceFile, transformHtml(html).getBytes("UTF-8"))
+            ClassLoaders.withContextClassLoader(projectClassLoader) {
+              val html = engine.layout(TemplateSource.fromFile(file, uri))
+              val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
+              sourceFile.getParentFile.mkdirs
+              IOUtil.writeBinaryFile(sourceFile, transformHtml(html).getBytes("UTF-8"))
+            }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
 
@@ -128,12 +150,14 @@ class SiteGenMojo extends AbstractMojo {
     processFile(warSourceDirectory, "")
 
     //this.project.add(targetDirectory.getCanonicalPath);
+
   }
 
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
-  def transformHtml(html: String): String = linkRegex.replaceAllIn(html, {m =>
+  def transformHtml(html: String): String = linkRegex.replaceAllIn(html, {
+    m =>
     // for some reason we don't just get the captured group - no idea why. Instead we get...
     //
     //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
@@ -141,9 +165,9 @@ class SiteGenMojo extends AbstractMojo {
     //
     // so lets replace the link URI in the matched text to just change the contents of the link
 
-    val link = m.group(1)
-    val matched = m.matched
-    matched.dropRight(link.size + 1) + transformLink(link) + matched.last
+      val link = m.group(1)
+      val matched = m.matched
+      matched.dropRight(link.size + 1) + transformLink(link) + matched.last
   })
 
   /**

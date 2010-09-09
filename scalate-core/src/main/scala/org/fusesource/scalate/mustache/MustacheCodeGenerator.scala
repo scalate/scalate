@@ -122,16 +122,13 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     val content = source.text
     val uri = source.uri
 
-    // Determine the package and class name to use for the generated class
-    val (packageName, className) = extractPackageAndClassNames(uri)
-
     // Parse the translation unit
     val fragments = (new MustacheParser).parse(content)
 
     val sb = new SourceBuilder
-    sb.generate(engine, packageName, className, bindings, fragments)
+    sb.generate(engine, source, bindings, fragments)
 
-    Code(this.className(uri), sb.code, Set(uri), sb.positions)
+    Code(source.className, sb.code, Set(uri), sb.positions)
   }
 }
 

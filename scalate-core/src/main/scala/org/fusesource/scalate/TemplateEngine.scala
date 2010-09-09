@@ -543,7 +543,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri
-    val className = generator(source).className(uri)
+    val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
     if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
