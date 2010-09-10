@@ -226,17 +226,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       var content = statement.body.map {_.value}.mkString(ScamlOptions.nl)
 
       var text: TextExpression = if (interpolate) {
-        val p = new ScamlParser()
+        val p = new ScamlParser(ScamlParser.UPTO_TYPE_MULTI_LINE)
         try {
           p.parse(p.literal_text(Some(sanitize)), content)
-        }
-        catch {
+        } catch {
           case e:InvalidSyntaxException =>
             val pos = statement.body.head.pos.asInstanceOf[OffsetPosition]
             throw new InvalidSyntaxException(e.brief, OffsetPosition(pos.source, pos.offset+e.pos.column))
         }
       } else {
-        LiteralText(List(Text(content)), Some(false))
+        LiteralText(List(Text(content)), Some(sanitize))
       }
 
       var prefix = "$_scalate_$_context << ( "

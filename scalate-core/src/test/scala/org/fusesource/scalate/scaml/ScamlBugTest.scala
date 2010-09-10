@@ -23,6 +23,17 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
+  testRender("#155: Scaml :!plain filter breaks when used with multiple content lines",
+"""
+- val msg = "hello"
+:!plain
+  #{msg}, user
+  The greeting is #{msg}.
+""","""
+hello, user
+The greeting is hello.
+""")
+
   testRender("#99: error if a comment containing just one space is used",
 "-#\n-# \ntest\n/\n/ \ntest\n","""
 test

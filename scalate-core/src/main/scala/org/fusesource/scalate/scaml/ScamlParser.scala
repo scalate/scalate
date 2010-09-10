@@ -153,18 +153,20 @@ case class FilterStatement(flags:List[Text], filters:List[Text], body:List[Text]
 case class Attribute(kind:Text, name: Text, className: Text, defaultValue: Option[Text], autoImport:Boolean) extends Statement
 case class Doctype(line:List[Text]) extends Statement
 
+import ScamlParser._
+
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ScamlParser extends IndentedParser() with ScalaParseSupport  {
+class ScamlParser(val upto_type:String=UPTO_TYPE_SINGLE_LINE) extends IndentedParser() with ScalaParseSupport  {
 
   override def upto[T](p1: Parser[T]): Parser[Text] = {
     text(
       text("""\z""".r) ~ failure("end of file") ^^{ null } |
       guard(p1) ^^ { _ => "" } |
-      rep1(not(p1) ~> ".".r) ^^ { _.mkString("") }
+      rep1(not(p1) ~> upto_type.r) ^^ { _.mkString("") }
     )
   }
 
@@ -277,8 +279,14 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
     case code~None=>{ code :: Nil }
   }
 
+  def litteral_part_delimiter = if( upto_type eq UPTO_TYPE_SINGLE_LINE )  {
+    "#{" | """\#{""" | """\\#{"""|any_space_then_nl
+  } else {
+    "#{" | """\#{""" | """\\#{"""
+  }
+
   val litteral_part:Parser[Text] =
-    upto("#{" | """\#{""" | """\\#{"""|any_space_then_nl) ~
+    upto(litteral_part_delimiter) ~
       opt(
         """\#{""" ~ opt(litteral_part) ^^ { case x~y=> "#{"+y.getOrElse(Text("")) }  |
         """\\""" ^^ { s=>"""\""" }
@@ -382,6 +390,10 @@ class ScamlParser extends IndentedParser() with ScalaParseSupport  {
 
 
 object ScamlParser {
+
+  val UPTO_TYPE_SINGLE_LINE = """."""
+  val UPTO_TYPE_MULTI_LINE = """.|\r|\n"""
+
   def main(args: Array[String]) = {
     val in = IOUtil.loadTextFile(new File(args(0)))
     val p = new ScamlParser
