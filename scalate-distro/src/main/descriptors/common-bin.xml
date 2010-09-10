@@ -10,18 +10,33 @@
       <includes>
         <include>org.fusesource.scalate:scalate-camel</include>
         <include>org.fusesource.scalate:scalate-core</include>
-        <include>org.fusesource.scalate:scalate-jsp-converter</include>
         <include>org.fusesource.scalate:scalate-test</include>
-        <include>org.fusesource.scalate:scalate-tool</include>
         <include>org.scala-lang:scala-library</include>
         <include>org.scala-lang:scala-compiler</include>
         <include>org.slf4j:slf4j-api</include>
         <include>org.slf4j:slf4j-nop</include>
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>/lib/tool</outputDirectory>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+      <includes>
         <include>org.apache.karaf.shell:org.apache.karaf.shell.console</include>
-<!--
-        <include>jline:jline</include>
-        <include>org.fusesource.jansi:jansi</include>
--->
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>/lib/tool</outputDirectory>
+      <unpack>false</unpack>
+      <scope>compile</scope>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+      <includes>
+        <include>org.fusesource.scalate:scalate-jsp-converter</include>
+        <include>org.fusesource.scalate:scalate-tool</include>
+
+        <!-- confexport -->
+        <include>org.codehaus.swizzle:swizzle-confluence</include>
+        <include>xmlrpc:xmlrpc</include>
       </includes>
     </dependencySet>
     <dependencySet>

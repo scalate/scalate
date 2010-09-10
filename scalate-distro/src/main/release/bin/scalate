@@ -116,13 +116,7 @@ if [ -z "$SCALATE_BASE" ] ; then
   SCALATE_BASE="$SCALATE_HOME"
 fi
 
-CLASSPATH="${SCALATE_HOME}/lib/scalate-core-${project.version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/scalate-jsp-converter-${project.version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/scalate-tool-${project.version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/org.apache.karaf.shell.console-${karaf-version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/scala-library-${scala-version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/slf4j-api-${slf4j-version}.jar"
-CLASSPATH="${CLASSPATH}:${SCALATE_HOME}/lib/slf4j-nop-${slf4j-version}.jar"
+CLASSPATH="${SCALATE_HOME}/lib/*:${SCALATE_HOME}/lib/tool/*"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
