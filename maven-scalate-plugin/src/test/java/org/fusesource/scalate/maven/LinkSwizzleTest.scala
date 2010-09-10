@@ -47,7 +47,7 @@ class LinkSwizzleTest extends FunSuiteSupport {
   protected def testReplaces(html: String, expected: String): Unit = {
     test("replaces: " + html) {
 
-      val answer = transformer.transformHtml(html)
+      val answer = transformer.transformHtml(html, "foo.html")
 
       info("converted " + html)
       info("into: " + answer)

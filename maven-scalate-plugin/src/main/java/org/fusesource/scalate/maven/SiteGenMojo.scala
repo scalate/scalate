@@ -32,6 +32,31 @@ import java.net.{URLClassLoader, URL}
 
 import scala.collection.JavaConversions._
 
+object Links {
+
+  /**
+   * Converts an absolute link rom the root directory to a relative link from the current
+   * request URI
+   */
+  def convertAbsoluteLinks(link: String, requestURI: String): String = if (link.startsWith("/")) {
+    var n = link.stripPrefix("/").split('/').toList
+    var r = requestURI.stripPrefix("/").split('/').toList
+
+    // lets strip the common prefixes off
+    while (n.size > 1 && r.size > 1 && n.head == r.head) {
+      n = n.tail
+      r = r.tail
+    }
+
+    val prefix = "../" * (r.size - 1)
+    n.mkString(prefix, "/", "")
+  } else {
+    link
+  }
+}
+
+import Links._
+
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups
  * you are using
@@ -131,7 +156,7 @@ class SiteGenMojo extends AbstractMojo {
               val html = engine.layout(TemplateSource.fromFile(file, uri))
               val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
               sourceFile.getParentFile.mkdirs
-              IOUtil.writeBinaryFile(sourceFile, transformHtml(html).getBytes("UTF-8"))
+              IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri).getBytes("UTF-8"))
             }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
@@ -156,27 +181,34 @@ class SiteGenMojo extends AbstractMojo {
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
-  def transformHtml(html: String): String = linkRegex.replaceAllIn(html, {
+  def transformHtml(html: String, uri: String): String = linkRegex.replaceAllIn(html, {
+    // for some reason we don't just get the captured group - no idea why. Instead we get...
+    //
+    //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
+    //   m.group(1) == "linkUri"
+    //
+    // so lets replace the link URI in the matched text to just change the contents of the link
     m =>
-      // for some reason we don't just get the captured group - no idea why. Instead we get...
-      //
-      //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
-      //   m.group(1) == "linkUri"
-      //
-      // so lets replace the link URI in the matched text to just change the contents of the link
       val link = m.group(1)
       val matched = m.matched
-      matched.dropRight(link.size + 1) + transformLink(link) + matched.last
+      matched.dropRight(link.size + 1) + transformLink(link, uri) + matched.last
   })
 
   /**
-   * If a link is absolute or includes a dot then assume its OK, otherwise append html extension
+   * If a link is external or includes a dot then assume its OK, otherwise append html extension
    */
-  def transformLink(link: String) = {
-    if (link.matches("""[^:\.]*""")) {
-      link + ".html"
-    } else {
+  def transformLink(link: String, requestUri: String) = {
+    if (link.contains(':')) {
+      // external so leave as is
       link
+    } else {
+      val relativeLink = convertAbsoluteLinks(link, requestUri)
+      if (link.contains('.')) {
+        relativeLink
+      }
+      else {
+        relativeLink + ".html"
+      }
     }
   }
 
@@ -197,7 +229,11 @@ class DummyTemplateEngine extends TemplateEngine {
 
 class DummyRenderContext(val requestURI: String, _engine: TemplateEngine, _out: PrintWriter) extends DefaultRenderContext(_engine, _out) {
   // for static website stuff we must zap the root dir typically
-  def uri(name: String) = name.stripPrefix("/")
+  def uri(name: String) = {
+    // lets deal with links to / as being to /index.html
+    val link = if (name == "/") "/index.html" else name
+    convertAbsoluteLinks(link, requestURI)
+  }
 }
 
 class DummyResponse {
