@@ -34,4 +34,41 @@ object Files {
     }
   }
 
+
+  /**
+   * Returns the relative URI of the given file with the respect to the given root directory
+   */
+  def relativeUri(rootDir: File, file: File): String = {
+    val parent = file.getParentFile
+    if (parent == null || parent == rootDir) {
+      file.getName
+    }
+    else {
+      relativeUri(rootDir, parent) + "/" + file.getName
+    }
+  }
+
+  /**
+   * Returns the extension of the file name
+   */
+  def extension(name: String) = {
+    val idx = name.lastIndexOf('.')
+    if (idx >= 0) {
+      name.substring(idx + 1)
+    } else {
+      ""
+    }
+  }
+
+  /**
+   * Returns the name of the file without its extension
+   */
+  def dropExtension(name: String) = {
+    val idx = name.lastIndexOf('.')
+    if (idx >= 0) {
+      name.substring(0, idx)
+    } else {
+      name
+    }
+  }
 }

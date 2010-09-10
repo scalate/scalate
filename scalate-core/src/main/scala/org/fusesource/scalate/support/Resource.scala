@@ -120,32 +120,23 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   /**
    * Returns the extension of the file
    */
-  def extension = {
-    val idx = name.lastIndexOf('.')
-    if (idx >= 0) {
-      name.substring(idx + 1)
-    } else {
-      name
-    }
-  }
+  def extension = Files.extension(name)
 
   /**
    * Returns the name of the file without its extension
    */
-  def nameDropExtension = {
-    val e = extension
-    if (e.length > 0) {
-      name.dropRight(e.length + 1)
-    } else {
-      name
-    }
-  }
+  def nameDropExtension = Files.dropExtension(name)
 
   /**
    * Recursively finds the first file in this directory that matches the given
    * predicate or matches against this file for non-directories
    */
   def find(f: File => Boolean): Option[File] = Files.find(file)(f)
+
+  /**
+   * Returns the relative URI of this file from the given root directory
+   */
+  def relativeUri(root: File) = Files.relativeUri(root, file)
 }
 
 case class URLResource(url: URL) extends WriteableResource {

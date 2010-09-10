@@ -25,7 +25,9 @@ import org.scala_tools.maven.mojo.annotations._
 import org.fusesource.scalate.{DefaultRenderContext, TemplateSource, Binding, TemplateEngine}
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.support.FileResourceLoader
-import org.fusesource.scalate.util.{ClassLoaders, IOUtil}
+import org.fusesource.scalate.util.{Files, ClassLoaders, IOUtil}
+import IOUtil._
+
 import java.{util => ju}
 import java.io.{PrintWriter, File}
 import java.net.{URLClassLoader, URL}
@@ -99,6 +101,9 @@ class SiteGenMojo extends AbstractMojo {
   @expression("${project.testClasspathElements}")
   var testClassPathElements: ju.List[_] = _
 
+  var engine = new DummyTemplateEngine()
+  val extensions = engine.extensions ++ Set("conf", "md", "markdown", "textile")
+
   def execute() = {
     targetDirectory.mkdirs();
 
@@ -121,24 +126,22 @@ class SiteGenMojo extends AbstractMojo {
     // which are outside of the ScalatePackage extension mechanism as there's no scala code gen for those filters
     ServletTemplateEngine.runBoot(List(projectClassLoader, getClass.getClassLoader))
 
-    var engine = new DummyTemplateEngine()
     engine.classLoader = projectClassLoader
     engine.workingDirectory = scalateWorkDir
     engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory))
 
-    val extensions = engine.extensions ++ Set("conf", "md", "markdown", "textile")
 
-    def processFile(file: File, baseuri: String, copyFile: Boolean = true): Unit = {
+    def processFile(file: File, baseuri: String, rootDir: File, copyFile: Boolean = true): Unit = {
       if (file.isDirectory()) {
         if (file.getName != "WEB-INF") {
           var children = file.listFiles();
           if (children != null) {
             for (child <- children) {
               if (child.isDirectory) {
-                processFile(child, baseuri + "/" + child.getName, copyFile)
+                processFile(child, baseuri + "/" + child.getName, rootDir, copyFile)
               }
               else {
-                processFile(child, baseuri, copyFile)
+                processFile(child, baseuri, rootDir, copyFile)
               }
             }
           }
@@ -156,7 +159,7 @@ class SiteGenMojo extends AbstractMojo {
               val html = engine.layout(TemplateSource.fromFile(file, uri))
               val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
               sourceFile.getParentFile.mkdirs
-              IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri).getBytes("UTF-8"))
+              IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
             }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
@@ -171,8 +174,10 @@ class SiteGenMojo extends AbstractMojo {
       }
     }
 
-    processFile(resourcesSourceDirectory, "", false)
-    processFile(warSourceDirectory, "")
+    def processRootDir(rootDir: File, copyFile: Boolean = true) = processFile(rootDir, "", rootDir, copyFile)
+
+    processRootDir(resourcesSourceDirectory, false)
+    processRootDir(warSourceDirectory)
 
     //this.project.add(targetDirectory.getCanonicalPath);
 
@@ -181,7 +186,7 @@ class SiteGenMojo extends AbstractMojo {
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
-  def transformHtml(html: String, uri: String): String = linkRegex.replaceAllIn(html, {
+  def transformHtml(html: String, uri: String, rootDir: File): String = linkRegex.replaceAllIn(html, {
     // for some reason we don't just get the captured group - no idea why. Instead we get...
     //
     //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
@@ -191,23 +196,51 @@ class SiteGenMojo extends AbstractMojo {
     m =>
       val link = m.group(1)
       val matched = m.matched
-      matched.dropRight(link.size + 1) + transformLink(link, uri) + matched.last
+      matched.dropRight(link.size + 1) + transformLink(link, uri, rootDir) + matched.last
   })
 
   /**
    * If a link is external or includes a dot then assume its OK, otherwise append html extension
    */
-  def transformLink(link: String, requestUri: String) = {
+  def transformLink(link: String, requestUri: String, rootDir: File) = {
+    def relativeLink(link: String) = convertAbsoluteLinks(link, requestUri)
+
+    /**
+     * lets start at the root directory and keep navigating through all files until we find a file name that matches
+     * the given link
+     */
+    def findConfluenceLink = {
+      // for now we are just using non-path names but if we wanted to support relative badly named files
+      // we could use: link.split('/').last
+      val name1 = link.toLowerCase
+      val name2 = name1.replace(' ', '-')
+      val extensions = engine.extensions
+
+      rootDir.find{ f =>
+        val n = f.nameDropExtension.toLowerCase
+        n == name1 || n == name2 && extensions.contains(f.extension.toLowerCase)
+      } match {
+        case Some(file) =>
+          "/" + Files.dropExtension(Files.relativeUri(rootDir, file))
+        case _ => link
+      }
+    }
+
     if (link.contains(':')) {
       // external so leave as is
       link
     } else {
-      val relativeLink = convertAbsoluteLinks(link, requestUri)
       if (link.contains('.')) {
-        relativeLink
+        relativeLink(link)
       }
       else {
-        relativeLink + ".html"
+        val newLink = if (link.contains('/')) {
+          link
+        } else {
+          // if we have no path then assume we are a bad confluence link and try find the actual path
+          findConfluenceLink
+        }
+        relativeLink(newLink) + ".html"
       }
     }
   }

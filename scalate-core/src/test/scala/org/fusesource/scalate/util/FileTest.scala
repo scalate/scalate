@@ -23,7 +23,6 @@ import java.io.File
 import IOUtil._
 
 class FileTest extends FunSuiteSupport {
-
   test("using rich file API to navigate") {
     val f: File = baseDir
 
@@ -41,7 +40,7 @@ class FileTest extends FunSuiteSupport {
     val file: File = baseDir / "src/test/resources/dummy.txt"
 
     val t = file.text.trim
-    expect("hello world!"){t}
+    expect("hello world!") {t}
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -67,6 +66,31 @@ class FileTest extends FunSuiteSupport {
     expect(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
       baseDir.find(_.name == "FileTest.scala")
     }
+  }
 
+  test("relative URIs") {
+    expect("pom.xml") {
+      (baseDir / "pom.xml").relativeUri(baseDir)
+    }
+
+    expect("src/test/scala/org/fusesource/scalate/util/FileTest.scala") {
+      new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala").relativeUri(baseDir)
+    }
+  }
+
+  assertNameSplit("foo", "foo", "")
+  assertNameSplit("foo.", "foo", "")
+  assertNameSplit("foo.txt", "foo", "txt")
+  assertNameSplit("foo.bar.txt", "foo.bar", "txt")
+  assertNameSplit(".txt", "", "txt")
+  assertNameSplit(".", "", "")
+
+  def assertNameSplit(name: String, expectedName: String, expectedExt: String) {
+    test("splitName: " + name) {
+      info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
+
+      expect(expectedExt, "extension") {Files.extension(name)}
+      expect(expectedName, "name without extension") {Files.dropExtension(name)}
+    }
   }
 }
