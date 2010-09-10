@@ -19,6 +19,19 @@ class LinkSwizzleTest extends FunSuiteSupport {
     """hello <a href="building">Building</a> something <a href="source">Source</a> there!""",
     """hello <a href="building.html">Building</a> something <a href="source.html">Source</a> there!""")
 
+  // upper case versions
+  testReplaces(
+    """hello <A href='building'>Building</A> there!""",
+    """hello <A href='building.html'>Building</A> there!""")
+
+  testReplaces(
+    """hello <A href="building">Building</A> there!""",
+    """hello <A href="building.html">Building</A> there!""")
+
+  testReplaces(
+    """hello <A href="building">Building</A> something <A href="source">Source</A> there!""",
+    """hello <A href="building.html">Building</A> something <A href="source.html">Source</A> there!""")
+
 
   // should not replace these...
   testReplaces(

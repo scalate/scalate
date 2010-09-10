@@ -158,13 +158,12 @@ class SiteGenMojo extends AbstractMojo {
    */
   def transformHtml(html: String): String = linkRegex.replaceAllIn(html, {
     m =>
-    // for some reason we don't just get the captured group - no idea why. Instead we get...
-    //
-    //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
-    //   m.group(1) == "linkUri"
-    //
-    // so lets replace the link URI in the matched text to just change the contents of the link
-
+      // for some reason we don't just get the captured group - no idea why. Instead we get...
+      //
+      //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
+      //   m.group(1) == "linkUri"
+      //
+      // so lets replace the link URI in the matched text to just change the contents of the link
       val link = m.group(1)
       val matched = m.matched
       matched.dropRight(link.size + 1) + transformLink(link) + matched.last
@@ -181,7 +180,7 @@ class SiteGenMojo extends AbstractMojo {
     }
   }
 
-  protected val linkRegex = "<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
+  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
 }
 
 class DummyTemplateEngine extends TemplateEngine {
