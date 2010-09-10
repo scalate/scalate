@@ -45,4 +45,28 @@ class FileTest extends FunSuiteSupport {
 
     info("Loaded file: " + file + " as text: " + t)
   }
+
+  test("working with names") {
+    val file = baseDir / "foo.txt"
+
+    expect("txt", "extension") {file.extension}
+    expect("foo", "nameDropExtension") {file.nameDropExtension}
+
+    println("name: " + file.name + " extension: " + file.extension)
+  }
+
+  test("Finding files") {
+    expect(None) {
+      baseDir.find(_.name == "doesNotExist.xml")
+    }
+
+    expect(Some(new File(baseDir, "pom.xml"))) {
+      baseDir.find(_.name == "pom.xml")
+    }
+
+    expect(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
+      baseDir.find(_.name == "FileTest.scala")
+    }
+
+  }
 }

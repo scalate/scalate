@@ -20,8 +20,8 @@ package org.fusesource.scalate.support
 
 import io.Source
 import java.io._
-import org.fusesource.scalate.util.{IOUtil, Logging}
 import java.net.{URISyntaxException, URL}
+import org.fusesource.scalate.util.{Files, IOUtil, Logging}
 
 /**
  * Represents a string, file or URI based resource
@@ -92,6 +92,9 @@ case class UriResource(override val uri: String, resourceLoader: ResourceLoader)
   protected def delegate = resourceLoader.resourceOrFail(uri)
 }
 
+/**
+ * Can act as a RichFile type interface too, adding a number of extra helper methods to make Files more rich
+ */
 case class FileResource(file: File, uri: String) extends WriteableResource {
   override def text = IOUtil.loadTextFile(file)
 
@@ -111,6 +114,38 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   implicit def asFile: File = file
 
   override def toFile = Some(file)
+
+  def name = file.getName
+
+  /**
+   * Returns the extension of the file
+   */
+  def extension = {
+    val idx = name.lastIndexOf('.')
+    if (idx >= 0) {
+      name.substring(idx + 1)
+    } else {
+      name
+    }
+  }
+
+  /**
+   * Returns the name of the file without its extension
+   */
+  def nameDropExtension = {
+    val e = extension
+    if (e.length > 0) {
+      name.dropRight(e.length + 1)
+    } else {
+      name
+    }
+  }
+
+  /**
+   * Recursively finds the first file in this directory that matches the given
+   * predicate or matches against this file for non-directories
+   */
+  def find(f: File => Boolean): Option[File] = Files.find(file)(f)
 }
 
 case class URLResource(url: URL) extends WriteableResource {
