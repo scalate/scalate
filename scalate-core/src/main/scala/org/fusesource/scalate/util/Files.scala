@@ -28,7 +28,7 @@ object Files {
    */
   def find(file: File)(filter: File => Boolean): Option[File] = {
     if (file.isDirectory) {
-      file.listFiles.map(find(_)(filter)).find(_.isDefined).getOrElse(None)
+      file.listFiles.view.map(find(_)(filter)).find(_.isDefined).getOrElse(None)
     } else {
       if (filter(file)) Some(file) else None
     }
