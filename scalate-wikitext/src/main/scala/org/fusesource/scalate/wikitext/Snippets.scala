@@ -4,12 +4,12 @@ import collection.mutable.HashMap
 import java.net.URI
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
-import org.fusesource.scalate.util.IOUtil
 import io.Source
 import compat.Platform
 import scala.Option
 import java.io.{FileInputStream, File, InputStream}
 import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
+import org.fusesource.scalate.util.{Logging, IOUtil}
 
 /**
  * Helper class to access file containing snippets of code:
@@ -17,7 +17,11 @@ import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
  * - using a full URL
  * - using a URL that starts with a predefined prefix
  */
-object Snippets {
+object Snippets extends Logging {
+
+  var errorHandler: (SnippetBlock, Throwable) => Unit = logError
+
+  var failOnError = false
 
   val prefixes = HashMap[String, String]()
 
@@ -53,12 +57,19 @@ object Snippets {
       new FileInputStream(new File(location))
     }, "UTF-8")    
   }
+
+  protected def logError(snippet: SnippetBlock, e: Throwable): Unit = {
+    error("Failed to generate snippet: " + snippet.url + ". " + e, e)
+    if (failOnError) {
+      throw e
+    }
+  }
 }
 
 /**
  * Represents a {snippet} block in the wiki markup
  */
-class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
+class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") with Logging {
 
   var lang:Option[String] = None
   var url: String = _
@@ -84,10 +95,15 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
   }
 
   override def endBlock() = {
-    for (line <- getSnippet) {
-      handler.addLine(line)
+    try {
+      for (line <- getSnippet) {
+        handler.addLine(line)
+      }
     }
-
+    catch {
+      case e =>
+        Snippets.errorHandler(this, e)
+    }
     handler.done
   }
 
@@ -110,6 +126,7 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
       case "url" => url = value
       case "lang" => lang = Some(value)
       case "pygmentize" => pygmentize = value.toBoolean
+      case n => warn("Ignored snippet attribute " + n + " on " + this)
     }
   }
 
@@ -133,6 +150,8 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
       ""
     }
   }
+
+  override def toString = "{snippet:url=" + url + "}"
 }
 
 /**
