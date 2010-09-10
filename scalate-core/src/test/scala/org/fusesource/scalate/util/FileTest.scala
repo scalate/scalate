@@ -49,10 +49,10 @@ class FileTest extends FunSuiteSupport {
   test("working with names") {
     val file = baseDir / "foo.txt"
 
+    info("name: " + file.name + " extension: " + file.extension)
+
     expect("txt", "extension") {file.extension}
     expect("foo", "nameDropExtension") {file.nameDropExtension}
-
-    println("name: " + file.name + " extension: " + file.extension)
   }
 
   test("Finding files") {
