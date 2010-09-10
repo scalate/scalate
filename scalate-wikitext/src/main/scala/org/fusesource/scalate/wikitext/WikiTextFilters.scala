@@ -19,7 +19,6 @@
 package org.fusesource.scalate.wikitext
 
 import org.fusesource.scalate.filter.Filter
-import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
 import org.eclipse.mylyn.wikitext.core.parser.markup.{Block, MarkupLanguage}
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
