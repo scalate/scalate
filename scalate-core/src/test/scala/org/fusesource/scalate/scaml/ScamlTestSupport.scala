@@ -53,7 +53,8 @@ class ScamlTestSupport extends TemplateTestSupport {
   def testInvalidSyntaxException(description: String, template: String, error: String) = {
     test(description) {
       try {
-        debug(render(description, template.trim).trim)
+        val data = render(description, template.trim).trim
+        debug(data)
         fail("Expected InvalidSyntaxException was not thrown")
       } catch {
         case e: TestFailedException => throw e
@@ -77,7 +78,8 @@ class ScamlTestSupport extends TemplateTestSupport {
   def testCompilerException(description: String, template: String, error: String) = {
     test(description) {
       try {
-        debug(render(description, template.trim).trim)
+        val data = render(description, template.trim).trim
+        debug(data)
         fail("Expected CompilerException was not thrown")
       } catch {
         case e: TestFailedException => throw e

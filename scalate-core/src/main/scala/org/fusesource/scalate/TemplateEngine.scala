@@ -590,7 +590,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
-  protected val sourceMapLog = Logging(getClass, "SourceMap")
+  protected val sourceMapLog = Log(getClass, "SourceMap")
 
   private def compileAndLoad(source: TemplateSource, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
     var code: Code = null
