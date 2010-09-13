@@ -26,7 +26,7 @@ import org.fusesource.scalate.{TemplateEngine, TemplateEngineAddOn}
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object MarkdownFilter extends Filter with TemplateEngineAddOn {
+object MarkdownJFilter extends Filter with TemplateEngineAddOn {
 
   val markdownProcessor = new MarkdownProcessor
 
@@ -38,9 +38,9 @@ object MarkdownFilter extends Filter with TemplateEngineAddOn {
    * Add the markdown filter tot he template engine.
    */
   def apply(te: TemplateEngine) = {
-    te.filters += "markdown"->MarkdownFilter
-    te.pipelines += "md"->List(MarkdownFilter)
-    te.pipelines += "markdown"->List(MarkdownFilter)
+    te.filters += "markdown"->MarkdownJFilter
+    te.pipelines += "md"->List(MarkdownJFilter)
+    te.pipelines += "markdown"->List(MarkdownJFilter)
   }
 
 }
