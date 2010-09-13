@@ -52,23 +52,4 @@ object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
     te.filters += "conf"->ConfluenceFilter
     te.pipelines += "conf"->List(ConfluenceFilter)
   }
-
-}
-
-/**
- * Adds extendsions to the Confluence language such as support for a 'pygmentize' macro
- *
- * The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block
- *
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
- */
-class ScalateConfluenceLanguage extends ConfluenceLanguage {
-
-  override def addStandardBlocks(blocks: ju.List[Block], paragraphBreakingBlocks: ju.List[Block]) = {
-    super.addStandardBlocks(blocks, paragraphBreakingBlocks)
-    blocks.add(new PygementsBlock)
-    blocks.add(new SnippetBlock)
-    paragraphBreakingBlocks.add(new PygementsBlock)
-    paragraphBreakingBlocks.add(new SnippetBlock)
-  }
 }
