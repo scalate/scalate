@@ -48,15 +48,11 @@ class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") with Logging {
     }
   }
 
-  override def setOption(option: String) = {
-  }
+  override def setOption(option: String) =
+    Blocks.unknownOption(option)
 
-  override def setOption(key: String, value: String) = {
-    key match {
-      case _ => warn("Unknown attribute '" + key + " with value: " + value)
-    }
-  }
-
+  override def setOption(key: String, value: String) =
+    Blocks.unknownAttribute(key, value)
 }
 
 class DivBlock extends AbstractConfluenceDelimitedBlock("div") with Logging {
@@ -77,9 +73,8 @@ class DivBlock extends AbstractConfluenceDelimitedBlock("div") with Logging {
     attributes = new Attributes()
   }
 
-  override def setOption(option: String) = {
-    warn("Not sure how to set the option: " + option)
-  }
+  override def setOption(option: String) =
+    Blocks.unknownOption(option)
 
   override def setOption(key: String, value: String) =
     Blocks.setOption(attributes, key, value)
@@ -107,9 +102,8 @@ class SectionBlock extends AbstractConfluenceDelimitedBlock("section") with Logg
     content.clear
   }
 
-  override def setOption(option: String) = {
-    warn("Not sure how to set the option: " + option)
-  }
+  override def setOption(option: String) =
+    Blocks.unknownOption(option)
 
   override def setOption(key: String, value: String) =
     Blocks.setOption(tableAttributes, key, value)
@@ -132,15 +126,22 @@ class ColumnBlock extends AbstractConfluenceDelimitedBlock("column") with Loggin
     attributes = new Attributes()
   }
 
-  override def setOption(option: String) = {
-    warn("Not sure how to set the option: " + option)
-  }
+  override def setOption(option: String) =
+    Blocks.unknownOption(option)
 
   override def setOption(key: String, value: String) =
     Blocks.setOption(attributes, key, value)
 }
 
 object Blocks extends Logging {
+  def unknownAttribute(key: String, value: String): Unit = {
+    warn("Unknown attribute '" + key + " with value: " + value)
+  }
+
+  def unknownOption(option: String) = {
+    warn("Not sure how to set the option: " + option)
+  }
+
   def setOption(attributes: Attributes, key: String, value: String) = {
     key match {
       case "class" => attributes.setCssClass(value)
@@ -148,7 +149,9 @@ object Blocks extends Logging {
       case "id" => attributes.setId(value)
       case "lang" => attributes.setLanguage(value)
       case "title" => attributes.setTitle(value)
-      case _ => warn("Unknown attribute '" + key + " with value: " + value)
+      case _ => unknownAttribute(key, value)
     }
   }
+
+
 }

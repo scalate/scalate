@@ -33,7 +33,7 @@ class ScalateConfluenceLanguage extends ConfluenceLanguage {
   override def addStandardBlocks(blocks: ju.List[Block], paragraphBreakingBlocks: ju.List[Block]) = {
     super.addStandardBlocks(blocks, paragraphBreakingBlocks)
 
-    List(new PygementsBlock, new SnippetBlock,
+    List(new PygementsBlock, new SnippetBlock, new IncludeBlock,
       new HtmlBlock, new DivBlock,
       new SectionBlock, new ColumnBlock
     ).foreach{b =>
