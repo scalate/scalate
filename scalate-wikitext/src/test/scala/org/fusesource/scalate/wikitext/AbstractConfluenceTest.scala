@@ -1,4 +1,5 @@
-package org.fusesource.scalate.wikitext
+package org.fusesource.scalate
+package wikitext
 
 import org.fusesource.scalate.test.FunSuiteSupport
 
@@ -11,7 +12,8 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
 
   protected def assertFilter(source: String, expected: String): Unit = {
     println("Converting: " + source)
-    val actual = filter.filter(source)
+    val context = new DefaultRenderContext("foo.conf", new TemplateEngine())
+    val actual = filter.filter(context, source)
     println("Created: " + actual)
     expect(expected) {actual}
   }    

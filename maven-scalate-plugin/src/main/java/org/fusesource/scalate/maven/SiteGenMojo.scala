@@ -25,6 +25,7 @@ import org.scala_tools.maven.mojo.annotations._
 import org.fusesource.scalate.{DefaultRenderContext, TemplateSource, Binding, TemplateEngine}
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.support.FileResourceLoader
+import org.fusesource.scalate.wikitext.Links._
 import org.fusesource.scalate.util.{Files, ClassLoaders, IOUtil}
 import IOUtil._
 
@@ -33,31 +34,6 @@ import java.io.{PrintWriter, File}
 import java.net.{URLClassLoader, URL}
 
 import scala.collection.JavaConversions._
-
-object Links {
-
-  /**
-   * Converts an absolute link rom the root directory to a relative link from the current
-   * request URI
-   */
-  def convertAbsoluteLinks(link: String, requestURI: String): String = if (link.startsWith("/")) {
-    var n = link.stripPrefix("/").split('/').toList
-    var r = requestURI.stripPrefix("/").split('/').toList
-
-    // lets strip the common prefixes off
-    while (n.size > 1 && r.size > 1 && n.head == r.head) {
-      n = n.tail
-      r = r.tail
-    }
-
-    val prefix = "../" * (r.size - 1)
-    n.mkString(prefix, "/", "")
-  } else {
-    link
-  }
-}
-
-import Links._
 
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups
@@ -159,7 +135,8 @@ class SiteGenMojo extends AbstractMojo {
               val html = engine.layout(TemplateSource.fromFile(file, uri))
               val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
               sourceFile.getParentFile.mkdirs
-              IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
+              //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
+              IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
             }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
@@ -183,69 +160,6 @@ class SiteGenMojo extends AbstractMojo {
 
   }
 
-  /**
-   * Lets fix up any links which are local and do notcontain a file extension
-   */
-  def transformHtml(html: String, uri: String, rootDir: File): String = linkRegex.replaceAllIn(html, {
-    // for some reason we don't just get the captured group - no idea why. Instead we get...
-    //
-    //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
-    //   m.group(1) == "linkUri"
-    //
-    // so lets replace the link URI in the matched text to just change the contents of the link
-    m =>
-      val link = m.group(1)
-      val matched = m.matched
-      matched.dropRight(link.size + 1) + transformLink(link, uri, rootDir) + matched.last
-  })
-
-  /**
-   * If a link is external or includes a dot then assume its OK, otherwise append html extension
-   */
-  def transformLink(link: String, requestUri: String, rootDir: File) = {
-    def relativeLink(link: String) = convertAbsoluteLinks(link, requestUri)
-
-    /**
-     * lets start at the root directory and keep navigating through all files until we find a file name that matches
-     * the given link
-     */
-    def findConfluenceLink = {
-      // for now we are just using non-path names but if we wanted to support relative badly named files
-      // we could use: link.split('/').last
-      val name1 = link.toLowerCase
-      val name2 = name1.replace(' ', '-')
-      val extensions = engine.extensions
-
-      rootDir.find{ f =>
-        val n = f.nameDropExtension.toLowerCase
-        n == name1 || n == name2 && extensions.contains(f.extension.toLowerCase)
-      } match {
-        case Some(file) =>
-          "/" + Files.dropExtension(Files.relativeUri(rootDir, file))
-        case _ => link
-      }
-    }
-
-    if (link.contains(':')) {
-      // external so leave as is
-      link
-    } else {
-      if (link.contains('.')) {
-        relativeLink(link)
-      }
-      else {
-        val newLink = if (link.contains('/')) {
-          link
-        } else {
-          // if we have no path then assume we are a bad confluence link and try find the actual path
-          findConfluenceLink
-        }
-        relativeLink(newLink) + ".html"
-      }
-    }
-  }
-
-  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
 }
 
 class DummyTemplateEngine extends TemplateEngine {
@@ -260,12 +174,12 @@ class DummyTemplateEngine extends TemplateEngine {
   ServletTemplateEngine.setLayoutStrategy(this)
 }
 
-class DummyRenderContext(val requestURI: String, _engine: TemplateEngine, _out: PrintWriter) extends DefaultRenderContext(_engine, _out) {
+class DummyRenderContext(val _requestUri: String, _engine: TemplateEngine, _out: PrintWriter) extends DefaultRenderContext(_requestUri, _engine, _out) {
   // for static website stuff we must zap the root dir typically
   def uri(name: String) = {
     // lets deal with links to / as being to /index.html
     val link = if (name == "/") "/index.html" else name
-    convertAbsoluteLinks(link, requestURI)
+    convertAbsoluteLinks(link, requestUri)
   }
 }
 

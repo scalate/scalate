@@ -35,7 +35,8 @@ class JadeTestSupport extends ScamlTestSupport {
   override def render(name: String, content: String): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(engine, out) {
+    val uri = "/org/fusesource/scalate/jade/test" + name
+    val context = new DefaultRenderContext(uri, engine, out) {
       val name = "Hiram"
       val title = "MyPage"
       val href = "http://scalate.fusesource.org"
@@ -52,7 +53,7 @@ class JadeTestSupport extends ScamlTestSupport {
     context.attributes("bean") = Bean("red", 10)
     context.attributes("label") = "Scalate"
 
-    val template = compileJade("/org/fusesource/scalate/jade/test" + name, content)
+    val template = compileJade(uri, content)
     template.render(context)
     out.close
     buffer.toString

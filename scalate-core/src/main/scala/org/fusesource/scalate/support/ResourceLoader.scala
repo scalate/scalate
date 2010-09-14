@@ -58,7 +58,7 @@ trait ResourceLoader extends Logging {
   protected def createNotFoundException(uri: String) = new ResourceNotFoundException(uri)
 }
 
-case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoader {
+case class FileResourceLoader(sourceDirectories: Traversable[File] = None) extends ResourceLoader {
   def resource(uri: String): Option[Resource] = {
     debug("Trying to load uri: " + uri)
 
@@ -86,9 +86,9 @@ case class FileResourceLoader(rootDir: Option[File] = None) extends ResourceLoad
   }
 
   protected def toFile(uri: String): File = {
-    rootDir match {
-      case Some(dir) => new File(dir, uri);
-      case None => new File(uri)
+    sourceDirectories.view.map(new File(_, uri)).find(_.exists) match {
+      case Some(file) => file
+      case _ => new File(uri)
     }
   }
 }

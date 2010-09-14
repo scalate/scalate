@@ -26,7 +26,7 @@ import collection.mutable.Stack
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
-class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) extends RenderContext with Logging {
+class DefaultRenderContext(private val _requestUri: String, val engine: TemplateEngine, var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext with Logging {
 
   val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
     update("context", DefaultRenderContext.this)
@@ -40,7 +40,9 @@ class DefaultRenderContext(val engine: TemplateEngine, var out: PrintWriter) ext
   //
   //////////////////////////////////x///////////////////////////////////
 
-  def <<(v: Any): Unit = {
+  def requestUri = _requestUri
+
+    def <<(v: Any): Unit = {
     out.print(value(v, false))
   }
 

@@ -95,6 +95,11 @@ trait RenderContext {
   def <<<(value: Any): Unit
 
   /**
+   * Returns the request URI
+   */
+  def requestUri: String
+
+  /**
    * Access the attributes available in this context
    */
   def attributes: AttributeMap[String, Any]
@@ -191,9 +196,10 @@ trait RenderContext {
   def escape(v: Any): Unit = this << value(v, true)
 
   def filter(name: String, content: String): String = {
+    val context = this
     engine.filters.get(name) match {
       case None => throw new NoSuchFilterException(name)
-      case Some(f) => f.filter(content)
+      case Some(f) => f.filter(context, content)
     }
   }
 

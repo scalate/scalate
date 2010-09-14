@@ -58,7 +58,8 @@ object ServletRenderContext {
  *
  * @version $Revision : 1.1 $
  */
-class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext) extends DefaultRenderContext(engine, out) {
+class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext)
+        extends DefaultRenderContext(request.getRequestURI, engine, out) {
   
   def this(engine: TemplateEngine, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) = this(engine, response.getWriter, request, response, servletContext)
 
@@ -150,7 +151,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
    * Returns the current URI with new query arguments (separated with &)
    */
   def currentUriPlus(newQueryArgs: String) = {
-    uriPlus(requestURI, queryString, newQueryArgs)
+    uriPlus(requestUri, queryString, newQueryArgs)
   }
 
 
@@ -158,7 +159,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
    * Returns the current URI with query arguments (separated with &) removed
    */
   def currentUriMinus(newQueryArgs: String) = {
-    uriMinus(requestURI, queryString, newQueryArgs)
+    uriMinus(requestUri, queryString, newQueryArgs)
   }
 
   /**
@@ -182,7 +183,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   /**
    * Returns the forwarded request uri or the current request URI if its not forwarded
    */
-  def requestURI: String = attributes.get("javax.servlet.forward.request_uri") match {
+  override def requestUri: String = attributes.get("javax.servlet.forward.request_uri") match {
     case Some(value: String) => value
     case _ => request.getRequestURI
   }

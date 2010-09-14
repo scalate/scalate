@@ -131,7 +131,7 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
    * Recursively finds the first file in this directory that matches the given
    * predicate or matches against this file for non-directories
    */
-  def find(f: File => Boolean): Option[File] = Files.find(file)(f)
+  def recursiveFind(f: File => Boolean): Option[File] = Files.recursiveFind(file)(f)
 
   /**
    * Returns the relative URI of this file from the given root directory

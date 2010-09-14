@@ -16,20 +16,22 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.filter
+package org.fusesource.scalate
+package filter
 
 /**
  * Represents a request to filter content.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-case class FilterRequest(filter:String, content:String)
+case class FilterRequest(filter: String, content: String)
 
 /**
- * Filters transform content.
+ * Filters transform content at a given URI.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 trait Filter {
-  def filter(content:String): String
+  def filter(context: RenderContext, content: String): String
 }
+

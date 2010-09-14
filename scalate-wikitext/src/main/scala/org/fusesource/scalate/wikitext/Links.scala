@@ -15,27 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fusesource.scalate.wikitext
 
-package org.fusesource.scalate
-package filter
+import java.{util => ju}
 
-import org.fusesource.scalate.util.RenderHelper
+object Links {
 
-/**
- * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
- * 
- * <p>Useful for including inline Javascript.</p>
- *
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
- */
-object JavascriptFilter extends Filter {
+  /**
+   * Converts an absolute link rom the root directory to a relative link from the current
+   * request URI
+   */
+  def convertAbsoluteLinks(link: String, requestUri: String): String = if (link.startsWith("/")) {
+    var n = link.stripPrefix("/").split('/').toList
+    var r = requestUri.stripPrefix("/").split('/').toList
 
-  def filter(context: RenderContext, content: String) = {
-    """<script type='text/javascript'>
-       |  //<![CDATA[
-       |    """.stripMargin+RenderHelper.indent("    ", content)+"""
-       |  //]]>
-       |</script>""".stripMargin
+    // lets strip the common prefixes off
+    while (n.size > 1 && r.size > 1 && n.head == r.head) {
+      n = n.tail
+      r = r.tail
+    }
+
+    val prefix = "../" * (r.size - 1)
+    n.mkString(prefix, "/", "")
+  } else {
+    link
   }
-  
 }

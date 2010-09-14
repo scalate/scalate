@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.maven
+package org.fusesource.scalate.wikitext
 
 import org.fusesource.scalate.test.FunSuiteSupport
 

@@ -26,14 +26,17 @@ object Files {
    * Recursively finds the first file in this directory that matches the given
    * predicate or matches against this file for non-directories
    */
-  def find(file: File)(filter: File => Boolean): Option[File] = {
+  def recursiveFind(file: File)(filter: File => Boolean): Option[File] = {
     if (file.isDirectory) {
-      file.listFiles.view.map(find(_)(filter)).find(_.isDefined).getOrElse(None)
+      file.listFiles.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
     } else {
       if (filter(file)) Some(file) else None
     }
   }
 
+  def recursiveFind(directories: Traversable[File])(filter: File => Boolean): Option[File] = {
+    directories.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
+  }
 
   /**
    * Returns the relative URI of the given file with the respect to the given root directory
@@ -72,3 +75,4 @@ object Files {
     }
   }
 }
+

@@ -49,12 +49,12 @@ object IOUtil extends Logging {
   /**
    * Recursively deletes a file and all of it's children files if it's a directory.
    */
-  def rdelete(file: File): Boolean = {
+  def recursiveDelete(file: File): Boolean = {
     if (file.isDirectory) {
       val children = file.listFiles
       if (children != null) {
         for (child <- children) {
-          rdelete(child)
+          recursiveDelete(child)
         }
       }
     }

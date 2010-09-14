@@ -16,17 +16,17 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.wikitext
+package org.fusesource.scalate
+package wikitext
 
-import org.fusesource.scalate.filter.Filter
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
-import org.eclipse.mylyn.wikitext.core.parser.markup.{Block, MarkupLanguage}
-import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
+import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage
 import java.{util => ju}
 import org.fusesource.scalate.{TemplateEngineAddOn, TemplateEngine}
+import org.fusesource.scalate.filter.{Pipeline, Filter}
 
 abstract class WikiTextFilter extends Filter {
-  def filter(content: String): String = {
+  def filter(context: RenderContext, content: String): String = {
     val parser = new MarkupParser
     parser.setMarkupLanguage(markupLanguage)
     parser.parseToHtml(content).split("<body>") match {
@@ -44,12 +44,23 @@ abstract class WikiTextFilter extends Filter {
 object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
   def markupLanguage = new ScalateConfluenceLanguage
 
+  /**
+   * Should we fix up wiki page links which can be wrong if we export wiki pages from a wiki
+   * such as Confluence and then move the files around on disk into directories
+   */
+  var fixWikiLinks = true
 
   /**
    * Add the markdown filter tot he template engine.
    */
   def apply(te: TemplateEngine) = {
-    te.filters += "conf"->ConfluenceFilter
-    te.pipelines += "conf"->List(ConfluenceFilter)
+    val confluenceFilter = if (fixWikiLinks) {
+      Pipeline(List(ConfluenceFilter, new SwizzleLinkFilter(te.sourceDirectories, te.extensions)))
+    } else {
+      ConfluenceFilter
+    }
+
+    te.filters += "conf" -> confluenceFilter
+    te.pipelines += "conf" -> List(confluenceFilter)
   }
 }

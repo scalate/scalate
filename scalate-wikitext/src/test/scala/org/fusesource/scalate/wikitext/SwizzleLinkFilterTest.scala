@@ -16,13 +16,15 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.maven
+package org.fusesource.scalate
+package wikitext
 
 import org.fusesource.scalate.test.FunSuiteSupport
+import java.io.File
 
-class LinkSwizzleTest extends FunSuiteSupport {
+class SwizzleLinkFilterTest extends FunSuiteSupport {
 
-  val transformer = new SiteGenMojo
+  val transformer = new SwizzleLinkFilter(List(new File(".")), new TemplateEngine().extensions)
 
   // valid replacements
   testReplaces(
@@ -65,7 +67,8 @@ class LinkSwizzleTest extends FunSuiteSupport {
   protected def testReplaces(html: String, expected: String): Unit = {
     test("replaces: " + html) {
 
-      val answer = transformer.transformHtml(html, "foo.html", baseDir)
+      val context = new DefaultRenderContext("foo.html", new TemplateEngine())
+      val answer = transformer.filter(context, html)
 
       info("converted " + html)
       info("into: " + answer)

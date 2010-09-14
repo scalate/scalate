@@ -19,23 +19,12 @@
 package org.fusesource.scalate
 package filter
 
-import org.fusesource.scalate.util.RenderHelper
-
 /**
- * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
- * 
- * <p>Useful for including inline Javascript.</p>
- *
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ * Applies a number of filters in order
  */
-object JavascriptFilter extends Filter {
-
-  def filter(context: RenderContext, content: String) = {
-    """<script type='text/javascript'>
-       |  //<![CDATA[
-       |    """.stripMargin+RenderHelper.indent("    ", content)+"""
-       |  //]]>
-       |</script>""".stripMargin
-  }
-  
+case class Pipeline(filters: List[Filter]) extends Filter {
+  def filter(context: RenderContext, content: String) =
+    filters.foldLeft(content){
+      (c, f) => f.filter(context, c)
+    }
 }

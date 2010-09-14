@@ -16,7 +16,8 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.filter
+package org.fusesource.scalate
+package filter
 
 import org.fusesource.scalate.util.RenderHelper
 
@@ -28,6 +29,5 @@ import org.fusesource.scalate.util.RenderHelper
  */
 object EscapedFilter extends Filter {
 
-  def filter(content: String) = RenderHelper.sanitize(content)
-
+  def filter(context: RenderContext, content: String) = RenderHelper.sanitize(content)
 }

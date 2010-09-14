@@ -99,7 +99,8 @@ class ScamlTestSupport extends TemplateTestSupport {
   def render(name: String, content: String): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = new DefaultRenderContext(engine, out) {
+    val uri = "/org/fusesource/scalate/scaml/test" + name
+    val context = new DefaultRenderContext(uri, engine, out) {
       val name = "Hiram"
       val title = "MyPage"
       val href = "http://scalate.fusesource.org"
@@ -116,7 +117,7 @@ class ScamlTestSupport extends TemplateTestSupport {
     context.attributes("bean") = Bean("red", 10)
     context.attributes("label") = "Scalate"
 
-    val template = compileScaml("/org/fusesource/scalate/scaml/test" + name, content)
+    val template = compileScaml(uri, content)
     template.render(context)
     out.close
     buffer.toString

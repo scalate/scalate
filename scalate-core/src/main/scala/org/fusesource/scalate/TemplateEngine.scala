@@ -56,7 +56,7 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
+class TemplateEngine(val sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -95,11 +95,10 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    */
   var importStatements: List[String] = List("import scala.collection.JavaConversions._", "import org.fusesource.scalate.util.TemplateConversions._")
 
-
   /**
    * Loads resources such as the templates based on URIs
    */
-  var resourceLoader: ResourceLoader = new FileResourceLoader(rootDir)
+  var resourceLoader: ResourceLoader = new FileResourceLoader(sourceDirectories)
 
   /**
    * The supported template engines and their default extensions
@@ -117,7 +116,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    * Returns the file extensions understood by Scalate; all the template engines and pipelines including
    * the wiki markup languages. 
    */
-  def extensions = codeGenerators.keySet ++ pipelines.keySet
+  def extensions: Set[String] = (codeGenerators.keySet ++ pipelines.keySet).toSet
 
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
@@ -406,8 +405,8 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
       templateCache.clear
-      IOUtil.rdelete(sourceDirectory)
-      IOUtil.rdelete(bytecodeDirectory)
+      IOUtil.recursiveDelete(sourceDirectory)
+      IOUtil.recursiveDelete(bytecodeDirectory)
       sourceDirectory.mkdirs
       bytecodeDirectory.mkdirs
     }
@@ -539,7 +538,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
    * Factory method used by the layout helper methods that should be overloaded by template engine implementations
    * if they wish to customize the render context implementation
    */
-  protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(this, out)
+  protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(uri, this, out)
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
     val uri = source.uri
@@ -607,7 +606,7 @@ class TemplateEngine(val rootDir: Option[File] = None, var mode: String = System
             def render(context: RenderContext) = {
               var rc = text
               p.foreach{ f=>
-                rc = f.filter(rc)
+                rc = f.filter(context, rc)
               }
               context << rc;
             }

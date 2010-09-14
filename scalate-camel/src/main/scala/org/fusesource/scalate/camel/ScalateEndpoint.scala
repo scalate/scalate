@@ -84,7 +84,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
 
       //val logTag = getClass().getName()
       val buffer = new StringWriter()
-      val context = new DefaultRenderContext(templateEngine, new PrintWriter(buffer))
+      val context = new DefaultRenderContext(uri, templateEngine, new PrintWriter(buffer))
 
       val variableMap = ExchangeHelper.createVariableMap(exchange)
       for ((key, value) <- variableMap) {
