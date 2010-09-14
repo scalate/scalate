@@ -20,8 +20,8 @@ package org.fusesource.scalate
 package wikitext
 
 import org.fusesource.scalate.filter.Filter
+import util.{Logging, IOUtil, Files}
 import java.io.File
-import org.fusesource.scalate.util.{IOUtil, Files}
 import IOUtil._
 
 /**
@@ -31,23 +31,26 @@ import IOUtil._
  * and directories you often want to move the wiki files into directory trees. This filter will fix up these
  * bad links, searching for wiki files in your source tree and swizzling the generated links to use those.
  */
-class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: Set[String]) extends Filter {
+case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: Set[String]) extends Filter with Logging {
 
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
-  def filter(context: RenderContext, html: String) = linkRegex.replaceAllIn(html, {
-    // for some reason we don't just get the captured group - no idea why. Instead we get...
-    //
-    //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
-    //   m.group(1) == "linkUri"
-    //
-    // so lets replace the link URI in the matched text to just change the contents of the link
-    m =>
-      val link = m.group(1)
-      val matched = m.matched
-      matched.dropRight(link.size + 1) + transformLink(link, context.requestUri) + matched.last
-  })
+  def filter(context: RenderContext, html: String) = {
+    debug("Transforming links with " + this)
+    linkRegex.replaceAllIn(html, {
+      // for some reason we don't just get the captured group - no idea why. Instead we get...
+      //
+      //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
+      //   m.group(1) == "linkUri"
+      //
+      // so lets replace the link URI in the matched text to just change the contents of the link
+      m =>
+        val link = m.group(1)
+        val matched = m.matched
+        matched.dropRight(link.size + 1) + transformLink(link, context.requestUri) + matched.last
+    })
+  }
 
   /**
    * If a link is external or includes a dot then assume its OK, otherwise append html extension

@@ -25,6 +25,14 @@ import java.{util => ju}
 import org.fusesource.scalate.{TemplateEngineAddOn, TemplateEngine}
 import org.fusesource.scalate.filter.{Pipeline, Filter}
 
+object WikiTextFilter {
+
+  /**
+   * Returns the default wiki file extensions
+   */
+  var wikiFileExtensions: Set[String] = Set("conf", "md", "markdown", "textile", "page")
+}
+
 abstract class WikiTextFilter extends Filter {
   def filter(context: RenderContext, content: String): String = {
     val parser = new MarkupParser
@@ -55,7 +63,8 @@ object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
    */
   def apply(te: TemplateEngine) = {
     val confluenceFilter = if (fixWikiLinks) {
-      Pipeline(List(ConfluenceFilter, new SwizzleLinkFilter(te.sourceDirectories, te.extensions)))
+      val extensions = te.extensions ++ WikiTextFilter.wikiFileExtensions
+      Pipeline(List(ConfluenceFilter, new SwizzleLinkFilter(te.sourceDirectories, extensions)))
     } else {
       ConfluenceFilter
     }

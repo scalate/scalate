@@ -34,6 +34,7 @@ import java.io.{PrintWriter, File}
 import java.net.{URLClassLoader, URL}
 
 import scala.collection.JavaConversions._
+import org.fusesource.scalate.wikitext.WikiTextFilter
 
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups
@@ -78,7 +79,7 @@ class SiteGenMojo extends AbstractMojo {
   var testClassPathElements: ju.List[_] = _
 
   var engine: DummyTemplateEngine = _
-  var defaultTemplateExtensions: Set[String] = Set("conf", "md", "markdown", "textile")
+  var defaultTemplateExtensions: Set[String] = WikiTextFilter.wikiFileExtensions
 
   def execute() = {
     targetDirectory.mkdirs();
