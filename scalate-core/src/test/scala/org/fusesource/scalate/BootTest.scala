@@ -10,7 +10,7 @@ class BootTest extends TemplateTestSupport {
 
   test("scalate.Boot gets invoked") {
     // lets pretend to be a web app
-    ServletTemplateEngine.runBoot()
+    ServletTemplateEngine.runBoot(List(new TemplateEngine()))
 
     //assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
 

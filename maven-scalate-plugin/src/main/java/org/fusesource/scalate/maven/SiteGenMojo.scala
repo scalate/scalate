@@ -77,8 +77,8 @@ class SiteGenMojo extends AbstractMojo {
   @expression("${project.testClasspathElements}")
   var testClassPathElements: ju.List[_] = _
 
-  var engine = new DummyTemplateEngine()
-  val extensions = engine.extensions ++ Set("conf", "md", "markdown", "textile")
+  var engine: DummyTemplateEngine = _
+  var defaultTemplateExtensions: Set[String] = Set("conf", "md", "markdown", "textile")
 
   def execute() = {
     targetDirectory.mkdirs();
@@ -88,6 +88,9 @@ class SiteGenMojo extends AbstractMojo {
     getLog.debug("targetDirectory: " + targetDirectory)
     getLog.debug("warSourceDirectory: " + warSourceDirectory)
     getLog.debug("resourcesSourceDirectory: " + resourcesSourceDirectory)
+
+    engine = new DummyTemplateEngine(List(resourcesSourceDirectory, warSourceDirectory))
+    val extensions = engine.extensions ++ defaultTemplateExtensions
 
     val urls: Array[URL] = testClassPathElements.map {
       d =>
@@ -100,7 +103,7 @@ class SiteGenMojo extends AbstractMojo {
 
     // lets invoke the bootstrap as we want to configure things like confluence snippet macros
     // which are outside of the ScalatePackage extension mechanism as there's no scala code gen for those filters
-    ServletTemplateEngine.runBoot(List(projectClassLoader, getClass.getClassLoader))
+    ServletTemplateEngine.runBoot(List(this, engine), List(projectClassLoader, getClass.getClassLoader))
 
     engine.classLoader = projectClassLoader
     engine.workingDirectory = scalateWorkDir
@@ -162,7 +165,7 @@ class SiteGenMojo extends AbstractMojo {
 
 }
 
-class DummyTemplateEngine extends TemplateEngine {
+class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(sourceDirectories) {
   override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
   private val responseClassName = classOf[DummyResponse].getName

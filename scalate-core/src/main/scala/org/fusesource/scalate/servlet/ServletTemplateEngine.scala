@@ -20,10 +20,12 @@ package org.fusesource.scalate.servlet
 
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy}
-import org.fusesource.scalate.util.{Logging, ClassLoaders, ClassPathBuilder};
+import org.fusesource.scalate.util.{Objects, Logging, ClassLoaders, ClassPathBuilder}
+
 
 import scala.tools.nsc.Global
 import javax.servlet.{ServletException, ServletContext, ServletConfig}
+import java.io.File
 
 object ServletTemplateEngine extends Logging {
   val templateEngineKey = classOf[ServletTemplateEngine].getName
@@ -51,7 +53,7 @@ object ServletTemplateEngine extends Logging {
     servletContext.setAttribute(templateEngineKey, templateEngine)
 
     // now lets fire the bootstrap code
-    runBoot()
+    runBoot(List(templateEngine, servletContext))
   }
 
   /**
@@ -68,12 +70,12 @@ object ServletTemplateEngine extends Logging {
     engine.layoutStrategy
   }
 
-  def runBoot(classLoaders: Traversable[ClassLoader] = ClassLoaders.defaultClassLoaders): Unit = {
+  def runBoot(injectionValues: List[AnyRef], classLoaders: Traversable[ClassLoader] = ClassLoaders.defaultClassLoaders): Unit = {
     val className = "scalate.Boot"
     ClassLoaders.findClass(className, classLoaders) match {
       case Some(clazz) =>
         try {
-          val o = clazz.newInstance
+          val o = Objects.instantiate(clazz, injectionValues)
           debug("About to invoke run() on bootstrap " + o)
           val m = clazz.getMethod("run")
           m.invoke(o)
@@ -86,7 +88,14 @@ object ServletTemplateEngine extends Logging {
         debug("No bootstrap class " + className + " found on classloaders: " + classLoaders)
     }
   }
+
+  /**
+   * Returns the source directories to use for the given config
+   */
+  def sourceDirectories(config: Config): List[File] =
+    List(new File(config.getServletContext.getRealPath("/")))
 }
+
 
 /**
  * A Servlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
@@ -99,7 +108,7 @@ object ServletTemplateEngine extends Logging {
  *  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletTemplateEngine(val config: Config) extends TemplateEngine {
+class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
