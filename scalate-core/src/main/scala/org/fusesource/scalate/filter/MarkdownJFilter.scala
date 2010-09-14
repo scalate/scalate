@@ -38,9 +38,11 @@ object MarkdownJFilter extends Filter with TemplateEngineAddOn {
    * Add the markdown filter tot he template engine.
    */
   def apply(te: TemplateEngine) = {
-    te.filters += "markdown"->MarkdownJFilter
-    te.pipelines += "md"->List(MarkdownJFilter)
-    te.pipelines += "markdown"->List(MarkdownJFilter)
+    if( !te.filters.contains("markdown") ) {
+      te.filters += "markdown"->MarkdownJFilter
+      te.pipelines += "md"->List(MarkdownJFilter)
+      te.pipelines += "markdown"->List(MarkdownJFilter)
+    }
   }
 
 }
