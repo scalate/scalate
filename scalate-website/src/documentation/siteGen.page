@@ -54,7 +54,7 @@ This will invoke the **scalate:sitegen** plugin which generates the static websi
 </div>
 
 <div class="left" markdown="1">
-# Deploying the static site
+  <h1 id="deploy">Deploying the static site</h1>
 </div>
 <div class="right">
 
@@ -121,7 +121,7 @@ mvn scalate:deploy
 </div>
 
 <div class="left" markdown="1">
-# Using LiveReload
+  <h1 id="livereload">Using LiveReload</h1>
 </div>
 <div class="right" markdown="1">
   
@@ -141,7 +141,7 @@ This works thanks to the **src/main/webapp/.livereload** configuration file know
 </div>
 
 <div class="left" markdown="1">
-# Exporting Confluence Wikis
+  <h1 id="export">Exporting Confluence Wikis</h1>
 </div>
 <div class="right" markdown="1">
   
