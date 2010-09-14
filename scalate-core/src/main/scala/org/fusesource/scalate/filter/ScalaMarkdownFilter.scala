@@ -19,27 +19,26 @@
 package org.fusesource.scalate
 package filter
 
-import com.petebevin.markdown.MarkdownProcessor
+import org.fusesource.scalate.{TemplateEngine, TemplateEngineAddOn}
+import org.fusesoruce.scalamd.Markdown
 
 /**
  * Renders markdown syntax.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object MarkdownFilter extends Filter with TemplateEngineAddOn {
-  val markdownProcessor = new MarkdownProcessor
+object ScalaMarkdownFilter extends Filter with TemplateEngineAddOn {
 
   def filter(context: RenderContext, content: String) = {
-    markdownProcessor.markdown(content).stripLineEnd
+    Markdown.apply(content).stripLineEnd
   }
 
   /**
-   * Add the markdown filter tot he template engine.
+   * Add the markdown filter to the template engine.
    */
   def apply(te: TemplateEngine) = {
-    te.filters += "markdown" -> MarkdownFilter
-    te.pipelines += "md" -> List(MarkdownFilter)
-    te.pipelines += "markdown" -> List(MarkdownFilter)
+    te.filters += "markdown"->ScalaMarkdownFilter
+    te.pipelines += "md"->List(ScalaMarkdownFilter)
+    te.pipelines += "markdown"->List(ScalaMarkdownFilter)
   }
-
 }

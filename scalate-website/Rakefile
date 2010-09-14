@@ -101,7 +101,7 @@ desc "checks the links on the deployed site"
 task :linkcheck do
   puts 'Generating linkerrors.html file using the linkchecker executable from (http://linkchecker.sourceforge.net)'
 
-  params = "--ignore-url=\"(http://localhost|^git|^ssh|^mailto)\" http://#{project_id}.fusesource.org/"
+  params = "--ignore-url=\"(http://localhost|^git|^ssh|^mailto)\" http://#{project_id}.fusesource.org/versions/snapshot"
   htmlcmd = "linkchecker -o html #{params} > linkerrors.html"
   puts htmlcmd
   system htmlcmd

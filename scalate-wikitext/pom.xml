@@ -33,7 +33,10 @@
   <description>WikiText Integration for Markdown and Confluence wiki notations</description>
 
   <properties>
+    <wikitext-version>1.4-SNAPSHOT</wikitext-version>
+<!--
     <wikitext-version>1.3.0.v20100608-0100-e3x</wikitext-version>
+-->
   </properties>
 
   <dependencies>
@@ -42,6 +45,12 @@
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.wikitext</groupId>
+      <artifactId>confluence-core</artifactId>
+      <version>${wikitext-version}</version>
+    </dependency>
+<!--
     <dependency>
       <groupId>org.eclipse.mylyn.wikitext</groupId>
       <artifactId>core</artifactId>
@@ -52,6 +61,7 @@
       <artifactId>confluence.core</artifactId>
       <version>${wikitext-version}</version>
     </dependency>
+-->
 
     <!-- testing -->
     <dependency>
