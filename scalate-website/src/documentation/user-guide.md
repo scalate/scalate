@@ -650,6 +650,32 @@ If you wanted to run a web application using a different directory, such as _/tm
 
 In production settings you can disable the caching and reloading of templates if you wish using the **allowCaching** and **allowReload** properties on [TemplateEngine](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) which default to **scalate.allowCaching** and **scalate.allowReload** respectively.
 
+### Configuring the TemplateEngine in your web app
+
+Scalate supports a standard bootstrap mechanism which tries to be framework agnostic so it can work in servlets or using the servlet filter or works when generating [static websites](siteGen.html) and is easy to plugin to other frameworks.
+
+Just add a class called **scalate.Boot** which should be a class with a method called **run()** which can then do whatever you need to configure things before the template engine starts to render your templates.
+
+If you need access to the TemplateEngine then just add a constructor argument. (You can also pass in ServletContext as a constructor parameter if you are inside a web application and other values which may come from your framework).
+
+e.g.
+
+{pygmentize:: scala}
+package scalate
+
+import org.fusesource.scalate.TemplateEngine
+import java.io.File
+
+class Boot(engine: TemplateEngine) extends Logging {
+
+  def run: Unit = {
+    // lets change the workingDirectory
+    engine.workingDirectory = new File("myScalateWorkDir")
+  }
+}
+{pygmentize}
+
+
 
 ### Precompiling Templates
 
