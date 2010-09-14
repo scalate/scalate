@@ -85,7 +85,7 @@
     <slf4j-version>1.6.0</slf4j-version>
     <surefire-version>2.5</surefire-version>
     <war-plugin-version>2.1-beta-1</war-plugin-version>
-    <scalamd-version>1.0</scalamd-version>
+    <scalamd-version>1.1</scalamd-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>

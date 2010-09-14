@@ -20,7 +20,7 @@ package org.fusesource.scalate
 package filter
 
 import org.fusesource.scalate.{TemplateEngine, TemplateEngineAddOn}
-import org.fusesoruce.scalamd.Markdown
+import org.fusesource.scalamd.Markdown
 
 /**
  * Renders markdown syntax.
