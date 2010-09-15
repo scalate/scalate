@@ -19,20 +19,12 @@
 package org.fusesource.scalate
 package wikitext
 
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
-import java.lang.String
-import java.util.regex.Matcher
-import util.Logging
-
 /**
  * Allows Scalate attributes to be defined inside a confluence template.
  *
  * For example  {attributes:layout=foo.scaml } to change the layout
  */
-class AttributesBlock extends ParameterizedBlock with Logging {
-  val startPattern = "\\s*\\{attributes(?::([^\\}]+))?\\}\\s*(.+)?".r.pattern
-  var matcher: Matcher = _
-  var blockLineNumber = 0
+class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
 
   def setOption(key: String, value: String) = {
     debug("{attributes} setting " + key + " to " + value)
@@ -40,35 +32,7 @@ class AttributesBlock extends ParameterizedBlock with Logging {
     context.attributes(key) = value
   }
 
-  def processLineContent(line: String, offset: Int) = {
-    blockLineNumber += 1
-    if (blockLineNumber > 1) {
-      setClosed(true)
-      0
-    } else {
-      val options = matcher.group(1)
-      debug("options: '" + options + "'")
-      setOptions(options)
-      setClosed(true)
-      matcher.start(2)
-    }
+  def doTag() = {
   }
-
-
-  def canStart(line: String, lineOffset: Int) = {
-    blockLineNumber = 0
-    matcher = startPattern.matcher(line)
-    if (lineOffset > 0) {
-      matcher.region(lineOffset, line.length)
-    }
-    if (matcher.matches()) {
-      true
-    } else {
-      matcher = null
-      false
-    }
-  }
-
-
 }
 

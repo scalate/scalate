@@ -27,15 +27,12 @@ import java.io.File
 import xml.NodeSeq
 
 /**
- * Implements the      { children } macro in confluence
+ * Implements the **children** macro in confluence
  */
-class ChildrenBlock extends AbstractConfluenceDelimitedBlock("children") with Logging {
+class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging {
   var page: Option[String] = None
   var depth = 1
   var all = false
-
-  override def setOption(option: String) =
-    Blocks.unknownOption(option)
 
   def setOption(key: String, value: String) = key match {
     case "all" => all = asBoolean(value)
@@ -45,13 +42,7 @@ class ChildrenBlock extends AbstractConfluenceDelimitedBlock("children") with Lo
   }
 
 
-  def beginBlock = {
-  }
-
-  def handleBlockContent(text: String) = {
-  }
-
-  def endBlock = {
+  def doTag() = {
     val context = RenderContext()
 
     def showChildren(rootDir: File, dir: File, level: Int): NodeSeq = {

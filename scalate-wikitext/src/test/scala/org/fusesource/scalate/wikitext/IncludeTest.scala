@@ -16,29 +16,20 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate
-package wikitext
+package org.fusesource.scalate.wikitext
 
-import util.Logging
+import org.fusesource.scalate.test.TemplateTestSupport
+import java.io.File
 
-/**
- * Implements the "include" macro
- */
-class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
-  var uri: String = _
+class IncludeTest extends TemplateTestSupport {
 
-  override def setOption(option: String) = {
-    uri = option
+  test("include") {
+    assertUriOutputContains("include/test.conf", "Included1", "Included2")
   }
 
-  def setOption(key: String, value: String) =
-    Blocks.unknownAttribute(key, value)
+  override protected def beforeAll(map: Map[String, Any]) = {
+    super.beforeAll(map)
 
-
-  def doTag() = {
-    val realUri = SwizzleLinkFilter.findWikiFileUri(uri).getOrElse(uri)
-
-    debug("{include} is now going to include URI '" + uri + "' found to map to '" + realUri + "'")
-    RenderContext().include(realUri)
+    engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
   }
 }
