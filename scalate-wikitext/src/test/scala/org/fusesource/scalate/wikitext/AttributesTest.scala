@@ -19,32 +19,14 @@
 package org.fusesource.scalate
 package wikitext
 
-import util.Logging
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
+class AttributesTest extends AbstractConfluenceTest {
+  test("attributes") {
+    val context = new DefaultRenderContext("foo.conf", new TemplateEngine())
+    RenderContext() = context
+    val source = "{attributes:layout=foo.scaml}"
+    val actual = filter.filter(context, source)
 
-/**
- * Implements the "include" macro
- */
-class IncludeBlock extends AbstractConfluenceDelimitedBlock("include") with Logging {
-  var uri: String = _
-
-  override def setOption(option: String) = {
-    uri = option
-  }
-
-  def setOption(key: String, value: String) =
-    Blocks.unknownAttribute(key, value)
-
-  def beginBlock = {
-  }
-
-  def handleBlockContent(text: String) = {
-  }
-
-  def endBlock = {
-    val realUri = SwizzleLinkFilter.findWikiFileUri(uri).getOrElse(uri)
-
-    debug("{include} is now going to include URI '" + uri + "' found to map to '" + realUri + "'")
-    RenderContext().include(realUri)
+    expect("") {actual}
+    expect("foo.scaml", "layout attribute") {context.attributeOrElse("layout", "failed!")}
   }
 }

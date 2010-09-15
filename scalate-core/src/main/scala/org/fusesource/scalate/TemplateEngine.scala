@@ -35,6 +35,7 @@ import scala.compat.Platform
 import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
+import collection.generic.TraversableForwarder
 
 object TemplateEngine {
 
@@ -56,7 +57,7 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(val sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
+class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -98,7 +99,19 @@ class TemplateEngine(val sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Loads resources such as the templates based on URIs
    */
-  var resourceLoader: ResourceLoader = new FileResourceLoader(sourceDirectories)
+  var resourceLoader: ResourceLoader = new FileResourceLoader(sourceDirectoriesForwarder)
+
+
+  /**
+   * A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
+   * is mutated after the TemplateEngine is constructed
+   */
+  protected def sourceDirectoriesForwarder = {
+    val engine = this
+    new TraversableForwarder[File] {
+      protected def underlying = engine.sourceDirectories
+    }
+  }
 
   /**
    * The supported template engines and their default extensions
@@ -151,9 +164,12 @@ class TemplateEngine(val sourceDirectories: Traversable[File] = None, var mode: 
     addOn(this)
   }
 
+
   /**
    * Returns true if this template engine is being used in development mode.
    */
+  override def toString = getClass.getSimpleName + "(sourceDirectories: " + sourceDirectories + ")"
+
   def isDevelopmentMode = mode != null && mode.toLowerCase.startsWith("d")
 
   /**

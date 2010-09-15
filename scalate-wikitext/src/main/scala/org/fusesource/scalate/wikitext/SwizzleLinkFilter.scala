@@ -53,10 +53,23 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
   }
 
   /**
-   * Finds a wiki link by starting at the root directories and avigating through all files until
-   * we find a file name that matches the given link
+   * Finds a wiki URI from a link name by starting at the root directories and navigating through all files until
+   * we find a file name that matches the given link (without an extension)
    */
-  def findConfluenceFile(link: String, requestUri: String): Option[String] = {
+  def findWikiFileUri(link: String, requestUri: String): Option[String] = findWikiFileWith[String](link, requestUri) {
+    (rootDir, file) => Files.relativeUri(rootDir, file)
+  }
+
+
+  /**
+   * Finds a wiki File from a link name by starting at the root directories and navigating through all files until
+   * we find a file name that matches the given link (without an extension)
+   */
+  def findWikiFile(link: String, requestUri: String): Option[File] = findWikiFileWith[File](link, requestUri) {
+    (rootDir, file) => file
+  }
+
+  protected def findWikiFileWith[T](link: String, requestUri: String)(fn: (File, File) => T): Option[T] = {
     // for now we are just using non-path names but if we wanted to support relative badly named files
     // we could use: link.split('/').last
     val name1 = link.toLowerCase
@@ -68,15 +81,16 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
       n == name1 || n == name2 && extensions.contains(f.extension.toLowerCase)
     }
 
-    def findMatching(rootDir: File): Option[String] =
+    def findMatching(rootDir: File): Option[T] =
       Files.recursiveFind(rootDir)(matchesName) match {
         case Some(file) =>
-          Some(Files.relativeUri(rootDir, file))
+          Some(fn(rootDir, file))
         case _ => None
       }
 
     sourceDirectories.view.map {findMatching(_)}.find(_.isDefined).getOrElse(None)
   }
+
 
   /**
    * If a link is external or includes a dot then assume its OK, otherwise append html extension
@@ -97,7 +111,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
           link
         } else {
           // if we have no path then assume we are a bad confluence link and try find the actual path
-          findConfluenceFile(link, requestUri) match {
+          findWikiFileUri(link, requestUri) match {
             case Some(file) => "/" + Files.dropExtension(file)
             case _ => link
           }
@@ -118,4 +132,22 @@ object SwizzleLinkFilter {
     val extensions = te.extensions ++ WikiTextFilter.wikiFileExtensions
     new SwizzleLinkFilter(te.sourceDirectories, extensions)
   }
+
+  /**
+   * Attempts to resolve the given link to a wiki URI
+   */
+  def findWikiFileUri(uri: String): Option[String] = {
+    val context = RenderContext()
+    apply(context).findWikiFileUri(uri, context.requestUri)
+  }
+
+
+  /**
+   * Attempts to resolve the given link to a wiki URI
+   */
+  def findWikiFile(uri: String): Option[File] = {
+    val context = RenderContext()
+    apply(context).findWikiFile(uri, context.requestUri)
+  }
+
 }

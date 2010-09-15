@@ -66,7 +66,7 @@ object Files {
   /**
    * Returns the name of the file without its extension
    */
-  def dropExtension(name: String) = {
+  def dropExtension(name: String): String = {
     val idx = name.lastIndexOf('.')
     if (idx >= 0) {
       name.substring(0, idx)
@@ -74,5 +74,10 @@ object Files {
       name
     }
   }
+
+  /**
+   * Returns the name of the file without its extension
+   */
+  def dropExtension(file: File): String = dropExtension(file.getName)
 }
 

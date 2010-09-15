@@ -24,7 +24,7 @@ object ClassLoaders extends Logging {
    * Returns the default class loaders to use for loading which is the current threads context class loader
    * and the class loader which loaded scalate-core by default
    */
-  def defaultClassLoaders = {
+  def defaultClassLoaders: List[ClassLoader] = {
     List(Thread.currentThread.getContextClassLoader, classOf[Logging].getClassLoader)
   }
 

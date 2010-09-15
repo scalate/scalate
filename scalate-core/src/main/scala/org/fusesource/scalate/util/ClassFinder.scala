@@ -29,31 +29,34 @@ import java.io.{InputStream, File}
  */
 object ClassFinder extends Logging {
 
-  def discoverCommands[T](indexPath:String, cl:ClassLoader=getClass.getClassLoader): List[T] = {
-    Thread.currentThread.setContextClassLoader(cl)
-    discoverCommandClasses(indexPath, cl).flatMap {
-      name =>
-        try {
-          val clazz = cl.loadClass(name)
-          try {
-            Some(clazz.newInstance.asInstanceOf[T])
-          } catch {
-            case e: Exception =>
-              // It may be a scala object.. check for a module class
+  def discoverCommands[T](indexPath:String, classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
+    classLoaders.flatMap{ cl=>
+      ClassLoaders.withContextClassLoader(cl) {
+        discoverCommandClasses(indexPath, cl).flatMap {
+          name =>
+            try {
+              val clazz = cl.loadClass(name)
               try {
-                val moduleField = cl.loadClass(name + "$").getDeclaredField("MODULE$")
-                Some(moduleField.get(null).asInstanceOf[T])
+                Some(clazz.newInstance.asInstanceOf[T])
               } catch {
-                case e2: Throwable =>
-                  // throw the original error...
-                  throw e
+                case e: Exception =>
+                  // It may be a scala object.. check for a module class
+                  try {
+                    val moduleField = cl.loadClass(name + "$").getDeclaredField("MODULE$")
+                    Some(moduleField.get(null).asInstanceOf[T])
+                  } catch {
+                    case e2: Throwable =>
+                      // throw the original error...
+                      throw e
+                  }
               }
-          }
-        } catch {
-          case e: Throwable =>
-            debug("Invalid class: " + name, e)
-            None
+            } catch {
+              case e: Throwable =>
+                debug("Invalid class: " + name, e)
+                None
+            }
         }
+      }
     }
   }
 
