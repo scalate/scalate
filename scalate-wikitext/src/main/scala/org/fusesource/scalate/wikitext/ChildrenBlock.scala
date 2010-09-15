@@ -71,7 +71,7 @@ class ChildrenBlock extends AbstractConfluenceDelimitedBlock("children") with Lo
                   {dirXml}
                 </li>
             } else {
-              val title = Files.dropExtension(f)
+              val title = Files.dropExtension(f).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
               val link = Files.relativeUri(rootDir, f)
               <li>
                 <a href={link}>

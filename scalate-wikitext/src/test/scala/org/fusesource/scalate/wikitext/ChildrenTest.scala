@@ -24,13 +24,9 @@ import java.io.File
 class ChildrenTest extends TemplateTestSupport {
 
   test("children depth 1") {
-/*
-
-    val answer = engine.layout("foo.conf")
-    println("Answer: " + answer)
-
-*/
-    assertUriOutputContains("foo.conf", """<a href="foo/a.conf">""", """<a href="foo/b.conf">""")
+    assertUriOutputContains("foo.conf", """<a href="foo/a.conf">""",
+      """<a href="foo/b.conf">""",
+      """<a href="foo/user-guide.conf">""", "User Guide")
   }
 
 
