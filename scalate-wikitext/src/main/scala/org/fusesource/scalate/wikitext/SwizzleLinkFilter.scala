@@ -72,7 +72,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
   protected def findWikiFileWith[T](link: String, requestUri: String)(fn: (File, File) => T): Option[T] = {
     // for now we are just using non-path names but if we wanted to support relative badly named files
     // we could use: link.split('/').last
-    val name1 = link.toLowerCase
+    val name1 = link.stripPrefix("/").toLowerCase
     val name2 = name1.replace(' ', '-')
 
 
