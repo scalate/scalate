@@ -29,7 +29,7 @@ import util.Logging
  *
  * For example  {attributes:layout=foo.scaml } to change the layout
  */
-class AttributesBlock extends ParameterizedBlock { //with Logging {
+class AttributesBlock extends ParameterizedBlock with Logging {
   val startPattern = "\\s*\\{attributes(?::([^\\}]+))?\\}\\s*(.+)?".r.pattern
   var matcher: Matcher = _
   var blockLineNumber = 0
