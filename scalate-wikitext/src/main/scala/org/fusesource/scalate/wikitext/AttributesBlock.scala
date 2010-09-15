@@ -31,27 +31,23 @@ import util.Logging
  */
 class AttributesBlock extends ParameterizedBlock { //with Logging {
   val startPattern = "\\s*\\{attributes(?::([^\\}]+))?\\}\\s*(.+)?".r.pattern
-  //val startPattern = "\\s*\\{attributes\\:([^\\}]+)\\}\\s*".r.pattern
   var matcher: Matcher = _
   var blockLineNumber = 0
 
-  def info(text: => String) = println(text)
-
   def setOption(key: String, value: String) = {
-    info("{attributes} setting " + key + " to " + value)
+    debug("{attributes} setting " + key + " to " + value)
     val context = RenderContext()
     context.attributes(key) = value
   }
 
   def processLineContent(line: String, offset: Int) = {
-    info("{attributes} processing line " + line)
     blockLineNumber += 1
     if (blockLineNumber > 1) {
       setClosed(true)
       0
     } else {
       val options = matcher.group(1)
-      info("options: '" + options + "'")
+      debug("options: '" + options + "'")
       setOptions(options)
       setClosed(true)
       matcher.start(2)
@@ -60,17 +56,14 @@ class AttributesBlock extends ParameterizedBlock { //with Logging {
 
 
   def canStart(line: String, lineOffset: Int) = {
-    info("canStart: " + line + " lineOffset: " + lineOffset)
     blockLineNumber = 0
     matcher = startPattern.matcher(line)
     if (lineOffset > 0) {
       matcher.region(lineOffset, line.length)
     }
     if (matcher.matches()) {
-      info("matches!")
       true
     } else {
-      info("not matches!")
       matcher = null
       false
     }

@@ -57,7 +57,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
    * we find a file name that matches the given link (without an extension)
    */
   def findWikiFileUri(link: String, requestUri: String): Option[String] = findWikiFileWith[String](link, requestUri) {
-    (rootDir, file) => Files.relativeUri(rootDir, file)
+    (rootDir, file) => "/" + Files.relativeUri(rootDir, file)
   }
 
 
@@ -112,7 +112,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
         } else {
           // if we have no path then assume we are a bad confluence link and try find the actual path
           findWikiFileUri(link, requestUri) match {
-            case Some(file) => "/" + Files.dropExtension(file)
+            case Some(file) => Files.dropExtension(file)
             case _ => link
           }
         }
