@@ -1,13 +1,14 @@
 package org.fusesource.scalate.tool
 
+import org.fusesource.scalate.util.IOUtil
+
 import org.osgi.service.command.CommandSession
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.runtime.shell.CommandShellImpl
+import org.apache.karaf.shell.console.Main
+import org.apache.karaf.shell.console.jline.Console
 import jline.Terminal
 import java.io.{PrintStream, InputStream}
-import org.apache.felix.gogo.runtime.shell.CommandShellImpl
-import org.apache.karaf.shell.console.jline.Console
-import org.fusesource.scalate.util.IOUtil
-import org.apache.karaf.shell.console.{Completer, Main}
 
 object ScalateMain {
   def main(args: Array[String]) = new ScalateMain().run(args)
@@ -28,6 +29,8 @@ class ScalateMain extends Main with Action {
   var debug = false
 
   override def getDiscoveryResource = "META-INF/services/org.fusesource.scalate/commands.index"
+
+  override def isMultiScopeMode() = false
 
 
   protected override def createConsole(commandProcessor: CommandShellImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal)  = {

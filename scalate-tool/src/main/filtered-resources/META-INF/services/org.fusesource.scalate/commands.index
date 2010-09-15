@@ -1,6 +1,7 @@
 org.fusesource.scalate.tool.commands.Create
-org.fusesource.scalate.tool.commands.Run
 org.fusesource.scalate.tool.commands.ConfluenceExport
 org.fusesource.scalate.tool.commands.Exit
-org.fusesource.scalate.tool.commands.ToScaml
+org.fusesource.scalate.tool.commands.Help
+org.fusesource.scalate.tool.commands.Run
 org.fusesource.scalate.tool.commands.ToJade
+org.fusesource.scalate.tool.commands.ToScaml

@@ -31,6 +31,10 @@
   <artifactId>scalate-tool</artifactId>
   <name>Scalate :: Tool</name>
 
+  <properties>
+    <!-- argument passed into 'mvn exec:java" -->
+    <arg>help</arg>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
@@ -83,11 +87,9 @@
         <configuration>
           <mainClass>org.fusesource.scalate.tool.ScalateMain</mainClass>
           <classpathScope>test</classpathScope>
-<!--
           <arguments>
-            <argument>create help</argument>
+            <argument>${arg}</argument>
           </arguments>
--->
         </configuration>
       </plugin>
     </plugins>
