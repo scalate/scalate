@@ -31,16 +31,26 @@ object Objects extends Logging {
    * Implements a really simple IoC mechanism. Ideally we'd improve this to support JSR330 style
    * better injection with annotated injection points or such like
    */
-  def instantiate[T](clazz: Class[T], injectionValues: List[AnyRef] = Nil): T = {
+  def instantiate[T](clazz: Class[T], injectionValues: List[AnyRef] = Nil): T =
+    tryInstantiate[T](clazz, injectionValues) match {
+      case Some(v) => v
+      case _ => throw new IllegalArgumentException("No valid constructor could be found for " + clazz.getName +
+              " and values: " + injectionValues)
+    }
+
+  /**
+   * Attempts to inject the given class if a constructor can be found
+   */
+  def tryInstantiate[T](clazz: Class[T], injectionValues: List[AnyRef] = Nil): Option[T] = {
     def argumentValue(paramType: Class[_]): Option[AnyRef] =
-      injectionValues.find(_.getClass.isAssignableFrom(paramType))
+      injectionValues.find(paramType.isInstance(_))
 
     def create(c: Constructor[_], args: Array[AnyRef] = Array()): T = {
       val answer = if (args.isEmpty) {
         clazz.newInstance
       } else {
         debug("About to call constructor: " + c + " on " + clazz.getName + " with args: " + args.toList)
-        c.newInstance(args:_*)
+        c.newInstance(args: _*)
       }
       answer.asInstanceOf[T]
     }
@@ -56,11 +66,6 @@ object Objects extends Logging {
     }
 
     val constructors = clazz.getConstructors.sortBy(_.getParameterTypes.size * -1)
-    constructors.view.map(c => tryCreate(c)).find(_.isDefined) match {
-      case Some(Some(answer)) => answer
-      case _ =>
-        // lets default to zero arg
-        clazz.newInstance.asInstanceOf[T]
-    }
+    constructors.view.map(c => tryCreate(c)).find(_.isDefined).getOrElse(None)
   }
 }

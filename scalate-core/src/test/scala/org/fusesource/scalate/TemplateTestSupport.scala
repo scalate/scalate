@@ -84,6 +84,13 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
     assertTextContains(output, "template " + template, expected: _*)
   }
 
+  def assertUriOutputContains(uri: String, expected: String*): Unit = assertUriOutputContains(uri, Map[String, Any](), expected: _*)
+
+  def assertUriOutputContains(uri: String, attributes: Map[String, Any], expected: String*): Unit =
+    assertOutputContains(fromUri(uri), attributes, expected: _*)
+
+  protected def fromUri(uri: String) = TemplateSource.fromUri(uri, engine.resourceLoader)
+
   def assertTextContains(source: String, description: => String, textLines: String*): Unit = {
     assume(source != null, "text was null for " + description)
     var index = 0

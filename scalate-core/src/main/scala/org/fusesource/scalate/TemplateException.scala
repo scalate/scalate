@@ -60,5 +60,7 @@ class NoSuchViewException(val model: AnyRef, val view: String) extends TemplateE
 
 class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.")
 
+class NoInjectionException(val injectClass: Class[_]) extends TemplateException("Could not inject type  '" + injectClass + "' was not set")
+
 class StaleCacheEntryException(source: TemplateSource)
   extends TemplateException("The compiled template for " + source + " needs to get recompiled") with NoStackTrace
