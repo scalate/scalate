@@ -51,13 +51,17 @@ trait ConsoleSnippets {
    */
   def editLink(filePath: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     // It might be a real file path
-    val file = new File(filePath);
-    val actualPath = if (file.exists) {
-      file.getCanonicalPath
+    if( filePath!=null ) {
+      val file = new File(filePath);
+      val actualPath = if (file.exists) {
+        file.getCanonicalPath
+      } else {
+        realPath(filePath)
+      }
+      EditLink.editLink(actualPath, line, col)(body)
     } else {
-      realPath(filePath)
+      <span>{body}</span>
     }
-    EditLink.editLink(actualPath, line, col)(body)
   }
 
   /**
@@ -80,13 +84,17 @@ trait ConsoleSnippets {
   def shorten(file: File): String = shorten(file.getPath)
 
   def shorten(file: String): String = {
-    var root = renderContext.engine.workingDirectory.getPath;
-    if (file.startsWith(root)) {
-      file.substring(root.length + 1)
+    if( file==null ) {
+      "<unknown>"
     } else {
-      sourcePrefixes.find(file.startsWith(_)) match {
-        case Some(prefix) => file.substring(prefix.length + 1)
-        case _ => file
+      var root = renderContext.engine.workingDirectory.getPath;
+      if (file.startsWith(root)) {
+        file.substring(root.length + 1)
+      } else {
+        sourcePrefixes.find(file.startsWith(_)) match {
+          case Some(prefix) => file.substring(prefix.length + 1)
+          case _ => file
+        }
       }
     }
   }
