@@ -89,15 +89,14 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     }
   }
 
-  val default_filters = "markdown"
+  val default_filters = "ssp,markdown"
   val default_name = "content"
 
   def filter(context: RenderContext, content: String) = {
     val p = new PageParser
     var parts = p.parsePageParts(content)
-    println(parts)
 
-    meta_data(parts) match {
+    meta_data(context, parts) match {
       case Some(meta_data)=>
         // Set all meta data values attributes
         meta_data.foreach { case (key, value)=>
@@ -112,7 +111,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
       val name = part.name.map(_.value).getOrElse(default_name)
       val filters = part.filters.map(_.value).getOrElse(default_filters).split(",").map{fn=>
-        context.engine.filters.get(fn) match {
+        context.engine.filter(fn) match {
           case Some(filter) => filter
           case _ =>
             throw new InvalidSyntaxException("Invalid filter name: "+fn, part.filters.map(_.pos).getOrElse(NoPosition) )
@@ -136,11 +135,12 @@ object PageFilter extends Filter with TemplateEngineAddOn {
   }
 
 
-  def meta_data( parts:List[PagePart] ) = {
+  def meta_data(context: RenderContext, parts:List[PagePart] ) = {
     parts.headOption match {
       case Some(PagePart(Nil, content))  =>
         val yaml = new Yaml();
-        Option(collection.JavaConversions.asMap(yaml.load(content.value).asInstanceOf[java.util.Map[String, AnyRef]]))
+        val data = context.engine.filter("ssp").map( _.filter(context, content.value) ).getOrElse(content.value)
+        Option(collection.JavaConversions.asMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]]))
       case _ =>
         None
     }
