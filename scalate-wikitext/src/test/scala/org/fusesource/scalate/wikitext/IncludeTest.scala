@@ -24,7 +24,7 @@ import java.io.File
 class IncludeTest extends TemplateTestSupport {
 
   test("include") {
-    assertUriOutputContains("include/test.conf", "Included1", "Included2")
+    assertUriOutputContains("include/test.conf", "Testing include", "Included1", "Included2")
   }
 
   override protected def beforeAll(map: Map[String, Any]) = {

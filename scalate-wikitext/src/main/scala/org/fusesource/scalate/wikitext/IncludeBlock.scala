@@ -39,6 +39,10 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
     val realUri = SwizzleLinkFilter.findWikiFileUri(uri).getOrElse(uri)
 
     debug("{include} is now going to include URI '" + uri + "' found to map to '" + realUri + "'")
-    RenderContext().include(realUri)
+
+    val context = RenderContext()
+    val template = context.engine.load(realUri)
+    val output = context.capture(template)
+    builder.charactersUnescaped(output)
   }
 }
