@@ -22,7 +22,7 @@ import java.{util => ju, lang => jl}
 import java.util.zip.ZipInputStream
 import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
 import java.lang.StringBuilder
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues}
 import org.osgi.service.command.CommandSession
 
 
@@ -78,6 +78,9 @@ class Create extends Action {
     info("    guice  Guice based Scalate project")
   }
 */
+
+  @completerValues(index = 0)
+  def archetypeNameArray = archetypes.keysIterator.toSeq.sortWith(_ < _).toArray
 
   def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
 
