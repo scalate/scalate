@@ -17,6 +17,7 @@
  */
 
 package org.fusesource.scalate
+package pkgtest
 
 import support.TemplatePackage
 
@@ -24,7 +25,7 @@ import support.TemplatePackage
  * Defines the template package of reusable imports, attributes and methods across templates
  */
 class ScalatePackage extends TemplatePackage {
-  def header(template: TemplateSource) = """
+  def header(template: TemplateSource, bindings: List[Binding]) = """
 
       import org.fusesource.scalate.boot.BootSample._
       // lets call the bootstrap code
