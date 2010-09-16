@@ -1,0 +1,12 @@
+---
+# The page header is in YAML format
+title: FAQ
+in_menu: false
+sort_info: 10
+---
+
+# Example 1
+
+* This is the default page part
+* It's name is content.
+

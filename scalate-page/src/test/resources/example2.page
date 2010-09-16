@@ -1,0 +1,2 @@
+--- name:content pipeline:javascript
+var t = "Hello World"
