@@ -181,5 +181,8 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   <li>
     <a href="ssp/errors/missingInclude.ssp">Missing include SSP template</a> or the <a href="scaml/errors/missingInclude.scaml">scaml version</a>
   </li>
+  <li>
+    <a href="ssp/errors/missingView.ssp">Missing view SSP template</a>
+  </li>
 </ul>
 

@@ -297,7 +297,7 @@ trait RenderContext {
     val templateUri = searchForView()
 
     if (templateUri == null) {
-      model.toString
+      throw new NoSuchViewException(model, viewName)
     } else {
       using(model) {
         include(templateUri)
