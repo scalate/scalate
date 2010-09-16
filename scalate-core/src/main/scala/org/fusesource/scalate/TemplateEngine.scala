@@ -738,7 +738,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Gets a pipeline to use for the give uri string by looking up the uri's extension
    * in the the pipelines map.
    */
-  protected def pipeline(source: TemplateSource) = extension(source).flatMap(pipelines.get(_) )
+  protected def pipeline(source: TemplateSource):Option[List[Filter]] = {
+    //sort the extensions so we match the longest first.
+    for( ext<- pipelines.keys.toList.sortWith{ case(x,y)=> if(x.length==y.length) x.compareTo(y)<0 else x.length > y.length } if source.uri.endsWith("."+ext) ) {
+      return pipelines.get(ext)
+    }
+    None
+  }
+
+
+
 
   /**
    * Gets the code generator to use for the give uri string by looking up the uri's extension
