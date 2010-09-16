@@ -208,6 +208,7 @@
     <module>scalate-tool</module>
     <module>scalate-jsp-converter</module>
     <module>scalate-page</module>
+    <module>scalate-markdownj</module>
   </modules>
 
   <dependencies>

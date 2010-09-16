@@ -59,11 +59,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.markdownj</groupId>
-      <artifactId>markdownj</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.fusesource.scalamd</groupId>
       <artifactId>scalamd</artifactId>
       <version>${scalamd-version}</version>

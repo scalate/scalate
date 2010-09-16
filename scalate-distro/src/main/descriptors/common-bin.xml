@@ -47,6 +47,7 @@
         <include>org.fusesource.scalate:scalate-guice</include>
         <include>org.fusesource.scalate:scalate-page</include>
         <include>org.fusesource.scalate:scalate-wikitext</include>
+        <include>org.fusesource.scalate:scalate-markdownj</include>
         <include>org.fusesource.scalamd:scalamd</include>
         <include>org.fusesource.wikitext:confluence-core</include>
         <include>org.fusesource.wikitext:textile-core</include> 
