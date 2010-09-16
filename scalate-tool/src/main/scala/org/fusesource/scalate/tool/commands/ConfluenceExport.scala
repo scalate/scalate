@@ -87,9 +87,18 @@ class ConfluenceExport extends Action {
       dir.mkdirs
       nodes.foreach { node=>
         val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
-        val file = new File(dir, santized_title + ".conf")
+        val file = new File(dir, santized_title + ".page")
         println("downloading: \u001B[1;32m"+file+"\u001B[0m")
-        IOUtil.writeText(file, confluence.getPage(node.summary.getId).getContent)
+        val page = confluence.getPage(node.summary.getId);
+        var content = """---
+title: """+page.getTitle+"""
+page_version: """+page.getVersion+"""
+page_creator: """+page.getCreator+"""
+page_modifier: """+page.getModifier+"""
+--- pipeline:conf
+"""+page.getContent
+
+        IOUtil.writeText(file, content)
         rc += 1
         if( !node.children.isEmpty ) {
           rc += export(new File(dir, santized_title), node.children)
