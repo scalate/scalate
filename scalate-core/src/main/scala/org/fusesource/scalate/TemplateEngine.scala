@@ -121,6 +121,14 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   
   var filters: Map[String, Filter] = Map()
 
+  def filter(name:String) = codeGenerators.get(name).map( gen =>
+        new Filter() {
+          def filter(context: RenderContext, content: String) = {
+            context.capture(compileText(name, content))
+          }
+        }
+    ).orElse(filters.get(name))
+
   var pipelines: Map[String, List[Filter]] = Map()
 
   private val attempt = Exception.ignoring(classOf[Throwable])

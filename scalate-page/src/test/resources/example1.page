@@ -4,8 +4,9 @@ title: FAQ
 in_menu: false
 sort_info: 10
 ---
+<%@ val title: String %>
 
-# Example 1
+# ${title}
 
 * This is the default page part
 * It's name is content.
