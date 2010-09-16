@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-import org.fusesource.scalate.TemplateSource
 import org.fusesource.scalate.support.TemplatePackage
+import org.fusesource.scalate.{Binding, TemplateSource}
 
 
 /**
  * Defines the template package of reusable imports, attributes and methods across templates
  */
 class ScalatePackage extends TemplatePackage {
-  def header(template: TemplateSource) = """
+  def header(source: TemplateSource, bindings: List[Binding]) = """
 
     // common imports go here
 

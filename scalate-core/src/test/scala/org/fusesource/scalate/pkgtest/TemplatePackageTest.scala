@@ -17,13 +17,14 @@
  */
 
 package org.fusesource.scalate
+package pkgtest
 
 import boot.BootSample
 
 class TemplatePackageTest extends TemplateTestSupport {
   test("scalate template packages get applied") {
 
-    val templateSource = TemplateSource.fromText("org/fusesource/scalate/dummy.ssp", "hello ${foo}!")
+    val templateSource = TemplateSource.fromText("org/fusesource/scalate/pkgtest/dummy.ssp", "hello ${foo}!")
     assertOutputContains(templateSource, "hello bar!")
 
     // lets check that we have invoked the bootstrap code now
@@ -32,7 +33,7 @@ class TemplatePackageTest extends TemplateTestSupport {
 
   test("parent scalate template packages get applied") {
 
-    val templateSource = TemplateSource.fromText("org/fusesource/scalate/cheese/whatnot/dummy.ssp", "goodbye ${foo}!")
+    val templateSource = TemplateSource.fromText("org/fusesource/scalate/pkgtest/cheese/whatnot/dummy.ssp", "goodbye ${foo}!")
     assertOutputContains(templateSource, "goodbye bar!")
   }
 }

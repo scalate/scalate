@@ -18,9 +18,9 @@
 
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.TemplateSource
 import org.fusesource.scalate.util.Strings.isEmpty
 import org.fusesource.scalate.util.{Logging, ClassLoaders}
+import org.fusesource.scalate.{Binding, TemplateSource}
 
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates
@@ -31,7 +31,7 @@ abstract class TemplatePackage {
    * Returns the header to add to the top of the method in the generated Scala code for the typesafe template
    * implementation for languages like ssp, scaml or jade
    */
-  def header(source: TemplateSource): String
+  def header(source: TemplateSource, bindings: List[Binding]): String
 }
 
 object TemplatePackage extends Logging {

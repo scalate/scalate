@@ -508,7 +508,7 @@ import org.fusesource.scalate.support.TemplatePackage
 class ScalatePackage extends TemplatePackage {
 
   /** Returns the Scala code to add to the top of the generated template method */
-  def header(template: TemplateSource) = """
+   def header(source: TemplateSource, bindings: List[Binding]) = """
 
 // some shared imports
 import com.acme._
