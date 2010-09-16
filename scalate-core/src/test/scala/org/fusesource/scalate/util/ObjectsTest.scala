@@ -36,11 +36,10 @@ class ObjectsTest extends FunSuiteSupport {
     assertInstantiate(classOf[Boot], List(new TemplateEngine()))
   }
 
-
   protected def assertInstantiate[T](clazz: Class[T], injectValues: List[AnyRef] = List()): T = {
     val answer = instantiate(clazz, injectValues)
     assert(answer != null, "Should have instantiated an instance of " + clazz.getName)
-    println("Instantiated: " + answer)
+    debug("Instantiated: " + answer)
     answer
 
   }

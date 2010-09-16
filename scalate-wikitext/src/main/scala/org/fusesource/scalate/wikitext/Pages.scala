@@ -18,18 +18,26 @@
 
 package org.fusesource.scalate.wikitext
 
-import org.fusesource.scalate.test.TemplateTestSupport
 import java.io.File
+import org.fusesource.scalate.util.Files
 
-class IncludeTest extends TemplateTestSupport {
+/**
+ * Helper class for working with wiki pages
+ */
+object Pages {
 
-  test("include") {
-    assertUriOutputContains("include/test.conf", "Testing include", "Included1", "Included2")
-  }
-
-  override protected def beforeAll(map: Map[String, Any]) = {
-    super.beforeAll(map)
-
-    engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
+  /**
+   * Returns the page title of the given wiki file.
+   *
+   * By default lets use a naming convention mapping to convert "-" to " " and
+   * upper case each word.
+   *
+   * We may wish to use a more sophisticated mechanism such as by loading a
+   * file called Files.dropExtension(file) + ".page".
+   *
+   * See: http://scalate.assembla.com/spaces/scalate/support/tickets/160
+   */
+  def title(f: File): String = {
+    Files.dropExtension(f).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
   }
 }

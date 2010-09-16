@@ -63,7 +63,8 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
   testPageContains("ssp/errors/missingAttribute.ssp", "The value for 'name' was not set")
   testPageContains("ssp/errors/missingInclude.ssp", "Could not load resource")
-  
+  testPageContains("ssp/errors/missingView.ssp", "No 'index' view template could be found for model object")
+
   testPageContains("ssp/ifExpression.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/ifExpression2.ssp", "x = 1", "x is 1", "x = 2", "x is not 1")
   testPageContains("ssp/includeServlet.ssp", "Scalate Start", "Hello World!", "Scalate End")

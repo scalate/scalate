@@ -23,7 +23,7 @@ import java.util.{Locale, Date}
 import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
 import collection.mutable.{ListBuffer, HashMap}
-import util.{RenderHelper, XmlHelper, Lazy}
+import util.{Objects, RenderHelper, XmlHelper, Lazy}
 import xml.{Node, PCData, NodeSeq, NodeBuffer}
 
 object RenderContext {
@@ -104,7 +104,6 @@ trait RenderContext {
    */
   def attributes: AttributeMap[String, Any]
 
-
   /**
    * Sorted list of attribute keys
    */
@@ -113,16 +112,25 @@ trait RenderContext {
   /**
    * Returns the attribute of the given type or a [[org.fussesource.scalate.NoValueSetException]] exception is thrown
    */
-  def attribute[T](name: String): T = {
-    attributes.get(name)
-            .getOrElse(throw new NoValueSetException(name))
-            .asInstanceOf[T]
+  def attribute[T](name: String): T =
+    attributeOrElse(name, throw new NoValueSetException(name))
+
+  /**
+   * Creates an instance of the given given type using dependency injection to inject the necessary values into
+   * the object
+   */
+  def inject[T](implicit manifest: Manifest[T]): T = {
+    val clazz = manifest.erasure
+    Objects.tryInstantiate(clazz, List(this)) match {
+      case Some(t) => t.asInstanceOf[T]
+      case _ => throw new NoInjectionException(clazz)
+    }
   }
 
   /**
    * Returns the attribute of the given name and type or the default value if it is not available
    */
-  def attributeOrElse[T](name: String, defaultValue: T): T = {
+  def attributeOrElse[T](name: String, defaultValue: => T): T = {
     attributes.get(name)
             .getOrElse(defaultValue)
             .asInstanceOf[T]
@@ -289,7 +297,7 @@ trait RenderContext {
     val templateUri = searchForView()
 
     if (templateUri == null) {
-      model.toString
+      throw new NoSuchViewException(model, viewName)
     } else {
       using(model) {
         include(templateUri)

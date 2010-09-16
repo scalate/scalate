@@ -21,7 +21,6 @@ package wikitext
 
 import StringConverter._
 
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
 import util.{Files, Logging}
 import java.io.File
 import xml.NodeSeq
@@ -62,7 +61,7 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging 
                   {dirXml}
                 </li>
             } else {
-              val title = Files.dropExtension(f).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
+              val title = Pages.title(f)
               val link = Files.relativeUri(rootDir, f)
               <li>
                 <a href={link}>

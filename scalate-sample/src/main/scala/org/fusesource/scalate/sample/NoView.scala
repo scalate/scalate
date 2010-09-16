@@ -16,20 +16,11 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.wikitext
+package org.fusesource.scalate.sample
 
-import org.fusesource.scalate.test.TemplateTestSupport
-import java.io.File
-
-class IncludeTest extends TemplateTestSupport {
-
-  test("include") {
-    assertUriOutputContains("include/test.conf", "Testing include", "Included1", "Included2")
-  }
-
-  override protected def beforeAll(map: Map[String, Any]) = {
-    super.beforeAll(map)
-
-    engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
-  }
+/**
+ * A simple class which has no view
+ */
+class NoView {
+  def foo = "bar"
 }
