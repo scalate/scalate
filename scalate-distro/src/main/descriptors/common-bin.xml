@@ -8,9 +8,7 @@
       <unpack>false</unpack>
       <scope>runtime</scope>
       <includes>
-        <include>org.fusesource.scalate:scalate-camel</include>
         <include>org.fusesource.scalate:scalate-core</include>
-        <include>org.fusesource.scalate:scalate-test</include>
         <include>org.scala-lang:scala-library</include>
         <include>org.scala-lang:scala-compiler</include>
         <include>org.slf4j:slf4j-api</include>
@@ -33,7 +31,6 @@
       <includes>
         <include>org.fusesource.scalate:scalate-jsp-converter</include>
         <include>org.fusesource.scalate:scalate-tool</include>
-
         <!-- confexport -->
         <include>org.codehaus.swizzle:swizzle-confluence</include>
         <include>xmlrpc:xmlrpc</include>
@@ -42,11 +39,17 @@
     <dependencySet>
       <outputDirectory>/lib/optional</outputDirectory>
       <unpack>false</unpack>
-      <scope>runtime</scope>
+      <scope>compile</scope>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
       <includes>
-        <include>org.markdownj:markdownj</include>
-        <include>com.sun.jersey:jersey-server</include>
-        <include>com.sun.jersey:jersey-core</include>
+        <include>org.fusesource.scalate:scalate-camel</include>
+        <include>org.fusesource.scalate:scalate-test</include>
+        <include>org.fusesource.scalate:scalate-guice</include>
+        <include>org.fusesource.scalate:scalate-page</include>
+        <include>org.fusesource.scalate:scalate-wikitext</include>
+        <include>org.fusesource.scalamd:scalamd</include>
+        <include>org.fusesource.wikitext:confluence-core</include>
+        <include>org.fusesource.wikitext:textile-core</include> 
       </includes>
     </dependencySet>
 

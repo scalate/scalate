@@ -32,10 +32,6 @@
   <name>Scalate :: WikiText</name>
   <description>WikiText Integration for Markdown and Confluence wiki notations</description>
 
-  <properties>
-    <wikitext-version>1.0</wikitext-version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>

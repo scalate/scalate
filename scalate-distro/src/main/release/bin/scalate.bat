@@ -80,7 +80,7 @@ REM SET SCALATE_DEBUG_OPTS="-agentlib:yjpagent"
 REM Uncomment to enable remote debugging
 REM SET SCALATE_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
 
-SET CLASSPATH=%SCALATE_HOME%\lib\*;%SCALATE_HOME%\lib\tool\*
+SET CLASSPATH=%SCALATE_HOME%\lib\*;%SCALATE_HOME%\lib\tool\*;%SCALATE_HOME%\lib\optional\*
 
 "%_JAVACMD%" %SCALATE_DEBUG_OPTS% %SUNJMX% %SCALATE_OPTS% -classpath "%CLASSPATH%" -Dscalate.classpath="%SCALATE_CLASSPATH%" -Dscalate.home="%SCALATE_HOME%" -Dscalate.base="%SCALATE_BASE%" org.fusesource.scalate.tool.ScalateMain %*
 

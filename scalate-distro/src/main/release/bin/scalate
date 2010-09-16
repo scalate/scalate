@@ -116,7 +116,7 @@ if [ -z "$SCALATE_BASE" ] ; then
   SCALATE_BASE="$SCALATE_HOME"
 fi
 
-CLASSPATH="${SCALATE_HOME}/lib/*:${SCALATE_HOME}/lib/tool/*"
+CLASSPATH="${SCALATE_HOME}/lib/*:${SCALATE_HOME}/lib/tool/*:${SCALATE_HOME}/lib/optional/*"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then

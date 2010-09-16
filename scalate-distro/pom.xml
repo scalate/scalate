@@ -60,6 +60,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-page</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j-version}</version>
@@ -74,6 +79,28 @@
       <artifactId>org.apache.karaf.shell.console</artifactId>
       <version>${karaf-version}</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.fusesource.scalamd</groupId>
+      <artifactId>scalamd</artifactId>
+      <version>${scalamd-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.wikitext</groupId>
+      <artifactId>confluence-core</artifactId>
+      <version>${wikitext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.wikitext</groupId>
+      <artifactId>textile-core</artifactId>
+      <version>${wikitext-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    
 
     <!-- archetypes to include -->
     <dependency>

@@ -86,6 +86,8 @@
     <surefire-version>2.5</surefire-version>
     <war-plugin-version>2.1-beta-1</war-plugin-version>
     <scalamd-version>1.1</scalamd-version>
+    <wikitext-version>1.0</wikitext-version>
+    
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
