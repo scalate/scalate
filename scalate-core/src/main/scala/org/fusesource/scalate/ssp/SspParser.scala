@@ -128,14 +128,14 @@ class SspParser extends ScalaParseSupport {
 
   def importExpression = expressionDirective("import") ^^ {ImportFragment(_)}
 
-  def endExpression = emptyDirective("end") ^^ {case a => EndFragment()}
+  def endExpression = emptyDirective("end") <~ """[ \t]*\r?\n?""".r ^^ {case a => EndFragment()}
 
   // useful for implementing directives
   def emptyDirective(name: String) = text(("#" + name) | ("#(" + name + ")"))
 
   def expressionDirective(name: String) = ("#" ~ name ~ anySpace ~ "(") ~> scalaExpression <~ ")"
 
-  def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ anySpace ~ "(") ~> scalaExpression <~ ")"
+  def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ anySpace ~ "(") ~> scalaExpression <~ """\)[ \t]*\r?\n?""".r
 
   def scalaExpression: Parser[Text] = {
     text(

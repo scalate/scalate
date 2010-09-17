@@ -42,11 +42,8 @@ done
 f1 a
 f1 b
 
-
 f2 a
-
 f2 b
-
 done""", template, Map("fields" -> List("a", "b")))
   }
 
