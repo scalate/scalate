@@ -722,6 +722,12 @@ Otherwise you can just add this to your pom.xml
 
 You could try the [sbt-scalate-plugin](http://github.com/Yasushi/sbt-scalate-plugin) if you use SBT as your main build tool.
 
+### Using Scalate on GAE 
+
+If you are using Scalate on [Google AppEngine](http://code.google.com/appengine/) (GAE) then you will probably want to precompile all your templates before you deploy them; so that each request is processed very quickly - so app engine won't kill your thread midway through.
+
+To see an example of a Scalate project already setup using GAE try the [the hello-scalate-appengine project](http://github.com/Yasushi/hello-scalate-appengine) by Yasushi Abe who also created the   [sbt-scalate-plugin](http://github.com/Yasushi/sbt-scalate-plugin).
+
 ### Possible Gotchas
 
 #### Class Loaders
