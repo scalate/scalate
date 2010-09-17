@@ -19,7 +19,7 @@
 package org.fusesource.scalate
 package wikitext
 
-import util.Logging
+import util.{Files, Logging}
 
 /**
  * Implements the "include" macro
@@ -41,8 +41,23 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
     debug("{include} is now going to include URI '" + uri + "' found to map to '" + realUri + "'")
 
     val context = RenderContext()
-    val template = context.engine.load(realUri)
-    val output = context.capture(template)
+    val ex = Files.extension(realUri)
+    val engine = context.engine
+
+    val output = if (engine.extensions.contains(ex)) {
+      val template = engine.load(realUri)
+      context.capture(template)
+    } else {
+      engine.resourceLoader.resource(realUri) match {
+        case Some(r) =>
+          warn("Using non-template or wiki markup  '" + realUri + "' from {include:" + uri + "}")
+          r.text
+        case _ =>
+          warn("Could not find include '" + realUri + "' from {include:" + uri + "}")
+          ""
+      }
+
+    }
     builder.charactersUnescaped(output)
   }
 }
