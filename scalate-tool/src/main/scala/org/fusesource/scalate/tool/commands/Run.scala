@@ -16,16 +16,14 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.tool.commands
+package org.fusesource.scalate
+package tool.commands
 
 import java.{util => ju, lang => jl}
 import java.io.File
 import collection.JavaConversions._
-import org.fusesource.scalate.TemplateEngine
-import org.fusesource.scalate.support.FileResourceLoader
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
 import org.osgi.service.command.CommandSession
-
 
 
 /**
@@ -36,14 +34,11 @@ import org.osgi.service.command.CommandSession
 @command(scope = "scalate", name = "run", description = "Renders a Scalate template file")
 class Run extends Action {
 
-  @argument(required = true, name = "template", description = "Name of the template to render")
-  var template: String = _
+  @argument(required = true, name = "template", description = "Template file to render")
+  var template: File = _
 
   @argument(index = 1, multiValued = true, name = "args", description = "Arguments to the template")
   var args: ju.List[String] = new ju.ArrayList[String]
-
-  @option(name = "--root", description = "Sets the root of the template search path.")
-  var root = new File(".")
 
   @option(name = "--workdir", description = "Sets the work directory where scalate generates class files to. Defaults to a temporary directory.")
   var workdir: File = _
@@ -54,10 +49,9 @@ class Run extends Action {
       if (workdir != null) {
         engine.workingDirectory = workdir
       }
-      engine.resourceLoader = new FileResourceLoader(Some(root))
 
       val attributes = Map("args" -> args.toList)
-      engine.layout(template, attributes)
+      engine.layout(TemplateSource.fromFile(template), attributes)
     } catch {
       case e: Exception =>
         "Error: Could not render: " + template + ". Due to: " + e

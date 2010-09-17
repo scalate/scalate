@@ -62,7 +62,10 @@
     <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
+<!--
     <karaf-version>2.0.1-SNAPSHOT</karaf-version>
+-->
+    <karaf-version>2.1.99-SNAPSHOT</karaf-version>
     <logback-version>0.9.24</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
 
