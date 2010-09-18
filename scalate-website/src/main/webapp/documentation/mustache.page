@@ -6,4 +6,4 @@ sort_info: 10
 # Mustache Reference Guide
 
 --- name:content pipeline:ssp
-${include("mustache.md")}
+${include("/documentation/_mustache.md")}

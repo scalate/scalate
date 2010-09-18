@@ -6,4 +6,4 @@ sort_info: 10
 # Ssp Reference Guide
 
 --- name:content pipeline:ssp
-${include("ssp-reference.md")}
+${include("/documentation/_ssp-reference.md")}

@@ -7,4 +7,4 @@ sort_info: 10
 Scala Template Engine: like HAML or JSP without the crap but with added Scala coolness
 
 --- name:content pipeline:ssp
-${include("user-guide.md")}
+${include("/documentation/_user-guide.md")}

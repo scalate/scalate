@@ -28,7 +28,7 @@ Scalate Tool helps get you scalate-ing faster!
     To get started with the Scalate Tool you'll need to download and install it.
 
     [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
- 
+
     The installation step is really just about adding the **bin/scalate** script to your **PATH** so that its easy to run the tool from any directory you happen to be in. If you know how to do that kind of stuff go right ahead. e.g. you could just create a symlink to it in a directory thats already on your path like /usr/local/bin or ~/.bin
 
     Or you can just run the scalate script directly from your download if you prefer. There follows detailed instructions on how to install the scalate tool to ensure you can run the tool from any directory.

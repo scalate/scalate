@@ -7,4 +7,4 @@ sort_info: 10
 Embeddable? Check.
 
 --- name:content pipeline:ssp
-${include("scalate-embedding-guide.md")}
+${include("/documentation/_scalate-embedding-guide.md")}

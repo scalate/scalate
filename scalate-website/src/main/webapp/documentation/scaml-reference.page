@@ -7,4 +7,4 @@ sort_info: 10
 Scaml is Markup Haiku for Scala
 
 --- name:content pipeline:ssp
-${include("scaml-reference.md")}
+${include("/documentation/_scaml-reference.md")}

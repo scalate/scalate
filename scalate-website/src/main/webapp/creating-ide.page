@@ -6,7 +6,7 @@ in_menu: false
 # How to create a Scalate IDE
 We love awesome IDEs! :)
 
---- name:content
+--- name:content pipeline:markdown
 
 # Scalate the IDE friendly template language
 

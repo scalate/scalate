@@ -115,6 +115,23 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>scalate-wikitext</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>scalate-page</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.fusesource.scalamd</groupId>
+            <artifactId>scalamd</artifactId>
+            <version>${scalamd-version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       
 
