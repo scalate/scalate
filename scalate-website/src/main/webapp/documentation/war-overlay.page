@@ -22,15 +22,17 @@ Adding Scalate console to your web application
 
     For example to use the Scalate WAR overlay in any maven web application just add this section to your pom.xml
 
-    {coderay:: xml}  <dependencies>
-        <dependency>
-          <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-war</artifactId>
-          <version>${project_version}</version>
-          <type>war</type>
-        </dependency>
-        ...
-      </dependencies>
-    {coderay}
+    {pygmentize:: xml}
+    <dependencies>
+      ...
+      <dependency>
+        <groupId>org.fusesource.scalate</groupId>
+        <artifactId>scalate-war</artifactId>
+        <version>${project_version}</version>
+        <type>war</type>
+      </dependency>
+      ...
+    </dependencies>
+    {pygmentize}
 
     Note that if you are already using one of the [scalate archetypes](getting-started.html) you don't have to worry about this; your archetype is already setup correctly for you.
