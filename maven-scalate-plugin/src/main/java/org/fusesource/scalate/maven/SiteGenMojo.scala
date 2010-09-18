@@ -113,7 +113,7 @@ class SiteGenMojo extends AbstractMojo {
 
     def processFile(file: File, baseuri: String, rootDir: File, copyFile: Boolean = true): Unit = {
       if (file.isDirectory()) {
-        if (file.getName != "WEB-INF") {
+        if (file.getName != "WEB-INF" && !file.getName.startsWith("_") ) {
           var children = file.listFiles();
           if (children != null) {
             for (child <- children) {
@@ -128,7 +128,7 @@ class SiteGenMojo extends AbstractMojo {
         }
       } else {
         val parts = file.getName.split('.')
-        if (parts.size > 1) {
+        if (parts.size > 1 && !file.getName.startsWith("_")) {
           val uri = baseuri + "/" + file.getName()
           // uri = uri.replace(':', '_')
           val ext = parts.last
