@@ -11,8 +11,8 @@ How the website works
   :markdown
     # How it works
 .right
-  :markdown
-    The *${project_name}* documentation and site is created using [WebGen](http://webgen.rubyforge.org/) and is stored in git in the same [source control system as the code](source.html)
+  :&markdown
+    The *#{project_name}* documentation and site is created using [WebGen](http://webgen.rubyforge.org/) and is stored in git in the same [source control system as the code](source.html)
 
 
 .left
@@ -50,7 +50,7 @@ How the website works
         sudo gem install feedtools
         sudo gem install haml
 
-    For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](pygments).
+    For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](http://pygments.org).
 
     To be able to deploy the site you will need
 

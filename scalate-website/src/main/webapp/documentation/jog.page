@@ -81,5 +81,5 @@ Using Scalate with JAXRS (Jersey) on Guice
   :markdown
     * [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
     * [Scalate Console](console.html)
-    * [Documentation](documentation.html) for further information on user guides and template references
+    * [Documentation](index.html) for further information on user guides and template references
   

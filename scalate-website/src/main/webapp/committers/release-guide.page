@@ -48,7 +48,7 @@ Cutting the release
       git push origin scalate-project-${project_version}
 
 * update the website (see below on making a branch)
-* announce the release on the [mailing list](community.html)
+* announce the release on the [mailing list](../community.html)
 * drink beers!
 
 ## Creating a branch for this release and website changes

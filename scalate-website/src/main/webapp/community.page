@@ -20,8 +20,8 @@ The ${project_name} community is here to help you
   :markdown
     # Mailing List
 .right
-  :markdown
-    We really want you to get involved in the ${project_name} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
+  :&markdown
+    We really want you to get involved in the #{project_name} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
 
     The main mailing list is hosted at the [scalate google group](http://groups.google.com/group/scalate).
 
@@ -68,7 +68,7 @@ The ${project_name} community is here to help you
   :markdown
     # Support
 .right
-  :markdown
-    If you have a problem you can [get help](support.html) or try surfing our [Issue Tracker](${project_issue_url})
+  :&markdown
+    If you have a problem you can [get help](support.html) or try surfing our [Issue Tracker](#{project_issue_url})
 
 

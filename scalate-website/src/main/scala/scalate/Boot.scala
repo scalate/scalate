@@ -20,8 +20,11 @@ class Boot(engine: TemplateEngine) extends Logging {
       // add some macros to markdown.
       Markdown.macros :::= List(
         MacroDefinition("""\{pygmentize::(.*?)\}(.*?)\{pygmentize\}""", "s", pygmentize, true),
-        MacroDefinition("""\{pygmentize\_and\_compare::(.*?)\}(.*?)\{pygmentize\_and\_compare\}""", "s", pygmentize, true)
-        )
+        MacroDefinition("""\{pygmentize\_and\_compare::(.*?)\}(.*?)\{pygmentize\_and\_compare\}""", "s", pygmentize, true),
+        MacroDefinition("""\$\{project_version\}""", "", _ => project_version.toString, true),
+        MacroDefinition("""\$\{project_name\}""", "", _ => project_name.toString, true),
+        MacroDefinition("""\$\{project_id\}""", "", _ => project_id.toString, true)
+      )
 
       for( ssp <- engine.filter("ssp"); md <- engine.filter("markdown") ) {
         engine.pipelines += "ssp.md"-> List(ssp, md)

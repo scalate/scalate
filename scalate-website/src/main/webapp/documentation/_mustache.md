@@ -14,7 +14,7 @@ You can use a regular HTML file as the template and let your designer own it, us
 A typical Mustache template:
 
 {pygmentize:: text}
-Hello {{name}}
+Hello {{name}} 
 You have just won ${{value}}!
 {{#in_ca}}
 Well, ${{taxed_value}}, after taxes.
@@ -50,7 +50,7 @@ The most basic tag type is the variable. A **{{name}}** tag just tries to lookup
 
 All values are HTML escaped by default. If you want to return unescaped HTML use the triple mustache **{{{name}}}**. Or you can use **{{& name}}**
 
-You can customize how a null value or empty string is rendered by configuring properties on [RenderContext](http://scalate.fusesource.org/maven/{project_version:}/scalate-core/scaladocs/org/fusesource/scalate/RenderContext.html) such as **nullString** or **noneString**
+You can customize how a null value or empty string is rendered by configuring properties on [RenderContext](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/RenderContext.html) such as **nullString** or **noneString**
 
 ### Sections
 

@@ -11,15 +11,22 @@ ${project_name} Blog <a href="index.rss"><img src="${uri("/images/rss.gif")}"/><
 </h1>
 The latest greatest news from the Scalate team
 
---- name:blog pipeline:plain
+--- name:blog pipeline:ssp
 
 <%
-max_posts_per_page = 10;
-pattern = /#{File.join(context.node.parent.alcn, '/')}.*\.html$/
-nodes = context.content_node.tree.node_access[:path].select {|path, n| path =~ pattern};
-nodes.sort.reverse.slice(0,max_posts_per_page).each do |path, n|
-  next if n.is_fragment?
-  next if !n['blog_post']
+import org.fusesource.scalate.util.IOUtil._
+import org.fusesource.scalate.page.PageFilter
+
+val df = new java.text.SimpleDateFormat("yyyy'-'MM'-'dd HH:mm:ss Z")
+val max_posts_per_page = 10;
+
+val root = new File("src") / "main" / "webapp" / "blog"
+
+files = root.recursiveList(_.name.endsWith(".page")).flatMap(
+    file=>PageFilter.meta_data(context, file.text).map(x=>(file, df.parse(x.get("created_at").get) ) ) 
+  ).sortWith((x,y)=> x._2.comareTo(y._2) ).map(_.1)
+
+file.
 %>
   	  <div class="post">
   	    <h2><%= context.dest_node.link_to(n) %></h2>
@@ -27,11 +34,6 @@ nodes.sort.reverse.slice(0,max_posts_per_page).each do |path, n|
     	  <p>
     	  <webgen:block name="content" chain="<%= n.acn %>"/>
         </p>
-    	  <% if n.node_info[:page].blocks.has_key?('full_story') %> 
-      	  <div class="read-more">
-      	    <%= context.dest_node.link_to(n, {:link_text=>"Read more..."}) %>
-      	  </div>
-        <% end %>
   	  </div>
 <% end %>
 
