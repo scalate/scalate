@@ -32,9 +32,10 @@ html(lang="en")
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/pygmentize.css")})
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/site.css")})
     
-    - if (include_console)
-      - include("/org/fusesource/scalate/console/console_head.scaml")
-      link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
+    -#
+      - if (include_console)
+        - include("/org/fusesource/scalate/console/console_head.scaml")
+        link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
     
     title= title
   body
@@ -66,8 +67,9 @@ html(lang="en")
         div.wrapper
           !~~ blog
           
-    - if (include_console)
-      = include("/org/fusesource/scalate/console/console.scaml")
+    -#
+      - if (include_console)
+        = include("/org/fusesource/scalate/console/console.scaml")
 
     :javascript
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
