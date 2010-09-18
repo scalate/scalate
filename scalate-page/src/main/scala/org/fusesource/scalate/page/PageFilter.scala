@@ -60,10 +60,11 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
     val div = """---""" ~> rep(space ~> attribute ) <~ opt_space ~ (nl | eof)
 
+
     val content:Parser[Text] =
       guarded(eof, success(Text(""))) |
-      guarded("---", success(Text(""))) |
-      upto(nl ~ "---" | nl~"\\---") ~ opt(nl) ~ opt("\\---" ~> content) ^^ {
+      guarded(div, success(Text(""))) |
+      upto(nl ~ div | nl~"\\---"~(eof | """\s""".r)) ~ opt(nl) ~ opt("\\---" ~> content) ^^ {
         case x~Some(y)~None => x+y
         case x~None~None => x
         case x~Some(y)~Some(z) => x+y+"---"+z
@@ -73,7 +74,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     val page_part = opt(nl) ~> div ~ content ^^ { case x~y=> PagePart(x, y) }
 
     val page_parts =
-      guarded("---", rep(page_part)) |
+      guarded(div, rep(page_part)) |
       content ~ rep(page_part) ^^ { case x~y=> PagePart(Nil, x) :: y }
 
     def parsePageParts(in: String): List[PagePart] = {
