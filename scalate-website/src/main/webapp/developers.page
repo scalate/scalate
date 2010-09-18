@@ -1,0 +1,43 @@
+---
+title: Developers
+in_menu: false
+--- name:overview
+
+# Developers
+Various links for developers 
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Developer Links
+.right
+  :&markdown
+    * [Building](building.html)
+    * [Contributing](contributing.html)
+    * [Release Guide](committers/release-guide.html)
+    * [Website for Older Versions](http://scalate.fusesource.org/versions/)
+    * [Website for Latest Snapshot](http://scalate.fusesource.org/versions/snapshot/) (based on #{project_snapshot_version})
+
+.left
+  :markdown
+    # ScalaDocs 
+.right
+  :&markdown
+    ## Version #{project_version}
+    * [TemplateEngine](http://scalate.fusesource.org/maven/#{project_version}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) is the main class you need to start with
+    [RenderContext](http://scalate.fusesource.org/maven/#{project_version}/scalate-core/scaladocs/org/fusesource/scalate/RenderContext.html) is the context used to render a template which has a bunch of helper methods for including other templates, rendering expressions and so forth
+    * [org.fusesource.scalate](http://scalate.fusesource.org/maven/#{project_version}/scalate-core/scaladocs/org/fusesource/scalate/package.html) the core scalate package has the core public API you need if you want to work directly with the API
+    * [full scaladoc](http://scalate.fusesource.org/maven/#{project_version}/scalate-core/scaladocs/index.html) contains the full detail of all packages if you want to write a plugin or work on the implementation or integration layers
+
+    **NOTE** we will be including ScalaDocs of releases inside distributions and on the website once the [maven-scala-plugin 2.13.2](http://scala-tools.org/mvnsites/maven-scala-plugin/) is released to work with Scala 2.8.0. See [this issue](http://scalate.assembla.com/spaces/scalate/tickets/61-when-2-13-2-of-maven-scala-plugin-comes-out--lets-switch---include-scaladoc-in-the-distribution) for more detail
+
+.left
+  :markdown
+    # Maven reports
+.right
+  :&markdown
+    * [#{project_version} Release](http://scalate.fusesource.org/maven/#{project_version}/)
+    * [Older Versions](http://scalate.fusesource.org/maven)
+    * [Next Snapshot](http://scalate.fusesource.org/maven/#{project_snapshot_version}/)
+

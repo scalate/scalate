@@ -1,0 +1,95 @@
+---
+title: Download
+in_menu: true
+sort_info: 5
+--- name:overview
+
+# ${project_name}
+Download it today!
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Download
+.right
+  :&markdown
+    
+    You can download **Scalate** from the [Maven Repository](http://repo.fusesource.com/nexus/content/repositories/public/) in the [Scalate area](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/).
+
+    Download a distribution:
+
+    * [1.2 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.2/scalate-distro-1.2-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.2/scalate-distro-1.2-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/07/release-1-2.html)
+    * [1.1 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/04/release-1-1.html)
+    * [1.0 zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-unix-bin.tar.gz) - [Release Notes](blog/releases/2010/04/release-1-0.html)
+
+    You can now [install the Scalate Tool](documentation/tool.html)
+
+    ## Snapshots
+
+    You can download a recent snapshot from the [Snapshot Maven Repository](http://repo.fusesource.com/nexus/content/repositories/snapshots/) in the [Scalate area](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/).
+
+    * [#{project_snapshot_version} zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=#{project_snapshot_version}&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=#{project_snapshot_version}&e=tar.gz&c=unix-bin)
+
+
+.left
+  :markdown
+    # Maven
+.right
+  :&markdown
+  
+    If you build your project using [Maven](http://maven.apache.org/) then just add the following to your *pom.xml*
+    {pygmentize:: xml}
+    <dependency>
+      <groupId>org.fusesource.#{project_id}</groupId>
+      <artifactId>#{project_id}-core</artifactId>
+      <version>${#{project_id}-version}</version>  
+    </dependency>
+    {pygmentize}
+
+    The releases should be synchronized to the [central maven repository](http://repo1.maven.org/maven2/org/fusesource/scalate/) so you should not need to add a maven repository to your pom.xml. 
+
+    However if a release has not yet made it to the central repository or you want to add a repository for completeness, add the following to your *pom.xml*
+
+    {pygmentize:: xml}  
+    <repositories>
+       <repository>
+         <id>fusesource.m2</id>
+         <name>FuseSource Public Repository</name>
+         <url>http://repo.fusesource.com/nexus/content/repositories/public</url>
+         <snapshots>
+           <enabled>false</enabled>
+         </snapshots>
+         <releases>
+           <enabled>true</enabled>
+         </releases>
+       </repository>
+     </repositories>
+    {pygmentize}
+
+    ## Snapshots
+
+    If you want to use a **snapshot version** you should ensure you have the Scalate Snapshot Maven repository defined in your *pom.xml*
+    {pygmentize:: xml}  
+    <repositories>
+       <repository>
+         <id>fusesource.snapshots</id>
+         <name>FuseSource Snapshot Repository</name>
+         <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
+         <snapshots>
+           <enabled>true</enabled>
+         </snapshots>
+         <releases>
+           <enabled>false</enabled>
+         </releases>
+       </repository>
+     </repositories>
+    {pygmentize}
+
+.left
+  :markdown
+    # Building
+.right
+  :markdown
+    If you prefer you can try building from [the source code](source.html) and [building it](building.html)
+

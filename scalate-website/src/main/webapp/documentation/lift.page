@@ -1,0 +1,36 @@
+---
+title: Lift
+in_menu: false
+sort_info: 2
+--- name:overview
+# Jog
+
+Using Scalate with Lift
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Overview
+
+.right
+  :markdown
+    Lift is a popular Scala based web framework with particularly powerful Comet support.
+
+    Support for Scalate has been added to Lift in the Scala 2.8.0 branch. For more details see [ticket 475](https://liftweb.assembla.com/spaces/liftweb/tickets/475).
+
+.left
+  :markdown
+    # Example
+
+.right
+  :markdown
+    There is a [helloscalate](http://github.com/lift/lift/tree/280_RC7/examples/helloscalate/) sample which shows you how you can integrate Scalate views into Lift
+
+    The trick to enabling Scalate is to enable the ScalateView in your Boot.scala class such as in [this example](http://github.com/lift/lift/blob/280_RC7/examples/helloscalate/src/main/scala/bootstrap/liftweb/Boot.scala).
+
+    The following code should do the trick
+    
+    {pygmentize::scala}
+    new ScalateView.register
+    {pygmentize}

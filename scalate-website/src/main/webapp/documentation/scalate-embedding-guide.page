@@ -1,0 +1,10 @@
+---
+title: Scalate Embedding Guide
+in_menu: true
+sort_info: 10
+--- name:overview
+# Scalate Embedding Guide
+Embeddable? Check.
+
+--- name:content pipeline:ssp
+${include("scalate-embedding-guide.md")}
