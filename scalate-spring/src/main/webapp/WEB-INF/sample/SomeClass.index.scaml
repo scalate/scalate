@@ -1,0 +1,9 @@
+-@ val it:SomeClass
+%html(lang="en")
+  = view (it, "head")
+  %body
+    %h1
+      This is a quick demonstration of Scalate's view dispatching
+    %ul
+      = view (it, "someValue")
+      = view (it, "anotherValue")
