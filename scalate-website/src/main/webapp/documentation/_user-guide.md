@@ -485,7 +485,7 @@ The [Scaml](scaml-reference.html) version of this is a bit more concise
 {pygmentize}
 
 
-## {#dry} Making templates more DRY
+## Making templates more DRY {#dry}
 
 When you create a number of templates in a directory you might find you are repeating the same sets of imports across many templates. This doesn't feel terribly DRY. Scala 2.8 supports [package objects](http://programming-scala.labs.oreilly.com/ch07.html#PackageObjects) which allows you to define types, variables and methods at the package scope to be reused inside classes and traits defined inside the package.
 
