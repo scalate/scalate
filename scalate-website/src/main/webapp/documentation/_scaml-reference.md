@@ -1,6 +1,5 @@
 # Scaml (Scala Markup Language)
 
-* Table of contents
 {:toc}
 
 Scaml is a very DRY way of writing XHTML templates.  It is Scala
@@ -19,7 +18,7 @@ because it uses a very concise white space active XHMLT notation.
 * [Haml](http://haml-lang.com/) or [Jade](http://jade-lang.com/) style 
   notation
 
-## {#jade} Haml vs Jade Notation
+## Haml vs Jade Notation {#jade}
 
 Scaml supports both the original [Haml](http://haml-lang.com/) notation and a
 newer [Jade](http://jade-lang.com/) notation. The Jade dialect of Haml

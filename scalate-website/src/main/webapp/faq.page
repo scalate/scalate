@@ -10,11 +10,9 @@ sort_info: 41
 
 This page contains all the frequently asked questions about the ${project_name} project.
 
-<div style="font-size: 10pt; clear: left; padding: 5px;">
-{menu: {used_nodes: fragments, min_levels: 4, max_levels: 6}}
-<div>
-
 --- name:content pipeline:markdown
+
+{:toc}
 
 ## General Questions
 
