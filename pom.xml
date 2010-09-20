@@ -201,13 +201,9 @@
     <module>scalate-wikitext</module>
     <module>scalate-spring-mvc</module>
     <module>scalate-guice</module>
-    <module>scalate-war</module>
-    <module>scalate-sample</module>
-    <module>scalate-sample-sitegen</module>
-    <module>scalate-sample-scuery</module>
-    <module>scalate-sample-spring-mvc</module>
-    <module>scalate-bookstore</module>
     <module>scalate-camel</module>
+    <module>scalate-war</module>
+    <module>samples</module>
     <module>maven-scalate-plugin</module>
     <module>archetypes</module>
     <module>scalate-tool</module>
