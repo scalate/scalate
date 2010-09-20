@@ -26,6 +26,8 @@ import collection.mutable.HashMap
 import org.fusesource.scalate.filter.{Pipeline, Filter}
 import util.parsing.input.{NoPosition, CharSequenceReader}
 
+case class Page(headers:Map[String, AnyRef], parts:Map[String, String])
+
 /**
  * <p>
  * </p>
@@ -135,6 +137,26 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     rendered_parts.get(default_name).getOrElse("")
   }
 
+  def parse(context: RenderContext, content: String):Page = {
+    val p = new PageParser
+    var parts = p.parsePageParts(content)
+
+    var headers = Map[String, AnyRef]()
+    meta_data(context, parts).foreach { meta_data=>
+      meta_data.foreach { case (key, value)=>
+        headers += key->value
+      }
+      parts = parts.drop(1)
+    }
+
+    var page_parts = Map[String, String]()
+    parts.foreach{ part=>
+      val name = part.name.map(_.value).getOrElse(default_name)
+      val value =  part.content.value
+      page_parts += name->value
+    }
+    Page(headers, page_parts)
+  }
 
   def meta_data(context: RenderContext, parts:List[PagePart] ) = {
     parts.headOption match {

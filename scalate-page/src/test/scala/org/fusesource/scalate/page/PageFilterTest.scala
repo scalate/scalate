@@ -30,7 +30,7 @@ import org.fusesource.scalate.test.TemplateTestSupport
 class PageFilterTest extends TemplateTestSupport {
 
   test("example 1") {
-    assertUriOutput("""<h1>FAQ</h1>
+    assertUriOutput("""<h1 id = "FAQ">FAQ</h1>
 
 <ul>
 <li>This is the default page part</li>
