@@ -46,6 +46,16 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-guice</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-spring-mvc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-test</artifactId>
       <version>${project.version}</version>
     </dependency>
