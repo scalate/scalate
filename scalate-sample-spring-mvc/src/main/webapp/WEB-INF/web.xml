@@ -15,7 +15,7 @@
              and fully-qualified @Configuration classes -->
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>org.fusesource.scalate.spring.config.AppConfig</param-value>
+      <param-value>org.fusesource.scalate.sample.springmvc.config.AppConfig</param-value>
     </init-param>
   </servlet>
 

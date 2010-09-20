@@ -1,7 +1,8 @@
-package org.fusesource.scalate.spring.config
+package org.fusesource.scalate.sample.springmvc
+package config
 
+import controller.IndexController
 import org.springframework.context.annotation._
-import org.fusesource.scalate.spring.controller.IndexController
 import org.fusesource.scalate.spring.view.ScalateViewResolver
 
 class AppConfig {

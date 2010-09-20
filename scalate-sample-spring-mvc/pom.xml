@@ -8,15 +8,11 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>scalate-spring</artifactId>
+  <artifactId>scalate-sample-spring-mvc</artifactId>
 
-  <name>Scalate :: Spring</name>
-  <description>Spring-mvc integration for a Scalate web application</description>
+  <name>Scalate :: Sample :: Spring MVC</name>
+  <description>Sample web application showing Spring MVC integration for a Scalate web application</description>
   <packaging>war</packaging>
-
-  <properties>
-    <org.springframework.version>3.0.4.RELEASE</org.springframework.version>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -26,7 +22,7 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-spring-mvc</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
