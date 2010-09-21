@@ -21,7 +21,8 @@ package org.fusesource.scalate
 import filter.FilterRequest
 import introspector.Introspector
 import support.Resource
-import util.{Objects, RenderHelper, XmlHelper, Lazy}
+import util._
+import util.IOUtil._
 
 import java.io.File
 import java.text.{DateFormat, NumberFormat}
@@ -111,6 +112,25 @@ trait RenderContext {
    * Returns the file for the given request resource
    */
   def requestFile: Option[File]
+
+
+  /**
+   * Returns a local link to the given file which should be within the [sourceDirectories]
+   */
+  def uri(file: File): Option[String] = {
+    for (s <- engine.sourceDirectories) {
+      if (Files.isDescendant(s, file)) {
+        return Some(uri("/" + Files.relativeUri(s, file)))
+      }
+    }
+    None
+  }
+
+
+  /**
+   * Allows conversion of an absolute URL starting with "/" to be converted using the prefix of a web application
+   */
+  def uri(u: String): String = u
 
   /**
    * Access the attributes available in this context

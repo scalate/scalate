@@ -180,7 +180,7 @@ class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(
 
 class DummyRenderContext(val _requestUri: String, _engine: TemplateEngine, _out: PrintWriter) extends DefaultRenderContext(_requestUri, _engine, _out) {
   // for static website stuff we must zap the root dir typically
-  def uri(name: String) = {
+  override def uri(name: String) = {
     // lets deal with links to / as being to /index.html
     val link = if (name == "/") "/index.html" else name
     convertAbsoluteLinks(link, requestUri)

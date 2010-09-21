@@ -52,6 +52,15 @@ object Files {
   def andDescendants(file: File): Iterable[File] = (
     Seq(file) ++ descendants(file))
 
+
+  /**
+   * Returns true if
+   */
+  def isDescendant(root: File, file: File): Boolean = {
+    val dir = if (file.isDirectory) file else file.getParentFile
+    dir.getCanonicalPath.startsWith(root.getCanonicalPath)
+  }
+
   /**
    * Returns the relative URI of the given file with the respect to the given root directory
    */
