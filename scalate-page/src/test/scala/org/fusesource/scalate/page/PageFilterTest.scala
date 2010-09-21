@@ -15,22 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.fusesource.scalate.page
 
-import java.io.File
 import org.fusesource.scalate.test.TemplateTestSupport
 
 
 /**
- * <p>
- * </p>
- *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class PageFilterTest extends TemplateTestSupport {
 
   test("example 1") {
-    assertUriOutput("""<h1>FAQ</h1>
+    assertUriOutput("""<h1 id = "FAQ">FAQ</h1>
 
 <ul>
 <li>This is the default page part</li>
@@ -44,10 +41,5 @@ class PageFilterTest extends TemplateTestSupport {
     var t = "Hello World"
   //]]>
 </script>""", "example2.page")
-  }
-
-  override protected def beforeAll(map: Map[String, Any]) = {
-    super.beforeAll(map)
-    engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
   }
 }

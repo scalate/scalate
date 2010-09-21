@@ -1,0 +1,12 @@
+<% import org.fusesource.scalate.page.BlogHelper._ %>
+
+#for(post <- posts)
+  	  <div class="post">
+  	    <h2><a href="${post.link}">${post.title}</a></h2>
+        <div class="details">Posted by ${post.author} on ${post.createdAt}</div>
+    	  <p>
+          ${post.render()}
+        </p>
+  	  </div>
+#end
+

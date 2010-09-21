@@ -1,0 +1,38 @@
+---
+blog_post: false
+title: Scalate 1.3 Released
+author: James Strachan
+author_url: http://macstrac.blogspot.com
+created_at: 2010-09-05 12:06:40 -0000
+--- 
+
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.3. 
+
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> which can be used stand alone, with servlets or web frameworks like [JAXRS](${uri("/documentation/jog.html")}), [Lift](http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) or in integration frameworks like [Apache Camel](http://camel.apache.org/scalate.html).
+
+The following template languages are supported through the same common API:
+
+* [Ssp](${uri("/documentation/ssp-reference.html#syntax")}) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+* [Scaml](${uri("/documentation/scaml-reference.html")}) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup along with the [Jade](${uri("/documentation/scaml-reference.html#jade")}) syntax
+* [Mustache](${uri("/documentation/mustache.html")}) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+
+All expressions inside [Ssp](${uri("/documentation/ssp-reference.html#syntax")})  and [Scaml](${uri("/documentation/scaml-reference.html")}) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
+
+
+**Scalate 1.3 Highlights**
+
+* [Jade](${uri("/documentation/scaml-reference.html#jade")}) template syntax is now supported which is a dialect of [Haml](http://haml-lang.com/) or [Scaml](${uri("/documentation/scaml-reference.html")})
+* New [Servlet Filter](${uri("/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application")}) which allows more flexible mapping of templates in a web application. For example you can have the request */foo.xml* automatically bound to */foo.xml.ssp* if the template exists letting you easily implement views requiring a controller or explicit routing in your MVC layer. 
+* [JSP Converter](${uri("/documentation/jspConvert.html")}) lets you migrate your existing JSP web application across to Scalate
+* [HTML Converter](${uri("/documentation/htmlConvert.html")}) lets you migrate your existing HTML files easily to [Scaml](${uri("/documentation/scaml-reference.html")}) or [Jade](${uri("/documentation/scaml-reference.html#jade")}) for extra DRY markup 
+* [DRY template imports, values and logic](${uri("/documentation/user-guide.html#dry")}) thanks to Scalate Package objects which allow imports, values and methods to be shared across templates some or all of your templates to reduce noise inside your templates.
+* [Site Generator](${uri("/documentation/siteGen.html")}) lets you generate static or dynamic websites using wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository. You can also use [a common bootstrap approach](${uri("/documentation/siteGen.html#bootstrapping")}) now across both static website generation and web applications - such as to configure wiki macros in a canonical way.
+* More filters and pipelines supported such as confluence as well as the existing markdown which are particularly useful for website generation (static or semi-static).
+* The [Scalate Tool](${uri("/documentation/tool.html")}) now comes with a full interactive shell with full tab completion to make it easier to use the tool either for one off or interactive use.
+
+For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3)
+
+[Feedback](${uri("/community.html")}) is always welcome! 
+
+
+

@@ -1,0 +1,32 @@
+---
+title: Documentation Versions
+in_menu: false
+sort_info: 5
+--- name:overview
+
+# Documentation Versions
+Documentation Versions
+
+
+--- name:content pipeline:ssp,markdown
+
+.left
+  :markdown
+    # Releases
+.right
+  :markdown
+  
+    * [Current Release](../index.html)
+    * [1.2 Release](http://scalate.fusesource.org/versions/1.2/index.html)
+    * [1.1 Release](http://scalate.fusesource.org/versions/1.1/index.html)
+    * [1.0 Release](http://scalate.fusesource.org/versions/1.0/index.html)
+
+
+.left
+  :markdown
+    # Snapshot
+.right
+  :markdown
+  
+    * [Development Snapshot](http://scalate.fusesource.org/versions/snapshot/index.html) based on ${project_snapshot_version}
+

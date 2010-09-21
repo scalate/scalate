@@ -113,7 +113,7 @@ class SiteGenMojo extends AbstractMojo {
 
     def processFile(file: File, baseuri: String, rootDir: File, copyFile: Boolean = true): Unit = {
       if (file.isDirectory()) {
-        if (file.getName != "WEB-INF") {
+        if (file.getName != "WEB-INF" && !file.getName.startsWith("_") ) {
           var children = file.listFiles();
           if (children != null) {
             for (child <- children) {
@@ -128,16 +128,17 @@ class SiteGenMojo extends AbstractMojo {
         }
       } else {
         val parts = file.getName.split('.')
-        if (parts.size > 1) {
+        if (parts.size > 1 && !file.getName.startsWith("_")) {
           val uri = baseuri + "/" + file.getName()
           // uri = uri.replace(':', '_')
           val ext = parts.last
           if (extensions.contains(ext)) {
-            getLog.info("    processing " + file + " with uri: " + uri)
 
             ClassLoaders.withContextClassLoader(projectClassLoader) {
               val html = engine.layout(TemplateSource.fromFile(file, uri))
-              val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
+              val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
+
+              getLog.info("    processing " + file + " with uri: " + uri + " => ")
               sourceFile.getParentFile.mkdirs
               //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
               IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
@@ -164,6 +165,18 @@ class SiteGenMojo extends AbstractMojo {
 
   }
 
+  protected var validFileExcentions = Set("js", "css", "rss", "atom", "htm", "xml", "csv", "json")
+
+  protected def appendHtmlPostfix(uri: String): String = {
+    val answer = Files.dropExtension(uri)
+    val ext = Files.extension(answer)
+    if (validFileExcentions.contains(ext)) {
+      answer
+    } else {
+      answer + ".html"
+    }
+  }
+
 }
 
 class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(sourceDirectories) {
@@ -180,7 +193,7 @@ class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(
 
 class DummyRenderContext(val _requestUri: String, _engine: TemplateEngine, _out: PrintWriter) extends DefaultRenderContext(_requestUri, _engine, _out) {
   // for static website stuff we must zap the root dir typically
-  def uri(name: String) = {
+  override def uri(name: String) = {
     // lets deal with links to / as being to /index.html
     val link = if (name == "/") "/index.html" else name
     convertAbsoluteLinks(link, requestUri)

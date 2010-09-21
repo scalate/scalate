@@ -1,0 +1,123 @@
+---
+title: Scuery
+in_menu: false
+sort_info: 2
+--- name:overview
+# Scuery
+
+Transform HTML using jQuery style DSL in Scala
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Scuery
+
+.right
+  :markdown
+
+    **Scuery** provides an XML transformation library which uses a jQuery style approach, using CSS3 selectors to transform HTML or XHTML to inject dynamic information from static HTML/XHTML documents owned by designers.
+
+    For example a designer could create a mock up layout in HTML; or have a sample page with mock data. Scuery can then be used to transform the XML, using Scala's [NodeSeq](http://www.scala-lang.org/api/current/scala/xml/NodeSeq.html) with CSS3 selectors.
+
+
+.left
+  :markdown
+    # Simple Example
+
+.right
+  :markdown
+
+    If you had the following HTML...
+
+    {pygmentize:: html}
+    <div id="content">
+      <table class="people">
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+        </tr>
+        <tr>
+          <td class="name">DummyName</td>
+          <td class="location">DummyLocation</td>
+        </tr>
+      </table>
+    </div>
+    {pygmentize}
+
+    Then you can transform this with the following code.
+
+    {pygmentize:: scala}
+    object transformer extends Transformer {
+      $("table .name").contents = "Hiram"
+      $(".location").contents = "Tampa"
+    }
+
+    val result = transformer(xml)
+    {pygmentize}
+
+    We are creating an object, transformer, which we can then use as a function to transform XML.
+
+.left
+  :markdown
+    # More complex example
+
+.right
+  :markdown
+
+    Typically you want to iterate through collections so something like this...
+
+    {pygmentize:: html}
+    <div id="content">
+      <table class="people">
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+        </tr>
+        <tr class="person">
+          <td class="name">DummyName</td>
+          <td class="location">DummyLocation</td>
+        </tr>
+      </table>
+    </div>
+    {pygmentize}
+
+    There's the Scala code to create the transformer...
+
+    {pygmentize:: scala}
+    val people = List(Person("James", "Mells"), 
+                      Person("Hiram", "Tampa"))
+
+    object transformer extends Transformer {
+      $(".person") { node =>
+        people.flatMap { p =>
+          new Transform(node) {
+            $(".name").contents = p.name
+            $(".location").contents = p.location
+          }
+        }
+      }
+    }
+    {pygmentize}
+  
+    Which would generate
+
+    {pygmentize:: html}
+    <div id="content">
+      <table class="people">
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+        </tr>
+        <tr class="person">
+          <td class="name">James</td>
+          <td class="location">Mells</td>
+        </tr>
+        <tr class="person">
+          <td class="name">Hiram</td>
+          <td class="location">Tampa</td>
+        </tr>
+      </table>
+    </div>
+    {pygmentize}
+

@@ -1,0 +1,74 @@
+---
+title: Community
+in_menu: true
+sort_info: 50
+--- name:overview
+
+# Lets Talk
+The ${project_name} community is here to help you
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Blog
+.right
+  :markdown
+    Keep up to date on the latest and greatest releases by following the [Scalate Blog](blog/index.html)
+
+.left
+  :markdown
+    # Mailing List
+.right
+  :&markdown
+    We really want you to get involved in the #{project_name} and we love [contributions](contributing.html). One of the easiest ways to get involved is to join the community discussions.
+
+    The main mailing list is hosted at the [scalate google group](http://groups.google.com/group/scalate).
+
+     * [http://groups.google.com/group/scalate](http://groups.google.com/group/scalate)
+
+    Please join us! 
+
+    Be aware that to reduce spam your first post will be moderated through; so please be patient. (Unfortunately we get a lot of spam)
+
+.left
+  :markdown
+    # Commits List
+.right
+  :markdown
+    The [scalate-commits google group](http://groups.google.com/group/scalate-commits) is notified of all changes to the source code or changes to [issues](support.html) so you can use this list to watch development and support occur.
+
+    * [http://groups.google.com/group/scalate-commits](http://groups.google.com/group/scalate-commits)
+
+    ### Old Archives
+
+    Previously to moving to the [google group](http://groups.google.com/group/scalate), we hosted scalate mailing lists on Nabble here:
+
+    * [scalate-dev](http://n3.nabble.com/scalate-f143585.html)
+    * [scalate-commits](http://n3.nabble.com/scalate-commits-f143594.html)
+
+.left
+  :markdown
+    # Twitter
+
+.right
+  :markdown
+    You can watch us on twitter by following [@scalate](http://twitter.com/scalate) or alternatively searching for [scalate](http://search.twitter.com/search?q=scalate) or the [#scalate](http://search.twitter.com/search?q=%23scalate) tag.
+
+    If you find something you like or don't like in scalate please do tweet it (with scalate or #scalate in the text) or lets chat about it on the [mailing list](http://groups.google.com/group/scalate)
+
+.left
+  :markdown
+    # IRC
+.right
+  :markdown
+    You can also catch us on IRC to chat via **#scalate** on **irc.freenode.net**. If you don't have an IRC client then try the [web based IRC client](http://webchat.freenode.net/?channels=#scalate) or the [freenode java applet](http://java.freenode.net/index.php?channel=scalate) or this
+
+.left
+  :markdown
+    # Support
+.right
+  :&markdown
+    If you have a problem you can [get help](support.html) or try surfing our [Issue Tracker](#{project_issue_url})
+
+

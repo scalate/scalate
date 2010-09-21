@@ -27,15 +27,38 @@ object Files {
    * predicate or matches against this file for non-directories
    */
   def recursiveFind(file: File)(filter: File => Boolean): Option[File] = {
+    andDescendants(file).find(filter)
+/*
     if (file.isDirectory) {
       file.listFiles.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
     } else {
       if (filter(file)) Some(file) else None
     }
+*/
   }
 
   def recursiveFind(directories: Traversable[File])(filter: File => Boolean): Option[File] = {
     directories.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
+  }
+
+  def children(file: File): Iterable[File] = new Iterable[File] {
+    def iterator = if (file.isDirectory) file.listFiles.iterator else Iterator.empty
+  }
+
+  def descendants(file: File): Iterable[File] = (
+    children(file).view.flatMap(andDescendants(_)))
+
+
+  def andDescendants(file: File): Iterable[File] = (
+    Seq(file) ++ descendants(file))
+
+
+  /**
+   * Returns true if
+   */
+  def isDescendant(root: File, file: File): Boolean = {
+    val dir = if (file.isDirectory) file else file.getParentFile
+    dir.getCanonicalPath.startsWith(root.getCanonicalPath)
   }
 
   /**

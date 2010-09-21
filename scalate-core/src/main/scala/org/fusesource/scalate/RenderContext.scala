@@ -19,11 +19,15 @@
 package org.fusesource.scalate
 
 import filter.FilterRequest
-import java.util.{Locale, Date}
-import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
+import support.Resource
+import util._
+import util.IOUtil._
+
+import java.io.File
+import java.text.{DateFormat, NumberFormat}
+import java.util.{Locale, Date}
 import collection.mutable.{ListBuffer, HashMap}
-import util.{Objects, RenderHelper, XmlHelper, Lazy}
 import xml.{Node, PCData, NodeSeq, NodeBuffer}
 
 object RenderContext {
@@ -98,6 +102,35 @@ trait RenderContext {
    * Returns the request URI
    */
   def requestUri: String
+
+  /**
+   * Returns the Resource of the request
+   */
+  def requestResource: Option[Resource]
+
+  /**
+   * Returns the file for the given request resource
+   */
+  def requestFile: Option[File]
+
+
+  /**
+   * Returns a local link to the given file which should be within the [sourceDirectories]
+   */
+  def uri(file: File): Option[String] = {
+    for (s <- engine.sourceDirectories) {
+      if (Files.isDescendant(s, file)) {
+        return Some(uri("/" + Files.relativeUri(s, file)))
+      }
+    }
+    None
+  }
+
+
+  /**
+   * Allows conversion of an absolute URL starting with "/" to be converted using the prefix of a web application
+   */
+  def uri(u: String): String = u
 
   /**
    * Access the attributes available in this context
@@ -205,7 +238,7 @@ trait RenderContext {
 
   def filter(name: String, content: String): String = {
     val context = this
-    engine.filters.get(name) match {
+    engine.filter(name) match {
       case None => throw new NoSuchFilterException(name)
       case Some(f) => f.filter(context, content)
     }
@@ -340,7 +373,7 @@ trait RenderContext {
    * Uses the new sets of attributes for the given block, then replace them all
    * (and remove any newly defined attributes)
    */
-  def withAttributes(attrMap: Map[String, Any])(block: => Unit): Unit = {
+  def withAttributes[T](attrMap: Map[String, Any])(block: => T): T = {
     val oldValues = new HashMap[String, Any]
 
     // lets replace attributes, saving the old values
@@ -352,7 +385,7 @@ trait RenderContext {
       attributes(key) = value
     }
 
-    block
+    val answer = block
 
     // restore old values
     for (key <- attrMap.keysIterator) {
@@ -361,6 +394,8 @@ trait RenderContext {
         setAttribute(key, oldValue)
       }
     }
+
+    answer
   }
 
   /**

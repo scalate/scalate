@@ -88,7 +88,7 @@
     <slf4j-version>1.6.0</slf4j-version>
     <surefire-version>2.5</surefire-version>
     <war-plugin-version>2.1-beta-1</war-plugin-version>
-    <scalamd-version>1.1</scalamd-version>
+    <scalamd-version>1.2-SNAPSHOT</scalamd-version>
     <wikitext-version>1.0</wikitext-version>
     
   </properties>
@@ -210,6 +210,7 @@
     <module>scalate-jsp-converter</module>
     <module>scalate-page</module>
     <module>scalate-markdownj</module>
+    <module>scalate-website</module>
   </modules>
 
   <dependencies>

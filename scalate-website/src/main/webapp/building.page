@@ -1,0 +1,63 @@
+---
+title: Building
+--- name:overview
+
+# How to Build ${project_name}
+The way most developers get started contributing to a project.
+
+--- name:content 
+
+## Building with Maven
+
+Scalate uses [Maven](http://maven.apache.org/) as its primary build tool for performing releases and uses the pom.xml to describe dependencies between modules. 
+
+If you don't fancy using Maven you can try using [sbt](sbt.html) which is particularly good for rapid edit-compile-test cycles or use your IDE directly or [Download](download.html) a distribution or JAR.
+
+### Prequisites
+
+*Required:*
+* Download and [install Maven](http://maven.apache.org/download.html)
+* Get the latest [Source](source.html)
+* Java 1.5
+
+### Maven options
+
+To build ${project_name} maven has to be configured to use more memory
+
+    set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m
+
+### A normal build
+
+    mvn install -Pdownload
+
+The last argument, **-Pdownload**, is optional and typically only used on the first build as it adds some extra repos to the project just in case our dependencies have not quite reached the central Maven repository yet.
+
+### Doing a Quick Build
+
+The following avoids running all the unit test cases, we just skip the test running phase and not the building part
+
+    mvn -Dtest=false clean install
+
+### Using an IDE
+
+If you prefer to use an IDE then you can auto-generate the IDE's project files using maven plugins. e.g.
+
+    mvn eclipse:eclipse
+  
+or
+
+    mvn idea:idea
+
+### Importing into Eclipse
+
+If you have not already done so, you will need to make Eclipse aware of the Maven repository so that it can build everything. In the preferences, go to `Java -> Build Path -> Classpath` and define a new Classpath Variable named `M2_REPO` that points to your local Maven repository. i.e. `~/.m2/repository` on Unix and `c:\Documents and Settings\$username\.m2\repository` on Windows).
+
+You can also get Maven to do this for you:
+
+    mvn eclipse:add-maven-repo -Declipse.workspace=/path/to/the/workspace/ 
+
+### See Also
+
+* [Building with SBT](sbt.html)
+* [Source](source.html)
+* [Developer Links](developers.html)

@@ -138,7 +138,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   /**
    * Creates a URI which if the uri starts with / then the link is prefixed with the web applications context
    */
-  def uri(uri: String) = {
+  override def uri(uri: String) = {
     if (uri.startsWith("/")) {
       request.getContextPath + uri
     }

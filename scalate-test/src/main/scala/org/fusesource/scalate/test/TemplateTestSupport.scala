@@ -20,6 +20,7 @@ class TemplateTestSupport extends FunSuiteSupport {
       // lets delete it before we run the tests
       IOUtil.recursiveDelete(workingDir)
     }
+    engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
     engine.workingDirectory = workingDir
   }
 

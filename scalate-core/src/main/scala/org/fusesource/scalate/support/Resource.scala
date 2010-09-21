@@ -134,6 +134,22 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   def recursiveFind(f: File => Boolean): Option[File] = Files.recursiveFind(file)(f)
 
   /**
+   * Returns an Iterable over the immediate children of this directory
+   * or an empty Iterable
+   */
+  def children: Iterable[File] = Files.children(file)
+
+  /**
+   * Returns an Iterable over any descending files
+   */
+  def descendants: Iterable[File] = Files.descendants(file)
+
+  /**
+   * Returns an Iterable over this file and any descending files
+   */
+  def andDescendants: Iterable[File] = Files.andDescendants(file)
+
+  /**
    * Returns the relative URI of this file from the given root directory
    */
   def relativeUri(root: File) = Files.relativeUri(root, file)

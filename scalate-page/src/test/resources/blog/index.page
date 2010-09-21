@@ -1,0 +1,26 @@
+---
+title: Scalate Blog
+in_menu: false
+sort_info: 7
+--- name:head pipeline:ssp
+<link rel="alternate" title="Foo RSS" href="index.rss" type="application/rss+xml">
+
+--- name:overview
+<h1>
+Foo Blog <a href="index.rss"><img src="images/rss.gif"/></a>
+</h1>
+The latest greatest news from the Scalate team
+
+--- name:blog pipeline:ssp
+
+<% import org.fusesource.scalate.page.BlogHelper._ %>
+#for(page <- helper.blogPosts)
+  	  <div class="post">
+  	    <h2><a href="">${page.title}</a></h2>
+        <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
+    	  <p>
+          ${page.render()}
+        </p>
+  	  </div>
+#end
+

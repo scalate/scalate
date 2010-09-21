@@ -17,31 +17,72 @@
  */
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate.support.{Text, ScalaParseSupport}
-import org.fusesource.scalate.util.IOUtil
-import java.io.File
-import org.fusesource.scalate.{RenderContext, InvalidSyntaxException, TemplateEngine, TemplateEngineAddOn}
-import org.yaml.snakeyaml.Yaml
-import collection.mutable.HashMap
+import org.fusesource.scalate._
 import org.fusesource.scalate.filter.{Pipeline, Filter}
-import util.parsing.input.{NoPosition, CharSequenceReader}
+import org.fusesource.scalate.support.{Text, ScalaParseSupport}
+import util.{IOUtil, Files}
+import IOUtil._
+
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import org.yaml.snakeyaml.Yaml
+import scala.util.parsing.input.{NoPosition, CharSequenceReader}
+
+case class Attribute(key:Text, value:Text)
+
+case class PagePart(attributes:List[Attribute], content:Text) {
+
+  def attribute(name:String) = attributes.find(_.key.value == name).map(_.value)
+  def name = attribute("name")
+
+  def pipeline = attribute("pipeline")
+
+  def filter(engine:TemplateEngine) = new Pipeline(pipeline.map(_.value).getOrElse("ssp,markdown").split(",").map{fn=>
+    engine.filter(fn) match {
+      case Some(filter) => filter
+      case _ =>
+        throw new InvalidSyntaxException("Invalid filter name: "+fn, pipeline.map(_.pos).getOrElse(NoPosition) )
+    }
+  }.toList)
+
+  def render(context: RenderContext) = filter(context.engine).filter(context, content.value)
+}
+
+case class Page(context: RenderContext, file: Option[File], headers:Map[String, AnyRef], parts:Map[String, PagePart]) extends Node {
+  protected lazy val fileNode = file.map(new FileNode(_))
+
+  override def toString = "Page(" + file + ")"
+
+  def title = headers.get("title") match {
+    case Some(t) => t.toString
+    case _ => fileNode.map(_.title).getOrElse("")
+  }
+
+  def author = headers.getOrElse("author", "").toString
+
+  def createdAt = headers.get("created_at") match {
+    case Some(t) => PageFilter.dateFormat.parse(t.toString)
+    case _ => fileNode.map(_.createdAt).getOrElse(new Date())
+  }
+
+  var link: String = _
+
+  def content(part:String="content") = parts.get(part).map(_.content.value).getOrElse("")
+
+  def render(part:String="content") = {
+    context.withAttributes(headers) {
+      parts.get(part).map(_.render(context)).getOrElse("")
+    }
+  }
+}
 
 /**
- * <p>
- * </p>
- *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object PageFilter extends Filter with TemplateEngineAddOn {
 
-  case class Attribute(key:Text, value:Text)
-  case class PagePart(attributes:List[Attribute], content:Text) {
-    def attribute(name:String) = attributes.find(_.key.value == name).map(_.value)
-    def name = attribute("name")
-    def filters = attribute("filters").orElse(attribute("pipeline"))
-  }
-
-
+  val dateFormat = new SimpleDateFormat("yyyy-MM-d HH:mm:ss Z")
 
   /**
    * Parser for the Page Format
@@ -90,51 +131,51 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     }
   }
 
-  val default_filters = "ssp,markdown"
   val default_name = "content"
 
   def filter(context: RenderContext, content: String) = {
+    val page = parse(context, content)
+    context.withAttributes(page.headers) {
+      var rc = ""
+      page.parts.foreach{ case(name, part)=>
+        if ( name!=default_name ) {
+          context.attributes(name) = part.render(context)
+        } else {
+          rc = part.render(context)
+        }
+      }
+      rc
+    }
+  }
+
+  def parse(context: RenderContext, content: String):Page =
+    parse(context, content, None)
+
+  def parse(context: RenderContext, file: File):Page =
+    parse(context, file.text, Some(file))
+
+  protected def parse(context: RenderContext, content: String, file: Option[File]):Page = {
     val p = new PageParser
     var parts = p.parsePageParts(content)
 
-    meta_data(context, parts) match {
-      case Some(meta_data)=>
-        // Set all meta data values attributes
-        meta_data.foreach { case (key, value)=>
-          context.attributes(key) = value
-        }
-        parts = parts.drop(1)
-      case _ =>
+    var headers = Map[String, AnyRef]()
+    meta_data(context, parts).foreach { meta_data=>
+      meta_data.foreach { case (key, value)=>
+        headers += key->value
+      }
+      parts = parts.drop(1)
     }
 
-    var rendered_parts = new HashMap[String, String]
+    var page_parts = Map[String, PagePart]()
     parts.foreach{ part=>
-
       val name = part.name.map(_.value).getOrElse(default_name)
-      val filters = part.filters.map(_.value).getOrElse(default_filters).split(",").map{fn=>
-        context.engine.filter(fn) match {
-          case Some(filter) => filter
-          case _ =>
-            throw new InvalidSyntaxException("Invalid filter name: "+fn, part.filters.map(_.pos).getOrElse(NoPosition) )
-        }
+      if( page_parts.contains(name) ) {
+        throw new InvalidSyntaxException("A page part named: %s was already defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
       }
-
-      val content = new Pipeline(filters.toList).filter(context, part.content.value)
-
-      if( rendered_parts.contains(name) ) {
-        throw new InvalidSyntaxException("A page part named: %s was allready defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
-      }
-
-      rendered_parts.put(name, content)
+      page_parts += name -> part
     }
-
-    for( (name, content) <- rendered_parts if name!=default_name ) {
-      context.attributes(name) = content
-    }
-
-    rendered_parts.get(default_name).getOrElse("")
+    Page(context, file, headers, page_parts)
   }
-
 
   def meta_data(context: RenderContext, parts:List[PagePart] ) = {
     parts.headOption match {

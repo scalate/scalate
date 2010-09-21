@@ -46,18 +46,17 @@
       <artifactId>snakeyaml</artifactId>
       <version>1.7</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalamd</groupId>
+      <artifactId>scalamd</artifactId>
+      <version>${scalamd-version}</version>
+    </dependency>
 
     <!-- testing -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-test</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.scalamd</groupId>
-      <artifactId>scalamd</artifactId>
-      <version>${scalamd-version}</version>
       <scope>test</scope>
     </dependency>
 
