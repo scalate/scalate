@@ -33,49 +33,54 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
   def filter(context: RenderContext, content: String) = {
     def attr(name: String, defaultValue: => String = "") = context.attributeOrElse(name, defaultValue)
 
-    // TODO apply headers found in file....
 
-    val helper = new PageHelper(context)
+    // lets disable layouts
+    context.attributes("layout") = ""
 
-    val pages = helper.blogPosts
+    val page = PageFilter.parse(context, content)
+    context.withAttributes(page.headers) {
 
-    val pubDate = format(new Date())
 
-    val xml = <rss version="2.0">
-      <channel>
-        <title>
-          {attr("title")}
-        </title>
-        <link>
-          {attr("link")}
-        </link>
-        <description>
-          {attr("link")}
-        </description>
-        <pubDate>
-          {pubDate}
-        </pubDate>
-        <lastBuildDate>
-          {pubDate}
-        </lastBuildDate>
-        <generator>Scalate - http://scalate.fusesource.org/</generator>
+      val helper = new PageHelper(context)
 
-        {pages.map {
-        page =>
-          <item>
-            <title>
-              {page.title}
-            </title>
-            <link>
-              {page.link}
-            </link>
-            <description></description>
-          </item>
-      }}
-      </channel>
-    </rss>
+      val pages = helper.blogPosts
 
-    "<?xml version='1.0' encoding='utf-8' ?>\n" + xml
+      val pubDate = format(new Date())
+
+      val xml = <rss version="2.0">
+        <channel>
+          <title>
+            {attr("title")}
+          </title>
+          <link>
+            {attr("link")}
+          </link>
+          <description>
+            {attr("description")}
+          </description>
+          <pubDate>
+            {pubDate}
+          </pubDate>
+          <lastBuildDate>
+            {pubDate}
+          </lastBuildDate>
+          <generator>Scalate - http://scalate.fusesource.org/</generator>{pages.map {
+          page =>
+            <item>
+              <title>
+                {page.title}
+              </title>
+              <link>
+                {page.link}
+              </link>
+              <description></description>
+            </item>
+        }}
+        </channel>
+      </rss>
+
+      "<?xml version='1.0' encoding='utf-8' ?>\n" + xml
+    }
   }
 
   def apply(te: TemplateEngine) = {

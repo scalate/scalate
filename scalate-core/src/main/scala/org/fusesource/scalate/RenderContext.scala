@@ -373,7 +373,7 @@ trait RenderContext {
    * Uses the new sets of attributes for the given block, then replace them all
    * (and remove any newly defined attributes)
    */
-  def withAttributes(attrMap: Map[String, Any])(block: => Unit): Unit = {
+  def withAttributes[T](attrMap: Map[String, Any])(block: => T): T = {
     val oldValues = new HashMap[String, Any]
 
     // lets replace attributes, saving the old values
@@ -385,7 +385,7 @@ trait RenderContext {
       attributes(key) = value
     }
 
-    block
+    val answer = block
 
     // restore old values
     for (key <- attrMap.keysIterator) {
@@ -394,6 +394,8 @@ trait RenderContext {
         setAttribute(key, oldValue)
       }
     }
+
+    answer
   }
 
   /**
