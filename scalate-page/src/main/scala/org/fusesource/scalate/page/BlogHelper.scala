@@ -39,7 +39,7 @@ object BlogHelper extends Logging {
     val index = new File(dir, "index.page")
     dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map { file =>
       val page = PageFilter.parse(context, file)
-      page.link = base + "/" + file.relativeUri(dir).stripSuffix(".page") + ".html"
+      page.link = file.relativeUri(dir).stripSuffix(".page") + ".html"
       page
     }.toList.sortBy(_.createdAt.getTime * -1)
   }

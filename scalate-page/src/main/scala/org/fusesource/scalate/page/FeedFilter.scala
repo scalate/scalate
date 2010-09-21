@@ -41,11 +41,12 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
 
       val posts = BlogHelper.posts
       val date = format(new Date())
+      val link = attr("link")
 
       val xml = <rss version="2.0">
         <channel>
           <title>{attr("title")}</title>
-          <link>{attr("link")}</link>
+          <link>{link}</link>
           <description>{attr("description")}</description>
           <pubDate>{date}</pubDate>
           <lastBuildDate>{date}</lastBuildDate>
@@ -53,7 +54,7 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
           {posts.map{ post =>
             <item>
               <title>{post.title}</title>
-              <link>{post.link}</link>
+              <link>{link+post.link}</link>
               <description>{post.render()}</description>
             </item>
           }}
