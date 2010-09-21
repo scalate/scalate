@@ -238,7 +238,7 @@ trait RenderContext {
 
   def filter(name: String, content: String): String = {
     val context = this
-    engine.filters.get(name) match {
+    engine.filter(name) match {
       case None => throw new NoSuchFilterException(name)
       case Some(f) => f.filter(context, content)
     }
