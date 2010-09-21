@@ -133,11 +133,12 @@ class SiteGenMojo extends AbstractMojo {
           // uri = uri.replace(':', '_')
           val ext = parts.last
           if (extensions.contains(ext)) {
-            getLog.info("    processing " + file + " with uri: " + uri)
 
             ClassLoaders.withContextClassLoader(projectClassLoader) {
               val html = engine.layout(TemplateSource.fromFile(file, uri))
-              val sourceFile = new File(targetDirectory, uri.stripPrefix("/").stripSuffix(ext) + "html")
+              val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
+
+              getLog.info("    processing " + file + " with uri: " + uri + " => ")
               sourceFile.getParentFile.mkdirs
               //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
               IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
@@ -162,6 +163,18 @@ class SiteGenMojo extends AbstractMojo {
 
     //this.project.add(targetDirectory.getCanonicalPath);
 
+  }
+
+  protected var validFileExcentions = Set("js", "css", "rss", "atom", "htm", "xml", "csv", "json")
+
+  protected def appendHtmlPostfix(uri: String): String = {
+    val answer = Files.dropExtension(uri)
+    val ext = Files.extension(answer)
+    if (validFileExcentions.contains(ext)) {
+      answer
+    } else {
+      answer + ".html"
+    }
   }
 
 }

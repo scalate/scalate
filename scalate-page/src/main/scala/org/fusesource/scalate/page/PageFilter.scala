@@ -17,17 +17,20 @@
  */
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate.support.{Text, ScalaParseSupport}
-import org.fusesource.scalate.util.IOUtil
-import java.io.File
-import org.fusesource.scalate.{RenderContext, InvalidSyntaxException, TemplateEngine, TemplateEngineAddOn}
-import org.yaml.snakeyaml.Yaml
+import org.fusesource.scalate._
 import org.fusesource.scalate.filter.{Pipeline, Filter}
-import util.parsing.input.{NoPosition, CharSequenceReader}
+import org.fusesource.scalate.support.{Text, ScalaParseSupport}
+import util.{IOUtil, Files}
+import IOUtil._
+
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
+import org.yaml.snakeyaml.Yaml
+import scala.util.parsing.input.{NoPosition, CharSequenceReader}
 
 case class Attribute(key:Text, value:Text)
+
 case class PagePart(attributes:List[Attribute], content:Text) {
 
   def attribute(name:String) = attributes.find(_.key.value == name).map(_.value)
@@ -46,27 +49,41 @@ case class PagePart(attributes:List[Attribute], content:Text) {
   def render(context: RenderContext) = filter(context.engine).filter(context, content.value)
 }
 
-case class Page(headers:Map[String, AnyRef], parts:Map[String, PagePart]) extends Node {
-  // TODO use the underlying File for the page as a default for missing attributes
-  def title = headers.getOrElse("title", "").toString
+case class Page(context: RenderContext, file: Option[File], headers:Map[String, AnyRef], parts:Map[String, PagePart]) extends Node {
+  protected lazy val fileNode = file.map(new FileNode(_))
+
+  override def toString = "Page(" + file + ")"
+
+  def title = headers.get("title") match {
+    case Some(t) => t.toString
+    case _ => fileNode.map(_.title).getOrElse("")
+  }
 
   def author = headers.getOrElse("author", "").toString
 
   def createdAt = headers.get("created_at") match {
     case Some(t) => PageFilter.dateFormat.parse(t.toString)
-    case _ => new Date()
+    case _ => fileNode.map(_.createdAt).getOrElse(new Date())
   }
+
+  def link: String =
+    file match {
+      case Some(f) =>
+        // lets drop the extension so we work nicely with static site generation
+        context.uri(f).map(Files.dropExtension(_)).getOrElse(throw new TemplateException("File " + f +
+              " is not within the template engines source directories: " + context.engine.sourceDirectories))
+      case _ => throw new TemplateException("Page does not have a file associated with it")
+    }
 
   def content(part:String="content") = parts.get(part).map(_.content.value).getOrElse("")
 
-  def render(context: RenderContext, part:String="content") = parts.get(part).map(_.render(context)).getOrElse("")
-
+  def render(part:String="content") =
+    context.withAttributes(headers) {
+      parts.get(part).map(_.render(context)).getOrElse("")
+    }
 }
 
 /**
- * <p>
- * </p>
- *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object PageFilter extends Filter with TemplateEngineAddOn {
@@ -125,17 +142,25 @@ object PageFilter extends Filter with TemplateEngineAddOn {
   def filter(context: RenderContext, content: String) = {
     val page = parse(context, content)
     var rc = ""
-    page.parts.foreach{ case(name, part)=>
-      if ( name!=default_name ) {
-        context.attributes(name) = part.render(context)
-      } else {
-        rc = part.render(context)
+    context.withAttributes(page.headers) {
+      page.parts.foreach{ case(name, part)=>
+        if ( name!=default_name ) {
+          context.attributes(name) = part.render(context)
+        } else {
+          rc = part.render(context)
+        }
       }
     }
     rc
   }
 
-  def parse(context: RenderContext, content: String):Page = {
+  def parse(context: RenderContext, content: String):Page =
+    parse(context, content, None)
+
+  def parse(context: RenderContext, file: File):Page =
+    parse(context, file.text, Some(file))
+
+  protected def parse(context: RenderContext, content: String, file: Option[File]):Page = {
     val p = new PageParser
     var parts = p.parsePageParts(content)
 
@@ -151,11 +176,11 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     parts.foreach{ part=>
       val name = part.name.map(_.value).getOrElse(default_name)
       if( page_parts.contains(name) ) {
-        throw new InvalidSyntaxException("A page part named: %s was allready defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
+        throw new InvalidSyntaxException("A page part named: %s was already defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
       }
       page_parts += name -> part
     }
-    Page(headers, page_parts)
+    Page(context, file, headers, page_parts)
   }
 
   def meta_data(context: RenderContext, parts:List[PagePart] ) = {

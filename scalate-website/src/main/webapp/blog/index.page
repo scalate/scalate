@@ -3,11 +3,11 @@ title: Scalate Blog
 in_menu: false
 sort_info: 7
 --- name:head pipeline:ssp
-<link rel="alternate" title="Foo RSS" href="index.rss" type="application/rss+xml">
+<link rel="alternate" title="${project_name} RSS" href="index.rss" type="application/rss+xml">
 
 --- name:overview
 <h1>
-Foo Blog <a href="index.rss"><img src="images/rss.gif"/></a>
+${project_name} Blog <a href="index.rss"><img src="${uri("/images/rss.gif")}"/></a>
 </h1>
 The latest greatest news from the Scalate team
 
@@ -21,12 +21,11 @@ The latest greatest news from the Scalate team
 %>
 
 #for(page <- helper.blogPosts)
-  	  <div class="post">
-  	    <h2><a href="">${page.title}</a></h2>
+        <div>
+  	    <h2><a href="${page.link}">${page.title}</a></h2>
         <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
-    	  <p>
           ${page.render()}
-        </p>
-  	  </div>
+  	    </div>
 #end
+
 

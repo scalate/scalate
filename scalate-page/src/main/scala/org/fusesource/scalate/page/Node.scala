@@ -42,7 +42,7 @@ class FileNode(file: File) extends Node {
 object Node {
   implicit def toNode(context: RenderContext, file: File): Node = {
     if (file.extension == "page") {
-      PageFilter.parse(context, file.text)
+      PageFilter.parse(context, file)
     } else {
       new FileNode(file)
     }

@@ -43,7 +43,7 @@ class PageHelper(context: RenderContext) extends Logging {
     val index = new File(dir, "index.page")
 
     dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map {
-      file => PageFilter.parse(context, file.text)
+      file => PageFilter.parse(context, file)
     }.toList.sortBy(_.createdAt.getTime * -1)
   }
 

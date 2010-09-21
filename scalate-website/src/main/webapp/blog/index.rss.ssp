@@ -1,16 +1,19 @@
-
 <%
   import org.fusesource.scalate.page.PageHelper
   val helper = inject[PageHelper]
+  attributes("layout") = ""
 %>
 
+Hello ${project_name}
+
+
 #for(page <- helper.blogPosts)
-  	  <div class="post">
+
+        <div>
   	    <h2><a href="${page.link}">${page.title}</a></h2>
         <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
-    	  <p>
           ${page.render()}
-        </p>
-  	  </div>
+  	    </div>
 #end
+
 
