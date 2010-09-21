@@ -1,0 +1,18 @@
+
+<%
+  import org.fusesource.scalate.page.PageHelper
+  val helper = inject[PageHelper]
+
+  println("Blog posts are: " + helper.blogPosts)
+%>
+
+#for(page <- helper.blogPosts)
+  	  <div class="post">
+  	    <h2><a href="">${page.title}</a></h2>
+        <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
+    	  <p>
+          ${page.content}
+        </p>
+  	  </div>
+#end
+

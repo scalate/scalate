@@ -18,28 +18,33 @@
 
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate.test.TemplateTestSupport
+import org.fusesource.scalate.RenderContext
+import org.fusesource.scalate.util.Files
+import org.fusesource.scalate.util.IOUtil._
+import java.io.File
+import java.util.Date
 
+trait Node {
+  def title: String
+
+  def createdAt: Date
+}
 
 /**
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
+ * Represents a regular file which has no metadata other than of the file itself
  */
-class PageFilterTest extends TemplateTestSupport {
+class FileNode(file: File) extends Node {
+  def title = Files.dropExtension(file).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
 
-  test("example 1") {
-    assertUriOutput("""<h1 id = "FAQ">FAQ</h1>
+  def createdAt = new Date(file.lastModified)
+}
 
-<ul>
-<li>This is the default page part</li>
-<li>It's name is content.</li>
-</ul>""", "example1.page")
-  }
-
-  test("example 2") {
-    assertUriOutput("""<script type='text/javascript'>
-  //<![CDATA[
-    var t = "Hello World"
-  //]]>
-</script>""", "example2.page")
+object Node {
+  implicit def toNode(context: RenderContext, file: File): Node = {
+    if (file.extension == "page") {
+      PageFilter.parse(context, file.text)
+    } else {
+      new FileNode(file)
+    }
   }
 }

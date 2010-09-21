@@ -19,9 +19,9 @@
 package org.fusesource.scalate
 
 import _root_.org.fusesource.scalate.util.{RenderHelper, Logging}
-import _root_.org.fusesource.scalate.support.{AttributesHashMap}
 import java.io._
 import collection.mutable.Stack
+import support.{Resource, AttributesHashMap}
 
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
@@ -42,7 +42,14 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
 
   def requestUri = _requestUri
 
-    def <<(v: Any): Unit = {
+  def requestResource: Option[Resource] = engine.resourceLoader.resource(requestUri)
+
+  def requestFile: Option[File] = requestResource match {
+    case Some(r) => r.toFile
+    case _ => None
+  }
+
+  def <<(v: Any): Unit = {
     out.print(value(v, false))
   }
 

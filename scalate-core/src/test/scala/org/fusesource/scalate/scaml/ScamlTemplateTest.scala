@@ -132,7 +132,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     Hello, *World*
 ""","""
 <p>
-  <h1>Markdown</h1>
+  <h1 id = "Markdown">Markdown</h1>
 
   <p>Hello, <em>World</em></p>
 </p>

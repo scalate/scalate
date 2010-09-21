@@ -25,8 +25,22 @@ import org.yaml.snakeyaml.Yaml
 import collection.mutable.HashMap
 import org.fusesource.scalate.filter.{Pipeline, Filter}
 import util.parsing.input.{NoPosition, CharSequenceReader}
+import java.text.SimpleDateFormat
+import java.util.Date
 
-case class Page(headers:Map[String, AnyRef], parts:Map[String, String])
+case class Page(headers:Map[String, AnyRef], parts:Map[String, String]) extends Node {
+  // TODO use the underlying File for the page as a default for missing attributes
+  def title = headers.getOrElse("title", "").toString
+
+  def author = headers.getOrElse("author", "").toString
+
+  def createdAt = headers.get("created_at") match {
+    case Some(t) => PageFilter.dateFormat.parse(t.toString)
+    case _ => new Date()
+  }
+
+  def content = parts.getOrElse("content", "").toString
+}
 
 /**
  * <p>
@@ -35,6 +49,8 @@ case class Page(headers:Map[String, AnyRef], parts:Map[String, String])
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object PageFilter extends Filter with TemplateEngineAddOn {
+
+  val dateFormat = new SimpleDateFormat("yyyy-MM-d HH:mm:ss Z")
 
   case class Attribute(key:Text, value:Text)
   case class PagePart(attributes:List[Attribute], content:Text) {

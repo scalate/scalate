@@ -19,11 +19,14 @@
 package org.fusesource.scalate
 
 import filter.FilterRequest
-import java.util.{Locale, Date}
-import java.text.{DateFormat, NumberFormat}
 import introspector.Introspector
-import collection.mutable.{ListBuffer, HashMap}
+import support.Resource
 import util.{Objects, RenderHelper, XmlHelper, Lazy}
+
+import java.io.File
+import java.text.{DateFormat, NumberFormat}
+import java.util.{Locale, Date}
+import collection.mutable.{ListBuffer, HashMap}
 import xml.{Node, PCData, NodeSeq, NodeBuffer}
 
 object RenderContext {
@@ -98,6 +101,16 @@ trait RenderContext {
    * Returns the request URI
    */
   def requestUri: String
+
+  /**
+   * Returns the Resource of the request
+   */
+  def requestResource: Option[Resource]
+
+  /**
+   * Returns the file for the given request resource
+   */
+  def requestFile: Option[File]
 
   /**
    * Access the attributes available in this context

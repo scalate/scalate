@@ -20,26 +20,11 @@ package org.fusesource.scalate.page
 
 import org.fusesource.scalate.test.TemplateTestSupport
 
+class PageHelperTest extends TemplateTestSupport {
 
-/**
- * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
- */
-class PageFilterTest extends TemplateTestSupport {
+  test("page helper iterates through blog posts in date order") {
+    showOutput = true
 
-  test("example 1") {
-    assertUriOutput("""<h1 id = "FAQ">FAQ</h1>
-
-<ul>
-<li>This is the default page part</li>
-<li>It's name is content.</li>
-</ul>""", "example1.page")
-  }
-
-  test("example 2") {
-    assertUriOutput("""<script type='text/javascript'>
-  //<![CDATA[
-    var t = "Hello World"
-  //]]>
-</script>""", "example2.page")
+    assertUriOutputContains("blog/index.ssp", "Scalate 1.1 Released",  "Scalate 1.0 Released")
   }
 }
