@@ -1,31 +1,24 @@
 ---
-title: Scalate Blog
+title: The ${project_name} Blog
 in_menu: false
 sort_info: 7
+
 --- name:head pipeline:ssp
 <link rel="alternate" title="${project_name} RSS" href="index.rss" type="application/rss+xml">
 
 --- name:overview
-<h1>
-${project_name} Blog <a href="index.rss"><img src="${uri("/images/rss.gif")}"/></a>
-</h1>
-The latest greatest news from the Scalate team
 
---- name:blog pipeline:ssp
+The latest and greatest news from the ${project_name} team
 
-<%
-  import org.fusesource.scalate.page.PageHelper
-  val helper = inject[PageHelper]
+--- name:blog pipeline:jade
 
-  println("Blog posts are: " + helper.blogPosts)
-%>
+:ssp
+  <h1>${project_name} Blog <a href="index.rss"><img src="${uri("/images/rss.gif")}"/></a></h1>
 
-#for(page <- helper.blogPosts)
-        <div>
-  	    <h2><a href="${page.link}">${page.title}</a></h2>
-        <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
-          ${page.render()}
-  	    </div>
-#end
-
-
+- import org.fusesource.scalate.page.BlogHelper._
+- for(post <- posts)
+  .post
+    a(href={post.link})
+      h2= post.title
+    .details Posted by #{post.author} on #{post.createdAt}
+    !~~ post.render()

@@ -1,5 +1,5 @@
 ---
-entries: [*/**/*.html]
+entries: ["*/**/*.html"]
 site_url: http://scalate.fusesource.org/blog/
 author: Scalate Team
 title: The Scalate Blog

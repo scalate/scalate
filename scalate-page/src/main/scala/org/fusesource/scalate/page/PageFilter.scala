@@ -66,21 +66,15 @@ case class Page(context: RenderContext, file: Option[File], headers:Map[String, 
     case _ => fileNode.map(_.createdAt).getOrElse(new Date())
   }
 
-  def link: String =
-    file match {
-      case Some(f) =>
-        // lets drop the extension so we work nicely with static site generation
-        context.uri(f).map(Files.dropExtension(_)).getOrElse(throw new TemplateException("File " + f +
-              " is not within the template engines source directories: " + context.engine.sourceDirectories))
-      case _ => throw new TemplateException("Page does not have a file associated with it")
-    }
+  var link: String = _
 
   def content(part:String="content") = parts.get(part).map(_.content.value).getOrElse("")
 
-  def render(part:String="content") =
+  def render(part:String="content") = {
     context.withAttributes(headers) {
       parts.get(part).map(_.render(context)).getOrElse("")
     }
+  }
 }
 
 /**
@@ -141,8 +135,8 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
   def filter(context: RenderContext, content: String) = {
     val page = parse(context, content)
-    var rc = ""
     context.withAttributes(page.headers) {
+      var rc = ""
       page.parts.foreach{ case(name, part)=>
         if ( name!=default_name ) {
           context.attributes(name) = part.render(context)
@@ -150,8 +144,8 @@ object PageFilter extends Filter with TemplateEngineAddOn {
           rc = part.render(context)
         }
       }
+      rc
     }
-    rc
   }
 
   def parse(context: RenderContext, content: String):Page =

@@ -1,15 +1,11 @@
+<% import org.fusesource.scalate.page.BlogHelper._ %>
 
-<%
-  import org.fusesource.scalate.page.PageHelper
-  val helper = inject[PageHelper]
-%>
-
-#for(page <- helper.blogPosts)
+#for(post <- posts)
   	  <div class="post">
-  	    <h2><a href="${page.link}">${page.title}</a></h2>
-        <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
+  	    <h2><a href="${post.link}">${post.title}</a></h2>
+        <div class="details">Posted by ${post.author} on ${post.createdAt}</div>
     	  <p>
-          ${page.render()}
+          ${post.render()}
         </p>
   	  </div>
 #end

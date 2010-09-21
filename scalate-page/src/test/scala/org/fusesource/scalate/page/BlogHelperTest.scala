@@ -20,7 +20,7 @@ package org.fusesource.scalate.page
 
 import org.fusesource.scalate.test.TemplateTestSupport
 
-class PageHelperTest extends TemplateTestSupport {
+class BlogHelperTest extends TemplateTestSupport {
 
   test("page helper iterates through blog posts in date order") {
     showOutput = true

@@ -23,36 +23,25 @@ import org.fusesource.scalate.util.IOUtil._
 import java.io.File
 import util.Logging
 
-object PageHelper {
-  def defaultBlogDir = new File("src") / "main" / "webapp" / "blog"
-
-}
-
-/**
- * A helper class for working with pages
- */
-class PageHelper(context: RenderContext) extends Logging {
+object BlogHelper extends Logging {
 
   /**
    * Returns the blog posts from the current request's directory by default sorted in date order
    */
-  //def blogPosts(dir: File = defaultBlogDir, max: Int = 10): List[Page] = {
-  def blogPosts: List[Page] = {
-    val dir = defaultBlogDir
-    println("Using dir: " + dir.getCanonicalPath)
-    val index = new File(dir, "index.page")
+  def posts: List[Page] = {
+    val context = RenderContext()
 
-    dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map {
-      file => PageFilter.parse(context, file)
+    val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
+    val dir = context.engine.resourceLoader.resource(base+"/index.page").flatMap(_.toFile).getOrElse(throw new Exception("index page not found.")).getParentFile
+
+    println("Using dir: "+dir+" at request path: "+base)
+
+    val index = new File(dir, "index.page")
+    dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map { file =>
+      val page = PageFilter.parse(context, file)
+      page.link = base + "/" + file.relativeUri(dir).stripSuffix(".page") + ".html"
+      page
     }.toList.sortBy(_.createdAt.getTime * -1)
   }
 
-  protected def defaultBlogDir: File = {
-    context.requestFile match {
-      case Some(f) => f.getParentFile
-      case _ =>
-        warn("Could not find File for resource " + context.requestResource)
-        PageHelper.defaultBlogDir
-    }
-  }
 }

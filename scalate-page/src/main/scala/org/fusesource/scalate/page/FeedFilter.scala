@@ -33,49 +33,30 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
   def filter(context: RenderContext, content: String) = {
     def attr(name: String, defaultValue: => String = "") = context.attributeOrElse(name, defaultValue)
 
-
     // lets disable layouts
     context.attributes("layout") = ""
 
     val page = PageFilter.parse(context, content)
     context.withAttributes(page.headers) {
 
-
-      val helper = new PageHelper(context)
-
-      val pages = helper.blogPosts
-
-      val pubDate = format(new Date())
+      val posts = BlogHelper.posts
+      val date = format(new Date())
 
       val xml = <rss version="2.0">
         <channel>
-          <title>
-            {attr("title")}
-          </title>
-          <link>
-            {attr("link")}
-          </link>
-          <description>
-            {attr("description")}
-          </description>
-          <pubDate>
-            {pubDate}
-          </pubDate>
-          <lastBuildDate>
-            {pubDate}
-          </lastBuildDate>
-          <generator>Scalate - http://scalate.fusesource.org/</generator>{pages.map {
-          page =>
+          <title>{attr("title")}</title>
+          <link>{attr("link")}</link>
+          <description>{attr("description")}</description>
+          <pubDate>{date}</pubDate>
+          <lastBuildDate>{date}</lastBuildDate>
+          <generator>Scalate - http://scalate.fusesource.org/</generator>
+          {posts.map{ post =>
             <item>
-              <title>
-                {page.title}
-              </title>
-              <link>
-                {page.link}
-              </link>
-              <description></description>
+              <title>{post.title}</title>
+              <link>{post.link}</link>
+              <description>{post.render()}</description>
             </item>
-        }}
+          }}
         </channel>
       </rss>
 

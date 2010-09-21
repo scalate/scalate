@@ -27,7 +27,7 @@ package
  */
 object Website {
 
-  val project_name= "scalate"
+  val project_name= "Scalate"
   val project_slogan= "Scala Template Engine: like JSP without the crap but with added Scala coolness"
   val project_id= "scalate"
   val project_jira_key= "SCALATE"
