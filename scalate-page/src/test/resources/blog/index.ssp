@@ -11,7 +11,7 @@
   	    <h2><a href="">${page.title}</a></h2>
         <div class="details">Posted by ${page.author} on ${page.createdAt}</div>
     	  <p>
-          ${page.content}
+          ${page.render(context)}
         </p>
   	  </div>
 #end

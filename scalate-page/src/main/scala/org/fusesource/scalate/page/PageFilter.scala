@@ -22,13 +22,31 @@ import org.fusesource.scalate.util.IOUtil
 import java.io.File
 import org.fusesource.scalate.{RenderContext, InvalidSyntaxException, TemplateEngine, TemplateEngineAddOn}
 import org.yaml.snakeyaml.Yaml
-import collection.mutable.HashMap
 import org.fusesource.scalate.filter.{Pipeline, Filter}
 import util.parsing.input.{NoPosition, CharSequenceReader}
 import java.text.SimpleDateFormat
 import java.util.Date
 
-case class Page(headers:Map[String, AnyRef], parts:Map[String, String]) extends Node {
+case class Attribute(key:Text, value:Text)
+case class PagePart(attributes:List[Attribute], content:Text) {
+
+  def attribute(name:String) = attributes.find(_.key.value == name).map(_.value)
+  def name = attribute("name")
+
+  def pipeline = attribute("pipeline")
+
+  def filter(engine:TemplateEngine) = new Pipeline(pipeline.map(_.value).getOrElse("ssp,markdown").split(",").map{fn=>
+    engine.filter(fn) match {
+      case Some(filter) => filter
+      case _ =>
+        throw new InvalidSyntaxException("Invalid filter name: "+fn, pipeline.map(_.pos).getOrElse(NoPosition) )
+    }
+  }.toList)
+
+  def render(context: RenderContext) = filter(context.engine).filter(context, content.value)
+}
+
+case class Page(headers:Map[String, AnyRef], parts:Map[String, PagePart]) extends Node {
   // TODO use the underlying File for the page as a default for missing attributes
   def title = headers.getOrElse("title", "").toString
 
@@ -39,7 +57,10 @@ case class Page(headers:Map[String, AnyRef], parts:Map[String, String]) extends 
     case _ => new Date()
   }
 
-  def content = parts.getOrElse("content", "").toString
+  def content(part:String="content") = parts.get(part).map(_.content.value).getOrElse("")
+
+  def render(context: RenderContext, part:String="content") = parts.get(part).map(_.render(context)).getOrElse("")
+
 }
 
 /**
@@ -51,15 +72,6 @@ case class Page(headers:Map[String, AnyRef], parts:Map[String, String]) extends 
 object PageFilter extends Filter with TemplateEngineAddOn {
 
   val dateFormat = new SimpleDateFormat("yyyy-MM-d HH:mm:ss Z")
-
-  case class Attribute(key:Text, value:Text)
-  case class PagePart(attributes:List[Attribute], content:Text) {
-    def attribute(name:String) = attributes.find(_.key.value == name).map(_.value)
-    def name = attribute("name")
-    def filters = attribute("filters").orElse(attribute("pipeline"))
-  }
-
-
 
   /**
    * Parser for the Page Format
@@ -108,49 +120,19 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     }
   }
 
-  val default_filters = "ssp,markdown"
   val default_name = "content"
 
   def filter(context: RenderContext, content: String) = {
-    val p = new PageParser
-    var parts = p.parsePageParts(content)
-
-    meta_data(context, parts) match {
-      case Some(meta_data)=>
-        // Set all meta data values attributes
-        meta_data.foreach { case (key, value)=>
-          context.attributes(key) = value
-        }
-        parts = parts.drop(1)
-      case _ =>
-    }
-
-    var rendered_parts = new HashMap[String, String]
-    parts.foreach{ part=>
-
-      val name = part.name.map(_.value).getOrElse(default_name)
-      val filters = part.filters.map(_.value).getOrElse(default_filters).split(",").map{fn=>
-        context.engine.filter(fn) match {
-          case Some(filter) => filter
-          case _ =>
-            throw new InvalidSyntaxException("Invalid filter name: "+fn, part.filters.map(_.pos).getOrElse(NoPosition) )
-        }
+    val page = parse(context, content)
+    var rc = ""
+    page.parts.foreach{ case(name, part)=>
+      if ( name!=default_name ) {
+        context.attributes(name) = part.render(context)
+      } else {
+        rc = part.render(context)
       }
-
-      val content = new Pipeline(filters.toList).filter(context, part.content.value)
-
-      if( rendered_parts.contains(name) ) {
-        throw new InvalidSyntaxException("A page part named: %s was allready defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
-      }
-
-      rendered_parts.put(name, content)
     }
-
-    for( (name, content) <- rendered_parts if name!=default_name ) {
-      context.attributes(name) = content
-    }
-
-    rendered_parts.get(default_name).getOrElse("")
+    rc
   }
 
   def parse(context: RenderContext, content: String):Page = {
@@ -165,11 +147,13 @@ object PageFilter extends Filter with TemplateEngineAddOn {
       parts = parts.drop(1)
     }
 
-    var page_parts = Map[String, String]()
+    var page_parts = Map[String, PagePart]()
     parts.foreach{ part=>
       val name = part.name.map(_.value).getOrElse(default_name)
-      val value =  part.content.value
-      page_parts += name->value
+      if( page_parts.contains(name) ) {
+        throw new InvalidSyntaxException("A page part named: %s was allready defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition) )
+      }
+      page_parts += name -> part
     }
     Page(headers, page_parts)
   }
