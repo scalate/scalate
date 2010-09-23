@@ -21,6 +21,7 @@
 -@ var overview: String = null
 -@ var spot: String = null
 -@ var blog: String = null
+-@ var head: String = null
 - val include_console = engine.isDevelopmentMode && engine.resourceLoader.exists("/org/fusesource/scalate/console/console_head.scaml")
 !!! Basic
 html(lang="en")
@@ -31,7 +32,10 @@ html(lang="en")
     meta(content="Scalate" name="author")
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/pygmentize.css")})
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/site.css")})
-    
+
+    - if (head!=null)
+      !~~ head
+
     -#
       - if (include_console)
         - include("/org/fusesource/scalate/console/console_head.scaml")

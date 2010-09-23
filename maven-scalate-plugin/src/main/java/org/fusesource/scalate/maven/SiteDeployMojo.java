@@ -22,8 +22,6 @@ package org.apache.maven.plugins.site;
 import org.apache.commons.lang.StringUtils;
 import org.apache.maven.artifact.manager.WagonConfigurationException;
 import org.apache.maven.artifact.manager.WagonManager;
-import org.apache.maven.model.DistributionManagement;
-import org.apache.maven.model.Site;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
@@ -70,11 +68,11 @@ import java.io.File;
  * </p>
  *
  * @author <a href="mailto:michal@org.codehaus.org">Michal Maczka</a>
+ * @phase("deploy")
  * @goal deploy
  */
 public class SiteDeployMojo
-    extends AbstractMojo implements Contextualizable
-{
+        extends AbstractMojo implements Contextualizable {
     /**
      * Directory containing the generated site.
      *
@@ -102,11 +100,28 @@ public class SiteDeployMojo
     private String chmodMode;
 
     /**
+     * The Server ID used to deploy the site which should reference a &lt;server&gt; in your
+     * ~/.m2/settings.xml file for username/pwd
+     *
+     * @parameter expression="${scalate.remoteServerId}"
+     */
+    private String remoteServerId;
+
+    /**
+     * The Server Server URL to deploy the site to which uses the same URL format as the
+     * distributionManagement / site / url expression in the pom.xml
+     *
+     * @parameter expression="${scalate.remoteServerUrl}"
+     */
+    private String remoteServerUrl;
+
+    /**
      * The path used relative to the distribution URL in maven.
+     * TODO...
      * Defaults to ".." so that the module name of the maven project using this goal is not included in the URL.
      * Configure to "." if you want to include the module name in the site URL
      *
-     * @parameter default-value=".."
+     * @parameter default-value="."
      */
     private String remoteDirectory;
 
@@ -142,15 +157,16 @@ public class SiteDeployMojo
 
     private PlexusContainer container;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void execute()
-        throws MojoExecutionException
-    {
-        if ( !inputDirectory.exists() )
-        {
-            throw new MojoExecutionException( "The site does not exist, please run site:site first" );
+            throws MojoExecutionException {
+        if (!inputDirectory.exists()) {
+            throw new MojoExecutionException("The site does not exist, please run site:site first");
         }
 
+/*
         DistributionManagement distributionManagement = project.getDistributionManagement();
 
         if ( distributionManagement == null )
@@ -170,97 +186,76 @@ public class SiteDeployMojo
 
         String id = site.getId();
 
-        if ( url == null )
-        {
-            throw new MojoExecutionException( "The URL to the site is missing in the project descriptor." );
-        }
-        getLog().debug( "The site will be deployed to '" + url + "'");
+*/
 
-        Repository repository = new Repository( id, url );
+        String url = remoteServerUrl;
+        String id = remoteServerId;
+
+        if (id == null) {
+            throw new MojoExecutionException("The remoteServerId is missing in the plugin configuration.");
+        }
+        if (url == null) {
+            throw new MojoExecutionException("The remoteServerUrl is missing in the plugin configuration.");
+        }
+        getLog().debug("The site will be deployed to '" + url + "' with id '" + id + "'");
+
+        Repository repository = new Repository(id, url);
 
         // TODO: work on moving this into the deployer like the other deploy methods
 
         Wagon wagon;
 
-        try
-        {
-            wagon = wagonManager.getWagon( repository );
-            configureWagon( wagon, repository.getId(), settings, container, getLog() );
-        }
-        catch ( UnsupportedProtocolException e )
-        {
-            throw new MojoExecutionException( "Unsupported protocol: '" + repository.getProtocol() + "'", e );
-        }
-        catch ( WagonConfigurationException e )
-        {
-            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
+        try {
+            wagon = wagonManager.getWagon(repository);
+            configureWagon(wagon, repository.getId(), settings, container, getLog());
+        } catch (UnsupportedProtocolException e) {
+            throw new MojoExecutionException("Unsupported protocol: '" + repository.getProtocol() + "'", e);
+        } catch (WagonConfigurationException e) {
+            throw new MojoExecutionException("Unable to configure Wagon: '" + repository.getProtocol() + "'", e);
         }
 
-        if ( !wagon.supportsDirectoryCopy() )
-        {
+        if (!wagon.supportsDirectoryCopy()) {
             throw new MojoExecutionException(
-                "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying" );
+                    "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
         }
 
-        try
-        {
+        try {
             Debug debug = new Debug();
 
-            wagon.addSessionListener( debug );
+            wagon.addSessionListener(debug);
 
-            wagon.addTransferListener( debug );
+            wagon.addTransferListener(debug);
 
-            ProxyInfo proxyInfo = getProxyInfo( repository, wagonManager );
-            if ( proxyInfo != null )
-            {
-                wagon.connect( repository, wagonManager.getAuthenticationInfo( id ), proxyInfo );
-            }
-            else
-            {
-                wagon.connect( repository, wagonManager.getAuthenticationInfo( id ) );
+            ProxyInfo proxyInfo = getProxyInfo(repository, wagonManager);
+            if (proxyInfo != null) {
+                wagon.connect(repository, wagonManager.getAuthenticationInfo(id), proxyInfo);
+            } else {
+                wagon.connect(repository, wagonManager.getAuthenticationInfo(id));
             }
 
-            wagon.putDirectory( inputDirectory, remoteDirectory );
+            wagon.putDirectory(inputDirectory, remoteDirectory);
 
-            if ( chmod && wagon instanceof CommandExecutor )
-            {
+            if (chmod && wagon instanceof CommandExecutor) {
                 CommandExecutor exec = (CommandExecutor) wagon;
-                exec.executeCommand( "chmod " + chmodOptions + " " + chmodMode + " " + repository.getBasedir() );
+                exec.executeCommand("chmod " + chmodOptions + " " + chmodMode + " " + repository.getBasedir());
             }
-        }
-        catch ( ResourceDoesNotExistException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthorizationException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( ConnectionException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthenticationException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( CommandExecutionException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        finally
-        {
-            try
-            {
+        } catch (ResourceDoesNotExistException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } catch (TransferFailedException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } catch (AuthorizationException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } catch (ConnectionException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } catch (AuthenticationException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } catch (CommandExecutionException e) {
+            throw new MojoExecutionException("Error uploading site", e);
+        } finally {
+            try {
                 wagon.disconnect();
-            }
-            catch ( ConnectionException e )
-            {
-                getLog().error( "Error disconnecting wagon - ignored", e );
+            } catch (ConnectionException e) {
+                getLog().error("Error disconnecting wagon - ignored", e);
             }
         }
     }
@@ -279,51 +274,42 @@ public class SiteDeployMojo
      * Defensively support for comma (",") and semi colon (";") in addition to pipe ("|") as separator.
      * </p>
      *
-     * @param repository the Repository to extract the ProxyInfo from.
+     * @param repository   the Repository to extract the ProxyInfo from.
      * @param wagonManager the WagonManager used to connect to the Repository.
      * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found
      */
-    public static ProxyInfo getProxyInfo( Repository repository, WagonManager wagonManager )
-    {
-        ProxyInfo proxyInfo = wagonManager.getProxy( repository.getProtocol() );
+    public static ProxyInfo getProxyInfo(Repository repository, WagonManager wagonManager) {
+        ProxyInfo proxyInfo = wagonManager.getProxy(repository.getProtocol());
 
-        if ( proxyInfo == null )
-        {
+        if (proxyInfo == null) {
             return null;
         }
 
         String host = repository.getHost();
         String nonProxyHostsAsString = proxyInfo.getNonProxyHosts();
-        String[] nonProxyHosts = StringUtils.split( nonProxyHostsAsString, ",;|" );
-        for ( int i = 0; i < nonProxyHosts.length; i++ )
-        {
+        String[] nonProxyHosts = StringUtils.split(nonProxyHostsAsString, ",;|");
+        for (int i = 0; i < nonProxyHosts.length; i++) {
             String nonProxyHost = nonProxyHosts[i];
-            if ( StringUtils.contains( nonProxyHost, "*" ) )
-            {
+            if (StringUtils.contains(nonProxyHost, "*")) {
                 // Handle wildcard at the end, beginning or middle of the nonProxyHost
-                String nonProxyHostPrefix = StringUtils.substringBefore( nonProxyHost, "*" );
-                String nonProxyHostSuffix = StringUtils.substringAfter( nonProxyHost, "*" );
+                String nonProxyHostPrefix = StringUtils.substringBefore(nonProxyHost, "*");
+                String nonProxyHostSuffix = StringUtils.substringAfter(nonProxyHost, "*");
                 // prefix*
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isEmpty( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isNotEmpty(nonProxyHostPrefix) && host.startsWith(nonProxyHostPrefix)
+                        && StringUtils.isEmpty(nonProxyHostSuffix)) {
                     return null;
                 }
                 // *suffix
-                if ( StringUtils.isEmpty( nonProxyHostPrefix )
-                    && StringUtils.isNotEmpty( nonProxyHostSuffix ) && host.endsWith( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isEmpty(nonProxyHostPrefix)
+                        && StringUtils.isNotEmpty(nonProxyHostSuffix) && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
                 // prefix*suffix
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isNotEmpty( nonProxyHostSuffix ) && host.endsWith( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isNotEmpty(nonProxyHostPrefix) && host.startsWith(nonProxyHostPrefix)
+                        && StringUtils.isNotEmpty(nonProxyHostSuffix) && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
-            }
-            else if ( host.equals( nonProxyHost ) )
-            {
+            } else if (host.equals(nonProxyHost)) {
                 return null;
             }
         }
@@ -333,57 +319,42 @@ public class SiteDeployMojo
     /**
      * Configure the Wagon with the information from serverConfigurationMap ( which comes from settings.xml )
      *
-     * @todo Remove when {@link WagonManager#getWagon(Repository) is available}. It's available in Maven 2.0.5.
      * @param wagon
      * @param repositoryId
      * @param settings
      * @param container
      * @param log
      * @throws WagonConfigurationException
+     * @todo Remove when {@link WagonManager#getWagon(Repository) is available}. It's available in Maven 2.0.5.
      */
-    static void configureWagon( Wagon wagon, String repositoryId, Settings settings, PlexusContainer container,
-                                Log log )
-        throws WagonConfigurationException
-    {
+    static void configureWagon(Wagon wagon, String repositoryId, Settings settings, PlexusContainer container,
+                               Log log)
+            throws WagonConfigurationException {
         // MSITE-25: Make sure that the server settings are inserted
-        for ( int i = 0; i < settings.getServers().size(); i++ )
-        {
-            Server server = (Server) settings.getServers().get( i );
+        for (int i = 0; i < settings.getServers().size(); i++) {
+            Server server = (Server) settings.getServers().get(i);
             String id = server.getId();
-            if ( id != null && id.equals( repositoryId ) )
-            {
-                if ( server.getConfiguration() != null )
-                {
+            if (id != null && id.equals(repositoryId)) {
+                if (server.getConfiguration() != null) {
                     final PlexusConfiguration plexusConf =
-                        new XmlPlexusConfiguration( (Xpp3Dom) server.getConfiguration() );
+                            new XmlPlexusConfiguration((Xpp3Dom) server.getConfiguration());
 
                     ComponentConfigurator componentConfigurator = null;
-                    try
-                    {
-                        componentConfigurator = (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE );
-                        componentConfigurator.configureComponent( wagon, plexusConf, container.getContainerRealm() );
-                    }
-                    catch ( final ComponentLookupException e )
-                    {
-                        throw new WagonConfigurationException( repositoryId, "Unable to lookup wagon configurator."
-                            + " Wagon configuration cannot be applied.", e );
-                    }
-                    catch ( ComponentConfigurationException e )
-                    {
-                        throw new WagonConfigurationException( repositoryId, "Unable to apply wagon configuration.",
-                                                               e );
-                    }
-                    finally
-                    {
-                        if ( componentConfigurator != null )
-                        {
-                            try
-                            {
-                                container.release( componentConfigurator );
-                            }
-                            catch ( ComponentLifecycleException e )
-                            {
-                                log.error( "Problem releasing configurator - ignoring: " + e.getMessage() );
+                    try {
+                        componentConfigurator = (ComponentConfigurator) container.lookup(ComponentConfigurator.ROLE);
+                        componentConfigurator.configureComponent(wagon, plexusConf, container.getContainerRealm());
+                    } catch (final ComponentLookupException e) {
+                        throw new WagonConfigurationException(repositoryId, "Unable to lookup wagon configurator."
+                                + " Wagon configuration cannot be applied.", e);
+                    } catch (ComponentConfigurationException e) {
+                        throw new WagonConfigurationException(repositoryId, "Unable to apply wagon configuration.",
+                                e);
+                    } finally {
+                        if (componentConfigurator != null) {
+                            try {
+                                container.release(componentConfigurator);
+                            } catch (ComponentLifecycleException e) {
+                                log.error("Problem releasing configurator - ignoring: " + e.getMessage());
                             }
                         }
                     }
@@ -394,10 +365,9 @@ public class SiteDeployMojo
         }
     }
 
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    public void contextualize(Context context)
+            throws ContextException {
+        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
 }
