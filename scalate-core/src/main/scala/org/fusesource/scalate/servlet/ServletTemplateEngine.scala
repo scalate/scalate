@@ -109,6 +109,7 @@ object ServletTemplateEngine extends Logging {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
+  templateDirectories ::= "/WEB-INF"
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)

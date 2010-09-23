@@ -5,7 +5,7 @@ import org.fusesource.scalate.TemplateEngine
 /**
  * A helper object to find a template from a URI using a number of possible extensions and directories
  */
-class TemplateFinder(engine: TemplateEngine, templateDirectories: List[String]) {
+class TemplateFinder(engine: TemplateEngine) {
   var replacedExtensions = List(".html", ".htm")
   lazy val extensions = engine.extensions
 
@@ -15,7 +15,7 @@ class TemplateFinder(engine: TemplateEngine, templateDirectories: List[String]) 
     // Is the uri a direct path to a template??
     // i.e: /path/page.jade -> /path/page.jade
     def findDirect(uri: String): Option[String] = {
-      for (base <- templateDirectories; ext <- extensions) {
+      for (base <- engine.templateDirectories; ext <- extensions) {
         val path = base + uri
         if (path.endsWith(ext) && engine.resourceLoader.exists(path)) {
           return Some(path)
@@ -27,7 +27,7 @@ class TemplateFinder(engine: TemplateEngine, templateDirectories: List[String]) 
     // Lets try to find the template by appending a template extension to the path
     // i.e: /path/page.html -> /path/page.html.jade
     def findAppended(uri: String): Option[String] = {
-      for (base <- templateDirectories; ext <- extensions) {
+      for (base <- engine.templateDirectories; ext <- extensions) {
         val path = base + uri + "." + ext
         if (engine.resourceLoader.exists(path)) {
           return Some(path)

@@ -42,7 +42,7 @@ class TemplateEngineFilter extends Filter with Logging {
   def init(filterConfig: FilterConfig) = {
     config = filterConfig
     engine = createTemplateEngine(config)
-    finder = new TemplateFinder(engine, ServletHelper.templateDirectories)
+    finder = new TemplateFinder(engine)
 
     filterConfig.getInitParameter("replaced-extensions") match {
       case null =>

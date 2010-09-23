@@ -56,7 +56,6 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] with Logging {
   protected var response: HttpServletResponse = _
 
   protected var errorUris: List[String] = ServletHelper.errorUris()
-  protected var templateDirectories = ServletHelper.templateDirectories
 
   def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     classOf[View[T]].isAssignableFrom(aClass)
@@ -113,16 +112,8 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] with Logging {
     }
   }
 
-  protected lazy val finder = new TemplateFinder(engine, ServletHelper.templateDirectories)
+  protected lazy val finder = new TemplateFinder(engine)
 
-  /*
-  protected def finder = {
-    if (_finder == null) {
-      _finder = new TemplateFinder(engine, ServletHelper.templateDirectories)
-    }
-    _finder
-  }
-*/
 
   protected def engine = ServletTemplateEngine(servletContext)
 
