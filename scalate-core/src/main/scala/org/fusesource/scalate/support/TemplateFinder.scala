@@ -1,16 +1,23 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.TemplateEngine
+import util.matching.Regex
 
 /**
  * A helper object to find a template from a URI using a number of possible extensions and directories
  */
 class TemplateFinder(engine: TemplateEngine) {
+
+  var hiddenPatterns = List("""^_|/_""".r, """^\.|/\.""".r)
   var replacedExtensions = List(".html", ".htm")
   lazy val extensions = engine.extensions
 
   def findTemplate(rootOrPath: String): Option[String] = {
     val path = if (rootOrPath == "/") "/index" else rootOrPath
+
+    for( p <- hiddenPatterns ; if p.findFirstIn(path).isDefined ) {
+      return None
+    }
 
     // Is the uri a direct path to a template??
     // i.e: /path/page.jade -> /path/page.jade
