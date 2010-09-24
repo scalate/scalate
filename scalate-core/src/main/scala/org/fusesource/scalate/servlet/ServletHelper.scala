@@ -30,10 +30,4 @@ object ServletHelper {
    */
   def errorUris(errorCode: String = "500"): List[String] = TemplateEngine.templateTypes.map("/WEB-INF/scalate/errors/" + errorCode + "." + _)
 
-
-  /**
-   * The default directories to look for templates
-   */
-  def templateDirectories = List("/WEB-INF", "")
-
 }

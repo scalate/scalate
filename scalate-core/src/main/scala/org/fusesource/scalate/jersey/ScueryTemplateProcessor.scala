@@ -56,7 +56,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
   }
 
   var errorUris: List[String] = ServletHelper.errorUris()
-  var templateDirectories = ServletHelper.templateDirectories
+  def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
   var templateSuffixes = List("", ".html", ".htm")
 

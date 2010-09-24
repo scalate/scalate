@@ -56,7 +56,8 @@ class TransformerWriter extends MessageBodyWriter[Transformer] with Logging {
   protected var response: HttpServletResponse = _
 
   protected var errorUris: List[String] = ServletHelper.errorUris()
-  protected var templateDirectories = ServletHelper.templateDirectories
+
+  protected def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
 
   def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {

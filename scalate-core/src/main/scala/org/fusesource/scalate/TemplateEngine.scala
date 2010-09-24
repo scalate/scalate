@@ -101,6 +101,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   var resourceLoader: ResourceLoader = new FileResourceLoader(sourceDirectoriesForwarder)
 
+  /**
+   * A list of directories which are searched to load requested templates.
+   */
+  var templateDirectories = List("")
 
   /**
    * A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
