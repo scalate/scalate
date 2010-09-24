@@ -63,15 +63,18 @@
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
 <!--
-    <karaf-version>2.0.1-SNAPSHOT</karaf-version>
--->
     <karaf-version>2.1.99-SNAPSHOT</karaf-version>
+-->
+    <karaf-version>2.0.1-SNAPSHOT</karaf-version>
     <logback-version>0.9.24</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
     <org.springframework.version>3.0.4.RELEASE</org.springframework.version>
 
-
     <scala-version>2.8.0</scala-version>
+    <!-- 
+    TODO doesn't seem to work - maven plugin barfs!!!
+    <scala-version>2.8.1.RC1</scala-version> 
+    -->
 <!--
     Using the snapshot so we can use continuous testing using jstrachan's fork of maven-scala plugin
     See : http://github.com/davidB/maven-scala-plugin/issues/#issue/35
