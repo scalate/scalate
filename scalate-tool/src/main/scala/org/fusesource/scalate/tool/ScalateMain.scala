@@ -9,9 +9,13 @@ import org.apache.karaf.shell.console.Main
 import org.apache.karaf.shell.console.jline.Console
 import jline.Terminal
 import java.io.{PrintStream, InputStream}
+import org.fusesource.jansi.Ansi
 
 object ScalateMain {
-  def main(args: Array[String]) = new ScalateMain().run(args)
+  def main(args: Array[String]) = {
+    Ansi.ansi()
+    new ScalateMain().run(args)
+  }
 
   // Some ANSI helpers...
   def ANSI(value:Any) =  "\u001B["+value+"m"
