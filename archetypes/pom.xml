@@ -37,7 +37,7 @@
   </properties>
 
   <modules>
-    <module>scalate-archetype-empty</module>
+    <module>scalate-archetype-jersey</module>
     <module>scalate-archetype-guice</module>
     <module>scalate-archetypes-itests</module>
   </modules>

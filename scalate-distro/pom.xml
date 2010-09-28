@@ -120,7 +120,7 @@
     <!-- archetypes to include -->
     <dependency>
       <groupId>org.fusesource.scalate.tooling</groupId>
-      <artifactId>scalate-archetype-empty</artifactId>
+      <artifactId>scalate-archetype-jersey</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
       <exclusions>

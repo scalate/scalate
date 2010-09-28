@@ -54,7 +54,7 @@ class Create extends Action {
   @option(name = "--home", description = "Scalate install directory")
   var homeDir = System.getProperty("scalate.home", "")
   
-  val archetypes = Map("empty" -> "scalate-archetype-empty", "guice" -> "scalate-archetype-guice")
+  val archetypes = Map("jersey" -> "scalate-archetype-jersey", "guice" -> "scalate-archetype-guice")
 
   var archetypeGroupId = "org.fusesource.scalate.tooling"
   val userDir = System.getProperty("user.dir", ".")
@@ -109,7 +109,7 @@ class Create extends Action {
         info("Cannot create archetype as " + outputFile.getAbsolutePath + " already exists")
         return -2
       } else {
-        if (packageName.length == 0) {
+        if (packageName==null || packageName.length == 0) {
           packageName = groupId + "." + artifactId
         }
 

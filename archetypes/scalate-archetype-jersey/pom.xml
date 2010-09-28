@@ -27,9 +27,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>scalate-archetype-empty</artifactId>
+  <artifactId>scalate-archetype-jersey</artifactId>
   <packaging>maven-archetype</packaging>
-  <name>Scalate :: Archetype :: Empty</name>
+  <name>Scalate :: Archetype :: Jersey</name>
   <description>An archetype which creates an empty Scalate web application</description>
 
   <build>

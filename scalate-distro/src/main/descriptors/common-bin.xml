@@ -60,7 +60,7 @@
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <unpack>false</unpack>
       <includes>
-        <include>org.fusesource.scalate.tooling:scalate-archetype-empty</include>
+        <include>org.fusesource.scalate.tooling:scalate-archetype-jersey</include>
         <include>org.fusesource.scalate.tooling:scalate-archetype-guice</include>
       </includes>
     </dependencySet>

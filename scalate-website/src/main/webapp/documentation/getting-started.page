@@ -16,7 +16,8 @@ Lets get scalating!
   :markdown
     Lets try and get you up to speed using Scalate as quickly as possible.
 
-    This guide will assume you have a reasonably recent installation of [Maven](http://maven.apache.org), say version 2.0.9 or later. If you don't, please [install one now](http://maven.apache.org/download.html).
+    This guide will assume you have a reasonably recent installation of [Maven](http://maven.apache.org), say 
+    version 2.0.9 or later. If you don't, please [install one now](http://maven.apache.org/download.html).
 
     Note that if you hit any issues during this guide you might want to check out the [FAQ](../faq.html).
 
@@ -26,23 +27,16 @@ Lets get scalating!
 .right
   :markdown
 
-    Lets create a new [Jog](jog.html) project that we can use as a base on which to build.
+    Lets create a new webapp project that we can use as a base on which to build. If you have not done so already,
+    [install the Scalate Tool](tool.html).  Now to create a new project run:
 
-    If you have not done so already [install the Scalate Tool](tool.html). If you prefer you can create projects using the [Scalate Maven archetypes via maven](archetypes.html) instead of using Scalate Tool
-
-    To see all of the available commands type this command into a command terminal
-
-          scalate
-
-    Now to create a new project type 
-
-          scalate create guice myGroup myArtifact
+          scalate create jersey mygroup myartifactid
     
-    You might want to change **myGroup** and **myArtifact** to whatever maven groupId and artifactId you want to use. 
+    Change the **mygroup** and **myartifactid** to whatever maven group id and artifact id you want to use. 
 
-    Now change directory to the newly created **myArtifact** directory (or whatever name you used for the artifactId)  
+    Now change directory to the newly created **myartifactid** directory (or whatever name you used for the artifact id)  
 
-          cd myArtifact  
+          cd myartifactid  
     
     You should now see a directory tree something like this
 
@@ -50,20 +44,21 @@ Lets get scalating!
           +--main
           |  |--resources
           |  +--scala
-          |  |  |--myGroup
+          |  |  |--mygroup
           |  +--webapp
           |     |--WEB-INF
           +--test
              +--scala
-                |--myGroup
+                |--mygroup
 
     If this step didn't work, [let us know](../community.html)!
 
-    Hopefully you now have a base [Jog](jog.html) project using Scalate, Scala, [Jersey](https://jersey.dev.java.net/) and [Guice](http://code.google.com/p/google-guice/).
+    This has created a basic skeleton module that be be built using SBT or Maven which generates a web application which
+    has Scalate integrated.
 
 .left
   :markdown
-    # Run the new project
+    # Building with Maven
 
 .right
   :markdown
@@ -71,39 +66,44 @@ Lets get scalating!
 
           mvn jetty:run
         
-    Now when the application starts up you should be able to point your browser at [http://localhost:8080](http://localhost:8080) to run the application.
+    Now when the application starts up you should be able to point your browser at 
+    [http://localhost:8080](http://localhost:8080) to run the application.
 
-    Your application is now ready for you to create new JAXRS resource beans (in Scala or Java code) as well as rendering any Scalate templates in the **src/main/webapp** directory.
+    Your application is now ready for you to create new JAXRS resource beans (in Scala 
+    or Java code) as well as rendering any Scalate templates in the **src/main/webapp** directory.
 
-    To start hacking on a template, try editing the **src/main/webapp/index.scaml** file which is used to render the home page (a [Scaml](scaml-reference.html) template). Or try adding new templates. 
-
-    For more detail on how the web application works please refer to the [Jog documentation](jog.html)
-
-.left
-  :markdown
-    # Scalate console
-
-.right
-  :markdown
-    While looking at the [home page](http://localhost:8080) of your running application you should see a little icon near the top right of the screen which opens/closes the [Scalate Console](console.html). Try opening it and try out its links.
-
-    The [Scalate Console](console.html) provides nice error messages if you make a typo in a template together with edit links to the source code, plus provides handy links to the current source, templates and layouts you are viewing in development mode along with a number of other features. 
-
-    Please refer to the [Console documentation](console.html) for more detail.
+    To start hacking on a template, try editing the **src/main/webapp/index.scaml** file which is 
+    used to render the home page (a [Scaml](scaml-reference.html) template). Or try adding new templates. 
 
 .left
   :markdown
-    # Using SBT
+    # Building with SBT
 
 .right
   :markdown
-    You can also compile the code with SBT (or [Simple build tool](http://code.google.com/p/simple-build-tool/)) if you prefer instead of Maven. Type the following commands into a terminal (the first command enters the SBT shell)
-
+    You can also compile the code with SBT (or [Simple build tool](http://code.google.com/p/simple-build-tool/)) 
+    if you prefer instead of Maven. Type the following commands into a terminal (the first command enters the SBT shell)
+    
           sbt
           update
           compile
     
-    At the time of writing there are [some issues with WAR overlays and SBT](http://code.google.com/p/simple-build-tool/issues/detail?id=87) so jetty-run might not work correctly.
+.left
+  :markdown
+    # Scalate Console
+
+.right
+  :markdown
+    While looking at the [home page](http://localhost:8080) of your running application 
+    you should see a little icon near the top right of the screen which opens/closes 
+    the [Scalate Console](console.html). Try opening it and try out its links.
+
+    The [Scalate Console](console.html) provides nice error messages if you make a typo 
+    in a template together with edit links to the source code, plus provides handy links 
+    to the current source, templates and layouts you are viewing in development mode along 
+    with a number of other features. 
+
+    Please refer to the [Console documentation](console.html) for more detail.
 
 
 .left
@@ -112,10 +112,10 @@ Lets get scalating!
     
 .right
   :markdown
-    Once you have the application working and you've played with the [Console](console.html) you might want to dive deeper into Scalate and understand how it works.
+    Once you have the application working and you've played with the [Console](console.html) you 
+    might want to dive deeper into Scalate and understand how it works.
 
-    * [FAQ](../faq.html) if you hit any issues along the way
-    * [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
     * [Scalate Console](console.html)
     * [Documentation](index.html) for further information on user guides and template references
+    * [FAQ](../faq.html) if you hit any issues along the way
   
