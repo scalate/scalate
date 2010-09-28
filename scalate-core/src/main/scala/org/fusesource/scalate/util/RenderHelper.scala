@@ -79,7 +79,7 @@ object RenderHelper
       case '<' => { "&lt;" }
       case '>' => { "&gt;" }
 // Not sure if there are other chars the need sanitization.. but if we do find
-// dome, then the following might work:      
+// some, then the following might work:
 //    case xxx   => { "&#x" + ch.toInt.toHexString + ";" }
       case _ => ch
     })
