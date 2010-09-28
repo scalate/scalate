@@ -177,11 +177,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   }
 
 
+  override def toString = getClass.getSimpleName + "(sourceDirectories: " + sourceDirectories + ")"
+
   /**
    * Returns true if this template engine is being used in development mode.
    */
-  override def toString = getClass.getSimpleName + "(sourceDirectories: " + sourceDirectories + ")"
-
   def isDevelopmentMode = mode != null && mode.toLowerCase.startsWith("d")
 
   /**
