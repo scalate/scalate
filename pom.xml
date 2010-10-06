@@ -986,7 +986,7 @@
         </plugins>
       </build>
 
-      <!-- to use the 2.1 staging release of the mvn release plugin until its released -->
+      <!-- TODO remove ASAP! for now use the 2.1 staging release of the mvn release plugin until its released -->
       <pluginRepositories>
         <pluginRepository>
           <id>staging</id>
