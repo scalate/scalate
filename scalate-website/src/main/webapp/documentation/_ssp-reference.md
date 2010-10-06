@@ -7,7 +7,7 @@ Ssp pages are like a Scala version of [Velocity](#velocity_style_directives), JS
 
 If you know Velocity, JSP or Erb then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.
 
-## Syntax
+## Syntax {#syntax}
 
 A Ssp template consists of plain text, usually an HTML document, which has special Ssp tags embedded in it so that
 portions of the document are rendered dynamically.  Everything outside of a `<% ... %>` and `${ ... }` sequence 
@@ -52,9 +52,9 @@ is rendered as:
 <p>hello there you!</p>
 {pygmentize}
 
-If you like to use [Velocity style directives](#velocity_style_directives) you can also use [`#{` `}#`](#_and__scriplets)
+If you like to use [Velocity style directives](#velocity_style_directives) you can also use [`#{` `}#`](#velocity_block)
 
-### Attributes: `<%@ %>`
+### Attributes: `<%@ %>` {#bindings}
 
 When a Scalate template is rendered, the caller can pass an attribute map
 which the template is in charge of rendering. To bind an attribute to a type safe Scala
@@ -99,7 +99,7 @@ Which is the same as:
 <p>Hello ${model.name}, what is the weather like in ${model.city}</p>
 {pygmentize}
 
-### Velocity style directives
+### Velocity style directives {#velocity_style_directives}
 
 To perform logical branching or looping Scalate supports [Velocity](http://velocity.apache.org/) style directives.
 
@@ -297,7 +297,7 @@ xml: produces
 {pygmentize_and_compare}
 
 
-#### `#{` and `}#` scriplets
+#### `#{` and `}#` scriplets {#velocity_block}
 
 Sometimes you just want to include a couple of lines of Scala code in a template such as to define a few variables, add a few imports or whatever.
 

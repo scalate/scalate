@@ -131,7 +131,10 @@
 
   <scm>
     <connection>scm:git:git://github.com/scalate/scalate.git</connection>
-    <!-- Work around for issue: http://jira.codehaus.org/browse/SCM-444 -->
+    <!-- 
+    TODO - hack this in your ~/.m2/settings.xml to point to your local checkout for releases 
+    see comments here: http://jira.codehaus.org/browse/MRELEASE-605
+    -->
     <developerConnection>${release-altGitURL}</developerConnection>
     <url>http://github.com/scalate/scalate/tree/master</url>
   </scm>
@@ -485,8 +488,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.0</version>
+        <version>2.1</version>
         <configuration>
+          <pushChanges>false</pushChanges>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
           <preparationGoals>clean install</preparationGoals>
@@ -981,6 +985,14 @@
 -->
         </plugins>
       </build>
+
+      <!-- to use the 2.1 staging release of the mvn release plugin until its released -->
+      <pluginRepositories>
+        <pluginRepository>
+          <id>staging</id>
+          <url>https://repository.apache.org/content/repositories/maven-002</url>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
     
     <!--

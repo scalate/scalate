@@ -174,7 +174,7 @@ The [Scaml](scaml-reference.html) version is
 {pygmentize}
 
 
-### Accessing request state inside a Scala function
+### Accessing request state inside a Scala function {#accessing_request_state_inside_a_scala_function}
 
 As you write snippet functions for use in your templates you might find yourself needing to access the current HttpServletRequest or HttpServletResponse.
 
@@ -196,7 +196,7 @@ object MySnippets {
 This helps you keep your snippet functions nice and small.
 
 
-### Passing a template block to a Scala function
+### Passing a template block to a Scala function {#passing_a_template_block_to_a_scala_function}
 
 To use the JSP concept of custom tags, you might want to pass a block of template to a function for further processing or transformation.
 
@@ -342,7 +342,7 @@ When passing attributes you can use the Scala symbol notation for keys if you pr
 If you prefer you can pass in a body to the template using the *layout* method as described in [using explicit layouts inside a template](#explicit_layouts_inside_a_template).
 
 
-## Layouts
+## Layouts {#layouts}
 
 Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.
 
@@ -405,7 +405,7 @@ If you wish to disable the use of the layout on a template, just set the layout 
 
 To see examples of layouts in use, try running the sample web application and looking at the layout related example pages.
 
-### Explicit layouts inside a template
+### Explicit layouts inside a template {#explicit_layouts_inside_a_template}
 
 You may want to layout some content within part of your template explicitly rather than just applying a layout to an entire page.
 
@@ -591,7 +591,7 @@ For more information see the [sbt building instructions](../sbt.html)
 
 You might want to refer to the [Frameworks Documentation](frameworks.html) to see if there is some specific instructions on using Scalate with your favourite web framework.
 
-### Using Scalate as Servlet filter in your Web Application
+### Using Scalate as Servlet filter in your Web Application {#using_scalate_as_servlet_filter_in_your_web_application}
 
 * Add something like the following to your web.xml file to support Scalate templates:
 
@@ -677,7 +677,7 @@ class Boot(engine: TemplateEngine) extends Logging {
 
 
 
-### Precompiling Templates
+### Precompiling Templates {#precompiling_templates}
 
 Scalate currently lazily compiles templates on the fly, then it will cache the compiled template and only recompile it if it detects the source template has changed.
 

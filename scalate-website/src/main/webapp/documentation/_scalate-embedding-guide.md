@@ -62,11 +62,11 @@ Would be rendered as:
 <p> Hello Hiram Chirino from Tampa. </p>
 {pygmentize}
 
-Each template syntax has it's own way of declaring variable bindings. For more details on
-on how to declare variable bindings in your template please reference:
+Each template syntax has it's own way of passing in and binding attributes. For more details on
+on how to declare attribute bindings in your template please reference:
 
-* [Ssp Reference: Binding Variables](ssp-reference.html#binding_variables_) 
-* [Scaml Reference: Binding Variables](scaml-reference.html#binding_variables_)
+* [Ssp Reference: Binding Attributes](ssp-reference.html#bindings) 
+* [Scaml Reference: Binding Attributes](scaml-reference.html#bindings)
 
 ## Passing Data from the Template elsewhere
 
@@ -173,7 +173,7 @@ engine.classpath = "/path/to/lib.jar:/path/to/another-lib.jar"
 {pygmentize}
 
 
-### Custom Template Loading
+### Custom Template Loading {#custom_template_loading}
 
 In the default configuration, templates are loaded from the file system.  The path you pass to the `TemplateEngine.load`
 method is expected to file path to an actual template file.  If you want to load templates from different location, perhaps the classpath or database you will need to supply the `TemplateEngine` a custom implementation of `ResourceLoader`.
