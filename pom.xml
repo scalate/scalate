@@ -81,9 +81,9 @@
 
     TODO revert to a release version before the next release!
 
-    <scala-plugin-version>2.14.1</scala-plugin-version>
--->
     <scala-plugin-version>2.14.2-SNAPSHOT</scala-plugin-version>
+-->
+    <scala-plugin-version>2.14.1</scala-plugin-version>
     <scalatest-version>1.2</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
