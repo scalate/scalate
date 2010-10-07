@@ -72,6 +72,11 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+
     <!-- testing -->
     <dependency>
       <groupId>org.scalatest</groupId>
