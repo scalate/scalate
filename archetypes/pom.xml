@@ -39,7 +39,6 @@
   <modules>
     <module>scalate-archetype-jersey</module>
     <module>scalate-archetype-guice</module>
-    <module>scalate-archetypes-itests</module>
   </modules>
 
   <build>
@@ -53,4 +52,14 @@
     </pluginManagement>
   </build>
 
+
+  <profiles>
+    <profile>
+      <id>distro</id>
+      <modules>
+        <!-- these integration tests can fail when cutting a release so lets disable -->
+        <module>scalate-archetypes-itests</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
