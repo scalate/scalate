@@ -823,6 +823,12 @@
             <checksumPolicy>fail</checksumPolicy>
           </releases>
         </pluginRepository>
+
+        <!-- TODO remove ASAP! for now use the 2.1 staging release of the mvn release plugin until its released -->
+        <pluginRepository>
+          <id>staging.002.apache.org</id>
+          <url>https://repository.apache.org/content/repositories/maven-002</url>
+        </pluginRepository>
       </pluginRepositories>
     </profile>
 
@@ -989,7 +995,7 @@
       <!-- TODO remove ASAP! for now use the 2.1 staging release of the mvn release plugin until its released -->
       <pluginRepositories>
         <pluginRepository>
-          <id>staging</id>
+          <id>staging.002.apache.org</id>
           <url>https://repository.apache.org/content/repositories/maven-002</url>
         </pluginRepository>
       </pluginRepositories>
