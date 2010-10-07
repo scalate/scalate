@@ -92,8 +92,13 @@ object ServletTemplateEngine extends Logging {
   /**
    * Returns the source directories to use for the given config
    */
-  def sourceDirectories(config: Config): List[File] =
-    List(new File(config.getServletContext.getRealPath("/")))
+  def sourceDirectories(config: Config): List[File] = {
+    config.getServletContext.getRealPath("/") match {
+      case path: String => List(new File(path))
+      case null => List()
+    }
+  }
+    
 }
 
 
