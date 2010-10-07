@@ -1,4 +1,4 @@
-package org.apache.maven.plugins.site;
+package org.fusesource.scalate.maven;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
