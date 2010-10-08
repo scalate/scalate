@@ -1,5 +1,5 @@
 
-* [Scalate 1.2](${uri("/")})
+* [Scalate ${project_version}](${uri("/")})
 * [Download](${uri("/download.html")})
 * [Source](${uri("/source.html")})
 * [Community](${uri("/community.html")})
