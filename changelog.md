@@ -1,7 +1,23 @@
 ![Scalate][logo]
 ===============================
 
-[Scalate 1.2](http://scalate.fusesource.org/blog/releases/2010/07/release-1-2.html), released 2010-07-30
+
+[Scalate 1.3](http://scalate.fusesource.org/blog/releases/release-1-3.html), released 2010-10-08
+----
+
+* [Jade](${uri("/documentation/scaml-reference.html#jade")}) template syntax is now supported which is a dialect of [Haml](http://haml-lang.com/) or [Scaml](${uri("/documentation/scaml-reference.html")})
+* New [Servlet Filter](${uri("/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application")}) which allows more flexible mapping of templates in a web application. For example you can have the request */foo.xml* automatically bound to */foo.xml.ssp* if the template exists letting you easily implement views without requiring a controller or routing in your MVC layer. 
+* [JSP Converter](${uri("/documentation/jspConvert.html")}) helps you migrate your existing JSP web application across to Scalate
+* [HTML Converter](${uri("/documentation/htmlConvert.html")}) lets you migrate your existing HTML files easily to [Scaml](${uri("/documentation/scaml-reference.html")}) or [Jade](${uri("/documentation/scaml-reference.html#jade")}) for extra DRY markup 
+* [DRY template imports, values and logic](${uri("/documentation/user-guide.html#dry")}) thanks to Scalate Package objects which allow imports, values and methods to be shared across some or all of your templates to reduce noise inside your templates.
+* [Site Generator](${uri("/documentation/siteGen.html")}) lets you generate static or dynamic websites using templates and/or wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository. You can also use [a common bootstrap approach](${uri("/documentation/siteGen.html#bootstrapping")}) now across both static website generation and web applications - such as to configure wiki macros in a canonical way. We now eat our own dog food and generate this site using Scalate.
+* More filters and pipelines supported such as confluence as well as the existing markdown which are particularly useful for website generation (static or semi-static).
+* The [Scalate Tool](${uri("/documentation/tool.html")}) now comes with a full interactive shell with full tab completion to make it easier to use the tool either for ad hoc or interactive shell use.
+
+For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3)
+
+
+[Scalate 1.2](http://scalate.fusesource.org/blog/releases/release-1-2.html), released 2010-07-30
 ----
 
 * Scalate now supports the [Mustache](http://scalate.fusesource.org/documentation/mustache.html) template language which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, [JAXRS](http://scalate.fusesource.org/documentation/jog.html), [Lift](http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) and [Apache Camel](http://camel.apache.org/scalate.html)
@@ -15,7 +31,7 @@
 For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/191841-1-2)
 
 
-[Scalate 1.1](http://scalate.fusesource.org/blog/releases/2010/04/release-1-1.html), released 2010-04-15
+[Scalate 1.1](http://scalate.fusesource.org/blog/releases/release-1-1.html), released 2010-04-15
 ----
 
 * [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) now supports [Velocity style directives](http://scalate.fusesource.org/documentation/ssp-reference.html#velocity_style_directives) for more concise looping and branching.
