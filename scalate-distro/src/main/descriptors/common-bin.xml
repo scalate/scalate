@@ -70,7 +70,7 @@
 
     <!-- copy the website docs -->
     <fileSet>
-      <directory>${basedir}/../scalate-website/out/</directory>
+      <directory>${basedir}/../scalate-website/target/sitegen/</directory>
       <outputDirectory>/docs</outputDirectory>
     </fileSet>
     <fileSet>
