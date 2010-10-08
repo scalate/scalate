@@ -5,7 +5,8 @@ Scalate is a [Scala](http://www.scala-lang.org) based template engine which supp
 
 The following template languages are supported:
 
-  * [Mustache](http://scalate.fusesource.org/documentation/mustache-reference.html#features): is a Mustache template language for Java/Scala
+  * [Mustache](http://scalate.fusesource.org/documentation/mustache.html#features): is a Mustache template language for Java/Scala
+  * [Jade](http://scalate.fusesource.org/documentation/scaml-reference.html#jade): The Jade style of Haml/Scaml template lanaguage
   * [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html#features): Provides Haml style template lanaguage
   * [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax): Provides a JSP, Erb and Velocity style template language
 
