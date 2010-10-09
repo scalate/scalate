@@ -20,24 +20,13 @@ package org.fusesource.scalate.osgi
 import org.osgi.framework.Bundle
 
 /**
- * A helper class to determine if the class loader provides access to an OSGi Bundle instance
+ * Helper class to work with bundle headers
  */
-object BundleClassLoader {
+case class BundleHeaders(val bundle: Bundle) {
 
-  type BundleClassLoader = {
-    def getBundle: Bundle
-  }
-
-  def unapply(ref: AnyRef): Option[BundleClassLoader] = {
-    if (ref == null) return None
-    try {
-      val method = ref.getClass.getMethod("getBundle")
-      if (method.getReturnType == classOf[Bundle])
-        Some(ref.asInstanceOf[BundleClassLoader])
-      else
-        None
-    } catch {
-      case e: NoSuchMethodException => None
+  lazy val classPath = bundle.getHeaders.get("Bundle-ClassPath") match {
+      case value: String => value.split(",")
+      case _ => Array[String]()
     }
-  }
+
 }

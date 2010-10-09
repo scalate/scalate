@@ -151,10 +151,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
-  lazy val compiler = new ScalaCompiler(bytecodeDirectory, classpath, combinedClassPath)
+  lazy val compiler = ScalaCompiler.create(this)
 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
+  def libraryDirectory = new File(workingDirectory, "lib")
 
   var classpath: String = null
   
