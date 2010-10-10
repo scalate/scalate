@@ -47,7 +47,6 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
       val url = context.getResource(uri)
       if (url!=null) {
         val resource = fromURL(url)
-        println(resource.text)
         Some(resource)
       } else {
         delegate.resource(uri)

@@ -31,6 +31,9 @@ import org.fusesource.scalate.util.Logging
  */
 object BundleClassPathBuilder extends Logging {
 
+  /**
+   * Create a list of AbstractFile instances, representing the bundle and its wired depedencies
+   */
   def fromBundle(bundle: Bundle) : List[AbstractFile] = {
     require(bundle != null, "Bundle should not be null")
 
@@ -43,17 +46,18 @@ object BundleClassPathBuilder extends Logging {
     files.toList
   }
 
+  /**
+   * Find bundles that have exports wired to the given and bundle
+   */
   def fromWires(bundle: Bundle) : List[AbstractFile] = {
     debug("Checking OSGi bundle wiring for " + bundle)
     val context = bundle.getBundleContext
     var ref: ServiceReference = context.getServiceReference(classOf[PackageAdmin].getName)
 
-
     if (ref == null) {
       warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
       return List()
     }
-
 
     try {
       var admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
@@ -120,10 +124,7 @@ object BundleClassPathBuilder extends Logging {
         }
 
       @throws(classOf[IOException])
-      def input: InputStream = {
-        System.out.println("Reading " + fullName)
-        url.openStream()
-      }
+      def input: InputStream = url.openStream
 
       /**
        * Not supported. Always throws an IOException.
@@ -214,7 +215,6 @@ object BundleClassPathBuilder extends Logging {
       }
 
       def lookupName(name: String, directory: Boolean): AbstractFile = {
-        System.out.println("Looking for " + name + " in " + this)
         val entry = bundle.getEntry(fullName + "/" + name)
         nullOrElse(entry) { entry =>
           if (directory)
