@@ -28,7 +28,7 @@ Lets get scalating!
   :markdown
 
     Lets create a new webapp project that we can use as a base on which to build. If you have not done so already,
-    [install the Scalate Tool](tool.html).  Now to create a new project run:
+    [install the Scalate Tool](installing.html).  Now to create a new project run:
 
           scalate create jersey mygroup myartifactid
     

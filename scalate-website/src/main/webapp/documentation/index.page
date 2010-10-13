@@ -19,6 +19,13 @@ All the information you need to be become an expert with Scalate
 
 .left
   :markdown
+    # [Installing](installing.html)
+.right
+  :markdown
+    Gets you set up to start scalating!
+
+.left
+  :markdown
     # [Getting Started](getting-started.html)
 .right
   :markdown
