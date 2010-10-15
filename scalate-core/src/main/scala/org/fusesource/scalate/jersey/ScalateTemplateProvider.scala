@@ -75,13 +75,15 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
   def getSize(arg: AnyRef, argType : Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
 
   def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
+    var answer = false
     if(mediaType.getType == "text" && mediaType.getSubtype == "html") {
       val servlet = TemplateEngineServlet()
-      val path = resolve(servlet.templateEngine.resourceLoader, argType)
-      path != null
-    } else {
-      false
+      if (servlet != null && servlet.templateEngine != null && servlet.templateEngine.resourceLoader != null) {
+        val path = resolve(servlet.templateEngine.resourceLoader, argType)
+        answer = path != null
+      }
     }
+    answer
   }
 
   def writeTo(arg:AnyRef, argType:Class[_], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
