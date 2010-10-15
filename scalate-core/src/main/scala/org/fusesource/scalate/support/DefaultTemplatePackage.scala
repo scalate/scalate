@@ -17,7 +17,7 @@ class DefaultTemplatePackage extends TemplatePackage with Logging {
         // already has a binding so don't do anything
         ""
       case _ =>
-        val cleanUri = source.uri.stripPrefix("/")
+        val cleanUri = source.uri.stripPrefix("/").stripPrefix("WEB-INF/")
         val extensions = cleanUri.split('.').tail
         var className = cleanUri.replace('/', '.')
         extensions.map {
