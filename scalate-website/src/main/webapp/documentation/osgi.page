@@ -1,0 +1,115 @@
+---
+title: OSGi
+in_menu: false
+sort_info: 2
+--- name:overview
+# OSGi
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Overview
+
+.right
+  :markdown
+    [OSGi](http://www.osgi.org/) is a module system and service platform for the Java programming language.  It uses a more modular classloader hierarchy, which requires
+    some additional configuration when using Scalate.
+
+.left
+  :markdown
+    # Required imports
+
+.right
+  :markdown
+    When deploying a WAR file in Karaf using a `war:` URL, the bundle automatically gets imports for `javax.servlet` and `javax.servlet.http`.
+
+    In order for Scalate to work properly, a few additional imports are required.
+
+    * `org.osgi.platform`
+    * `org.osgi.services.packageadmin`
+    * `javax.swing.tree`
+
+    When using Apache Karaf (or another environment that uses Pax Logging), you can optionally add:
+
+    * `org.slf4j` to allow Scalate to use the provided logging services
+
+.left
+  :markdown
+    # Using war:
+
+.right
+  :markdown
+    The required imports can be added dynamically when installing the WAR file by using these options on the `war:` URL:
+
+    * `Import-Package` to specify the required imports
+    * `Webapp-Context` to specify the web application context root
+
+    Example: to install a file name documentation.war on Karaf
+    {pygmentize::raw}
+    osgi:install -s war:file:documentation.war?Webapp-Context=documentation&Import-Package=org.slf4j,javax.servlet,javax.servlet.http,org.osgi.framework,org.osgi.service.packageadmin
+    {pygmentize}
+
+.left
+  :markdown
+    # Maven bundle plugin
+
+.right
+  :markdown
+    Another way to add the required imports, is by including the necessary configuration in your WAR file directly at build time.  This can be done with the Maven bundle plugin:
+
+    {pygmentize::xml}
+    <plugin>
+      <artifactId>maven-war-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifestFile>
+            ${project.build.outputDirectory}/META-INF/MANIFEST.MF
+          </manifestFile>
+        </archive>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>maven-bundle-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>bundle-manifest</id>
+          <phase>process-classes</phase>
+          <goals>
+            <goal>manifest</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <supportedProjectTypes>
+          <supportedProjectType>jar</supportedProjectType>
+          <supportedProjectType>bundle</supportedProjectType>
+          <supportedProjectType>war</supportedProjectType>
+        </supportedProjectTypes>
+        <instructions>
+          <Import-Package>
+            javax.servlet,javax.servlet.http,
+            org.osgi.framework,org.osgi.service.packageadmin,
+            javax.swing.tree,
+            org.slf4j
+          </Import-Package>
+          <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+          <Embed-Directory>WEB-INF/lib</Embed-Directory>
+          <Embed-Dependency>
+            *;scope=compile|runtime
+          </Embed-Dependency>
+          <Embed-Transitive>true</Embed-Transitive>
+          <Webapp-Context>documentation</Webapp-Context>
+        </instructions>
+      </configuration>
+    </plugin>
+    {pygmentize}
+
+
+
+
+
+
+
+

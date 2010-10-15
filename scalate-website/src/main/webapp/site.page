@@ -12,23 +12,24 @@ How the website works
     # How it works
 .right
   :&markdown
-    The *#{project_name}* documentation and site is created using [WebGen](http://webgen.rubyforge.org/) and is stored in git in the same [source control system as the code](source.html)
+    The *#{project_name}* documentation and site is created using Scalate and is stored in git in the same [source control system as the code](source.html)
 
-
+    **Note:** For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](http://pygments.org).
+    
 .left
   :markdown
     # Editing the source code
 .right
   :markdown
-    If you [grab the source code](source.html) you can get the site source in the *webgen* directory.
-    If you have webgen installed (see below for instructions) then you can build the website from [the code](source.html) as follows
+    If you [grab the source code](source.html) you can get the site source in the *scalate-website* directory.
+    If you [have Scalate installed](documentation/installing.html) then you can build the website from [the code](source.html) as follows
 
         cd scalate-website
-        webgen
+        mvn install
   
     If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use
 
-        webgen
+        mvn jetty:run
     
     You can now surf the site and see changes immediately.
 
@@ -36,22 +37,8 @@ How the website works
 
 .left
   :markdown
-    # Installing WebGen
+    # Deploying the site
 .right
   :markdown
-    Before running the webgen command above you need to install it by following these instructions
-
-        sudo gem install webgen
-
-    You also need to install the following gems
-
-        sudo gem install --source http://gems.github.com FooBarWidget-mizuho
-        sudo gem install coderay
-        sudo gem install feedtools
-        sudo gem install haml
-
-    For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](http://pygments.org).
-
-    To be able to deploy the site you will need
-
-        sudo port install sitecopy
+    You can deploy the site using Maven:
+        mvn scalate:deploy

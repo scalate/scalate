@@ -9,7 +9,7 @@ Using Scalate with popular web frameworks
 
 --- name:content pipeline:jade
 
-There are lots of different web frameworks out there to suit all tastes and requirements.
+There are lots of different (web) frameworks out there to suit all tastes and requirements.
 
 .left
   :markdown
@@ -40,6 +40,14 @@ There are lots of different web frameworks out there to suit all tastes and requ
 .right
   :markdown
     [Scalatra](scalatra.html) is a tiny, [Sinatra](http://www.sinatrarb.com/)-like web framework for Scala
+
+.left
+  :markdown
+    # [OSGi](osgi.html)
+
+.right
+  :markdown
+    [OSGi](osgi.html) is a module system and service platform for the Java programming language, used by e.g. [Apache Karaf](http://karaf.apache.org) 
 
 
 .left

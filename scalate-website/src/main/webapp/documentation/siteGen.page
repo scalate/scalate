@@ -99,7 +99,7 @@ Create that static website with Scalate
 
 
     <div class="left" markdown="1">
-    # Link Checking
+    <h1 id="linkCheck">Link Checking</h1>
     </div>
     <div class="right">
 

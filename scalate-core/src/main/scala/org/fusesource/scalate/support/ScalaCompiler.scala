@@ -19,21 +19,22 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate._
-import util.ClassPathBuilder
-import util.Logging
-import util.Sequences.removeDuplicates
-import java.io.File
-import java.io.PrintWriter
-import java.io.StringWriter
+import osgi.{BundleHeaders, BundleClassPathBuilder, BundleClassLoader}
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.reporters.ConsoleReporter
-import tools.nsc.util.{OffsetPosition, FakePos, NoPosition, Position}
 import scala.util.parsing.input.OffsetPosition
+import tools.nsc.io.AbstractFile
+import tools.nsc.util._
+import collection.mutable.ListBuffer
+import org.osgi.framework.Bundle
+import util.{IOUtil, ClassPathBuilder, Logging}
+import java.io.{PrintWriter, StringWriter, File}
 
 class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
+
   val compiler = new Global(settings, null)
 
   def compile(file:File): Unit = {
@@ -76,7 +77,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
   private def errorHandler(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
-  private def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
+  protected def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
     bytecodeDirectory.mkdirs
 
     val pathSeparator = File.pathSeparator
@@ -116,4 +117,58 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     //settings.make.value = "transitivenocp"
     settings
   }
+}
+
+class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
+        extends ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath) {
+
+  debug("Using OSGi-enabled Scala compiler")
+
+  override val compiler = new Global(settings, null) {
+    lazy val internalClassPath = {
+      require(!forMSIL, "MSIL not supported")
+      createClassPath(super.classPath)
+    }
+
+    override def rootLoader = new loaders.JavaPackageLoader(internalClassPath.asInstanceOf[ClassPath[AbstractFile]])
+
+    def createClassPath[T](original: ClassPath[T]) = {
+      var result = ListBuffer(original)
+      BundleClassPathBuilder.fromBundle(bundle).foreach(file => {
+        debug("Adding bundle " + file + " to the Scala compiler classpath")
+        result += original.context.newClassPath(file)
+      })
+      new MergedClassPath(result.toList.reverse, original.context)
+    }
+  }
+
+  override protected def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
+    engine.libraryDirectory.mkdirs
+
+    // handle embedded bundle dependencies
+    for (entry <- BundleHeaders(bundle).classPath; if entry.endsWith(".jar")) {
+      val url = bundle.getResource(entry)
+      val name = entry.split("/").last
+      IOUtil.copy(url, new File(engine.libraryDirectory, name))
+      debug("Extracting " + url.getFile + " into " + engine.libraryDirectory)
+    }
+
+    val builder = new ClassPathBuilder
+    builder.addLibDir(engine.libraryDirectory.getAbsolutePath)
+
+    super.generateSettings(bytecodeDirectory,
+                           classpath + File.pathSeparator + builder.classPath,
+                           combineClasspath)
+  }
+}
+
+object ScalaCompiler extends Logging {
+
+  def create(engine: TemplateEngine) : ScalaCompiler = {
+    Thread.currentThread.getContextClassLoader match {
+      case BundleClassLoader(loader) => new OsgiScalaCompiler(engine, loader.getBundle)
+      case _ => new ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath)
+    }
+  }
+
 }

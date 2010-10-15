@@ -22,6 +22,7 @@ package org.fusesource.scalate.util
 import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
 import org.fusesource.scalate.support.FileResource
+import java.net.URL
 
 object IOUtil extends Logging {
 
@@ -120,6 +121,24 @@ object IOUtil extends Logging {
   }
 
   def copy(file: File, out: OutputStream): Long = copy(new BufferedInputStream(new FileInputStream(file)), out)
+
+  def copy(in: InputStream, file: File): Long = {
+    val out = new FileOutputStream(file)
+    try {
+      copy(in, out)
+    } finally {
+      out.close
+    }
+  }
+
+  def copy(url: URL, file: File): Long = {
+    val in = url.openStream
+    try {
+      copy(in, file)
+    } finally {
+      in.close
+    }
+  }
 
   def copy(in: InputStream, out: OutputStream): Long = {
     var bytesCopied: Long = 0

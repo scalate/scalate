@@ -160,7 +160,7 @@ case class URLResource(url: URL) extends WriteableResource {
 
   lazy val connection = url.openConnection
 
-  def inputStream = connection.getInputStream
+  def inputStream = url.openStream
 
   def outputStream = connection.getOutputStream
 

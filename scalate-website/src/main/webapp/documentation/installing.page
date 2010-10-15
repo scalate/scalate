@@ -1,0 +1,134 @@
+---
+title: Installing
+in_menu: false
+sort_info: 5
+--- name:overview
+
+# Installing
+Lets set up scalate!
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Requirements
+.right
+  :markdown
+    To use Scalate you will need:
+    
+    * [Maven 2](http://maven.apache.org)
+    * JDK 1.5 or greater
+    
+    To run the `sitegen` sample you will need to install:
+    
+    * Python
+    * [Pygments](http://pygments.org/)
+
+.left
+  :markdown
+    # Scalate Tool
+.right
+  :&markdown
+
+    ### Windows 2000/XP
+
+    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
+    1. Unzip the distribution archive, i.e. `scalate-#{project_version}-windows-bin.zip` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `C:\Program Files\Scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
+    1. Add the `C:\Program Files\Scala\scalate-#{project_version}\bin` directory to the `PATH` environment variable:
+      1. Opening up the system properties using (**WinKey + Pause**).
+      1. Selecting the **Advanced** tab.
+      1. Click the **Environment Variables** button.
+      1. Update/create the `PATH` variable in the user variables prepending the value `C:\Program Files\Scala\scalate-#{project_version}`. 
+      1. Be sure to omit any quotation marks around the path even if it contains spaces. 
+    1. In the same dialog, make sure that `JAVA\_HOME` exists in your user variables or in the system variables and it is set to the location of your JDK (e.g. `C:\Program Files\Java\jdk1.5.0\_02`).
+    1. Make sure that `%JAVA\_HOME%\bin` is in your `PATH` environment variable.
+    1. Open a new command prompt:
+        1. Click **Winkey + R**.
+        1. Type `cmd`.
+    1. Run the following to verify that it is correctly installed.
+
+            scalate
+  
+    ### Unix-based Operating Systems (Linux, Solaris and Mac OS X)
+
+    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
+    1. Extract the distribution archive, i.e. `scalate-#{project_version}-unix-bin.tar.gz` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `/usr/local/scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
+    1. In a command terminal, prepend the `PATH` variable with the `bin` directory in the scalate release.
+
+            export PATH=/usr/local/scala/scalate-#{project_version}/bin:$PATH
+    
+    1. Make sure that `JAVA\_HOME` is set to the location of your JDK.
+
+            export JAVA_HOME=/usr/java/jdk1.5.0_02
+    
+    1. Make sure that `$JAVA\_HOME/bin` is in your `PATH` environment variable. 
+    
+            export PATH=$JAVA_HOME/bin:$PATH
+    
+    1. Run the following to verify that it is installed correctly
+
+            scalate
+      
+
+    ### Mac OS X and Homebrew
+
+    If you use OS X then we highly recommend using [Homebrew](http://mxcl.github.com/homebrew/) to manage installation of tools.
+    
+    1. If you have not done so already please [Install Homebrew](http://wiki.github.com/mxcl/homebrew/installation).
+    1. Once you have Homebrew installed you can install Scalate via this command
+
+            brew install scalate
+      
+        The scalate executable should now be available from any terminal.
+    1. To verify this works try typing
+
+            scalate
+
+.left
+  :markdown
+    # Maven
+
+.right
+  :markdown
+    Scalate can be used as part of a Maven build by adding the following dependencies into your POM:
+    
+        <dependencies>
+          <dependency>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>scalate-wikitext</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>scalate-page</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.fusesource.scalamd</groupId>
+            <artifactId>scalamd</artifactId>
+            <version>${scalamd-version}</version>
+          </dependency>
+          <!-- testing -->
+          <dependency>
+            <groupId>org.fusesource.scalate</groupId>
+            <artifactId>scalate-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+          </dependency>
+        </dependencies>
+
+    **Note:** The path to your local Maven repository `.m2` cannot have any spaces.
+    
+.left
+  :markdown
+    # Diving deeper
+    
+.right
+  :markdown
+    Once you have the application working and you've played with the [Console](console.html) you 
+    might want to dive deeper into Scalate and understand how it works.
+
+    * [Scalate Console](console.html)
+    * [Documentation](index.html) for further information on user guides and template references
+    * [FAQ](../faq.html) if you hit any issues along the way
+  
