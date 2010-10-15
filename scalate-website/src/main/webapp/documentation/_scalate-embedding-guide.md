@@ -15,28 +15,10 @@ import org.fusesource.scalate._
 
 Once you create and configure and instance of `TemplateEngine`, it can be treated as a thread safe 
 singleton.  It has sensible configuration defaults so you could just use the following to compile
-and load a template:
+and render a template:
 {pygmentize:: scala}
 val engine = new TemplateEngine
-val template = engine.load("/path/to/template.ssp")
-{pygmentize}
-
-The `load` method returns `Template` object.  `Template` object is a dynamically byte code compiled
-version of the the requested template.  The template engine caches the template for
-you and watches the original source files for updates so it pick up changes.  Therefore, it's
-recommended that you `load` the template each time you before you use it.
-
-The next step is to render the template.  To do this you first need to create a `RenderContext`.
-The `RenderContext` is used to supply the template with data and collect the render results.  `RenderContext`
-is just an interface in case you want to use a custom implementation, but the supplied 
-`DefaultRenderContext` implementation should be suitable for most needs.
-
-The following shows how to render loaded template:
-{pygmentize:: scala}
-val buffer = new StringWriter()
-val context = new DefaultRenderContext(engine, new PrintWriter(buffer))
-template.render(context)
-println(buffer.toString)
+val output = engine.layout("/path/to/template.ssp")
 {pygmentize}
 
 
@@ -44,10 +26,7 @@ println(buffer.toString)
 
 Variables can passed as attributes to the template via the render context.  For example:
 {pygmentize:: scala}
-val context = new DefaultRenderContext(engine, new PrintWriter(buffer))
-context.attributes("name") = ("Hiram", "Chirino")
-context.attributes("city") = "Tampa"
-template.render(context)
+val output = engine.layout("/foo/bar.scaml", Map("name" -> "Hiram", "city" -> "Tampa"))
 {pygmentize}
 
 A template can then access those attributes once they declare a variable binding.  For example:
