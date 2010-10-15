@@ -48,4 +48,22 @@ class WhitespaceTest extends TemplateTestSupport {
 """)
   }
 
+  test("ssp ${...} expression whitespace") {
+    assertSspOutput("""
+  Copyright 2010 MyCompany
+""", """
+<% val year = "2010" %>
+  Copyright ${year} MyCompany
+""")
+  }
+
+  test("ssp <%=...%> expression whitespace") {
+    assertSspOutput("""
+  Copyright 2010 MyCompany
+""", """
+<% val year = "2010" %>
+  Copyright <%=year%> MyCompany
+""")
+  }
+
 }
