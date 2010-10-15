@@ -18,6 +18,8 @@
 
 package org.fusesource.scalate.util
 
+import java.net.URL
+
 object ClassLoaders extends Logging {
 
   /**
@@ -45,6 +47,21 @@ object ClassLoaders extends Logging {
       case _ => None
     }
   }
+
+  /**
+   * Tries to find the named resource on the given class loaders
+   */
+  def findResource(name: String, classLoaders: Traversable[ClassLoader] = defaultClassLoaders): Option[URL] = {
+      def tryLoadClass(classLoader: ClassLoader) = {
+        try {
+          classLoader.getResource(name)
+        }
+        catch {
+          case e => null
+        }
+      }
+      classLoaders.map(tryLoadClass).find(_ != null)
+    }
 
 
   /**
