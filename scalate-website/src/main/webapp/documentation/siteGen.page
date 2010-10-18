@@ -94,6 +94,16 @@ Create that static website with Scalate
     </p>
 
     <p>If you also want to deploy a regular maven website too then you can reuse the same site configuration as above but just specify a <b>remoteDirectory</b> property on the plugin (which defaults to ".." to avoid including the maven project name in the deploy url)</p>
+    
+    You will need to add the project's Web server to your Maven configuration:
+    
+    {pygmentize:: xml}
+    <server>
+      <id>website.fusesource.org</id>
+      <username>xxxx</username>
+      <password>xxxxx</password>
+    </server>
+    {pygmentize}
 
     </div>
 
