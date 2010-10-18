@@ -23,7 +23,7 @@ import java.lang.String
 import org.osgi.framework.{ServiceReference, Bundle}
 import collection.mutable.{HashMap, ListBuffer}
 import org.osgi.service.packageadmin.{ExportedPackage, PackageAdmin}
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.{Logging, Strings}
 
 /**
  * Helper methods to transform OSGi bundles into {@link AbstractFile} implementations
@@ -103,7 +103,7 @@ object BundleClassPathBuilder extends Logging {
     abstract class BundleEntry(url: URL, parent: DirEntry) extends AbstractFile {
       require(url != null, "url must not be null")
       lazy val (path: String, name: String) = getPathAndName(url)
-      lazy val fullName: String = (path::name::Nil).filter(!_.isEmpty).mkString("/")
+      lazy val fullName: String = (path::name::Nil).filter(n => !Strings.isEmpty(n)).mkString("/")
 
       /**
        * @return null

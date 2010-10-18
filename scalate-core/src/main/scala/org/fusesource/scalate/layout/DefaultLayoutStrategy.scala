@@ -16,10 +16,12 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.layout
+package org.fusesource.scalate
+package layout
 
-import org.fusesource.scalate.{ResourceNotFoundException, RenderContext, Template, TemplateEngine}
-import org.fusesource.scalate.util.Logging
+import util.Logging
+import util.Strings.isEmpty
+
 
 /**
  * The default implementation of <code>LayoutStrategy</code>.
@@ -35,7 +37,7 @@ import org.fusesource.scalate.util.Logging
 class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
   def layout(template: Template, context: RenderContext) {
 
-    def isLayoutDisabled(layout: String) = layout.trim.isEmpty
+    def isLayoutDisabled(layout: String) = isEmpty(layout.trim)
 
     // lets capture the body to be used for the layout
     val body = context.capture(template)

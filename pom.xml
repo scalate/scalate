@@ -56,8 +56,10 @@
     <asm-version>3.1</asm-version>
     <jansi-version>1.4</jansi-version>
     <jar-plugin-version>2.3</jar-plugin-version>
-    <jersey-version>1.4-ea05</jersey-version>
-
+<!--
+<jersey-version>1.4</jersey-version>
+-->
+    <jersey-version>1.5-ea01</jersey-version>
     <jetty-version>7.1.5.v20100705</jetty-version>
     <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
     <jline-version>0.9.95.20100209</jline-version>
@@ -695,18 +697,6 @@
             <enabled>false</enabled>
           </releases>
         </repository>
-        <!-- TODO only required until we move to a real JCommander release -->
-        <repository>
-          <id>fusesource-nexus-snapshot</id>
-          <name>FuseSource Nexus Snapshot Repository</name>
-          <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <releases>
-            <enabled>false</enabled>
-          </releases>
-        </repository>
         <repository>
           <id>servicemix.m2</id>
           <name>ServiceMix M2 Repository</name>
@@ -1031,7 +1021,7 @@
   
     <!-- 
         Do a license check by running       : mvn -P license license:check  
-        UPdate the license check by running : mvn -P license license:format  
+        Update the license check by running : mvn -P license license:format
       -->
     <profile>
       <id>license</id>

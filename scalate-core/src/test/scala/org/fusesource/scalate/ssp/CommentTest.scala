@@ -20,49 +20,23 @@ package org.fusesource.scalate
 package ssp
 
 
-class WhitespaceTest extends TemplateTestSupport {
+class CommentTest extends TemplateTestSupport {
 
   showOutput = true
 
-  test("regular ssp directive") {
+  test("<%-- ... --%> ssp comments") {
     assertSspOutput("""
-  person: James
-  person: Hiram
+  Copyright  MyCompany
 """, """
-<% val people = List("James", "Hiram") %>
-<% for (p <- people) { %>
-  person: ${p}
-<% } %>
+  Copyright <%-- year --%> MyCompany
 """)
   }
 
-  test("velocity style ssp directive") {
+  test("<%# ... %> ssp comments") {
     assertSspOutput("""
-  person: James
-  person: Hiram
+  Copyright  MyCompany
 """, """
-<% val people = List("James", "Hiram") %>
-#for(p <- people)
-  person: ${p}
-#end
-""")
-  }
-
-  test("ssp ${...} expression whitespace") {
-    assertSspOutput("""
-  Copyright 2010 MyCompany
-""", """
-<% val year = "2010" %>
-  Copyright ${year} MyCompany
-""")
-  }
-
-  test("ssp <%=...%> expression whitespace") {
-    assertSspOutput("""
-  Copyright 2010 MyCompany
-""", """
-<% val year = "2010" %>
-  Copyright <%=year%> MyCompany
+  Copyright <%#=year%> MyCompany
 """)
   }
 
