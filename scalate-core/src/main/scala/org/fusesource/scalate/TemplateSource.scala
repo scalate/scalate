@@ -111,7 +111,7 @@ trait TemplateSource extends Resource {
 
     def processClassName(cn: String) = cn.replace('.', '_').replace("-", "$dash")
 
-    def invalidPackageName(name: String): Boolean = name.isEmpty || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
+    def invalidPackageName(name: String): Boolean = isEmpty(name) || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
 
     val normalizedURI: String = try {
       new URI(uri).normalize.toString

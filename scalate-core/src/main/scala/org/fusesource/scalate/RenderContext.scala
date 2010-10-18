@@ -22,6 +22,7 @@ import filter.FilterRequest
 import introspector.Introspector
 import support.Resource
 import util._
+import util.Strings.isEmpty
 import util.IOUtil._
 
 import java.io.File
@@ -308,7 +309,7 @@ trait RenderContext {
     def viewForClass(clazz: Class[_]): String = {
       for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
         val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
-        val fullPath = if (prefix.isEmpty) {"/" + path} else {"/" + prefix + "/" + path}
+        val fullPath = if (isEmpty(prefix)) {"/" + path} else {"/" + prefix + "/" + path}
         if (engine.resourceLoader.exists(fullPath)) {
           return fullPath
         }
