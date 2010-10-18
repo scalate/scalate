@@ -71,10 +71,10 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         case af: AttributeFragment => {
         }
         case DollarExpressionFragment(code) => {
-          this << "$_scalate_$_context << " :: wrapInParens(code)
+          this << "$_scalate_$_context <<< " :: wrapInParens(code)
         }
         case ExpressionFragment(code) => {
-          this << "$_scalate_$_context << " :: wrapInParens(code)
+          this << "$_scalate_$_context <<< " :: wrapInParens(code)
         }
         case IfFragment(code) => {
           this << code.pos;

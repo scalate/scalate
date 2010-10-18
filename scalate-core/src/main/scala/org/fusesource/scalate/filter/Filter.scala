@@ -24,7 +24,7 @@ package filter
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-case class FilterRequest(filter: String, content: String)
+case class FilterRequest(filter: String, content: Any)
 
 /**
  * Filters transform content at a given URI.

@@ -182,8 +182,8 @@ trait RenderContext {
   // Rendering API
   //
   //////////////////////////////////x///////////////////////////////////
-  def value(any: Any, shouldSanitize: Boolean = escapeMarkup): String = {
-    def sanitize(text: String): String = if (shouldSanitize) {RenderHelper.sanitize(text)} else {text}
+  def value(any: Any, shouldSanitize: Boolean = escapeMarkup): Any = {
+    def sanitize(text: String): Any = if (shouldSanitize) {Unescaped(RenderHelper.sanitize(text))} else {text}
 
     any match {
       case u: Unit => ""
@@ -200,7 +200,7 @@ trait RenderContext {
       case v: Number => sanitize(numberFormat.format(v))
       case f: FilterRequest => {
         // NOTE assume a filter does the correct sanitizing
-        var rc = filter(f.filter, f.content)
+        var rc = filter(f.filter, f.content.toString)
         rc
       }
       // No need to sanitize nodes as they are already sanitized
@@ -556,5 +556,7 @@ trait RenderContext {
   /**
    * Used to represent some text which does not need escaping
    */
-  case class Unescaped(text: String)
+  case class Unescaped(text: String) {
+    override def toString = text
+  }
 }
