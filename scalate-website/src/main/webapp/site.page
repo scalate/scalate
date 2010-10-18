@@ -40,5 +40,21 @@ How the website works
     # Deploying the site
 .right
   :markdown
-    You can deploy the site using Maven:
-        mvn scalate:deploy
+    The site is automatically deployed by the CI builds, so you can simply wait for the changes to be automatically pushed 
+    to the project site.
+    
+    You can manually deploy the site using Maven:
+    
+    {pygmentize:: text}
+    mvn scalate:deploy
+    {pygmentize}
+
+    You will need to add the Scalate project's Web server to your Maven configuration:
+    
+    {pygmentize:: xml}
+    <server>
+      <id>website.fusesource.org</id>
+      <username>xxxx</username>
+      <password>xxxxx</password>
+    </server>
+    {pygmentize}
