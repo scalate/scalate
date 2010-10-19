@@ -22,7 +22,7 @@ If the release is a major release then we need to freeze the current website at 
 * in the current last-release branch change the scalate-website/pom.xml and edit the "maven-scalate-plugin" section to list the correct remoteServerUrl to something like...
 
 {pygmentize:: xml}
-<remoteServerUrl>dav:http://fusesource.com/forge/dav/${forge-project-id}/versions/snapshot
+<remoteServerUrl>dav:http://fusesource.com/forge/dav/\${forge-project-id}/versions/snapshot
 <remoteServerUrl/>
 {pygmentize}
 
