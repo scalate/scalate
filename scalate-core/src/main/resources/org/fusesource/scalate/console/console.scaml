@@ -22,14 +22,14 @@
     - if (!optionEnabled("console"))
       .toggle.show
         %a(href={enableLink("console")} class="consoleLink" title="Show the Scalate Console")
-          %img(src="/images/scalate/project-icon-24x24.png")
-          %img(src="/images/scalate/plus.png")
+          %img(src={uri("/images/scalate/project-icon-24x24.png")})
+          %img(src={uri("/images/scalate/plus.png")})
     - else
       .toggle.hide
         %a(href={disableLink("console")} class="consoleLink hide" title="Hide the Scalate Console")
-          %img(src="/images/scalate/project-icon-24x24.png")
+          %img(src={uri("/images/scalate/project-icon-24x24.png")})
           Scalate Console
-          %img(src="/images/scalate/minus.png")
+          %img(src={uri("/images/scalate/minus.png")})
 
       .archetypes
         %p Create
@@ -88,12 +88,12 @@
         .toggle.show
           %a(href={enableLink("attributes")} title="Show the Attributes")
             Attributes
-            %img(src="/images/scalate/plus.png")
+            %img(src={uri("/images/scalate/plus.png")})
       - else
         .toggle.hide
           %a(href={disableLink("attributes")} title="Hide the Attributes")
             Attributes
-            %img(src="/images/scalate/minus.png")
+            %img(src={uri("/images/scalate/minus.png")})
         .attributes
           %table#attributes
             %tr
@@ -112,12 +112,12 @@
           .toggle.show
             %a(href={enableLink("body")} title="Show the Body")
               Body
-              %img(src="/images/scalate/plus.png")
+              %img(src={uri("/images/scalate/plus.png")})
         - else
           .toggle.hide
             %a(href={disableLink("body")} title="Hide the Body")
               Body
-              %img(src="/images/scalate/minus.png")
+              %img(src={uri("/images/scalate/minus.png")})
           .body
             %pre(class="brush: html")<
               &~ attributes("body")
@@ -128,12 +128,12 @@
         .toggle.show
           %a(href={enableLink("sysProp")} title="Show the System Properties")
             System Properties
-            %img(src="/images/scalate/plus.png")
+            %img(src={uri("/images/scalate/plus.png")})
       - else
         .toggle.hide
           %a(href={disableLink("sysProp")} title="Hide the System Properties")
             System Properties
-            %img(src="/images/scalate/minus.png")
+            %img(src={uri("/images/scalate/minus.png")})
         .systemProperties
           %table#systemProperties
             %tr
