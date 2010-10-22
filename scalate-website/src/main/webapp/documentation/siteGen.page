@@ -55,7 +55,7 @@ Create that static website with Scalate
     
     This will invoke the **scalate:sitegen** plugin which generates the static website to the **target/sitegen** directory.
 
-    The **scalate:sitegen** goal is leveraging the default Maven goal and lifecycle configuration defined in the plugin.  There's also a **scalate:sitegen-no-fork** plugin goal available that can be used to configure additional/different executions of the goal in an existing build.  
+    There's also a **scalate:sitegen-no-fork** plugin goal available that can be used to configure additional/different executions of the goal in an existing build.  
 
 .left
   :markdown
@@ -95,6 +95,16 @@ Create that static website with Scalate
     </p>
 
     <p>If you also want to deploy a regular maven website too then you can reuse the same site configuration as above but just specify a <b>remoteDirectory</b> property on the plugin (which defaults to ".." to avoid including the maven project name in the deploy url)</p>
+    
+    You will need to add the project's Web server to your Maven configuration:
+    
+    {pygmentize:: xml}
+    <server>
+      <id>website.fusesource.org</id>
+      <username>xxxx</username>
+      <password>xxxxx</password>
+    </server>
+    {pygmentize}
 
     </div>
 

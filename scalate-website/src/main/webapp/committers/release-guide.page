@@ -19,11 +19,13 @@ Various documentation changes first (which should be done before the release is 
 
 If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion
 
-* in the current last-release branch change the Rakefile to generate the website to generate the the last version. For example if the last released version is 0.1 then change the line in the Rakefile to...
+* in the current last-release branch change the scalate-website/pom.xml and edit the "maven-scalate-plugin" section to list the correct remoteServerUrl to something like...
 
-      remote /forge/dav/#{project_id}/versions/0.1
+{pygmentize:: xml}
+<remoteServerUrl>dav:http://fusesource.com/forge/dav/\${forge-project-id}/versions/snapshot
+<remoteServerUrl/>
+{pygmentize}
 
-* make sure the CI build for [webgen last release](http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&tab=buildTypeStatusDiv) runs so that the website for the previous release is archived into the versions directory.
 * add a link to the versions.page to this old version. 
 
 Cutting the release 

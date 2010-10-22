@@ -35,7 +35,10 @@ class DefaultTemplatePackage extends TemplatePackage with Logging {
             }
 
           case _ =>
-            debug("Could not find a class on the classpath based on the current url: " + cleanUri)
+            if (!className.split('.').last.startsWith("_")) {
+              // lets ignore partial templates which are never bound to a resource directly
+              debug("Could not find a class on the classpath based on the current url: " + cleanUri)
+            }
             ""
         }
     }

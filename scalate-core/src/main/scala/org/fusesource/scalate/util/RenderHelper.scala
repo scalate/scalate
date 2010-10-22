@@ -46,7 +46,7 @@ object RenderHelper
    * Pads the text following newlines with the specified
    * indent amount so that the text is indented.
    */
-  def indent( amount:String, text: String ): String = text.replaceAll("\n(.)", "\n"+amount+"$1" )
+  def indent( amount:String, text: Any ): String = text.toString.replaceAll("\n(.)", "\n"+amount+"$1" )
 
   def indentAmount( level:Int, kind:String ): String = {
     val rc = new StringBuilder
@@ -63,7 +63,7 @@ object RenderHelper
    * so that multiple lines encode to a sinle long HTML source line
    * but still render in browser as multiple lines.
    */
-  def preserve( text: String ): String = text.replaceAll("\n", "&#x000A;");
+  def preserve( text: Any ): String = text.toString.replaceAll("\n", "&#x000A;");
 
   /**
    *  Escapes any XML special characters.
@@ -134,7 +134,7 @@ object RenderHelper
   }
 
   def smart_sanitize(context: RenderContext, value: Any): String = {
-    context.value(value)
+    context.value(value).toString
 /*
     if (value == null) {
       return context.value(value);

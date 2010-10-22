@@ -50,11 +50,11 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
   }
 
   def <<(v: Any): Unit = {
-    out.print(value(v, false))
+    out.print(value(v, false).toString)
   }
 
   def <<<(v: Any): Unit = {
-    out.print(value(v))
+    out.print(value(v).toString)
   }
 
 

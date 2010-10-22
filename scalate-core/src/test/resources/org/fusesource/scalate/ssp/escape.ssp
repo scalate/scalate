@@ -1,0 +1,8 @@
+<%@ var myVal: String = """foo="bar baz" <this>""" %>
+<html>
+<body>
+ <div id="a">${myVal}</div>
+ <div id="b"><%=myVal%></div>
+ <div id="c">${value(myVal)}</div>
+</body>
+</html>

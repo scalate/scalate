@@ -491,9 +491,11 @@ When you create a number of templates in a directory you might find you are repe
 
 So Scalate supports a similar feature for templates which are code generated like [SSP](ssp-reference.html), [Scaml](scaml-reference.html) and [Jade](scaml-reference.html#jade).
 
-The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package. If a ScalatePackage class is found then its **header** method is invoked to generate any shared imports, variables or methods across templates.
+The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). 
 
-For example you could use this scala file to add some default imports you want to share across a number of templates in a directory...
+If a ScalatePackage class is found then its **header** method is invoked to generate any shared imports, variables or methods across templates.
+
+For example you could add the following Scala code to a file called **src/main/scala/foo/ScalatePackage.scala** to add some default imports you want to share across a number of templates in a the **foo** directory and its descendants...
 
 {pygmentize:: scala}
 package foo
@@ -523,7 +525,7 @@ def time = new java.util.Date()
 
 {pygmentize}
 
-You can then use the usual expressive composition features of Scala to use inheritance, traits, delegation and so forth to decide how to spread this code across your templates. You might find moving templates into functional directories makes it easier to reuse common boilerplate imports, values and methods across templates.
+You can then use the usual expressive composition features of Scala to use inheritance, traits, delegation and so forth to decide how to spread this code across your templates and decide how to combine these things at the package level to be inherited by all child packages and templates. You might find moving templates into functional directories makes it easier to reuse common boilerplate imports, values and methods across templates.
 
 
 ## Scalate Samples
