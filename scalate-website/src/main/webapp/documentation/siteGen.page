@@ -54,7 +54,8 @@ Create that static website with Scalate
         mvn install
     
     This will invoke the **scalate:sitegen** plugin which generates the static website to the **target/sitegen** directory.
-    
+
+    There's also a **scalate:sitegen-no-fork** plugin goal available that can be used to configure additional/different executions of the goal in an existing build.  
 
 .left
   :markdown

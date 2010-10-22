@@ -77,9 +77,9 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
   def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     var answer = false
     if(mediaType.getType == "text" && mediaType.getSubtype == "html") {
-      val servlet = TemplateEngineServlet()
-      if (servlet != null && servlet.templateEngine != null && servlet.templateEngine.resourceLoader != null) {
-        val path = resolve(servlet.templateEngine.resourceLoader, argType)
+      val templateEngine = ServletTemplateEngine(servletContext)
+      if (templateEngine != null && templateEngine.resourceLoader != null) {
+        val path = resolve(templateEngine.resourceLoader, argType)
         answer = path != null
       }
     }
@@ -90,8 +90,8 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
     // Ensure headers are committed
     out.flush()
 
-    val servlet = TemplateEngineServlet()
-    val path = resolve(servlet.templateEngine.resourceLoader, argType)
+    val templateEngine = ServletTemplateEngine(servletContext)
+    val path = resolve(templateEngine.resourceLoader, argType)
 
     try {
 
@@ -100,7 +100,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
       request.setAttribute("uri_info", uriInfo)
       request.setAttribute("it", arg)
 
-      val context = new ServletRenderContext(servlet.templateEngine, request, response, servletContext)
+      val context = new ServletRenderContext(templateEngine, request, response, servletContext)
       context.include(path, true, List(Binding("it", argType.getName, false, None, "val",  true )))
 
 
@@ -123,7 +123,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
             request.setAttribute("javax.servlet.error.status_code", status)
 
             request.setAttribute("it", e)
-            servlet.render(uri, request, response)
+            TemplateEngineServlet.render(uri, templateEngine, servletContext, request, response)
             notFound = false
           }
         }

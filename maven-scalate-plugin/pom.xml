@@ -45,6 +45,7 @@
 <!--
     <maven-version>2.0.6</maven-version>
 -->
+    <mvnplugins-version>1.12-SNAPSHOT</mvnplugins-version>
     <wagonVersion>1.0-beta-6</wagonVersion>
   </properties>
 
@@ -106,7 +107,7 @@
     <dependency>
       <groupId>org.fusesource.mvnplugins</groupId>
       <artifactId>scala-mojo-support</artifactId>
-      <version>1.10</version>
+      <version>${mvnplugins-version}</version>
     </dependency>
 
     <!-- site deploy stuff -->
@@ -243,7 +244,7 @@
           <dependency>
             <groupId>org.fusesource.mvnplugins</groupId>
             <artifactId>scala-mojo-support</artifactId>
-            <version>1.10</version>
+            <version>${mvnplugins-version}</version>
           </dependency>
         </dependencies>
       </plugin>
