@@ -38,15 +38,28 @@ import org.fusesource.scalate.wikitext.WikiTextFilter
 
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups
- * you are using
+ * you are using.  It binds to the verify phase, so it may fork a separate lifecycle in the Maven build.
  *
  * @author <a href="http://macstrac.blogspot.com">James Strachan</a>
  */
 @goal("sitegen")
 @phase("verify")
+@executeGoal("sitegen")
+@executePhase("verify")
 @requiresProject
 @requiresDependencyResolution("test")
-class SiteGenMojo extends AbstractMojo {
+class SiteGenMojo extends SiteGenNoForkMojo
+
+/**
+ * This goal functions the same as the 'sitegen' goal but does not fork the build and is suitable for attaching to the build lifecycle.
+ *
+ * @author <a href="http://macstrac.blogspot.com">James Strachan</a>
+ */
+@goal("sitegen-no-fork")
+@phase("verify")
+@requiresProject
+@requiresDependencyResolution("test")
+class SiteGenNoForkMojo extends AbstractMojo {
   @parameter
   @expression("${project}")
   @readOnly
