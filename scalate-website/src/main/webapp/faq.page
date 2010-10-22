@@ -102,12 +102,44 @@ We [compare approaches here](code-in-view.html), see which is right for you and 
 
 Try the [Getting Started Guide](documentation/getting-started.html) which should have you *scalating* nicely really quickly!
 
+### How do I enable or disable markup esscaping
+
+By default Scalate will safely escape any markup characters to avoid you creating invalid or unsafe markup.
+
+However sometimes you want to output a Scala expression which is a String but contains markup you wish to preserve and not escape.
+
+Firstly escaping is enabled by default via the **escapeMarkup** property on TemplateEngine; as you create a RenderContext it inherits the setting. So you can globally disable escaping by just setting the flag on the TemplateEngine.
+
+Or you can enable/disable it inside a template. 
+
+{pygmentize:: jsp}
+<% escapeMarkup = false %>
+{pygmentize}
+
+The other option is to wrap your expression inside the **escape** or **unescape** methods.
+
+e.g. 
+
+{pygmentize:: jsp}
+some text
+${unescape("<h1>hello there</h1>")}
+{pygmentize}
+
+Incidentally we assume NodeSeq from Scala's XML API is already markup so we don't escape it. So if you have an expression which is a NodeSeq then it won't be escaped.
+
+{pygmentize:: jsp}
+<% val markup = <h1>hello<h1> %>
+<% val text = "<h1>hello<h1>" %>
+
+this will not be escaped ${markup}
+this will be escaped ${text}  
+{pygmentize}
+
 ### How do I disable layouts?
 
 If you want to disable layouts, just set the **layoutStrategy** property on the [TemplateEngine](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) to be the [NullLayoutStrategy](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/layout/NullLayoutStrategy$.html)
 
 Or you can just create an empty layout. For example if you are using servlets or JAXRS, just create a template in */WEB-INF/scalate/layouts/default.ssp* which just includes the body and does not perform any actual layout.
-
 
 ### How can I use Scalate and Scala in a RAD way?
 
