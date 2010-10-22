@@ -66,4 +66,18 @@ class WhitespaceTest extends TemplateTestSupport {
 """)
   }
 
+  test("ssp <%=...%> expression whitespace 2") {
+    assertSspOutput("""
+  <tr class="featured">
+""", """
+  <tr<% if(true) { %> class="featured"<% } %>>
+""")
+  }
+
+  test("ssp <%=...%> expression whitespace 3") {
+    assertSspOutput("""
+  Hello World!""", """
+  Hello <% if(true) { %>World!<% } %>
+""")
+  }
 }
