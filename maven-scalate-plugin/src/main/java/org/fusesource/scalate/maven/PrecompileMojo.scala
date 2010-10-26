@@ -24,7 +24,8 @@ import org.fusesource.scalate.{Binding, TemplateEngine}
 import collection.mutable.ListBuffer
 import java.net.URLClassLoader
 import org.fusesource.scalate.util.{ClassPathBuilder, IOUtil}
-import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.Artifact
+import java.util.ArrayList;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
@@ -73,6 +74,10 @@ class PrecompileMojo extends AbstractMojo {
   @expression("${project.build.outputDirectory}")
   var classesDirectory:File = _
 
+  @parameter
+  @description("Additional template paths to compile.")
+  var templates:ArrayList[String] = new ArrayList[String]()
+
   def execute() = {
     targetDirectory.mkdirs();
 
@@ -96,6 +101,11 @@ class PrecompileMojo extends AbstractMojo {
       paths = collectUrisWithExtension(sd, "", "." + extension) ::: paths;
     }
 
+    import collection.JavaConversions._
+    templates.foreach { x=>
+      paths ::= x 
+    }
+
     getLog.info("Precompiling Scalate Templates into Scala classes...");
 
     val loader = createProjectClassLoader
@@ -104,7 +114,7 @@ class PrecompileMojo extends AbstractMojo {
     for (uri <- paths) {
 
       // TODO it would be easier to just generate Source + URI pairs maybe rather than searching again for the source file???
-      val file = sourceDirs.map(new File(_, uri)).find(_.exists).getOrElse(throw new Exception("Could not find " + uri + " in any paths " + sourceDirs))
+      val file = sourceDirs.map(new File(_, uri)).find(_.exists).getOrElse(uri)
       getLog.info("    processing " + file)
 
       val template = engine.load(uri)
