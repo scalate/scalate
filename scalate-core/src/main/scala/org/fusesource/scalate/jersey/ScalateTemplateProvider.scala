@@ -101,8 +101,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
       request.setAttribute("it", arg)
 
       val context = new ServletRenderContext(templateEngine, request, response, servletContext)
-      context.include(path, true, List(Binding("it", argType.getName, false, None, "val",  true )))
-
+      context.include(path, true)
 
     } catch {
       case e: Exception =>
