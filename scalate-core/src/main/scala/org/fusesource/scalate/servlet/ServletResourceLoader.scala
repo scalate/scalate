@@ -24,6 +24,7 @@ import org.fusesource.scalate.ResourceNotFoundException
 import org.fusesource.scalate.support.Resource._
 import java.lang.String
 import org.fusesource.scalate.support.{ResourceLoader, FileResourceLoader}
+import java.net.MalformedURLException
 
 object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context)
@@ -44,12 +45,17 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
         None
     }
     else {
-      val url = context.getResource(uri)
-      if (url!=null) {
-        val resource = fromURL(url)
-        Some(resource)
-      } else {
-        delegate.resource(uri)
+      try {
+        val url = context.getResource(uri)
+        if (url!=null) {
+          val resource = fromURL(url)
+          Some(resource)
+        } else {
+          delegate.resource(uri)
+        }
+      } catch {
+        case x:MalformedURLException=>
+          delegate.resource(uri)
       }
     }
   }

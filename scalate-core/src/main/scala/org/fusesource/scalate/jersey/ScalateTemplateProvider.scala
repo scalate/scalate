@@ -36,7 +36,7 @@ import javax.ws.rs.ext.{Provider, MessageBodyWriter, MessageBodyReader}
 import javax.ws.rs.Produces
 import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
 import javax.ws.rs.core.{UriInfo, MultivaluedMap, MediaType, Context}
-import org.fusesource.scalate.{Binding, TemplateEngine}
+import org.fusesource.scalate.{TemplateException, ResourceNotFoundException, Binding, TemplateEngine}
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -56,17 +56,17 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
   @Context
   var uriInfo:UriInfo = _
 
-  var templateDirectories = List("/WEB-INF", "")
-
-  def resolve(loader:ResourceLoader, argType:Class[_]):String = {
+  def resolve(engine:ServletTemplateEngine, argType:Class[_]):String = {
     val argBase = argType.getName.replace('.','/')
-
-    templateDirectories.foreach { dir =>
-      TemplateEngine.templateTypes.foreach { types =>
-        val path = dir + "/" + argBase + "." + types
-        if( loader.exists(path) ) {
+    engine.extensions.foreach { ext =>
+      val path = "/"+argBase + "." + ext
+      try {
+        engine.load(path)
+        return path
+      } catch {
+        case x:ResourceNotFoundException =>
+        case x:TemplateException =>
           return path
-        }
       }
     }
     null
@@ -77,9 +77,9 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
   def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     var answer = false
     if(mediaType.getType == "text" && mediaType.getSubtype == "html") {
-      val templateEngine = ServletTemplateEngine(servletContext)
-      if (templateEngine != null && templateEngine.resourceLoader != null) {
-        val path = resolve(templateEngine.resourceLoader, argType)
+      val engine = ServletTemplateEngine(servletContext)
+      if (engine != null && engine.resourceLoader != null) {
+        val path = resolve(engine, argType)
         answer = path != null
       }
     }
@@ -90,8 +90,8 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
     // Ensure headers are committed
     out.flush()
 
-    val templateEngine = ServletTemplateEngine(servletContext)
-    val path = resolve(templateEngine.resourceLoader, argType)
+    val engine = ServletTemplateEngine(servletContext)
+    val path = resolve(engine, argType)
 
     try {
 
@@ -100,7 +100,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
       request.setAttribute("uri_info", uriInfo)
       request.setAttribute("it", arg)
 
-      val context = new ServletRenderContext(templateEngine, request, response, servletContext)
+      val context = new ServletRenderContext(engine, request, response, servletContext)
       context.include(path, true)
 
     } catch {
@@ -122,7 +122,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
             request.setAttribute("javax.servlet.error.status_code", status)
 
             request.setAttribute("it", e)
-            TemplateEngineServlet.render(uri, templateEngine, servletContext, request, response)
+            TemplateEngineServlet.render(uri, engine, servletContext, request, response)
             notFound = false
           }
         }
