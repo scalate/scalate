@@ -24,13 +24,17 @@ How the website works
     If you [grab the source code](source.html) you can get the site source in the *scalate-website* directory.
     If you [have Scalate installed](documentation/installing.html) then you can build the website from [the code](source.html) as follows
 
-        cd scalate-website
-        mvn install
-  
+    {pygmentize:: text}
+    cd scalate-website
+    mvn install
+    {pygmentize}
+
     If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use
 
-        mvn jetty:run
-    
+    {pygmentize:: text}
+    mvn jetty:run
+    {pygmentize}
+
     You can now surf the site and see changes immediately.
 
     If you are on OS X then we highly recommend [TextMate](http://macromates.com/) as a great editor which supports Textile and Markdown
@@ -48,6 +52,8 @@ How the website works
     {pygmentize:: text}
     mvn scalate:deploy
     {pygmentize}
+
+    Though website deployment also occurs by default using the **deploy** goal in maven
 
     You will need to add the Scalate project's Web server to your Maven configuration:
     
