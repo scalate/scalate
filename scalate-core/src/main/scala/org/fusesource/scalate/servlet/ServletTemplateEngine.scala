@@ -121,7 +121,6 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
   ServletTemplateEngine.setLayoutStrategy(this)
 
   info("Scalate template engine using working directory: " + workingDirectory)
-  
   private def buildClassPath(): String = {
 
     val builder = new ClassPathBuilder
@@ -133,7 +132,12 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
     builder.addPathFrom(getClass)
             .addPathFrom(classOf[ServletConfig])
             .addPathFrom(classOf[Product])
-            .addPathFrom(classOf[Global])
+
+    try {
+      builder.addPathFrom(classOf[Global])
+    } catch {
+      case x => // the scala compiler might not be on the path.
+    }
 
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
     builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
