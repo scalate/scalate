@@ -30,8 +30,8 @@ import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import org.fusesource.scalate.util.Logging
 import com.sun.jersey.api.container.ContainerException
 import javax.ws.rs.core.Context
-import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.{ResourceNotFoundException, TemplateException, TemplateEngine}
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -52,21 +52,24 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     case _ => ""
   }
 
-  var templateTypes: List[String] = TemplateEngine.templateTypes
   var errorUris: List[String] = ServletHelper.errorUris()
-  var templateSuffixes: List[String] = templateTypes.map(s => "." + s) :+ ""
-  var templateDirectories = List("/WEB-INF", "")
 
   def resolve(requestPath: String): String = {
+
     if (servletContext == null) {
       warn("No servlet context")
+      return null
+    }
+    val engine = ServletTemplateEngine(servletContext)
+    if( engine==null ) {
+      warn("No ServletTemplateEngine context")
       return null
     }
 
     try {
       val path = if (basePath.length > 0) basePath + requestPath else requestPath
 
-      tryFindPath(path) match {
+      tryFindPath(engine, path) match {
         case Some(answer) => answer
         case None =>
           /* 
@@ -79,7 +82,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
           val idx = path.lastIndexOf('/')
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
-            tryFindPath(newPath).getOrElse(null)
+            tryFindPath(engine, newPath).getOrElse(null)
           }
           else {
             null
@@ -92,22 +95,19 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     }
   }
 
-  def tryFindPath(path: String): Option[String] = {
-    def findPath(filter: String => Boolean): Option[String] = {
-      for (prefix <- templateDirectories; postfix <- templateSuffixes) {
-        val p = prefix + path + postfix
-        if (filter(p)) return Some(p)
+  def tryFindPath(engine:ServletTemplateEngine, path: String): Option[String] = {
+    for( ext <- engine.extensions ) {
+      val p = path + "." + ext
+      try {
+        engine.load(p)
+        return Some(p)
+      } catch {
+        case x:ResourceNotFoundException =>
+        case x:TemplateException =>
+          return Some(p)
       }
-      None
     }
-
-    val servlet = TemplateEngineServlet()
-    if (servlet != null) {
-      val loader = servlet.templateEngine.resourceLoader
-      findPath(loader.resource(_).isDefined)
-    } else {
-      findPath(servletContext.getResource(_) ne null)
-    }
+    return None
   }
 
 
