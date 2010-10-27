@@ -215,7 +215,6 @@
     <module>scalate-war</module>
     <module>samples</module>
     <module>maven-scalate-plugin</module>
-    <module>maven-linkchecker-plugin</module>
     <module>archetypes</module>
     <module>scalate-tool</module>
     <module>scalate-jsp-converter</module>
