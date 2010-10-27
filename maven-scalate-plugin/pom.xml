@@ -45,7 +45,7 @@
 <!--
     <maven-version>2.0.6</maven-version>
 -->
-    <mvnplugins-version>1.12-SNAPSHOT</mvnplugins-version>
+    <mvnplugins-version>1.12</mvnplugins-version>
     <wagonVersion>1.0-beta-6</wagonVersion>
   </properties>
 

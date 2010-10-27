@@ -1012,7 +1012,7 @@
           <plugin>
             <groupId>org.fusesource.mvnplugins</groupId>
             <artifactId>maven-graph-plugin</artifactId>
-            <version>1.9</version>
+            <version>1.12</version>
           </plugin>
         </plugins>
       </build>
