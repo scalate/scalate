@@ -2,6 +2,16 @@
 ===============================
 
 
+[Scalate 1.3.1](http://scalate.fusesource.org/blog/releases/release-1-3-1.html), released 2010-10-27
+----
+
+* for folks migrating from Erb, [Ssp](${uri("/documentation/ssp-reference.html#syntax")}) now supports Erb style comments
+* [ScalatePackage classes](${uri("/documentation/user-guide.html#dry")}) can now be properly auto-detected for templates which reside in the WEB-INF directory in a web application.
+* works inside OSGi containers
+* all documentation now correctly included in the distro
+
+For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/300141-1-3-1)
+
 [Scalate 1.3](http://scalate.fusesource.org/blog/releases/release-1-3.html), released 2010-10-08
 ----
 
