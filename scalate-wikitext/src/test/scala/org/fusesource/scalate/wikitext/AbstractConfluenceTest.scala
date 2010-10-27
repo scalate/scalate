@@ -15,6 +15,7 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
     val context = new DefaultRenderContext("foo.conf", new TemplateEngine())
     val actual = filter.filter(context, source)
     println("Created: " + actual)
-    expect(expected) {actual}
+    val expectedWithPlatformNewlines = expected.replaceAll("\\\\n", System.getProperty("line.separator"))
+    expect(expectedWithPlatformNewlines) {actual}
   }    
 }
