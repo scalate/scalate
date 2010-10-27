@@ -49,7 +49,7 @@ object Pygmentize extends Logging {
       }
 
       val output = new String(out.toByteArray).trim
-      println("Pygmentize installed: " + output)
+      debug("Pygmentize installed: " + output)
       true
     }
     catch {
