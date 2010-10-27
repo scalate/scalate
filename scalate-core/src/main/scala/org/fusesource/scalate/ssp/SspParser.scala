@@ -85,7 +85,7 @@ class SspParser extends ScalaParseSupport {
     case x ~ None => x
   }
 
-  val tagEnding = """%>[ \t]*\r?\n""".r | "%>"
+  val tagEnding = "+%>" | """%>[ \t]*\r?\n""".r | "%>"
   val commentFragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
   val altCommentFragment = wrapped("<%#", "%>") ^^ {CommentFragment(_)}
   val dollarExpressionFragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}

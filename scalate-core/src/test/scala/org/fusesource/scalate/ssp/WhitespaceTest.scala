@@ -80,4 +80,12 @@ class WhitespaceTest extends TemplateTestSupport {
   Hello <% if(true) { %>World!<% } %>
 """)
   }
+
+  test("ssp <%=...%> expression whitespace 4") {
+    assertSspOutput("""
+  Hello World!
+""", """
+  Hello <% if(true) { %>World!<% } +%>
+""")
+  }
 }
