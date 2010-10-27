@@ -173,11 +173,11 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
   def begin = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))
     builder.beginBlock(BlockType.PREFORMATTED, cssClass(language));
-    builder.characters(Platform.EOL)
+    builder.characters("\n")
   }
 
   def addLine(line: String) = {
-    builder.characters(line + Platform.EOL)
+    builder.characters(line + "\n")
   }
 
   def done = {
