@@ -155,46 +155,5 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
         // throw new ContainerException(e)
     }
   }
-/*
-  def writeToUsingRequestDispatcher(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
-    val dispatcher = servletContext.getRequestDispatcher(resolvedPath)
-    if (dispatcher == null) {
-      throw new ContainerException("No request dispatcher for: " + resolvedPath)
-    }
 
-    try {
-      val wrapper = new RequestDispatcherWrapper(dispatcher, basePath, hc, viewable)
-      wrapper.forward(request, response)
-      //wrapper.forward(requestInvoker.get(), responseInvoker.get())
-    } catch {
-      case e: Exception =>
-        // lets forward to the error handler
-        var notFound = true
-        for (uri <- errorUris if notFound) {
-          val rd = servletContext.getRequestDispatcher(uri)
-          if (rd != null) {
-
-            // we need to expose all the errors property here...
-            request.setAttribute("javax.servlet.error.exception", e)
-            request.setAttribute("javax.servlet.error.exception_type", e.getClass)
-            request.setAttribute("javax.servlet.error.message", e.getMessage)
-            request.setAttribute("javax.servlet.error.request_uri", request.getRequestURI)
-            request.setAttribute("javax.servlet.error.servlet_name", request.getServerName)
-
-            // TODO how to get the status code???
-            val status = 500
-            request.setAttribute("javax.servlet.error.status_code", status)
-
-            val rdw = new RequestDispatcherWrapper(rd, basePath, hc, new Viewable(uri, e))
-            rdw.forward(request, response)
-            notFound = false
-          }
-        }
-        if (notFound) {
-          throw new ContainerException(e)
-        }
-
-        // throw new ContainerException(e)
-    }
-  }*/
 }
