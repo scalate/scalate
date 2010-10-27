@@ -171,31 +171,34 @@ object Pygmentize extends Logging {
   }
 
   def pygmentize(body:String, lang:String, lines:Boolean):String = {
+    if (!isInstalled) {
+      "<pre><code>" + body + "</code></pre>";
+    } else {
+      var options = "style=colorful"
+      if( lines ) {
+        options += ",linenos=1"
+      }
 
-    var options = "style=colorful"
-    if( lines ) {
-      options += ",linenos=1"
+      var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", lang))
+
+      thread("pygmetize err handler") {
+        IOUtil.copy(process.getErrorStream, System.err)
+      }
+
+      thread("pygmetize in handler") {
+        IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
+        process.getOutputStream.close
+      }
+
+      val out = new ByteArrayOutputStream()
+      IOUtil.copy(process.getInputStream, out)
+      process.waitFor
+      if (process.exitValue != 0) {
+        throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
+      }
+
+      new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
     }
-
-    var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", lang))
-
-    thread("pygmetize err handler") {
-      IOUtil.copy(process.getErrorStream, System.err)
-    }
-
-    thread("pygmetize in handler") {
-      IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
-      process.getOutputStream.close
-    }
-
-    val out = new ByteArrayOutputStream()
-    IOUtil.copy(process.getInputStream, out)
-    process.waitFor
-    if( process.exitValue != 0 ) {
-      throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
-    }
-
-    new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
   }
 
 }
