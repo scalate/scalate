@@ -45,13 +45,15 @@
     <!-- version info -->
     <jersey-version>${jersey-version}</jersey-version>
     <jetty-version>${jetty-version}</jetty-version>
-    <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
     <logback-version>${logback-version}</logback-version>
     <scala-version>${scala-version}</scala-version>
-    <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
     <scalate-version>${project.version}</scalate-version>
     <servlet-api-version>${servlet-api-version}</servlet-api-version>
-    <surefire-version>${surefire-version}</surefire-version>
+
+    <!-- plugins -->
+    <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
+    <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
+    <surefire-plugin-version>${surefire-plugin-version}</surefire-plugin-version>
     <war-plugin-version>${war-plugin-version}</war-plugin-version>
   </properties>
    
@@ -212,7 +214,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>\${surefire-version}</version>
+        <version>\${surefire-plugin-version}</version>
         <configuration>
           <forkMode>once</forkMode>
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->

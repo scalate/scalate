@@ -55,10 +55,8 @@
     <!-- version info -->
     <asm-version>3.1</asm-version>
     <jansi-version>1.4</jansi-version>
-    <jar-plugin-version>2.3</jar-plugin-version>
     <jersey-version>1.5-ea03</jersey-version>
     <jetty-version>7.1.5.v20100705</jetty-version>
-    <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
 <!--
@@ -71,22 +69,43 @@
 
     <osgi.version>4.2.0</osgi.version>
 
-    <scala-version>2.8.0</scala-version>
-    <!-- 
+    <!--
     TODO doesn't seem to work - maven plugin barfs!!!
-    <scala-version>2.8.1.RC1</scala-version> 
+    <scala-version>2.8.1.RC1</scala-version>
     -->
-    <scala-plugin-version>2.14.2</scala-plugin-version>
+    <scala-version>2.8.0</scala-version>
+
     <scalatest-version>1.2</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd-version>1.2</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.0</slf4j-version>
-    <surefire-version>2.5</surefire-version>
-    <war-plugin-version>2.1-beta-1</war-plugin-version>
     <wikitext-version>1.1</wikitext-version>
-    
+
+
+    <!-- plugin version info -->
+
+    <assembly-plugin-version>2.2-beta-2</assembly-plugin-version>
+    <changes-plugin-version>2.3</changes-plugin-version>
+    <compiler-plugin-version>2.3.1</compiler-plugin-version>
+    <eclipse-plugin-version>2.5.1</eclipse-plugin-version>
+    <idea-plugin-version>2.2</idea-plugin-version>
+    <license-plugin-version>1.7.0</license-plugin-version>
+    <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
+    <jar-plugin-version>2.3</jar-plugin-version>
+    <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
+    <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
+    <release-plugin-version>2.1</release-plugin-version>
+    <scala-plugin-version>2.14.2</scala-plugin-version>
+    <scm-plugin-version>1.3</scm-plugin-version>
+    <site-plugin-version>2.1.1</site-plugin-version>
+    <source-plugin-version>2.1.1</source-plugin-version>
+    <surefire-plugin-version>2.5</surefire-plugin-version>
+    <surefire-report-plugin-vesrion>2.5</surefire-report-plugin-vesrion>
+    <taglist-plugin-version>2.4</taglist-plugin-version>
+    <wagon-webdav-plugin-version>1.0-beta-6</wagon-webdav-plugin-version>
+    <war-plugin-version>2.1-beta-1</war-plugin-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
@@ -294,7 +313,7 @@
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-webdav-jackrabbit</artifactId>
-        <version>1.0-beta-6</version>
+        <version>${wagon-webdav-plugin-version}</version>
       </extension>
     </extensions>
 
@@ -338,6 +357,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>${compiler-plugin-version}</version>
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
@@ -370,13 +390,13 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2-beta-2</version>
+          <version>${assembly-plugin-version}</version>
         </plugin>
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-idea-plugin</artifactId>
-          <version>2.2</version>
+          <version>${idea-plugin-version}</version>
           <configuration>
             <downloadSources>true</downloadSources>
             <downloadJavadocs>true</downloadJavadocs>
@@ -386,7 +406,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.5.1</version>
+          <version>${eclipse-plugin-version}</version>
           <configuration>
             <outputDirectory>${basedir}/eclipse-classes</outputDirectory>
             <downloadSources>true</downloadSources>
@@ -466,7 +486,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.3</version>
+        <version>${changes-plugin-version}</version>
         <configuration>
           <filteringChanges>true</filteringChanges>
         </configuration>
@@ -474,7 +494,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-version}</version>
+        <version>${surefire-plugin-version}</version>
         <configuration>
           <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
           <useSystemClassLoader>false</useSystemClassLoader>
@@ -489,7 +509,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.1</version>
+        <version>${release-plugin-version}</version>
         <configuration>
           <pushChanges>false</pushChanges>
           <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -503,24 +523,24 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-scm-plugin</artifactId>
-        <version>1.3</version>
+        <version>${scm-plugin-version}</version>
         <dependencies>
           <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>1.3</version>
+            <version>${scm-plugin-version}</version>
           </dependency>
         </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.1.1</version>
+        <version>${site-plugin-version}</version>
         <dependencies>
           <dependency>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>1.0-beta-6</version>
+            <version>${wagon-webdav-plugin-version}</version>
             <exclusions>
               <exclusion>
                 <groupId>commons-logging</groupId>
@@ -550,37 +570,16 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jxr-maven-plugin</artifactId>
-        <version>2.0-beta-1</version>
+        <version>${jxr-maven-plugin}</version>
         <configuration>
           <aggregate>true</aggregate>
         </configuration>
       </plugin>
 
-      <!--
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.6</version>
-          <configuration>
-            <detectLinks>true</detectLinks>
-            <linksource>true</linksource>
-          </configuration>
-          <reportSets>
-            <reportSet>
-              <reports>
-                <report>javadoc</report>
-                &lt;!&ndash;<report>aggregate</report>&ndash;&gt;
-                <report>test-javadoc</report>
-              </reports>
-            </reportSet>
-          </reportSets>
-        </plugin>
-      -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.1</version>
+        <version>${site-plugin-version}</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -610,7 +609,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.5</version>
+        <version>${surefire-report-plugin-vesrion}</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -631,7 +630,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.3</version>
+        <version>${changes-plugin-version}</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -646,6 +645,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
+        <version>${taglist-plugin-version}</version>
       </plugin>
 
     </plugins>
@@ -867,7 +867,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.1</version>
+            <version>${source-plugin-version}</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -938,7 +938,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.1</version>
+            <version>${source-plugin-version}</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -968,27 +968,6 @@
               </execution>
             </executions>
           </plugin>
-
-<!--
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.6</version>
-            
-            <configuration>
-              <encoding>${project.build.sourceEncoding}</encoding>
-            </configuration>
-            
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
--->
         </plugins>
       </build>
 
@@ -1012,7 +991,7 @@
           <plugin>
             <groupId>org.fusesource.mvnplugins</groupId>
             <artifactId>maven-graph-plugin</artifactId>
-            <version>1.12</version>
+            <version>${mvnplugins-plugin-version}</version>
           </plugin>
         </plugins>
       </build>
@@ -1029,7 +1008,7 @@
           <plugin>
             <groupId>com.mycila.maven-license-plugin</groupId>
             <artifactId>maven-license-plugin</artifactId>
-            <version>1.7.0</version>
+            <version>${license-plugin-version}</version>
             <configuration>
               <quiet>false</quiet>
               <header>src/main/resources/license-header.txt</header>

@@ -79,7 +79,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-version}</version>
+        <version>${surefire-plugin-version}</version>
         <configuration>
           <forkMode>once</forkMode>
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->

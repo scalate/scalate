@@ -89,7 +89,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-version}</version>
+        <version>${surefire-plugin-version}</version>
         <configuration>
           <forkMode>once</forkMode>
           <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->
@@ -147,7 +147,7 @@
       <plugin>
         <groupId>org.fusesource.mvnplugins</groupId>
         <artifactId>maven-linkchecker-plugin</artifactId>
-        <version>1.12</version>
+        <version>${mvnplugins-plugin-version}</version>
         <configuration>
           <excludedLinks>
             <value>http://github.com/</value>

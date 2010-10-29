@@ -85,7 +85,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-version}</version>
+        <version>${surefire-plugin-version}</version>
         <configuration>
           <systemPropertyVariables>
             <!-- lets force any generated source to be in the build directory when running archetype tests -->
