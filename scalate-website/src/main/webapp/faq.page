@@ -102,7 +102,7 @@ We [compare approaches here](code-in-view.html), see which is right for you and 
 
 Try the [Getting Started Guide](documentation/getting-started.html) which should have you *scalating* nicely really quickly!
 
-### How do I enable or disable markup esscaping
+### How do I enable or disable markup escaping
 
 By default Scalate will safely escape any markup characters to avoid you creating invalid or unsafe markup.
 
