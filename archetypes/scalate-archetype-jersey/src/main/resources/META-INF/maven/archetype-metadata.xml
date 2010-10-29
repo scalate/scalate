@@ -43,6 +43,9 @@
       <includes>
         <include>pom.xml</include>
       </includes>
+      <excludes>
+        <excludes>**/*</excludes>
+      </excludes>
     </fileSet>
     <!-- place main sources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
@@ -59,6 +62,8 @@
         <include>**/*</include>
       </includes>
       <excludes>
+        <exclude>*.ico</exclude>
+        <exclude>**/*.ico</exclude>
         <exclude>images/**/*</exclude>
       </excludes>
     </fileSet>
@@ -66,13 +71,15 @@
       <directory>src/main/webapp</directory>
       <includes>
         <include>images/**/*</include>
+        <include>*.ico</include>
+        <include>**/*.ico</include>
       </includes>
     </fileSet>
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="false" packaged="false">
       <directory>src/main/resources</directory>
       <includes>
-        <include>**/*</include>
+        <include>*.xml</include>
       </includes>
     </fileSet>
     <!-- place test sources -->

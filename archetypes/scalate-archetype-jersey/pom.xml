@@ -45,6 +45,20 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <excludes>
+          <exclude>**/*.ico</exclude>
+          <exclude>**/*.png</exclude>
+          <exclude>**/*.jpg</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>**/*.ico</include>
+          <include>**/*.png</include>
+          <include>**/*.jpg</include>
+        </includes>
       </resource>
     </resources>
 

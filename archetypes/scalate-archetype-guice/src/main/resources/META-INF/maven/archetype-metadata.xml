@@ -34,42 +34,11 @@
       <includes>
         <include>pom.xml</include>
       </includes>
-    </fileSet>
-    <!-- place main sources -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="true">
-      <directory>src/main/scala</directory>
-      <includes>
-        <include>*.scala</include>
-        <include>**/*.scala</include>
-      </includes>
-    </fileSet>
-    <!-- place templates -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>src/main/webapp</directory>
-      <includes>
-        <include>**/*</include>
-      </includes>
       <excludes>
-        <exclude>images/**/*</exclude>
-        <exclude>WEB-INF/resources</exclude>
-        <exclude>WEB-INF/resources/**</exclude>
+        <excludes>**/*</excludes>
       </excludes>
     </fileSet>
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
-      <directory>src/main/webapp</directory>
-      <includes>
-        <include>images/**/*</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8" filtered="true" packaged="true">
-      <directory>src/main/webapp/WEB-INF</directory>
-      <includes>
-        <include>**/*</include>
-      </includes>
-      <excludes>
-        <exclude>web.xml</exclude>
-      </excludes>
-    </fileSet>
+
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
       <directory>src/main/resources</directory>
@@ -93,4 +62,46 @@
       </includes>
     </fileSet>
   </fileSets>
+
+    <!-- place main sources -->
+    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+      <directory>src/main/scala</directory>
+      <includes>
+        <include>*.scala</include>
+        <include>**/*.scala</include>
+      </includes>
+    </fileSet>
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>images/**/*</include>
+        <include>*.ico</include>
+        <include>**/*.ico</include>
+      </includes>
+    </fileSet>
+    <!-- place templates -->
+<!--
+    <fileSet encoding="UTF-8" filtered="true" packaged="false">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+      <excludes>
+        <exclude>*.ico</exclude>
+        <exclude>**/*.ico</exclude>
+        <exclude>images/**/*</exclude>
+        <exclude>WEB-INF/resources</exclude>
+        <exclude>WEB-INF/resources/**</exclude>
+      </excludes>
+    </fileSet>
+-->
+    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+      <excludes>
+        <exclude>web.xml</exclude>
+      </excludes>
+    </fileSet>
 </archetype-descriptor>

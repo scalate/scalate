@@ -23,10 +23,10 @@ import org.junit.Test
 /**
  * @version $Revision : 1.1 $
  */
-class ArchetypeEmptyTest extends ArchetypeTestSupport {
+class ArchetypeJerseyTest extends ArchetypeTestSupport {
 
   @Test
   def testArchetype: Unit = {
-    testScalateArchetype("scalate-archetype-empty");
+    testScalateArchetype("scalate-archetype-jersey");
   }
 }
