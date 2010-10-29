@@ -46,6 +46,7 @@ import org.scala_tools.maven.mojo.annotations._
 @goal("precompile")
 @phase("process-classes")
 @requiresProject
+@requiresDependencyResolution("compile")
 class PrecompileMojo extends AbstractMojo {
 
   @parameter
@@ -93,6 +94,9 @@ class PrecompileMojo extends AbstractMojo {
     engine.bindings = createBindings()
     engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory));
     engine.classpath = getProjectClassPath
+
+    getLog.debug("scalac classpath set to: "+engine.classpath)
+    
     engine.workingDirectory = targetDirectory
 
     val sourceDirs = List(warSourceDirectory, resourcesSourceDirectory)
