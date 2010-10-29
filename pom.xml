@@ -63,7 +63,7 @@
     <karaf-version>2.1.99-SNAPSHOT</karaf-version>
 -->
     <karaf-version>2.1.0</karaf-version>
-    <logback-version>0.9.24</logback-version>
+    <logback-version>0.9.26</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
     <org.springframework.version>3.0.4.RELEASE</org.springframework.version>
 
@@ -80,32 +80,32 @@
     <sbt-version>0.7.3</sbt-version>
     <scalamd-version>1.2</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
-    <slf4j-version>1.6.0</slf4j-version>
+    <slf4j-version>1.6.1</slf4j-version>
     <wikitext-version>1.1</wikitext-version>
 
 
     <!-- plugin version info -->
 
-    <assembly-plugin-version>2.2-beta-2</assembly-plugin-version>
+    <assembly-plugin-version>2.2</assembly-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
-    <compiler-plugin-version>2.3.1</compiler-plugin-version>
-    <eclipse-plugin-version>2.5.1</eclipse-plugin-version>
+    <compiler-plugin-version>2.3.2</compiler-plugin-version>
+    <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.2</idea-plugin-version>
     <license-plugin-version>1.7.0</license-plugin-version>
     <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
-    <jar-plugin-version>2.3</jar-plugin-version>
-    <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
+    <jar-plugin-version>2.3.1</jar-plugin-version>
+    <jetty-plugin-version>8.0.0.M1</jetty-plugin-version>
     <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
     <release-plugin-version>2.1</release-plugin-version>
-    <scala-plugin-version>2.14.2</scala-plugin-version>
-    <scm-plugin-version>1.3</scm-plugin-version>
+    <scala-plugin-version>2.14.3</scala-plugin-version>
+    <scm-plugin-version>1.4</scm-plugin-version>
     <site-plugin-version>2.1.1</site-plugin-version>
     <source-plugin-version>2.1.1</source-plugin-version>
-    <surefire-plugin-version>2.5</surefire-plugin-version>
-    <surefire-report-plugin-vesrion>2.5</surefire-report-plugin-vesrion>
+    <surefire-plugin-version>2.6</surefire-plugin-version>
+    <surefire-report-plugin-vesrion>2.6</surefire-report-plugin-vesrion>
     <taglist-plugin-version>2.4</taglist-plugin-version>
     <wagon-webdav-plugin-version>1.0-beta-6</wagon-webdav-plugin-version>
-    <war-plugin-version>2.1-beta-1</war-plugin-version>
+    <war-plugin-version>2.1</war-plugin-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
