@@ -19,7 +19,8 @@
 
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -59,9 +60,9 @@
     <jetty-version>7.1.5.v20100705</jetty-version>
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
-<!--
-    <karaf-version>2.1.99-SNAPSHOT</karaf-version>
--->
+    <!--
+        <karaf-version>2.1.99-SNAPSHOT</karaf-version>
+    -->
     <karaf-version>2.1.0</karaf-version>
     <logback-version>0.9.26</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
@@ -96,10 +97,11 @@
     <jar-plugin-version>2.3.1</jar-plugin-version>
     <jetty-plugin-version>8.0.0.M1</jetty-plugin-version>
     <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
+    <project-info-reports-plugin-version>2.2</project-info-reports-plugin-version>
     <release-plugin-version>2.1</release-plugin-version>
     <scala-plugin-version>2.14.3</scala-plugin-version>
     <scm-plugin-version>1.4</scm-plugin-version>
-    <site-plugin-version>2.1.1</site-plugin-version>
+    <site-plugin-version>3.0-beta-2</site-plugin-version>
     <source-plugin-version>2.1.1</source-plugin-version>
     <surefire-plugin-version>2.6</surefire-plugin-version>
     <surefire-report-plugin-vesrion>2.6</surefire-report-plugin-vesrion>
@@ -271,7 +273,7 @@
         <version>4.2.0</version>
         <scope>provided</scope>
         <optional>true</optional>
-      </dependency>      
+      </dependency>
 
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -334,15 +336,15 @@
           <configuration>
             <!-- lets disable vscaladoc -->
             <scaladocClassName>scala.tools.nsc.ScalaDoc</scaladocClassName>
-<!--
-            <scalaJars>
-              <scalaJar>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-compiler</artifactId>
-                <version>${scala-version}</version>
-              </scalaJar>
-            </scalaJars>
--->
+            <!--
+                        <scalaJars>
+                          <scalaJar>
+                            <groupId>org.scala-lang</groupId>
+                            <artifactId>scala-compiler</artifactId>
+                            <version>${scala-version}</version>
+                          </scalaJar>
+                        </scalaJars>
+            -->
             <jvmArgs>
               <jvmArg>-Xmx1024m</jvmArg>
             </jvmArgs>
@@ -406,7 +408,7 @@
           <artifactId>maven-assembly-plugin</artifactId>
           <version>${assembly-plugin-version}</version>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-idea-plugin</artifactId>
@@ -468,7 +470,7 @@
               <!-- enable easy JMX connection to JConsole -->
               <systemProperty>
                 <name>com.sun.management.jmxremote</name>
-                <value />
+                <value/>
               </systemProperty>
               <systemProperty>
                 <name>scalate.editor</name>
@@ -521,6 +523,52 @@
       </plugin>
 
       <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${site-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>attach-descriptor</id>
+            <goals>
+              <goal>attach-descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-project-info-reports-plugin</artifactId>
+              <version>${project-info-reports-plugin-version}</version>
+              <configuration>
+                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                <webAccessUrl>http://github.com/scalate/scalate</webAccessUrl>
+              </configuration>
+              <reports>
+                <report>index</report>
+                <report>summary</report>
+                <report>plugins</report>
+                <report>dependencies</report>
+                <report>dependency-convergence</report>
+                <report>dependency-management</report>
+                <report>license</report>
+                <report>mailing-list</report>
+                <report>project-team</report>
+                <report>issue-tracking</report>
+                <report>cim</report>
+                <!--
+                 Doesn't seem to grok git modules etc
+                <report>scm</report>
+                -->
+
+
+              </reports>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>${release-plugin-version}</version>
@@ -546,6 +594,7 @@
           </dependency>
         </dependencies>
       </plugin>
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
@@ -564,6 +613,8 @@
           </dependency>
         </dependencies>
       </plugin>
+      
+      -->
     </plugins>
   </build>
 
@@ -587,36 +638,6 @@
         <version>${jxr-maven-plugin}</version>
         <configuration>
           <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${site-plugin-version}</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>index</report>
-              <report>summary</report>
-              <report>plugins</report>
-              <report>dependencies</report>
-              <report>dependency-convergence</report>
-              <report>dependency-management</report>
-              <report>license</report>
-              <report>mailing-list</report>
-              <report>project-team</report>
-              <report>issue-tracking</report>
-              <report>cim</report>
-              <!--
-                 Doesn't seem to grok git modules etc
-                <report>scm</report>
-              -->
-            </reports>
-          </reportSet>
-        </reportSets>
-        <configuration>
-          <webAccessUrl>http://github.com/scalate/scalate</webAccessUrl>
         </configuration>
       </plugin>
 
@@ -751,9 +772,9 @@
         <repository>
           <id>scala</id>
           <name>Scala Tools</name>
-<!--
-          <url>http://nexus.scala-tools.org/content/repositories/releases</url>
--->
+          <!--
+                    <url>http://nexus.scala-tools.org/content/repositories/releases</url>
+          -->
           <url>http://scala-tools.org/repo-releases</url>
           <releases>
             <enabled>true</enabled>
@@ -775,21 +796,21 @@
             <checksumPolicy>fail</checksumPolicy>
           </releases>
         </repository>
-<!--
-        <repository>
-          <id>nexus.snapshots.scala-tools.org</id>
-          <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://nexus.scala-tools.org/content/repositories/snapshots</url>
-          <snapshots>
-            <enabled>true</enabled>
-            <checksumPolicy>fail</checksumPolicy>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-            <checksumPolicy>fail</checksumPolicy>
-          </releases>
-        </repository>
--->
+        <!--
+                <repository>
+                  <id>nexus.snapshots.scala-tools.org</id>
+                  <name>Scala-Tools Maven2 Snapshot Repository</name>
+                  <url>http://nexus.scala-tools.org/content/repositories/snapshots</url>
+                  <snapshots>
+                    <enabled>true</enabled>
+                    <checksumPolicy>fail</checksumPolicy>
+                  </snapshots>
+                  <releases>
+                    <enabled>true</enabled>
+                    <checksumPolicy>fail</checksumPolicy>
+                  </releases>
+                </repository>
+        -->
         <repository>
           <id>apache.snapshots</id>
           <name>Apache Development Snapshot Repository</name>
@@ -801,21 +822,21 @@
             <enabled>true</enabled>
           </snapshots>
         </repository>
-        
+
         <repository>
           <id>fluido-skin</id>
           <url>http://fluido-skin.googlecode.com/svn/repo/</url>
         </repository>
-        
+
       </repositories>
 
       <pluginRepositories>
         <pluginRepository>
           <id>scala</id>
           <name>Scala Tools</name>
-<!--
-          <url>http://nexus.scala-tools.org/content/repositories/releases</url>
--->
+          <!--
+                    <url>http://nexus.scala-tools.org/content/repositories/releases</url>
+          -->
           <url>http://scala-tools.org/repo-releases</url>
           <releases>
             <enabled>true</enabled>
@@ -849,23 +870,23 @@
     <!-- use a profile for generating the maven site since we require a snapshot version for 2.8.0 Scala -->
     <profile>
       <id>site</id>
-<!--
-      <properties>
-        &lt;!&ndash; this snapshot release works with 2.8.0-beta1 &ndash;&gt;
-        <scala-plugin-version>2.13.2-SNAPSHOT</scala-plugin-version>
-      </properties>
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
-            <configuration>
-              <scalaVersion>${scala-version}</scalaVersion>
-            </configuration>
-          </plugin>
-        </plugins>
-      </reporting>
--->
+      <!--
+            <properties>
+              &lt;!&ndash; this snapshot release works with 2.8.0-beta1 &ndash;&gt;
+              <scala-plugin-version>2.13.2-SNAPSHOT</scala-plugin-version>
+            </properties>
+            <reporting>
+              <plugins>
+                <plugin>
+                  <groupId>org.scala-tools</groupId>
+                  <artifactId>maven-scala-plugin</artifactId>
+                  <configuration>
+                    <scalaVersion>${scala-version}</scalaVersion>
+                  </configuration>
+                </plugin>
+              </plugins>
+            </reporting>
+      -->
     </profile>
 
     <!-- so we can create a distro on our CI box -->
@@ -978,7 +999,7 @@
                 <configuration>
                   <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
                   <outputDirectory>apidocs</outputDirectory>
-                </configuration>                
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -993,7 +1014,7 @@
         </pluginRepository>
       </pluginRepositories>
     </profile>
-    
+
     <!--
       To generate a graph of the project dependencies, run: mvn -P graph
       graph:project
@@ -1009,12 +1030,12 @@
           </plugin>
         </plugins>
       </build>
-    </profile>    
-  
+    </profile>
+
     <!-- 
-        Do a license check by running       : mvn -P license license:check  
-        Update the license check by running : mvn -P license license:format
-      -->
+      Do a license check by running       : mvn -P license license:check
+      Update the license check by running : mvn -P license license:format
+    -->
     <profile>
       <id>license</id>
       <build>
@@ -1028,8 +1049,8 @@
               <header>src/main/resources/license-header.txt</header>
               <aggregate>true</aggregate>
               <includes>
-                  <include>src/**</include>
-                  <include>**/pom.xml</include>
+                <include>src/**</include>
+                <include>**/pom.xml</include>
               </includes>
               <excludes>
                 <exclude>**/.git/**</exclude>
@@ -1037,11 +1058,11 @@
                 <exclude>**/src/test/resources/test-lib/fake-jar</exclude>
                 <exclude>**/src/main/resources/META-INF/services/jersey-server-components</exclude>
                 <exclude>**/WEB-INF/_scalate/**</exclude>
-                
-            
+
+
                 <!-- ignore files produced during a build -->
                 <exclude>**/target/**</exclude>
-            
+
                 <!-- ignore binary files -->
                 <exclude>**/*.jpg</exclude>
                 <exclude>**/*.png</exclude>
@@ -1051,10 +1072,10 @@
               </excludes>
               <useDefaultExcludes>false</useDefaultExcludes>
               <mapping>
-                  <ssp>DYNASCRIPT_STYLE</ssp>
-                  <jj>JAVADOC_STYLE</jj>
-                  <index>SCRIPT_STYLE</index>
-                  <jersey-server-components>SCRIPT_STYLE</jersey-server-components>
+                <ssp>DYNASCRIPT_STYLE</ssp>
+                <jj>JAVADOC_STYLE</jj>
+                <index>SCRIPT_STYLE</index>
+                <jersey-server-components>SCRIPT_STYLE</jersey-server-components>
               </mapping>
             </configuration>
             <executions>
@@ -1063,7 +1084,7 @@
                   <goal>check</goal>
                 </goals>
               </execution>
-            </executions>        
+            </executions>
           </plugin>
         </plugins>
       </build>
