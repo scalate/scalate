@@ -32,9 +32,6 @@ import org.osgi.service.command.CommandSession
 @command(scope = "scalate", name = "create", description = "Creates your Scalate project fast to get you scalate-ing!")
 class Create extends Action {
 
-  // TODO need way to show archetypes!
-
-
   @argument(index = 0, required = true, name = "archetype", description = "Archetype to create")
   // TODO rename to archetype
   var archetype: String = _
