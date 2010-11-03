@@ -1007,6 +1007,11 @@
                 </configuration>
               </execution>
             </executions>
+            <configuration>
+              <args>
+                <arg>-optimise</arg>
+              </args>
+            </configuration>
           </plugin>
         </plugins>
       </build>
