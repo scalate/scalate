@@ -213,6 +213,44 @@ xml: produces
 {pygmentize_and_compare}
 
 
+#### `#set` {#set}
+
+You often want to take a section of a template and assign it to an attribute which you can then pass into a [layout]("user-guide.html#layouts") or some other template.
+
+For example you might wish to define a head section to allow a page to define custom output to go into the HTML head element...
+
+{pygmentize:: jsp}
+#set (head)
+  ... some page specific JavaScript includes here...
+#end
+...rest of the page here...
+{pygmentize}
+
+Then in the [layout]("user-guide.html#layouts") we could use
+
+{pygmentize:: jsp}
+<%@ var body: String %>
+<%@ var title: String = "Some Default Title" %>
+<%@ var head: String = "" %>
+<html>
+<head>
+  <title>${title}</title>
+  
+  <%-- page specific head goes here --%>
+  ${unescape(head)}
+</head>
+<body>
+  <p>layout header goes here...</p>
+
+  ${unescape(body)}
+  
+  <p>layout footer goes here...</p>
+</body>
+</html>
+{pygmentize}
+
+
+
 #### `#match`
 
 You can perform Scala style pattern matching using the `#match`, `#case`, `#otherwise` and `#end` directives.

@@ -360,7 +360,7 @@ All you need to do is create a layout template in _/WEB-INF/scalate/layouts/defa
 <body>
   <p>layout header goes here...</p>
 
-  <%= body %>
+  ${unescape(body)}
 
   <p>layout footer goes here...</p>
 </body>

@@ -11,7 +11,7 @@ The ${project_name} community is here to help you
 
 .left
   :markdown
-    # Blog
+    # [Blog](blog/index.html)
 .right
   :markdown
     Keep up to date on the latest and greatest releases by following the [Scalate Blog](blog/index.html)

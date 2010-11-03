@@ -121,6 +121,10 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << "for (" :: code :: ") {" :: Nil
           indentLevel += 1
         }
+        case SetFragment(code) => {
+          this << "$_scalate_$_context.attributes(\"" + (code.trim) + "\") = capture {" :: Nil
+          indentLevel += 1
+        }
         case ImportFragment(code) => {
           this << "import " :: code :: Nil
         }
@@ -197,6 +201,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     for (f <- fragments) f match {
       case f: ForFragment => open(f)
+      case f: SetFragment => open(f)
       case f: DoFragment => open(f)
       case f: IfFragment => open(f)
       case f: MatchFragment => open(f)

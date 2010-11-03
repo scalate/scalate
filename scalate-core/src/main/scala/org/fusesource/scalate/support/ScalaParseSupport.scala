@@ -32,6 +32,8 @@ case class Text(value: String) extends Positional {
 
   def +(other: Text) = Text(value + other.value).setPos(pos)
 
+  def trim = Text(value.trim).setPos(pos)
+
   def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
 
   def isEmpty = value.length == 0

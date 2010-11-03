@@ -44,6 +44,7 @@ case class CaseFragment(code: Text) extends Directive("#case")
 case class OtherwiseFragment() extends Directive("#otherwise")
 
 case class ForFragment(code: Text) extends Directive("#for")
+case class SetFragment(code: Text) extends Directive("#set")
 case class DoFragment(code: Text) extends Directive("#do")
 case class ImportFragment(code: Text) extends Directive("#import")
 case class EndFragment() extends Directive("#end")
@@ -103,7 +104,7 @@ class SspParser extends ScalaParseSupport {
 
   def directives: Parser[PageFragment] = ifExpression | elseIfExpression | elseExpression |
           matchExpression | caseExpression | otherwiseExpression |
-          forExpression | doExpression | velocityScriplet | importExpression | endExpression
+          forExpression | doExpression | setExpression | velocityScriplet | importExpression | endExpression
 
   // if / elseif / else
   def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
@@ -124,6 +125,8 @@ class SspParser extends ScalaParseSupport {
   def velocityScriplet = wrapped("#{", "}#") ^^ {ScriptletFragment(_)}
 
   def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
+
+  def setExpression = expressionDirective("set") ^^ {SetFragment(_)}
 
   def doExpression = expressionDirective("do") ^^ {DoFragment(_)}
 
