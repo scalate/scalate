@@ -126,7 +126,12 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
           generateInitialImports
           generateBindings(bindings) {
             generateTemplatePackage(source, bindings)
+
             generate(statements)
+            if (statements.isEmpty) {
+              // lets generate a dummy statement to avoid a compile error
+              this << "$_scalate_$_context << \"\""
+            }
           }
         }
         this << "}"
