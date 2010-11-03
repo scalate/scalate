@@ -95,7 +95,12 @@
     <license-plugin-version>1.7.0</license-plugin-version>
     <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
     <jar-plugin-version>2.3.1</jar-plugin-version>
+<!--
+    Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
+
     <jetty-plugin-version>8.0.0.M1</jetty-plugin-version>
+-->
+    <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
     <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
     <project-info-reports-plugin-version>2.2</project-info-reports-plugin-version>
     <release-plugin-version>2.1</release-plugin-version>
