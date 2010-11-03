@@ -26,6 +26,24 @@ import java.lang.reflect.Constructor
 object Objects extends Logging {
 
   /**
+   * A helper method to return a non null value or the default value if it is null
+   */
+  def getOrElse[T](value: T, defaultValue: => T) = if (value != null) value else defaultValue
+
+
+  /**
+   * Asserts that the given value is not null with a descriptive message
+   */
+  def notNull[T <: AnyRef](value: T, message: => String): T = {
+    if (value == null) {
+      throw new IllegalArgumentException(message)
+    }
+    value
+  }
+
+  def assertInjected[T <: AnyRef](value: T)(implicit m: ClassManifest[T]): T = notNull(value, "Value of type " + m.erasure.getName + " has not been injected!")
+
+  /**
    * Instantiates the given object class using the possible list of values to be injected.
    *
    * Implements a really simple IoC mechanism. Ideally we'd improve this to support JSR330 style
