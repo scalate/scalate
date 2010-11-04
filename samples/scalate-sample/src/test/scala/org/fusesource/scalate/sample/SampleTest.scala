@@ -42,6 +42,8 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     pageContains("Scalate")
   }
 
+  testPageContains("jade/captureAttribute.jade", "the captured template", "some javascript goes here", "Hello World")
+
   testPageContains("mustache", "Scala", "Great", "Java", "Crufty")
   testPageContains("mustache/errors/templateCompileError.mustache", "Missing", "'{{/items}}'", "near line 8")
 
@@ -121,6 +123,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     "%h1 Template Compiler Error")
 
 
+  testPageContains("scaml/captureAttribute.scaml", "Captured text", "Hello World")
   testPageContains("scaml/locale.scaml", "22.0 / 7 = 3.143")
   testPageContains("scaml/optionTest.scaml", "no foo")
   testPageContains("scaml/renderObject.scaml", "Strachan")

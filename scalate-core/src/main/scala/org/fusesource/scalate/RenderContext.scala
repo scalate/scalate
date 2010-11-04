@@ -149,17 +149,6 @@ trait RenderContext {
   def attribute[T](name: String): T =
     attributeOrElse(name, throw new NoValueSetException(name))
 
-  /**
-   * Creates an instance of the given given type using dependency injection to inject the necessary values into
-   * the object
-   */
-  def inject[T](implicit manifest: Manifest[T]): T = {
-    val clazz = manifest.erasure
-    Objects.tryInstantiate(clazz, List(this)) match {
-      case Some(t) => t.asInstanceOf[T]
-      case _ => throw new NoInjectionException(clazz)
-    }
-  }
 
   /**
    * Returns the attribute of the given name and type or the default value if it is not available
@@ -177,6 +166,25 @@ trait RenderContext {
     }
   }
 
+  /**
+   * Sets the given attribute name to be the captured body of the template
+   */
+  def captureAttribute(name: String)(body: => Unit): Unit = {
+    val v = capture(body)
+    attributes(name) = v
+  }
+
+  /**
+   * Creates an instance of the given given type using dependency injection to inject the necessary values into
+   * the object
+   */
+  def inject[T](implicit manifest: Manifest[T]): T = {
+    val clazz = manifest.erasure
+    Objects.tryInstantiate(clazz, List(this)) match {
+      case Some(t) => t.asInstanceOf[T]
+      case _ => throw new NoInjectionException(clazz)
+    }
+  }
   /////////////////////////////////////////////////////////////////////
   //
   // Rendering API
