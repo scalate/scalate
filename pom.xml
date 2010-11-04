@@ -905,6 +905,14 @@
       -->
     </profile>
 
+    <!-- use plugin versions which work for maven 2.x -->
+    <profile>
+      <id>m2</id>
+      <properties>
+        <site-plugin-version>2.2.1</site-plugin-version>
+      </properties>
+    </profile>
+
     <!-- so we can create a distro on our CI box -->
     <profile>
       <id>distro</id>
