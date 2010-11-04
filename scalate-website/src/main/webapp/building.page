@@ -28,9 +28,20 @@ To build ${project_name} maven has to be configured to use more memory
 
 ### A normal build
 
+If you are using Maven 3.0 or later then build as follows
+
     mvn install -Pdownload
 
 The last argument, **-Pdownload**, is optional and typically only used on the first build as it adds some extra repos to the project just in case our dependencies have not quite reached the central Maven repository yet.
+
+For using Maven 2.x or later please add the **m2** profile. e.g.
+
+    mvn install -Pdownload,m2
+
+Once you have done the first build to download dependencies you can omit the **download* profile
+
+    mvn install -Pm2
+
 
 ### Doing a Quick Build
 

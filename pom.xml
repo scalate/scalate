@@ -909,7 +909,7 @@
     <profile>
       <id>m2</id>
       <properties>
-        <site-plugin-version>2.2.1</site-plugin-version>
+        <site-plugin-version>2.1.1</site-plugin-version>
       </properties>
     </profile>
 
