@@ -128,7 +128,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def filter(name:String) = codeGenerators.get(name).map( gen =>
         new Filter() {
           def filter(context: RenderContext, content: String) = {
-            context.capture(compileText(name, content))
+            context.capture(compileText(context.currentTemplate, name, content, Nil))
           }
         }
     ).orElse(filters.get(name))
@@ -156,6 +156,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
   def libraryDirectory = new File(workingDirectory, "lib")
+  def tmpDirectory = new File(workingDirectory, "tmp")
 
   var classpath: String = null
   
@@ -244,9 +245,24 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * and return the template
    */
   def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
-    val file = File.createTempFile("scalate", "." + extension)
+    compileText("", extension, text, extraBindings)
+  }
+  /**
+   * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
+   * and return the template
+   */
+  def compileText(uriPrefix:String, extension: String, text: String, extraBindings:List[Binding]):Template = {
+    tmpDirectory.mkdirs
+    val file = File.createTempFile("scalate", "." + extension, tmpDirectory)
     IOUtil.writeText(file, text)
-    compile(TemplateSource.fromFile(file), extraBindings)
+    val uri = if (uriPrefix==null ) {
+      file.getName
+    } else {
+       uriPrefix+file.getName
+    }
+    val rc = compile(TemplateSource.fromFile(file, uri), extraBindings)
+    file.delete
+    rc
   }
 
 

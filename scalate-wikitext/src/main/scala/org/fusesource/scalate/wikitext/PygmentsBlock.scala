@@ -172,7 +172,7 @@ object Pygmentize extends Logging {
 
   def pygmentize(body:String, lang:String, lines:Boolean):String = {
     if (!isInstalled) {
-      "<pre name='code' class='" + lang + "'><code>" +RenderHelper.sanitize(body) + "</code></pre>"
+      "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" +RenderHelper.sanitize(body) + "</code></pre>"
     } else {
       var options = "style=colorful"
       if( lines ) {

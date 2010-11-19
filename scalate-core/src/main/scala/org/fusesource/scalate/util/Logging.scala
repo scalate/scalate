@@ -28,7 +28,13 @@ import java.util.concurrent.atomic.AtomicLong
 object Log {
 
   def apply(name: String): Log = new Log(LoggerFactory.getLogger(name))
-  def apply(clazz: Class[_], postfix: String): Log = apply(clazz.getName.stripSuffix("$") + "." + postfix)
+  def apply(clazz: Class[_], postfix: String): Log = {
+    val className = clazz.getName.stripSuffix("$")
+    // Logback doesn't like "." to come after "$"
+    // See http://jira.qos.ch/browse/LBCLASSIC-102
+    val delimiter = if (className.contains("$")) "$" else "."
+    apply(className + delimiter + postfix)
+  }
   def apply(clazz: Class[_]): Log = apply(clazz.getName.stripSuffix("$"))
 
   val exception_id_generator = new AtomicLong(System.currentTimeMillis)
