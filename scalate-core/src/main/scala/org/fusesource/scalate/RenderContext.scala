@@ -20,7 +20,6 @@ package org.fusesource.scalate
 
 import filter.FilterRequest
 import introspector.Introspector
-import support.Resource
 import util._
 import util.Strings.isEmpty
 import util.IOUtil._

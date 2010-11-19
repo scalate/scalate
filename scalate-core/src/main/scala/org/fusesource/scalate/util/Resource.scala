@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.support
+package org.fusesource.scalate.util
 
 import io.Source
 import java.io._
 import java.net.{URISyntaxException, URL}
-import org.fusesource.scalate.util.{Files, IOUtil, Logging}
 
 /**
  * Represents a string, file or URI based resource

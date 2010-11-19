@@ -21,7 +21,6 @@ package org.fusesource.scalate.util
 
 import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
-import org.fusesource.scalate.support.FileResource
 import java.net.URL
 
 object IOUtil extends Logging {

@@ -16,22 +16,25 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.jersey
+package org.fusesource.scalate
+package jersey
 
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
+import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import javax.ws.rs.core.Context
+
+import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
+import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.core.reflection.ReflectionHelper
-import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
-import org.fusesource.scalate.util.Logging
-import com.sun.jersey.api.container.ContainerException
-import javax.ws.rs.core.Context
+import com.sun.jersey.spi.template.ViewProcessor
+
+
 import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
-import org.fusesource.scalate.{ResourceNotFoundException, TemplateException, TemplateEngine}
+import util.{ResourceNotFoundException, Logging}
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -102,8 +105,8 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
         engine.load(p)
         return Some(p)
       } catch {
-        case x:ResourceNotFoundException =>
-        case x:TemplateException =>
+        case x: ResourceNotFoundException =>
+        case x: TemplateException =>
           return Some(p)
       }
     }

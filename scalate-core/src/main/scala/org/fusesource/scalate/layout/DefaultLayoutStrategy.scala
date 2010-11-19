@@ -19,8 +19,8 @@
 package org.fusesource.scalate
 package layout
 
-import util.Logging
 import util.Strings.isEmpty
+import util.{ResourceNotFoundException, Logging}
 
 
 /**

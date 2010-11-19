@@ -14,15 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.jade
+package org.fusesource.scalate
+package jade
+
+import java.io.{StringWriter, PrintWriter, File}
 
 import org.fusesource.scalate.scaml.ScamlTestSupport
-
-import _root_.org.fusesource.scalate._
-import _root_.org.scalatest.TestFailedException
-import _root_.java.util.concurrent.atomic.AtomicInteger
-import java.io.{StringWriter, PrintWriter, File}
-import support.FileResourceLoader
 
 /**
  * <p>

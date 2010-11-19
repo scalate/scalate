@@ -18,25 +18,19 @@
 
 package org.fusesource.scalate.jersey
 
-import java.io.OutputStream
-import java.net.MalformedURLException
-import javax.servlet.ServletContext
-import com.sun.jersey.api.view.Viewable
-import com.sun.jersey.spi.template.ViewProcessor
-import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
-import org.fusesource.scalate.util.Logging
-import com.sun.jersey.api.container.ContainerException
-import java.lang.{String, Class}
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
-import org.fusesource.scalate.support.ResourceLoader
-import javax.ws.rs.ext.{Provider, MessageBodyWriter, MessageBodyReader}
-import javax.ws.rs.Produces
-import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import java.io.OutputStream
+import javax.servlet.ServletContext
+import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import javax.ws.rs.ext.{Provider, MessageBodyWriter}
 import javax.ws.rs.core.{UriInfo, MultivaluedMap, MediaType, Context}
-import org.fusesource.scalate.{TemplateException, ResourceNotFoundException, Binding, TemplateEngine}
+
+import com.sun.jersey.api.container.ContainerException
+
+import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.TemplateException
+import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -64,8 +58,8 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
         engine.load(path)
         return path
       } catch {
-        case x:ResourceNotFoundException =>
-        case x:TemplateException =>
+        case x: ResourceNotFoundException =>
+        case x: TemplateException =>
           return path
       }
     }

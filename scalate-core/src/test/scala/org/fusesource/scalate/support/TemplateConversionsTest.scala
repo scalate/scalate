@@ -1,11 +1,11 @@
-package org.fusesource.scalate.util
+package org.fusesource.scalate.support
 
 import org.fusesource.scalate.FunSuiteSupport
 import java.{util => ju}
 
 // the following imports are included by default in TemplateEngine
 import scala.collection.JavaConversions._
-import org.fusesource.scalate.util.TemplateConversions._
+import TemplateConversions._
 
 case class Address(city: String, country: String)
 case class Person(name: String, address: Address)

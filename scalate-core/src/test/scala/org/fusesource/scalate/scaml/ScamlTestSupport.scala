@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.scaml
+package org.fusesource.scalate
+package scaml
 
-import _root_.org.fusesource.scalate._
-import _root_.org.scalatest.TestFailedException
-import _root_.java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicInteger
 import java.io.{StringWriter, PrintWriter, File}
-import support.FileResourceLoader
+
+import org.scalatest.TestFailedException
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

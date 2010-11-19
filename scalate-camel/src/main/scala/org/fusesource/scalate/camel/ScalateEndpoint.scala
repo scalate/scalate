@@ -16,19 +16,18 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.camel
+package org.fusesource.scalate
+package camel
 
-import org.fusesource.scalate.{DefaultRenderContext, TemplateEngine}
-import org.fusesource.scalate.util.{IOUtil}
-import org.apache.camel._
-import org.apache.camel.component.ResourceBasedEndpoint
-import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
-import impl.ProcessorEndpoint
 import java.io._
-import collection.JavaConversions._
 import java.{util => ju}
-import java.util.concurrent.atomic.AtomicInteger
-import org.apache.commons.logging.{LogFactory, Log}
+import org.apache.camel._
+import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
+
+import org.apache.commons.logging.LogFactory
+
+import impl.ProcessorEndpoint
+import collection.JavaConversions._
 
 /**
  * @version $Revision : 1.1 $

@@ -40,7 +40,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin with L
   testPageContains("code.conf", "Java code sample")
 
   if (Pygmentize.isInstalled) {
-    testPageContains("pygmentize.conf", "Pygmentize sample")
+    testPageContains("pygmentizeExample.conf", "Pygmentize sample")
   } else {
     warn("Pygmentize not installed so ignoring the tests")
   }

@@ -16,23 +16,23 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.maven
+package org.fusesource.scalate
+package maven
+
+import collection.mutable.ListBuffer
 
 import java.io.File
-import org.apache.maven.plugin.AbstractMojo
-import org.fusesource.scalate.{Binding, TemplateEngine}
-import collection.mutable.ListBuffer
 import java.net.URLClassLoader
-import org.fusesource.scalate.util.{ClassPathBuilder, IOUtil}
-import org.apache.maven.artifact.Artifact
 import java.util.ArrayList;
+
+import org.apache.maven.artifact.Artifact
+import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 
-
-
 import org.fusesource.scalate.servlet.ServletRenderContext;
-import org.fusesource.scalate.support.FileResourceLoader
+import org.fusesource.scalate.util.{ClassPathBuilder, IOUtil, FileResourceLoader}
+
 import org.scala_tools.maven.mojo.annotations._
 
 

@@ -20,23 +20,19 @@ package org.fusesource.scalate.rest
 
 import java.io.OutputStream
 import java.lang.reflect.Type
-import java.net.URL
 import javax.ws.rs.ext.{MessageBodyWriter, Provider}
 import javax.servlet.ServletContext
 import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
 
-import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.util.Logging
-
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
-import xml.{XML, NodeSeq}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import java.lang.{String, Class}
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
 
 
 /**

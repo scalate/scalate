@@ -94,7 +94,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Sets the import statements used in each generated template class
    */
-  var importStatements: List[String] = List("import scala.collection.JavaConversions._", "import org.fusesource.scalate.util.TemplateConversions._")
+  var importStatements: List[String] = List("import scala.collection.JavaConversions._", "import org.fusesource.scalate.support.TemplateConversions._")
 
   /**
    * Loads resources such as the templates based on URIs
@@ -128,7 +128,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def filter(name:String) = codeGenerators.get(name).map( gen =>
         new Filter() {
           def filter(context: RenderContext, content: String) = {
-            context.capture(compileText(context.currentTemplate, name, content, Nil))
+            context.capture(compileText(name, content))
           }
         }
     ).orElse(filters.get(name))
@@ -156,7 +156,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
   def libraryDirectory = new File(workingDirectory, "lib")
-  def tmpDirectory = new File(workingDirectory, "tmp")
 
   var classpath: String = null
   
@@ -245,24 +244,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * and return the template
    */
   def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
-    compileText("", extension, text, extraBindings)
-  }
-  /**
-   * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
-   * and return the template
-   */
-  def compileText(uriPrefix:String, extension: String, text: String, extraBindings:List[Binding]):Template = {
-    tmpDirectory.mkdirs
-    val file = File.createTempFile("scalate", "." + extension, tmpDirectory)
+    val file = File.createTempFile("scalate", "." + extension)
     IOUtil.writeText(file, text)
-    val uri = if (uriPrefix==null ) {
-      file.getName
-    } else {
-       uriPrefix+file.getName
-    }
-    val rc = compile(TemplateSource.fromFile(file, uri), extraBindings)
-    file.delete
-    rc
+    compile(TemplateSource.fromFile(file), extraBindings)
   }
 
 
@@ -751,6 +735,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         e.source = source
         throw e
       case e: TemplateException => throw e
+      case e: ResourceNotFoundException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }

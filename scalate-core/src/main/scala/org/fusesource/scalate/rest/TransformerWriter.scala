@@ -19,6 +19,7 @@
 package org.fusesource.scalate.rest
 
 import java.io.OutputStream
+import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.net.{URL}
 import javax.ws.rs.ext.{MessageBodyWriter, Provider}
@@ -26,8 +27,8 @@ import javax.servlet.ServletContext
 import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
 
 import org.fusesource.scalate.scuery.Transformer
-import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
 
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
@@ -35,9 +36,6 @@ import com.sun.jersey.api.container.ContainerException
 import scala.collection.JavaConversions._
 import xml.{XML, NodeSeq}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import java.lang.{String, Class}
-import java.lang.annotation.Annotation
-import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
 
 /**
  * Converts an Scuery [[org.fusesource.scalate.scuery.Transformer]] to output

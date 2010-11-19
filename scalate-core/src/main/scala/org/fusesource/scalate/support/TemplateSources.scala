@@ -22,7 +22,7 @@ import org.fusesource.scalate.TemplateSource
 import java.io.File
 import java.net.{URL}
 import io.Source
-
+import org.fusesource.scalate.util._
 
 class StringTemplateSource(uri: String, text: String) extends StringResource(uri, text) with TemplateSource
 

@@ -16,16 +16,16 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.camel
+package org.fusesource.scalate
+package camel
 
-import _root_.org.fusesource.scalate.support.FileResourceLoader
-import _root_.org.fusesource.scalate.TemplateEngine
-import org.apache.camel.impl.DefaultComponent
-import java.util.Map
-import java.lang.String
-import org.apache.camel.Endpoint
 import java.io.File
+import java.util.Map
+
+import org.apache.camel.Endpoint
+import org.apache.camel.impl.DefaultComponent
 import org.springframework.core.io.DefaultResourceLoader
+import org.fusesource.scalate.util.FileResourceLoader
 
 /**
  * @version $Revision : 1.1 $

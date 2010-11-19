@@ -16,25 +16,26 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.maven
+package org.fusesource.scalate
+package maven
 
-import org.apache.maven.plugin.AbstractMojo
-import org.apache.maven.project.MavenProject
-import org.scala_tools.maven.mojo.annotations._
-
-import org.fusesource.scalate.{DefaultRenderContext, TemplateSource, Binding, TemplateEngine}
-import org.fusesource.scalate.servlet.ServletTemplateEngine
-import org.fusesource.scalate.support.FileResourceLoader
-import org.fusesource.scalate.wikitext.Links._
-import org.fusesource.scalate.util.{Files, ClassLoaders, IOUtil}
-import IOUtil._
+import collection.JavaConversions._
 
 import java.{util => ju}
 import java.io.{PrintWriter, File}
 import java.net.{URLClassLoader, URL}
 
-import scala.collection.JavaConversions._
+import org.apache.maven.plugin.AbstractMojo
+import org.apache.maven.project.MavenProject
+
+import org.scala_tools.maven.mojo.annotations._
+
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import org.fusesource.scalate.util.{ClassLoaders, Files, FileResourceLoader, IOUtil}
+import org.fusesource.scalate.util.IOUtil._
+import org.fusesource.scalate.wikitext.Links._
 import org.fusesource.scalate.wikitext.WikiTextFilter
+
 
 /**
  * This goal generates static HTML files for your website using the Scalate templates, filters and wiki markups

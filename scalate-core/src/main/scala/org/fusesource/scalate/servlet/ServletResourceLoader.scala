@@ -19,12 +19,11 @@
 package org.fusesource.scalate.servlet
 
 import java.io.File
-import javax.servlet.ServletContext
-import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.support.Resource._
-import java.lang.String
-import org.fusesource.scalate.support.{ResourceLoader, FileResourceLoader}
 import java.net.MalformedURLException
+import javax.servlet.ServletContext
+
+import org.fusesource.scalate.util.{ResourceNotFoundException, ResourceLoader, FileResourceLoader}
+import org.fusesource.scalate.util.Resource._
 
 object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context)

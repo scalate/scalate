@@ -21,7 +21,8 @@ package org.fusesource.scalate
 import _root_.org.fusesource.scalate.util.{RenderHelper, Logging}
 import java.io._
 import collection.mutable.Stack
-import support.{Resource, AttributesHashMap}
+import support.AttributesHashMap
+import util.Resource
 
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]

@@ -16,13 +16,11 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.support
+package org.fusesource.scalate.util
 
-import org.fusesource.scalate.ResourceNotFoundException
-import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.support.Resource._
 import java.net.URI
 import java.io.File
+import Resource._
 
 /**
  * A strategy for loading [[Resource]] instances
@@ -93,3 +91,8 @@ case class FileResourceLoader(sourceDirectories: Traversable[File] = None) exten
   }
 }
 
+class ResourceNotFoundException(resource: String, root: String = "", description: String = "")
+  extends Exception(
+    "Could not load resource: [" + resource +
+    (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
+    (if (description == "") "" else ". " + description))

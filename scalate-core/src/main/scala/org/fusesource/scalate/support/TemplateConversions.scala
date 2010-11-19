@@ -1,6 +1,6 @@
-package org.fusesource.scalate.util
+package org.fusesource.scalate.support
 
-import org.fusesource.scalate.support.{Elvis, MapEntry}
+import org.fusesource.scalate.util.Logging
 
 /**
  * A number of helper implicit conversions for use in templates
