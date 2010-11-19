@@ -555,14 +555,16 @@ Web Container Requirements:
 
 Install [Maven](http://maven.apache.org/) version 2.0.9 or later. Then type
 
-    mvn install
-{: .syntax }
+{pygmentize:: text}
+mvn install
+{pygmentize}
 
 To run the sample web application
 
-    cd scalate-sample
-    mvn jetty:run
-{: .syntax }
+{pygmentize:: text}
+cd scalate-sample
+mvn jetty:run
+{pygmentize}
 
 Then open [the sample home page](http://localhost:8080/)
 
@@ -572,19 +574,22 @@ You can also use [sbt](http://code.google.com/p/simple-build-tool/ "simple build
 
 To setup your sbt environment and import the dependencies from the maven pom files type
 
-    ./sbt
-    update
-{: .syntax }
+{pygmentize:: text}
+./sbt
+update
+{pygmentize}
 
 Then to build the code type
 
-    compile
-{: .syntax }
+{pygmentize:: text}
+compile
+{pygmentize}
 
 to run the tests 
 
-    test
-{: .syntax }
+{pygmentize:: text}
+test
+{pygmentize}
 
 For more information see the [sbt building instructions](../sbt.html)
 
@@ -648,7 +653,9 @@ The [archetypes](archetypes.html) or projects created by the [scalate tool](tool
 
 If you wanted to run a web application using a different directory, such as _/tmp_ you could do
 
-    mvn -Dscalate.workdir=/tmp jetty:run
+{pygmentize:: text}
+mvn -Dscalate.workdir=/tmp jetty:run
+{pygmentize}
 
 In production settings you can disable the caching and reloading of templates if you wish using the **allowCaching** and **allowReload** properties on [TemplateEngine](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) which default to **scalate.allowCaching** and **scalate.allowReload** respectively.
 
@@ -692,8 +699,10 @@ To do this you just need to include the *maven-scalate-plugin* into your project
 
 When using the current [scalate build](../building.html) you can precompile any project using the *precompile* profile. e.g.
 
-    cd scalate-war
-    mvn install -Pprecompile
+{pygmentize:: text}
+cd scalate-war
+mvn install -Pprecompile
+{pygmentize}
     
 Using a maven profile helps you avoid precompiling in development mode, unless you are happy to take the speed hit - but you can include that when you do a release.
 
@@ -757,17 +766,19 @@ Using an IDE plugin can make it much easier to view and edit Scalate templates.
 
 If you use [TextMate](http://macromates.com/) (which on OS X is a great text editor) you can install the [Scalate plugin](http://github.com/scalate/Scalate.tmbundle) as follows:
 
-    cd ~/Library/Application\ Support/TextMate/Bundles/
-    git clone git://github.com/scalate/Scalate.tmbundle.git
-{: .syntax }
+{pygmentize:: text}
+cd ~/Library/Application\ Support/TextMate/Bundles/
+git clone git://github.com/scalate/Scalate.tmbundle.git
+{pygmentize}
 
 If you have not already done so you will also need a Scala plugin for TextMate which the [Ssp](ssp-reference.html) and [Scaml](scaml-reference.html) languages uses for the Scala code blocks.
 
 We like the [version by Dean Wampler](http://github.com/deanwampler/Scala.tmbundle) though there's a few around github and one included in sbaz in the Scala distro too.
 
-    cd ~/Library/Application\ Support/TextMate/Bundles/
-    git clone git://github.com/deanwampler/Scala.tmbundle.git
-{: .syntax }
+{pygmentize:: text}
+cd ~/Library/Application\ Support/TextMate/Bundles/
+git clone git://github.com/deanwampler/Scala.tmbundle.git
+{pygmentize}
 
 When you restart TextMate you should now get syntax highlighting and more when you open up either a [Ssp](ssp-reference.html) or  [Scaml](scaml-reference.html) file. 
 
@@ -785,8 +796,3 @@ The current plugin does not highlight Scala expressions terribly well with the d
 We created Scalate specifically to be IDE friendly and we'd love to help create more and better IDE plugins (plus we [love contributions](../contributing.html)!). It should be easy to reuse any JSP / Erb / HAML IDE plugins but just swizzle them a little to use the Scala language instead - then get all the benefits of smart completion from Scala's static type system.
 
 We've a [page on writing IDE plugins for Scalate](../creating-ide.html) which has more details on how an IDE plugin should ideally work for Scalate.
-
-
-
-
-
