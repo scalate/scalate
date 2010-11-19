@@ -21,7 +21,7 @@ package org.fusesource.scalate.scaml
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
 import support.{Text, Code, AbstractCodeGenerator}
-import util.RenderHelper
+import support.RenderHelper
 import collection.immutable.List
 import scala.util.parsing.input.OffsetPosition
 
@@ -101,7 +101,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     override def generateInitialImports = {
-      this << "import _root_.org.fusesource.scalate.util.RenderHelper.{sanitize=>$_scalate_$_sanitize, preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, smart_sanitize=>$_scalate_$_smart_sanitize, attributes=>$_scalate_$_attributes}"
+      this << "import _root_.org.fusesource.scalate.support.RenderHelper.{sanitize=>$_scalate_$_sanitize, preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, smart_sanitize=>$_scalate_$_smart_sanitize, attributes=>$_scalate_$_attributes}"
     }
 
     def generate(statements: List[Statement]): Unit = {

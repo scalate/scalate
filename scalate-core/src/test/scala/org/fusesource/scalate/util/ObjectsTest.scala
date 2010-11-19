@@ -23,13 +23,6 @@ import Objects._
 import scalate.Boot
 
 class ObjectsTest extends FunSuiteSupport {
-  test("inject no params") {
-    val a = assertInstantiate(classOf[NoParams])
-    expect("Hello") {a.value}
-  }
-
-  // single values
-  testInject(StringParam("James"), classOf[StringParam], List("James"))
 
   // derived values
   test("inject derived class") {
@@ -43,17 +36,5 @@ class ObjectsTest extends FunSuiteSupport {
     answer
 
   }
-
-  protected def testInject(expected: AnyRef, clazz: Class[_], injectValues: List[AnyRef] = List()): Unit = {
-    test("inject " + clazz.getName + " with " + injectValues) {
-      expect(expected) {assertInstantiate(clazz, injectValues)}
-    }
-  }
-}
-
-case class StringParam(name: String)
-
-class NoParams {
-  val value = "Hello"
 }
 

@@ -33,14 +33,13 @@
  */
 
 
-package org.fusesource.scalate.util
+package org.fusesource.scalate
+package support
 
-import _root_.org.fusesource.scalate.RenderContext
 import collection.mutable.LinkedHashMap
 import xml.{Node, NodeBuffer, NodeSeq}
 
-object RenderHelper
-{
+object RenderHelper {
 
   /**
    * Pads the text following newlines with the specified

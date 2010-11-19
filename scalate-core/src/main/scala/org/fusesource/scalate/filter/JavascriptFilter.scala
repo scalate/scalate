@@ -19,7 +19,7 @@
 package org.fusesource.scalate
 package filter
 
-import org.fusesource.scalate.util.RenderHelper
+import org.fusesource.scalate.support.RenderHelper
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
