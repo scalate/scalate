@@ -223,6 +223,7 @@
   </developers>
 
   <modules>
+    <module>scalate-util</module>
     <module>scalate-core</module>
     <module>scalate-test</module>
     <module>scalate-wikitext</module>

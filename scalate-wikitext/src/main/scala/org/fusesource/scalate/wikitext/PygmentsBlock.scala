@@ -28,7 +28,7 @@ import util.parsing.input.{NoPosition, CharSequenceReader}
 import org.fusesource.scalate.support.{Text, ScalaParseSupport}
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.InvalidSyntaxException
-import org.fusesource.scalate.util.RenderHelper
+import org.fusesource.scalate.support.RenderHelper
 
 object Pygmentize extends Logging {
   def isInstalled: Boolean = {

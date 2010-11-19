@@ -33,9 +33,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala-version}</version>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-util</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.scala-lang</groupId>

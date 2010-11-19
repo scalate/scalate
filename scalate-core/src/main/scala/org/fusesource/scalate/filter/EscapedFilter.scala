@@ -19,7 +19,7 @@
 package org.fusesource.scalate
 package filter
 
-import org.fusesource.scalate.util.RenderHelper
+import support.RenderHelper
 
 
 /**

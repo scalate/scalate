@@ -1,0 +1,4 @@
+<% val it = inject[SomeHelper] %>
+Start
+${it.greeting}
+End
