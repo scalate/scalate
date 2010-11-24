@@ -222,7 +222,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/main/descriptors/unix-bin.xml</descriptor>
               </descriptors>
-              <finalName>scalate-${pom.version}</finalName>
+              <finalName>scalate-${project.version}</finalName>
               <tarLongFileMode>gnu</tarLongFileMode>
             </configuration>
           </execution>
@@ -236,7 +236,7 @@
               <descriptors>
                 <descriptor>${basedir}/src/main/descriptors/windows-bin.xml</descriptor>
               </descriptors>
-              <finalName>scalate-${pom.version}</finalName>
+              <finalName>scalate-${project.version}</finalName>
               <appendAssemblyId>true</appendAssemblyId>
               <assemblyId />
             </configuration>
