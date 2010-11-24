@@ -36,9 +36,10 @@
     </encoder>
   </appender>
 
-  <logger name="org.fusesource.scalate" level="INFO" />
+  <logger name="org.fusesource.scalate" level="DEBUG" />
 
-  <root level="info">
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>
 

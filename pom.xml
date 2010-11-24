@@ -26,7 +26,7 @@
 
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>scalate-project</artifactId>
-  <version>1.4-SNAPSHOT</version>
+  <version>1.4.0.SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Scalate Project</name>
@@ -53,11 +53,40 @@
     <test.useFile>false</test.useFile>
 
 
+    <!-- OSGi bundles properties -->
+    <scalate.osgi.version.clean>${project.version}</scalate.osgi.version.clean>
+    <scalate.osgi.import.rider.version>version="[$(version;==;${scalate.osgi.version.clean}),$(version;=+;${scalate.osgi.version.clean}))"</scalate.osgi.import.rider.version>
+    <scalate.osgi.import.strict.version>version="[$(version;===;${scalate.osgi.version.clean}),$(version;==+;${scalate.osgi.version.clean}))"</scalate.osgi.import.strict.version>
+    <scalate.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</scalate.osgi.import.default.version>
+    <scalate.osgi.import.defaults>
+      org.slf4j..*;version="[1.6,2)",
+    </scalate.osgi.import.defaults>
+    <scalate.osgi.import.before.defaults />
+    <scalate.osgi.import.additional />
+    <scalate.osgi.import.pkg>
+      !${scalate.osgi.export.pkg},
+      org.fuseource.scalate.*;${scalate.osgi.import.rider.version},
+      ${scalate.osgi.import.before.defaults},
+      ${scalate.osgi.import.defaults},
+      ${scalate.osgi.import.additional},
+      *
+    </scalate.osgi.import.pkg>
+    <scalate.osgi.activator />
+    <scalate.osgi.failok>false</scalate.osgi.failok>
+    <scalate.osgi.private.pkg>!*</scalate.osgi.private.pkg>
+    <scalate.osgi.export>${scalate.osgi.export.pkg};${scalate.osgi.version}</scalate.osgi.export>
+    <scalate.osgi.version>version=${project.version}</scalate.osgi.version>
+    <scalate.osgi.split.pkg>-split-package:=first</scalate.osgi.split.pkg>
+    <scalate.osgi.import>${scalate.osgi.import.pkg}</scalate.osgi.import>
+    <scalate.osgi.dynamic />
+    <scalate.osgi.symbolic.name>${project.groupId}.${project.artifactId}</scalate.osgi.symbolic.name>
+    <scalate.osgi.exclude.dependencies>false</scalate.osgi.exclude.dependencies>
+
     <!-- version info -->
     <asm-version>3.1</asm-version>
     <jansi-version>1.4</jansi-version>
-    <jersey-version>1.5-ea03</jersey-version>
-    <jetty-version>7.1.5.v20100705</jetty-version>
+    <jersey-version>1.5-ea05</jersey-version>
+    <jetty-version>7.2.1.v20101111</jetty-version>
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
     <!--
@@ -66,13 +95,13 @@
     <karaf-version>2.1.0</karaf-version>
     <logback-version>0.9.26</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
-    <org.springframework.version>3.0.4.RELEASE</org.springframework.version>
+    <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
 
     <osgi.version>4.2.0</osgi.version>
 
     <!--
     TODO doesn't seem to work - maven plugin barfs!!!
-    <scala-version>2.8.1.RC1</scala-version>
+    <scala-version>2.8.1</scala-version>
     -->
     <scala-version>2.8.0</scala-version>
 
@@ -88,10 +117,11 @@
     <!-- plugin version info -->
 
     <assembly-plugin-version>2.2</assembly-plugin-version>
+    <bundle-plugin-version>2.1.0</bundle-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
     <compiler-plugin-version>2.3.2</compiler-plugin-version>
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
-    <idea-plugin-version>2.2</idea-plugin-version>
+    <idea-plugin-version>2.3-20100704</idea-plugin-version>
     <install-plugin-version>2.3.1</install-plugin-version>
     <license-plugin-version>1.7.0</license-plugin-version>
     <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
@@ -101,20 +131,20 @@
 
     <jetty-plugin-version>8.0.0.M1</jetty-plugin-version>
 -->
-    <jetty-plugin-version>7.1.5.v20100705</jetty-plugin-version>
+    <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
     <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
     <project-info-reports-plugin-version>2.2</project-info-reports-plugin-version>
     <release-plugin-version>2.1</release-plugin-version>
     <resources-plugin-version>2.4.3</resources-plugin-version>
-    <scala-plugin-version>2.14.3</scala-plugin-version>
+    <scala-plugin-version>2.15.0</scala-plugin-version>
     <scm-plugin-version>1.4</scm-plugin-version>
-    <site-plugin-version>3.0-beta-2</site-plugin-version>
-    <source-plugin-version>2.1.1</source-plugin-version>
+    <site-plugin-version>3.0-beta-3</site-plugin-version>
+    <source-plugin-version>2.1.2</source-plugin-version>
     <surefire-plugin-version>2.6</surefire-plugin-version>
     <surefire-report-plugin-vesrion>2.6</surefire-report-plugin-vesrion>
     <taglist-plugin-version>2.4</taglist-plugin-version>
     <wagon-webdav-plugin-version>1.0-beta-6</wagon-webdav-plugin-version>
-    <war-plugin-version>2.1</war-plugin-version>
+    <war-plugin-version>2.1.1</war-plugin-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
@@ -260,7 +290,7 @@
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-htmlunit-driver</artifactId>
-        <version>2.0a1</version>
+        <version>2.0a2</version>
       </dependency>
 
       <dependency>
@@ -307,7 +337,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.7</version>
+        <version>4.8</version>
       </dependency>
 
     </dependencies>
@@ -403,6 +433,28 @@
           </configuration>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>${bundle-plugin-version}</version>
+          <extensions>true</extensions>
+          <configuration>
+            <excludeDependencies>${scalate.osgi.exclude.dependencies}</excludeDependencies>
+            <instructions>
+              <Bundle-Name>${project.artifactId}</Bundle-Name>
+              <Bundle-SymbolicName>${scalate.osgi.symbolic.name}</Bundle-SymbolicName>
+              <Bundle-Activator>${scalate.osgi.activator}</Bundle-Activator>
+              <Export-Package>${scalate.osgi.export}</Export-Package>
+              <Import-Package>${scalate.osgi.import}</Import-Package>
+              <DynamicImport-Package>${scalate.osgi.dynamic}</DynamicImport-Package>
+              <Private-Package>${scalate.osgi.private.pkg}</Private-Package>
+              <Implementation-Title>Apache Camel</Implementation-Title>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <_versionpolicy>${scalate.osgi.import.default.version}</_versionpolicy>
+              <_failok>${scalate.osgi.failok}</_failok>
+            </instructions>
+          </configuration>
+        </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <version>${war-plugin-version}</version>

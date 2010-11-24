@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4.0.SNAPSHOT</version>
   </parent>
 
   <artifactId>scalate-tool</artifactId>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.codehaus.swizzle</groupId>
       <artifactId>swizzle-confluence</artifactId>
-      <version>1.1</version>
+      <version>1.2.Alpha1</version>
     </dependency>
 
   </dependencies>

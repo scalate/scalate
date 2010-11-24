@@ -45,6 +45,14 @@ Cutting the release
 {pygmentize}
 
 * check your repo is clean and you are on master branch
+* check that we are using the latest versions of dependencies
+
+{pygmentize:: text}
+mvn versions:use-next-releases
+mvn versions:update-properties
+{pygmentize}
+
+* then review the changes to pom.xml to check they all seem fine. You probably want to rollback the jetty changes to version 8.x, other than that it should be fine. Do a test run to check!
 * prepare the release
 
 {pygmentize:: text}

@@ -19,10 +19,11 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
-import collection.JavaConversions._
-import _root_.java.{lang => jl, util => ju}
 import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.introspector.Introspector
+
+import collection.JavaConversions._
+import java.{lang => jl, util => ju}
 
 object Scope {
   def apply(context: RenderContext) = {

@@ -44,11 +44,13 @@ class CamelScalateEndpointTest extends FunSuite {
    */
   def withRouteBuilder(routeBuilder: RouteBuilder)(useTemplate: (ProducerTemplate) => Unit): Unit = {
     val context = new DefaultCamelContext()
+    context.setTracing(true)
     context.addRoutes(routeBuilder)
     try {
       context.start()
 
       val template = context.createProducerTemplate()
+      Thread.sleep(2000)
       useTemplate(template)
     }
     finally {
@@ -82,8 +84,11 @@ class CamelScalateEndpointTest extends FunSuite {
           val out = response.getOut
           assume(out != null, "out was null when sending to uri: " + uri + " body: " + body)
 
+          val actualBody = out.getBody(classOf[String])
+          assume(actualBody != null, "Null body should not be returned when sending to: " + uri + " with out message: " + out)
+
           expect(expectedResult) {
-            out.getBody(classOf[String]).trim()
+            actualBody.trim()
           }
           expect(headerValue) {
             out.getHeader("cheese", classOf[String])

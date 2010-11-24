@@ -18,9 +18,12 @@
 
 package org.fusesource.scalate.support
 
-import _root_.org.fusesource.scalate.AttributeMap
+import org.fusesource.scalate.AttributeMap
 
 import scala.collection.JavaConversions._
+
+import java.{util => ju}
+
 import scala.collection.Set
 //import scala.collection.mutable.HashMap
 
@@ -31,9 +34,7 @@ import scala.collection.Set
 //class AttributesHashMap[A, B] extends HashMap[A,B] with AttributeMap[A, B] {
 class AttributesHashMap[A, B] extends AttributeMap[A, B] {
 
-  import java.util.HashMap
-
-  private[this] val map = new HashMap[A, B]
+  private[this] val map = new ju.HashMap[A, B]
 
   def get(key: A): Option[B] = {
     val value = map.get(key)

@@ -9,6 +9,7 @@
       <scope>runtime</scope>
       <includes>
         <include>org.fusesource.scalate:scalate-core</include>
+        <include>org.fusesource.scalate:scalate-util</include>
         <include>org.scala-lang:scala-library</include>
         <include>org.scala-lang:scala-compiler</include>
         <include>org.slf4j:slf4j-api</include>
