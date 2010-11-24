@@ -69,6 +69,14 @@
       <artifactId>scalamd</artifactId>
       <version>${scalamd-version}</version>
       <optional>true</optional>
+
+      <!-- lets avoid issues with different scala versions -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
