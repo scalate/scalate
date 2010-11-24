@@ -103,7 +103,7 @@
     TODO doesn't seem to work - maven plugin barfs!!!
     <scala-version>2.8.1</scala-version>
     -->
-    <scala-version>2.8.1</scala-version>
+    <scala-version>2.8.0</scala-version>
 
     <scalatest-version>1.2</scalatest-version>
 
@@ -120,6 +120,7 @@
     <bundle-plugin-version>2.1.0</bundle-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
     <compiler-plugin-version>2.3.2</compiler-plugin-version>
+    <deploy-plugin-version>2.5</deploy-plugin-version>
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
     <install-plugin-version>2.3.1</install-plugin-version>
@@ -649,6 +650,12 @@
           <goals>deploy</goals>
           <arguments>-Prelease</arguments>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${deploy-plugin-version}</version>
       </plugin>
 
       <plugin>
