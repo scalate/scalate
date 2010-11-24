@@ -99,6 +99,14 @@
       <groupId>org.fusesource.scalamd</groupId>
       <artifactId>scalamd</artifactId>
       <version>${scalamd-version}</version>
+
+      <!-- lets avoid issues with different scala versions -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.fusesource.wikitext</groupId>
