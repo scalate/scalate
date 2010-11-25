@@ -8,7 +8,6 @@
 * minor refactoring of internal classes such as Resource and ResourceLoader from the org.fusesource.scalate.support package into the org.fusesource.scalate.util package to make the util package more stand alone and reuseable outside of Scalate.
 * scalate-util module now refactored out of scalate-core
 * both scalate-core and scalate-util now OSGi bundles
-* upgraded to Scala 2.8.1
 
 For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/300141-1-3-1)
 
