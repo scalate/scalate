@@ -19,6 +19,7 @@
 package org.fusesource.scalate.wikitext
 
 import java.io.File
+import org.junit.Assert.assertTrue
 
 /**
  * Test cases for {snippet} macro support 
@@ -125,5 +126,10 @@ h1. Snippet with id
     }
   } else {
     warn("Pygmentize not installed so ignoring the tests")
+  }
+
+  test("URL prefix handling") {
+    assertTrue("Only leading occurence of prefix should only have been replaced", 
+               Snippets.handlePrefix("test/with/a/subfolder/named/test").endsWith("with/a/subfolder/named/test"))
   }
 }

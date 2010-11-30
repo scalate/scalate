@@ -36,10 +36,10 @@ object Snippets extends Logging {
    */
   def addPrefix(prefix: String, location: String) : Unit = prefixes.put(prefix, location)
 
-  private def handlePrefix(location: String) : String = {
+  private[wikitext] def handlePrefix(location: String) : String = {
     val prefix = location.substring(0, location.indexOf("/"))
     if (prefixes.contains(prefix)) {
-      location.replace(prefix, prefixes(prefix))
+      location.replaceFirst(prefix, prefixes(prefix))
     } else {
       location
     }
