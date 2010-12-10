@@ -53,6 +53,12 @@ class ConfluenceExport extends Action {
   var user: String = _
   @option(name = "--password", description = "Login password")
   var password: String = _
+  @option(name = "--allow-spaces", description = "Whether to allow spaces in filenames (boolean). Only use if the O/S supports spaces in file names (e.g. on Windows). If false, file names are modified to be non-colonised names (NCName).")
+  var allow_spaces: String = "false";
+  @option(name = "--format", description = """The format of the downloaded pages. Possible values are:
+page - for page files suitable for rendering in a Scalate web site. Suffix is .page
+conf - for a plain confluence text file without metadata. Suffix is .conf""")
+  var format: String = "page"
 
   case class Node(summary:PageSummary) {
     val children = ListBuffer[Node]()
@@ -86,25 +92,43 @@ class ConfluenceExport extends Action {
       var rc = 0
       dir.mkdirs
       nodes.foreach { node=>
-        val santized_title = node.summary.getTitle.toLowerCase.replaceAll(" ","-");
-        val file = new File(dir, santized_title + ".page")
-        println("downloading: \u001B[1;32m"+file+"\u001B[0m")
+        val sanitized_title = sanitize(node.summary.getTitle);
         val page = confluence.getPage(node.summary.getId);
-        var content = """---
+        var content:String = "";
+        var file_suffix = ".page";
+        if (format.equalsIgnoreCase("page")) {
+            file_suffix = ".page"
+            content = """---
 title: """+page.getTitle+"""
 page_version: """+page.getVersion+"""
 page_creator: """+page.getCreator+"""
 page_modifier: """+page.getModifier+"""
 --- pipeline:conf
-"""+page.getContent
+"""
+        }
+        else if (format.equalsIgnoreCase("conf")) {
+            file_suffix = ".conf"
+        }
+        content += page.getContent
 
+        val file = new File(dir, sanitized_title + file_suffix)
+        println("downloading: \u001B[1;32m"+file+"\u001B[0m")
         IOUtil.writeText(file, content)
         rc += 1
         if( !node.children.isEmpty ) {
-          rc += export(new File(dir, santized_title), node.children)
+          rc += export(new File(dir, sanitized_title), node.children)
         }
       }
       rc
+    }
+    
+    def sanitize(title:String): String = {
+        if (allow_spaces.equalsIgnoreCase("true")) {
+            title.replaceAll("\\\"", "")
+        }
+        else {
+            title.toLowerCase.replaceAll(" ","-").replaceAll("[^a-zA-Z_0-9\\-\\.]", "")
+        }
     }
 
     val total = export(target, rootNodes);
