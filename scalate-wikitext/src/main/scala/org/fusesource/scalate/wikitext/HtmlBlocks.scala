@@ -67,7 +67,7 @@ class DivBlock extends AbstractConfluenceDelimitedBlock("div") with Logging {
   override def handleBlockContent(value: String) = {
     // lets parse body as wiki markup
     //builder.characters(value)
-    markupLanguage.processContent(getParser, value, false)
+    getMarkupLanguage.processContent(getParser, value, false)
   }
 
   override def endBlock() = {
@@ -93,7 +93,7 @@ class SectionBlock extends AbstractConfluenceDelimitedBlock("section") with Logg
   }
 
   override def handleBlockContent(value: String) = {
-    markupLanguage.processContent(getParser, value, false)
+    getMarkupLanguage.processContent(getParser, value, false)
   }
 
   override def endBlock() = {
@@ -122,7 +122,7 @@ class ColumnBlock extends AbstractConfluenceDelimitedBlock("column") with Loggin
   override def handleBlockContent(value: String) = {
     // lets parse bodhy as wiki markup
     //builder.characters(value)
-    markupLanguage.processContent(getParser, value, false)
+    getMarkupLanguage.processContent(getParser, value, false)
   }
 
   override def endBlock() = {
