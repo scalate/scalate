@@ -55,22 +55,26 @@ class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") with Logging {
     Blocks.unknownAttribute(key, value)
 }
 
-class DivBlock extends AbstractConfluenceDelimitedBlock("div") with Logging {
+class MarkupBlockBlock(blockType: BlockType, elementName: String) extends AbstractConfluenceDelimitedBlock(elementName) with Logging {
   var attributes = new Attributes()
+  var textBuffer = new StringBuilder
 
   override def beginBlock() = {
-    //attributes.setCssClass("syntax")
-    builder.beginBlock(BlockType.DIV, attributes)
+    builder.beginBlock(blockType, attributes)
+    textBuffer = new StringBuilder
   }
 
 
   override def handleBlockContent(value: String) = {
-    // lets parse body as wiki markup
-    //builder.characters(value)
-    getMarkupLanguage.processContent(getParser, value, false)
+    if (!textBuffer.isEmpty) {
+      textBuffer.append("\n")
+    }
+    textBuffer.append(value)
   }
 
   override def endBlock() = {
+    // lets parse body as wiki markup at the end of the block
+    getMarkupLanguage.processContent(getParser, textBuffer.toString, false)
     builder.endBlock()
     attributes = new Attributes()
   }
@@ -81,6 +85,11 @@ class DivBlock extends AbstractConfluenceDelimitedBlock("div") with Logging {
   override def setOption(key: String, value: String) =
     Blocks.setOption(attributes, key, value)
 }
+
+
+class DivBlock extends MarkupBlockBlock(BlockType.DIV, "div")
+
+class ColumnBlock extends MarkupBlockBlock(BlockType.TABLE_CELL_NORMAL, "column")
 
 class SectionBlock extends AbstractConfluenceDelimitedBlock("section") with Logging {
   var tableAttributes = new Attributes()
@@ -111,31 +120,6 @@ class SectionBlock extends AbstractConfluenceDelimitedBlock("section") with Logg
     Blocks.setOption(tableAttributes, key, value)
 }
 
-class ColumnBlock extends AbstractConfluenceDelimitedBlock("column") with Logging {
-  var attributes = new Attributes()
-
-  override def beginBlock() = {
-    builder.beginBlock(BlockType.TABLE_CELL_NORMAL, attributes)
-  }
-
-
-  override def handleBlockContent(value: String) = {
-    // lets parse bodhy as wiki markup
-    //builder.characters(value)
-    getMarkupLanguage.processContent(getParser, value, false)
-  }
-
-  override def endBlock() = {
-    builder.endBlock()
-    attributes = new Attributes()
-  }
-
-  override def setOption(option: String) =
-    Blocks.unknownOption(option)
-
-  override def setOption(key: String, value: String) =
-    Blocks.setOption(attributes, key, value)
-}
 
 object Blocks extends Logging {
   def unknownAttribute(key: String, value: String): Unit = {
