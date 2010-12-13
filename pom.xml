@@ -53,7 +53,6 @@
 
 
     <!-- OSGi bundles properties -->
-    <scalate.osgi.version.clean>${project.version}</scalate.osgi.version.clean>
     <scalate.osgi.import.rider.version>version="[$(version;==;${scalate.osgi.version.clean}),$(version;=+;${scalate.osgi.version.clean}))"</scalate.osgi.import.rider.version>
     <scalate.osgi.import.strict.version>version="[$(version;===;${scalate.osgi.version.clean}),$(version;==+;${scalate.osgi.version.clean}))"</scalate.osgi.import.strict.version>
     <scalate.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</scalate.osgi.import.default.version>
@@ -449,6 +448,21 @@
               <_failok>${scalate.osgi.failok}</_failok>
             </instructions>
           </configuration>
+
+          <executions>
+            <execution>
+              <id>cleanVersions</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>cleanVersions</goal>
+              </goals>
+              <configuration>
+                <versions>
+                  <scalate.osgi.version.clean>${project.version}</scalate.osgi.version.clean>
+                </versions>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
