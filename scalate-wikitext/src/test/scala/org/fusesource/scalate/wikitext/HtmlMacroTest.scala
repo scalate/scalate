@@ -26,16 +26,16 @@ class HtmlMacroTest extends AbstractConfluenceTest {
 
   test("div macro test") {
     assertFilter("""{div}hello world{div}""",
-      """<div>hello world</div>""")
+      """<div><p>hello world</p></div>""")
   }
 
   test("div with attributes macro test") {
     assertFilter("""{div:style=margin-left:-20px; text-align:center; padding-right:20px;}hello world{div}""",
-      """<div style="margin-left:-20px; text-align:center; padding-right:20px;">hello world</div>""")
+      """<div style="margin-left:-20px; text-align:center; padding-right:20px;"><p>hello world</p></div>""")
   }
 
   test("section and column") {
     assertFilter("""{section}{column}foo{column}{column}bar{column}{section}""",
-      """<table><tr><td>foo</td><td>bar</td></tr></table>""")
+      """<table><tr><td><p>foo</p></td><td><p>bar</p></td></tr></table>""")
   }
 }
