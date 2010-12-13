@@ -600,7 +600,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     if( allowCaching ) {
       templateCache += (source.uri -> ce)
     }
-    ce.template
+    val answer = ce.template
+    debug("Loaded uri: " + source.uri + " template: " + answer)
+    answer
   }
 
   /**
@@ -630,16 +632,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       pipeline(source) match {
         case Some(p)=>
           val text = source.text
-          // Implements a template which uses a pipeline of filters for the implementation.
-          return (new Template() {
-            def render(context: RenderContext) = {
-              var rc = text
-              p.foreach{ f=>
-                rc = f.filter(context, rc)
-              }
-              context << rc;
-            }
-          }, Set(uri))
+          return (new PipelineTemplate(p, text), Set(uri))
         case None=>
       }
 
