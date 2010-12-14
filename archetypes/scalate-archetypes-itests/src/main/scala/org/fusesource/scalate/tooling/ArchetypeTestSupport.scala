@@ -18,11 +18,15 @@
 
 package org.fusesource.scalate.tooling
 
-import _root_.org.fusesource.scalate.util.IOUtil._
-import _root_.org.apache.maven.project.{DefaultProjectBuildingRequest, ProjectBuilder, MavenProject}
-import _root_.org.junit.{After, Before, Assert}
-import _root_.scala.collection.JavaConversions._
-import org.codehaus.plexus.{DefaultContainerConfiguration, ContainerConfiguration, DefaultPlexusContainer}
+import java.io.File
+import java.util.Collections
+import java.util.{List => JList}
+import java.util.LinkedHashMap
+import java.util.Map
+import java.util.Properties
+
+import scala.collection.JavaConversions._
+
 import org.apache.maven.Maven
 import org.apache.maven.exception.DefaultExceptionHandler
 import org.apache.maven.exception.ExceptionHandler
@@ -32,23 +36,25 @@ import org.apache.maven.execution.MavenExecutionRequest
 import org.apache.maven.execution.MavenExecutionRequestPopulator
 import org.apache.maven.execution.MavenExecutionResult
 import org.apache.maven.lifecycle.LifecycleExecutionException
+import org.apache.maven.project.{DefaultProjectBuildingRequest, ProjectBuilder, MavenProject}
 import org.apache.maven.repository.RepositorySystem
 import org.apache.maven.settings.building.DefaultSettingsBuildingRequest
 import org.apache.maven.settings.building.SettingsBuilder
 import org.apache.maven.settings.building.SettingsBuildingRequest
 import org.apache.maven.settings.building.SettingsBuildingResult
-import org.codehaus.plexus.util.FileUtils
-import org.slf4j.LoggerFactory
-import java.io.File
-import java.util.Collections
-import java.util.{List => JList}
-import java.util.LinkedHashMap
-import java.util.Map
-import java.util.Properties
-/**
- * @version $Revision : 1.1 $
- */
 
+import org.codehaus.plexus.{DefaultContainerConfiguration, ContainerConfiguration, DefaultPlexusContainer}
+import org.codehaus.plexus.util.FileUtils
+
+import org.fusesource.scalate.util.IOUtil._
+
+import org.junit.{After, Before, Assert}
+
+import org.slf4j.LoggerFactory
+
+/**
+ * A base class for testing out archetypes
+ */
 class ArchetypeTestSupport {
   protected val logger = LoggerFactory.getLogger(getClass)
   protected var baseDir = new File(System.getProperty("basedir", ".")).getAbsoluteFile
@@ -86,6 +92,12 @@ class ArchetypeTestSupport {
     props.setProperty("user.dir", targetDir.getAbsolutePath)
     props.setProperty("basedir", targetDir.getAbsolutePath)
 
+    /*val localRepo = "file://" + (new File(System.getProperty("user.home", ".") + "/.m2/repository").getCanonicalFile)
+    println("Using archetype repo: " + localRepo)
+    props.setProperty("archetypeRepository", localRepo)
+    */
+    props.setProperty("archetypeCatalog", "local")
+
     var request: DefaultMavenExecutionRequest = new DefaultMavenExecutionRequest
 
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
@@ -100,15 +112,15 @@ class ArchetypeTestSupport {
     logger.info("Now building created archetype in: " + newProjectDir)
 
     runMaven(mavenRequest(Collections.singletonList("install")))
-/*
-    request = new DefaultMavenExecutionRequest
-    request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
-    request.setGoals(Collections.singletonList("install"))
-    request.setBaseDirectory(newProjectDir)
-    request.setProjectPresent(true)
-    request.setPom(new File(newProjectDir, "pom.xml"))
-    runMaven(request)
-*/
+    /*
+        request = new DefaultMavenExecutionRequest
+        request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
+        request.setGoals(Collections.singletonList("install"))
+        request.setBaseDirectory(newProjectDir)
+        request.setProjectPresent(true)
+        request.setPom(new File(newProjectDir, "pom.xml"))
+        runMaven(request)
+    */
 
 
     if (testConsole) {
@@ -130,7 +142,7 @@ class ArchetypeTestSupport {
 
 
   def copyFile(fromFileName: String, toFileName: String): File = {
-    val from  = new File(fromFileName)
+    val from = new File(fromFileName)
     val to = new File(toFileName)
     println("copying from: " + from + " to: " + to)
     copy(from, to)
@@ -144,6 +156,7 @@ class ArchetypeTestSupport {
     request.setUserProperties(properties)
     runMaven(request)
   }
+
   def mavenRequest(goals: JList[String]): DefaultMavenExecutionRequest = {
     val request = new DefaultMavenExecutionRequest
     request.setSystemProperties(System.getProperties.clone.asInstanceOf[Properties])
@@ -185,7 +198,9 @@ class ArchetypeTestSupport {
 
     val buildingResult = builder.build(new File(baseDir, "pom.xml"), buildingRequest)
     assert(buildingResult != null)
-    buildingResult.getProject.getVersion
+    val answer = buildingResult.getProject.getVersion
+    println("Found archetype version: " + answer)
+    answer
   }
 
   protected def runMaven(request: MavenExecutionRequest): MavenExecutionResult = {

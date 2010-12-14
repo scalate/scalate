@@ -58,6 +58,7 @@ class JettyServer {
     var defaultWebAppDir: String = basedir + mavenWebAppSubDir
 
     LOG.info("Using basedir: " + basedir)
+    LOG.info("Using defaultWebAppDir: " + defaultWebAppDir)
 
     // we are typically used in a test so lets define the scalate test dir by default
     if (System.getProperty("scalate.workdir", "").length == 0) {
@@ -76,6 +77,7 @@ class JettyServer {
         webAppDir = defaultWebAppDir
       }
       else {
+        LOG.info("defaultWebAppDir does not exist! " + file + " so using defaultDirectory: " + defaultDirectory + " with " + defaultWebAppDir)
         webAppDir = defaultDirectory + "/" + defaultWebAppDir
       }
       //webAppDir += "," + overlayWebAppDir
