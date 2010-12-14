@@ -38,9 +38,13 @@ abstract class TemplateTestSupport extends FunSuiteSupport {
       IOUtil.recursiveDelete(workingDir)
     }
     engine.workingDirectory = workingDir
+    configureTemplateEngine
   }
 
   protected def createTemplateEngine = new TemplateEngine
+
+  protected def configureTemplateEngine(): Unit = {
+  }
 
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): String =
     assertSspOutput(expectedOutput, templateText, attributes, true)
