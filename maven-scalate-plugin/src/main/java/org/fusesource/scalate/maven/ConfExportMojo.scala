@@ -42,9 +42,7 @@ import org.scala_tools.maven.mojo.annotations._
  * @author Eric Johnson
  */
 @goal("conf-export")
-@phase("generate-sources")
-@executeGoal("conf-export")
-@executePhase("generate-sources")
+@phase("generate-resources")
 @requiresProject
 class ConfExportMojo extends AbstractMojo {
   @parameter

@@ -101,13 +101,8 @@
         <executions>
           <execution>
             <goals>
-              <goal>conf-export</goal>
               <goal>sitegen</goal>
             </goals>
-            <configuration>
-              <url>https://cwiki.apache.org/confluence/rpc/xmlrpc</url>
-              <space>SM</space>
-            </configuration>
           </execution>
         </executions>
       </plugin>
