@@ -64,10 +64,6 @@ class ConfExportMojo extends AbstractMojo {
   var space: String = "SM"
 
   @parameter
-  @description("The target directory")
-  var target: File = new File(".")
-
-  @parameter
   @description("The Confluence username to access the wiki.")
   var user : String = _
 
@@ -86,14 +82,14 @@ class ConfExportMojo extends AbstractMojo {
   @parameter
   @description("The directory where the exported pages will land.")
   @expression("${project.build.directory}/generated-sources/confluence")
-  var targetDirectory: File = _
+  var target: File = _
   
   case class Node(summary:PageSummary) {
     val children = ListBuffer[Node]()
   }
 
   def execute() = {
-    targetDirectory.mkdirs();
+    target.mkdirs();
 
     getLog.info("Extracting pages from " + url + "/" + space);
 
@@ -139,7 +135,7 @@ page_modifier: """+page.getModifier+"""
         content += page.getContent
 
         val file = new File(dir, sanitized_title + file_suffix)
-        getLog.info("downloading: \u001B[1;32m"+file+"\u001B[0m")
+        getLog.info("downloading: "+file)
         IOUtil.writeText(file, content)
         rc += 1
         if( !node.children.isEmpty ) {
@@ -159,7 +155,7 @@ page_modifier: """+page.getModifier+"""
     }
 
     val total = export(target, rootNodes);
-    getLog.info("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
+    getLog.info("Exported page(s) "+ total);
     null
   }
 
