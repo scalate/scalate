@@ -36,6 +36,7 @@ class ScalateConfluenceLanguage extends ConfluenceLanguage {
     List(new PygementsBlock, new SnippetBlock,
       new HtmlBlock, new DivBlock,
       new SectionBlock, new ColumnBlock,
+      new CenterBlock,
 
       // tags
       new AttributesTag, new IncludeTag, new ChildrenTag

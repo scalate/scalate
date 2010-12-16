@@ -44,20 +44,23 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
     val ex = Files.extension(realUri)
     val engine = context.engine
 
-    val output = if (engine.extensions.contains(ex)) {
-      val template = engine.load(realUri)
-      context.capture(template)
-    } else {
-      engine.resourceLoader.resource(realUri) match {
-        case Some(r) =>
-          warn("Using non-template or wiki markup  '" + realUri + "' from {include:" + uri + "}")
-          r.text
-        case _ =>
-          warn("Could not find include '" + realUri + "' from {include:" + uri + "}")
-          ""
-      }
+    context.withUri(realUri) {
+      val output = if (engine.extensions.contains(ex)) {
+        val template = engine.load(realUri)
+        context.capture(template)
+      } else {
+        context.
+        engine.resourceLoader.resource(realUri) match {
+          case Some(r) =>
+            warn("Using non-template or wiki markup  '" + realUri + "' from {include:" + uri + "}")
+            r.text
+          case _ =>
+            warn("Could not find include '" + realUri + "' from {include:" + uri + "}")
+            ""
+        }
 
+      }
+      builder.charactersUnescaped(output)
     }
-    builder.charactersUnescaped(output)
   }
 }

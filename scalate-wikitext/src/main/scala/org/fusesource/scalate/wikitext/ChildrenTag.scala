@@ -76,7 +76,10 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging 
       }
     }
 
-    val pageUri = page.getOrElse(Files.dropExtension(context.requestUri))
+    val requestUri = if (context.currentTemplate != null) context.currentTemplate else context.requestUri
+    val idx = requestUri.lastIndexOf('/')
+    val pageName = if (idx >= 0) requestUri.substring(idx+1) else requestUri
+    val pageUri = page.getOrElse(Files.dropExtension(pageName))
     SwizzleLinkFilter.findWikiFile(pageUri) match {
       case Some(file) =>
         info("{children} now going to iterate from file '" + file)

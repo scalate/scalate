@@ -75,6 +75,8 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     val name1 = link.stripPrefix("/").toLowerCase
     val name2 = name1.replace(' ', '-')
 
+    info("Looking for files matching " + name2 + " from " + requestUri)
+
 
     def matchesName(f: File) = {
       val n = f.nameDropExtension.toLowerCase
