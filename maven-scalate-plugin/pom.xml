@@ -219,6 +219,13 @@
       <artifactId>plexus-utils</artifactId>
       <version>2.0.1</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.codehaus.swizzle</groupId>
+      <artifactId>swizzle-confluence</artifactId>
+      <version>1.2</version>
+    </dependency>
+
 <!--
     <dependency>
       <groupId>ch.qos.logback</groupId>

@@ -118,8 +118,12 @@
         <version>${project.version}</version>
         <configuration>
           <remoteServerId>website.fusesource.org</remoteServerId>
-          <remoteServerUrl>dav:http://fusesource.com/forge/dav/${forge-project-id}/versions/snapshot
+          <remoteServerUrl>dav:http://fusesource.com/forge/dav/${forge-project-id}
           </remoteServerUrl>
+<!--
+<remoteServerUrl>dav:http://fusesource.com/forge/dav/${forge-project-id}/versions/snapshot
+</remoteServerUrl>
+-->
         </configuration>
         <executions>
           <execution>

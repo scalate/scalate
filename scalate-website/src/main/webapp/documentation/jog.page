@@ -16,7 +16,9 @@ Using Scalate with JAXRS (Jersey) on Guice
   :markdown
     Jog is a way of using Scalate with JAXRS (using the [Jersey](https://jersey.dev.java.net/) reference implementation) for the RESTful controller layer along with [Guice](http://code.google.com/p/google-guice/) for dependency injection
 
-    The quickest way to get up to speed on Jog is trying the [getting started guide](getting-started.html)
+    The quickest way to get up to speed on Jog is trying the [getting started guide](getting-started.html). Though rather than creating the **jersey** archetype, create the **guice** archetype. So follow the instructions to [install the Scalate Tool](installing.html) then run
+
+        scalate create guice mygroup myartifactid
 
 .left
   :markdown

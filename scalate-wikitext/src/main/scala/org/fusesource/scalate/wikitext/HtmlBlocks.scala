@@ -140,6 +140,7 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
 
 class DivBlock extends AbstractNestedBlock("div") with Logging {
   var attributes = new Attributes()
+  var textBuffer = new StringBuilder
 
   override def beginBlock() = {
     //attributes.setCssClass("syntax")

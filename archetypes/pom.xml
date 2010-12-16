@@ -34,7 +34,9 @@
 
   <properties>
     <maven.resources.escapeString>\</maven.resources.escapeString>
+    <archetype-plugin-version>2.0</archetype-plugin-version>
   </properties>
+
 
   <modules>
     <module>scalate-archetype-jersey</module>

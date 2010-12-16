@@ -20,13 +20,13 @@
 -->
 
 <archetype-descriptor name="scalate-archetype-guice">
-<!--
-  <requiredProperties>
-    <requiredProperty key="scalaVersion">
-      <defaultValue>${scala.version}</defaultValue>
-    </requiredProperty>
-  </requiredProperties>
--->
+  <!--
+    <requiredProperties>
+      <requiredProperty key="scalaVersion">
+        <defaultValue>${scala.version}</defaultValue>
+      </requiredProperty>
+    </requiredProperties>
+  -->
   <fileSets>
     <!-- store the pom -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
@@ -61,7 +61,6 @@
         <include>**/*</include>
       </includes>
     </fileSet>
-  </fileSets>
 
     <!-- place main sources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
@@ -72,36 +71,44 @@
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8" filtered="false" packaged="false">
-      <directory>src/main/webapp</directory>
+      <directory>src/main/resources</directory>
       <includes>
-        <include>images/**/*</include>
-        <include>*.ico</include>
-        <include>**/*.ico</include>
+        <include>*.xml</include>
       </includes>
     </fileSet>
+
     <!-- place templates -->
-<!--
+
+    <!-- we need to filter the web.xml to add the package -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
       <directory>src/main/webapp</directory>
       <includes>
-        <include>**/*</include>
+        <include>WEB-INF/web.xml</include>
       </includes>
-      <excludes>
-        <exclude>*.ico</exclude>
-        <exclude>**/*.ico</exclude>
-        <exclude>images/**/*</exclude>
-        <exclude>WEB-INF/resources</exclude>
-        <exclude>WEB-INF/resources/**</exclude>
-      </excludes>
     </fileSet>
--->
-    <fileSet encoding="UTF-8" filtered="true" packaged="true">
+
+    <!-- the WEB-INF/resources need to be put into the package -->
+    <fileSet encoding="UTF-8" filtered="false" packaged="true">
       <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>resources</include>
+        <include>resources/*</include>
+      </includes>
+    </fileSet>
+
+    <!-- everything else lets not package or filter to avoid borking images -->
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/webapp</directory>
       <includes>
         <include>**/*</include>
       </includes>
       <excludes>
-        <exclude>web.xml</exclude>
+        <exclude>WEB-INF/resources</exclude>
+        <exclude>WEB-INF/resources/**</exclude>
+        <exclude>WEB-INF/resources/**/*</exclude>
+        <exclude>WEB-INF/web.xml</exclude>
       </excludes>
     </fileSet>
+  </fileSets>
+
 </archetype-descriptor>

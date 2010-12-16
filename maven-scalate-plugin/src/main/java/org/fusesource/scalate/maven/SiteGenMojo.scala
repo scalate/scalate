@@ -92,6 +92,10 @@ class SiteGenNoForkMojo extends AbstractMojo {
   @expression("${project.testClasspathElements}")
   var testClassPathElements: ju.List[_] = _
 
+  @parameter
+  @description("Properties to pass into the templates.")
+  var templateProperties: ju.Map[String,String] = _
+
   var engine: DummyTemplateEngine = _
   var defaultTemplateExtensions: Set[String] = WikiTextFilter.wikiFileExtensions
 
@@ -99,6 +103,8 @@ class SiteGenNoForkMojo extends AbstractMojo {
     targetDirectory.mkdirs();
 
     getLog.info("Generating static website from Scalate Templates and wiki files...");
+
+    getLog.info("template properties: " + templateProperties)
 
     getLog.debug("targetDirectory: " + targetDirectory)
     getLog.debug("warSourceDirectory: " + warSourceDirectory)
@@ -123,6 +129,12 @@ class SiteGenNoForkMojo extends AbstractMojo {
     engine.classLoader = projectClassLoader
     engine.workingDirectory = scalateWorkDir
     engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory))
+
+    val attributes: Map[String,Any] = if (templateProperties != null) {
+      templateProperties.toMap
+    } else {
+      Map()
+    }
 
 
     def processFile(file: File, baseuri: String, rootDir: File, copyFile: Boolean = true): Unit = {
@@ -149,7 +161,8 @@ class SiteGenNoForkMojo extends AbstractMojo {
           if (extensions.contains(ext)) {
 
             ClassLoaders.withContextClassLoader(projectClassLoader) {
-              val html = engine.layout(TemplateSource.fromFile(file, uri))
+              val source = TemplateSource.fromFile(file, uri)
+              val html = engine.layout(source, attributes)
               val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
 
               getLog.info("    processing " + file + " with uri: " + uri + " => ")
