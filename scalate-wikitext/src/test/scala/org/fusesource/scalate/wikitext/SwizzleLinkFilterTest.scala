@@ -52,6 +52,10 @@ class SwizzleLinkFilterTest extends FunSuiteSupport {
     """hello <A href="building">Building</A> something <A href="source">Source</A> there!""",
     """hello <A href="building.html">Building</A> something <A href="source.html">Source</A> there!""")
 
+  testReplaces(
+    """hello <A href="user' guide">Building</A>""",
+    """hello <A href="user' guide.html">Building</A>""")
+
 
   // should not replace these...
   testReplaces(
@@ -67,7 +71,7 @@ class SwizzleLinkFilterTest extends FunSuiteSupport {
   protected def testReplaces(html: String, expected: String): Unit = {
     test("replaces: " + html) {
 
-      val context = new DefaultRenderContext("foo.html", new TemplateEngine())
+      val context = new DefaultRenderContext("foo.html", new TemplateEngine)
       val answer = transformer.filter(context, html)
 
       info("converted " + html)

@@ -48,7 +48,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
       m =>
         val link = m.group(1)
         val matched = m.matched
-        matched.dropRight(link.size + 1) + transformLink(link, context.requestUri) + matched.last
+        matched.dropRight(link.size - 1) + transformLink(link.substring(1, link.size - 1), context.requestUri) + matched.last
     })
   }
 
@@ -123,7 +123,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     }
   }
 
-  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
+  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?(\\\".*?\\\"|'.*?')[^>]*?".r
 }
 
 

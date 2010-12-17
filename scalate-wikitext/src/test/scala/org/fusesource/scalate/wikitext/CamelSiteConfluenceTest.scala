@@ -49,7 +49,7 @@ h3. Options
 You can append query options to the URI in the following format, {{?option=value&option=value&...}}
 
 """)
-    assertOccurrences(output, "<table>", 1)
+    assertOccurrences(output, "<table", 1)
     assertOccurrences(output, "<tr>", 4)
   }
 
