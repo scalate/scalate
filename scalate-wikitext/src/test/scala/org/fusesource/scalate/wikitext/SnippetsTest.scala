@@ -28,6 +28,7 @@ class SnippetsTest extends AbstractConfluenceTest {
 
   // setting up a snippet prefix 'test' -> 'src/test/resources'
   Snippets.addPrefix("test", new File(baseDir, "src/test/resources").toURI.toString)
+  Snippets.usePygmentize = false
 
   test("snippets macro without snippet id") {
 

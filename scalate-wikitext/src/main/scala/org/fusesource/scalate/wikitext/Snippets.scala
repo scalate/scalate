@@ -23,6 +23,12 @@ object Snippets extends Logging {
 
   var failOnError = false
 
+  /**
+   * By default lets use Pygmentize if its installed to style snippets
+   * unless its explicitly disabled via user
+   */
+  var usePygmentize: Boolean = Pygmentize.isInstalled
+
   val prefixes = HashMap[String, String]()
 
   /**
@@ -49,13 +55,20 @@ object Snippets extends Logging {
    * Get the snippet file contents
    */
   def getSource(location: String) : Source = {
-    val uri = new URI(handlePrefix(location))
-    Source.fromInputStream(if (uri.isAbsolute) {
-      uri.toURL.openStream
+    val url = handlePrefix(location)
+
+    def isUrl = url.indexOf(':') > 0
+
+    var file = new File(location)
+    if (!file.exists) {
+      file = new File(url)
+    }
+    debug("for location: " + location + " using prefix: " + url)
+    if (file.exists || !isUrl) {
+      Source.fromFile(file, "UTF-8")
     } else {
-      // if the URI is not absolute, let's try using it as relative file path
-      new FileInputStream(new File(location))
-    }, "UTF-8")    
+      Source.fromURL(url, "UTF-8")
+    }
   }
 
   protected def logError(snippet: SnippetBlock, e: Throwable): Unit = {
@@ -74,7 +87,7 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") with Logg
   var lang:Option[String] = None
   var url: String = _
   var id:Option[String] = None
-  var pygmentize : Boolean = false
+  var pygmentize : Boolean = Snippets.usePygmentize
 
   lazy val handler : SnippetHandler = {
     if (pygmentize) {
