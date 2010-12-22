@@ -48,7 +48,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
       m =>
         val link = m.group(1)
         val matched = m.matched
-        matched.dropRight(link.size + 1) + transformLink(link, context.requestUri) + matched.last
+        matched.dropRight(link.size - 1) + transformLink(link.substring(1, link.size - 1), context.requestUri) + matched.last
     })
   }
 
@@ -74,6 +74,8 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     // we could use: link.split('/').last
     val name1 = link.stripPrefix("/").toLowerCase
     val name2 = name1.replace(' ', '-')
+
+    info("Looking for files matching " + name2 + " from " + requestUri)
 
 
     def matchesName(f: File) = {
@@ -121,7 +123,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     }
   }
 
-  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?[\\\"'](.*?)[\\\"'][^>]*?".r
+  protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?(\\\".*?\\\"|'.*?')[^>]*?".r
 }
 
 

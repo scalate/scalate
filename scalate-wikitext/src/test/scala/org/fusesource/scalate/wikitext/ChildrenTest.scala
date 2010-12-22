@@ -36,6 +36,11 @@ class ChildrenTest extends TemplateTestSupport {
   }
 
 
+  test("children of b") {
+    assertUriOutputContains("foo/b.conf", """<a href="b/b1.conf">""", """<a href="b/b2.conf">""")
+  }
+
+
   override protected def beforeAll(map: Map[String, Any]) = {
     super.beforeAll(map)
 

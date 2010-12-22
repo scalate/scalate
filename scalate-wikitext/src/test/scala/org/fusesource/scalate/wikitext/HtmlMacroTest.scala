@@ -36,6 +36,32 @@ class HtmlMacroTest extends AbstractConfluenceTest {
 
   test("section and column") {
     assertFilter("""{section}{column}foo{column}{column}bar{column}{section}""",
-      """<table><tr><td><p>foo</p></td><td><p>bar</p></td></tr></table>""")
+      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>""")
   }
+
+  test("section and column with line breaks") {
+    assertFilter("""
+{section}
+{column}
+foo{column}
+{column}
+bar
+{column}
+{section}
+""",
+      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>""")
+  }
+
+  test("link with image and width") {
+    assertFilter("""[!karaf-box.png|width=256!|Download]""",
+      """<p><a href="Download"><img width="256" border="0" src="karaf-box.png"/></a></p>""")
+  }
+
+
+  test("multiple links") {
+    assertFilter("""[Foo|foo]/[Bar|bar]""",
+      """<p><a href="foo">Foo</a>/<a href="bar">Bar</a></p>""")
+  }
+
+
 }
