@@ -19,32 +19,45 @@
 package org.fusesource.scalate.spring.view
 
 import java.util.Locale
+
 import org.springframework.web.servlet.View
 import org.springframework.web.servlet.view.AbstractCachingViewResolver
 
-class ScalateViewResolver extends AbstractCachingViewResolver {
+import scala.reflect.BeanProperty
 
-  override def loadView(viewName:String, locale:Locale) : View = {
+trait Ordered extends org.springframework.core.Ordered
 
-    var view:View = null
+class ScalateViewResolver() extends AbstractCachingViewResolver with Ordered {
+
+  @BeanProperty var order: Int = 1
+  @BeanProperty var prefix: String = ""
+  @BeanProperty var suffix: String = ""
+
+  override def loadView(viewName: String, locale: Locale): View = {
+
+    var view: AbstractScalateView = null
 
     if (viewName == "view") {
       view = new ScalateView
-    } else if (viewName.startsWith("render:")) {
-      val urlView = new ScalateUrlView with DefaultScalateRenderStrategy
-      urlView.setUrl(viewName.replaceFirst("render:",""))
+    } else if (viewName.startsWith("layout:")) {
+      val urlView = new ScalateUrlView with LayoutScalateRenderStrategy
+      urlView.setUrl(prefix + viewName.substring("layout:".length()) + suffix)
       view = urlView
     } else {
-      val urlView = new ScalateUrlView with LayoutScalateRenderStrategy
-      urlView.setUrl(viewName)
+      val urlView = new ScalateUrlView with DefaultScalateRenderStrategy
+      urlView.setUrl(prefix + viewName + suffix)
       view = urlView
     }
 
     // needed for spring magic on the view.  views are cached, so this will only be a one-time call
     if (view != null)
       getApplicationContext().getAutowireCapableBeanFactory().initializeBean(view, viewName);
+      if (!view.checkResource(locale)) {
+    	  view = null
+      }
 
-    return view
+  	view
+
   }
 
 }
