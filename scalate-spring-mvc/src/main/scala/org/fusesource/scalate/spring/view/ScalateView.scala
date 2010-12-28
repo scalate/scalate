@@ -39,21 +39,21 @@ trait ScalateRenderStrategy {
 trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
   def templateEngine:ServletTemplateEngine
   def render(context:ServletRenderContext, model: Map[String,Any]) {
-    log.debug("render: " + getUrl)
+    log.debug("Rendering view with name '"+ getUrl + "' with model " + model)
     templateEngine.layout(getUrl, context)
   }
 }
 
 trait DefaultScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
   override def render(context:ServletRenderContext, model: Map[String,Any]) {
-    log.debug("render: " + getUrl)
+    log.debug("Rendering view with name '"+ getUrl + "' with model " + model)
     context.render(getUrl, model)
   }
 }
 
 trait ViewScalateRenderStrategy extends ScalateRenderStrategy {
   override def render(context:ServletRenderContext, model: Map[String,Any]) {
-	  log.debug("render")
+	  log.debug("Rendering with model " + model)
     val it = model.get("it")
     if (it.isEmpty)
       throw new TemplateException("No 'it' model object specified.  Cannot render request")
@@ -83,12 +83,12 @@ class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
   }
 
   override def checkResource(locale: Locale): Boolean = try {
-    log.debug("checkResource: " + getUrl)
+    log.debug("Checking for resource " + getUrl)
     templateEngine.load(getUrl)
     true
   } catch {
     case e: ResourceNotFoundException => {
-    	log.info("Could not find resource" + getUrl, e);
+    	log.info("Could not find resource " + getUrl);
     	false
     }
   }
