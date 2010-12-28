@@ -32,30 +32,28 @@ import _root_.org.slf4j.LoggerFactory
 import org.fusesource.scalate.util.ResourceNotFoundException
 
 trait ScalateRenderStrategy {
+  protected val log = LoggerFactory.getLogger(getClass)
   def render(context:ServletRenderContext, model: Map[String,Any]);
 }
 
 trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
   def templateEngine:ServletTemplateEngine
   def render(context:ServletRenderContext, model: Map[String,Any]) {
+    log.debug("render: " + getUrl)
     templateEngine.layout(getUrl, context)
-  }
-  override def checkResource(locale:Locale): Boolean = try {
-    templateEngine.load(getUrl)
-    true
-  } catch {
-    case _=> false
   }
 }
 
 trait DefaultScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
   override def render(context:ServletRenderContext, model: Map[String,Any]) {
+    log.debug("render: " + getUrl)
     context.render(getUrl, model)
   }
 }
 
 trait ViewScalateRenderStrategy extends ScalateRenderStrategy {
   override def render(context:ServletRenderContext, model: Map[String,Any]) {
+	  log.debug("render")
     val it = model.get("it")
     if (it.isEmpty)
       throw new TemplateException("No 'it' model object specified.  Cannot render request")
@@ -85,6 +83,7 @@ class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
   }
 
   override def checkResource(locale: Locale): Boolean = try {
+    log.debug("checkResource: " + getUrl)
     templateEngine.load(getUrl)
     true
   } catch {
