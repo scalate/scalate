@@ -1,0 +1,56 @@
+---
+title: Spring MVC
+in_menu: false
+sort_info: 2
+--- name:overview
+# Spring MVC
+
+Using Scalate with Spring MVC
+
+--- name:content pipeline:jade
+
+.left
+  :markdown
+    # Overview
+
+.right
+  :markdown
+    Scalate with the [Spring MVC framework](http://www.springsource.org/go-webflow2). Spring MVC is a flexible MVC web
+    application framework, built on core [Spring](http://www.springsource.org/) functionality.
+
+    The ScalateViewResolver is an
+    (AbstractCachingViewResolver)[http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/web/servlet/view/AbstractCachingViewResolver.html]
+    that works similarly to an (UrlBasedViewResolver)[http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/web/servlet/view/UrlBasedViewResolver.html]
+    to render Scalate templates.
+
+.left
+  :markdown
+    # View Resolver
+
+.right
+  :markdown
+    The prefix and suffix properties are supported and default to empty Strings. The order property is also supported
+    and defaults to [org.springframework.core.Ordered.HIGHEST_PRECEDENCE](http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/core/Ordered.html#HIGHEST_PRECEDENCE).
+
+    The ScalateViewResolver is configured as follows:
+    {pygmentize:: xml}
+    <bean class="org.fusesource.scalate.spring.view.ScalateViewResolver">
+        <property name="prefix" value="/WEB-INF/views/scalate/" />
+        <property name="suffix" value=".jade" />
+    </bean>
+    {pygmentize}
+
+    View resolver chaining is configured as follows (ScalateViewResolver is tried before InternalResourceViewResolver):
+    {pygmentize:: xml}
+    <bean class="org.fusesource.scalate.spring.view.ScalateViewResolver">
+        <property name="order" value="1" />
+        <property name="prefix" value="/WEB-INF/views/scalate/" />
+        <property name="suffix" value=".jade" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2" />
+        <property name="prefix" value="/WEB-INF/views/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    {pygmentize}

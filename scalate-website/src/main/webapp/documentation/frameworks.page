@@ -47,8 +47,16 @@ There are lots of different (web) frameworks out there to suit all tastes and re
 
 .right
   :markdown
-    [OSGi](osgi.html) is a module system and service platform for the Java programming language, used by e.g. [Apache Karaf](http://karaf.apache.org) 
+    [OSGi](osgi.html) is a module system and service platform for the Java programming language, used by e.g. [Apache Karaf](http://karaf.apache.org)
 
+.left
+  :markdown
+    # [Spring MVC](spring-mvc.html)
+
+.right
+  :markdown
+    Scalate with the [Spring MVC framework](http://www.springsource.org/go-webflow2). Spring MVC is a flexible MVC web application framework, built on
+    core [Spring](http://www.springsource.org/) functionality.
 
 .left
   :markdown

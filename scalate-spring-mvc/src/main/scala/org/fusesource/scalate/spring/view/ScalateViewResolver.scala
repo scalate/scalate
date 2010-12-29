@@ -29,7 +29,7 @@ trait Ordered extends org.springframework.core.Ordered
 
 class ScalateViewResolver() extends AbstractCachingViewResolver with Ordered {
 
-  @BeanProperty var order: Int = 1
+  @BeanProperty var order: Int = org.springframework.core.Ordered.HIGHEST_PRECEDENCE
   @BeanProperty var prefix: String = ""
   @BeanProperty var suffix: String = ""
 
