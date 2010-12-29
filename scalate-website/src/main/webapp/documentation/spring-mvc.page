@@ -32,6 +32,8 @@ Using Scalate with Spring MVC
     The prefix and suffix properties are supported and default to empty Strings. The order property is also supported
     and defaults to [org.springframework.core.Ordered.HIGHEST_PRECEDENCE](http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/core/Ordered.html#HIGHEST_PRECEDENCE).
 
+    The forward: and redirect: prefixes are not currently supported.
+
     The ScalateViewResolver is configured as follows:
     {pygmentize:: xml}
     <bean class="org.fusesource.scalate.spring.view.ScalateViewResolver">
