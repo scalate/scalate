@@ -228,6 +228,14 @@ This should generate something like
 <a href="/products/123" title="Product link">product 123</a>
 {pygmentize}
 
+Or using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
+
+{pygmentize:: jsp}
+#do(foo(id))
+product ${id}
+#end
+{pygmentize}
+
 
 The [Scaml](scaml-reference.html) version is
 

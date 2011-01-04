@@ -195,3 +195,11 @@ To see more examples try the [TemplateEngineTest.scala test case](http://github.
 ### How can I precompile my templates
 
 See the section on [precompiling templates](documentation/user-guide.html#precompiling_templates) in the [user guide](documentation/user-guide.html)
+
+### Is there a Scalate version of custom tag libraries
+
+In template engines like JSP and GSP its common to use XML tag libraries. Its a [pending support request](http://www.assembla.com/spaces/scalate/tickets/9) which we might implement in SSP one of these days.
+
+Though typically its easier to just use a Scala method call in Scalate rather than mapping namespaced XML elements to functions.
+
+Refer to the [user guide on calling functions and passing blocks](documentation/user-guide.html#passing_a_template_block_to_a_scala_function) for some samples. An example of this kind of thing is performing a [layout of a template block](documentation/user-guide.html#explicit_layouts_inside_a_template)

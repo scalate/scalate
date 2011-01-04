@@ -306,9 +306,9 @@ xml: produces
 {pygmentize_and_compare}
 
 
-#### `#do`
+#### `#do` {#do}
 
-The `#do` directive can be used to invoke a function passing a block of template as an argument such as when you want to apply a specific [layout to a block of template](user-guide.html#explicit_layouts_inside_a_template)
+The `#do` directive can be used to invoke a function passing a block of template as an argument such as when you want to apply a specific [layout to a block of template](user-guide.html#explicit_layouts_inside_a_template) or want to call a [function passing a template block](user-guide.html#passing_a_template_block_to_a_scala_function), a little like you might do using custom tags in JSP.
 
 {pygmentize:: jsp}
 #do(layout("someLayout.ssp"))
