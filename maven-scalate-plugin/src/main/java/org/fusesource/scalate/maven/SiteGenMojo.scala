@@ -173,7 +173,8 @@ class SiteGenNoForkMojo extends AbstractMojo {
               }
             }
             catch {
-              case e => throw new Exception(e.getMessage + " processing file: " + file.getCanonicalPath, e)
+              case e: NoValueSetException => getLog.warn(e.getMessage + ". Ignored template file due to missing attributes: " + file.getCanonicalPath)
+              case e => throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
             }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
