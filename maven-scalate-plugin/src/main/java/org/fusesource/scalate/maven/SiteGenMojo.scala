@@ -160,15 +160,20 @@ class SiteGenNoForkMojo extends AbstractMojo {
           val ext = parts.last
           if (extensions.contains(ext)) {
 
-            ClassLoaders.withContextClassLoader(projectClassLoader) {
-              val source = TemplateSource.fromFile(file, uri)
-              val html = engine.layout(source, attributes)
-              val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
+            try {
+              ClassLoaders.withContextClassLoader(projectClassLoader) {
+                val source = TemplateSource.fromFile(file, uri)
+                val html = engine.layout(source, attributes)
+                val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
 
-              getLog.info("    processing " + file + " with uri: " + uri + " => ")
-              sourceFile.getParentFile.mkdirs
-              //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
-              IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
+                getLog.info("    processing " + file + " with uri: " + uri + " => ")
+                sourceFile.getParentFile.mkdirs
+                //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
+                IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
+              }
+            }
+            catch {
+              case e => throw new Exception(e.getMessage + " processing file: " + file.getCanonicalPath, e)
             }
           } else {
             getLog.debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + extensions)
