@@ -31,7 +31,9 @@ import org.fusesource.scalate.InvalidSyntaxException
 import org.fusesource.scalate.support.RenderHelper
 
 object Pygmentize extends Logging {
-  def isInstalled: Boolean = {
+
+  // lets calculate once on startup
+  private lazy val _installed: Boolean = {
     try {
       var process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
       thread("pygmetize err handler") {
@@ -45,18 +47,20 @@ object Pygmentize extends Logging {
 
       process.waitFor
       if (process.exitValue != 0) {
-        return false;
+        false
+      } else {
+        val output = new String(out.toByteArray).trim
+        debug("Pygmentize installed: " + output)
+        true
       }
-
-      val output = new String(out.toByteArray).trim
-      debug("Pygmentize installed: " + output)
-      true
     }
     catch {
       case e => debug("Failed to start pygmetize: " + e)
       false
     }
   }
+
+  def isInstalled: Boolean = _installed
 
   def unindent(data:String):String = unindent( data.split("""\r?\n""").toList )
 
