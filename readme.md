@@ -13,6 +13,11 @@ The following template languages are supported:
 In Scaml and SSP all expressions are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages.
 Mustache uses dynamic typing and reflection; a trade off of hiding code and logic from inside the templates.
 
+Building
+--------
+
+To build Scalate from the source please see the [building instructions](http://scalate.fusesource.org/building.html)
+
 Links
 -----
 
