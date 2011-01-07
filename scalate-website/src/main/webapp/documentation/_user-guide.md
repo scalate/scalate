@@ -9,7 +9,7 @@ Scalate is a template engine based on the Scala language.
 
 * Supports multiple template syntaxes
   * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](scaml-reference.html#jade)
+  * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](jade.html)
   * [Mustache](mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
 * Support for [layouts](#layouts) of templates and wiki markup
@@ -83,7 +83,7 @@ For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml
 
 ### Jade 
 
-The [Jade syntax](scaml-reference.html#jade) is similar to [Scaml](scaml-reference.html), its a [modified dialect](http://jade-lang.com/) of [Haml](http://haml-lang.com/) where element names do not require a leading % symbol which can make it a little easier to read.
+The [Jade syntax](jade.html) is similar to [Scaml](scaml-reference.html), its a [modified dialect](http://jade-lang.com/) of [Haml](http://haml-lang.com/) where element names do not require a leading % symbol which can make it a little easier to read.
 
 {pygmentize_and_compare::}
 -----------------------------
@@ -104,7 +104,7 @@ xml: produces
 <p>See, I can count!</p>
 {pygmentize_and_compare}
 
-For more details see the [Jade reference](scaml-reference.html#jade) 
+For more details see the [Jade reference](jade.html) 
  
 ### Mustache
 
@@ -497,7 +497,7 @@ The [Scaml](scaml-reference.html) version of this is a bit more concise
 
 When you create a number of templates in a directory you might find you are repeating the same sets of imports across many templates. This doesn't feel terribly DRY. Scala 2.8 supports [package objects](http://programming-scala.labs.oreilly.com/ch07.html#PackageObjects) which allows you to define types, variables and methods at the package scope to be reused inside classes and traits defined inside the package.
 
-So Scalate supports a similar feature for templates which are code generated like [SSP](ssp-reference.html), [Scaml](scaml-reference.html) and [Jade](scaml-reference.html#jade).
+So Scalate supports a similar feature for templates which are code generated like [SSP](ssp-reference.html), [Scaml](scaml-reference.html) and [Jade](jade.html).
 
 The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). 
 

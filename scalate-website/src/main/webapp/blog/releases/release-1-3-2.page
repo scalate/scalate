@@ -13,10 +13,10 @@ Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wik
 The following template languages are supported through the same common API:
 
 * [Ssp](${uri("/documentation/ssp-reference.html#syntax")}) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-* [Scaml](${uri("/documentation/scaml-reference.html")}) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup along with the [Jade](${uri("/documentation/scaml-reference.html#jade")}) syntax
+* [Scaml](${uri("/documentation/scaml-reference.html")}) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup along with the [Jade](${uri("/documentation/jade.html")}) syntax
 * [Mustache](${uri("/documentation/mustache.html")}) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
-All expressions inside [Ssp](${uri("/documentation/ssp-reference.html#syntax")}), [Scaml](${uri("/documentation/scaml-reference.html")}) and [Jade](${uri("/documentation/scaml-reference.html#jade")}) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
+All expressions inside [Ssp](${uri("/documentation/ssp-reference.html#syntax")}), [Scaml](${uri("/documentation/scaml-reference.html")}) and [Jade](${uri("/documentation/jade.html")}) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
 
 
 **Scalate 1.3.2 Highlights**

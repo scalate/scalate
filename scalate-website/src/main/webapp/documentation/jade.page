@@ -1,0 +1,104 @@
+---
+title: Jade Reference
+--- name:overview
+# Jade Reference Guide
+Jade is the daddy of HTML template engines for Scala
+
+--- name:content pipeline:markdown
+
+[Jade](http://jade-lang.com/) is a [neater](jade-syntax.html) dialect of [Haml](http://haml-lang.com/) / [Scaml](scaml-reference.html) which is a very DRY template language for creating HTML markup.
+
+Here's a simple Jade example
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: An example .jade file
+-----------------------------
+!!! 5
+html(lang="en")
+  head
+    title= pageTitle
+    :javascript
+      | if (foo) {
+      |    bar()
+      | }
+  body
+    h1 Jade - node template engine
+    #container
+      - if (youAreUsingJade)
+        p You are amazing
+      - else
+        p Get on it!
+-----------------------------
+xml: the generated HTML
+-----------------------------
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Jade</title>
+    <script type="text/javascript">
+      //<![CDATA[
+      if (foo) {
+      	bar()
+      }
+      //]]>
+    </script>
+  </head>
+  <body>
+    <h1>Jade - node template engine</h1>
+    <div id="container">
+      <p>You are amazing</p>
+    </div>
+  </body>
+</html>
+{pygmentize_and_compare}
+
+If you already know [Haml](http://haml-lang.com/) / [Scaml](scaml-reference.html) then Jade which basically avoids the use of % before element names making things a little easier to read; then for text content on a new line you either prefix the text with the **|** symbol or you use a markup format like markdown.
+
+If you don't know [Haml](http://haml-lang.com/) / [Scaml](scaml-reference.html), please refer to the [Jade Syntax](jade-syntax.html).
+      
+## Markdown and Jade rock
+
+Jade and markdown are the perfect couple for your HTML templating needs; Jade provides the very DRY and concise HTML markup using concise CSS aware markup, markdown provides the wiki formatting of text blocks.
+
+Jade by itself is great for structural markup and layouts but is not always optimal for lots of text with embedded markup like bold and hyperlinks.
+
+Here's an example of some text markup with hyperlinks using vanilla jade
+
+{pygmentize:: haml}
+.foo
+  p
+    | This is some 
+    b text 
+    with a
+    a(href="http://fusesource.com") FuseSource
+    link.
+{pygmentize}
+
+Now lets use markdown - which is great for concise DRY text with markup effects and embedded links..
+
+{pygmentize:: haml}
+.foo
+  :markdown
+    This is some **text** with a [FuseSource](http://fusesource.com) link.    
+{pygmentize}
+      
+Both of which should generate something like this
+
+{pygmentize:: xml}
+<div class="foo">
+  <p>
+    This is some <b>text</b> with a <a href="http://fusesource.com">FuseSource</a> link.
+  </p>
+</div>
+{pygmentize}
+    
+    
+## See Also
+
+* [Jade Syntax](jade-syntax.html)
+* [User Guide](user-guide.html)
+* [Documentation](index.html)
+
+
+

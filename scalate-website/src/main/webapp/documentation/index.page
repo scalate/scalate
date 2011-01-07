@@ -47,7 +47,7 @@ All the information you need to be become an expert with Scalate
     tr
       td(cellvalign="middle")
         :markdown
-          # [Jade](scaml-reference.html#jade)
+          # [Jade](jade.html)
       td
         :markdown
           Reference for the Jade template language. 

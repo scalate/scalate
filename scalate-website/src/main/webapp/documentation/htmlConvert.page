@@ -14,7 +14,7 @@ Lets get that HTML markup nice and DRY!
     # Overview
 .right
   :markdown
-    HTML Converter is a little tool for converting your HTML into the nice DRY form using either [Jade](scaml-reference.html#jade) or [Scaml](scaml-reference.html) syntax.
+    HTML Converter is a little tool for converting your HTML into the nice DRY form using either [Jade](jade.html) or [Scaml](scaml-reference.html) syntax.
 
     First you need to install the [Scalate tool](tool.html)
 
@@ -28,7 +28,7 @@ Lets get that HTML markup nice and DRY!
 
         scalate tojade foo.html bar.jade
     
-    To convert a HTML file to the [Jade](scaml-reference.html#jade) syntax or use 
+    To convert a HTML file to the [Jade](jade.html) syntax or use 
 
         scalate toscaml foo.html bar.scaml
 
