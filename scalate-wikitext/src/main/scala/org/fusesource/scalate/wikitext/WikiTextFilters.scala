@@ -59,7 +59,7 @@ object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
   var fixWikiLinks = true
 
   /**
-   * Add the markdown filter tot he template engine.
+   * Add the markdown filter to the template engine.
    */
   def apply(te: TemplateEngine) = {
     val confluenceFilter = if (fixWikiLinks) {
@@ -71,5 +71,20 @@ object ConfluenceFilter extends WikiTextFilter with TemplateEngineAddOn {
 
     te.filters += "conf" -> confluenceFilter
     te.pipelines += "conf" -> List(confluenceFilter)
+  }
+}
+
+/**
+ * Renders a Textile filter
+ */
+object TextileFilter extends WikiTextFilter with TemplateEngineAddOn {
+  def markupLanguage = new org.eclipse.mylyn.wikitext.textile.core.TextileLanguage
+
+  /**
+   * Add the textile filter to the template engine.
+   */
+  def apply(te: TemplateEngine) = {
+    te.filters += "textile" -> TextileFilter
+    te.pipelines += "textile" -> List(TextileFilter)
   }
 }
