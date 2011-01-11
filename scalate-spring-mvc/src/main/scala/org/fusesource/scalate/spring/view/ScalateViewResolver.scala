@@ -19,45 +19,32 @@
 package org.fusesource.scalate.spring.view
 
 import java.util.Locale
-
 import org.springframework.web.servlet.View
-import org.springframework.web.servlet.view.AbstractCachingViewResolver
+import org.springframework.web.servlet.view.AbstractTemplateViewResolver
+import org.springframework.web.servlet.view.AbstractUrlBasedView
 
-import scala.reflect.BeanProperty
+class ScalateViewResolver() extends AbstractTemplateViewResolver {
 
-trait Ordered extends org.springframework.core.Ordered
+  setViewClass(requiredViewClass())
 
-class ScalateViewResolver() extends AbstractCachingViewResolver with Ordered {
-
-  @BeanProperty var order: Int = org.springframework.core.Ordered.HIGHEST_PRECEDENCE
-  @BeanProperty var prefix: String = ""
-  @BeanProperty var suffix: String = ""
-
-  override def loadView(viewName: String, locale: Locale): View = {
-
+  override def requiredViewClass(): java.lang.Class[_] = classOf[org.fusesource.scalate.spring.view.ScalateView]
+  
+  override def buildView(viewName: String): AbstractUrlBasedView = {
     var view: AbstractScalateView = null
 
     if (viewName == "view") {
       view = new ScalateView
     } else if (viewName.startsWith("layout:")) {
       val urlView = new ScalateUrlView with LayoutScalateRenderStrategy
-      urlView.setUrl(prefix + viewName.substring("layout:".length()) + suffix)
+      urlView.setUrl(getPrefix() + viewName.substring("layout:".length()) + getSuffix())
       view = urlView
     } else {
       val urlView = new ScalateUrlView with DefaultScalateRenderStrategy
-      urlView.setUrl(prefix + viewName + suffix)
+      urlView.setUrl(getPrefix() + viewName + getSuffix())
       view = urlView
     }
 
-    // needed for spring magic on the view.  views are cached, so this will only be a one-time call
-    if (view != null)
-      getApplicationContext().getAutowireCapableBeanFactory().initializeBean(view, viewName);
-      if (!view.checkResource(locale)) {
-    	  view = null
-      }
-
-  	view
-
+    view.asInstanceOf[AbstractUrlBasedView]
   }
 
 }
