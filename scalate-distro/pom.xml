@@ -176,6 +176,18 @@
       </exclusions>
     </dependency>
     
+    <dependency>
+      <groupId>org.fusesource.scalate.tooling</groupId>
+      <artifactId>scalate-archetype-sitegen</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>scalate-war</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <!-- TODO include examples
     <dependency>

@@ -63,6 +63,7 @@
       <includes>
         <include>org.fusesource.scalate.tooling:scalate-archetype-jersey</include>
         <include>org.fusesource.scalate.tooling:scalate-archetype-guice</include>
+        <include>org.fusesource.scalate.tooling:scalate-archetype-sitegen</include>
       </includes>
     </dependencySet>
   </dependencySets>
