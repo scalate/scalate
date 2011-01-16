@@ -40,6 +40,9 @@ trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRende
   def templateEngine:ServletTemplateEngine
   def render(context:ServletRenderContext, model: Map[String,Any]) {
     log.debug("Rendering view with name '"+ getUrl + "' with model " + model)
+    for ((key, value) <- model) {
+      context.attributes(key) = value
+    }
     templateEngine.layout(getUrl, context)
   }
 }
