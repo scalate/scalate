@@ -42,6 +42,11 @@
       <artifactId>confluence-core</artifactId>
       <version>${wikitext-version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.wikitext</groupId>
+      <artifactId>textile-core</artifactId>
+      <version>${wikitext-version}</version>
+    </dependency>
 
     <!-- testing -->
     <dependency>

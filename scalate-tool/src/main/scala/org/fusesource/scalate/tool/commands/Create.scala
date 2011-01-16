@@ -51,7 +51,11 @@ class Create extends Action {
   @option(name = "--home", description = "Scalate install directory")
   var homeDir = System.getProperty("scalate.home", "")
   
-  val archetypes = Map("jersey" -> "scalate-archetype-jersey", "guice" -> "scalate-archetype-guice")
+  val archetypes = Map(
+    "jersey" -> "scalate-archetype-jersey",
+    "guice" -> "scalate-archetype-guice",
+    "sitegen" -> "scalate-archetype-sitegen"
+  )
 
   var archetypeGroupId = "org.fusesource.scalate.tooling"
   val userDir = System.getProperty("user.dir", ".")

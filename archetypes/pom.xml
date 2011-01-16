@@ -41,6 +41,7 @@
   <modules>
     <module>scalate-archetype-jersey</module>
     <module>scalate-archetype-guice</module>
+    <module>scalate-archetype-sitegen</module>
   </modules>
 
   <build>

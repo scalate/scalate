@@ -48,21 +48,17 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-    </dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>${slf4j-version}</version>
+    </dependency>    
 
-
-    <!-- testing -->
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
+
+    <sourceDirectory>${basedir}/ext</sourceDirectory>
+
     <plugins>
       <plugin>
         <inherited>true</inherited>
@@ -78,23 +74,6 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${surefire-plugin-version}</version>
-        <configuration>
-          <forkMode>once</forkMode>
-          <!-- these settings are mandatory to avoid SureFire giving a bogus system property to the web container -->
-          <useSystemClassLoader>false</useSystemClassLoader>
-          <useManifestOnlyJar>false</useManifestOnlyJar>
-          <includes>
-            <include>**/*Test.*</include>
-          </includes>
-          <excludes>
-            <exclude>**/SomeFailingTest.*</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.fusesource.scalate</groupId>
         <artifactId>maven-scalate-plugin</artifactId>
         <version>${project.version}</version>
@@ -105,16 +84,47 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <warSourceDirectory>${basedir}/src</warSourceDirectory>
+        </configuration>
       </plugin>
-      
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <warSourceDirectory>${basedir}/src</warSourceDirectory>
+        </configuration>
       </plugin>
       
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>7.2.1.v20101111</version>
+        <configuration>
+          <webAppConfig>
+            <contextPath>/</contextPath>
+            <resourceBase>${basedir}/src</resourceBase>
+            <unpackOverlays>false</unpackOverlays>
+          </webAppConfig>
+          <webAppSourceDirectory>${basedir}/src</webAppSourceDirectory>
+          <systemProperties>
+            <systemProperty>
+              <name>scalate.editor</name>
+              <value>${env.SCALATE_EDITOR}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>scalate.workdir</name>
+              <value>${basedir}/target/_scalate</value>
+            </systemProperty>
+            <systemProperty>
+              <name>scalate.mode</name>
+              <value>development</value>
+            </systemProperty>
+          </systemProperties>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+        </configuration>
       </plugin>
     </plugins>
   </build>

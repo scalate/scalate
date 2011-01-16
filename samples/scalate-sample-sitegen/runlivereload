@@ -6,5 +6,5 @@ echo You must install 1.4 or later: http://github.com/mockko/livereload
 echo
 echo Then enable the LiveReload extension in Safari/Chrome when viewing the site
 echo
-livereload src/main/webapp
+livereload src
 
