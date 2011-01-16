@@ -1,5 +1,5 @@
 package org.fusesource.scalate.scaml
 
-object TestSnippets {
+object SampleSnippets {
   def sayHello(text: String) = "Hello " + text
 }

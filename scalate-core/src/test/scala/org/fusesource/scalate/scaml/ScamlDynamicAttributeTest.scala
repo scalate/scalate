@@ -73,6 +73,6 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
 """)
 
   override protected def configureTemplateEngine() = {
-    engine.importStatements ::= "import org.fusesource.scalate.scaml.TestSnippets._"
+    engine.importStatements ::= "import org.fusesource.scalate.scaml.SampleSnippets._"
   }
 }

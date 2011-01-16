@@ -115,6 +115,9 @@ trait Scope extends Logging {
           // due to bug in JSON parser returning Map() for JSON expression []
           case s: Map[_,_] => if (!s.isEmpty) childScope(name, s)(block)
 
+          case Some(a) => childScope(name, a)(block)
+          case None =>
+
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
 
@@ -152,6 +155,9 @@ trait Scope extends Logging {
           case s: Seq[_] => if (s.isEmpty) block(this)
 
           case s: Map[_,_] => if (s.isEmpty) block(this)
+
+          case Some(a) =>
+          case None => block(this)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] =>

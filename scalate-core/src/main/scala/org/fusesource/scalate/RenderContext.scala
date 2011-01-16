@@ -197,6 +197,7 @@ trait RenderContext {
       case u: Unit => ""
       case null => sanitize(nullString)
       case None => sanitize(noneString)
+      case Some(a) => value(a, shouldSanitize)
       case Unescaped(text) => text
       case f: Function0[_] => value(f(), shouldSanitize)
       case v: String => sanitize(v)
