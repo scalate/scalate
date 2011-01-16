@@ -19,9 +19,9 @@ html(lang="en")
   head
     title= pageTitle
     :javascript
-      | if (foo) {
-      |    bar()
-      | }
+      if (foo) {
+         bar()
+      }
   body
     h1 Jade - node template engine
     #container
@@ -70,9 +70,9 @@ Here's an example of some text markup with hyperlinks using vanilla jade
   p
     | This is some 
     b text 
-    with a
+    | with a
     a(href="http://fusesource.com") FuseSource
-    link.
+    | link.
 {pygmentize}
 
 Now lets use markdown - which is great for concise DRY text with markup effects and embedded links..

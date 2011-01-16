@@ -130,7 +130,7 @@ script(type="text/javascript"
 You can use both attribute syntaxes together if you really want:
 
 {pygmentize:: haml}
-%a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
+a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
 
 
@@ -162,7 +162,7 @@ For example, Scaml::Helpers defines the following method:
 
 This can then be used in Scaml, like so:
 
-    %html{html_attrs("fr-fr")}
+    html{html_attrs("fr-fr")}
 
 This is rendered to:
 
@@ -185,7 +185,7 @@ For example, if you defined
 
 then
 
-    %sandwich{hash1, hash2, :delicious => true}/
+    sandwich{hash1, hash2, :delicious => true}/
 
 would render to:
 
@@ -449,7 +449,7 @@ allowing use of otherwise interpreted characters as plain text.
 -----------------------------
 haml: example
 -----------------------------
-%title
+title
   = title
   \= title
 -----------------------------
@@ -735,11 +735,11 @@ None of this text will be rendered.
 -----------------------------
 haml: example
 -----------------------------
-%p foo
+p foo
 -#
   This won't be displayed
     Nor will this
-%p bar
+p bar
 -----------------------------
 xml: renders to
 -----------------------------
@@ -1431,6 +1431,41 @@ line2
 line3
   </p>
 </html>
+{pygmentize_and_compare}
+
+## Differences from JavaScript Jade
+
+The Scalate flavour of Jade diverges a little in a few places from [Jade implementation in JavaScript](http://jade-lang.com/) mostly around the area of filters.
+
+In Scalate, the contents of a filter (like **:markdown** or **:javascript**) is assumed to be text, so there is no need to prepend the | symbol to each line.
+
+{pygmentize_and_compare::}
+-----------------------------
+haml: Scalate Jade
+-----------------------------
+!!! 5
+html(lang="en")
+  head
+    title= pageTitle
+    :javascript
+      if (foo) {
+         bar()
+      }
+  body
+    h1 Jade - node template engine
+-----------------------------
+haml: JavaScript Jade
+-----------------------------
+!!! 5
+html(lang="en")
+  head
+    title= pageTitle
+    :javascript
+      | if (foo) {
+      |    bar()
+      | }
+  body
+    h1 Jade - node template engine
 {pygmentize_and_compare}
 
 ## Other Resources
