@@ -22,6 +22,7 @@ All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-ref
 **Scalate 1.4 Highlights**
 
 * upgraded to Scala 2.8.1
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) can [now](http://www.assembla.com/spaces/scalate/tickets/122) be used for creating layouts and refer to parts of the generated template by [navigating the **html** section](http://scalate.fusesource.org/documentation/mustache.html#Layouts).
 
 For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/315531-1-4)
 

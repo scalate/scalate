@@ -267,6 +267,20 @@ According to ctemplates, this "is useful for languages like TeX, where double-br
 
 Custom delimiters may not contain whitespace or the equals sign.
 
+## Layouts
+
+The way the layouts work with the other template languages in Scalate is you define attributes inside the templates which are then passed into the layout template as template attributes. However Mustache has no 'set attribute' syntax since its a 'no logic in the template' style.
+
+The Mustache approach is inside a layout template we can use the **{{#html}}** section to navigate the HTML of the template output.
+
+For example this template [sample.mustache](https://github.com/scalate/scalate/blob/master/scalate-core/src/test/resources/org/fusesource/scalate/mustache/sample.mustache) we could apply this layout [mylayout.mustache](https://github.com/scalate/scalate/blob/master/scalate-core/src/test/resources/org/fusesource/scalate/mustache/mylayout.mustache) to generate [this output](https://github.com/scalate/scalate/blob/master/scalate-core/src/test/scala/org/fusesource/scalate/mustache/LayoutTest.scala#L30)
+
+Inside the **{{#html}}** section we can then pull out child elements by name.  So inside the **{{#head}}** section you can refer to **{{title}}** and you'll get the entire &lt;title&gt; element (attributes and all). 
+
+If you want just the children an element, create a section for it and use **{{_}}** (e.g. the way we exclude the &lt;body&gt; element in the layout but just use all the children). Names starting with @ refer to attributes. (This is using the **\** method on [NodeSeq](http://www.scala-lang.org/api/rc/scala/xml/NodeSeq.html) underneath).
+
+
+
 ## Other Resources
 
 * [Mustache reference](http://mustache.github.com/mustache.5.html)
