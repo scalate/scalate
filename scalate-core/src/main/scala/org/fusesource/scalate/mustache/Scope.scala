@@ -24,6 +24,7 @@ import org.fusesource.scalate.introspector.Introspector
 
 import collection.JavaConversions._
 import java.{lang => jl, util => ju}
+import xml.{NodeSeq, Node, XML}
 
 object Scope {
   def apply(context: RenderContext) = {
@@ -109,6 +110,8 @@ trait Scope extends Logging {
 
           case FunctionResult(r) => renderValue(r)
 
+          case s: NodeSeq => childScope(name, s)(block)
+
           case s: Seq[Any] => foreachScope(name, s)(block)
 
           // lets treat empty maps as being empty collections
@@ -152,6 +155,7 @@ trait Scope extends Logging {
 
           case FunctionResult(r) =>
 
+          case s: NodeSeq => if (s.isEmpty) block(this)
           case s: Seq[_] => if (s.isEmpty) block(this)
 
           case s: Map[_,_] => if (s.isEmpty) block(this)
@@ -203,6 +207,7 @@ trait Scope extends Logging {
   def createScope(name: String, value: Any): Scope = {
     value match {
       case v: Map[String, Any] => new MapScope(this, name, v)
+      case n: NodeSeq => new NodeScope(this, name, n)
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
@@ -253,19 +258,47 @@ trait Scope extends Logging {
 
 }
 
+/**
+ * Scope for the render context
+ */
 case class RenderContextScope(context: RenderContext, defaultObjectName: Option[String] = Some("it")) extends Scope {
   // lets create a parent scope which is the defaultObject scope so we look there last
+  val rootScope = MarkupAttributeContextScope(context, "html")
+
   val _parent: Option[Scope] = defaultObjectName match {
     case Some(name) => apply(name) match {
-      case Some(value) => Some(createScope(name, value))
-      case _ => None
+      case Some(value) => Some(rootScope.createScope(name, value))
+      case _ => Some(rootScope)
     }
-    case _ => None
+    case _ => Some(rootScope)
   }
 
   def parent: Option[Scope] = _parent
 
   def localVariable(name: String): Option[Any] = context.attributes.get(name)
+}
+
+/**
+ * A context intended for use in layouts which looks up an attribute in the render context and if it exists
+ * returns a new child scope for walking the templates markup
+ */
+case class MarkupAttributeContextScope(context: RenderContext, attributeName: String) extends Scope {
+  def parent = None
+
+  def localVariable(name: String) = if (name == attributeName) {
+    // lets get the context from the attributes
+    // by default this is stored in the 'body' attribute in the current
+    // layout mechanism
+    context.attributes.get("body") match {
+      case Some(t) =>
+        val text = t.toString
+        // lets create a markup scope
+        Some(XML.loadString(text))
+
+      case v =>
+        None
+    }
+  } else None
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
@@ -278,7 +311,10 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 
 class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
   def localVariable(name: String): Option[Any] = map.get(name)
+}
 
+class NodeScope(parent: Scope, name: String, node: NodeSeq) extends ChildScope(parent) {
+  def localVariable(name: String): Option[Any] = Some(node \ name)
 }
 
 class EmptyScope(parent: Scope) extends ChildScope(parent) {
