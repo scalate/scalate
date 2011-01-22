@@ -1,7 +1,6 @@
 # Ssp (Scala Server Pages)
 
-* Table of contents
-{:toc}
+{:toc:2-5}
 
 Ssp pages are like a Scala version of [Velocity](#velocity_style_directives), JSP or Erb from Rails in syntax but using Scala code for expressions instead of Java/EL/Ruby.
 
@@ -18,7 +17,7 @@ are considered literal text and are generally passed through to the rendered doc
 Code wrapped by `<%=` and `%>` or with '${' and '}' is evaluated and  the output is inserted into the document.
 
 For example:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <p>
   <%= List("hi", "there", "reader!").mkString(" ") %>
   ${ "yo "+(3+4) } 
@@ -38,7 +37,7 @@ is rendered as:
 Code wrapped by `<%` and `%>` is evaluated but *not* inserted into the document.
 
 For example:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%
   var foo = "hello"
   foo += " there"
@@ -60,7 +59,7 @@ When a Scalate template is rendered, the caller can pass an attribute map
 which the template is in charge of rendering. To bind an attribute to a type safe Scala
 variable an SSP template uses the following syntax to declare the attribute:
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val foo: MyType %>
 {pygmentize}
 
@@ -69,7 +68,7 @@ NoValueSetException is thrown when the the template is rendered.
 
 To avoid this exception, a default value can be configured.  For
 example:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val bar: String = "this is the default value" %>
 {pygmentize}
 
@@ -80,13 +79,13 @@ frequently accessed.  In this cases, it's convenient to import all the object's
 members.  This can be done by adding the import keyword to the attribute declaration.
 
 For example:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ import val model: Person %>
 <p>Hello ${name}, what is the weather like in ${city}</p>
 {pygmentize}
 
 is the same as:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val model: Person %>
 <% import model._ %>
 <p>Hello ${name}, what is the weather like in ${city}</p>
@@ -94,7 +93,7 @@ is the same as:
 
 Which is the same as:
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val model: Person %>
 <p>Hello ${model.name}, what is the weather like in ${model.city}</p>
 {pygmentize}
@@ -121,7 +120,7 @@ The `#for` directive is used to iterate over expressions in a Scala like way.
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <ul>
 #for (i <- 1 to 5)
@@ -146,7 +145,7 @@ For example for a nested loop of both x and y...
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <ul>
 #for (x <- 1 to 2; y <- 1 to 2)
@@ -173,7 +172,7 @@ The use of `#elseif` and `#else` are optional. You can just use `#if` and `#end`
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <p>
 #if (customer.type == "Gold")
@@ -193,7 +192,7 @@ Or you can use each directive together, using as many `#elseif` directives as yo
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <p>
 #if (n == "James")
@@ -219,7 +218,7 @@ You often want to take a section of a template and assign it to an attribute whi
 
 For example you might wish to define a head section to allow a page to define custom output to go into the HTML head element...
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 #set (head)
   ... some page specific JavaScript includes here...
 #end
@@ -228,7 +227,7 @@ For example you might wish to define a head section to allow a page to define cu
 
 Then in the [layout]("user-guide.html#layouts") we could use
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var body: String %>
 <%@ var title: String = "Some Default Title" %>
 <%@ var head: String = "" %>
@@ -261,7 +260,7 @@ The `#match` takes an expression to match on, then each `#case` takes a value, f
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <p>
 #match (customer.type)
@@ -285,7 +284,7 @@ This example shows how you can use type expressions instead to match on
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <p>
 #match (person)
@@ -310,7 +309,7 @@ xml: produces
 
 The `#do` directive can be used to invoke a function passing a block of template as an argument such as when you want to apply a specific [layout to a block of template](user-guide.html#explicit_layouts_inside_a_template) or want to call a [function passing a template block](user-guide.html#passing_a_template_block_to_a_scala_function), a little like you might do using custom tags in JSP.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 #do(layout("someLayout.ssp"))
  this is some template output...
 #end
@@ -323,7 +322,7 @@ The `#import` directive can be used as an alternative to using `<% import somePa
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 #import(java.util.Date)
 
@@ -341,7 +340,7 @@ Sometimes you just want to include a couple of lines of Scala code in a template
 
 If you don't like the JSP / Erb style `<%` .. `%>` tags you can use velocity style `#{` .. `}#` instead
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 #{
   import java.util.Date
   val now = new Date 
@@ -354,7 +353,7 @@ Hello the time is ${now}
 
 Ssp comments prevent everything inside the comment markers from being inserted in to the rendered document.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%-- this is a comment --%>
 {pygmentize}
 
@@ -362,7 +361,7 @@ Ssp comments prevent everything inside the comment markers from being inserted i
 
 You can include other scripts in your page using the include method
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 ${include("relativeOrAbsoluteURL"}
 {pygmentize}
 

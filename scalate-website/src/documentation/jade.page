@@ -12,7 +12,7 @@ Here's a simple Jade example
 
 {pygmentize_and_compare::}
 -----------------------------
-haml: An example .jade file
+jade: An example .jade file
 -----------------------------
 !!! 5
 html(lang="en")
@@ -65,7 +65,7 @@ Jade by itself is great for structural markup and layouts but is not always opti
 
 Here's an example of some text markup with hyperlinks using vanilla jade
 
-{pygmentize:: haml}
+{pygmentize:: jade}
 .foo
   p
     | This is some 
@@ -77,7 +77,7 @@ Here's an example of some text markup with hyperlinks using vanilla jade
 
 Now lets use markdown - which is great for concise DRY text with markup effects and embedded links..
 
-{pygmentize:: haml}
+{pygmentize:: jade}
 .foo
   :markdown
     This is some **text** with a [FuseSource](http://fusesource.com) link.    

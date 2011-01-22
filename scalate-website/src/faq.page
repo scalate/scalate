@@ -112,7 +112,7 @@ Firstly escaping is enabled by default via the **escapeMarkup** property on Temp
 
 Or you can enable/disable it inside a template. 
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% escapeMarkup = false %>
 {pygmentize}
 
@@ -120,14 +120,14 @@ The other option is to wrap your expression inside the **escape** or **unescape*
 
 e.g. 
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 some text
 ${unescape("<h1>hello there</h1>")}
 {pygmentize}
 
 Incidentally we assume NodeSeq from Scala's XML API is already markup so we don't escape it. So if you have an expression which is a NodeSeq then it won't be escaped.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% val markup = <h1>hello<h1> %>
 <% val text = "<h1>hello<h1>" %>
 
@@ -154,7 +154,7 @@ When using Scalate with servlets or [Jog](documentation/jog.html) you might wish
 
 So your template can refer to these variables if they are required directly - rather like they can be in JSP.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <h1>Hello ${someMethod(request, response)}</h1>
 {pygmentize}
 

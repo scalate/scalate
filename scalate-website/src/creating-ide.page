@@ -37,7 +37,7 @@ Other than detecting when there is a Scala code block or expression in the  [Ssp
 * each attribute declaration is available in scope (which maybe be imported too if the 'import' keyword is used)
 
 For example the following [Ssp](documentation/ssp-reference.html) script:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val bar: String = "this is the default value" %>
 <%@ import val foo: Customer %>
 <p>hello there ${name} and ${bar}</p>

@@ -27,7 +27,7 @@ If you know [Velocity](http://velocity.apache.org/), JSP or Erb from Rails then 
 
 {pygmentize_and_compare::}
 -----------------------------
-jsp: .ssp file
+ssp: .ssp file
 -----------------------------
 <%@ var user: User %>
 <p>Hi ${user.name},</p>
@@ -62,7 +62,7 @@ with some code to generate dynamic content.
 
 {pygmentize_and_compare::}
 -----------------------------
-haml: .scaml file
+scaml: .scaml file
 -----------------------------
 -@ var user: User
 %p Hi #{user.name},
@@ -87,7 +87,7 @@ The [Jade syntax](jade.html) is similar to [Scaml](scaml-reference.html), its a 
 
 {pygmentize_and_compare::}
 -----------------------------
-haml: .jade file
+jade: .jade file
 -----------------------------
 -@ var user: User
 p Hi #{user.name},
@@ -159,7 +159,7 @@ object Cheese {
 
 This function can be invoked in your [Ssp](ssp-reference.html) code as
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% import Cheese._  %>
 ${foo(123)}
 {pygmentize}
@@ -168,7 +168,7 @@ If your template is in the same package as the <b>Cheese</b> class then the impo
 
 The [Scaml](scaml-reference.html) version is
 
-{pygmentize:: haml}
+{pygmentize:: scaml}
 - import Cheese._
 = foo(123)    
 {pygmentize}
@@ -213,7 +213,7 @@ object Cheese {
 
 See how the body is captured using the <b>capture(body)</b> function. Now the text of the hypertext link can be specified as a block of template in [Ssp](ssp-reference.html)
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val id: Int = 123 %>
 <% import Cheese._  %>
 
@@ -230,7 +230,7 @@ This should generate something like
 
 Or using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 #do(foo(id))
 product ${id}
 #end
@@ -239,7 +239,7 @@ product ${id}
 
 The [Scaml](scaml-reference.html) version is
 
-{pygmentize:: haml}
+{pygmentize:: scaml}
 -@ val id: Int = 123
 - import Cheese._
 
@@ -255,7 +255,7 @@ Notice the [Scaml](scaml-reference.html) version is simpler, not requiring the o
 From within your Scala code or inside a template you often want to render an object or collection of objects. 
 Scalate uses a convention over configuration mechanism so that you can render any object using a simple method call in your template. e.g. in SSP
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var it: User %>
 <p>Something...</p>
 
@@ -268,7 +268,7 @@ Scalate uses a convention over configuration mechanism so that you can render an
 
 The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var it: User %>
 
 <% view(it, "edit") %>
@@ -290,7 +290,7 @@ By default we use the variable named _it_ to refer to the model parameter. This 
 
 If you have a collection of objects you wish to view then you can use a simple helper method called *collection* which works like the *view* method described above.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var it: List[Person] %>
 
 <% collection(it) %>
@@ -300,14 +300,14 @@ As with the *view* method you can specify an optional view name if you won't wan
 
 Also you can specify a separator to use between views of objects. The following example shows a horizontal line between views...
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino")) %>
 <% collection(people, separator = "<hr/>")  %>
 {pygmentize}
 
 Or without using named arguments
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% collection(people, "index", "<hr/>")  %>
 {pygmentize}
 
@@ -315,7 +315,7 @@ If a collection contains different types of objects then the correct view will b
 
 You can also supply a function for the separator if you want it to be dynamic
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% var x = 1 %>
 collection(people, separator = {x += 1; <h3>Person {x}</h3>})
 {pygmentize}
@@ -325,25 +325,25 @@ collection(people, separator = {x += 1; <h3>Person {x}</h3>})
 
 It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the *render* method as follows
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% render("foo.ssp") %>
 {pygmentize}
 
 This will render a template called *foo.ssp* relative to the current template. You can use absolute names if you prefer
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% render("/customers/contact.ssp") %>
 {pygmentize}
 
 You can also pass parameters into the template if it takes any
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% render("/customers/contact.ssp", Map("customer" -> c, "title" -> "Customer")) %>
 {pygmentize}
 
 When passing attributes you can use the Scala symbol notation for keys if you prefer...
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% render("/customers/contact.ssp", Map('customer -> c, 'title -> "Customer")) %>
 {pygmentize}
 
@@ -358,7 +358,7 @@ You can achieve this using the layout support in Scalate.
 
 All you need to do is create a layout template in _/WEB-INF/scalate/layouts/default.ssp_ (or _/WEB-INF/scalate/layouts/default.scaml_ if you prefer). Here is a simple example layout which lays out the body and lets the title be customized on a per page basis.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var body: String %>
 <%@ var title: String = "Some Default Title" %>
 <html>
@@ -379,7 +379,7 @@ Then all pages will be wrapped in this layout by default.
 
 This means your templates don't need to include the whole html/head/body stuff, typically you'll just want the actual content to be displayed in the part of the layout you need. So a typical page might look like this...
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <h3>My Page</h3>
 <p>This is some text</p>
 {pygmentize}
@@ -389,7 +389,7 @@ This means your templates don't need to include the whole html/head/body stuff, 
 
 To set parameters on a layout or to change the layout template used, just output attribute values in your template.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% attributes("layout") = "/WEB-INF/layouts/custom.ssp" %>
 <% attributes("title") = "This is the custom title" %>
 <h3>Custom page</h3>
@@ -401,7 +401,7 @@ To set parameters on a layout or to change the layout template used, just output
 
 If you wish to disable the use of the layout on a template, just set the layout attribute to "" the empty string.
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% attributes("layout") = "" %>
 <html>
 <body>
@@ -419,7 +419,7 @@ You may want to layout some content within part of your template explicitly rath
 
 For example you may want to create a layout as follows in file _foo.ssp_
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ val body: String = "Bar" %>
 <table>
  <tr>
@@ -433,13 +433,13 @@ For example you may want to create a layout as follows in file _foo.ssp_
 
 Then we can invoke this template passing in the body as follows in [Ssp](ssp-reference.html)
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% render("foo.ssp", Map("body" -> "Foo")) %>
 {pygmentize}
 
 However if you want to pass in the body as a block of template you can use the *layout* method as follows
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% layout("foo.ssp") {%>
 Foo
 <%}%>
@@ -447,7 +447,7 @@ Foo
 
 Or using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 #do( layout("foo.ssp") )
 Foo
 #end
@@ -468,7 +468,7 @@ Sometimes you may wish to capture the result of rendering a block of template, a
 
 For example
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% val foo = capture { %>
   hello there ${user.name} how are you?
 <%}%>
@@ -482,7 +482,7 @@ We capture the block which generates a greeting, assign it to the _foo_ variable
 
 The [Scaml](scaml-reference.html) version of this is a bit more concise
 
-{pygmentize:: haml}
+{pygmentize:: scaml}
 - var foo = capture
   hello there #{user.name} how are you?
     

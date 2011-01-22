@@ -30,7 +30,7 @@ val output = engine.layout("/foo/bar.scaml", Map("name" -> "Hiram", "city" -> "T
 {pygmentize}
 
 A template can then access those attributes once they declare a variable binding.  For example:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <%@ var name:(String,String) %>
 <%@ var city:String %>
 <p> Hello ${name._1} ${name._2}, from ${city}. </p>
@@ -54,7 +54,7 @@ If you wish you can export attributes from the template using the attributes on 
 For example inside a SSP page:
 
 
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <% attributes("title") = "This is my new title" %>
 <p> This is some content. </p>
 {pygmentize}
@@ -82,7 +82,7 @@ val template = engine.load("/path/to/template.ssp", List(Binding("city", "String
 In the above example, the `name` and `city` variables would be implicitly bound in the template.
 This means that previous example template would now need to omit the explicit variable
 declarations of `name` and `city`.  The new template would look like:
-{pygmentize:: jsp}
+{pygmentize:: ssp}
 <p> Hello ${name._1} ${name._2}, from ${city}. </p>
 {pygmentize}
 
@@ -119,7 +119,7 @@ For example, lets say you want all templates to be able to use a method called `
     {pygmentize}
 
 4.  The method is now available for use in all templates:
-    {pygmentize:: jsp}
+    {pygmentize:: ssp}
     <p> Going to log something..</p>
     <% log("Our template just executed.") %>
     {pygmentize}

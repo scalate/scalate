@@ -48,7 +48,7 @@ Ditch that crappy JSP pronto!
   :markdown
     Iterating over maps tends to be different in scala. In JSTL / EL you tend to iterate over a map which returns a Map.Entry object. In Scala you get a tuple of key and value. So instead of this...    
 
-    {pygmentize:: jsp}
+    {pygmentize:: ssp}
     #for (entry <- someMap)
       ${entry.getKey} = ${entry.getValue}
     #end
@@ -56,7 +56,7 @@ Ditch that crappy JSP pronto!
 
     A more idiomatic scala way would be
 
-    {pygmentize:: jsp}
+    {pygmentize:: ssp}
     #for ((key, value) <- someMap)
       ${key} = ${value}
     #end
