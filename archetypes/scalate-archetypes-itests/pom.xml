@@ -27,9 +27,7 @@
     <version>1.4.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.fusesource.scalate.tooling</groupId>
   <artifactId>scalate-archetypes-itests</artifactId>
-  <name>Scalate :: Archetypes :: Integration Tests</name>
 
   <dependencies>
     <dependency>

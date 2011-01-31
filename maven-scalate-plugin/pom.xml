@@ -28,12 +28,9 @@
     <version>1.4.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.fusesource.scalate</groupId>
   <artifactId>maven-scalate-plugin</artifactId>
-  <version>1.4.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>Scalate :: Maven Plugin</name>
   <description>A Scalate Maven Plugin</description>
 
   <prerequisites>
@@ -42,9 +39,6 @@
 
   <properties>
     <maven-version>2.2.1</maven-version>
-<!--
-    <maven-version>2.0.6</maven-version>
--->
     <mvnplugins-version>1.12</mvnplugins-version>
     <wagonVersion>1.0-beta-7</wagonVersion>
   </properties>
@@ -52,10 +46,26 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+      <scope>compile</scope>
+      <optional>false</optional>
+    </dependency>
+    
+    <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
@@ -75,42 +85,13 @@
       <groupId>org.fusesource.scalamd</groupId>
       <artifactId>scalamd</artifactId>
       <version>${scalamd-version}</version>
-
-      <!-- lets avoid issues with different scala versions -->
-      <exclusions>
-        <exclusion>
-          <groupId>org.scala-lang</groupId>
-          <artifactId>scala-library</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-nop</artifactId>
       <version>${slf4j-version}</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jcl</artifactId>
-      <version>${slf4j-version}</version>
-    </dependency>
--->
-
-
-    <!-- Maven -->
-<!--
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-      <version>${maven-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
-      <version>${maven-version}</version>
-    </dependency>
--->
 
     <dependency>
       <groupId>org.fusesource.mvnplugins</groupId>
@@ -123,6 +104,10 @@
           <groupId>org.scala-lang</groupId>
           <artifactId>scala-library</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-compiler</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -133,67 +118,6 @@
       <version>2.5</version>
     </dependency>
 
-    <!-- linkcheck stuff -->
-    <!--
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-sink-api</artifactId>
-      <version>1.1.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-site-renderer</artifactId>
-      <version>1.1.3</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-container-default</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-component-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-linkcheck</artifactId>
-      <version>1.1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-i18n</artifactId>
-      <version>1.0-beta-7</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-component-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.reporting</groupId>
-      <artifactId>maven-reporting-api</artifactId>
-      <version>2.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.reporting</groupId>
-      <artifactId>maven-reporting-impl</artifactId>
-      <version>2.1</version>
-      <version>2.0.4.2</version>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
@@ -225,18 +149,6 @@
       <artifactId>swizzle-confluence</artifactId>
       <version>1.2</version>
     </dependency>
-
-<!--
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-    </dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-		</dependency>
--->
 
     <!-- testing -->
     <dependency>

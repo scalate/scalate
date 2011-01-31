@@ -20,15 +20,16 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
     <version>1.4.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>scalate-camel</artifactId>
 
-  <name>Scalate :: Camel</name>
+  <artifactId>scalate-camel</artifactId>
+  <packaging>bundle</packaging>
+
   <description>Camel component for scalate</description>
 
   <properties>
@@ -36,16 +37,19 @@
   </properties>
 
   <dependencies>
+    
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
       <version>${camelVersion}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-scala</artifactId>

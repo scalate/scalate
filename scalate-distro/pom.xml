@@ -31,9 +31,22 @@
   <artifactId>scalate-distro</artifactId>
   <packaging>pom</packaging>
 
-  <name>Scalate :: Distro</name>
+  <description>The Scalate binary distributions</description>
 
   <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+      <scope>compile</scope>
+      <optional>false</optional>
+    </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>

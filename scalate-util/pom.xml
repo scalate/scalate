@@ -20,24 +20,19 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
     <version>1.4.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>scalate-util</artifactId>
 
-  <name>Scalate :: Util</name>
-  <description>Scalate Util</description>
+  <artifactId>scalate-util</artifactId>
   <packaging>bundle</packaging>
 
+  <description>Scalate Utilities</description>
+
   <dependencies>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala-version}</version>
-    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -66,10 +61,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-      </plugin>
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

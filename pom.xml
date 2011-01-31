@@ -28,7 +28,7 @@
   <version>1.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Scalate Project</name>
+  <name>${project.artifactId}</name>
   <description>Scalate Project POM</description>
 
   <prerequisites>
@@ -72,7 +72,7 @@
     <scalatest-version>1.2</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
-    <scalamd-version>1.4</scalamd-version>
+    <scalamd-version>1.5-SNAPSHOT</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
     <wikitext-version>1.2-SNAPSHOT</wikitext-version>
@@ -237,6 +237,22 @@
   </modules>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala-version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
+    
   </dependencies>
 
   <dependencyManagement>
@@ -398,43 +414,7 @@
           </configuration>
         </plugin>
 
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>${bundle-plugin-version}</version>
-          <extensions>true</extensions>
-          <inherited>true</inherited>
-          <configuration>
-            <instructions>
-              <Implementation-Title>Scalate</Implementation-Title>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <Bundle-Name>${project.artifactId}</Bundle-Name>
-              <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-              <Export-Package>{local-packages};version=${project.version};-noimport:=true</Export-Package>
-              <Import-Package>*</Import-Package>
-              <Private-Package>!*</Private-Package>
-              <_versionpolicy-impl>[$(version;==;$(@)),$(version;=+;$(@)))</_versionpolicy-impl>
-              <_versionpolicy-uses>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy-uses>
-              <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
-              <_failok>false</_failok>
-            </instructions>
-          </configuration>
 
-          <executions>
-            <execution>
-              <id>cleanVersions</id>
-              <phase>generate-sources</phase>
-              <goals>
-                <goal>cleanVersions</goal>
-              </goals>
-              <configuration>
-                <versions>
-                  <scalate.osgi.version.clean>${project.version}</scalate.osgi.version.clean>
-                </versions>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <version>${war-plugin-version}</version>
@@ -547,7 +527,29 @@
         <artifactId>maven-scala-plugin</artifactId>
       </plugin>
 
-
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${bundle-plugin-version}</version>
+        <extensions>true</extensions>
+        <inherited>true</inherited>
+        <configuration>
+          <instructions>
+            <Implementation-Title>${project.description}</Implementation-Title>
+            <Implementation-Version>${project.version}</Implementation-Version>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>{local-packages};version=${project.version};-noimport:=true</Export-Package>
+            <Import-Package>*</Import-Package>
+            <Private-Package>!*</Private-Package>
+            <_versionpolicy-impl>[$(version;==;$(@)),$(version;=+;$(@)))</_versionpolicy-impl>
+            <_versionpolicy-uses>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy-uses>
+            <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
+            <_failok>false</_failok>
+          </instructions>
+        </configuration>
+      </plugin>
+        
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>

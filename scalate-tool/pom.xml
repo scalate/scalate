@@ -28,18 +28,22 @@
   </parent>
 
   <artifactId>scalate-tool</artifactId>
-  <name>Scalate :: Tool</name>
+  <packaging>bundle</packaging>
+
+  <description>Scalate Command Line Tool</description>
 
   <properties>
     <!-- argument passed into 'mvn exec:java" -->
     <arg>help</arg>
   </properties>
   <dependencies>
+
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.karaf.shell</groupId>
       <artifactId>org.apache.karaf.shell.console</artifactId>

@@ -20,15 +20,16 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
     <version>1.4.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+  
   <artifactId>scalate-jsp-converter</artifactId>
+  <packaging>bundle</packaging>
 
-  <name>Scalate :: JSP Converter</name>
   <description>Converter of JSP to SSP</description>
 
   <properties>
@@ -36,11 +37,20 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.apache.karaf.shell</groupId>
       <artifactId>org.apache.karaf.shell.console</artifactId>
@@ -62,13 +72,6 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <scope>test</scope>
-    </dependency>
-
-    <!-- for console -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala-version}</version>
     </dependency>
 
   </dependencies>

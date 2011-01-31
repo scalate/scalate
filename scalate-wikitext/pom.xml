@@ -20,28 +20,32 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
     <artifactId>scalate-project</artifactId>
     <version>1.4.0-SNAPSHOT</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
+  
   <artifactId>scalate-wikitext</artifactId>
+  <packaging>bundle</packaging>
 
-  <name>Scalate :: WikiText</name>
   <description>WikiText Integration for Markdown and Confluence wiki notations</description>
 
   <dependencies>
+
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.fusesource.wikitext</groupId>
       <artifactId>confluence-core</artifactId>
       <version>${wikitext-version}</version>
     </dependency>
+    
     <dependency>
       <groupId>org.fusesource.wikitext</groupId>
       <artifactId>textile-core</artifactId>
