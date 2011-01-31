@@ -35,7 +35,7 @@ class SourceMapStratum(val name: String) {
 
   def mapToStratum(line:Int):Option[(String, Int)] = {
     import JavaConversions._
-    val lines = asIterable(this.lines)
+    val lines = asScalaIterable(this.lines)
 
     def file(id:Int) = {
       val value = files.get(id)

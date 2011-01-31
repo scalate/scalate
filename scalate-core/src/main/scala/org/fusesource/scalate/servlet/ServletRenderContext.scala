@@ -91,7 +91,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
 
     def keySet: Set[String] = {
       val answer = new HashSet[String]()
-      for (a <- asIterator(request.getAttributeNames)) {
+      for (a <- enumerationAsScalaIterator(request.getAttributeNames)) {
         answer.add(a.toString)
       }
       answer

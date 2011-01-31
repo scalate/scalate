@@ -226,9 +226,9 @@ trait Scope extends Logging {
     case f: Function1[String, _] if isParam1(f, classOf[String]) =>
       FunctionResult(f(capture(block)))
 
-    case c: ju.Collection[_] => asIterable(c)
-    case i: ju.Iterator[_] => asIterator(i)
-    case i: jl.Iterable[_] => asIterable(i)
+    case c: ju.Collection[_] => asScalaIterable(c)
+    case i: ju.Iterator[_] => asScalaIterator(i)
+    case i: jl.Iterable[_] => asScalaIterable(i)
     case _ => v
   }
 

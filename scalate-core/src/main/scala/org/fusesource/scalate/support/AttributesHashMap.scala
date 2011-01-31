@@ -60,7 +60,7 @@ class AttributesHashMap[A, B] extends AttributeMap[A, B] {
    if (value == null) None else Some(value)
   }
 
-  def keySet = asSet(map.keySet)
+  def keySet = asScalaSet(map.keySet)
 
   override def toString = map.toString
 }
