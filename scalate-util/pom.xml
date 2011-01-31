@@ -32,10 +32,6 @@
   <description>Scalate Util</description>
   <packaging>bundle</packaging>
 
-  <properties>
-    <scalate.osgi.export.pkg>org.fusesource.scalate.util.*</scalate.osgi.export.pkg>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
