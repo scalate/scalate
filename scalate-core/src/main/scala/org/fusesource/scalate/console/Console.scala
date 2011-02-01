@@ -24,7 +24,9 @@ import _root_.javax.ws.rs._
 import _root_.org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine}
 import _root_.org.fusesource.scalate.util.Constraints._
 import javax.ws.rs.core.Context
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.Log
+
+object Console extends Log; import Console._
 
 /**
  * The Scalate development console
@@ -32,7 +34,8 @@ import org.fusesource.scalate.util.Logging
  * @version $Revision : 1.1 $
  */
 @Path("/scalate")
-class Console extends DefaultRepresentations with Logging {
+class Console extends DefaultRepresentations {
+
   @Context
   var _servletContext: ServletContext = _
   @Context

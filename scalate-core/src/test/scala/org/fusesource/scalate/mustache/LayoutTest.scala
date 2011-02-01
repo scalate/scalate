@@ -57,7 +57,7 @@ class LayoutTest extends TemplateTestSupport {
   }
 
   override protected def createTemplateEngine = {
-    debug("Using rootDir: " + rootDir)
+    debug("Using rootDir: %s", rootDir)
     val engine = new TemplateEngine(Some(rootDir))
     engine.layoutStrategy = new DefaultLayoutStrategy(engine, "mylayout.mustache")
     engine

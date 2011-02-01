@@ -19,6 +19,10 @@
 package org.fusesource.scalate
 package wikitext
 
+import util.Log
+
+object AttributesTag extends Log ; import AttributesTag._
+
 /**
  * Allows Scalate attributes to be defined inside a confluence template.
  *
@@ -27,7 +31,7 @@ package wikitext
 class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
 
   def setOption(key: String, value: String) = {
-    debug("{attributes} setting " + key + " to " + value)
+    debug("{attributes} setting %s to %s",key,value)
     val context = RenderContext()
     context.attributes(key) = value
   }

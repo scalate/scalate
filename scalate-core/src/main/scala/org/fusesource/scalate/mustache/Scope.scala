@@ -19,14 +19,14 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
-import org.fusesource.scalate.util.Logging
 import org.fusesource.scalate.introspector.Introspector
 
 import collection.JavaConversions._
 import java.{lang => jl, util => ju}
-import xml.{NodeSeq, Node, XML}
+import xml.{NodeSeq, XML}
+import org.fusesource.scalate.util.Log
 
-object Scope {
+object Scope extends Log {
   def apply(context: RenderContext) = {
     context.attributeOrElse[Scope]("scope", RenderContextScope(context))
   }
@@ -37,7 +37,8 @@ object Scope {
  *
  * @version $Revision : 1.1 $
  */
-trait Scope extends Logging {
+trait Scope {
+  import Scope._
   def parent: Option[Scope]
 
   def context: RenderContext
@@ -56,7 +57,7 @@ trait Scope extends Logging {
           case _ => null
         }
     }
-    debug("renderVariable " + name + " = " + v + " on " + this)
+    debug("renderVariable %s = %s on %s",name,v,this)
     renderValue(v, unescape)
   }
 
@@ -212,7 +213,7 @@ trait Scope extends Logging {
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
       case v =>
-        warn("Unable to process value: " + v)
+        warn("Unable to process value: %s", v)
         new EmptyScope(this)
     }
   }

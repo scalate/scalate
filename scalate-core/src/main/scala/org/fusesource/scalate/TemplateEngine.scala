@@ -38,6 +38,7 @@ import xml.NodeSeq
 import collection.generic.TraversableForwarder
 
 object TemplateEngine {
+  val log = Log(getClass); import log._
 
   /**
    * The default template types available in Scalate
@@ -57,7 +58,8 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) extends Logging {
+class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) {
+  import TemplateEngine.log._
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
     def isStale() = dependencies.exists {
@@ -205,7 +207,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           f.deleteOnExit
         }
         else {
-          warn("Could not delete file " + f + " so we could create a temp directory")
+          warn("Could not delete file %s so we could create a temp directory", f)
           _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
         }
       }

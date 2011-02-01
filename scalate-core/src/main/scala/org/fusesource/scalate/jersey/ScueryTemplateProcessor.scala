@@ -28,18 +28,18 @@ import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.core.reflection.ReflectionHelper
-import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
-
-import org.fusesource.scalate.util.Logging
-import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.util.Log
+
+object ScueryTemplateProcessor extends Log
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scuery transformer
  * @version $Revision : 1.1 $
  */
 
-class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
+class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
+  import ScueryTemplateProcessor._
 
   @Context
   var servletContext: ServletContext = _
@@ -91,7 +91,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
       }
     } catch {
       case e: MalformedURLException =>
-        warn("Tried to load template using Malformed URL. " + e.getMessage)
+        warn(e, "Tried to load template using Malformed URL: %s", e.getMessage)
         null
     }
   }

@@ -182,7 +182,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
       case Some(PagePart(Nil, content))  =>
         val yaml = new Yaml();
         val data = context.engine.filter("ssp").map( _.filter(context, content.value) ).getOrElse(content.value)
-        Option(collection.JavaConversions.asMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]]))
+        Option(collection.JavaConversions.asScalaMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]]))
       case _ =>
         None
     }

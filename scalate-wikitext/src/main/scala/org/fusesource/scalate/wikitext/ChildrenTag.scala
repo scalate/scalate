@@ -21,14 +21,16 @@ package wikitext
 
 import StringConverter._
 
-import util.{Files, Logging}
 import java.io.File
 import xml.NodeSeq
+import util.{Log, Files}
 
+object ChildrenTag extends Log
 /**
  * Implements the **children** macro in confluence
  */
-class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging {
+class ChildrenTag extends AbstractConfluenceTagSupport("children") {
+  import ChildrenTag._
   var page: Option[String] = None
   var depth = 1
   var all = false
@@ -82,11 +84,11 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging 
     val pageUri = page.getOrElse(Files.dropExtension(pageName))
     SwizzleLinkFilter.findWikiFile(pageUri) match {
       case Some(file) =>
-        info("{children} now going to iterate from file '" + file)
+        info("{children} now going to iterate from file '%s'",file)
         val rootDir = file.getParentFile
         val dir = new File(rootDir, Files.dropExtension(file))
         if (!dir.exists) {
-          warn("{children} cannot find directory: " + dir)
+          warn("{children} cannot find directory: %s", dir)
         }
         else {
           //context << showChildren(rootDir, dir, 1)
@@ -94,7 +96,7 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") with Logging 
         }
 
       case _ =>
-        warn("Could not find wiki file for page '" + pageUri + "'")
+        warn("Could not find wiki file for page '%s'", pageUri)
     }
   }
 }

@@ -19,10 +19,8 @@
 package org.fusesource.scalate.scuery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{Text, Elem, Node, NodeSeq}
-import org.fusesource.scalate.util.Logging
-
-class RuleTest extends FunSuiteSupport with Logging {
+import xml.{Text, Node, NodeSeq}
+class RuleTest extends FunSuiteSupport {
 
   def fn1(node: Node): NodeSeq = Text("f1")
   def fn2(node: Node): String = "f2"

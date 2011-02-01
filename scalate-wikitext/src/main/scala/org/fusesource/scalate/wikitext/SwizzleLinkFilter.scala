@@ -20,8 +20,8 @@ package org.fusesource.scalate
 package wikitext
 
 import org.fusesource.scalate.filter.Filter
-import util.{Logging, IOUtil, Files}
 import java.io.File
+import util.{Log, IOUtil, Files}
 import IOUtil._
 
 /**
@@ -31,7 +31,8 @@ import IOUtil._
  * and directories you often want to move the wiki files into directory trees. This filter will fix up these
  * bad links, searching for wiki files in your source tree and swizzling the generated links to use those.
  */
-case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: Set[String]) extends Filter with Logging {
+case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: Set[String]) extends Filter {
+  import SwizzleLinkFilter._
 
   /**
    * Lets fix up any links which are local and do notcontain a file extension
@@ -75,7 +76,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     val name1 = link.stripPrefix("/").toLowerCase
     val name2 = name1.replace(' ', '-')
 
-    info("Looking for files matching " + name2 + " from " + requestUri)
+    info("Looking for files matching %s from %s", name2, requestUri)
 
 
     def matchesName(f: File) = {
@@ -127,7 +128,7 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
 }
 
 
-object SwizzleLinkFilter {
+object SwizzleLinkFilter extends Log {
   def apply(renderContext: RenderContext): SwizzleLinkFilter = apply(renderContext.engine)
 
   def apply(te: TemplateEngine): SwizzleLinkFilter = {

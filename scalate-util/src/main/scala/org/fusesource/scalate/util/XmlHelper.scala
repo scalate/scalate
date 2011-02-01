@@ -26,7 +26,8 @@ import scala.io.Source
  * @version $Revision : 1.1 $
  */
 
-object XmlHelper extends Logging {
+object XmlHelper {
+  val log = Log(getClass); import log._
 
   /**
    * Parsers some markup which might not be a single Xml document

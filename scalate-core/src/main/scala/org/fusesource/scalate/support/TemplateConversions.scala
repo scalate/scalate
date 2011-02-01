@@ -1,11 +1,12 @@
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.Log
 
 /**
  * A number of helper implicit conversions for use in templates
  */
-object TemplateConversions extends Logging {
+object TemplateConversions {
+  val log = Log(getClass); import log._
 
 
   /**
@@ -35,7 +36,7 @@ object TemplateConversions extends Logging {
       }
     } catch {
       case e: NullPointerException =>
-        debug("Handling null pointer " + e, e)
+        debug(e, "Handling null pointer " + e)
         defaultValue
     }
   }

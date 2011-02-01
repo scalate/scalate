@@ -19,21 +19,22 @@
 package org.fusesource.scalate.support
 
 
-import org.fusesource.scalate.util.Logging
-import java.util.regex.Pattern
-import java.net.URI
-import java.io.File
 import scala.collection.immutable.TreeMap
 import util.parsing.input.{Positional, OffsetPosition, Position}
 import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
+import org.fusesource.scalate.util.Log
+
+object AbstractCodeGenerator extends Log
 
 /**
  * Provides a common base class for CodeGenerator implementations.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
+abstract class AbstractCodeGenerator[T] extends CodeGenerator
 {
+  import AbstractCodeGenerator._
+
   abstract class AbstractSourceBuilder[T] {
     var indentLevel = 0
     var code = ""
@@ -224,7 +225,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator with Logging
           buffer.append(c)
         else {
           buffer.append("\\u")
-          buffer.append(format("%04x", c.asInstanceOf[Int]))
+          buffer.append("%04x".format(c.asInstanceOf[Int]))
         }
       })
       buffer.append("\"")

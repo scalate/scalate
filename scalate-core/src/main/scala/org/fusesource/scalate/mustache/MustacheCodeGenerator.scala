@@ -22,11 +22,16 @@ package org.fusesource.scalate.mustache
 import org.fusesource.scalate._
 import support.{Code, AbstractCodeGenerator}
 import collection.mutable.Stack
+import util.Log
+
+object MustacheCodeGenerator extends Log
 
 /**
  * @version $Revision: 1.1 $
  */
 class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
+  import MustacheCodeGenerator._
+
   override val stratumName = "MSC"
 
   implicit def textToString(text: Text) = text.value
@@ -98,7 +103,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << "$_scalate_$_context << \"ERROR: This implementation of mustache doesn't understand the '" + name + "' pragma\""
         case SetDelimiter(open,close) =>
         case s => {
-          warn("Unsupported statement: " + s)
+          warn("Unsupported statement: %s", s)
         }
       }
     }

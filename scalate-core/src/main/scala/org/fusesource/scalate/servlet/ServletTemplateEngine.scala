@@ -20,14 +20,14 @@ package org.fusesource.scalate.servlet
 
 import org.fusesource.scalate.{Binding, TemplateEngine}
 import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy}
-import org.fusesource.scalate.util.{Objects, Logging, ClassLoaders, ClassPathBuilder}
-
-
 import scala.tools.nsc.Global
 import javax.servlet.{ServletException, ServletContext, ServletConfig}
 import java.io.File
+import org.fusesource.scalate.util._
 
-object ServletTemplateEngine extends Logging {
+object ServletTemplateEngine {
+  val log = Log(getClass); import log._
+
   val templateEngineKey = classOf[ServletTemplateEngine].getName
 
   /**
@@ -114,13 +114,15 @@ object ServletTemplateEngine extends Logging {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
+  import ServletTemplateEngine.log._
+
   templateDirectories ::= "/WEB-INF"
   bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   ServletTemplateEngine.setLayoutStrategy(this)
 
-  info("Scalate template engine using working directory: " + workingDirectory)
+  info("Scalate template engine using working directory: %s", workingDirectory)
   private def buildClassPath(): String = {
 
     val builder = new ClassPathBuilder

@@ -21,9 +21,10 @@ package page
 
 import org.fusesource.scalate.util.IOUtil._
 import java.io.File
-import util.Logging
+import util.Log
 
-object BlogHelper extends Logging {
+object BlogHelper {
+  val log = Log(getClass); import log._
 
   /**
    * Returns the blog posts from the current request's directory by default sorted in date order

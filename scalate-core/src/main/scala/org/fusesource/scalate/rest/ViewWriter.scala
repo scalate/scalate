@@ -32,8 +32,9 @@ import java.lang.{String, Class}
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
-import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
+import org.fusesource.scalate.util.{Log, ResourceNotFoundException, Logging}
 
+object ViewWriter extends Log
 
 /**
  * Renders a [[org.fusesource.scalate.rest.View]] using the Scalate template engine 
@@ -41,7 +42,9 @@ import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
  * @version $Revision : 1.1 $
  */
 @Provider
-class ViewWriter[T] extends MessageBodyWriter[View[T]] with Logging {
+class ViewWriter[T] extends MessageBodyWriter[View[T]] {
+  import ViewWriter._
+
   @Context
   protected var uriInfo: ExtendedUriInfo = _
   @Context
@@ -67,7 +70,7 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] with Logging {
       val template = view.uri
       finder.findTemplate(template) match {
         case Some(name) =>
-          info("Attempting to generate View for " + name)
+          info("Attempting to generate View for %s", name)
           // Ensure headers are committed
           //out.flush()
           view.model match {

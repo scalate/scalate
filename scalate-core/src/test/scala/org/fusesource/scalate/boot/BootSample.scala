@@ -18,13 +18,15 @@
 
 package org.fusesource.scalate.boot
 
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.{Log, Logging}
 
 /**
  * Helper class to help test that we can write custom bootstrap code
  * using the ScalatePackage mechanism
  */
-object BootSample extends Logging {
+object BootSample {
+  val log = Log(getClass); import log._
+
   var initialised = false
 
   def boot: Unit = {

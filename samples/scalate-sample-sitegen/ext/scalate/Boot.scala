@@ -1,9 +1,11 @@
 package scalate
 
-import org.fusesource.scalate.util.Logging
 import java.util.concurrent.atomic.AtomicBoolean
+import org.fusesource.scalate.util.Log
 
-class Boot extends Logging {
+object Boot extends Log
+class Boot {
+  import Boot._
 
   private var _initialised = new AtomicBoolean(false)
 

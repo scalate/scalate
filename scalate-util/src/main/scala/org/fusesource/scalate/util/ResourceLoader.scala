@@ -22,12 +22,15 @@ import java.net.URI
 import java.io.File
 import Resource._
 
+object ResourceLoader extends Log
+import ResourceLoader._
+
 /**
  * A strategy for loading [[Resource]] instances
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait ResourceLoader extends Logging {
+trait ResourceLoader {
   val pageFileEncoding = "UTF-8"
 
   def resource(uri: String): Option[Resource]

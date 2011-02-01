@@ -23,13 +23,15 @@ import xml.{XML, NodeSeq}
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
 import java.net.URL
-import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
+import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
 
 /**
  * @version $Revision : 1.1 $
  */
+object ScueryView extends Log
+trait ScueryView {
+  import ScueryView._
 
-trait ScueryView extends Logging {
   @Context
   private var _servletContext: ServletContext = _
 

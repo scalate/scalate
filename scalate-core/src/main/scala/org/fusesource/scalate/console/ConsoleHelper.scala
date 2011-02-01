@@ -22,7 +22,6 @@ import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.{DefaultRenderContext, RenderContext}
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
-import _root_.org.fusesource.scalate.util.{SourceMapInstaller, SourceMap, Logging}
 import _root_.scala.Option
 import java.io.File
 import scala.io.Source
@@ -30,7 +29,8 @@ import collection.JavaConversions._
 import collection.immutable.SortedMap
 import collection.mutable.{ArrayBuffer, ListBuffer}
 import util.parsing.input.{Position, OffsetPosition}
-import xml.{Elem, NodeSeq}
+import xml.NodeSeq
+import org.fusesource.scalate.util.{Log, SourceMapInstaller, SourceMap}
 
 case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
@@ -57,12 +57,15 @@ case class SourceLine(line: Int, source: String) {
   }
 }
 
+object ConsoleHelper extends Log
+
 /**
  * Helper snippets for creating the console
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets with Logging {
+class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets {
+  import ConsoleHelper._
   import context._
 
   val consoleParameter = "_scalate"

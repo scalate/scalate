@@ -19,99 +19,190 @@
 package org.fusesource.scalate.util
 
 import _root_.java.lang.{Throwable, String}
-import _root_.org.slf4j.{Logger, LoggerFactory}
+import org.slf4j.{MDC, LoggerFactory}
+
+
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * A helper class for logging up a Log
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object Log {
-
-  def apply(name: String): Log = new Log(LoggerFactory.getLogger(name))
-  def apply(clazz: Class[_], postfix: String): Log = {
-    val className = clazz.getName.stripSuffix("$")
-    // Logback doesn't like "." to come after "$"
-    // See http://jira.qos.ch/browse/LBCLASSIC-102
-    val delimiter = if (className.contains("$")) "$" else "."
-    apply(className + delimiter + postfix)
+  def apply(name:String):Log = new Log {
+    override lazy val log = LoggerFactory.getLogger(name)
   }
-  def apply(clazz: Class[_]): Log = apply(clazz.getName.stripSuffix("$"))
+  def apply(clazz:Class[_]):Log = apply(clazz.getName.replace("$", "#").stripSuffix("#"))
+  def apply(clazz:Class[_], suffix:String):Log = apply(clazz.getName.replace("$", "#").stripSuffix("#")+"."+suffix)
 
   val exception_id_generator = new AtomicLong(System.currentTimeMillis)
   def next_exception_id = exception_id_generator.incrementAndGet.toHexString
-
 }
 
 /**
- * A handy logger class which can be used for logging using a public API
- * which is handy if you want to create a number of Log objects in an implementation
- * class and delegate to them for logging .
+ * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class Log(val log: Logger) {
-
+trait Log {
   import Log._
 
-  /**
-   * Logs the trace trace with /w a new stack trace id at debug level
-   * and returns a string that correlates to the stack trace id
-   */
-  private def stack(e: Throwable) = if (log.isDebugEnabled) {
-    val id = next_exception_id
-    log.debug("(stack:"+id+")", e)
-    " (stack:"+id+")"
-  } else {
-    ""
+  lazy val log = LoggerFactory.getLogger(getClass.getName.replace("$", "#").stripSuffix("#"))
+
+  private def with_throwable(e:Throwable)(func: =>Unit) = {
+    if( e!=null ) {
+      val stack_ref = if( log.isDebugEnabled ) {
+        val id = next_exception_id
+        MDC.put("stackref", id.toString);
+        Some(id)
+      } else {
+        None
+      }
+      func
+      stack_ref.foreach { id=>
+        log.debug("stack trace: "+id, e)
+        MDC.remove("stackref")
+      }
+    } else {
+      func
+    }
   }
 
-  def error(message: => String): Unit = if (log.isErrorEnabled) log.error(message)
-  def error(message: => String, e: Throwable): Unit = error(message+stack(e))
-  def error(e: Throwable): Unit = error(e.getMessage, e)
+  private def format(message:String, args:Seq[Any]) = {
+    if( args.isEmpty ) {
+      message
+    } else {
+      message.format(args.map(_.asInstanceOf[AnyRef]) : _*)
+    }
+  }
 
-  def warn(message: => String): Unit = if (log.isWarnEnabled) log.warn(message)
-  def warn(message: => String, e: Throwable): Unit = warn(message+stack(e))
-  def warn(e: Throwable): Unit = warn(e.getMessage, e)
+  def error(m: => String, args:Any*): Unit = {
+    if( log.isErrorEnabled ) {
+      log.error(format(m, args.toSeq))
+    }
+  }
 
-  def info(message: => String): Unit = if (log.isInfoEnabled) log.info(message)
-  def info(message: => String, e: Throwable): Unit = info(message+stack(e))
-  def info(e: Throwable): Unit = info(e.getMessage, e)
+  def error(e: Throwable, m: => String, args:Any*): Unit = {
+    if( log.isErrorEnabled ) {
+      with_throwable(e) {
+        log.error(format(m, args.toSeq))
+      }
+    }
+  }
 
-  def debug(message: => String): Unit = if (log.isDebugEnabled()) log.debug(message)
-  def debug(message: => String, e: Throwable): Unit = if (log.isDebugEnabled()) log.debug(message, e)
-  def debug(e: Throwable): Unit = debug(e.getMessage, e)
+  def error(e: Throwable): Unit = {
+    if( log.isErrorEnabled ) {
+      with_throwable(e) {
+        log.error(e.getMessage)
+      }
+    }
+  }
 
-  def trace(message: => String): Unit = if (log.isTraceEnabled()) log.trace(message)
-  def trace(message: => String, e: Throwable): Unit = if (log.isTraceEnabled()) log.trace(message, e)
-  def trace(e: Throwable): Unit = trace(e.getMessage, e)
+  def warn(m: => String, args:Any*): Unit = {
+    if( log.isWarnEnabled ) {
+      log.warn(format(m, args.toSeq))
+    }
+  }
+
+  def warn(e: Throwable, m: => String, args:Any*): Unit = {
+    if( log.isWarnEnabled ) {
+      with_throwable(e) {
+        log.warn(format(m, args.toSeq))
+      }
+    }
+  }
+
+  def warn(e: Throwable): Unit = {
+    if( log.isWarnEnabled ) {
+      with_throwable(e) {
+        log.warn(e.getMessage)
+      }
+    }
+  }
+
+  def info(m: => String, args:Any*): Unit = {
+    if( log.isInfoEnabled ) {
+      log.info(format(m, args.toSeq))
+    }
+  }
+
+  def info(e: Throwable, m: => String, args:Any*): Unit = {
+    if( log.isInfoEnabled ) {
+      with_throwable(e) {
+        log.info(format(m, args.toSeq))
+      }
+    }
+  }
+
+  def info(e: Throwable): Unit = {
+    with_throwable(e) {
+      if( log.isInfoEnabled ) {
+        log.info(e.getMessage)
+      }
+    }
+  }
+
+  def debug(m: => String, args:Any*): Unit = {
+    if( log.isDebugEnabled ) {
+      log.debug(format(m, args.toSeq))
+    }
+  }
+
+  def debug(e: Throwable, m: => String, args:Any*): Unit = {
+    if( log.isDebugEnabled ) {
+      log.debug(format(m, args.toSeq), e)
+    }
+  }
+
+  def debug(e: Throwable): Unit = {
+    if( log.isDebugEnabled ) {
+      log.debug(e.getMessage, e)
+    }
+  }
+
+  def trace(m: => String, args:Any*): Unit = {
+    if( log.isTraceEnabled ) {
+      log.trace(format(m, args.toSeq))
+    }
+  }
+
+  def trace(e: Throwable, m: => String, args:Any*): Unit = {
+    if( log.isTraceEnabled ) {
+      log.trace(format(m, args.toSeq), e)
+    }
+  }
+
+  def trace(e: Throwable): Unit = {
+    if( log.isTraceEnabled ) {
+      log.trace(e.getMessage, e)
+    }
+  }
 
 }
+
 
 /**
  * A Logging trait you can mix into an implementation class without affecting its public API
  */
 trait Logging {
 
-  private lazy val _log = Log(getClass)
-  protected def log:Log = _log
+  protected val log = Log(getClass)
 
   protected def error(message: =>String): Unit = log.error(message)
-  protected def error(message: =>String, e: Throwable): Unit = log.error(message, e)
+  protected def error(message: =>String, e: Throwable): Unit = log.error(e, message)
   protected def error(e: Throwable): Unit = log.error(e)
 
   protected def warn(message: =>String): Unit = log.warn(message)
-  protected def warn(message: =>String, e: Throwable): Unit = log.warn(message, e)
+  protected def warn(message: =>String, e: Throwable): Unit = log.warn(e, message)
   protected def warn(e: Throwable): Unit = log.warn(e)
 
   protected def info(message: =>String): Unit = log.info(message)
-  protected def info(message: =>String, e: Throwable): Unit = log.info(message, e)
+  protected def info(message: =>String, e: Throwable): Unit = log.info(e, message)
   protected def info(e: Throwable): Unit = log.info(e)
 
   protected def debug(message: =>String): Unit = log.debug(message)
-  protected def debug(message: =>String, e: Throwable): Unit = log.debug(message, e)
+  protected def debug(message: =>String, e: Throwable): Unit = log.debug(e, message)
   protected def debug(e: Throwable): Unit = log.debug(e)
 
   protected def trace(message: =>String): Unit = log.trace(message)
-  protected def trace(message: =>String, e: Throwable): Unit = log.trace(message, e)
+  protected def trace(message: =>String, e: Throwable): Unit = log.trace(e, message)
   protected def trace(e: Throwable): Unit = log.trace(e)
 }
-
 

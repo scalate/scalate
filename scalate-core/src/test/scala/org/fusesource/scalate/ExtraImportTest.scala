@@ -30,7 +30,7 @@ Hello ${if (bean != null) bean else "no bean"}
 
     val output = engine.layout("foo.ssp", template).trim
     assertContains(output, "Hello no bean")
-    debug("template generated: " + output)
+    debug("template generated: %s", output)
   }
 
 

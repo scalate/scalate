@@ -48,6 +48,7 @@ class MyBean {
 }
 
 class IntrospectorTest extends FunSuiteSupport {
+
   test("product introspector") {
     val introspector = Introspector(classOf[MyProduct])
     expect("myProduct") {introspector.typeStyleName}
@@ -113,22 +114,22 @@ class IntrospectorTest extends FunSuiteSupport {
     age.set(v, 30)
     expect(30){ age(v) }
 
-    debug("created bean: " + v)
+    debug("created bean: %s", v)
     // TODO....
   }
 
   def dump[T](introspector: Introspector[T]): Unit = {
-    debug("Introspector for " + introspector.elementType.getName)
+    debug("Introspector for %s", introspector.elementType.getName)
     val expressions = introspector.expressions
     for (k <- expressions.keysIterator.toSeq.sortWith(_ < _)) {
-      debug("Expression: " + k + " = " + expressions(k))
+      debug("Expression: %s = %s", k, expressions(k))
     }
   }
 
   def assertStringFunctor[T](introspector: Introspector[T], instance: T, name: String, arg: String, expected: Any): Unit = {
     introspector.get(name, instance) match {
       case Some(f: Function1[String, _]) =>
-        debug("calling function " + f + " named " + name + " on " + instance + " = " + f(arg))
+        debug("calling function %s named %s on %s = %s", f, name, instance, f(arg))
         expect(expected) {f(arg)}
       case Some(v) =>
         fail("Expected function for expression " + name + " but got " + v)
@@ -146,7 +147,7 @@ class IntrospectorTest extends FunSuiteSupport {
 
   def assertProperties(properties: Seq[Property[_]], expectedSize: Int) = {
     for (property <- properties) {
-      debug("Property: " + property)
+      debug("Property: %s", property)
     }
     expect(expectedSize) {properties.size}
   }

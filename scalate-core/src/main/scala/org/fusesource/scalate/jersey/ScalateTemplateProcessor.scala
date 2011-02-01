@@ -34,13 +34,17 @@ import com.sun.jersey.spi.template.ViewProcessor
 
 
 import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
-import util.{ResourceNotFoundException, Logging}
+import util.{Log, ResourceNotFoundException}
+
+object ScalateTemplateProcessor extends Log
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
  * @version $Revision : 1.1 $
  */
-class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with Logging {
+class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String]  {
+  import ScalateTemplateProcessor._
+
   @Context
   var servletContext: ServletContext = _
   @Context
@@ -93,7 +97,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
       }
     } catch {
       case e: MalformedURLException =>
-        warn("Tried to load template using Malformed URL. " + e.getMessage)
+        warn(e, "Tried to load template using Malformed URL: %s", e.getMessage)
         null
     }
   }

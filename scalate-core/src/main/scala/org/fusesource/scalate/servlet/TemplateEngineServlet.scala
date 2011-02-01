@@ -19,13 +19,15 @@
 package org.fusesource.scalate.servlet
 
 import org.fusesource.scalate.TemplateEngine
-import org.fusesource.scalate.util.Logging
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.{ServletContext, ServletConfig}
+import org.fusesource.scalate.util.{Log}
 
-object TemplateEngineServlet {
+object TemplateEngineServlet extends Log {
+
+
   protected var singleton: TemplateEngineServlet = _
 
   def apply(): TemplateEngineServlet = singleton
@@ -64,8 +66,10 @@ object TemplateEngineServlet {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngineServlet extends HttpServlet with Logging {
+class TemplateEngineServlet extends HttpServlet {
+  import TemplateEngineServlet._
   var templateEngine: ServletTemplateEngine = _
+
 
   override def init(config: ServletConfig) {
     super.init(config)

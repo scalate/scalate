@@ -32,7 +32,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     test("assertFilter: " + selector) {
       val actual = xml.$(selector)
 
-      debug("filtering selector: " + selector + " expected: " + expected + " actual: " + actual)
+      debug("filtering selector: %s expected: %s actual: %s", selector, expected, actual)
       expect(expected) {actual}
     }
   }

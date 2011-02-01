@@ -1,15 +1,13 @@
 package org.fusesource.scalate.wikitext
 
 import collection.mutable.HashMap
-import java.net.URI
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
 import io.Source
-import compat.Platform
 import scala.Option
-import java.io.{FileInputStream, File, InputStream}
+import java.io.File
 import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
-import org.fusesource.scalate.util.{Logging, IOUtil}
+import org.fusesource.scalate.util.{Log, Logging}
 
 /**
  * Helper class to access file containing snippets of code:
@@ -17,8 +15,8 @@ import org.fusesource.scalate.util.{Logging, IOUtil}
  * - using a full URL
  * - using a URL that starts with a predefined prefix
  */
-object Snippets extends Logging {
-
+object Snippets {
+  val log = Log(getClass); import log._
   var errorHandler: (SnippetBlock, Throwable) => Unit = logError
 
   var failOnError = false
@@ -72,17 +70,18 @@ object Snippets extends Logging {
   }
 
   protected def logError(snippet: SnippetBlock, e: Throwable): Unit = {
-    error("Failed to generate snippet: " + snippet.url + ". " + e, e)
+    error(e, "Failed to generate snippet: " + snippet.url + ". " + e)
     if (failOnError) {
       throw e
     }
   }
 }
+import Snippets.log._
 
 /**
  * Represents a {snippet} block in the wiki markup
  */
-class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") with Logging {
+class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
 
   var lang:Option[String] = None
   var url: String = _
@@ -139,7 +138,7 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") with Logg
       case "url" => url = value
       case "lang" => lang = Some(value)
       case "pygmentize" => pygmentize = value.toBoolean
-      case n => warn("Ignored snippet attribute " + n + " on " + this)
+      case n => warn("Ignored snippet attribute %s on %s", n, this)
     }
   }
 

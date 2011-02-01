@@ -20,13 +20,14 @@ package org.fusesource.scalate.wikitext
 
 import java.{util => ju}
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
-import org.fusesource.scalate.util.Logging
 import collection.mutable.ListBuffer
 import java.util.regex.{Pattern, Matcher}
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ParameterizedBlock, TextBoxBlock, AbstractConfluenceDelimitedBlock}
 import org.eclipse.mylyn.wikitext.core.parser.{TableRowAttributes, TableAttributes, TableCellAttributes, Attributes}
+import org.fusesource.scalate.util.{Log, Logging}
 
-class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") with Logging {
+class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
+
   var div = false
 
   override def beginBlock() = {
@@ -138,7 +139,7 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
   }
 }
 
-class DivBlock extends AbstractNestedBlock("div") with Logging {
+class DivBlock extends AbstractNestedBlock("div") {
   var attributes = new Attributes()
   var textBuffer = new StringBuilder
 
@@ -161,7 +162,7 @@ class DivBlock extends AbstractNestedBlock("div") with Logging {
     Blocks.setOption(attributes, key, value)
 }
 
-class SectionBlock extends AbstractNestedBlock("section") with Logging {
+class SectionBlock extends AbstractNestedBlock("section") {
   var tableAttributes: TableAttributes = null
   var rowAttributes : TableRowAttributes = null
   var content = ListBuffer[String]()
@@ -204,7 +205,7 @@ class SectionBlock extends AbstractNestedBlock("section") with Logging {
   }
 }
 
-class ColumnBlock extends AbstractNestedBlock("column") with Logging {
+class ColumnBlock extends AbstractNestedBlock("column") {
   var attributes: TableCellAttributes = null
 
   override def beginBlock() = {
@@ -238,7 +239,7 @@ class ColumnBlock extends AbstractNestedBlock("column") with Logging {
     Blocks.setOption(attributes, key, value)
 }
 
-class CenterBlock extends AbstractNestedBlock("center") with Logging {
+class CenterBlock extends AbstractNestedBlock("center") {
   var attributes = new Attributes()
 
   override def beginBlock() = {
@@ -260,13 +261,15 @@ class CenterBlock extends AbstractNestedBlock("center") with Logging {
     Blocks.setOption(attributes, key, value)
 }
 
-object Blocks extends Logging {
+object Blocks {
+  val log = Log(getClass); import log._
+
   def unknownAttribute(key: String, value: String): Unit = {
-    warn("Unknown attribute '" + key + " with value: " + value)
+    warn("Unknown attribute '%s' with value: %s", key, value)
   }
 
   def unknownOption(option: String) = {
-    warn("Not sure how to set the option: " + option)
+    warn("Not sure how to set the option: %s", option)
   }
 
   def setOption(attributes: Attributes, key: String, value: String) = {

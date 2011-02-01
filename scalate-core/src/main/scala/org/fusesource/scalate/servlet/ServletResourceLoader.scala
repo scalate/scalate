@@ -22,12 +22,14 @@ import java.io.File
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
 
-import org.fusesource.scalate.util.{ResourceNotFoundException, ResourceLoader, FileResourceLoader}
 import org.fusesource.scalate.util.Resource._
+import org.fusesource.scalate.util.{Log, ResourceNotFoundException, ResourceLoader, FileResourceLoader}
 
-object ServletResourceLoader {
+object ServletResourceLoader extends Log {
   def apply(context: ServletContext) = new ServletResourceLoader(context)
 }
+import ServletResourceLoader._
+
 /**
  * Loads files using <code>ServletContext</code>.
  *

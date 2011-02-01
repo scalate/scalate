@@ -19,12 +19,15 @@
 package org.fusesource.scalate
 package wikitext
 
-import util.{Files, Logging}
+import util.{Log, Files}
+
+object IncludeTag extends Log
 
 /**
  * Implements the "include" macro
  */
-class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
+class IncludeTag extends AbstractConfluenceTagSupport("include") {
+  import IncludeTag._
   var uri: String = _
 
   override def setOption(option: String) = {
@@ -38,7 +41,7 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
   def doTag() = {
     val realUri = SwizzleLinkFilter.findWikiFileUri(uri).getOrElse(uri)
 
-    debug("{include} is now going to include URI '" + uri + "' found to map to '" + realUri + "'")
+    debug("{include} is now going to include URI '%s' found to map to '%s'", uri, realUri)
 
     val context = RenderContext()
     val ex = Files.extension(realUri)
@@ -52,10 +55,10 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") with Logging {
         context.
         engine.resourceLoader.resource(realUri) match {
           case Some(r) =>
-            warn("Using non-template or wiki markup  '" + realUri + "' from {include:" + uri + "}")
+            warn("Using non-template or wiki markup  '%s' from {include:%s}", realUri, uri)
             r.text
           case _ =>
-            warn("Could not find include '" + realUri + "' from {include:" + uri + "}")
+            warn("Could not find include '%s' from {include:%s}", realUri, uri)
             ""
         }
 

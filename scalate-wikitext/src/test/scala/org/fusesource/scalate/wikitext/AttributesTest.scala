@@ -22,11 +22,14 @@ package wikitext
 class AttributesTest extends AbstractConfluenceTest {
   test("attributes") {
     val context = new DefaultRenderContext("foo.conf", new TemplateEngine())
-    RenderContext() = context
-    val source = "{attributes:layout=foo.scaml}"
-    val actual = filter.filter(context, source)
 
-    expect("") {actual}
-    expect("foo.scaml", "layout attribute") {context.attributeOrElse("layout", "failed!")}
+    RenderContext.using(context) {
+      val source = "{attributes:layout=foo.scaml}"
+      val actual = filter.filter(context, source)
+
+      expect("") {actual}
+      expect("foo.scaml", "layout attribute") {context.attributeOrElse("layout", "failed!")}
+    }
+
   }
 }

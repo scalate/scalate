@@ -20,13 +20,11 @@ package org.fusesource.scalate.util
 
 import java.io.File
 import java.net.{URI, URLClassLoader}
-import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import java.util.{Properties, jar => juj}
+import java.util.{jar => juj}
 import java.util.jar.{Attributes, JarFile}
 
-
-class ClassPathBuilder extends Logging {
+class ClassPathBuilder {
   import ClassPathBuilder._
 
   private val classpath = new ArrayBuffer[String]
@@ -103,21 +101,21 @@ class ClassPathBuilder extends Logging {
               // classpath entries are usually relative to the jar
               if (new File(n).exists) n else new File(parent, n).getPath
             }
-            debug("Found manifest classpath values " + answer + " in " + f)
+            debug("Found manifest classpath values %s in ",answer,f)
           }
         }
       }
       catch {
         case e => // ignore any errors probably due to non-jar
-          debug("Ignoring exception trying to open jar file: " + f + " " + e)
+          debug(e, "Ignoring exception trying to open jar file: %s", f)
       }
     }
     answer
   }
 }
 
-private object ClassPathBuilder extends Logging {
-  
+private object ClassPathBuilder extends Log {
+
   type AntLikeClassLoader = {
     def getClasspath: String
   }
@@ -157,7 +155,7 @@ private object ClassPathBuilder extends Logging {
       cp.split(File.pathSeparator)
 
     case _ =>
-      warn("Cannot introspect on class loader: "+classLoader+" of type "+classLoader.getClass.getCanonicalName)
+      warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
       val parent = classLoader.getParent
       if (parent != null && parent != classLoader) getClassPathFrom(parent)
       else Nil

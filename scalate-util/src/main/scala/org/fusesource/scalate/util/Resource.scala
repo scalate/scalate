@@ -22,10 +22,11 @@ import io.Source
 import java.io._
 import java.net.{URISyntaxException, URL}
 
+
 /**
  * Represents a string, file or URI based resource
  */
-trait Resource extends Logging {
+trait Resource {
 
   /**
    * Returns the URI of the resource
@@ -154,7 +155,9 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   def relativeUri(root: File) = Files.relativeUri(root, file)
 }
 
+object URLResource extends Log
 case class URLResource(url: URL) extends WriteableResource {
+  import URLResource._
   def uri = url.toExternalForm
 
   lazy val connection = url.openConnection
@@ -178,7 +181,7 @@ case class URLResource(url: URL) extends WriteableResource {
           case e: URISyntaxException => f = new File(url.getPath)
         }
       } catch {
-        case e => debug("While converting " + url + " to a File I caught: " + e, e)
+        case e => debug(e, "While converting " + url + " to a File I caught: " + e)
       }
     }
     if (f != null && f.exists && f.isFile) {

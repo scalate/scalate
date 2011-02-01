@@ -23,7 +23,9 @@ import java.lang.reflect.Constructor
 /**
  * Helper object for working with objects using reflection
  */
-object Objects extends Logging {
+object Objects {
+  val log = Log(getClass); import log._
+
 
   /**
    * A helper method to return a non null value or the default value if it is null
@@ -67,7 +69,7 @@ object Objects extends Logging {
       val answer = if (args.isEmpty) {
         clazz.newInstance
       } else {
-        debug("About to call constructor: " + c + " on " + clazz.getName + " with args: " + args.toList)
+        debug("About to call constructor: %S on %s with args: %s", c, clazz.getName, args.toList)
         c.newInstance(args: _*)
       }
       answer.asInstanceOf[T]

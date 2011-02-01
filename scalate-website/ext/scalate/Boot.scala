@@ -1,14 +1,16 @@
 package scalate
 
-import org.fusesource.scalate.util.Logging
 import java.util.concurrent.atomic.AtomicBoolean
 import _root_.Website._
 import org.fusesource.scalamd.{MacroDefinition, Markdown}
 import java.util.regex.Matcher
 import org.fusesource.scalate.wikitext.Pygmentize
 import org.fusesource.scalate._
+import util.Log
 
-class Boot(engine: TemplateEngine) extends Logging {
+object Boot extends Log; import Boot._
+
+class Boot(engine: TemplateEngine) {
 
   private var _initialised = new AtomicBoolean(false)
 
@@ -41,7 +43,7 @@ class Boot(engine: TemplateEngine) extends Logging {
         engine.pipelines += "ssp.md"-> List(ssp, md)
         engine.pipelines += "ssp.markdown"-> List(ssp, md)
       }
-      info("Bootstrapped website gen for: %s".format(project_name))
+      info("Bootstrapped website gen for: %s", project_name)
     }
   }
 }

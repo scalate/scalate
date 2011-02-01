@@ -33,18 +33,18 @@ class LogTest extends FunSuiteSupport with ShouldMatchers {
     log.log.getName should equal ("org.fusesource.scalate.util.LogTest.postfix")
   }
 
-  test("logger postfix for inner class is delimited with '$'") {
+  test("logger postfix for inner class is delimited with '#'") {
     val log = Log(classOf[InnerTrait], "postfix")
-    log.log.getName should equal ("org.fusesource.scalate.util.LogTest$InnerTrait$postfix")
+    log.log.getName should equal ("org.fusesource.scalate.util.LogTest#InnerTrait.postfix")
   }
 
-  test("Trailing '$' is trimmed from class name before applying postfix") {
+  test("Trailing '#' is trimmed from class name before applying postfix") {
     val log = Log(LogTest.getClass, "postfix")
     log.log.getName should equal ("org.fusesource.scalate.util.LogTest.postfix")
   }
 
-  test("Trailing '$' is trimmed from inner class name before applying postfix") {
+  test("Trailing '#' is trimmed from inner class name before applying postfix") {
     val log = Log(InnerObject.getClass, "postfix")
-    log.log.getName should equal ("org.fusesource.scalate.util.LogTest$InnerObject$postfix")
+    log.log.getName should equal ("org.fusesource.scalate.util.LogTest#InnerObject.postfix")
   }
 }

@@ -20,7 +20,9 @@ package org.fusesource.scalate.util
 
 import java.net.URL
 
-object ClassLoaders extends Logging {
+object ClassLoaders {
+  val log = Log(getClass); import log._
+
 
   /**
    * Returns the default class loaders to use for loading which is the current threads context class loader

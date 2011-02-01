@@ -19,8 +19,8 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util.{Logging, ClassLoaders}
 import org.fusesource.scalate.{Binding, TemplateSource}
+import org.fusesource.scalate.util.{Log, ClassLoaders}
 
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates
@@ -34,7 +34,9 @@ abstract class TemplatePackage {
   def header(source: TemplateSource, bindings: List[Binding]): String
 }
 
-object TemplatePackage extends Logging {
+object TemplatePackage {
+  val log = Log(getClass); import log._
+
   val scalatePackageClassName = "ScalatePackage"
 
   /**

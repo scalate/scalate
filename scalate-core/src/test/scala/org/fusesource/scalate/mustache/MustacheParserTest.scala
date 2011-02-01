@@ -27,6 +27,7 @@ import java.io.File
  */
 
 class MustacheParserTest extends FunSuiteSupport {
+
   implicit def stringToText(x: String) = Text(x)
 
   test("set directive") {
@@ -132,7 +133,7 @@ class MustacheParserTest extends FunSuiteSupport {
     val e = intercept[InvalidSyntaxException] {
       block
     }
-    debug("caught: " + e, e)
+    debug(e, "caught: " + e)
     e
   }
 

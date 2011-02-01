@@ -30,7 +30,9 @@ import com.sun.jersey.api.container.ContainerException
 
 import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
 import org.fusesource.scalate.TemplateException
-import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
+import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
+
+object ScalateTemplateProvider extends Log; import ScalateTemplateProvider._
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -39,7 +41,8 @@ import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
  * @version $Revision : 1.1 $
  */
 @Provider
-class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] with Logging {
+class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
+  import ScalateTemplateProvider._
 
   @Context
   var servletContext: ServletContext = _

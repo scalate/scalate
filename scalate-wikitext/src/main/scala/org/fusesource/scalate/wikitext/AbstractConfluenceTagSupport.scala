@@ -22,12 +22,11 @@ package wikitext
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
 import java.lang.String
 import java.util.regex.Matcher
-import util.Logging
 
 /**
  * Base class for any confluence tag which is a single tag not a AbstractConfluenceDelimitedBlock
  */
-abstract class AbstractConfluenceTagSupport(tag: String) extends ParameterizedBlock with Logging {
+abstract class AbstractConfluenceTagSupport(tag: String) extends ParameterizedBlock {
   val startPattern = ("\\s*\\{" + tag + "(?::([^\\}]+))?\\}\\s*(.+)?").r.pattern
   var matcher: Matcher = _
   var blockLineNumber = 0

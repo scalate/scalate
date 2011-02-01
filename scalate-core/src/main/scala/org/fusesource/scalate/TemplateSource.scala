@@ -32,6 +32,8 @@ import java.util.regex.Pattern
  * @version $Revision : 1.1 $
  */
 trait TemplateSource extends Resource {
+  import TemplateSource.log._
+
   private var _packageName: String = _
   private var _className: String = _
   private var _simpleClassName: String = _
@@ -166,6 +168,7 @@ trait TemplateSource extends Resource {
  * Helper methods to create a [[org.fusesource.scalate.TemplateSource]] from various sources
  */
 object TemplateSource {
+  val log = Log(getClass); import log._
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from the actual String contents using the given

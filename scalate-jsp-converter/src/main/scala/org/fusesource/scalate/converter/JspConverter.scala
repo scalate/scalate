@@ -18,8 +18,8 @@
 package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.support.Text
-import org.fusesource.scalate.util.Logging
 import util.matching.Regex.Match
+import org.fusesource.scalate.util.Log
 
 
 object ExpressionLanguage {
@@ -98,8 +98,10 @@ trait IndentWriter {
 
   def text = out.toString
 }
+object JspConverter extends Log
+class JspConverter extends IndentWriter  {
+  import JspConverter._
 
-class JspConverter extends IndentWriter with Logging {
   var coreLibraryPrefix: String = "c"
   var whenCount = 0
       

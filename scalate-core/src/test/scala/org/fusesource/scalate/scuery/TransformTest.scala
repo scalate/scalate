@@ -19,10 +19,8 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.Text
-import org.fusesource.scalate.util.Logging
+class TransformTest extends FunSuiteSupport {
 
-class TransformTest extends FunSuiteSupport with Logging {
   var printOutput = false
   val xml = <html>
     <head>

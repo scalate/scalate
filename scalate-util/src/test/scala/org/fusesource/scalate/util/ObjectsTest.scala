@@ -22,6 +22,7 @@ package util
 import Objects._
 
 class ObjectsTest extends FunSuiteSupport {
+
   test("inject no params") {
     val a = assertInstantiate(classOf[NoParams])
     expect("Hello") {a.value}

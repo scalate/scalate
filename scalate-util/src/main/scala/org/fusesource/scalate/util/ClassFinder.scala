@@ -27,7 +27,8 @@ import java.io.{InputStream, File}
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object ClassFinder extends Logging {
+object ClassFinder {
+  val log = Log(getClass); import log._
 
   def discoverCommands[T](indexPath:String, classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
     classLoaders.flatMap{ cl=>
@@ -52,7 +53,7 @@ object ClassFinder extends Logging {
               }
             } catch {
               case e: Throwable =>
-                debug("Invalid class: " + name, e)
+                debug(e, "Invalid class: %s", name)
                 None
             }
         }
@@ -65,10 +66,10 @@ object ClassFinder extends Logging {
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {
       val url = resources.nextElement;
-      debug("loaded commands from " + url)
+      debug("loaded commands from %s", url)
       val p = loadProperties(url.openStream)
       if (p == null) {
-        warn("Could not load class list from: " + url)
+        warn("Could not load class list from: %s", url)
       }
       val enum = p.keys
       while (enum.hasMoreElements) {
@@ -76,7 +77,7 @@ object ClassFinder extends Logging {
       }
     }
     rc = rc.distinct
-    debug("loaded classes: " + rc)
+    debug("loaded classes: %s", rc)
     return rc
   }
 

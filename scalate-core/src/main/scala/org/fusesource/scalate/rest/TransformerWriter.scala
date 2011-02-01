@@ -21,21 +21,22 @@ package org.fusesource.scalate.rest
 import java.io.OutputStream
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
-import java.net.{URL}
+import java.net.URL
 import javax.ws.rs.ext.{MessageBodyWriter, Provider}
 import javax.servlet.ServletContext
 import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
 
 import org.fusesource.scalate.scuery.Transformer
 import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
-import org.fusesource.scalate.util.{ResourceNotFoundException, Logging}
-
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
 import scala.collection.JavaConversions._
 import xml.{XML, NodeSeq}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
+
+object TransformerWriter extends Log
 
 /**
  * Converts an Scuery [[org.fusesource.scalate.scuery.Transformer]] to output
@@ -43,7 +44,9 @@ import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
  * @version $Revision : 1.1 $
  */
 @Provider
-class TransformerWriter extends MessageBodyWriter[Transformer] with Logging {
+class TransformerWriter extends MessageBodyWriter[Transformer] {
+  import TransformerWriter._
+
   @Context
   protected var uriInfo: ExtendedUriInfo = _
   @Context

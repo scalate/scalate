@@ -431,7 +431,9 @@ object SourceMapInstaller {
    */
   val SOURCE_DEBUG_EXTENSION_MAX_SIZE = Integer.getInteger("SOURCE_DEBUG_EXTENSION_MAX_SIZE", 65535).intValue
 
-  class Writer(val orig: Array[Byte], val sourceDebug:String) extends Logging {
+  object Writer extends Log
+  class Writer(val orig: Array[Byte], val sourceDebug:String) {
+    import Writer._
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)
@@ -572,7 +574,9 @@ object SourceMapInstaller {
     }
   }
 
-  class Reader(val orig: Array[Byte]) extends Logging {
+  object Reader extends Log
+  class Reader(val orig: Array[Byte]) {
+    import Reader._
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)

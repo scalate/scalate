@@ -28,10 +28,24 @@ import tools.nsc.io.AbstractFile
 import tools.nsc.util._
 import collection.mutable.ListBuffer
 import org.osgi.framework.Bundle
-import util.{IOUtil, ClassPathBuilder, Logging}
 import java.io.{PrintWriter, StringWriter, File}
 
-class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Logging {
+import util.{Log, IOUtil, ClassPathBuilder}
+
+object ScalaCompiler extends Log {
+
+  def create(engine: TemplateEngine) : ScalaCompiler = {
+    Thread.currentThread.getContextClassLoader match {
+      case BundleClassLoader(loader) => new OsgiScalaCompiler(engine, loader.getBundle)
+      case _ => new ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath)
+    }
+  }
+
+}
+
+import ScalaCompiler._
+
+class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
@@ -162,13 +176,3 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
   }
 }
 
-object ScalaCompiler extends Logging {
-
-  def create(engine: TemplateEngine) : ScalaCompiler = {
-    Thread.currentThread.getContextClassLoader match {
-      case BundleClassLoader(loader) => new OsgiScalaCompiler(engine, loader.getBundle)
-      case _ => new ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath)
-    }
-  }
-
-}

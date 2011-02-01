@@ -20,8 +20,9 @@ package org.fusesource.scalate
 package layout
 
 import util.Strings.isEmpty
-import util.{ResourceNotFoundException, Logging}
+import util.{Log, ResourceNotFoundException}
 
+object DefaultLayoutStrategy extends Log
 
 /**
  * The default implementation of <code>LayoutStrategy</code>.
@@ -34,7 +35,9 @@ import util.{ResourceNotFoundException, Logging}
  *
  * @version $Revision : 1.1 $
  */
-class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy with Logging {
+class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy {
+  import DefaultLayoutStrategy._
+
   def layout(template: Template, context: RenderContext) {
 
     def isLayoutDisabled(layout: String) = isEmpty(layout.trim)
@@ -49,14 +52,14 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
           noLayout(body, context)
         else
         if (!tryLayout(layout, body, context)) {
-          debug("Could not load layout resource: " + layout)
+          debug("Could not load layout resource: %s", layout)
           noLayout(body, context)
         }
 
       case _ =>
         val layoutName = defaultLayouts.find(tryLayout(_, body, context))
         if (layoutName.isEmpty) {
-          debug("Could not load any of the default layout resource: " + defaultLayouts)
+          debug("Could not load any of the default layout resource: %s", defaultLayouts)
           noLayout(body, context)
         }
     }
@@ -68,13 +71,13 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
     }
 
     try {
-      debug("Attempting to load layout: " + layoutTemplate)
+      debug("Attempting to load layout: %s", layoutTemplate)
 
       context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List())
       context.attributes("body") = body
       engine.load(layoutTemplate).render(context)
 
-      debug("layout completed of: " + layoutTemplate)
+      debug("layout completed of: %s", layoutTemplate)
       true
     } catch {
       case e: ResourceNotFoundException =>
@@ -82,7 +85,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
         false
       case e: Exception =>
         removeLayout
-        error("Unhandled: " + e, e)
+        error(e, "Unhandled: %s", e)
         throw e
     }
   }

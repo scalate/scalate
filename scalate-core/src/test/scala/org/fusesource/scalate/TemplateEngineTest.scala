@@ -20,8 +20,8 @@ package org.fusesource.scalate
 
 import java.io.File
 import Asserts._
-
 class TemplateEngineTest extends FunSuiteSupport {
+
   val engine = new TemplateEngine
   engine.workingDirectory = new File(baseDir, "target/test-data/TemplateEngineTest")
 

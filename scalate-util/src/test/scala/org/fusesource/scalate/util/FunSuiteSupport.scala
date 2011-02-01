@@ -20,19 +20,19 @@ package org.fusesource.scalate
 
 import java.io.File
 import collection.immutable.Map
+import util.Log
 import xml.NodeSeq
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
-
-import util.Logging
+import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends Log with FunSuite with BeforeAndAfterAll {
   protected var _basedir = "."
 
   /**
@@ -46,7 +46,7 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
       case Some(basedir) => basedir.toString
       case _ => System.getProperty("basedir", ".")
     }
-    debug("using basedir: " + _basedir)
+    debug("using basedir: %s", _basedir)
   }
 
   def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {

@@ -21,18 +21,20 @@ package org.fusesource.scalate
 import _root_.org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
-import scuery.XmlHelper._
-import util.Logging
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
+import util.Log
+import scuery.XmlHelper._
 import xml.NodeSeq
+import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends Log with FunSuite with BeforeAndAfterAll {
+
   protected var _basedir = "."
 
   /**
@@ -46,7 +48,7 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
       case Some(basedir) => basedir.toString
       case _ => System.getProperty("basedir", ".")
     }
-    debug("using basedir: " + _basedir)
+    debug("using basedir: %s", _basedir)
   }
 
 

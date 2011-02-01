@@ -20,9 +20,9 @@ package org.fusesource.scalate.scuery.support
 
 import xml.{Elem, Node, NodeSeq}
 import org.fusesource.scalate.scuery.XmlHelper._
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.{Log, Logging}
 
-object Rule {
+object Rule extends Log {
   /**
    * Combines multiple rules to a single rule
    */
@@ -47,13 +47,14 @@ object Rule {
     }
   }
 }
+import Rule._
 
 /**
  * Represents manipuluation rules
  *
  * @version $Revision : 1.1 $
  */
-trait Rule extends Logging {
+trait Rule {
   def apply(node: Node): NodeSeq
 
   /**
@@ -96,7 +97,7 @@ case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
-      debug("Setting attribute " + name + " to " + value)
+      debug("Setting attribute %s to %s",name,value)
       setAttribute(e, name, value)
 
     case n => n

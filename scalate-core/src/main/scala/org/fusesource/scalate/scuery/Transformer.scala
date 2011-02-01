@@ -29,7 +29,7 @@ import XmlHelper._
  *
  * @version $Revision : 1.1 $
  */
-class Transformer extends Logging {
+class Transformer {
   protected val _rules = new HashMap[Selector, Rule]
 
   implicit def toSXml(node: Node) = SXml(node)

@@ -18,17 +18,20 @@
 
 package org.fusesource.scalate
 
-import util.{Logging, Resource}
-import support.{AttributesHashMap, RenderHelper}
+import support.AttributesHashMap
 
 import java.io._
 import collection.mutable.Stack
+import util.{Log, Resource}
 
+object DefaultRenderContext extends Log
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(private val _requestUri: String, val engine: TemplateEngine,
-                           var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext with Logging {
+                           var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
+
+  import DefaultRenderContext._
 
   val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
     update("context", DefaultRenderContext.this)
@@ -86,7 +89,7 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
-      debug("rendering template " + template)
+      debug("rendering template %s", template)
       template.render(this)
       out.close()
       buffer.toString

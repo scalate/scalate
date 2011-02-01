@@ -22,9 +22,11 @@ package org.fusesource.scalate
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
-import util.IOUtil
+import util.{Log, IOUtil}
+import org.slf4j.LoggerFactory
 
-abstract class TemplateTestSupport extends FunSuiteSupport {
+abstract class TemplateTestSupport extends FunSuiteSupport with Log {
+
   var showOutput = false
   var engine: TemplateEngine = _
 

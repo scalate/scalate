@@ -29,7 +29,8 @@ import _root_.org.scalatest.FunSuite
 import _root_.org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class EditLinkTest extends FunSuite with Logging {
+class EditLinkTest extends FunSuite {
+  val log = Log(getClass); import log._
 
   val file = "src/test/scala/org/fusesource/scalate/console/EditLinkTest.scala"
 

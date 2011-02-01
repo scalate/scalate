@@ -24,13 +24,14 @@ import org.scalatest.{BeforeAndAfterAll, FunSuite}
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
-import org.fusesource.scalate.util.Logging
+import org.fusesource.scalate.util.Log
+import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends FunSuite with BeforeAndAfterAll with Log {
 
   /**
    * Returns the base directory of the current project
@@ -42,6 +43,6 @@ abstract class FunSuiteSupport extends FunSuite with Logging with BeforeAndAfter
       case Some(basedir) => Config.baseDir = basedir.toString
       case _ =>
     }
-    debug("using basedir: " + Config.baseDir)
+    debug("using basedir: %s", Config.baseDir)
   }
 }

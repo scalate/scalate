@@ -18,19 +18,17 @@ package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{AbstractConfluenceDelimitedBlock, CodeBlock}
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
 import java.lang.String
 import collection.mutable.ListBuffer
 import org.fusesource.scalate.util.Threads._
-import java.io.{ByteArrayInputStream, ByteArrayOutputStream, OutputStream, InputStream}
-import org.fusesource.scalate.util.{Logging, IOUtil}
-import util.parsing.input.{NoPosition, CharSequenceReader}
-import org.fusesource.scalate.support.{Text, ScalaParseSupport}
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
+import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
-import org.fusesource.scalate.InvalidSyntaxException
 import org.fusesource.scalate.support.RenderHelper
+import org.fusesource.scalate.util.{Log, IOUtil}
 
-object Pygmentize extends Logging {
+object Pygmentize extends Log {
 
   // lets calculate once on startup
   private lazy val _installed: Boolean = {
@@ -55,7 +53,7 @@ object Pygmentize extends Logging {
       }
     }
     catch {
-      case e => debug("Failed to start pygmetize: " + e)
+      case e => debug(e, "Failed to start pygmetize: " + e)
       false
     }
   }

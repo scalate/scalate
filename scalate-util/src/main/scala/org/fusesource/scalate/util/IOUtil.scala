@@ -23,7 +23,10 @@ import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
 import java.net.URL
 
-object IOUtil extends Logging {
+object IOUtil {
+
+  val log = Log(getClass); import log._
+
 
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files
@@ -184,7 +187,7 @@ object IOUtil extends Logging {
         else {
           val name = entry.getName
           if (!entry.isDirectory && filter(entry)) {
-            debug("processing resource: " + name)
+            debug("processing resource: %s", name)
             val file = new File(outputDir.getCanonicalPath + "/" + name)
             file.getParentFile.mkdirs
             val bos = new FileOutputStream(file)

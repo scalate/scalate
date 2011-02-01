@@ -17,19 +17,21 @@
 package org.fusesource.scalate.osgi
 
 import java.io.{InputStream, IOException, File}
-import scala.tools.nsc.io.{PlainFile, AbstractFile}
-import java.net.{URISyntaxException, URL}
+import scala.tools.nsc.io.AbstractFile
+import java.net.URL
 import java.lang.String
 import org.osgi.framework.{ServiceReference, Bundle}
-import collection.mutable.{HashMap, ListBuffer}
-import org.osgi.service.packageadmin.{ExportedPackage, PackageAdmin}
-import org.fusesource.scalate.util.{Logging, Strings}
+import collection.mutable.ListBuffer
+import org.osgi.service.packageadmin.PackageAdmin
+import org.fusesource.scalate.util.{Log, Strings}
 
 /**
  * Helper methods to transform OSGi bundles into {@link AbstractFile} implementations
  * suitable for use with the Scala compiler
  */
-object BundleClassPathBuilder extends Logging {
+object BundleClassPathBuilder {
+  val log = Log(getClass); import log._
+
 
   /**
    * Create a list of AbstractFile instances, representing the bundle and its wired depedencies
@@ -50,7 +52,7 @@ object BundleClassPathBuilder extends Logging {
    * Find bundles that have exports wired to the given and bundle
    */
   def fromWires(bundle: Bundle) : List[AbstractFile] = {
-    debug("Checking OSGi bundle wiring for " + bundle)
+    debug("Checking OSGi bundle wiring for %s", bundle)
     val context = bundle.getBundleContext
     var ref: ServiceReference = context.getServiceReference(classOf[PackageAdmin].getName)
 
@@ -78,7 +80,7 @@ object BundleClassPathBuilder extends Logging {
         val bundles = pkg.getImportingBundles();
         if (bundles != null) {
             for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
-              debug("Bundle imports " + pkg + " from " + pkg.getExportingBundle)
+              debug("Bundle imports %s from %s",pkg,pkg.getExportingBundle)
               if (b.getBundleId == 0) {
                 debug("Ignoring system bundle")
               } else {
