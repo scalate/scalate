@@ -535,7 +535,7 @@
         <inherited>true</inherited>
         <configuration>
           <instructions>
-            <Implementation-Title>${project.description}</Implementation-Title>
+            <Implementation-Title>${project.artifactId}</Implementation-Title>
             <Implementation-Version>${project.version}</Implementation-Version>
             <Bundle-Name>${project.artifactId}</Bundle-Name>
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
