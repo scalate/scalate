@@ -63,7 +63,7 @@ class Precompiler {
     if( contextClass!=null ) {
       engine.bindings = List(Binding("context", contextClass, true, isImplicit = true))
     } else {
-      engine.bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
+      engine.bindings = List(Binding("context", "_root_."+classOf[ServletRenderContext].getName, true, isImplicit = true))
     }
 
     if( workingDirectory!=null ) {

@@ -36,7 +36,6 @@ trait TemplateSource extends Resource {
 
   var engine: TemplateEngine = _
   private var _packageName: String = _
-  private var _className: String = _
   private var _simpleClassName: String = _
 
 
@@ -66,22 +65,28 @@ trait TemplateSource extends Resource {
    */
   def templateType(extension: String) = new CustomExtensionTemplateSource(this, extension)
 
-
   /**
    * Returns the package name the generated template class will be in for code generated templates
    */
   def packageName: String = {
     checkInitialised()
-    engine.packagePrefix +  _packageName
+    if( engine.packagePrefix.isEmpty() || _packageName.isEmpty() ) {
+      engine.packagePrefix+_packageName
+    } else {
+      engine.packagePrefix + "." + _packageName
+    }
   }
-
 
   /**
    * Returns the generated fully qualified class name for code generated templates
    */
   def className: String = {
-    checkInitialised()
-    engine.packagePrefix + _className
+    val pn = packageName
+    if (pn.isEmpty) {
+      _simpleClassName
+    } else {
+      pn + "." + _simpleClassName
+    }
   }
 
   /**
@@ -96,18 +101,11 @@ trait TemplateSource extends Resource {
    * Checks that we have lazily created the package and class names
    */
   protected def checkInitialised(): Unit = {
-    if (_className == null) {
+    if (_simpleClassName == null) {
       // TODO is there a nice way to assign to fields from tuple matching???
       val (pn, sn) = extractPackageAndClassNames(uri)
       _simpleClassName = sn
-      _packageName = pn
-
-      // Build the complete class name (including the package name, if any)
-      _className = if (isEmpty(pn))
-        sn
-      else
-        pn + "." + sn
-
+      _packageName = Option(pn).getOrElse("")
     }
   }
 

@@ -97,7 +97,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Sets the import statements used in each generated template class
    */
-  var importStatements: List[String] = List("import scala.collection.JavaConversions._", "import org.fusesource.scalate.support.TemplateConversions._")
+  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._", "import _root_.org.fusesource.scalate.support.TemplateConversions._")
 
   /**
    * Loads resources such as the templates based on URIs
@@ -205,7 +205,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * By default lets bind the context so we get to reuse its methods in a template
    */
-  var bindings = Binding("context", classOf[RenderContext].getName, true, None, "val", false) :: Nil
+  var bindings = Binding("context", "_root_."+classOf[RenderContext].getName, true, None, "val", false) :: Nil
   
   private val templateCache = new HashMap[String, CacheEntry]
   private var _cacheHits = 0

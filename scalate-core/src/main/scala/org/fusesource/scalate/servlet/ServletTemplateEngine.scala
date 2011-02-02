@@ -97,7 +97,7 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
   import ServletTemplateEngine.log._
 
   templateDirectories ::= "/WEB-INF"
-  bindings = List(Binding("context", classOf[ServletRenderContext].getName, true, isImplicit = true))
+  bindings = List(Binding("context", "_root_."+classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   ServletTemplateEngine.setLayoutStrategy(this)

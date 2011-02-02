@@ -29,7 +29,7 @@ class DefaultTemplatePackage extends TemplatePackage {
             ClassLoaders.findClass(className)
         }.find(_.isDefined).getOrElse(None) match {
           case Some(clazz) =>
-            val it = "val " + variableName + " = attribute[" + clazz.getName + "](\"" + variableName + "\")\n"
+            val it = "val " + variableName + " = attribute[_root_." + clazz.getName + "](\"" + variableName + "\")\n"
             if (importMethod) {
               it + "import it._\n"
             } else {

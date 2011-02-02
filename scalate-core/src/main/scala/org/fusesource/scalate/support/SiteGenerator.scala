@@ -145,10 +145,10 @@ class SiteGenerator {
 class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(sourceDirectories) {
   override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
-  private val responseClassName = classOf[DummyResponse].getName
+  private val responseClassName = "_root_."+classOf[DummyResponse].getName
 
   bindings = List(
-    Binding("context", classOf[DummyRenderContext].getName, true, isImplicit = true),
+    Binding("context", "_root_."+classOf[DummyRenderContext].getName, true, isImplicit = true),
     Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()")))
 
   ServletTemplateEngine.setLayoutStrategy(this)
