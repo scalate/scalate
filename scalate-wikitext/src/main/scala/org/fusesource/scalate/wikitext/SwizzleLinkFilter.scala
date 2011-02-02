@@ -20,6 +20,7 @@ package org.fusesource.scalate
 package wikitext
 
 import org.fusesource.scalate.filter.Filter
+import org.fusesource.scalate.support.Links
 import java.io.File
 import util.{Log, IOUtil, Files}
 import IOUtil._

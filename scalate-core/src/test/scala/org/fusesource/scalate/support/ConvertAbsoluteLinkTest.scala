@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package org.fusesource.scalate.wikitext
+package org.fusesource.scalate.support
 
-import org.fusesource.scalate.test.FunSuiteSupport
+import org.fusesource.scalate.FunSuiteSupport
 
 class ConvertAbsoluteLinkTest extends FunSuiteSupport {
   List(
