@@ -1,6 +1,35 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.4](http://scalate.fusesource.org/blog/releases/release-1-4.html), unreleased
+----
+
+* [183](http://scalate.assembla.com/spaces/scalate/tickets/183) switched to [Scala 2.8.1 final release](http://www.scala-lang.org/node/8102) 
+* improved the OSGi metadata: optional dependencies are marked optional.
+* fixed bugs in the Snippet URL handling
+* [#185](http://scalate.assembla.com/spaces/scalate/tickets/185) updated the `{div}` and `{column}` tags evaluation in confluence markup so that they are evaluated as wiki notation
+* [#188](http://scalate.assembla.com/spaces/scalate/tickets/188) added support to easily pass in attributes to the site generation step
+* added a new maven plugin goal to export confluence sites
+* [#189](http://scalate.assembla.com/spaces/scalate/tickets/189) allow the use of HTTP URLs for the snippet source prefix - also default to using pygmentize if its installed unless disabled via Snippets.usePygmentize = false in the scalate.Boot.run() method
+* bug fixes in `scalate-wikitext`
+* upgrade to ScalaMD version 1.5
+* [#190](http://scalate.assembla.com/spaces/scalate/tickets/190) sitegen reports on the template file it failed on
+* [#191](http://scalate.assembla.com/spaces/scalate/tickets/191) templates with missing attributes are ignored and a warning is generated
+* [#193](http://scalate.assembla.com/spaces/scalate/tickets/193) cache the evaluation of whether pygmentize is installed; which typically doesn't change during an application run
+* updated Spring MVC integration: added support for order, prefix, and suffix properties. Removed requirement to use "render:" in view name. Layout render strategy passes the model to the render context.
+* [#194](http://scalate.assembla.com/spaces/scalate/tickets/194) added support for a textile filter.
+* cleaned up the maven poms so that the scala and logback artifacts are not pushed as transitive dependencies to our users.
+* [#195](http://scalate.assembla.com/spaces/scalate/tickets/195) switched to a simpler directory layout for static site generation modules
+* added support for using any scalate filter as a macro within markdown.
+* [#196](http://scalate.assembla.com/spaces/scalate/tickets/196) added a `scalate create sitegen ...` command to create static sitegen project
+* [#197](http://scalate.assembla.com/spaces/scalate/tickets/197) and [#198](http://scalate.assembla.com/spaces/scalate/tickets/198) Option is now treated as a collection of 0 or 1 in Mustache and so that Some(foo) is unwrapped to foo when outputting Option values in any Scalate template language
+* [#122](http://scalate.assembla.com/spaces/scalate/tickets/122) allow Mustache templates to layout generated HTML by navigating the 'html' variable to access the head / title or body content.
+* [#200](http://scalate.assembla.com/spaces/scalate/tickets/200) moved most log instances to be singleton objects.
+* [#204](http://scalate.assembla.com/spaces/scalate/tickets/204) added support a package prefix setting for all generated templates
+* [#202](http://scalate.assembla.com/spaces/scalate/tickets/202) added support for the Boot class feature on all TemplateEngines
+* [#203](http://scalate.assembla.com/spaces/scalate/tickets/203) moved the sitegen and precompiler core logic into scalate-core so it can be reused by other build tools 
+* [#201](http://scalate.assembla.com/spaces/scalate/tickets/201) changed the Maven plugin so that it uses the Scalate version defined in the project's dependency list.
+
 [Scalate 1.3.2](http://scalate.fusesource.org/blog/releases/release-1-3-2.html), released 2010-11-24
 ----
 
