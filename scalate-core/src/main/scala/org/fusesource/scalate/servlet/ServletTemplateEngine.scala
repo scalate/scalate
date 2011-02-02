@@ -99,6 +99,7 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
   templateDirectories ::= "/WEB-INF"
   bindings = List(Binding("context", "_root_."+classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
+  classLoader = Thread.currentThread.getContextClassLoader
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   ServletTemplateEngine.setLayoutStrategy(this)
   bootInjections = List(this, config.getServletContext)
