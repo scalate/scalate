@@ -80,7 +80,7 @@
 
     <!-- plugin version info -->
     <assembly-plugin-version>2.2</assembly-plugin-version>
-    <bundle-plugin-version>2.2.0</bundle-plugin-version>
+    <bundle-plugin-version>2.3.5-SNAPSHOT</bundle-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
     <compiler-plugin-version>2.3.2</compiler-plugin-version>
     <deploy-plugin-version>2.5</deploy-plugin-version>
