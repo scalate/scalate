@@ -108,6 +108,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   var templateDirectories = List("")
 
+  var packagePrefix = ""
   /**
    * A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
    * is mutated after the TemplateEngine is constructed
@@ -305,6 +306,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * it was last compiled.
    */
   def load(source: TemplateSource, extraBindings:List[Binding]= Nil): Template = {
+    source.engine = this
     templateCache.synchronized {
 
       // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
@@ -572,6 +574,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(uri, this, out)
 
   private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
+    source.engine = this
     val uri = source.uri
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
@@ -625,6 +628,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   protected val sourceMapLog = Log(getClass, "SourceMap")
 
   private def compileAndLoad(source: TemplateSource, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
+    source.engine = this
     var code: Code = null
     try {
       val uri = source.uri

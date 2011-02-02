@@ -34,6 +34,7 @@ import java.util.regex.Pattern
 trait TemplateSource extends Resource {
   import TemplateSource.log._
 
+  var engine: TemplateEngine = _
   private var _packageName: String = _
   private var _className: String = _
   private var _simpleClassName: String = _
@@ -71,7 +72,7 @@ trait TemplateSource extends Resource {
    */
   def packageName: String = {
     checkInitialised()
-    _packageName
+    engine.packagePrefix +  _packageName
   }
 
 
@@ -80,7 +81,7 @@ trait TemplateSource extends Resource {
    */
   def className: String = {
     checkInitialised()
-    _className
+    engine.packagePrefix + _className
   }
 
   /**
