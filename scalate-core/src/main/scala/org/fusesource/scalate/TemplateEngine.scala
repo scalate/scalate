@@ -63,7 +63,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   import TemplateEngine.log._
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
-    def isStale() = dependencies.exists {
+    def isStale() = timestamp!=0 && dependencies.exists {
       resourceLoader.lastModified(_) > timestamp
     }
   }
