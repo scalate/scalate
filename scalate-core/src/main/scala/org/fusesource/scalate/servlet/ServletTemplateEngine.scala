@@ -51,9 +51,8 @@ object ServletTemplateEngine {
    */
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
     servletContext.setAttribute(templateEngineKey, templateEngine)
-
     // now lets fire the bootstrap code
-    runBoot(List(templateEngine, servletContext))
+    templateEngine.boot
   }
 
   /**
@@ -68,25 +67,6 @@ object ServletTemplateEngine {
   def setLayoutStrategy(engine: TemplateEngine): LayoutStrategy = {
     engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
     engine.layoutStrategy
-  }
-
-  def runBoot(injectionValues: List[AnyRef], classLoaders: Traversable[ClassLoader] = ClassLoaders.defaultClassLoaders): Unit = {
-    val className = "scalate.Boot"
-    ClassLoaders.findClass(className, classLoaders) match {
-      case Some(clazz) =>
-        try {
-          val o = Objects.instantiate(clazz, injectionValues)
-          debug("About to invoke run() on bootstrap " + o)
-          val m = clazz.getMethod("run")
-          m.invoke(o)
-        }
-        catch {
-          case e => throw new ServletException("Failed to invoke "+ className + ".run() : " + e, e)
-        }
-
-      case _ =>
-        debug("No bootstrap class " + className + " found on classloaders: " + classLoaders)
-    }
   }
 
   /**
@@ -121,6 +101,9 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
   classpath = buildClassPath
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   ServletTemplateEngine.setLayoutStrategy(this)
+  bootInjections = List(this, config.getServletContext)
+
+  Option(config.getInitParameter("boot.class")).foreach(clazz=> bootClassName=clazz)
 
   info("Scalate template engine using working directory: %s", workingDirectory)
   private def buildClassPath(): String = {

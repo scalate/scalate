@@ -36,6 +36,7 @@ import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 import collection.generic.TraversableForwarder
+import java.util.concurrent.atomic.AtomicBoolean
 
 object TemplateEngine {
   val log = Log(getClass); import log._
@@ -109,6 +110,41 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var templateDirectories = List("")
 
   var packagePrefix = ""
+
+  var bootClassName = "scalate.Boot"
+  var bootInjections:List[AnyRef] = List(this)
+
+  private var booted = new AtomicBoolean()
+
+  def boot: Unit = {
+    if(booted.compareAndSet(false, true)) {
+      ClassLoaders.findClass(bootClassName, List(classLoader)) match {
+        case Some(clazz) =>
+
+          // Structural Typing to make Reflection easier.
+          type Boot = {
+            def run:Unit
+          }
+
+          val o = try {
+             Objects.instantiate(clazz, bootInjections).asInstanceOf[Boot]
+          } catch {
+            case e => throw new TemplateException("Failed to create the instance of class " + bootClassName, e)
+          }
+
+          try {
+            o.run
+          } catch {
+            case e => throw new TemplateException("Failed to invoke "+ bootClassName + ".run() : " + e, e)
+          }
+
+        case _ =>
+          info("No bootstrap class " + bootClassName + " found on classloader: " + classLoader)
+      }
+    }
+  }
+
+
   /**
    * A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
    * is mutated after the TemplateEngine is constructed

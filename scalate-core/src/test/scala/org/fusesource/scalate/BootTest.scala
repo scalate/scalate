@@ -1,6 +1,7 @@
 package org.fusesource.scalate
 
 import servlet.ServletTemplateEngine
+import org.fusesource.scalate.util.ClassLoaders
 
 object MockBootstrap {
   var initialised = false
@@ -9,8 +10,9 @@ object MockBootstrap {
 class BootTest extends TemplateTestSupport {
 
   test("scalate.Boot gets invoked") {
-    // lets pretend to be a web app
-    ServletTemplateEngine.runBoot(List(new TemplateEngine()))
+
+    val engine = new TemplateEngine()
+    engine.boot
 
     //assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
 
