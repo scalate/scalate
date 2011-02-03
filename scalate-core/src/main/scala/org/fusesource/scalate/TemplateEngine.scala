@@ -819,14 +819,28 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     case Some(generator) => generator
   }
 
-  private def loadCompiledTemplate(className:String, from_cache:Boolean=true) = {
+  private def loadCompiledTemplate(className:String, from_cache:Boolean=true):Template = {
     val cl = if(from_cache) {
       new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     } else {
       classLoader
     }
-    val clazz = cl.loadClass(className)
-    clazz.asInstanceOf[Class[Template]].newInstance
+    val clazz = try {
+      cl.loadClass(className)
+    } catch {
+      case e:ClassNotFoundException =>
+        if( packagePrefix=="" ){
+          throw e
+        } else {
+          // Try without the package prefix.
+          try {
+            cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
+          } catch {
+            case _ => throw e
+          }
+        }
+    }
+    return clazz.asInstanceOf[Class[Template]].newInstance
   }
 
   /**
