@@ -118,7 +118,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   def boot: Unit = {
     if(booted.compareAndSet(false, true)) {
-      ClassLoaders.findClass(bootClassName, List(classLoader)) match {
+      ClassLoaders.findClass(bootClassName, List(classLoader, Thread.currentThread.getContextClassLoader)) match {
         case Some(clazz) =>
 
           // Structural Typing to make Reflection easier.
