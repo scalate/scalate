@@ -11,9 +11,9 @@ import scala.collection.jcl.Conversions._
 trait ScalateProject {
   this: DefaultWebProject =>
 
-  val sitegenOutputPath: Path = outputPath / "sitegen"
+  def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
-  val sitegenBootClassName: Option[String] = None
+  def sitegenBootClassName: Option[String] = None
 
   lazy val sitegen = task {
     Thread.currentThread.setContextClassLoader(scalateClassLoader)
@@ -48,10 +48,10 @@ trait ScalateProject {
     None
   }
 
-  val precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
-  val precompilerTemplates: List[String] = Nil
-  val precompilerContextClass: Option[String] = None
-  val precompilerBootClassName: Option[String] = None
+  def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
+  def precompilerTemplates: List[String] = Nil
+  def precompilerContextClass: Option[String] = None
+  def precompilerBootClassName: Option[String] = None
 
   lazy val precompile = task {
     Thread.currentThread.setContextClassLoader(scalateClassLoader)
