@@ -8,7 +8,7 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
-trait SitegenProject {
+trait ScalateProject {
   this: DefaultWebProject =>
 
   val sitegenOutputPath: Path = outputPath / "sitegen"
