@@ -16,15 +16,7 @@ trait ScalateProject {
   val sitegenBootClassName: Option[String] = None
 
   lazy val sitegen = task {
-    //
-    // Lets use project's classpath when we run the site gen tool
-    //
-    val sitegenPath = buildScalaInstance.jars.foldLeft(runClasspath) { 
-       (cp, jar) => cp +++ Path.fromFile(jar)
-    }
-
-    val loader = ClasspathUtilities.toLoader(sitegenPath)
-    Thread.currentThread.setContextClassLoader(loader)
+    Thread.currentThread.setContextClassLoader(scalateClassLoader)
 
     // Structural Typing FTW (avoids us doing manual reflection)
     type SiteGenerator = {
@@ -39,7 +31,7 @@ trait ScalateProject {
     }
 
     val className = "org.fusesource.scalate.support.SiteGenerator"
-    val generator = loader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
+    val generator = Thread.currentThread.getContextClassLoader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
     generator.info = (value:String)=>log.info(value)
     generator.scalateWorkDir = temporaryWarPath.asFile
@@ -54,5 +46,52 @@ trait ScalateProject {
     generator.bootClassName = sitegenBootClassName.getOrElse(null)
     generator.execute()
     None
+  }
+
+  val precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
+  val precompilerTemplates: List[String] = Nil
+  val precompilerContextClass: Option[String] = None
+  val precompilerBootClassName: Option[String] = None
+
+  lazy val precompile = task {
+    Thread.currentThread.setContextClassLoader(scalateClassLoader)
+
+    // Structural Typing FTW (avoids us doing manual reflection)
+    type Precompiler = {
+      var warSourceDirectory: File
+      var resourcesSourceDirectory: File
+      var workingDirectory: File
+      var classesDirectory: File
+      var templates: ju.ArrayList[String]
+      var info: {def apply(v1:String):Unit}
+      var contextClass: String
+      var bootClassName:String
+      def execute(): Unit
+    }
+
+    val className = "org.fusesource.scalate.support.Precompiler"
+    val precompiler = Thread.currentThread.getContextClassLoader.loadClass(className).newInstance.asInstanceOf[Precompiler]
+
+    precompiler.info = (value:String)=>log.info(value)
+    precompiler.warSourceDirectory = webappPath.asFile
+    precompiler.resourcesSourceDirectory = mainResourcesPath.asFile
+    precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
+    precompiler.classesDirectory = mainCompilePath.asFile
+    precompiler.templates = {
+      val list = new ju.ArrayList[String]
+      list ++ precompilerTemplates
+      list
+    }
+    precompiler.contextClass = precompilerContextClass.getOrElse(null)
+    precompiler.bootClassName = precompilerBootClassName.getOrElse(null)
+    precompiler.execute()
+    None
+  }
+
+  protected def scalateClassLoader: ClassLoader = {
+    val sitegenPath = buildScalaInstance.jars.foldLeft(runClasspath) { 
+       (cp, jar) => cp +++ Path.fromFile(jar)
+    }
+    ClasspathUtilities.toLoader(sitegenPath)
   }
 }
