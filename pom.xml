@@ -72,7 +72,7 @@
     <scalatest-version>1.2</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
-    <scalamd-version>1.5-SNAPSHOT</scalamd-version>
+    <scalamd-version>1.5</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
     <wikitext-version>1.2-SNAPSHOT</wikitext-version>
@@ -80,7 +80,7 @@
 
     <!-- plugin version info -->
     <assembly-plugin-version>2.2</assembly-plugin-version>
-    <bundle-plugin-version>2.3.5-SNAPSHOT</bundle-plugin-version>
+    <bundle-plugin-version>2.3.4</bundle-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
     <compiler-plugin-version>2.3.2</compiler-plugin-version>
     <deploy-plugin-version>2.5</deploy-plugin-version>
