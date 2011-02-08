@@ -24,7 +24,7 @@ import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
 import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues}
 import org.osgi.service.command.CommandSession
-
+import java.util.regex.Pattern
 
 /**
  * The 'scalate create' sub command.
@@ -191,18 +191,14 @@ class Create extends Action {
 
   protected def transformContents(fileContents: String): String = {
     var answer = replaceVariable(fileContents, "package", packageName)
-    if (name == "pom.xml") {
-      // lets replace groupId and artifactId in pom.xml
-      answer = answer.replaceFirst("""<groupId>.*</groupId>""", """<groupId>""" + groupId + """</groupId>""")
-      answer = answer.replaceFirst("""<artifactId>.*</artifactId>""", """<artifactId>""" + artifactId + """</artifactId>""")
-      answer = answer.replaceFirst("""<version>.*</version>""", """<version>""" + version + """</version>""")
-    }
+    answer = replaceVariable(answer, "groupId", groupId)
+    answer = replaceVariable(answer, "artifactId", artifactId)
+    answer = replaceVariable(answer, "version", version)
     answer
   }
 
-
   protected def replaceVariable(text: String, name: String, value: String): String = {
-    text.replaceAll("""([^\\])\$\{""" + name + """\}""", "$1" + value)
+    text.replaceAll(Pattern.quote("${"+name+"}"), value)
   }
 
 }
