@@ -940,6 +940,18 @@
           <id>staging.002.apache.org</id>
           <url>https://repository.apache.org/content/repositories/maven-002</url>
         </pluginRepository>
+
+        <pluginRepository>
+          <id>mc-releases</id>
+          <name>mc-releases</name>
+          <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </pluginRepository>
       </pluginRepositories>
     </profile>
 
