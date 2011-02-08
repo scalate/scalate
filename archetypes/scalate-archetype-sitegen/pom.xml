@@ -86,6 +86,8 @@
 
                 <copy todir="${basedir}/src/main/resources/archetype-resources" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../samples/scalate-sample-sitegen">
+                    <include name="project/build.properties" />
+                    <include name="project/**/*.scala" />
                     <include name="src/**" />
                     <include name="ext/**" />
                     <include name="runlivereload"/>
