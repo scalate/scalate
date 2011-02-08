@@ -10,7 +10,11 @@ trait SiteGenProject extends ScalateProject {
   def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
 
-  lazy val sitegen = task {
+  lazy val generateSite = generateSiteAction
+
+  def generateSiteAction = generateSiteTask() describedAs("Generates a static site.")
+
+  def generateSiteTask() = task {
     withContextClassLoader(scalateClassLoader) { classLoader =>
       // Structural Typing FTW (avoids us doing manual reflection)
       type SiteGenerator = {
@@ -42,4 +46,6 @@ trait SiteGenProject extends ScalateProject {
       None
     }
   }
+
+  override def packageAction = super.packageAction dependsOn generateSiteAction
 }
