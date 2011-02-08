@@ -7,6 +7,7 @@ import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
 trait SiteGenProject extends ScalateProject {
+  
   def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
 
@@ -46,6 +47,13 @@ trait SiteGenProject extends ScalateProject {
       None
     }
   }
+
+  //
+  // We don't use a standard directory layout
+  //
+  override def mainScalaSourcePath = "ext"
+  override def mainResourcesPath = "resources"
+  override def webappPath = "src"
 
   override def packageAction = super.packageAction dependsOn generateSiteAction
 }
