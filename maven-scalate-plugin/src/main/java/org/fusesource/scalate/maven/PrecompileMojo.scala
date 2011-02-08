@@ -36,7 +36,7 @@ import collection.JavaConversions._
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 @goal("precompile")
-@phase("process-classes")
+@phase("prepare-package")
 @requiresProject
 @requiresDependencyResolution("test")
 class PrecompileMojo extends AbstractMojo {

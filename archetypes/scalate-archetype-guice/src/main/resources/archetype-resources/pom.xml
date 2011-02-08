@@ -234,9 +234,6 @@
           <includes>
             <include>**/*Test.*</include>
           </includes>
-          <excludes>
-            <exclude>**/SomeTestThatDoesntWorkYetTest.*</exclude>
-          </excludes>
         </configuration>
       </plugin>
 
@@ -292,29 +289,22 @@
         </configuration>
       </plugin>
 
+      <plugins>
+        <plugin>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>maven-scalate-plugin</artifactId>
+          <version>\${scalate-version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>precompile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+
     </plugins>
   </build>
 
-
-  <profiles>
-    <profile>
-      <id>precompile</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin</artifactId>
-            <version>\${scalate-version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>precompile</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

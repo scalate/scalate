@@ -233,9 +233,6 @@
           <includes>
             <include>**/*Test.*</include>
           </includes>
-          <excludes>
-            <exclude>**/SomeTestThatDoesntWorkYetTest.*</exclude>
-          </excludes>
         </configuration>
       </plugin>
 
@@ -252,14 +249,6 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>\${jetty-plugin-version}</version>
         <configuration>
-          <!--
-          <connectors>
-            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-              <port>\${jetty.port}</port>
-              <maxIdleTime>60000</maxIdleTime>
-            </connector>
-          </connectors>
-          -->
           <webAppConfig>
             <contextPath>/</contextPath>
           </webAppConfig>
@@ -290,30 +279,23 @@
           <scanIntervalSeconds>0</scanIntervalSeconds>
         </configuration>
       </plugin>
-
+      
+      <plugins>
+        <plugin>
+          <groupId>org.fusesource.scalate</groupId>
+          <artifactId>maven-scalate-plugin</artifactId>
+          <version>\${scalate-version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>precompile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+      
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>precompile</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin</artifactId>
-            <version>\${scalate-version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>precompile</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

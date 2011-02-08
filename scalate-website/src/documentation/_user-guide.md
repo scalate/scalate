@@ -696,25 +696,23 @@ class Boot(engine: TemplateEngine) extends Logging {
 
 ### Precompiling Templates {#precompiling_templates}
 
-Scalate currently lazily compiles templates on the fly, then it will cache the compiled template and only recompile it if it detects the source template has changed.
+Scalate currently lazily compiles templates on the fly, then it will cache
+the compiled template and only recompile it if it detects the source template
+has changed.
 
 In production you probably want all your templates to be precompiled so that
 
-* you can detect at build time any typos in your templates, particularly if you are using [Scaml](scaml-reference.html) or [Ssp](ssp-reference.html) which use static type checking for all expressions in your template. 
-* all your templates are immediately available as a fast, compiled JVM .class file rather than taking the overhead of the first request causing a compile phase
+* you can detect at build time any typos in your templates, particularly if
+  you are using [Scaml](scaml-reference.html) or [Ssp](ssp-reference.html)
+  which use static type checking for all expressions in your template.
 
-To do this you just need to include the *maven-scalate-plugin* into your project.
+* all your templates are immediately available as a fast, compiled JVM .class
+  file rather than taking the overhead of the first request causing a compile
+  phase
 
-When using the current [scalate build](../building.html) you can precompile any project using the *precompile* profile. e.g.
+To do this you just need to include the *maven-scalate-plugin* into your project. The plugin only precompiles when you are packaging into a war to avoid slowing down your development mode cycles.
 
-{pygmentize:: text}
-cd scalate-war
-mvn install -Pprecompile
-{pygmentize}
-    
-Using a maven profile helps you avoid precompiling in development mode, unless you are happy to take the speed hit - but you can include that when you do a release.
-
-The [archetypes](archetypes.html) created by the [scalate tool](tool.html) come with this profile enabled already.
+The [archetypes](archetypes.html) created by the [scalate tool](tool.html) come with this plugin enabled already.
 
 Otherwise you can just add this to your pom.xml
 
