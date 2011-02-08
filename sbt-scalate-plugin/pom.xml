@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2009-2010 the original author or authors.
+    See the notice.md file distributed with this work for additional
+    information regarding copyright ownership.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.fusesource.scalate</groupId>
+    <artifactId>scalate-project</artifactId>
+    <version>1.4.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>sbt-scalate-plugin</artifactId>
+  <packaging>jar</packaging>
+
+  <description>An SBT Maven Plugin</description>
+
+  <prerequisites>
+    <maven>${maven-version}</maven>
+  </prerequisites>
+
+  <properties>
+    <scala-version>2.7.7</scala-version>
+    <sbt-version>0.7.5.RC0</sbt-version>
+  </properties>
+
+  <dependencies>
+    <!--
+      The official SBT distribution is not deployed to a Maven repository.
+      The org.fusesource.scalate.sbt jars should be identical to the stock
+      version, but use a custom POM to make them available to a Maven build.
+     -->
+    <dependency>
+      <groupId>org.fusesource.scalate.sbt</groupId>
+      <artifactId>sbt_${scala-version}</artifactId>
+      <version>${sbt-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate.sbt</groupId>
+      <artifactId>compile_${scala-version}</artifactId>
+      <version>${sbt-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate.sbt</groupId>
+      <artifactId>ivy_${scala-version}</artifactId>
+      <version>${sbt-version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate.sbt</groupId>
+      <artifactId>interface</artifactId>
+      <version>${sbt-version}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <configuration>
+          <scalaVersion>${scala-version}</scalaVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -228,6 +228,7 @@
     <module>scalate-war</module>
     <module>samples</module>
     <module>maven-scalate-plugin</module>
+    <module>sbt-scalate-plugin</module>
     <module>archetypes</module>
     <module>scalate-tool</module>
     <module>scalate-jsp-converter</module>
@@ -938,6 +939,18 @@
         <pluginRepository>
           <id>staging.002.apache.org</id>
           <url>https://repository.apache.org/content/repositories/maven-002</url>
+        </pluginRepository>
+
+        <pluginRepository>
+          <id>mc-releases</id>
+          <name>mc-releases</name>
+          <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
         </pluginRepository>
       </pluginRepositories>
     </profile>
