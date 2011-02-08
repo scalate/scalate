@@ -6,12 +6,20 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
+/**
+ * Precompiles Scalate templates.  The templates will be compiled into Scala
+ * sources, then built as part of the standard compile action.
+ */
 trait PrecompilerProject extends ScalateProject {
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
   def precompilerTemplates: List[String] = Nil
   def precompilerContextClass: Option[String] = None
 
-  lazy val precompile = task {
+  lazy val precompileTemplates = precompileTemplatesAction
+
+  def precompileTemplatesAction = precompileTemplatesTask() describedAs("Precompiles the Scalate templates")
+
+  def precompileTemplatesTask() = task {
     withContextClassLoader(scalateClassLoader) { classLoader =>
       Thread.currentThread.setContextClassLoader(scalateClassLoader)
 
@@ -47,4 +55,6 @@ trait PrecompilerProject extends ScalateProject {
       None
     }
   }
+
+  override def compileAction = super.compileAction dependsOn(precompileTemplates)
 }
