@@ -13,7 +13,7 @@ trait ScalateProject {
 
   def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
-  def sitegenBootClassName: Option[String] = None
+  def scalateBootClassName: Option[String] = None
 
   lazy val sitegen = task {
     Thread.currentThread.setContextClassLoader(scalateClassLoader)
@@ -43,7 +43,7 @@ trait ScalateProject {
       jclMap ++= sitegenTemplateProperties
       jclMap
     }
-    generator.bootClassName = sitegenBootClassName.getOrElse(null)
+    generator.bootClassName = scalateBootClassName.getOrElse(null)
     generator.execute()
     None
   }
@@ -51,7 +51,6 @@ trait ScalateProject {
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
   def precompilerTemplates: List[String] = Nil
   def precompilerContextClass: Option[String] = None
-  def precompilerBootClassName: Option[String] = None
 
   lazy val precompile = task {
     Thread.currentThread.setContextClassLoader(scalateClassLoader)
@@ -83,7 +82,7 @@ trait ScalateProject {
       list
     }
     precompiler.contextClass = precompilerContextClass.getOrElse(null)
-    precompiler.bootClassName = precompilerBootClassName.getOrElse(null)
+    precompiler.bootClassName = scalateBootClassName.getOrElse(null)
     precompiler.execute()
     None
   }
