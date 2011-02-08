@@ -52,25 +52,25 @@
       <groupId>org.fusesource.scalate.sbt</groupId>
       <artifactId>sbt_${scala-version}</artifactId>
       <version>${sbt-version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate.sbt</groupId>
       <artifactId>compile_${scala-version}</artifactId>
       <version>${sbt-version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate.sbt</groupId>
       <artifactId>ivy_${scala-version}</artifactId>
       <version>${sbt-version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate.sbt</groupId>
       <artifactId>interface</artifactId>
       <version>${sbt-version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
