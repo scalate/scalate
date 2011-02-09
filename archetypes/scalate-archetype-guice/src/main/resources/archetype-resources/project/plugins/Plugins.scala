@@ -6,5 +6,5 @@ class Plugins(info: ProjectInfo) extends PluginDefinition(info) {
            "http://repo.fusesource.com/nexus/content/repositories/snapshots"
 
   lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project.version}"
-  
+
 }
