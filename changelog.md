@@ -31,7 +31,7 @@
 * [#201](http://scalate.assembla.com/spaces/scalate/tickets/201) changed the Maven plugin so that it uses the Scalate version defined in the project's dependency list.
 * [#210](http://scalate.assembla.com/spaces/scalate/tickets/210) Fixed template Cache Bug: If scalate can't figure out the last update time of a resource it always considers it stale
 * Upgraded to Jersey 1.5
-* Upgraded to wikitext 1.2
+* Upgraded to wikitext 1.3
 * [#205](http://scalate.assembla.com/spaces/scalate/tickets/205) Fixed bug where `scalate create` corrupts generated image files on windows
 * [#206](http://scalate.assembla.com/spaces/scalate/tickets/206) Fixed bad output generated from the `{children}` confluence macro
 * [#207](http://scalate.assembla.com/spaces/scalate/tickets/207) Fixed bug where page titles were not correctly getting set in sitegen project.
