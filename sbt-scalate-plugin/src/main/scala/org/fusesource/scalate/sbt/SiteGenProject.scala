@@ -16,7 +16,8 @@ trait SiteGenProject extends ScalateProject {
   def generateSiteAction = generateSiteTask() describedAs("Generates a static site.")
 
   def generateSiteTask() = task {
-    withContextClassLoader(scalateClassLoader) { classLoader =>
+    withScalateClassLoader { classLoader =>
+      
       // Structural Typing FTW (avoids us doing manual reflection)
       type SiteGenerator = {
         var scalateWorkDir: File

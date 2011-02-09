@@ -1,0 +1,14 @@
+.left
+  h1 Jade Markup
+
+.right
+  :markdown
+    Jade lets you concisely define HTML markup but then easily
+    use wiki syntax for the content sections like this one.
+    
+    Plus you can also embed Scala expressions to code generate
+    html.  For example: 
+
+  ul
+    - for( i <- 1 to 5 )
+      li Item Number #{i} 

@@ -142,6 +142,18 @@ object IOUtil {
     }
   }
 
+  // For ARM
+  def using[R,C <:Closeable](c: C)(func: (C)=>R):R = {
+    try {
+      func(c)
+    } finally {
+      try {
+        c.close
+      } catch {
+        case _ => // ignore
+      }
+    }
+  }
   def copy(in: InputStream, out: OutputStream): Long = {
     var bytesCopied: Long = 0
     val buffer = new Array[Byte](8192)

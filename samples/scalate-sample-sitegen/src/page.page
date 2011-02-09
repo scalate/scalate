@@ -1,0 +1,25 @@
+---
+title: Page Syntax
+--- name:head pipeline:plain
+<style type='text/css'>
+/* This will go into the header */
+.footie {
+  text-align:center; 
+  position:absolute; 
+  bottom:0px; 
+  padding:2em;
+}
+</style>
+
+--- name:content
+#### Page Markup
+
+The page syntax allows you to define meta data header and then multiple
+content parts.  The header is in YAML format but if first filtered through ssp.  Each of the content part can be configured with a custom processing
+pipeline. The default pipeline is markdown.
+
+--- name:footer pipeline:jade
+
+.footie 
+  p This is the footer content part.  It's being processed with jade.
+  p Copyright(C) 2011 FuseSource Corp

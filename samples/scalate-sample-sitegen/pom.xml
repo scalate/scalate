@@ -38,8 +38,20 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -47,6 +59,17 @@
       <artifactId>scalate-wikitext</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-page</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.scalamd</groupId>
+      <artifactId>scalamd</artifactId>
+      <version>${scalamd-version}</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-nop</artifactId>

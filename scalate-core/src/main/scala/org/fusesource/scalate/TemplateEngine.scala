@@ -186,6 +186,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   // dependencies.
   attempt( filters += "plain" -> PlainFilter )
   attempt( filters += "javascript"-> JavascriptFilter )
+  attempt( filters += "css"-> CssFilter )
+  attempt( filters += "cdata"-> CdataFilter )
   attempt( filters += "escaped"->EscapedFilter )
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy

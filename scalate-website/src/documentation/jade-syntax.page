@@ -1306,14 +1306,12 @@ Scalate has the following filters defined:
 > Surrounds the filtered text with `<script>` and CDATA tags.
 > Useful for including inline Javascript.
 
-<!--
 #### `:css` {#css-filter}
 > Surrounds the filtered text with `<style>` and CDATA tags.
 Useful for including inline CSS.
 
 #### `:cdata` {#cdata-filter}
 > Surrounds the filtered text with CDATA tags.
--->
 
 #### `:escaped` {#escaped-filter}
 > Works the same as plain, but HTML-escapes the text
@@ -1334,15 +1332,15 @@ Embedded Ruby code is evaluated in the same context as the Haml template.
 
 #### `:sass` {#sass-filter}
 Parses the filtered text with Sass to produce CSS output.
+-->
 
 #### `:textile` {#textile-filter}
-Parses the filtered text with [Textile](http://www.textism.com/tools/textile).
-Only works if [RedCloth](http://redcloth.org) is installed.
--->
+> Parses the filtered text with [Textile](http://www.textism.com/tools/textile).
+Only works the scalate-wikitext module is found on the class path.
 
 #### `:markdown` {#markdown-filter}
 > Parses the filtered text with [Markdown](http://daringfireball.net/projects/markdown).
-> Only works if [MarkdownJ](http://markdownj.org/) is found on the class path.
+Only works if [scalamd](http://scalamd.fusesource.org/) or [MarkdownJ](http://markdownj.org/) is found on the class path.
 
 <!--
 ## Custom Filters

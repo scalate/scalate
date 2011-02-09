@@ -135,17 +135,18 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
   def filter(context: RenderContext, content: String) = {
     val page = parse(context, content)
-    context.withAttributes(page.headers) {
-      var rc = ""
-      page.parts.foreach{ case(name, part)=>
-        if ( name!=default_name ) {
-          context.attributes(name) = part.render(context)
-        } else {
-          rc = part.render(context)
-        }
-      }
-      rc
+    page.headers.foreach{ case(name, value)=>
+      context.attributes(name) = value
     }
+    var rc = ""
+    page.parts.foreach{ case(name, part)=>
+      if ( name!=default_name ) {
+        context.attributes(name) = part.render(context)
+      } else {
+        rc = part.render(context)
+      }
+    }
+    rc
   }
 
   def parse(context: RenderContext, content: String):Page =
@@ -182,7 +183,8 @@ object PageFilter extends Filter with TemplateEngineAddOn {
       case Some(PagePart(Nil, content))  =>
         val yaml = new Yaml();
         val data = context.engine.filter("ssp").map( _.filter(context, content.value) ).getOrElse(content.value)
-        Option(collection.JavaConversions.asScalaMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]]))
+        val result = collection.JavaConversions.asScalaMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]])
+        Option(result)
       case _ =>
         None
     }

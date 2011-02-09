@@ -18,8 +18,9 @@
 
 -@ var body: String
 -@ var title : String = "Scalate Sample"
+-@ var footer : String = ""
+-@ var head : String = ""
 - response.setContentType("text/html")
-
 -# Only include the console if it's available and the engine is in dev mode.
 - val include_console = engine.isDevelopmentMode && engine.resourceLoader.exists("/org/fusesource/scalate/console/console_head.scaml")
 
@@ -50,7 +51,8 @@
     
     %title
       = title
-  
+    !~~ head
+    
   %body
     #navigation
       .wrapper
@@ -72,7 +74,7 @@
     
     #footer
       .wrapper
-        %br
+        !~~ footer
         - if (include_console)
           = include("/org/fusesource/scalate/console/console.scaml")
         
