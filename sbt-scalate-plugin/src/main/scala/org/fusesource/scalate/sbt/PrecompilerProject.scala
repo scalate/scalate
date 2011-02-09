@@ -47,7 +47,7 @@ trait PrecompilerProject extends ScalateProject {
       precompiler.execute()
       None
     }
-  }
+  } named ("precompile-templates")
 
   override def packageAction = super.packageAction dependsOn precompileTemplates
 }
