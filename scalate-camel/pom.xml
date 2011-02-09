@@ -30,6 +30,7 @@
   <artifactId>scalate-camel</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Camel component for scalate</description>
 
   <properties>

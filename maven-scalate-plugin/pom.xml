@@ -31,6 +31,7 @@
   <artifactId>maven-scalate-plugin</artifactId>
   <packaging>maven-plugin</packaging>
 
+  <name>${project.artifactId}</name>
   <description>A Scalate Maven Plugin</description>
 
   <prerequisites>

@@ -30,6 +30,7 @@
   <artifactId>scalate-sample</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Sample Web Application</description>
 
   <properties>

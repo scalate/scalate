@@ -30,6 +30,7 @@
   <artifactId>scalate-wikitext</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>WikiText Integration for Markdown and Confluence wiki notations</description>
 
   <dependencies>

@@ -30,6 +30,7 @@
   <artifactId>scalate-archetype-jersey</artifactId>
   <packaging>maven-archetype</packaging>
 
+  <name>${project.artifactId}</name>
   <description>An archetype which creates an empty Scalate web application</description>
 
   <build>

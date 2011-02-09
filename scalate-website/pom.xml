@@ -30,6 +30,7 @@
   <artifactId>scalate-website</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>The Scalate Website and Documentation</description>
 
   <properties>

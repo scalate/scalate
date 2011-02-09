@@ -30,6 +30,7 @@
   <artifactId>scalate-sample-scuery</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Sample Scuery Web Application</description>
 
   <properties>

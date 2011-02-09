@@ -31,6 +31,7 @@
   <artifactId>scalate-sample-spring-mvc</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Sample web application showing Spring MVC integration for a Scalate web application</description>
 
   <dependencies>

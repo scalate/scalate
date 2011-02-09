@@ -30,6 +30,7 @@
   <artifactId>scalate-sample-sitegen</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Sample Site Generation Web Application</description>
 
   <properties>

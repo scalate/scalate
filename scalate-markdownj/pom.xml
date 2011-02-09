@@ -30,6 +30,7 @@
   <artifactId>scalate-markdownj</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>A Scalate filter that uses MarkdownJ</description>
 
   <properties>

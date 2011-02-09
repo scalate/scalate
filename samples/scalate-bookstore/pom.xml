@@ -30,6 +30,7 @@
   <artifactId>scalate-bookstore</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Sample BookStore Web Application</description>
 
   <properties>

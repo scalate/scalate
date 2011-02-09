@@ -30,6 +30,7 @@
   <artifactId>scalate-guice</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Guice integration for a Jersey based Scalate web application</description>
 
   <properties>

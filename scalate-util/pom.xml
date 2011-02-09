@@ -30,6 +30,7 @@
   <artifactId>scalate-util</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Utilities</description>
 
   <dependencies>

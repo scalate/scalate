@@ -30,6 +30,7 @@
   <artifactId>scalate-jsp-converter</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Converter of JSP to SSP</description>
 
   <properties>

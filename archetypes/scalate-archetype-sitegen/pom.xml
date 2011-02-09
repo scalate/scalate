@@ -30,6 +30,7 @@
   <artifactId>scalate-archetype-sitegen</artifactId>
   <packaging>maven-archetype</packaging>
   
+  <name>${project.artifactId}</name>
   <description>An archetype which creates an empty Scalate static website generation project</description>
 
   <build>

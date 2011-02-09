@@ -30,6 +30,7 @@
   <artifactId>scalate-war</artifactId>
   <packaging>war</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Base Web Application</description>
 
   <properties>

@@ -29,6 +29,7 @@
   
   <artifactId>scalate-test</artifactId>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Test Support Classes</description>
 
   <dependencies>

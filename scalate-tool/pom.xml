@@ -30,6 +30,7 @@
   <artifactId>scalate-tool</artifactId>
   <packaging>bundle</packaging>
 
+  <name>${project.artifactId}</name>
   <description>Scalate Command Line Tool</description>
 
   <properties>

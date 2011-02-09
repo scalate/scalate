@@ -32,6 +32,8 @@
 
   <packaging>pom</packaging>
 
+  <name>${project.artifactId}</name>
+
   <modules>
     <module>scalate-sample</module>
     <module>scalate-sample-sitegen</module>
