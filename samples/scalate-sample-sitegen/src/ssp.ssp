@@ -1,0 +1,13 @@
+<h1>SSP Markup</h1>
+
+<p>    
+  SSP is like JSP, but for Scala instead of Java.
+  You can embed Scala expressions to code generate
+  html.  For example:
+</p>    
+     
+<ul>
+<% for( i <- 1 to 5 ) { %>
+  <li>Item Number ${i}</li>
+<% } %>
+<ul>

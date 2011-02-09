@@ -1,4 +1,4 @@
-h1. Pygmentize sample
+# Pygmentize sample
 
 Here is some code
 
