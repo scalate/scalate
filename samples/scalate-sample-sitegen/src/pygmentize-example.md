@@ -2,7 +2,7 @@
 
 Here is some code
 
-{pygmentize:java}
+{pygmentize::java}
 for (String x : cheese) {
   System.out.println("Hello " + x);
 }
