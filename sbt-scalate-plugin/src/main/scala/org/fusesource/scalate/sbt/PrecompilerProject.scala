@@ -20,8 +20,7 @@ trait PrecompilerProject extends ScalateProject {
   def precompileTemplatesAction = precompileTemplatesTask() describedAs("Precompiles the Scalate templates")
 
   def precompileTemplatesTask() = task {
-    withContextClassLoader(scalateClassLoader) { classLoader =>
-      Thread.currentThread.setContextClassLoader(scalateClassLoader)
+    withScalateClassLoader { classLoader =>
 
       // Structural Typing FTW (avoids us doing manual reflection)
       type Precompiler = {
@@ -56,5 +55,5 @@ trait PrecompilerProject extends ScalateProject {
     }
   }
 
-  override def compileAction = super.compileAction dependsOn(precompileTemplates)
+  override def packageAction = super.packageAction dependsOn precompileTemplates
 }
