@@ -47,7 +47,7 @@ trait SiteGenProject extends ScalateProject {
       generator.execute()
       None
     }
-  }
+  } named ("generate-site")
 
   //
   // We don't use a standard directory layout
