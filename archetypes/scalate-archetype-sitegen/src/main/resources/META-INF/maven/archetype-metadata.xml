@@ -19,46 +19,33 @@
 
 -->
 
-<archetype-descriptor name="scalate-archetype-empty">
+<archetype-descriptor name="scalate-archetype-sitegen">
   <requiredProperties>
   </requiredProperties>
-  <fileSets>
-    <!-- store the pom -->
+  <fileSets>    
+    <!-- Filter Text Files -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory/>
-      <includes>
-        <include>pom.xml</include>
-      </includes>
-      <excludes>
-        <excludes>**/*</excludes>
-      </excludes>
-    </fileSet>
-    <!-- place main sources -->
-    <fileSet encoding="UTF-8" filtered="false" packaged="true">
-      <directory>ext</directory>
-      <includes>
-        <include>*.scala</include>
-        <include>**/*.scala</include>
-      </includes>
-    </fileSet>
-    <!-- place templates -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>src</directory>
+      <directory>/</directory>
       <includes>
         <include>**/*</include>
       </includes>
       <excludes>
         <exclude>*.ico</exclude>
         <exclude>**/*.ico</exclude>
-        <exclude>images/**/*</exclude>
+        <exclude>**/*.png</exclude>
+        <exclude>**/*.gif</exclude>
+        <exclude>**/*.jpg</exclude>
       </excludes>
     </fileSet>
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
-      <directory>src</directory>
+    <!-- Don't Filter The Binaries -->
+    <fileSet filtered="false" packaged="false">
+      <directory>/</directory>
       <includes>
-        <include>images/**/*</include>
         <include>*.ico</include>
         <include>**/*.ico</include>
+        <include>**/*.png</include>
+        <include>**/*.gif</include>
+        <include>**/*.jpg</include>
       </includes>
     </fileSet>
   </fileSets>

@@ -43,22 +43,12 @@
 
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
+        <directory>${basedir}/src/main/resources</directory>
         <filtering>true</filtering>
-        <excludes>
-          <exclude>**/*.ico</exclude>
-          <exclude>**/*.png</exclude>
-          <exclude>**/*.jpg</exclude>
-        </excludes>
       </resource>
       <resource>
-        <directory>src/main/resources</directory>
+        <directory>${basedir}/target/resources</directory>
         <filtering>false</filtering>
-        <includes>
-          <include>**/*.ico</include>
-          <include>**/*.png</include>
-          <include>**/*.jpg</include>
-        </includes>
       </resource>
     </resources>
 
@@ -84,7 +74,7 @@
                     from elsewhere we could remove this crap
                  -->
 
-                <copy todir="${basedir}/src/main/resources/archetype-resources" overwrite="false" verbose="true">
+                <copy todir="${basedir}/target/resources/archetype-resources" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../samples/scalate-sample-sitegen">
                     <include name="src/**" />
                     <include name="ext/**" />
