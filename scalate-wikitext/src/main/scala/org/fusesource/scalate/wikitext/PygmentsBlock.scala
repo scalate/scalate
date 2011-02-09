@@ -27,9 +27,23 @@ import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate.util.{Log, IOUtil}
+import org.fusesource.scalate._
+import org.fusesource.scalate.filter.{Pipeline, Filter}
 
-object Pygmentize extends Log {
 
+object Pygmentize extends Log with Filter with TemplateEngineAddOn {
+
+  /**
+   * Add the markdown filter to the template engine.
+   */
+  def apply(te: TemplateEngine) = {
+    te.filters += "pygmentize" -> Pygmentize
+  }  
+  
+  def filter(context: RenderContext, content: String): String = {
+    pygmentize(content)
+  }
+  
   // lets calculate once on startup
   private lazy val _installed: Boolean = {
     try {
@@ -108,7 +122,7 @@ object Pygmentize extends Log {
     }
   }
 
-  def pygmentize(data:String, options:String):String = {
+  def pygmentize(data:String, options:String=""):String = {
 
     var lang1 = "text"
     var lines = false
@@ -134,7 +148,7 @@ object Pygmentize extends Log {
     // Now look for header sections...
     val header_re = """(?s)\n------+\s*\n\s*([^:\s]+)\s*:\s*([^\n]+)\n------+\s*\n(.*)""".r
 
-    header_re.findFirstMatchIn(data) match {
+    header_re.findFirstMatchIn("\n"+data) match {
       case Some(m1) =>
 
         lang1 = m1.group(1)

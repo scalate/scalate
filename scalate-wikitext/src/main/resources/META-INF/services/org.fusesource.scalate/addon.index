@@ -15,4 +15,5 @@
 # limitations under the License.
 org.fusesource.scalate.wikitext.ConfluenceFilter
 org.fusesource.scalate.wikitext.TextileFilter
+org.fusesource.scalate.wikitext.Pygmentize
 
