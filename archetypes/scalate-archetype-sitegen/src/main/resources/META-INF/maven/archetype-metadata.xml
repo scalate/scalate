@@ -23,30 +23,23 @@
   <requiredProperties>
   </requiredProperties>
   <fileSets>    
-    <!-- Filter Text Files -->
+
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>/</directory>
+      <directory></directory>
+      <includes>
+        <include>project/**</include>
+      </includes>
+    </fileSet>
+
+    <fileSet filtered="false" packaged="false">
+      <directory></directory>
       <includes>
         <include>**/*</include>
       </includes>
       <excludes>
-        <exclude>*.ico</exclude>
-        <exclude>**/*.ico</exclude>
-        <exclude>**/*.png</exclude>
-        <exclude>**/*.gif</exclude>
-        <exclude>**/*.jpg</exclude>
+        <exclude>pom.xml</exclude>
+        <exclude>project/**</exclude>
       </excludes>
-    </fileSet>
-    <!-- Don't Filter The Binaries -->
-    <fileSet filtered="false" packaged="false">
-      <directory>/</directory>
-      <includes>
-        <include>*.ico</include>
-        <include>**/*.ico</include>
-        <include>**/*.png</include>
-        <include>**/*.gif</include>
-        <include>**/*.jpg</include>
-      </includes>
     </fileSet>
   </fileSets>
 </archetype-descriptor>
