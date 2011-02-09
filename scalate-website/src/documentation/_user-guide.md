@@ -722,7 +722,7 @@ Otherwise you can just add this to your pom.xml
     <plugin>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>maven-scalate-plugin</artifactId>
-      <version>${scalate-version}</version>
+      <version>${project_version}</version>
       <executions>
         <execution>
           <goals>
@@ -737,13 +737,33 @@ Otherwise you can just add this to your pom.xml
 
 #### Precompiling templates with SBT
 
-You could try the [sbt-scalate-plugin](http://github.com/Yasushi/sbt-scalate-plugin) if you use SBT as your main build tool.
+The [archetypes](archetypes.html) created by the [scalate tool](tool.html)
+have their SBT build configuration setup so that the templates are
+precompiled before they are packaged.  If you need to add the precompiler
+to an existing sbt project then you need to first add the plugin
+dependency:
+
+    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project_version}"
+
+And then in your WebProject, you will need to add the
+`org.fusesource.scalate.sbt.PrecompilerProject` trait.  And then make sure
+the Scalate dependencies are added to the project.  For example:
+
+    class Project(info: ProjectInfo) extends 
+          DefaultWebProject(info) with 
+          PrecompilerProject {
+      
+      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "${project_version}" 
+      lazy val servlet = "javax.servlet" % "servlet-api"% "2.5" 
+      lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
+      
+    }
 
 ### Using Scalate on GAE 
 
 If you are using Scalate on [Google AppEngine](http://code.google.com/appengine/) (GAE) then you will probably want to precompile all your templates before you deploy them; so that each request is processed very quickly - so app engine won't kill your thread midway through.
 
-To see an example of a Scalate project already setup using GAE try the [the hello-scalate-appengine project](http://github.com/Yasushi/hello-scalate-appengine) by Yasushi Abe who also created the   [sbt-scalate-plugin](http://github.com/Yasushi/sbt-scalate-plugin).
+To see an example of a Scalate project already setup using GAE try the [the hello-scalate-appengine project](http://github.com/Yasushi/hello-scalate-appengine) by Yasushi Abe.
 
 ### Possible Gotchas
 
