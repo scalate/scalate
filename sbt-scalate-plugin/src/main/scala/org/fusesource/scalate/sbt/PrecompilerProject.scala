@@ -42,7 +42,7 @@ trait PrecompilerProject extends ScalateProject {
       precompiler.warSourceDirectory = webappPath.asFile
       precompiler.resourcesSourceDirectory = mainResourcesPath.asFile
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
-      precompiler.classesDirectory = mainCompilePath.asFile
+      precompiler.classesDirectory = (temporaryWarPath / "WEB-INF" / "classes").asFile
       precompiler.templates = {
         val list = new ju.ArrayList[String]
         list ++ precompilerTemplates
