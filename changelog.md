@@ -15,7 +15,7 @@
 * upgrade to ScalaMD version 1.5
 * [#190](http://scalate.assembla.com/spaces/scalate/tickets/190) sitegen reports on the template file it failed on
 * [#191](http://scalate.assembla.com/spaces/scalate/tickets/191) templates with missing attributes are ignored and a warning is generated
-* [#193](http://scalate.assembla.com/spaces/scalate/tickets/193) cache the evaluation of whether pygmentize is installed; which typically doesn't change during an application run
+* [#192](http://scalate.assembla.com/spaces/scalate/tickets/192) cache the evaluation of whether pygmentize is installed; which typically doesn't change during an application run
 * updated Spring MVC integration: added support for order, prefix, and suffix properties. Removed requirement to use "render:" in view name. Layout render strategy passes the model to the render context.
 * [#194](http://scalate.assembla.com/spaces/scalate/tickets/194) added support for a textile filter.
 * cleaned up the maven poms so that the scala and logback artifacts are not pushed as transitive dependencies to our users.
@@ -29,6 +29,16 @@
 * [#202](http://scalate.assembla.com/spaces/scalate/tickets/202) added support for the Boot class feature on all TemplateEngines
 * [#203](http://scalate.assembla.com/spaces/scalate/tickets/203) moved the sitegen and precompiler core logic into scalate-core so it can be reused by other build tools 
 * [#201](http://scalate.assembla.com/spaces/scalate/tickets/201) changed the Maven plugin so that it uses the Scalate version defined in the project's dependency list.
+* [#210](http://scalate.assembla.com/spaces/scalate/tickets/210) Fixed template Cache Bug: If scalate can't figure out the last update time of a resource it always considers it stale
+* Upgraded to Jersey 1.5
+* Upgraded to wikitext 1.2
+* [#205](http://scalate.assembla.com/spaces/scalate/tickets/205) Fixed bug where `scalate create` corrupts generated image files on windows
+* [#206](http://scalate.assembla.com/spaces/scalate/tickets/206) Fixed bad output generated from the `{children}` confluence macro
+* [#207](http://scalate.assembla.com/spaces/scalate/tickets/207) Fixed bug where page titles were not correctly getting set in sitegen project.
+* [#208](http://scalate.assembla.com/spaces/scalate/tickets/208) Added CSS and CDATA filters
+* [#209](http://scalate.assembla.com/spaces/scalate/tickets/209) Fixed bug where the `{include}` macro does trim the included file name
+* [#211](http://scalate.assembla.com/spaces/scalate/tickets/211) Add SBT plugins for the precompiling and sitegen tasks
+* [#193](http://scalate.assembla.com/spaces/scalate/tickets/193) Add a :pygmentize filter for use in jade/scaml
 
 [Scalate 1.3.2](http://scalate.fusesource.org/blog/releases/release-1-3-2.html), released 2010-11-24
 ----

@@ -48,7 +48,9 @@ templates.
   creating layouts and refer to parts of the generated template by
   [navigating the **html**
   section](http://scalate.fusesource.org/documentation/mustache.html#Layouts).
+* Added pygmentize, css, and cdata filters
 * Added Textile support
+* Added SBT plugins to support precompiling templates and executing sitegen projects
 * Improved OSGi support
 
 For more detail see the [Full Change
