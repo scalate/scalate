@@ -35,8 +35,8 @@ object Website {
   val project_forums_url= "http://scalate.fusesource.org/community.html"
   val project_wiki_url= "http://wiki.github.com/scalate/scalate/"
   val project_logo= "/images/project-logo.png"
-  val project_version= "1.3.2"
-  val project_snapshot_version= "1.4.0-SNAPSHOT"
+  val project_version= "1.4.0"
+  val project_snapshot_version= "1.5.0-SNAPSHOT"
 
   val github_page= "http://github.com/scalate/scalate"
   val git_user_url= "git://github.com/scalate/scalate.git"
