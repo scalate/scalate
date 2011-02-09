@@ -24,11 +24,10 @@ trait PrecompilerProject extends ScalateProject {
 
       // Structural Typing FTW (avoids us doing manual reflection)
       type Precompiler = {
-        var warSourceDirectory: File
-        var resourcesSourceDirectory: File
+        var sources: Array[File]
         var workingDirectory: File
-        var classesDirectory: File
-        var templates: ju.ArrayList[String]
+        var targetDirectory: File
+        var templates: Array[String]
         var info: {def apply(v1:String):Unit}
         var contextClass: String
         var bootClassName:String
@@ -39,15 +38,10 @@ trait PrecompilerProject extends ScalateProject {
       val precompiler = classLoader.loadClass(className).newInstance.asInstanceOf[Precompiler]
 
       precompiler.info = (value:String)=>log.info(value)
-      precompiler.warSourceDirectory = webappPath.asFile
-      precompiler.resourcesSourceDirectory = mainResourcesPath.asFile
+      precompiler.sources = Array(webappPath.asFile, mainResourcesPath.asFile)
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
-      precompiler.classesDirectory = (temporaryWarPath / "WEB-INF" / "classes").asFile
-      precompiler.templates = {
-        val list = new ju.ArrayList[String]
-        list ++ precompilerTemplates
-        list
-      }
+      precompiler.targetDirectory = (temporaryWarPath / "WEB-INF" / "classes").asFile
+      precompiler.templates = precompilerTemplates.toArray
       precompiler.contextClass = precompilerContextClass.getOrElse(null)
       precompiler.bootClassName = scalateBootClassName.getOrElse(null)
       precompiler.execute()

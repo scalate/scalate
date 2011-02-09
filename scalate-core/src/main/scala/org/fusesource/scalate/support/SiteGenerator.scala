@@ -37,9 +37,8 @@ import SiteGenerator._
  * @author <a href="http://macstrac.blogspot.com">James Strachan</a>
  */
 class SiteGenerator {
-  var scalateWorkDir: File = _
-  var warSourceDirectory: File = _
-  var resourcesSourceDirectory: File = _
+  var workingDirectory: File = _
+  var sources = Array[File]()
   var targetDirectory: File = _
   var templateProperties: ju.Map[String,String] = _
   var bootClassName:String = _
@@ -49,17 +48,25 @@ class SiteGenerator {
   def execute() = {
     targetDirectory.mkdirs();
 
+    if(sources==null || sources.isEmpty ) {
+      throw new IllegalArgumentException("The sources property not properly set")
+    }
+
     info("Generating static website from Scalate Templates and wiki files...");
     info("template properties: " + templateProperties)
 
-    var engine = new DummyTemplateEngine(List(resourcesSourceDirectory, warSourceDirectory))
+    var engine = new DummyTemplateEngine(sources)
     engine.classLoader = Thread.currentThread.getContextClassLoader
-    engine.workingDirectory = scalateWorkDir
-    engine.resourceLoader = new FileResourceLoader(Some(warSourceDirectory))
-
+        
     if( bootClassName!=null ) {
       engine.bootClassName = bootClassName
     }
+    
+    if( workingDirectory!=null ) {
+      engine.workingDirectory = workingDirectory
+      workingDirectory.mkdirs();
+    }
+    
     engine.boot
 
     val attributes: Map[String,Any] = if (templateProperties != null) {
@@ -121,8 +128,9 @@ class SiteGenerator {
 
     def processRootDir(rootDir: File, copyFile: Boolean = true) = processFile(rootDir, "", rootDir, copyFile)
 
-    processRootDir(resourcesSourceDirectory, false)
-    processRootDir(warSourceDirectory)
+    sources.reverse.foreach { dir=>
+      processRootDir(dir, sources.head == dir)
+    }
 
     //this.project.add(targetDirectory.getCanonicalPath);
 
@@ -142,7 +150,7 @@ class SiteGenerator {
 
 }
 
-class DummyTemplateEngine(sourceDirectories: List[File]) extends TemplateEngine(sourceDirectories) {
+class DummyTemplateEngine(sourceDirectories: Array[File]) extends TemplateEngine(sourceDirectories) {
   override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
   private val responseClassName = "_root_."+classOf[DummyResponse].getName

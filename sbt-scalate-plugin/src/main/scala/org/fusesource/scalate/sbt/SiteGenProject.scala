@@ -20,9 +20,8 @@ trait SiteGenProject extends ScalateProject {
       
       // Structural Typing FTW (avoids us doing manual reflection)
       type SiteGenerator = {
-        var scalateWorkDir: File
-        var warSourceDirectory: File
-        var resourcesSourceDirectory: File
+        var sources: Array[File]
+        var workingDirectory: File
         var targetDirectory: File
         var templateProperties: ju.Map[String,String]
         var bootClassName:String
@@ -34,9 +33,8 @@ trait SiteGenProject extends ScalateProject {
       val generator = classLoader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
       generator.info = (value:String)=>log.info(value)
-      generator.scalateWorkDir = temporaryWarPath.asFile
-      generator.warSourceDirectory = webappPath.asFile
-      generator.resourcesSourceDirectory = mainResourcesPath.asFile
+      generator.sources = Array(webappPath.asFile, mainResourcesPath.asFile)
+      generator.workingDirectory = temporaryWarPath.asFile
       generator.targetDirectory = sitegenOutputPath.asFile
       generator.templateProperties = {
         val jclMap = new jcl.HashMap[String, String]

@@ -103,26 +103,25 @@ class PrecompileMojo extends AbstractMojo {
     try {
       // Structural Typing FTW (avoids us doing manual reflection)
       type Precompiler = {
-        var warSourceDirectory: File
-        var resourcesSourceDirectory: File
+        var sources: Array[File]
         var workingDirectory: File
-        var classesDirectory:File
-        var templates:ArrayList[String]
-        var contextClass:String
-        var bootClassName:String
+        var targetDirectory: File
+        var templates: Array[String]
         var info: {def apply(v1:String):Unit}
-        def execute():Unit
+        var contextClass: String
+        var bootClassName:String
+        def execute(): Unit
       }
 
       val precompilerClassName = "org.fusesource.scalate.support.Precompiler"
       val precompiler = loader.loadClass(precompilerClassName).newInstance.asInstanceOf[Precompiler]
 
       precompiler.info = (value:String)=>getLog.info(value)
-      precompiler.warSourceDirectory = this.warSourceDirectory
-      precompiler.resourcesSourceDirectory = this.resourcesSourceDirectory
+      
+      precompiler.sources = Array(this.warSourceDirectory, this.resourcesSourceDirectory)
       precompiler.workingDirectory = this.targetDirectory
-      precompiler.classesDirectory = this.classesDirectory
-      precompiler.templates = this.templates
+      precompiler.targetDirectory = this.classesDirectory      
+      precompiler.templates = this.templates.toList.toArray
       precompiler.contextClass = this.contextClass
       precompiler.bootClassName = this.bootClassName
       precompiler.execute
