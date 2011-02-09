@@ -8,7 +8,7 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
-trait ScalateProject extends BasicWebScalaProject with MavenStyleWebScalaPaths {
+trait ScalateProject extends BasicScalaProject with MavenStyleScalaPaths {
   def scalateBootClassName: Option[String] = None
 
   /**

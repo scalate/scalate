@@ -7,10 +7,12 @@ import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
 /**
- * Precompiles Scalate templates.  The templates will be compiled into Scala
- * sources, then built as part of the standard compile action.
+ * Precompiles the templates as part of the package action.  For a web project,
+ * please instead mix in {{{org.fusesource.scalate.sbt.PrecompilerWebProject}}}.
  */
 trait PrecompilerProject extends ScalateProject {
+  def precompilerSourcesPath: PathFinder = mainResourcesPath
+  def precompilerCompilePath: Path = mainCompilePath
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
   def precompilerTemplates: List[String] = Nil
   def precompilerContextClass: Option[String] = None
@@ -38,9 +40,9 @@ trait PrecompilerProject extends ScalateProject {
       val precompiler = classLoader.loadClass(className).newInstance.asInstanceOf[Precompiler]
 
       precompiler.info = (value:String)=>log.info(value)
-      precompiler.sources = Array(webappPath.asFile, mainResourcesPath.asFile)
+//      precompiler.sources = precompilerSourcesPath.get.toArray
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
-      precompiler.targetDirectory = (temporaryWarPath / "WEB-INF" / "classes").asFile
+      precompiler.targetDirectory = precompilerCompilePath.asFile
       precompiler.templates = precompilerTemplates.toArray
       precompiler.contextClass = precompilerContextClass.getOrElse(null)
       precompiler.bootClassName = scalateBootClassName.getOrElse(null)
@@ -51,3 +53,12 @@ trait PrecompilerProject extends ScalateProject {
 
   override def packageAction = super.packageAction dependsOn precompileTemplates
 }
+
+/**
+ * Supports precompilation of templates in a web project.
+ */
+trait PrecompilerWebProject extends PrecompilerProject with MavenStyleWebScalaPaths {
+  override def precompilerSourcesPath: PathFinder = webappPath +++ super.precompilerSourcesPath
+  override def precompilerCompilePath: Path = temporaryWarPath / "WEB-INF" / "classes"
+}
+

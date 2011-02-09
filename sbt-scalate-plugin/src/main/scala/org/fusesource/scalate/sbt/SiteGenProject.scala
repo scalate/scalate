@@ -6,7 +6,7 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
-trait SiteGenProject extends ScalateProject {
+trait SiteGenProject extends ScalateProject with MavenStyleWebScalaPaths {
   
   def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
