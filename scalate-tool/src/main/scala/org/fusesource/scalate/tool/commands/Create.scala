@@ -20,11 +20,13 @@ package org.fusesource.scalate.tool.commands
 
 import java.{util => ju, lang => jl}
 import java.util.zip.ZipInputStream
-import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
+import java.io._
 import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues}
 import org.osgi.service.command.CommandSession
 import java.util.regex.Pattern
+import org.fusesource.scalate.util.IOUtil._
+
 
 /**
  * The 'scalate create' sub command.
@@ -63,8 +65,7 @@ class Create extends Action {
   var archetypeArtifactId = ""
   var name = ""
 
-
-
+  val binarySuffixes = List(".png", ".ico", ".gif", ".jpg", ".jpeg", ".bmp")
 
 /*
   TODO
@@ -84,6 +85,9 @@ class Create extends Action {
   def archetypeNameArray = archetypes.keysIterator.toSeq.sortWith(_ < _).toArray
 
   def archetypeNames = archetypes.keysIterator.toSeq.sortWith(_ < _).mkString("(", ", ", ")")
+
+  protected val webInfResources = "src/main/webapp/WEB-INF/resources"
+  protected val sourcePathRegexPattern = "(src/(main|test)/(java|scala)/)(.*)".r.pattern
 
   def execute(session: CommandSession): jl.Integer = {
     def info(s: => String = "") = session.getConsole.println(s)
@@ -118,32 +122,46 @@ class Create extends Action {
                 groupId + " artifactId: " + artifactId + " version: " + version
                 + " in directory: " + outputDir)
 
-        val zip = new ZipInputStream(new FileInputStream(file))
-        try {
+        using(new ZipInputStream(new FileInputStream(file))) { zip=>
           var ok = true
           while (ok) {
             val entry = zip.getNextEntry
             if (entry == null) {
               ok = false
-            }
-            else {
+            } else {
               val fullName = entry.getName
               if (!entry.isDirectory && fullName.startsWith(zipEntryPrefix)) {
                 name = fullName.substring(zipEntryPrefix.length)
                 val longSize = entry.getSize
                 val size = longSize.toInt
                 debug("processing resource: " + name)
-                val bos = new ByteArrayOutputStream()
-                val buffer = new Array[Byte](64 * 1024)
-                var bytes = 1
-                while (bytes > 0) {
-                  bytes = zip.read(buffer)
-                  if (bytes > 0) {
-                    bos.write(buffer, 0, bytes)
+
+                val idx = name.lastIndexOf('/')
+                val matcher = sourcePathRegexPattern.matcher(name)
+                val dirName = if (packageName.length > 0 && idx > 0 && matcher.matches) {
+                  val prefix = matcher.group(1)
+                  outputDir + "/" + prefix + packageName.replace('.', '/') + "/" + name.substring(prefix.length)
+                } else if (packageName.length > 0 && name.startsWith(webInfResources)) {
+                  outputDir + "/src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/resources" + name.substring(webInfResources.length)
+                } else {
+                  outputDir + "/" + name
+                }
+
+                // lets replace properties...
+                val file = new File(dirName)
+                file.getParentFile.mkdirs
+                using(new FileOutputStream(file)) { out =>
+                  if( binarySuffixes.find( name.endsWith(_) ).isDefined ) {
+                    // binary file?  don't transform.
+                    copy(zip, out)
+                  } else {
+                    // text file...
+                    val bos = new ByteArrayOutputStream()
+                    copy(zip, bos)
+                    val text = new String(bos.toByteArray, "UTF-8")
+                    out.write(transformContents(text).getBytes())
                   }
                 }
-                val text = new String(bos.toByteArray)
-                processResource(text)
               }
               zip.closeEntry
             }
@@ -156,37 +174,10 @@ class Create extends Action {
           info("  mvn jetty:run")
           info()
 
-        } finally {
-          zip.close
         }
         return 0
       }
     }
-  }
-
-  protected val webInfResources = "src/main/webapp/WEB-INF/resources"
-  protected val sourcePathRegexPattern = "(src/(main|test)/(java|scala)/)(.*)".r.pattern
-
-  protected def processResource(fileContents: String): Unit = {
-    val idx = name.lastIndexOf('/')
-    val matcher = sourcePathRegexPattern.matcher(name)
-    val dirName = if (packageName.length > 0 && idx > 0 && matcher.matches) {
-      val prefix = matcher.group(1)
-      outputDir + "/" + prefix + packageName.replace('.', '/') + "/" + name.substring(prefix.length)
-    }
-    else if (packageName.length > 0 && name.startsWith(webInfResources)) {
-      outputDir + "/src/main/webapp/WEB-INF/" + packageName.replace('.', '/') + "/resources" + name.substring(webInfResources.length)
-    }
-    else {
-      outputDir + "/" + name
-    }
-
-    // lets replace properties...
-    val dir = new File(dirName)
-    dir.getParentFile.mkdirs
-    val out = new FileWriter(dir)
-    out.write(transformContents(fileContents))
-    out.close
   }
 
   protected def transformContents(fileContents: String): String = {
