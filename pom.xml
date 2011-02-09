@@ -234,7 +234,6 @@
     <module>scalate-jsp-converter</module>
     <module>scalate-page</module>
     <module>scalate-markdownj</module>
-    <module>scalate-website</module>
   </modules>
 
   <dependencies>
