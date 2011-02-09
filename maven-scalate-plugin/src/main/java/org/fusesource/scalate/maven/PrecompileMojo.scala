@@ -97,33 +97,37 @@ class PrecompileMojo extends AbstractMojo {
 
     getLog.debug("Found project class loader URLs: " + urls.toList)
     val loader = new URLClassLoader(urls, Thread.currentThread.getContextClassLoader)
+
+    val oldLoader = Thread.currentThread.getContextClassLoader
     Thread.currentThread.setContextClassLoader(loader)
+    try {
+      // Structural Typing FTW (avoids us doing manual reflection)
+      type Precompiler = {
+        var warSourceDirectory: File
+        var resourcesSourceDirectory: File
+        var workingDirectory: File
+        var classesDirectory:File
+        var templates:ArrayList[String]
+        var contextClass:String
+        var bootClassName:String
+        var info: {def apply(v1:String):Unit}
+        def execute():Unit
+      }
 
-    // Structural Typing FTW (avoids us doing manual reflection)
-    type Precompiler = {
-      var warSourceDirectory: File
-      var resourcesSourceDirectory: File
-      var workingDirectory: File
-      var classesDirectory:File
-      var templates:ArrayList[String]
-      var contextClass:String
-      var bootClassName:String
-      var info: {def apply(v1:String):Unit}
-      def execute():Unit
+      val precompilerClassName = "org.fusesource.scalate.support.Precompiler"
+      val precompiler = loader.loadClass(precompilerClassName).newInstance.asInstanceOf[Precompiler]
+
+      precompiler.info = (value:String)=>getLog.info(value)
+      precompiler.warSourceDirectory = this.warSourceDirectory
+      precompiler.resourcesSourceDirectory = this.resourcesSourceDirectory
+      precompiler.workingDirectory = this.targetDirectory
+      precompiler.classesDirectory = this.classesDirectory
+      precompiler.templates = this.templates
+      precompiler.contextClass = this.contextClass
+      precompiler.bootClassName = this.bootClassName
+      precompiler.execute
+    } finally {
+      Thread.currentThread.setContextClassLoader(oldLoader)
     }
-
-    val precompilerClassName = "org.fusesource.scalate.support.Precompiler"
-    val precompiler = loader.loadClass(precompilerClassName).newInstance.asInstanceOf[Precompiler]
-
-    precompiler.info = (value:String)=>getLog.info(value)
-    precompiler.warSourceDirectory = this.warSourceDirectory
-    precompiler.resourcesSourceDirectory = this.resourcesSourceDirectory
-    precompiler.workingDirectory = this.targetDirectory
-    precompiler.classesDirectory = this.classesDirectory
-    precompiler.templates = this.templates
-    precompiler.contextClass = this.contextClass
-    precompiler.bootClassName = this.bootClassName
-    precompiler.execute
   }
-
 }

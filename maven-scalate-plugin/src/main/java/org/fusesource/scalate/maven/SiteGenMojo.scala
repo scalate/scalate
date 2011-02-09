@@ -103,31 +103,38 @@ class SiteGenNoForkMojo extends AbstractMojo {
 
     getLog.debug("Found project class loader URLs: " + urls.toList)
     val loader = new URLClassLoader(urls, Thread.currentThread.getContextClassLoader)
+
+    val oldLoader = Thread.currentThread.getContextClassLoader
     Thread.currentThread.setContextClassLoader(loader)
+    try {
+      
+      // Structural Typing FTW (avoids us doing manual reflection)
+      type SiteGenerator = {
+        var scalateWorkDir: File
+        var warSourceDirectory: File
+        var resourcesSourceDirectory: File
+        var targetDirectory: File
+        var templateProperties: ju.Map[String,String]
+        var bootClassName:String
+        var info: {def apply(v1:String):Unit}
+        def execute():Unit
+      }
 
-    // Structural Typing FTW (avoids us doing manual reflection)
-    type SiteGenerator = {
-      var scalateWorkDir: File
-      var warSourceDirectory: File
-      var resourcesSourceDirectory: File
-      var targetDirectory: File
-      var templateProperties: ju.Map[String,String]
-      var bootClassName:String
-      var info: {def apply(v1:String):Unit}
-      def execute():Unit
+      val className = "org.fusesource.scalate.support.SiteGenerator"
+      val generator = loader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
+
+      generator.info = (value:String)=>getLog.info(value)
+      generator.scalateWorkDir = this.scalateWorkDir
+      generator.warSourceDirectory = this.warSourceDirectory
+      generator.resourcesSourceDirectory = this.resourcesSourceDirectory
+      generator.targetDirectory = this.targetDirectory
+      generator.templateProperties = this.templateProperties
+      generator.bootClassName = this.bootClassName
+      generator.execute
+      
+    } finally {
+      Thread.currentThread.setContextClassLoader(oldLoader)
     }
-
-    val className = "org.fusesource.scalate.support.SiteGenerator"
-    val generator = loader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
-
-    generator.info = (value:String)=>getLog.info(value)
-    generator.scalateWorkDir = this.scalateWorkDir
-    generator.warSourceDirectory = this.warSourceDirectory
-    generator.resourcesSourceDirectory = this.resourcesSourceDirectory
-    generator.targetDirectory = this.targetDirectory
-    generator.templateProperties = this.templateProperties
-    generator.bootClassName = this.bootClassName
-    generator.execute
 
   }
 
