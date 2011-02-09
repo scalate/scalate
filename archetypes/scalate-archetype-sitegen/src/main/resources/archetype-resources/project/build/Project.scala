@@ -1,7 +1,7 @@
 import sbt._
 import org.fusesource.scalate.sbt._
 
-class Project(info: ProjectInfo) extends DefaultWebProject(info) with SiteGenProject {
+class Project(info: ProjectInfo) extends DefaultWebProject(info) with SiteGenWebProject {
 
   lazy val fusesource_snapshot_repo = "FuseSource Snapshots" at
            "http://repo.fusesource.com/nexus/content/repositories/snapshots"
