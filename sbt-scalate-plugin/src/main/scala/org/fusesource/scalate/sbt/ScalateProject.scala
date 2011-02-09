@@ -8,8 +8,9 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
-trait ScalateProject extends BasicScalaProject with MavenStyleScalaPaths {
+trait ScalateProject extends BasicScalaProject {
   def scalateBootClassName: Option[String] = None
+  def scalateSources: PathFinder = mainResources
 
   /**
    * Runs a block of code with the given context class loader.
@@ -27,4 +28,8 @@ trait ScalateProject extends BasicScalaProject with MavenStyleScalaPaths {
       Thread.currentThread.setContextClassLoader(oldLoader)
     }
   }
+}
+
+trait ScalateWebProject extends ScalateProject with WebScalaPaths {
+  override def scalateSources = super.scalateSources +++ webappResources
 }

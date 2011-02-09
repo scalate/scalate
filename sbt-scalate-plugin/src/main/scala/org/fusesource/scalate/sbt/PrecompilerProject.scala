@@ -11,7 +11,6 @@ import scala.collection.jcl.Conversions._
  * please instead mix in {{{org.fusesource.scalate.sbt.PrecompilerWebProject}}}.
  */
 trait PrecompilerProject extends ScalateProject {
-  def precompilerSourcesPath: PathFinder = mainResourcesPath
   def precompilerCompilePath: Path = mainCompilePath
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
   def precompilerTemplates: List[String] = Nil
@@ -40,7 +39,7 @@ trait PrecompilerProject extends ScalateProject {
       val precompiler = classLoader.loadClass(className).newInstance.asInstanceOf[Precompiler]
 
       precompiler.info = (value:String)=>log.info(value)
-//      precompiler.sources = precompilerSourcesPath.get.toArray
+      precompiler.sources = scalateSources.get.toArray map { p: Path => p.asFile }
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
       precompiler.targetDirectory = precompilerCompilePath.asFile
       precompiler.templates = precompilerTemplates.toArray
@@ -57,8 +56,7 @@ trait PrecompilerProject extends ScalateProject {
 /**
  * Supports precompilation of templates in a web project.
  */
-trait PrecompilerWebProject extends PrecompilerProject with MavenStyleWebScalaPaths {
-  override def precompilerSourcesPath: PathFinder = webappPath +++ super.precompilerSourcesPath
+trait PrecompilerWebProject extends PrecompilerProject with ScalateWebProject {
   override def precompilerCompilePath: Path = temporaryWarPath / "WEB-INF" / "classes"
 }
 

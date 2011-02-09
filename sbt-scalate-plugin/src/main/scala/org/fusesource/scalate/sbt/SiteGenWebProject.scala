@@ -6,7 +6,7 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
-trait SiteGenWebProject extends ScalateProject with MavenStyleWebScalaPaths {
+trait SiteGenWebProject extends ScalateWebProject with MavenStyleWebScalaPaths {
   
   def sitegenOutputPath: Path = outputPath / "sitegen"
   def sitegenTemplateProperties: Map[String, String] = Map.empty
@@ -33,7 +33,7 @@ trait SiteGenWebProject extends ScalateProject with MavenStyleWebScalaPaths {
       val generator = classLoader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
       generator.info = (value:String)=>log.info(value)
-      generator.sources = Array(webappPath.asFile, mainResourcesPath.asFile)
+      generator.sources = scalateSources.get.toArray map { p: Path => p.asFile }
       generator.workingDirectory = temporaryWarPath.asFile
       generator.targetDirectory = sitegenOutputPath.asFile
       generator.templateProperties = {
