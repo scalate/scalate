@@ -31,7 +31,7 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") {
   var uri: String = _
 
   override def setOption(option: String) = {
-    uri = option
+    uri = option.trim
   }
 
   def setOption(key: String, value: String) =

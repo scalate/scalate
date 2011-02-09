@@ -54,21 +54,22 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
         <ul>
           {files.map {
           f =>
-            if (f.isDirectory) {
-              val dirXml = showChildren(rootDir, f, level + 1)
-              if (dirXml.isEmpty)
-                dirXml
-              else
-                <li>
-                  {dirXml}
-                </li>
-            } else {
+            debug("{children} processing file '%s'", f)
+            if (f.isFile) {
               val title = Pages.title(f)
               val link = Files.relativeUri(rootDir, f)
+              val child = new File(f.getParentFile, Files.dropExtension(f))
+              debug("{children} checking child '%s'", child)
+              val dirXml = if (child.isDirectory) {
+                showChildren(rootDir, child, level + 1)
+              } else {
+                Nil
+              }
               <li>
                 <a href={link}>
                   {title}
                 </a>
+                {dirXml}
               </li>
             }
         }}
