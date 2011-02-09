@@ -19,34 +19,9 @@
 
 -->
 
-<archetype-descriptor name="scalate-archetype-empty">
-  <requiredProperties>
-<!--
-    <requiredProperty key="scala-version">
-      <defaultValue>${scala-version}</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="jersey-version">
-      <defaultValue>${jersey-version}</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="jetty-version">
-      <defaultValue>${jetty-version}</defaultValue>
-    </requiredProperty>
-    <requiredProperty key="jetty-plugin-version">
-      <defaultValue>${jetty-plugin-version}</defaultValue>
-    </requiredProperty>
--->
-  </requiredProperties>
+<archetype-descriptor name="scalate-archetype-jersey">
   <fileSets>
-    <!-- store the pom -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory/>
-      <includes>
-        <include>pom.xml</include>
-      </includes>
-      <excludes>
-        <excludes>**/*</excludes>
-      </excludes>
-    </fileSet>
+
     <!-- place main sources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
       <directory>src/main/scala</directory>

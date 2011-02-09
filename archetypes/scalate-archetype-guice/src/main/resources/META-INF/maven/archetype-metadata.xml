@@ -20,24 +20,7 @@
 -->
 
 <archetype-descriptor name="scalate-archetype-guice">
-  <!--
-    <requiredProperties>
-      <requiredProperty key="scalaVersion">
-        <defaultValue>${scala.version}</defaultValue>
-      </requiredProperty>
-    </requiredProperties>
-  -->
   <fileSets>
-    <!-- store the pom -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory/>
-      <includes>
-        <include>pom.xml</include>
-      </includes>
-      <excludes>
-        <excludes>**/*</excludes>
-      </excludes>
-    </fileSet>
 
     <!-- place resources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
@@ -45,7 +28,17 @@
       <includes>
         <include>**/*</include>
       </includes>
+      <excludes>
+        <exclude>*.xml</exclude>
+      </excludes>
     </fileSet>
+    <fileSet encoding="UTF-8" filtered="false" packaged="false">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>*.xml</include>
+      </includes>
+    </fileSet>
+    
     <!-- place test sources -->
     <fileSet encoding="UTF-8" filtered="true" packaged="true">
       <directory>src/test/scala</directory>
@@ -68,12 +61,6 @@
       <includes>
         <include>*.scala</include>
         <include>**/*.scala</include>
-      </includes>
-    </fileSet>
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
-      <directory>src/main/resources</directory>
-      <includes>
-        <include>*.xml</include>
       </includes>
     </fileSet>
 

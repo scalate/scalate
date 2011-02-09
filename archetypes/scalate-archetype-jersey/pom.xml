@@ -60,6 +60,10 @@
           <include>**/*.jpg</include>
         </includes>
       </resource>
+      <resource>
+        <directory>${basedir}/target/resources</directory>
+        <filtering>false</filtering>
+      </resource>
     </resources>
 
     <plugins>
@@ -84,7 +88,7 @@
                     from elsewhere we could remove this crap
                  -->
 
-                <copy todir="${basedir}/src/main/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
+                <copy todir="${basedir}/target/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../scalate-war/src/main/webapp">
                     <exclude name="WEB-INF/web.xml" />
                     <exclude name="index.*" />

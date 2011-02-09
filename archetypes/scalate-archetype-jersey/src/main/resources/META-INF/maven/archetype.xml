@@ -20,7 +20,7 @@
 -->
 
 <archetype>
-  <id>scalate-archetype-empty</id>
+  <id>scalate-archetype-jersey</id>
   <sources/>
   <resources/>
 </archetype>
