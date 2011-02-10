@@ -1,13 +1,13 @@
 ---
 blog_post: false
-title: Scalate 1.4.0 Released
-author: Hiram Chirino
-author_url: http://hiramchirino.com/blog
-created_at: 2011-02-10 12:06:40 -0000
+title: Scalate 1.5.0 Released
+author: James Strachan
+author_url: http://macstrac.blogspot.com
+created_at: 2011-01-01 12:06:40 -0000
 --- 
 
 The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
-availability of Scalate 1.4.0
+availability of Scalate 1.5.0
 
 Scalate is a [Scala 2.8.1](http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
@@ -40,23 +40,12 @@ checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
 
 
-**Scalate 1.4.0 Highlights**
+**Scalate 1.5.0 Highlights**
 
-* Upgraded to Scala 2.8.1
-* [Added](http://www.assembla.com/spaces/scalate/tickets/211) new SBT plugins for precompiling templates and [site generation](http://scalate.fusesource.org/documentation/siteGen.html)
-* [Site generation](http://scalate.fusesource.org/documentation/siteGen.html) is [now](http://www.assembla.com/spaces/scalate/tickets/196) available in the [scalate command line tool and shell](http://scalate.fusesource.org/documentation/tool.html) and it also [now](http://www.assembla.com/spaces/scalate/tickets/195) supports a simpler directory layout.
-* Added pygmentize, css, and cdata filters
-* Added [Textile](http://textile.thresholdstate.com/) support and filters
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) can
-  [now](http://www.assembla.com/spaces/scalate/tickets/122) be used for
-  creating layouts and refer to parts of the generated template by
-  [navigating the **html**
-  section](http://scalate.fusesource.org/documentation/mustache.html#Layouts).
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [automatically](http://www.assembla.com/spaces/scalate/tickets/198) [unwraps Option](http://www.assembla.com/spaces/scalate/tickets/197) types.
-* Improved OSGi support
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [now](http://www.assembla.com/spaces/scalate/tickets/199) supports Java collections and Maps better 
 
 For more detail see the [Full Change
-Log](http://www.assembla.com/spaces/scalate/milestones/315531-1-4)
+Log](http://www.assembla.com/spaces/scalate/milestones/289475-1-5)
 
 [Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
 
