@@ -24,13 +24,33 @@ import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
 /**
- * Precompiles the templates as part of the package action.  For a web project,
- * please instead mix in {{{org.fusesource.scalate.sbt.PrecompilerWebProject}}}.
+ * Precompiles the templates as a dependency of the package action.  Web
+ * projects should instead mix in
+ * [[org.fusesource.scalate.sbt.PrecompilerWebProject]]
  */
 trait PrecompilerProject extends ScalateProject {
-  def precompilerCompilePath: Path = mainCompilePath
+  /**
+   * The directory into which Scalate templates are compiled to Scala sources.
+   */
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
+
+  /**
+   * The directory into which the sources in [[precompilerGeneratedSourcesPath]]
+   * are compiled into classes.
+   */
+  def precompilerCompilePath: Path = mainCompilePath
+
+  /**
+   * Additional files to be precompiled.  Directories to be searched for
+   * templates should be specified by [[scalateSources]].
+   */
   def precompilerTemplates: PathFinder = Path.emptyPathFinder
+
+  /**
+   * The class of render context to use when precompiling the templates.
+   *
+   * @see org.fusesource.scalate.RenderContext
+   */
   def precompilerContextClass: Option[String] = None
 
   lazy val precompileTemplates = precompileTemplatesAction
@@ -71,7 +91,8 @@ trait PrecompilerProject extends ScalateProject {
 }
 
 /**
- * Supports precompilation of templates in a web project.
+ * Supports precompilation of templates in a web project.  Differs from
+ * [[PrecompilerProject]] by also looking for templates in the webapp directory.
  */
 trait PrecompilerWebProject extends PrecompilerProject with ScalateWebProject {
   override def precompilerCompilePath: Path = temporaryWarPath / "WEB-INF" / "classes"

@@ -28,9 +28,8 @@ import collection.JavaConversions._
 
 
 /**
- * This goal builds precompiles the Scalate templates
- * as Scala source files that be included in your standard
- * build. 
+ * This goal precompiles the Scalate templates into classes to be included
+ * in your build.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

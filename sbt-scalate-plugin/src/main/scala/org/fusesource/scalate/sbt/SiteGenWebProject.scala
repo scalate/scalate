@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009-2011 the original author or authors.
+ *  Copyright (C) 2009-2011 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -23,9 +23,19 @@ import java.{util => ju}
 import scala.collection.jcl
 import scala.collection.jcl.Conversions._
 
+/**
+ * Generates static HTML files for your website using the Scalate templates.
+ * It runs as a dependency of the package action.
+ */
 trait SiteGenWebProject extends ScalateWebProject with MavenStyleWebScalaPaths {
-  
+  /**
+   * The directory into which the site will be generated.
+   */
   def sitegenOutputPath: Path = outputPath / "sitegen"
+
+  /**
+   * Attributes to pass into the templates.
+   */
   def sitegenTemplateProperties: Map[String, String] = Map.empty
 
   lazy val generateSite = generateSiteAction
