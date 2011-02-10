@@ -41,10 +41,11 @@ trait PrecompilerProject extends ScalateProject {
   def precompilerCompilePath: Path = mainCompilePath
 
   /**
-   * Additional files to be precompiled.  Directories to be searched for
-   * templates should be specified by [[scalateSources]].
+   * Additional template resource URIs to precompile.  Typically used to precompile 
+   * tempaltes found in jar dependencies which the precompiler can't discover since
+   * they are not are resource local to the project.
    */
-  def precompilerTemplates: PathFinder = Path.emptyPathFinder
+  def precompilerTemplates = Set[String]()
 
   /**
    * The class of render context to use when precompiling the templates.
@@ -79,7 +80,7 @@ trait PrecompilerProject extends ScalateProject {
       precompiler.sources = scalateSources.map( _.asFile ).toArray
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
       precompiler.targetDirectory = precompilerCompilePath.asFile
-      precompiler.templates = precompilerTemplates.get.toArray map { p: Path => p.absolutePath }
+      precompiler.templates = precompilerTemplates.toArray
       precompiler.contextClass = precompilerContextClass.getOrElse(null)
       precompiler.bootClassName = scalateBootClassName.getOrElse(null)
       precompiler.execute()
