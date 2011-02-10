@@ -112,15 +112,13 @@ trait Scope {
           case FunctionResult(r) => renderValue(r)
 
           case s: NodeSeq => childScope(name, s)(block)
-
           case s: Seq[Any] => foreachScope(name, s)(block)
+          case Some(a) => childScope(name, a)(block)
+          case None =>
 
           // lets treat empty maps as being empty collections
           // due to bug in JSON parser returning Map() for JSON expression []
-          case s: Map[_,_] => if (!s.isEmpty) childScope(name, s)(block)
-
-          case Some(a) => childScope(name, a)(block)
-          case None =>
+          case s: collection.Map[_,_] => if (!s.isEmpty) childScope(name, s)(block)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
@@ -158,11 +156,10 @@ trait Scope {
 
           case s: NodeSeq => if (s.isEmpty) block(this)
           case s: Seq[_] => if (s.isEmpty) block(this)
-
-          case s: Map[_,_] => if (s.isEmpty) block(this)
-
           case Some(a) =>
           case None => block(this)
+
+          case s: collection.Map[_,_] => if (s.isEmpty) block(this)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] =>
@@ -207,8 +204,8 @@ trait Scope {
 
   def createScope(name: String, value: Any): Scope = {
     value match {
-      case v: Map[String, Any] => new MapScope(this, name, v)
       case n: NodeSeq => new NodeScope(this, name, n)
+      case v: collection.Map[String, _] => new MapScope(this, name, v)
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
@@ -220,6 +217,9 @@ trait Scope {
 
   def toTraversable(v: Any, block: Scope => Unit): Any = v match {
     case t: Seq[_] => t
+    case t: Array[_] => t.toSeq
+    case t: ju.Map[_,_] => asScalaMap(t)
+
     case f: Function0[_] => toTraversable(f(), block)
     case f: Function1[Scope, _] if isParam1(f, classOf[Scope]) => toTraversable(f(this), block)
 
@@ -230,6 +230,7 @@ trait Scope {
     case c: ju.Collection[_] => asScalaIterable(c)
     case i: ju.Iterator[_] => asScalaIterator(i)
     case i: jl.Iterable[_] => asScalaIterable(i)
+
     case _ => v
   }
 
@@ -310,7 +311,7 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
   def context = parentScope.context
 }
 
-class MapScope(parent: Scope, name: String, map: Map[String, _]) extends ChildScope(parent) {
+class MapScope(parent: Scope, name: String, map: collection.Map[String, _]) extends ChildScope(parent) {
   def localVariable(name: String): Option[Any] = map.get(name)
 }
 
