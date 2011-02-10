@@ -746,12 +746,12 @@ dependency:
     lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project_version}"
 
 And then in your WebProject, you will need to add the
-`org.fusesource.scalate.sbt.PrecompilerProject` trait.  And then make sure
+`org.fusesource.scalate.sbt.PrecompilerWebProject` trait.  And then make sure
 the Scalate dependencies are added to the project.  For example:
 
     class Project(info: ProjectInfo) extends 
           DefaultWebProject(info) with 
-          PrecompilerProject {
+          PrecompilerWebProject {
       
       lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "${project_version}" 
       lazy val servlet = "javax.servlet" % "servlet-api"% "2.5" 
