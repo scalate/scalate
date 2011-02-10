@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.fusesource.scalate.tooling</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
   </parent>
 
   <artifactId>scalate-archetype-sitegen</artifactId>
@@ -78,7 +78,7 @@
                   <fileset dir="${basedir}/../../samples/scalate-sample-sitegen">
                     <include name="src/**" />
                     <include name="ext/**" />
-                    <include name="runlivereload"/>
+                    <include name="runlivereload" />
                   </fileset>
                 </copy>
               </tasks>
