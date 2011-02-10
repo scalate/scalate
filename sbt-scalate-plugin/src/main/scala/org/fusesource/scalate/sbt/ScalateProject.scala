@@ -28,7 +28,7 @@ import scala.collection.jcl.Conversions._
 /**
  * Base trait for Scalate tool support.
  */
-trait ScalateProject extends BasicScalaProject {
+trait ScalateProject extends BasicScalaProject with BasicProjectPaths {
   /**
    * The name of the bootstrap class.  If None, the tool will attempt to load
    * a default class.
@@ -38,7 +38,7 @@ trait ScalateProject extends BasicScalaProject {
   /**
    * The directories to search for Scalate templates.
    */
-  def scalateSources: PathFinder = mainResources
+  def scalateSources: List[Path] = List(mainResourcesPath)
 
   /**
    * Runs a block of code with the Scalate classpath as the context class
@@ -63,6 +63,6 @@ trait ScalateProject extends BasicScalaProject {
 /**
  * Base trait for Scalate tool support in a web project.
  */
-trait ScalateWebProject extends ScalateProject with WebScalaPaths {
-  override def scalateSources = super.scalateSources +++ webappResources
+trait ScalateWebProject extends ScalateProject with MavenStyleWebScalaPaths {
+  override def scalateSources = webappPath :: super.scalateSources
 }

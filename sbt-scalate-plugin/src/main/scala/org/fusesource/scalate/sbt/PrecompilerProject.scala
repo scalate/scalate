@@ -76,7 +76,7 @@ trait PrecompilerProject extends ScalateProject {
       val precompiler = classLoader.loadClass(className).newInstance.asInstanceOf[Precompiler]
 
       precompiler.info = (value:String)=>log.info(value)
-      precompiler.sources = scalateSources.get.toArray map { p: Path => p.asFile }
+      precompiler.sources = scalateSources.map( _.asFile ).toArray
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
       precompiler.targetDirectory = precompilerCompilePath.asFile
       precompiler.templates = precompilerTemplates.get.toArray map { p: Path => p.absolutePath }

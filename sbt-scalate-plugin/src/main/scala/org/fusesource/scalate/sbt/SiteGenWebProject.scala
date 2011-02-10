@@ -27,7 +27,7 @@ import scala.collection.jcl.Conversions._
  * Generates static HTML files for your website using the Scalate templates.
  * It runs as a dependency of the package action.
  */
-trait SiteGenWebProject extends ScalateWebProject with MavenStyleWebScalaPaths {
+trait SiteGenWebProject extends ScalateWebProject {
   /**
    * The directory into which the site will be generated.
    */
@@ -60,7 +60,7 @@ trait SiteGenWebProject extends ScalateWebProject with MavenStyleWebScalaPaths {
       val generator = classLoader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
       generator.info = (value:String)=>log.info(value)
-      generator.sources = scalateSources.get.toArray map { p: Path => p.asFile }
+      generator.sources = scalateSources.map( _.asFile ).toArray
       generator.workingDirectory = temporaryWarPath.asFile
       generator.targetDirectory = sitegenOutputPath.asFile
       generator.templateProperties = {
