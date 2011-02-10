@@ -42,11 +42,11 @@ templates.
 
 **Scalate 1.4.0 Highlights**
 
-* upgraded to Scala 2.8.1
+* Upgraded to Scala 2.8.1
 * [Added](http://www.assembla.com/spaces/scalate/tickets/211) new SBT plugins for precompiling templates and [site generation](http://scalate.fusesource.org/documentation/siteGen.html)
 * [Site generation](http://scalate.fusesource.org/documentation/siteGen.html) is [now](http://www.assembla.com/spaces/scalate/tickets/196) available in the [scalate command line tool and shell](http://scalate.fusesource.org/documentation/tool.html) and it also [now](http://www.assembla.com/spaces/scalate/tickets/195) supports a simpler directory layout.
 * Added pygmentize, css, and cdata filters
-* Added Textile support
+* Added [Textile](http://textile.thresholdstate.com/) support and filters
 * [Mustache](http://scalate.fusesource.org/documentation/mustache.html) can
   [now](http://www.assembla.com/spaces/scalate/tickets/122) be used for
   creating layouts and refer to parts of the generated template by
