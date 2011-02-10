@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2009-2010 the original author or authors.
+    Copyright (C) 2009-2011 the original author or authors.
     See the notice.md file distributed with this work for additional
     information regarding copyright ownership.
 
@@ -18,48 +18,27 @@
     limitations under the License.
 
 -->
-
-<archetype-descriptor name="scalate-archetype-empty">
+<archetype-descriptor name="scalate-archetype-sitegen">
   <requiredProperties>
   </requiredProperties>
-  <fileSets>
-    <!-- store the pom -->
+  <fileSets>    
+
     <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory/>
+      <directory></directory>
       <includes>
-        <include>pom.xml</include>
-      </includes>
-      <excludes>
-        <excludes>**/*</excludes>
-      </excludes>
-    </fileSet>
-    <!-- place main sources -->
-    <fileSet encoding="UTF-8" filtered="false" packaged="true">
-      <directory>ext</directory>
-      <includes>
-        <include>*.scala</include>
-        <include>**/*.scala</include>
+        <include>project/**</include>
       </includes>
     </fileSet>
-    <!-- place templates -->
-    <fileSet encoding="UTF-8" filtered="true" packaged="false">
-      <directory>src</directory>
+
+    <fileSet filtered="false" packaged="false">
+      <directory></directory>
       <includes>
         <include>**/*</include>
       </includes>
       <excludes>
-        <exclude>*.ico</exclude>
-        <exclude>**/*.ico</exclude>
-        <exclude>images/**/*</exclude>
+        <exclude>pom.xml</exclude>
+        <exclude>project/**</exclude>
       </excludes>
-    </fileSet>
-    <fileSet encoding="UTF-8" filtered="false" packaged="false">
-      <directory>src</directory>
-      <includes>
-        <include>images/**/*</include>
-        <include>*.ico</include>
-        <include>**/*.ico</include>
-      </includes>
     </fileSet>
   </fileSets>
 </archetype-descriptor>

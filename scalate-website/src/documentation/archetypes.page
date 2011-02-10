@@ -22,7 +22,7 @@ However if you want to miss out the [installation step for Scalate Tool](tool.ht
 
 If you have Maven installed you should be able to create a new project by typing this
 
-    mvn org.apache.maven.plugins:maven-archetype-plugin:2.0-alpha-4:generate \
+    mvn org.apache.maven.plugins:maven-archetype-plugin:2.0:generate \
       -DarchetypeGroupId=org.fusesource.scalate.tooling \
       -DarchetypeArtifactId=scalate-archetype-guice \
       -DarchetypeVersion=${project_version} \

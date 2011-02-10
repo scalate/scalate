@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2009-2010 the original author or authors.
+    Copyright (C) 2009-2011 the original author or authors.
     See the notice.md file distributed with this work for additional
     information regarding copyright ownership.
 
@@ -18,14 +18,13 @@
     limitations under the License.
 
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>scalate-project</artifactId>
-  <version>1.4.0-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
@@ -87,7 +86,6 @@
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
     <install-plugin-version>2.3.1</install-plugin-version>
-    <license-plugin-version>1.7.0</license-plugin-version>
     <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
     <jar-plugin-version>2.3.1</jar-plugin-version>
 <!--
@@ -271,7 +269,7 @@
       <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-htmlunit-driver</artifactId>
-        <version>2.0a4</version>
+        <version>2.0a5</version>
       </dependency>
 
       <dependency>
@@ -318,7 +316,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.8.1</version>
+        <version>4.8.2</version>
       </dependency>
 
     </dependencies>
@@ -1052,7 +1050,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <configuration>
               <passphrase>${gpg.passphrase}</passphrase>
             </configuration>
@@ -1143,7 +1141,7 @@
           <plugin>
             <groupId>com.mycila.maven-license-plugin</groupId>
             <artifactId>maven-license-plugin</artifactId>
-            <version>${license-plugin-version}</version>
+            <version>1.9.0</version>
             <configuration>
               <quiet>false</quiet>
               <header>src/main/resources/license-header.txt</header>
@@ -1158,7 +1156,17 @@
                 <exclude>**/src/test/resources/test-lib/fake-jar</exclude>
                 <exclude>**/src/main/resources/META-INF/services/jersey-server-components</exclude>
                 <exclude>**/WEB-INF/_scalate/**</exclude>
-
+                <exclude>**/dummy.txt</exclude>
+                <exclude>**/foo.txt</exclude>
+                <exclude>**/foo.mustache</exclude>
+                <exclude>**/src/highlight/**</exclude>
+                <exclude>**/.livereload</exclude>
+                <exclude>**/pygmentize.css</exclude>
+                <exclude>**/*.md</exclude>
+                <exclude>**/*.conf</exclude>
+                <exclude>**/*.page</exclude>
+                <exclude>**/banner.txt</exclude>
+                
 
                 <!-- ignore files produced during a build -->
                 <exclude>**/target/**</exclude>
@@ -1175,7 +1183,7 @@
                 <ssp>DYNASCRIPT_STYLE</ssp>
                 <jj>JAVADOC_STYLE</jj>
                 <index>SCRIPT_STYLE</index>
-                <jersey-server-components>SCRIPT_STYLE</jersey-server-components>
+                <jade>HAML_STYLE</jade>
               </mapping>
             </configuration>
             <executions>

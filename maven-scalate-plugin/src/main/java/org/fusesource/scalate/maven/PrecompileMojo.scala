@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009-2010 the original author or authors.
+ * Copyright (C) 2009-2011 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.fusesource.scalate.maven
 
 import java.io.File
@@ -29,9 +28,8 @@ import collection.JavaConversions._
 
 
 /**
- * This goal builds precompiles the Scalate templates
- * as Scala source files that be included in your standard
- * build. 
+ * This goal precompiles the Scalate templates into classes to be included
+ * in your build.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

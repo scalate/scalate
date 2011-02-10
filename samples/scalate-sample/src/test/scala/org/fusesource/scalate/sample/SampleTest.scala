@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009-2010 the original author or authors.
+ * Copyright (C) 2009-2011 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.fusesource.scalate.sample
 
 import _root_.org.junit.runner.RunWith
@@ -57,11 +56,11 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
   testPageContains("ssp/errors/badAttributeType.ssp",
     "error: not found: type StringF",
-    "in /ssp/errors/badAttributeType.ssp near line 3 col 13")
+    "in /ssp/errors/badAttributeType.ssp near line 22 col 13")
   
   testPageContains("ssp/errors/badExpression.ssp",
     "error: not found: value nameX",
-    "in /ssp/errors/badExpression.ssp near line 5 col 13")
+    "in /ssp/errors/badExpression.ssp near line 24 col 13")
 
   testPageContains("ssp/errors/missingAttribute.ssp", "The value for 'name' was not set")
   testPageContains("ssp/errors/missingInclude.ssp", "Could not load resource")

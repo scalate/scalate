@@ -53,16 +53,26 @@ mvn versions:update-properties
 {pygmentize}
 
 * then review the changes to pom.xml to check they all seem fine. You probably want to rollback the jetty changes to version 8.x, other than that it should be fine. Do a test run to check!
+* Verify that the `src/main/resources/license-header.txt` file is still current.
+* Check that all the source file license headers are in place:
+
+{pygmentize:: text}
+mvn -P license license:check
+mvn -P license license:format
+{pygmentize}
+
+* then review the changes and check they all seem fine. You may need to add exclusions to the `maven-license-plugin`'s
+configuration to ignore some files.
 * prepare the release
 
 {pygmentize:: text}
-mvn release:prepare -P release
+mvn -P release release:prepare 
 {pygmentize}
 
 * perform the release
 
 {pygmentize:: text}
-mvn release:perform -P release
+mvn -P release release:perform 
 {pygmentize}
 
 * open [Nexus Staging](http://repo.fusesource.com/nexus/index.html#staging) and close the Staging release of scalate

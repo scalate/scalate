@@ -56,6 +56,8 @@ Create that static website with Scalate
 
 .right
   :markdown
+
+    ### Maven
   
     To generate the static site run
 
@@ -65,7 +67,37 @@ Create that static website with Scalate
     **target/sitegen** directory.
 
     There's also a **scalate:sitegen-no-fork** plugin goal available that can be used to configure 
-    additional/different executions of the goal in an existing build.  
+    additional/different executions of the goal in an existing build.
+
+    ### sbt
+
+    To create a sitegen project in sbt, first add the plugin dependency to
+    `project/plugins/Plugins.scala`:
+
+    {pygmentize:: scala}
+    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project_version}"
+    {pygmentize}
+
+    Then mix the `org.fusesource.scalate.sbt.SiteGenWebProject` into your
+    web project, along with the Scalate dependencies.  For example:
+
+    {pygmentize:: scala}
+    import org.scalate.fusesource.sbt.SiteGenWebProject
+
+    class MySiteGenProject(info: ProjectInfo) extends
+          DefaultWebProject(info) with
+          SiteGenWebProject {
+
+      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "${project_version}"
+      lazy val servlet = "javax.servlet" % "servlet-api"% "2.5"
+      lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
+
+    }
+    {pygmentize}
+
+    This creates a ***generate-site*** action, which is run as a dependency of
+    the ***package*** action.  The static web site is generated to the
+    ***target/sitegen*** directory.
 
 .left
   :markdown

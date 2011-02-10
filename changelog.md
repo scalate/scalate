@@ -1,7 +1,7 @@
 ![Scalate][logo]
 ===============================
 
-[Scalate 1.4](http://scalate.fusesource.org/blog/releases/release-1-4.html), unreleased
+[Scalate 1.4](http://scalate.fusesource.org/blog/releases/release-1-4.html), released 2011-02-10
 ----
 
 * [183](http://scalate.assembla.com/spaces/scalate/tickets/183) switched to [Scala 2.8.1 final release](http://www.scala-lang.org/node/8102) 
