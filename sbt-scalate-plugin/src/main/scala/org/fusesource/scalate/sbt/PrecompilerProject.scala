@@ -30,7 +30,7 @@ import scala.collection.jcl.Conversions._
 trait PrecompilerProject extends ScalateProject {
   def precompilerCompilePath: Path = mainCompilePath
   def precompilerGeneratedSourcesPath: Path = outputPath / "generated-sources" / "scalate"
-  def precompilerTemplates: List[String] = Nil
+  def precompilerTemplates: PathFinder = Path.emptyPathFinder
   def precompilerContextClass: Option[String] = None
 
   lazy val precompileTemplates = precompileTemplatesAction
@@ -59,7 +59,7 @@ trait PrecompilerProject extends ScalateProject {
       precompiler.sources = scalateSources.get.toArray map { p: Path => p.asFile }
       precompiler.workingDirectory = precompilerGeneratedSourcesPath.asFile
       precompiler.targetDirectory = precompilerCompilePath.asFile
-      precompiler.templates = precompilerTemplates.toArray
+      precompiler.templates = precompilerTemplates.get.toArray map { p: Path => p.absolutePath }
       precompiler.contextClass = precompilerContextClass.getOrElse(null)
       precompiler.bootClassName = scalateBootClassName.getOrElse(null)
       precompiler.execute()
