@@ -1,6 +1,6 @@
 <%--
 
-    Copyright (C) 2009-2010 the original author or authors.
+    Copyright (C) 2009-2011 the original author or authors.
     See the notice.md file distributed with this work for additional
     information regarding copyright ownership.
 
@@ -17,7 +17,6 @@
     limitations under the License.
 
 --%>
-
 <h2>Render Collection3</h2>
 
 <p>This page renders a collection of model objects using the default template for each type of model object, using a separator passed as a function returning XML</p>

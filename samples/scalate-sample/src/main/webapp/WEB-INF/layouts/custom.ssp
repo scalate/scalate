@@ -1,6 +1,6 @@
 <%--
 
-    Copyright (C) 2009-2010 the original author or authors.
+    Copyright (C) 2009-2011 the original author or authors.
     See the notice.md file distributed with this work for additional
     information regarding copyright ownership.
 
@@ -17,7 +17,6 @@
     limitations under the License.
 
 --%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ var body: String %>
 <%@ var title : String = "Custom Layout" %>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2009-2010 the original author or authors.
+    Copyright (C) 2009-2011 the original author or authors.
     See the notice.md file distributed with this work for additional
     information regarding copyright ownership.
 
@@ -18,7 +18,6 @@
     limitations under the License.
 
 -->
-
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
