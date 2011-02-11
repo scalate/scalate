@@ -26,6 +26,20 @@ Scalate stands for Scala Template Engine hence ScalaTE, though its easier on the
 
 Details of [why you should use Scalate here](why.html)
 
+### How do I get started?
+
+See the [Getting started Guide](documentation/getting-started.html) :).
+
+### Can I use Scalate in my Java web app or J2EE app even though I don't use Scala
+
+Absolutely, you can use Scaml, SSP, Jade or Mustache easily from any web application or J2EE application; just create a WAR, add the scalate-core jar and its dependencies and define the Scalate Filter in your web.xml and you're good to go.
+
+Here's a [sample web.xml](https://github.com/scalate/scalate/blob/master/archetypes/scalate-archetype-jersey/src/main/resources/archetype-resources/src/main/webapp/WEB-INF/web.xml) that has Jersey (JAXRS) and Scalate. You can always take out jersey from your web.xml if you don't want to use JAXRS.
+
+Scalate can work with any objects on the JVM; whether they were developed in Java, Scala, Groovy, JRuby, Clojure or whatever.
+
+The easiest way to get started is by following the [Getting started Guide](documentation/getting-started.html).
+
 ### Which template engine should I use?
 
 See [which template engine you should use](which.html)
