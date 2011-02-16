@@ -61,7 +61,6 @@ trait SiteGenWebProject extends ScalateWebProject {
 
       generator.info = (value:String)=>log.info(value)
       generator.sources = scalateSources.map( _.asFile ).toArray
-      generator.workingDirectory = temporaryWarPath.asFile
       generator.targetDirectory = sitegenOutputPath.asFile
       generator.templateProperties = {
         val jclMap = new jcl.HashMap[String, String]
