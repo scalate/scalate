@@ -28,7 +28,7 @@ import scala.collection.jcl.Conversions._
 /**
  * Base trait for Scalate tool support.
  */
-trait ScalateProject extends BasicScalaProject with BasicProjectPaths {
+trait ScalateProject extends BasicScalaProject with MavenStyleScalaPaths {
   /**
    * The name of the bootstrap class.  If None, the tool will attempt to load
    * a default class.
