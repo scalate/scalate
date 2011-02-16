@@ -135,12 +135,12 @@ class SiteGenerator {
 
   }
 
-  protected var validFileExcentions = Set("js", "css", "rss", "atom", "htm", "xml", "csv", "json")
+  protected var validFileExtensions = Set("js", "css", "rss", "atom", "htm", "xml", "csv", "json")
 
   protected def appendHtmlPostfix(uri: String): String = {
     val answer = Files.dropExtension(uri)
     val ext = Files.extension(answer)
-    if (validFileExcentions.contains(ext)) {
+    if (validFileExtensions.contains(ext)) {
       answer
     } else {
       answer + ".html"
