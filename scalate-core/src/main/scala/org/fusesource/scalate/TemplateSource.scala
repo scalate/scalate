@@ -69,7 +69,7 @@ trait TemplateSource extends Resource {
    */
   def packageName: String = {
     checkInitialised()
-    if( engine.packagePrefix.isEmpty() || _packageName.isEmpty() ) {
+    if( engine.packagePrefix.length==0 || _packageName.length==0 ) {
       engine.packagePrefix+_packageName
     } else {
       engine.packagePrefix + "." + _packageName
@@ -81,7 +81,7 @@ trait TemplateSource extends Resource {
    */
   def className: String = {
     val pn = packageName
-    if (pn.isEmpty) {
+    if (pn.length==0) {
       _simpleClassName
     } else {
       pn + "." + _simpleClassName
