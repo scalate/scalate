@@ -27,7 +27,7 @@ import scala.collection.jcl.Conversions._
  * Generates static HTML files for your website using the Scalate templates.
  * It runs as a dependency of the package action.
  */
-trait SiteGenWebProject extends ScalateWebProject {
+trait SiteGenWebProject extends BasicWebScalaProject with ScalateWebProject {
   /**
    * The directory into which the site will be generated.
    */
@@ -40,14 +40,16 @@ trait SiteGenWebProject extends ScalateWebProject {
 
   lazy val generateSite = generateSiteAction
 
-  def generateSiteAction = generateSiteTask() describedAs("Generates a static site.")
+  def generateSiteAction = generateSiteTask()
+    .describedAs("Generates a static site.")
+    .dependsOn(prepareWebapp)
 
   def generateSiteTask() = task {
     withScalateClassLoader { classLoader =>
       
       // Structural Typing FTW (avoids us doing manual reflection)
       type SiteGenerator = {
-        var sources: Array[File]
+        var webappDirectory: File
         var workingDirectory: File
         var targetDirectory: File
         var templateProperties: ju.Map[String,String]
@@ -60,7 +62,7 @@ trait SiteGenWebProject extends ScalateWebProject {
       val generator = classLoader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
       generator.info = (value:String)=>log.info(value)
-      generator.sources = scalateSources.map( _.asFile ).toArray
+      generator.webappDirectory = temporaryWarPath.asFile
       generator.targetDirectory = sitegenOutputPath.asFile
       generator.templateProperties = {
         val jclMap = new jcl.HashMap[String, String]
@@ -80,5 +82,5 @@ trait SiteGenWebProject extends ScalateWebProject {
   override def mainResourcesPath = "resources"
   override def webappPath = "src"
 
-  override def packageAction = super.packageAction dependsOn generateSiteAction
+  override def packageAction = super.packageAction dependsOn generateSite
 }

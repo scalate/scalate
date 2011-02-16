@@ -37,24 +37,24 @@ import SiteGenerator._
  */
 class SiteGenerator {
   var workingDirectory: File = _
-  var sources = Array[File]()
+  var webappDirectory: File = _
   var targetDirectory: File = _
   var templateProperties: ju.Map[String,String] = _
   var bootClassName:String = _
   var info:{def apply(v1:String):Unit} = (value:String)=>println(value)
-  
+
 
   def execute() = {
     targetDirectory.mkdirs();
 
-    if(sources==null || sources.isEmpty ) {
-      throw new IllegalArgumentException("The sources property not properly set")
+    if (webappDirectory == null || !webappDirectory.exists) {
+      throw new IllegalArgumentException("The webappDirectory properly is not properly set")
     }
 
     info("Generating static website from Scalate Templates and wiki files...");
     info("template properties: " + templateProperties)
 
-    var engine = new DummyTemplateEngine(sources)
+    var engine = new DummyTemplateEngine(webappDirectory)
     engine.classLoader = Thread.currentThread.getContextClassLoader
         
     if( bootClassName!=null ) {
@@ -75,17 +75,17 @@ class SiteGenerator {
     }
 
 
-    def processFile(file: File, baseuri: String, rootDir: File, copyFile: Boolean = true): Unit = {
+    def processFile(file: File, baseuri: String): Unit = {
       if (file.isDirectory()) {
         if (file.getName != "WEB-INF" && !file.getName.startsWith("_") ) {
           var children = file.listFiles();
           if (children != null) {
             for (child <- children) {
               if (child.isDirectory) {
-                processFile(child, baseuri + "/" + child.getName, rootDir, copyFile)
+                processFile(child, baseuri + "/" + child.getName)
               }
               else {
-                processFile(child, baseuri, rootDir, copyFile)
+                processFile(child, baseuri)
               }
             }
           }
@@ -113,26 +113,16 @@ class SiteGenerator {
               case e => throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
             }
           } else {
-            debug("    ignoring " + file + " with uri: " + uri + " extension: " + ext + " not in " + engine.extensions)
-
-            if (copyFile) {
-              // lets copy the file across if its not a template
-              val sourceFile = new File(targetDirectory, uri.stripPrefix("/"))
-              IOUtil.copy(file, sourceFile)
-            }
+            // let's copy the file across if its not a template
+            debug("    copying " + file + " with uri: " + uri + " extension: " + ext + " not in " + engine.extensions)
+            val sourceFile = new File(targetDirectory, uri.stripPrefix("/"))
+            IOUtil.copy(file, sourceFile)
           }
         }
       }
     }
 
-    def processRootDir(rootDir: File, copyFile: Boolean = true) = processFile(rootDir, "", rootDir, copyFile)
-
-    sources.reverse.foreach { dir=>
-      processRootDir(dir, sources.head == dir)
-    }
-
-    //this.project.add(targetDirectory.getCanonicalPath);
-
+    processFile(webappDirectory, "")
   }
 
   protected var validFileExtensions = Set("js", "css", "rss", "atom", "htm", "xml", "csv", "json")
@@ -149,7 +139,7 @@ class SiteGenerator {
 
 }
 
-class DummyTemplateEngine(sourceDirectories: Array[File]) extends TemplateEngine(sourceDirectories) {
+class DummyTemplateEngine(rootDirectory: File) extends TemplateEngine(Some(rootDirectory)) {
   override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
   private val responseClassName = "_root_."+classOf[DummyResponse].getName
