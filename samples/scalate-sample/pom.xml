@@ -149,5 +149,32 @@
       </plugin>
     </plugins>
   </build>
+  
+  <profiles>
+    <profile>
+      <id>jdk5</id>
+      <activation>
+        <jdk>1.5</jdk>
+      </activation>
+      
+      <build>
+        <plugins>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <!-- Jersey requires Java 1.6, so this test will fail. -->
+                <exclude>**/SampleTest.*</exclude>
+              </excludes>
+            </configuration>
+          </plugin>          
+
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+    
 </project>
 
