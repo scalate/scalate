@@ -48,6 +48,7 @@ class Lazy[T](thunk: => T) {
    */
   def set(value: T): T = {
     _value = value
+    _evaluated = true
     _value
   }
 
