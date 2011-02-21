@@ -37,32 +37,12 @@
     <archetype-plugin-version>2.0</archetype-plugin-version>
   </properties>
 
-
   <modules>
     <module>scalate-archetype-jersey</module>
     <module>scalate-archetype-guice</module>
     <module>scalate-archetype-sitegen</module>
+    <!-- This is failing when built /w maven 3 -->
+    <!-- <module>scalate-archetypes-itests</module>  -->
   </modules>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-invoker-plugin</artifactId>
-          <version>1.3</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
-
-  <profiles>
-    <profile>
-      <id>distro</id>
-      <modules>
-        <!-- these integration tests can fail when cutting a release so lets disable -->
-        <module>scalate-archetypes-itests</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>

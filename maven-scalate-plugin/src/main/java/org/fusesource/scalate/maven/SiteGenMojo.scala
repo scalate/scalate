@@ -64,14 +64,9 @@ class SiteGenNoForkMojo extends AbstractMojo {
   var scalateWorkDir: File = _
 
   @parameter
-  @description("The directory where the templates files are located.")
-  @expression("${basedir}/src/main/webapp")
-  var warSourceDirectory: File = _
-
-  @parameter
-  @description("The directory where resources are located.")
-  @expression("${basedir}/src/main/resources")
-  var resourcesSourceDirectory: File = _
+  @description("The directory where the webapp is built.")
+  @expression("${project.build.directory}/${project.build.finalName}")
+  var webappDirectory: File = _
 
   @parameter
   @description("The directory where the website will be generated into.")
@@ -109,8 +104,7 @@ class SiteGenNoForkMojo extends AbstractMojo {
       
       // Structural Typing FTW (avoids us doing manual reflection)
       type SiteGenerator = {
-        var sources: Array[File]
-        var workingDirectory: File
+        var webappDirectory: File
         var targetDirectory: File
         var templateProperties: ju.Map[String,String]
         var bootClassName:String
@@ -122,8 +116,7 @@ class SiteGenNoForkMojo extends AbstractMojo {
       val generator = loader.loadClass(className).newInstance.asInstanceOf[SiteGenerator]
 
       generator.info = (value:String)=>getLog.info(value)
-      generator.sources = Array(this.warSourceDirectory, this.resourcesSourceDirectory)
-      generator.workingDirectory = this.scalateWorkDir
+      generator.webappDirectory = this.webappDirectory
       generator.targetDirectory = this.targetDirectory
       generator.templateProperties = this.templateProperties
       generator.bootClassName = this.bootClassName

@@ -211,9 +211,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <warSourceDirectory>\${basedir}/src</warSourceDirectory>
-        </configuration>
       </plugin>
 
       <plugin>
