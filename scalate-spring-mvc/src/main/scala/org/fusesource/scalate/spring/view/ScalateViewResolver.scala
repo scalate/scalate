@@ -43,6 +43,11 @@ class ScalateViewResolver() extends AbstractTemplateViewResolver {
       view = urlView
     }
 
+    val contentType = getContentType
+    if (contentType != null) {
+      view.setContentType(contentType)
+    }
+
     view.asInstanceOf[AbstractUrlBasedView]
   }
 
