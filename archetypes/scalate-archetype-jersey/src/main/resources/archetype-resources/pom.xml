@@ -53,6 +53,7 @@
     <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
     <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
     <surefire-plugin-version>${surefire-plugin-version}</surefire-plugin-version>
+    <tomcat-plugin-version>${tomcat-plugin-version>}</tomcat-plugin-version>
     <war-plugin-version>${war-plugin-version}</war-plugin-version>
   </properties>
    
@@ -272,13 +273,33 @@
             </systemProperty>
             <systemProperty>
               <name>scalate.mode</name>
-              <value>${scalate.mode}</value>
+              <value>\${scalate.mode}</value>
             </systemProperty>
           </systemProperties>
           <scanIntervalSeconds>0</scanIntervalSeconds>
         </configuration>
       </plugin>
-      
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <version>\${tomcat-plugin-version}</version>
+        <configuration>
+          <path>/</path>
+
+          <systemProperties>
+            <!-- enable easy JMX connection to JConsole -->
+            <com.sun.management.jmxremote></com.sun.management.jmxremote>
+
+            <!-- Scalate console configuration -->
+            <scalate.mode>\${scalate.mode}</scalate.mode>
+            <scalate.editor>\${scalateEditor}</scalate.editor>
+            <scalate.workdir>\${scalate.workdir}</scalate.workdir>
+            <scalate.package.resources>\${scalate.package.resources}</scalate.package.resources>
+          </systemProperties>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.fusesource.scalate</groupId>
         <artifactId>maven-scalate-plugin</artifactId>
