@@ -25,19 +25,30 @@
     <artifactId>scalate-project</artifactId>
     <version>1.5.0-SNAPSHOT</version>
   </parent>
-  
-  <artifactId>scalate-test</artifactId>
+
+  <artifactId>scalate-web</artifactId>
+  <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
-  <description>Scalate Test Support Classes</description>
+  <description>A single dependency for all the modules required to use scalate and the common wiki formats in a web application
+  so includes dependencies on servlets, scala-compiler, scalate-page etc</description>
+
+  <properties>
+  </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-page</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
@@ -45,33 +56,13 @@
     </dependency>
 
     <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
-    <!-- testing -->
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-htmlunit-driver</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>${jetty-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
-      <version>${jetty-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-util</artifactId>
-      <version>${jetty-version}</version>
-    </dependency>  </dependencies>
+  </dependencies>
+
 
 </project>

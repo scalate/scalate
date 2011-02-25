@@ -221,6 +221,8 @@
     <module>scalate-core</module>
     <module>scalate-test</module>
     <module>scalate-wikitext</module>
+    <module>scalate-page</module>
+    <module>scalate-web</module>
     <module>scalate-spring-mvc</module>
     <module>scalate-guice</module>
     <module>scalate-camel</module>
@@ -231,7 +233,6 @@
     <module>archetypes</module>
     <module>scalate-tool</module>
     <module>scalate-jsp-converter</module>
-    <module>scalate-page</module>
     <module>scalate-markdownj</module>
   </modules>
 
@@ -304,7 +305,6 @@
 
     </dependencies>
   </dependencyManagement>
-
 
   <build>
     <defaultGoal>install</defaultGoal>

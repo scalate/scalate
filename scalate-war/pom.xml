@@ -37,17 +37,11 @@
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-web</artifactId>
       <version>${project.version}</version>
+      <type>pom</type>
     </dependency>
 
     <dependency>
