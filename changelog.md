@@ -4,6 +4,9 @@
 [Scalate 1.4.1](http://scalate.fusesource.org/blog/releases/release-1-4-1.html), released 2011-02-25
 ----
 
+* Fixes [#219](http://scalate.assembla.com/spaces/scalate/tickets/219) removes the error attributes from the request context if scalate directly rendered the error page.
+* Fixes [#221](http://scalate.assembla.com/spaces/scalate/tickets/221) to add a scalate-web dependency and use it in scalate-war for simplicity
+* Added scala-library dependency to scalate-util; if you want to exclude this dependency due to different scala versions you can add an exclusion easily. scala-compiler is an optional dependency on scala-core now
 * Fixes [#220](http://scalate.assembla.com/spaces/scalate/tickets/220) so that we can use tomcat:run inside archetypes and projects inside scalate
 * Fixes to the spring mvc integration to make the contentType works
 * Fixes scalate core so it can run on Java 1.5 once again
