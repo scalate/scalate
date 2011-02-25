@@ -1,10 +1,20 @@
 ![Scalate][logo]
 ===============================
 
-[Scalate 1.4](http://scalate.fusesource.org/blog/releases/release-1-4.html), released 2011-02-10
+[Scalate 1.4.1](http://scalate.fusesource.org/blog/releases/release-1-4-1.html), released 2011-02-25
 ----
 
-* [183](http://scalate.assembla.com/spaces/scalate/tickets/183) switched to [Scala 2.8.1 final release](http://www.scala-lang.org/node/8102) 
+* Fixes [#220](http://scalate.assembla.com/spaces/scalate/tickets/220) so that we can use tomcat:run inside archetypes and projects inside scalate
+* Fixes to the spring mvc integration to make the contentType works
+* Fixes scalate core so it can run on Java 1.5 once again
+* Fixes [#216](http://scalate.assembla.com/spaces/scalate/tickets/216) to let users properly override the number format
+* Fixes [#199](http://scalate.assembla.com/spaces/scalate/tickets/199) to treat java collections and Maps better in mustache
+* Fixes SBT pre-compiler and sitegen plugins
+
+[Scalate 1.4](http://scalate.fusesource.org/blog/releases/release-1-4-0.html), released 2011-02-10
+----
+
+* [#183](http://scalate.assembla.com/spaces/scalate/tickets/183) switched to [Scala 2.8.1 final release](http://www.scala-lang.org/node/8102) 
 * improved the OSGi metadata: optional dependencies are marked optional.
 * fixed bugs in the Snippet URL handling
 * [#185](http://scalate.assembla.com/spaces/scalate/tickets/185) updated the `{div}` and `{column}` tags evaluation in confluence markup so that they are evaluated as wiki notation
