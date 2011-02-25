@@ -250,6 +250,24 @@
           <scanIntervalSeconds>0</scanIntervalSeconds>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>tomcat-maven-plugin</artifactId>
+        <version>${tomcat-plugin-version}</version>
+        <configuration>
+          <path>/</path>
+          <ignorePackaging>true</ignorePackaging>
+          <warSourceDirectory>\${basedir}/src</warSourceDirectory>
+          <systemProperties>
+            <!-- Scalate console configuration -->
+            <scalate.mode>development</scalate.mode>
+            <scalate.editor>\${env.SCALATE_EDITOR}</scalate.editor>
+            <scalate.workdir>\${basedir}/target/_scalate</scalate.workdir>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      
     </plugins>
   </build>
 </project>

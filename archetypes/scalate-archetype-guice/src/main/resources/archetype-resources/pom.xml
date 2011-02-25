@@ -54,7 +54,7 @@
     <jetty-plugin-version>${jetty-plugin-version}</jetty-plugin-version>
     <scala-plugin-version>${scala-plugin-version}</scala-plugin-version>
     <surefire-plugin-version>${surefire-plugin-version}</surefire-plugin-version>
-    <tomcat-plugin-version>${tomcat-plugin-version>}</tomcat-plugin-version>
+    <tomcat-plugin-version>${tomcat-plugin-version}</tomcat-plugin-version>
     <war-plugin-version>${war-plugin-version}</war-plugin-version>
   </properties>
 
