@@ -152,7 +152,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     try {
       render(resolvedPath)
     } catch {
-      case e: Exception =>
+      case e: Throwable =>
         // lets forward to the error handler
         var notFound = true
         for (uri <- errorUris if notFound) {
@@ -170,7 +170,16 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
             request.setAttribute("javax.servlet.error.status_code", status)
 
             request.setAttribute("it", e)
+            response.setStatus(status)
             render(uri)
+
+            request.removeAttribute("javax.servlet.error.exception")
+            request.removeAttribute("javax.servlet.error.exception_type")
+            request.removeAttribute("javax.servlet.error.message")
+            request.removeAttribute("javax.servlet.error.request_uri")
+            request.removeAttribute("javax.servlet.error.servlet_name")
+            request.removeAttribute("javax.servlet.error.status_code")
+
             notFound = false
           }
         }
