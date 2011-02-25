@@ -24,7 +24,7 @@
 
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>scalate-project</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.4.1</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
@@ -471,7 +471,7 @@
               <!-- enable easy JMX connection to JConsole -->
               <systemProperty>
                 <name>com.sun.management.jmxremote</name>
-                <value/>
+                <value />
               </systemProperty>
               <systemProperty>
                 <name>scalate.editor</name>
@@ -499,7 +499,7 @@
 
             <systemProperties>
               <!-- enable easy JMX connection to JConsole -->
-              <com.sun.management.jmxremote></com.sun.management.jmxremote>
+              <com.sun.management.jmxremote />
 
               <!-- Scalate console configuration -->
               <scalate.mode>${scalate.mode}</scalate.mode>
