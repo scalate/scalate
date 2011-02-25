@@ -33,7 +33,7 @@
   <description>Camel component for scalate</description>
 
   <properties>
-    <camelVersion>2.5.0-fuse-00-00</camelVersion>
+    <camelVersion>2.6.0-fuse-00-00</camelVersion>
   </properties>
 
   <dependencies>
@@ -50,6 +50,12 @@
       <version>${camelVersion}</version>
     </dependency>
     
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala-version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-scala</artifactId>

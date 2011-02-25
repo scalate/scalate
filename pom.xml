@@ -235,24 +235,6 @@
     <module>scalate-markdownj</module>
   </modules>
 
-  <dependencies>
-
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala-version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala-version}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-    
-  </dependencies>
 
   <dependencyManagement>
     <dependencies>
