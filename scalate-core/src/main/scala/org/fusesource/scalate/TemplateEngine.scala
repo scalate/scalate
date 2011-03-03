@@ -303,6 +303,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * will then be compiled into the application as part of a build process.
    */
   def generateScala(source: TemplateSource, extraBindings:List[Binding] = Nil) = {
+    source.engine = this
     generator(source).generate(this, source, bindings ::: extraBindings)
   }
 
