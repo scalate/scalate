@@ -533,17 +533,20 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       // Check to see if it's a dynamic attribute list
       var dynamic = false
-      entries.foreach {
-        (entry) => entry._2 match {
-          case x: EvaluatedText =>
-            dynamic = true
-          case x: LiteralText =>
-            if (x.text.length > 1) {
-              dynamic = true
-            }
-          case _ =>
-        }
 
+      def check(n: Any): Unit = n match {
+        case x: EvaluatedText =>
+          dynamic = true
+        case x: LiteralText =>
+          if (x.text.length > 1) {
+            dynamic = true
+          }
+        case _ =>
+      }
+
+      for ((k, v) <- entries) {
+        check(k)
+        check(v)
       }
       if (dynamic) {
 
