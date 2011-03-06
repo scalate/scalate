@@ -52,9 +52,9 @@ object CssFilter extends Filter {
 
     if (useCData(context)) {
       """<style type='text/css'>
-         |  //<![CDATA[
+         |  /* <![CDATA[ */
          |    """.stripMargin + css + """
-         |  //]]>
+         |  /* ]]> */
          |</style>""".stripMargin
     } else {
       """<style type='text/css'>
