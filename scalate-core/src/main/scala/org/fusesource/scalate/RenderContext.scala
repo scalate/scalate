@@ -80,6 +80,11 @@ trait RenderContext {
    */
   var escapeMarkup = true
 
+  /**
+   * Whether we should escape CSS in CDATA sections when using the CSS filter
+   */
+  var wrapCssInCData = false
+
   var currentTemplate: String = _
 
   var viewPrefixes = List("")

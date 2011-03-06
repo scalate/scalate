@@ -36,7 +36,11 @@ class ScamlTestSupport extends TemplateTestSupport {
       expect(result.trim) {
         before()
         try {
-          render(description, template.trim).trim
+          val output = render(description, template.trim)
+          if (showOutput) {
+            println(output)
+          }
+          output.trim
         } finally {
           after()
         }

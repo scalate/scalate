@@ -5,7 +5,8 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   val mavenLocal = "Local Maven Repository" at "file://" + Path.userHome + "/.m2/repository"
 
   // Projects
-  lazy val scalate_core = project("scalate-core", "scalate-core", new ScalateCore(_))
+  lazy val scalate_util = project("scalate-util", "scalate-util", new ScalateUtil(_))
+  lazy val scalate_core = project("scalate-core", "scalate-core", new ScalateCore(_), scalate_util)
   lazy val scalate_test = project("scalate-test", "scalate-test", new ScalateTest(_), scalate_core)
   lazy val scalate_page = project("scalate-page", "scalate-page", new ScalatePage(_), scalate_core, scalate_test)
   lazy val scalate_wikitext = project("scalate-wikitext", "scalate-wikitext", new ScalateWikiText(_), scalate_core, scalate_test)
@@ -31,6 +32,9 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
     }
   }
 
+
+  class ScalateUtil(info: ProjectInfo) extends ScalateProject(info) {
+  }
 
   class ScalateCore(info: ProjectInfo) extends ScalateProject(info) {
   }

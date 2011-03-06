@@ -256,10 +256,10 @@ From within your Scala code or inside a template you often want to render an obj
 Scalate uses a convention over configuration mechanism so that you can render any object using a simple method call in your template. e.g. in SSP
 
 {pygmentize:: ssp}
-<%@ var it: User %>
+<% val user = new User("foo") %>
 <p>Something...</p>
 
-<% view(it) %>
+<% view(user) %>
 
 <p>... more stuff </p>
 {pygmentize}
@@ -269,31 +269,57 @@ Scalate uses a convention over configuration mechanism so that you can render an
 The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
 
 {pygmentize:: ssp}
-<%@ var it: User %>
+<% val user = new User("foo") %>
 
-<% view(it, "edit") %>
+${view(user, "edit")}
 {pygmentize}
 
-Scalate will then look for the template called _packageDirectory.ClassName.viewName.(ssp|scaml)_ and render that. For example in the sample web application to render an _org.fusesource.scalate.sample.Person_ object Scalate uses the [org/fusesource/scalate/sample/Person.index.ssp template](http://github.com/scalate/scalate/blob/master/scalate-sample/src/main/webapp/org/fusesource/scalate/sample/Person.index.ssp).
+
+Scalate will then look for the template called _packageDirectory.ClassName.viewName.(jade|mustache|ssp|scaml)_ and render that. For example in the sample web application to render an _org.fusesource.scalate.sample.Person_ object Scalate uses the [org/fusesource/scalate/sample/Person.index.ssp template](https://github.com/scalate/scalate/blob/master/samples/scalate-sample/src/main/webapp/WEB-INF/org/fusesource/scalate/sample/Person.index.ssp).
 
 Notice that since the view is defined within the package of the model object, there is no need to import the _org.fusesource.scalate.sample.Person_, instead you can just refer to the model type directly as _Person_.
 
 If a template is not found for the exact class name then the class and interface (trait) hierarchies are walked until one is found.
 
-So for example you could provide a template for a generic trait you have - such as a template to render any [scala.Product](http://github.com/scalate/scalate/blob/master/scalate-sample/src/main/webapp/scala/Product.index.ssp) which will then render any case class; then you can customise the view on a class by class basis as required.
+So for example you could provide a template for a generic trait you have - such as a template to render any [scala.Product](https://github.com/scalate/scalate/blob/master/samples/scalate-sample/src/main/webapp/WEB-INF/scala/Product.index.ssp) which will then render any case class; then you can customise the view on a class by class basis as required.
 
 ### The 'it' variable
 
 By default we use the variable named _it_ to refer to the model parameter. This convention means that when working with JAXRS and Jersey's implicit views the model object is implicitly available to any templates using this naming convention.
+
+### DRY IT
+
+Given how common object views are and templates where you pass in an object to render, the default behaviour of [Scalate Packages](#dry) is to automatically import a value based on the type of the template if you follow the object naming convention shown above.
+
+For example if your template matches the name **package/className.viewName.extension** then the className is implicitly imported into your template as a typesafe attribute.
+
+For example if you're template is org/fusesource/scalate/sample/Person.index.ssp then it can look like this
+
+{pygmentize:: ssp}
+name: ${firstName} ${surname}
+{pygmentize}
+
+Which has an implicit import of the 'it' variable so the above template is equivalent to the more explicit (but less DRY) alternative:
+
+{pygmentize:: ssp}
+<%@ import val it: Person %>
+name: ${firstName} ${surname}
+{pygmentize}
+
+Or the even less DRY
+
+{pygmentize:: ssp}
+<%@ val it: Person %>
+name: ${it.firstName} ${it.surname}
+{pygmentize}
 
 ### Collections
 
 If you have a collection of objects you wish to view then you can use a simple helper method called *collection* which works like the *view* method described above.
 
 {pygmentize:: ssp}
-<%@ var it: List[Person] %>
-
-<% collection(it) %>
+<% val people = List(Person("James", "Strachan"), Person("Hiram", "Chirino")) %>
+<% collection(people) %>
 {pygmentize}
 
 As with the *view* method you can specify an optional view name if you won't want to use the _"index"_ default.
@@ -728,6 +754,7 @@ Otherwise you can just add this to your pom.xml
           <goals>
             <goal>precompile</goal>
           </goals>
+          <phase>process-classes</phase>
         </execution>
       </executions>
     </plugin>

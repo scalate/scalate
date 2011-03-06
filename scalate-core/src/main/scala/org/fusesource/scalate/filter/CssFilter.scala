@@ -48,11 +48,22 @@ import org.fusesource.scalate._
 object CssFilter extends Filter {
 
   def filter(context: RenderContext, content: String) = {
-    """<style type='text/css'>
-       |  //<![CDATA[
-       |    """.stripMargin+RenderHelper.indent("    ", content)+"""
-       |  //]]>
-       |</style>""".stripMargin
+    lazy val css = RenderHelper.indent("    ", content)
+
+    if (useCData(context)) {
+      """<style type='text/css'>
+         |  //<![CDATA[
+         |    """.stripMargin + css + """
+         |  //]]>
+         |</style>""".stripMargin
+    } else {
+      """<style type='text/css'>
+         |  """.stripMargin + css + """
+         |</style>""".stripMargin
+    }
   }
-  
+
+  def useCData(context: RenderContext): Boolean =
+    context.wrapCssInCData
+
 }
