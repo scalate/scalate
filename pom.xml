@@ -109,6 +109,10 @@
     <tomcat-plugin-version>1.1</tomcat-plugin-version>
     <wagon-webdav-plugin-version>1.0-beta-7</wagon-webdav-plugin-version>
     <war-plugin-version>2.1.1</war-plugin-version>
+
+
+    <!-- osgi settings -->
+    <scalate.osgi.import>*</scalate.osgi.import>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
@@ -542,7 +546,7 @@
             <Bundle-Name>${project.artifactId}</Bundle-Name>
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Export-Package>{local-packages};version=${project.version};-noimport:=true</Export-Package>
-            <Import-Package>*</Import-Package>
+            <Import-Package>${scalate.osgi.import}</Import-Package>
             <Private-Package>!*</Private-Package>
             <_versionpolicy-impl>[$(version;==;$(@)),$(version;=+;$(@)))</_versionpolicy-impl>
             <_versionpolicy-uses>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy-uses>

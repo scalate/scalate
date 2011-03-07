@@ -32,6 +32,14 @@
   <name>${project.artifactId}</name>
   <description>Scalate Core</description>
 
+  <properties>
+    <scalate.osgi.import>
+      scala.tools.nsc;resolution:=optional,
+      scala.tools.nsc.*;resolution:=optional,
+      *
+    </scalate.osgi.import>
+
+  </properties>
   <dependencies>
     
     <dependency>
@@ -45,11 +53,11 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
+    <!-- exclude or add this dependency as scope 'provided' if you wish to exclude from a war -->
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
       <version>${scala-version}</version>
-      <optional>true</optional>
     </dependency>
 
     <dependency>
