@@ -70,7 +70,7 @@ object Tidy {
 @command(scope = "scalate", name = "toscaml", description = "Converts an XML or HTML file to Scaml")
 class ToScaml extends Action {
 
-  @argument(index = 0, name = "from", description = "The input file. If ommited, input is read from the console")
+  @argument(index = 0, name = "from", description = "The input file or http URL. If ommited, input is read from the console")
   var from: String = _
 
   @argument(index = 1, name = "to", description = "The output file. If ommited, output is written to the console")
