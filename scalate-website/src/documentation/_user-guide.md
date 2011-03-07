@@ -754,7 +754,6 @@ Otherwise you can just add this to your pom.xml
           <goals>
             <goal>precompile</goal>
           </goals>
-          <phase>process-classes</phase>
         </execution>
       </executions>
     </plugin>

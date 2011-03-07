@@ -29,6 +29,6 @@ class ToJade extends ToScaml {
 
   override def to_text(line: String) = "| "+line
 
-  override def to_element(tag: String) = tag
+  override def to_element(tag: String) = super.to_element(tag).stripPrefix("%")
 
 }

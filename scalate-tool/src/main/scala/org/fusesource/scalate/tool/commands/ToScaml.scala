@@ -70,7 +70,7 @@ object Tidy {
 @command(scope = "scalate", name = "toscaml", description = "Converts an XML or HTML file to Scaml")
 class ToScaml extends Action {
 
-  @argument(index = 0, name = "from", description = "The input file. If ommited, input is read from the console")
+  @argument(index = 0, name = "from", description = "The input file or http URL. If ommited, input is read from the console")
   var from: String = _
 
   @argument(index = 1, name = "to", description = "The output file. If ommited, output is written to the console")
@@ -147,7 +147,11 @@ class ToScaml extends Action {
   }
 
   def to_element(tag: String): String = {
-    "%" + tag
+    var rc = tag
+    if( rc.startsWith("div.") ||  tag.startsWith("div#") ) {
+      rc = rc.stripPrefix("div")
+    }
+    "%"+rc
   }
 
   def process(value:AnyRef):Unit = {
@@ -199,7 +203,7 @@ class ToScaml extends Action {
           }
         }
 
-        pi.p(to_element(tag(x.label))+id+clazz)
+        pi.p(to_element(tag(x.label)+id+clazz))
         if( atts!="" ) {
           p("("+atts+")")
         }
