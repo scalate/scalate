@@ -147,7 +147,11 @@ class ToScaml extends Action {
   }
 
   def to_element(tag: String): String = {
-    "%" + tag
+    var rc = tag
+    if( rc.startsWith("div.") ||  tag.startsWith("div#") ) {
+      rc = rc.stripPrefix("div")
+    }
+    "%"+rc
   }
 
   def process(value:AnyRef):Unit = {
@@ -199,7 +203,7 @@ class ToScaml extends Action {
           }
         }
 
-        pi.p(to_element(tag(x.label))+id+clazz)
+        pi.p(to_element(tag(x.label)+id+clazz))
         if( atts!="" ) {
           p("("+atts+")")
         }
