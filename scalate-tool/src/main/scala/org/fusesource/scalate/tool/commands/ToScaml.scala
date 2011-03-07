@@ -20,8 +20,46 @@ package org.fusesource.scalate.tool.commands
 import org.osgi.service.command.CommandSession
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
 import scala.xml._
-import java.io.{OutputStream, FileOutputStream, PrintStream, File}
-import collection.mutable.ArrayBuffer
+import java.io._
+import java.net.URL
+import org.fusesource.scalate.util.{Threads, IOUtil}
+import Threads._
+
+object Tidy {
+
+  val installed = {
+    try {
+      var process = Runtime.getRuntime.exec(Array("tidy", "--version"))
+      process.getErrorStream.close
+      process.getOutputStream.close
+      process.getInputStream.close
+      process.waitFor
+      process.exitValue == 0
+    } catch {
+      case e:Throwable =>
+        false
+    }
+  }
+
+  def process(value:Array[Byte]):Array[Byte] = {
+    var process = Runtime.getRuntime.exec(Array("tidy", "-asxhtml", "-numeric", "-q"))
+    thread("tidy err handler") {
+      IOUtil.copy(process.getErrorStream, System.err)
+    }
+    thread("tidy in handler") {
+      IOUtil.copy(new ByteArrayInputStream(value), process.getOutputStream)
+      process.getOutputStream.close
+    }
+
+    val out = new ByteArrayOutputStream()
+    IOUtil.copy(process.getInputStream, out)
+    process.waitFor
+    if (process.exitValue != 0 && process.exitValue != 1) {
+      throw new RuntimeException("'tidy' execution failed: %d.".format(process.exitValue))
+    }
+    out.toByteArray
+  }
+}
 
 /**
  * <p>
@@ -33,7 +71,7 @@ import collection.mutable.ArrayBuffer
 class ToScaml extends Action {
 
   @argument(index = 0, name = "from", description = "The input file. If ommited, input is read from the console")
-  var from: File = _
+  var from: String = _
 
   @argument(index = 1, name = "to", description = "The output file. If ommited, output is written to the console")
   var to: File = _
@@ -42,12 +80,53 @@ class ToScaml extends Action {
 
   def execute(session: CommandSession): AnyRef = {
 
-    def doit = {
-      if( from!=null ) {
-        process(XML.loadFile(from))
+    def doit:Unit = {
+
+      var in = if( from==null ) {
+        session.getKeyboard
       } else {
-        process(XML.load(session.getKeyboard))
+        if( from.startsWith("http://") || from.startsWith("https://") ) {
+          new URL(from).openStream
+        } else {
+          new FileInputStream(from)
+        }
       }
+
+      var data = IOUtil.loadBytes(in)
+
+      // try to tidy the html first before we try to parse it as XML
+      if( Tidy.installed ) {
+        System.err.println("Cleaning up html with tidy...")
+        data = Tidy.process(data)
+      } else {
+        System.err.println("tidy is not installed... conversion will only work if input is XHTML")
+      }
+
+      // Try to strip out the doc type... stuff..
+      {
+        val text = new String(data, "UTF-8").trim
+        if( text.startsWith("<!DOCTYPE") ) {
+          data = text.substring(text.indexOf('>')+1).getBytes("UTF-8")
+        }
+      }
+
+      System.err.println("Parsing html...")
+      val doc = try {
+        XML.load(new ByteArrayInputStream(data))
+      } catch {
+        case e:SAXParseException =>
+          // save the tidy version...
+          System.err.println("Could not parse the html markup: "+e.getMessage+" at "+e.getLineNumber+":"+e.getColumnNumber)
+          out.write(data)
+          return
+        case e:Throwable =>
+          // save the tidy version...
+          System.err.println("Could not parse the html markup: "+e.getMessage)
+          out.write(data)
+          return
+      }
+      System.err.println("Converting...")
+      process(doc)
     }
 
     if( to!=null ) {
@@ -71,7 +150,7 @@ class ToScaml extends Action {
     "%" + tag
   }
 
-  def process(value:Any):Unit = {
+  def process(value:AnyRef):Unit = {
 
     val t = out
     import t._
@@ -85,6 +164,7 @@ class ToScaml extends Action {
     }
 
     value match {
+
       case x:Elem =>
 
         var id=""
@@ -127,7 +207,7 @@ class ToScaml extends Action {
         x.child match {
           case Seq(x:Text) =>
             val value = x.text.trim
-            if (value.contains("\r?\n")) {
+            if (value.contains("\n")) {
               pl()
               indent {
                 process(x)
