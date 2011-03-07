@@ -88,6 +88,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
 
+  private var compilerInstalled = true
+
   /**
    * Whether a custom classpath should be combined with the deduced classpath
    */
@@ -117,6 +119,20 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   def boot: Unit = {
     if(booted.compareAndSet(false, true)) {
+
+      if( allowReload ) {
+        // Is the Scala compiler on the class path?
+        try {
+          getClass.getClassLoader.loadClass("scala.tools.nsc.settings.ScalaSettings")
+        } catch {
+          case e:Throwable =>
+          // if it's not, then disable class reloading..
+          debug("Scala compiler not found on the class path. Template reloading disabled.")
+          allowReload = false
+          compilerInstalled = false
+        }
+      }
+
       ClassLoaders.findClass(bootClassName, List(classLoader, Thread.currentThread.getContextClassLoader)) match {
         case Some(clazz) =>
 
@@ -678,6 +694,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           val text = source.text
           return (new PipelineTemplate(p, text), Set(uri))
         case None=>
+      }
+
+      if( !compilerInstalled ) {
+        throw new TemplateException("Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
       val g = generator(source);
