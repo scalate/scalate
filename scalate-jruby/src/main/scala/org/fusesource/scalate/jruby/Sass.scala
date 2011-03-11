@@ -18,17 +18,24 @@ object Sass extends TemplateEngineAddOn with Log {
     if( !te.filters.contains("sass") ) {
       val sass = new Sass(jruby, te)
       te.filters += "sass"->sass
-      te.pipelines += "sass"->List(sass)
+      te.pipelines += "sass"->List(NoLayout(sass))
     }
 
     if( !te.filters.contains("scss") ) {
       val scss = new Scss(jruby, te)
       te.filters += "scss"->scss
-      te.pipelines += "scss"->List(scss)
+      te.pipelines += "scss"->List(NoLayout(scss))
     }
   }
 
 
+}
+
+case class NoLayout(val next: Sass) extends Filter {
+  def filter(context: RenderContext, content: String) = {
+    context.attributes("layout")="" // disable the layout
+    next.filter(context, content)
+  }
 }
 
 class Sass(val jruby:JRuby, val engine: TemplateEngine) extends Filter {
