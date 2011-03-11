@@ -83,7 +83,7 @@ trait RenderContext {
   /**
    * Whether we should escape CSS in CDATA sections when using the CSS filter
    */
-  var wrapCssInCData = false
+  var wrapCssInCData = true
 
   var currentTemplate: String = _
 
