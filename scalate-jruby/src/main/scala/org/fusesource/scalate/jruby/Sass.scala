@@ -4,6 +4,7 @@ import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{TemplateException, RenderContext, TemplateEngine, TemplateEngineAddOn}
 import java.io.File
+import org.fusesource.scalate.servlet.ServletRenderContext
 
 /**
  * <p>
@@ -34,6 +35,10 @@ object Sass extends TemplateEngineAddOn with Log {
 case class NoLayout(val next: Sass) extends Filter {
   def filter(context: RenderContext, content: String) = {
     context.attributes("layout")="" // disable the layout
+    context match {
+      case x:ServletRenderContext => x.response.setContentType("text/css")
+      case _ =>
+    }
     next.filter(context, content)
   }
 }

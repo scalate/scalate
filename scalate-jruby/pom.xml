@@ -48,6 +48,12 @@
       <artifactId>jruby-complete</artifactId>
       <version>1.5.6</version>
     </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <optional>true</optional>
+    </dependency>
         
     <!-- testing -->
     <dependency>
