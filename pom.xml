@@ -238,6 +238,7 @@
     <module>scalate-tool</module>
     <module>scalate-jsp-converter</module>
     <module>scalate-markdownj</module>
+    <module>scalate-jruby</module>
   </modules>
 
 

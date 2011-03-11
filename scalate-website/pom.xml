@@ -49,6 +49,12 @@
       <artifactId>scalate-wikitext</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-jruby</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     
     <dependency>
       <groupId>org.fusesource.scalate</groupId>

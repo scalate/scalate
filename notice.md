@@ -14,4 +14,8 @@ Copyright 2009-2010 Progress Software Corporation
   It is MIT licensed and contains the following copyright:
   
       Copyright (c) 2006-2009 Hampton Catlin, Nathan Weizenbaum, and Chris Eppstein
-  
+
+* This product includes software (haml) developed by
+  Hampton Catlin, Nathan Weizenbaum, and Chris Eppstein  
+
+      Copyright (c) 2006-2009 Hampton Catlin, Nathan Weizenbaum, and Chris Eppstein  
