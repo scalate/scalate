@@ -1376,10 +1376,17 @@ The Ruby code is evaluated in the same context as the Haml template.
 Parses the filtered text with ERb, like an RHTML template.
 Not available if the [`:suppress_eval`](#suppress_eval-option) option is set to true.
 Embedded Ruby code is evaluated in the same context as the Haml template.
+-->
 
 #### `:sass` {#sass-filter}
-Parses the filtered text with Sass to produce CSS output.
--->
+> Parses the filtered text with [Sass](http://sass-lang.com/) to produce CSS output.  
+Only works if you have the `scalate-jruby` module on the class path.  You normally 
+want to combine with the `:css` filter.  For example `:css:sass`
+
+#### `:scss` {#scss-filter}
+> Parses the filtered text with [Scss](http://sass-lang.com/) to produce CSS output.
+Only works if you have the `scalate-jruby` module on the class path.  You normally 
+want to combine with the `:css` filter.  For example `:css:scss`
 
 #### `:textile` {#textile-filter}
 > Parses the filtered text with [Textile](http://www.textism.com/tools/textile).
