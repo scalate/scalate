@@ -85,7 +85,7 @@ import java.io.File;
  * </p>
  *
  * @author <a href="mailto:michal@org.codehaus.org">Michal Maczka</a>
- * @phase("deploy")
+ * @phase deploy
  * @goal deploy
  */
 public class SiteDeployMojo
