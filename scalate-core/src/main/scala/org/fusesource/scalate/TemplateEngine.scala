@@ -113,9 +113,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var packagePrefix = ""
 
   var bootClassName = "scalate.Boot"
-  var bootInjections:List[AnyRef] = List(this)
+  var bootInjections: List[AnyRef] = List(this)
 
   private var booted = new AtomicBoolean()
+
 
   def boot: Unit = {
     if(booted.compareAndSet(false, true)) {
@@ -135,23 +136,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
       ClassLoaders.findClass(bootClassName, List(classLoader, Thread.currentThread.getContextClassLoader)) match {
         case Some(clazz) =>
-
-          // Structural Typing to make Reflection easier.
-          type Boot = {
-            def run:Unit
-          }
-
-          val o = try {
-             Objects.instantiate(clazz, bootInjections).asInstanceOf[Boot]
-          } catch {
-            case e => throw new TemplateException("Failed to create the instance of class " + bootClassName, e)
-          }
-
-          try {
-            o.run
-          } catch {
-            case e => throw new TemplateException("Failed to invoke "+ bootClassName + ".run() : " + e, e)
-          }
+          Boots.invokeBoot(clazz, bootInjections)
 
         case _ =>
           info("No bootstrap class " + bootClassName + " found on classloader: " + classLoader)
