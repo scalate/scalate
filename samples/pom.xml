@@ -36,6 +36,7 @@
 
   <modules>
     <module>scalate-sample</module>
+    <module>scalate-sample-precompile</module>
     <module>scalate-sample-sitegen</module>
     <module>scalate-sample-scuery</module>
     <module>scalate-sample-spring-mvc</module>
