@@ -68,20 +68,26 @@
     </plugins>
   </build>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>zt-repo</id>
-      <name>Zero turnaround repo</name>
-      <url>http://repos.zeroturnaround.com/maven2</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <profiles>
+    <profile>
+      <id>download</id>
 
-  <repositories>
-    <repository>
-      <id>zt-repo</id>
-      <name>Zero turnaround repo</name>
-      <url>http://repos.zeroturnaround.com/maven2</url>
-    </repository>
-  </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>zt-repo</id>
+          <name>Zero turnaround repo</name>
+          <url>http://repos.zeroturnaround.com/maven2</url>
+        </pluginRepository>
+      </pluginRepositories>
+
+      <repositories>
+        <repository>
+          <id>zt-repo</id>
+          <name>Zero turnaround repo</name>
+          <url>http://repos.zeroturnaround.com/maven2</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
 
 </project>

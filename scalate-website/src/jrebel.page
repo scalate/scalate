@@ -22,7 +22,6 @@ Here's how you can use it in a web application with Scalate.
     
 * run your web application in maven
 
-
     mvn jetty:run
 
 Now if your code is compiled by your IDE or a build process, the classes are automatically reloaded on the fly. Neat eh!
@@ -33,6 +32,32 @@ For example if you run the following in another shell
     
 Then as you edit your scala code it will be recompiled using Scala's incremental compiler, then JRebel will auto-reload any recompiled classes.
 
+## Using the Scalate JRebel plugin
+
+If you have templates which depend on Scala code thats reloaded by JRebel, it might be that the templates by default are not auto-reloaded by JRebel. This is because by default JRebel is not aware of the source & classes directories used by Scalate to generate Scala code for each template and compile it.
+
+The easiest thing to do is to just depend on the scalate-jrebel plugin in your web application. This is a JRebel plugin which listens to classes being reloaded in JRebel and it flushes all the Scalate template classes to ensure that your template is recompiled against the latest code.
+
+So for example if you are using maven then add this profile to your web application pom.xml
+
+{pygmentize:: xml}
+<profiles>
+  <profile>
+    <id>jrebel</id>
+    <dependencies>
+      <dependency>
+        <groupId>org.fusesource.scalate</groupId>
+        <artifactId>scalate-jrebel</artifactId>
+        <version>\${scalate-version}</version>
+      </dependency>
+    </dependencies>
+  </profile>
+</profiles>
+{pygmentize}
+
+If you then run your web application as follows (assuming you've defined **MAVEN_OPTS**) as specified above)
+   
+    mvn jetty:run -Pjrebel
 
 ## Things to watch
 

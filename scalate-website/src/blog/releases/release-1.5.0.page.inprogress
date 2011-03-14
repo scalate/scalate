@@ -42,7 +42,7 @@ templates.
 
 **Scalate 1.5.0 Highlights**
 
-* new JRebel plugin for better reloading of templates when using JRebel with Scalate
+* new [Scalate JRebel plugin](http://scalate.fusesource.org/jrebel.html) for better reloading of templates when using JRebel and dependent Scala code is reloaded by JRebel
 * [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [now](http://www.assembla.com/spaces/scalate/tickets/199) supports Java collections and Maps better 
 
 For more detail see the [Full Change
