@@ -58,7 +58,7 @@ object ClassFinder {
             }
         }
       }
-    }
+    }.distinct
   }
 
   def discoverCommandClasses(indexPath:String, cl:ClassLoader=getClass.getClassLoader): List[String] = {

@@ -229,8 +229,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   private var _cacheMisses = 0
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
-  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn=>
-    addOn(this)
+  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach{ addOn =>
+      debug("Installing Scalate add on " + addOn.getClass)
+      addOn(this)
   }
 
 
