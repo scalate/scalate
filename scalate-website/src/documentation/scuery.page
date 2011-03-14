@@ -85,6 +85,9 @@ Transform HTML using jQuery style DSL in Scala
     There's the Scala code to create the transformer...
 
     {pygmentize:: scala}
+    // add an implicit conversion from Transform -> NodeSeq
+    import org.fusesource.scalate.scuery.Transform._
+
     val people = List(Person("James", "Mells"), 
                       Person("Hiram", "Tampa"))
 
