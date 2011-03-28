@@ -43,7 +43,8 @@ templates.
 **Scalate 1.5.0 Highlights**
 
 * new [Scalate JRebel plugin](http://scalate.fusesource.org/jrebel.html) for better reloading of templates when using JRebel and dependent Scala code is reloaded by JRebel
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [now](http://www.assembla.com/spaces/scalate/tickets/199) supports Java collections and Maps better 
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [now](http://www.assembla.com/spaces/scalate/tickets/199) supports Java collections and Maps better
+* new [captureAttributeAppend](http://www.assembla.com/spaces/scalate/tickets/234) helper method for appending fragments of a template to an attribute, such as for building up lists of style sheet or javascript inclusions that can later be rendered in the head element.
 
 For more detail see the [Full Change
 Log](http://www.assembla.com/spaces/scalate/milestones/289475-1-5)

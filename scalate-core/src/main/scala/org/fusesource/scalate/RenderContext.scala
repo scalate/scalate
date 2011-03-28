@@ -171,10 +171,22 @@ trait RenderContext {
   }
 
   /**
-   * Sets the given attribute name to be the captured body of the template
+   * Captured the body of the function call then sets it to the given attribute value
    */
   def captureAttribute(name: String)(body: => Unit): Unit = {
     val v = capture(body)
+    attributes(name) = v
+  }
+
+  /**
+   * Captured the body of the function call then append it to the given attribute value
+   */
+  def captureAttributeAppend(name: String)(body: => Unit): Unit = {
+    val text = capture(body)
+    val v = attributes.get(name) match {
+      case Some(t) => t + text
+      case _ => text
+    }
     attributes(name) = v
   }
 
