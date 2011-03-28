@@ -76,7 +76,7 @@ object BundleClassPathBuilder {
                                                                                                                                                                 
   def fromWires(admin: PackageAdmin, bundle: Bundle) : List[AbstractFile] = {
     val exported = admin.getExportedPackages(null : Bundle)
-    val list = new ListBuffer[AbstractFile]
+    val list = new ListBuffer[Bundle]
     for (pkg <- exported; if pkg.getExportingBundle.getBundleId != 0) {
         val bundles = pkg.getImportingBundles();
         if (bundles != null) {
@@ -85,12 +85,12 @@ object BundleClassPathBuilder {
               if (b.getBundleId == 0) {
                 debug("Ignoring system bundle")
               } else {
-                list += create(pkg.getExportingBundle)
+                list += pkg.getExportingBundle
               }
             }
         }
     }
-    list.toList
+    list.map(create(_)).toList
   }
 
 
