@@ -25,7 +25,7 @@ Ditch that crappy JSP pronto!
   :markdown
     To convert the JSP files in a directory foo just type
 
-        scalate foo
+        scalate jsp2ssp foo
     
     You should see lots of ssp files generated.
     
