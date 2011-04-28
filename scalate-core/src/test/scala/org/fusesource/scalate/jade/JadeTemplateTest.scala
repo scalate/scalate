@@ -292,6 +292,14 @@ html
 </funny.element>
 """)
 
+  testRender("'tag = quality' renders a tag with nested content",
+"""
+p=quality
+p = quality
+""","""
+<p>scrumptious</p>
+<p>scrumptious</p>
+""")
 
   /////////////////////////////////////////////////////////////////////
   //

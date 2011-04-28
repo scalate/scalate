@@ -255,7 +255,7 @@ class ScamlParser(val upto_type:String=UPTO_TYPE_SINGLE_LINE) extends IndentedPa
       "<"  ^^{ s=> Trim.Inner } 
 
   def element_text:Parser[Option[TextExpression]] = 
-    prefixed("=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None, false)) } |
+    prefixed(opt_space ~ "=", upto(nl) <~ nl) ^^ { x=> Some(EvaluatedText(x, List(), false, None, false)) } |
     opt_space ~ nl ^^ { x=>None } |
     space ~> literal_text(None) <~ any_space_then_nl ^^ { x=>Some(x) }
 
