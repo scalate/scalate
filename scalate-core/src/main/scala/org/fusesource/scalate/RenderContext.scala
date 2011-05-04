@@ -27,8 +27,8 @@ import util.IOUtil._
 import java.io.File
 import java.text.{DateFormat, NumberFormat}
 import java.util.{Locale, Date}
-import collection.mutable.{ListBuffer, HashMap}
 import xml.{Node, PCData, NodeSeq, NodeBuffer}
+import collection.mutable.{ListMap, LinkedHashSet, ListBuffer, HashMap}
 
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
@@ -140,7 +140,7 @@ trait RenderContext {
   /**
    * Access the attributes available in this context
    */
-  def attributes: AttributeMap[String, Any]
+  def attributes: AttributeMap
 
   /**
    * Sorted list of attribute keys
@@ -177,6 +177,8 @@ trait RenderContext {
     val v = capture(body)
     attributes(name) = v
   }
+
+
 
   /**
    * Captured the body of the function call then append it to the given attribute value

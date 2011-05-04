@@ -30,17 +30,16 @@ import scala.collection.Set
  * The default implementation for <code>AttributeMap</code> backed
  * by a map like collection.
  */
-//class AttributesHashMap[A, B] extends HashMap[A,B] with AttributeMap[A, B] {
-class AttributesHashMap[A, B] extends AttributeMap[A, B] {
+class AttributesHashMap extends AttributeMap {
 
-  private[this] val map = new ju.HashMap[A, B]
+  private[this] val map = new ju.HashMap[String, Any]
 
-  def get(key: A): Option[B] = {
+  def get(key: String): Option[Any] = {
     val value = map.get(key)
     if (value == null) None else Some(value)
   }
 
-  def apply(key: A): B = {
+  def apply(key: String): Any = {
     val answer = map.get(key)
     if (answer == null) {
       throw new NoSuchElementException("key " + key + " not available")
@@ -50,11 +49,11 @@ class AttributesHashMap[A, B] extends AttributeMap[A, B] {
     }
   }
 
-  def update(key: A, value: B) {
+  def update(key: String, value: Any) {
     map.put(key, value)
   }
 
-  def remove(key: A): Option[B] = {
+  def remove(key: String): Option[Any] = {
     val value = map.remove(key)
    if (value == null) None else Some(value)
   }

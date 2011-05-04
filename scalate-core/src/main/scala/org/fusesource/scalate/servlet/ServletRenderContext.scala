@@ -64,7 +64,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
 
   viewPrefixes = List("WEB-INF", "")
 
-  override val attributes = new AttributeMap[String, Any] {
+  override val attributes = new AttributeMap {
     request.setAttribute("context", ServletRenderContext.this)
 
     def get(key: String): Option[Any] = {

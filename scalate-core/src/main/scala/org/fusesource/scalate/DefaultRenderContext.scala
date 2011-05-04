@@ -32,7 +32,7 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
 
   import DefaultRenderContext._
 
-  val attributes: AttributeMap[String,Any] = new AttributesHashMap[String, Any]() {
+  val attributes: AttributeMap = new AttributesHashMap() {
     update("context", DefaultRenderContext.this)
   }
   escapeMarkup = engine.escapeMarkup
