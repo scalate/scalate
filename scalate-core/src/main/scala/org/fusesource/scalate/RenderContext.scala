@@ -138,6 +138,13 @@ trait RenderContext {
   def uri(u: String): String = u
 
   /**
+   * Loads the given template or file as a String for inclusion into the current page.
+   *
+   * Useful if you want to include some client side template, particularly with a .jade extension
+   */
+  def load(uri: String): String = engine.resourceLoader.load(uri)
+
+  /**
    * Access the attributes available in this context
    */
   def attributes: AttributeMap
