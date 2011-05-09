@@ -98,7 +98,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Sets the import statements used in each generated template class
    */
-  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._", "import _root_.org.fusesource.scalate.support.TemplateConversions._")
+  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._",
+    "import _root_.org.fusesource.scalate.support.TemplateConversions._",
+    "import _root_.org.fusesource.scalate.util.Measurements._")
 
   /**
    * Loads resources such as the templates based on URIs

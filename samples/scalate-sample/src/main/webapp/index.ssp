@@ -138,6 +138,13 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
   </li>
 </ul>
 
+<h2>Jade Samples</h2>
+
+<ul>
+  <li>
+    <a href="jade/measurements.jade">measurements</a>
+  </li>
+</ul>
 
 <h2>JAXRS Samples</h2>
 
