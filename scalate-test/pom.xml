@@ -41,7 +41,7 @@
 
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>${scalatest-artifact}</artifactId>
+      <artifactId>scalatest_2.9.0</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

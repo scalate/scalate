@@ -69,7 +69,6 @@
 
     <scala-version>2.9.0</scala-version>
 
-    <scalatest-artifact>scalatest_2.9.0</scalatest-artifact>
     <scalatest-version>1.4.1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
@@ -88,7 +87,7 @@
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
     <install-plugin-version>2.3.1</install-plugin-version>
-    <mvnplugins-plugin-version>1.12</mvnplugins-plugin-version>
+    <mvnplugins-version>1.14</mvnplugins-version>
     <jar-plugin-version>2.3.1</jar-plugin-version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
@@ -302,7 +301,7 @@
       -->
       <dependency>
         <groupId>org.scalatest</groupId>
-        <artifactId>${scalatest-artifact}</artifactId>
+        <artifactId>scalatest_2.9.0</artifactId>
         <version>${scalatest-version}</version>
       </dependency>
       <dependency>
@@ -1136,7 +1135,7 @@
           <plugin>
             <groupId>org.fusesource.mvnplugins</groupId>
             <artifactId>maven-graph-plugin</artifactId>
-            <version>${mvnplugins-plugin-version}</version>
+            <version>${mvnplugins-version}</version>
           </plugin>
         </plugins>
       </build>
