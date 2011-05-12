@@ -39,9 +39,6 @@ object RenderContext {
 
   def apply(): RenderContext = threadLocal.get
 
-  @deprecated("Can leak thread local storage. Use the 'using' method instead.")
-  def update(that: RenderContext) = threadLocal.set(that)
-  
   def using[T](that: RenderContext)(func: =>T):T = {
     val previous = threadLocal.get
     try {

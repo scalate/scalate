@@ -217,7 +217,7 @@ trait Scope {
   def toTraversable(v: Any, block: Scope => Unit): Any = v match {
     case t: Seq[_] => t
     case t: Array[_] => t.toSeq
-    case t: ju.Map[_,_] => asScalaMap(t)
+    case t: ju.Map[_,_] => mapAsScalaMap(t)
 
     case f: Function0[_] => toTraversable(f(), block)
     case f: Function1[Scope, _] if isParam1(f, classOf[Scope]) => toTraversable(f(this), block)
@@ -226,9 +226,9 @@ trait Scope {
     case f: Function1[String, _] if isParam1(f, classOf[String]) =>
       FunctionResult(f(capture(block)))
 
-    case c: ju.Collection[_] => asScalaIterable(c)
+    case c: ju.Collection[_] => collectionAsScalaIterable(c)
     case i: ju.Iterator[_] => asScalaIterator(i)
-    case i: jl.Iterable[_] => asScalaIterable(i)
+    case i: jl.Iterable[_] => iterableAsScalaIterable(i)
 
     case _ => v
   }

@@ -12,7 +12,7 @@ import org.jruby.embed.{LocalContextScope, ScriptingContainer}
 class JRuby(loadPaths:List[File]) extends Log {
 
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
-  container.getProvider.setLoadPaths(collection.JavaConversions.asJavaList(loadPaths))
+  container.getProvider.setLoadPaths(collection.JavaConversions.seqAsJavaList(loadPaths))
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)
 
   RubyInstanceConfig.FASTCASE_COMPILE_ENABLED = true
