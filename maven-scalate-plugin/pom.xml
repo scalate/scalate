@@ -39,7 +39,7 @@
 
   <properties>
     <maven-version>2.2.1</maven-version>
-    <mvnplugins-version>1.12</mvnplugins-version>
+    <mvnplugins-version>1.14-SNAPSHOT</mvnplugins-version>
     <wagonVersion>1.0-beta-7</wagonVersion>
   </properties>
 
