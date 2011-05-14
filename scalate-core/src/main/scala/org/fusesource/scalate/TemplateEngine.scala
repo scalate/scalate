@@ -675,12 +675,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     var code: Code = null
     try {
       val uri = source.uri
-
+      val text = source.text
 
       // Can we use a pipeline to process the request?
       pipeline(source) match {
         case Some(p)=>
-          val text = source.text
           return (new PipelineTemplate(p, text), Set(uri))
         case None=>
       }
