@@ -87,7 +87,7 @@
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
     <install-plugin-version>2.3.1</install-plugin-version>
-    <mvnplugins-version>1.14</mvnplugins-version>
+    <mvnplugins-version>1.15</mvnplugins-version>
     <jar-plugin-version>2.3.1</jar-plugin-version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
