@@ -156,7 +156,8 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
         // lets forward to the error handler
         var notFound = true
         for (uri <- errorUris if notFound) {
-          if (servletContext.getResource(uri) != null) {
+          try {
+            val template = engine.load(uri)
 
             // we need to expose all the errors property here...
             request.setAttribute("javax.servlet.error.exception", e)
@@ -181,6 +182,8 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
             request.removeAttribute("javax.servlet.error.status_code")
 
             notFound = false
+          } catch {
+            case _ =>
           }
         }
         if (notFound) {
