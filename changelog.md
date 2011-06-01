@@ -1,6 +1,44 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.5.0](http://scalate.fusesource.org/blog/releases/release-1-5-0.html), released 2011-06-01
+----
+
+* Fixes[#244](http://scalate.assembla.com/spaces/scalate/tickets/244) Error Page Template not display if precompiled and source excluded from webapp
+* Try to load the source's content early in compileAndLoad so that a ResourceNotFoundException throw before a TemplateException due to the scala compiler not being available.
+* Fixes[#243](http://scalate.assembla.com/spaces/scalate/tickets/243)  Updated to Scala 2.9.0-1
+* Fixes[#242](http://scalate.assembla.com/spaces/scalate/tickets/242) to add simple helper methods to turn measurement units into nice pretty strings
+* added helper method to load a template as text such as to render a jade template as source inside a template for client side rendering
+* support easy access to lazy created sets/lists/maps in the attributes.
+* Fixes[#239](http://scalate.assembla.com/spaces/scalate/tickets/239) : Adding a cofeescript filter.
+* Fixes[#238](http://scalate.assembla.com/spaces/scalate/tickets/238): scaml/jade using = on one line doesn't like a space before the =
+* fixes [#235](http://scalate.assembla.com/spaces/scalate/tickets/235) so that jsp2ssp is now available as a tool
+* added new captureAttributeAppend method which fixes [#230](http://scalate.assembla.com/spaces/scalate/tickets/230)
+* Fix classpath for scala compiler in osgi
+* fixed up documentation bug
+* explicitly reset the test counter just in case
+* added test case to check we can implement a Boot class in pure Java easily
+* moved the jrebel dependency repositories into the download profile and added more docs to the website
+* added test case for Wille's issue: http://groups.google.com/group/scalate/browse_thread/thread/78013156e89b1ee8
+* added a sample to test out the use of precompiling templates
+* fixes [#228](http://scalate.assembla.com/spaces/scalate/tickets/228) to provide a JRebel plugin for Scalate so that templates are reloaded whenever JRebel reloads a class. Its pretty pessimistic so far; we should be able to minimise the reloading of templates using JRebel's dependency tracking
+* Add doco that the scss and sass filters are available.
+* Trimming files form the haml distro that are not needed at runtime.
+* Fixes [#227](http://scalate.assembla.com/spaces/scalate/tickets/227) : Added scss and sass filters!
+* Use the right javadoc annotation style.
+* removed some unnecessary dependencies from poms
+* made scala-compiler a default dependency so that mvn jetty:run and mvn tomcat:run work fine; folks can always exclude the dependency or specify it a provided scope dependency if they want to exclude it from a WAR
+* Update the description of the from parameter since it can be a HTTP url too now.
+* omit the div declaration when a class or style attribute is available.
+* Fixes [#225](http://scalate.assembla.com/spaces/scalate/tickets/225) We now check to see if the scala compiler is installed and disable template reloading if it's not.  Also print a more descriptive message if we HAVE to compile a template and it's not available.
+* Run the html through the tidy command if it's available, strip the doctype header, and handle multi line text areas properly.
+* fixes [#223](http://scalate.assembla.com/spaces/scalate/tickets/223) Use CSS comments to hide the CDATA expressions.
+* Merge branch 'master' of github.com:scalate/scalate
+* support dynamic attribute values in the ruby style attribute syntax in jade & scaml. fixes [#222](http://scalate.assembla.com/spaces/scalate/tickets/222)
+* Fixes NPE that occurs when generateScala is called.
+* fixed up the user guide a bit more to mention the DRY IT approach
+
+
 [Scalate 1.4.1](http://scalate.fusesource.org/blog/releases/release-1-4-1.html), released 2011-02-25
 ----
 
