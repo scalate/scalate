@@ -1,7 +1,7 @@
 ![Scalate][logo]
 ===============================
 
-[Scalate 1.5.0](http://scalate.fusesource.org/blog/releases/release-1-5-0.html), released 2011-06-01
+[Scalate 1.5.0](http://scalate.fusesource.org/blog/releases/release-1.5.0.html), released 2011-06-01
 ----
 
 * Fixes[#244](http://scalate.assembla.com/spaces/scalate/tickets/244) Error Page Template not display if precompiled and source excluded from webapp
