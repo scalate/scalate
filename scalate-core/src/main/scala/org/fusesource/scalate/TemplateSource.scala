@@ -34,7 +34,7 @@ trait TemplateSource extends Resource {
   import TemplateSource.log._
 
   var engine: TemplateEngine = _
-  private var _packageName: String = _
+  private var _packageName: String = ""
   private var _simpleClassName: String = _
 
 
@@ -69,10 +69,10 @@ trait TemplateSource extends Resource {
    */
   def packageName: String = {
     checkInitialised()
-    if( engine.packagePrefix.length==0 || packageName.length==0 ) {
-      engine.packagePrefix + packageName
+    if( engine.packagePrefix.length==0 || _packageName.length==0 ) {
+      engine.packagePrefix + _packageName
     } else {
-      engine.packagePrefix + "." + packageName
+      engine.packagePrefix + "." + _packageName
     }
   }
 
