@@ -69,10 +69,10 @@ trait TemplateSource extends Resource {
    */
   def packageName: String = {
     checkInitialised()
-    if( engine.packagePrefix.length==0 || _packageName.length==0 ) {
-      engine.packagePrefix+_packageName
+    if( engine.packagePrefix.length==0 || packageName.length==0 ) {
+      engine.packagePrefix + packageName
     } else {
-      engine.packagePrefix + "." + _packageName
+      engine.packagePrefix + "." + packageName
     }
   }
 
