@@ -1,0 +1,25 @@
+<%
+  val people = Map("James" -> "Mells", "Hiram" -> "Tampa")
+%>
+
+<div class="main">
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+    </tr>
+    #for ((name, location) <- people)
+    <tr>
+      <td>${name}</td>
+      <td>${location}</td>
+    </tr>
+    #end
+  </table> 
+</div>
+
+<div class="description">
+  <p>
+    This is lots and lots of text.
+    <b>Scalate</b> really is rather awesome!
+  </p>      
+</div>

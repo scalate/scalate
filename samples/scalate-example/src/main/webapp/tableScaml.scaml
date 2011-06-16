@@ -1,0 +1,16 @@
+- val people = Map("James" -> "Mells", "Hiram" -> "Tampa")
+
+.main
+  %table
+    %tr
+      %th Name
+      %th Location
+    - for ((name, location) <- people) 
+      %tr
+        %td = name
+        %td = location
+
+.description      
+  %p
+    This is lots and lots of text.
+    <b>Scalate</b> really is rather awesome!

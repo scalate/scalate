@@ -1,0 +1,18 @@
+- val people = Map("James" -> "Mells", "Hiram" -> "Tampa")
+
+h1 Table Example
+
+.main
+  table
+    tr
+      th Name
+      th Location
+    - for ((name, location) <- people) 
+      tr
+        td= name
+        td= location
+      
+.description      
+  :markdown
+    This is lots and lots of text.
+    **Scalate** really is rather awesome!

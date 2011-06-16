@@ -1,0 +1,25 @@
+-@ val body: String
+-@ val title: String = "Default Title"
+- response.setContentType("text/html")
+!!!
+html
+  head
+    title= title
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    link(href={uri("/css/style.css")} rel="stylesheet" type="text/css")
+  body
+    #navigation
+      .wrapper
+        ul
+          li
+            a(href={uri("/")}) My Layout
+          li
+            a(href="http://scalate.fusesource.org/") Documentation
+
+    #content
+      .wrapper
+        !~~ body
+    
+    #footer
+      .wrapper
+        br
