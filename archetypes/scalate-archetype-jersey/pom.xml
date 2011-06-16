@@ -91,7 +91,9 @@
                 <copy todir="${basedir}/target/resources/archetype-resources/src/main/webapp" overwrite="false" verbose="true">
                   <fileset dir="${basedir}/../../scalate-war/src/main/webapp">
                     <exclude name="WEB-INF/web.xml" />
+                    <!--
                     <exclude name="index.*" />
+                    -->
                     <exclude name="WEB-INF/_scalate" />
                     <exclude name="WEB-INF/_scalate/**" />
                   </fileset>

@@ -24,38 +24,35 @@
 - val include_console = engine.isDevelopmentMode && engine.resourceLoader.exists("/org/fusesource/scalate/console/console_head.scaml")
 
 !!! Basic
-%html(lang="en")
-  %head
-    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
-    %meta(name="description" content="description goes here")
-    %meta(name="keywords" content="keywords,goes,here")
-    %meta(name="author" content="Your Name")
+html(lang="en")
+  head
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(name="description" content="description goes here")
+    meta(name="keywords" content="keywords,goes,here")
+    meta(name="author" content="Your Name")
 
     - if (include_console)
       = include("/org/fusesource/scalate/console/console_head.scaml")
 
-    %link(href={uri("/css/style.css")} rel="stylesheet" type="text/css")
+    link(href={uri("/css/style.css")} rel="stylesheet" type="text/css")
 
     - if (include_console)
-      %link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
+      link(href={uri("/css/scalate/console.css")} rel="stylesheet" type="text/css")
 
-    %title
-      = title
+    title = title
   
-  %body
+  body
     #navigation
       .wrapper
-        %ul
+        ul
           - if (requestUri.startsWith("/index."))
-            %li
-              %span Home
+            li
+              span Home
           - else
-            %li
-              %a(href={uri("/")}) 
-                Home
-          %li
-            %a(href="http://scalate.fusesource.org/")
-              Documentation
+            li
+              a(href={uri("/")}) Home
+          li
+            a(href="http://scalate.fusesource.org/") Documentation
 
     #content
       .wrapper
@@ -63,7 +60,7 @@
     
     #footer
       .wrapper
-        %br
+        br
         - if (include_console)
           = include("/org/fusesource/scalate/console/console.scaml")
         

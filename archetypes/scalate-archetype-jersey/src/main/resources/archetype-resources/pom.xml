@@ -76,7 +76,7 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-page</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
