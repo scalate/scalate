@@ -621,6 +621,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     val uri = source.uri
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
+    template.source = source
     if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
