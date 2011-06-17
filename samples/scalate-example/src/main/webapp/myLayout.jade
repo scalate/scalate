@@ -1,5 +1,6 @@
 -@ val body: String
 -@ val title: String = "Default Title"
+
 - response.setContentType("text/html")
 !!!
 html
@@ -18,7 +19,9 @@ html
 
     #content
       .wrapper
+        h1 Start of MyLayout...
         !~~ body
+        h1 End of MyLayout
     
     #footer
       .wrapper
