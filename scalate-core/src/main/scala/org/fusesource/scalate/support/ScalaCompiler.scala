@@ -21,10 +21,10 @@ import org.fusesource.scalate._
 import osgi.{BundleHeaders, BundleClassPathBuilder, BundleClassLoader}
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
+import scala.tools.nsc.io.AbstractFile
 import scala.tools.nsc.reporters.ConsoleReporter
+import scala.tools.nsc.util._
 import scala.util.parsing.input.OffsetPosition
-import tools.nsc.io.AbstractFile
-import tools.nsc.util._
 import collection.mutable.ListBuffer
 import org.osgi.framework.Bundle
 import java.io.{PrintWriter, StringWriter, File}

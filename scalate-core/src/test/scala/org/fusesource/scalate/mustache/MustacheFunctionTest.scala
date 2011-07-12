@@ -1,5 +1,7 @@
+package org.fusesource.scalate.mustache
+
 /**
- * Copyright (C) 2009-2011 the original author or authors.
+ * Copyright (C) 2009-2010 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -15,21 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate
 
-import java.text.DecimalFormat
+import org.fusesource.scalate.TemplateTestSupport
+import java.{util => ju}
 
-class RenderContextTest extends FunSuiteSupport {
-  val engine = new TemplateEngine
-  val context = new DefaultRenderContext("someUri", engine)
+class MustacheFunctionTest extends TemplateTestSupport {
 
-  test("change the numberFormat") {
+  showOutput = true
 
-    var df = new DecimalFormat
-    df.setGroupingUsed(false)
-    context.numberFormat = df
-    val value = context.value(1234, false).toString
-
-    expect("1234"){ context.value(1234, false).toString }
+  test("function test") {
+    assertMoustacheOutput("start <b>Willy</b>end",
+      "start {{#wrapped}}{{name}}{{/wrapped}} end",
+      Map(
+        "name" -> "Willy",
+        "wrapped" -> {(text: String) => if (showOutput) println("Called function with: " + text); <b>{text}</b>}))
   }
 }

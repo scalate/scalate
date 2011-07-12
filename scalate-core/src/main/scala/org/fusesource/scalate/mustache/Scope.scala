@@ -220,11 +220,17 @@ trait Scope {
     case t: ju.Map[_,_] => mapAsScalaMap(t)
 
     case f: Function0[_] => toTraversable(f(), block)
-    case f: Function1[Scope, _] if isParam1(f, classOf[Scope]) => toTraversable(f(this), block)
-
-    // lets call the function with the block as a text value
-    case f: Function1[String, _] if isParam1(f, classOf[String]) =>
-      FunctionResult(f(capture(block)))
+    case f: Function1[_, _] =>
+      if (isParam1(f, classOf[Scope])) {
+        val f2 = f.asInstanceOf[Function1[Scope,_]]
+        toTraversable(f2(this), block)
+      } else if (isParam1(f, classOf[String])) {
+        // lets call the function with the block as a text value
+        val f2 = f.asInstanceOf[Function1[String,_]]
+        FunctionResult(f2(capture(block)))
+      } else {
+        f
+      }
 
     case c: ju.Collection[_] => collectionAsScalaIterable(c)
     case i: ju.Iterator[_] => asScalaIterator(i)
@@ -247,7 +253,7 @@ trait Scope {
     context.capture(body)
   }
 
-  def isParam1[T](f: Function1[T, _], clazz: Class[T]): Boolean = {
+  def isParam1[T](f: Function1[_, _], clazz: Class[T]): Boolean = {
     try {
       f.getClass.getMethod("apply", clazz)
       true
