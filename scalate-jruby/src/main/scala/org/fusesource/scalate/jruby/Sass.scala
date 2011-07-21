@@ -1,10 +1,10 @@
 package org.fusesource.scalate.jruby
 
-import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{TemplateException, RenderContext, TemplateEngine, TemplateEngineAddOn}
 import java.io.File
 import org.fusesource.scalate.servlet.ServletRenderContext
+import org.fusesource.scalate.filter.{CssFilter, Pipeline, Filter}
 
 /**
  * <p>
@@ -16,20 +16,18 @@ object Sass extends TemplateEngineAddOn with Log {
 
   def apply(te: TemplateEngine) = {
     val jruby = new JRuby(List[File]())
-    if( !te.filters.contains("sass") ) {
+    if (!te.filters.contains("sass")) {
       val sass = new Sass(jruby, te)
-      te.filters += "sass"->sass
-      te.pipelines += "sass"->List(NoLayout(sass))
+      te.filters += "sass" -> Pipeline(List(sass, CssFilter))
+      te.pipelines += "sass" -> List(NoLayout(sass))
     }
 
-    if( !te.filters.contains("scss") ) {
+    if (!te.filters.contains("scss")) {
       val scss = new Scss(jruby, te)
-      te.filters += "scss"->scss
-      te.pipelines += "scss"->List(NoLayout(scss))
+      te.filters += "scss" -> Pipeline(List(scss, CssFilter))
+      te.pipelines += "scss" -> List(NoLayout(scss))
     }
   }
-
-
 }
 
 case class NoLayout(val next: Sass) extends Filter {
