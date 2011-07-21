@@ -21,7 +21,7 @@ Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wik
 * stand alone in any JVM or as a [Servlet Filter](documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) in any Java in a web application 
 * with JAXRS with [Jersey](https://jersey.dev.java.net/)
 * in the [Play Framework](http://www.playframework.org/) via [play-scalate](http://github.com/pk11/play-scalate)
-* in [Apache Camel](http://camel.apache.org/scalate.html) for transforming messages and templating
+* in [Apache Camel](camel.html) for transforming messages and templating
 * to generate your [static or semi-static website](documentation/siteGen.html)
 
 Scalate supports the following template formats

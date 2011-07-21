@@ -187,3 +187,41 @@ div.compare div div {
 
 .wide div.compare div.compare-left { float:none; width:700px; }
 .wide div.compare div.compare-right { float:none; width:700px; }
+
+
+table.confluenceTable {
+    margin: 5px;
+    border-collapse: collapse;
+}
+
+table.confluenceTable td.confluenceTd {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 3px 4px 3px 4px;
+}
+
+table.confluenceTable th.confluenceTh {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 3px 4px 3px 4px;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+td.confluenceTd {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 3px 4px 3px 4px;
+}
+
+th.confluenceTh {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 3px 4px 3px 4px;
+    background-color: #f0f0f0;
+    text-align: center;
+}
