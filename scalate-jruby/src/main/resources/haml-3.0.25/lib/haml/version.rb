@@ -42,9 +42,13 @@ module Haml
     def version
       return @@version if defined?(@@version)
 
-      numbers = File.read(scope('VERSION')).strip.split('.').
+      #data = File.read(scope('VERSION'))
+      data = "3.0.25"
+      numbers = data.strip.split('.').
         map {|n| n =~ /^[0-9]+$/ ? n.to_i : n}
-      name = File.read(scope('VERSION_NAME')).strip
+      #data = File.read(scope('VERSION_NAME'))
+      data = "Classy Cassidy"
+      name = data.strip
       @@version = {
         :major => numbers[0],
         :minor => numbers[1],
