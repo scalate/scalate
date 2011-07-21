@@ -33,7 +33,7 @@
   <description>Camel component for scalate</description>
 
   <properties>
-    <camelVersion>2.6.0-fuse-00-00</camelVersion>
+    <camelVersion>2.7.1-fuse-00-39</camelVersion>
   </properties>
 
   <dependencies>
