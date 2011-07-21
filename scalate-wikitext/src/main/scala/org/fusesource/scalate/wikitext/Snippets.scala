@@ -107,7 +107,7 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
 
   lazy val handler : SnippetHandler = {
     if (pygmentize) {
-      val block = new PygementsBlock
+      val block = new PygmentsBlock
       block.setState(state)
       block.setParser(parser)
       block.setOption("lang", language)
@@ -228,7 +228,7 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
 /**
  * Uses pygmentize to handles syntax coloring for the {snippet}'s code
  */
-case class PygmentizeSnippetHandler(val block: PygementsBlock) extends SnippetHandler {
+case class PygmentizeSnippetHandler(val block: PygmentsBlock) extends SnippetHandler {
 
   def begin = block.beginBlock
   def addLine(line: String) = block.handleBlockContent(line)

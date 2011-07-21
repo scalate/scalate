@@ -20,19 +20,30 @@ package org.fusesource.scalate.wikitext
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import java.{util => ju}
+import collection.JavaConversions._
 
 /**
- * Adds extendsions to the Confluence language such as support for a 'pygmentize' macro
+ * Registry of language extensions
+ */
+object ConfluenceLanguageExtensions {
+  var extensions: List[Block] = List()
+}
+
+/**
+ * Adds extensions to the Confluence language such as support for a 'pygmentize' macro
  *
  * The pygmentize macro will use the pygmentize command line tool to syntax highlight the code within the block
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScalateConfluenceLanguage extends ConfluenceLanguage {
+
   override def addStandardBlocks(blocks: ju.List[Block], paragraphBreakingBlocks: ju.List[Block]) = {
     super.addStandardBlocks(blocks, paragraphBreakingBlocks)
 
-    List(new PygementsBlock, new SnippetBlock,
+    blocks.addAll(ConfluenceLanguageExtensions.extensions)
+
+    List(new PygmentsBlock, new SnippetBlock,
       new HtmlBlock, new DivBlock,
       new SectionBlock, new ColumnBlock,
       new CenterBlock,

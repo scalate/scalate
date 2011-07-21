@@ -4,9 +4,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import _root_.Website._
 import org.fusesource.scalamd.{MacroDefinition, Markdown}
 import java.util.regex.Matcher
-import org.fusesource.scalate.wikitext.Pygmentize
 import org.fusesource.scalate._
 import util.Log
+import wikitext._
 
 object Boot extends Log; import Boot._
 
@@ -43,6 +43,10 @@ class Boot(engine: TemplateEngine) {
         engine.pipelines += "ssp.md"-> List(ssp, md)
         engine.pipelines += "ssp.markdown"-> List(ssp, md)
       }
+
+      // lets add the confluence macros...
+      ConfluenceLanguageExtensions.extensions ++= List(ExpressionTag("project_version", () => project_version))
+
       info("Bootstrapped website gen for: %s", project_name)
     }
   }

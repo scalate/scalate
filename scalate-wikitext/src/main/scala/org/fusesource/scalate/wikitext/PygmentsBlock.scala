@@ -221,7 +221,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 }
 
 
-class PygementsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
+class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
 
   var language:String = _
   var lines:Boolean = false
