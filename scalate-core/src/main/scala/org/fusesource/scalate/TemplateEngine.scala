@@ -200,6 +200,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
   def libraryDirectory = new File(workingDirectory, "lib")
+  def tmpDirectory = new File(workingDirectory, "tmp")
 
   var classpath: String = null
   
@@ -289,9 +290,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * and return the template
    */
   def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
-    val file = File.createTempFile("scalate", "." + extension)
+    tmpDirectory.mkdirs()
+    val file = File.createTempFile("_scalate_tmp_", "." + extension, tmpDirectory)
     IOUtil.writeText(file, text)
-    compile(TemplateSource.fromFile(file), extraBindings)
+    val loader = new FileResourceLoader(List(tmpDirectory))
+    compile(TemplateSource.fromUri(file.getName, loader), extraBindings)
   }
 
 
