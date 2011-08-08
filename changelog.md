@@ -1,6 +1,29 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.5.1](http://scalate.fusesource.org/blog/releases/release-1.5.1.html), released 2011-08-08
+----
+
+* Fixes [#252](http://scalate.assembla.com/spaces/scalate/tickets/252) : Maven sitegen goal should set the work directory
+* Fixes [#251](http://scalate.assembla.com/spaces/scalate/tickets/251) : Dynamically generated template sources should be stored under the scalate working directory and avoid using package declarations.
+* Fixes failing Sass test.
+* updated to a recent camel release
+* added a camel page describing the scalate-camel component
+* added an ExpressionTag so its easy to make new confluence tags using a scala function, such as for {project_version}
+* fixed the Sass filter to wrap it in the <style> element like the CssFilter - and added a test case
+* added missing pages from demo :)
+* updated docs to refer to HTML 5 headers for jade/scaml
+* added missing pages from demo :)
+* fixed index page
+* Merge branch 'master' of github.com:scalate/scalate
+* added a little sample to kinda showcase how layouts work and how the different template languages look and feel
+* fixes [#242494](http://scalate.assembla.com/spaces/scalate/tickets/249) to migrate the default archetypes over to using jade
+* fix for loading precompiled templates
+* tried a better fix for the NPE issue :)
+* fixed possible NPE
+* Fix link.
+* remove unneeded file.
+
 [Scalate 1.5.0](http://scalate.fusesource.org/blog/releases/release-1.5.0.html), released 2011-06-01
 ----
 
