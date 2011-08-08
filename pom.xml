@@ -22,6 +22,12 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.fusesource</groupId>
+    <artifactId>fusesource-pom</artifactId>
+    <version>1.8</version>
+  </parent>
+
   <groupId>org.fusesource.scalate</groupId>
   <artifactId>scalate-project</artifactId>
   <version>1.6.0-SNAPSHOT</version>
@@ -79,36 +85,21 @@
 
 
     <!-- plugin version info -->
-    <assembly-plugin-version>2.2</assembly-plugin-version>
     <bundle-plugin-version>2.3.4</bundle-plugin-version>
     <changes-plugin-version>2.3</changes-plugin-version>
-    <compiler-plugin-version>2.3.2</compiler-plugin-version>
-    <deploy-plugin-version>2.5</deploy-plugin-version>
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
-    <install-plugin-version>2.3.1</install-plugin-version>
     <mvnplugins-version>1.15</mvnplugins-version>
-    <jar-plugin-version>2.3.1</jar-plugin-version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
 
     <jetty-plugin-version>8.0.0.M2</jetty-plugin-version>
     <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
 -->
-    <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
-    <jxr-maven-plugin>2.0-beta-1</jxr-maven-plugin>
-    <project-info-reports-plugin-version>2.2</project-info-reports-plugin-version>
-    <release-plugin-version>2.1</release-plugin-version>
-    <resources-plugin-version>2.4.3</resources-plugin-version>
-    <scala-plugin-version>2.15.0</scala-plugin-version>
-    <scm-plugin-version>1.4</scm-plugin-version>
-    <site-plugin-version>3.0-beta-3</site-plugin-version>
-    <source-plugin-version>2.1.2</source-plugin-version>
     <surefire-plugin-version>2.6</surefire-plugin-version>
-    <surefire-report-plugin-vesrion>2.6</surefire-report-plugin-vesrion>
-    <taglist-plugin-version>2.4</taglist-plugin-version>
+    <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
+    <scala-plugin-version>2.15.0</scala-plugin-version>
     <tomcat-plugin-version>1.1</tomcat-plugin-version>
-    <wagon-webdav-plugin-version>1.0-beta-7</wagon-webdav-plugin-version>
     <war-plugin-version>2.1.1</war-plugin-version>
 
 
@@ -118,11 +109,6 @@
 
   <url>http://scalate.fusesource.org/</url>
   <inceptionYear>2010</inceptionYear>
-
-  <organization>
-    <name>FuseSource</name>
-    <url>http://fusesource.com/</url>
-  </organization>
 
   <licenses>
     <license>
@@ -151,11 +137,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/scalate/scalate.git</connection>
-    <!-- 
-    TODO - hack this in your ~/.m2/settings.xml to point to your local checkout for releases 
-    see comments here: http://jira.codehaus.org/browse/MRELEASE-605
-    -->
-    <developerConnection>${release-altGitURL}</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com:scalate/scalate.git</developerConnection>
     <url>http://github.com/scalate/scalate/tree/master</url>
   </scm>
 
@@ -165,21 +147,11 @@
   </issueManagement>
 
   <ciManagement>
-    <system>teamcity</system>
-    <url>http://ci.fusesource.com/teamcity/project.html?projectId=project33</url>
+    <system>hudson</system>
+    <url>http://ci.fusesource.com/hudson/view/Scalate/</url>
   </ciManagement>
 
   <distributionManagement>
-    <repository>
-      <id>fusesource-nexus-staging</id>
-      <name>Fusesource Release Repository</name>
-      <url>http://repo.fusesource.com/nexus/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <id>fusesource-nexus-snapshots</id>
-      <name>Fusesource Nexus Snapshots</name>
-      <url>http://repo.fusesource.com/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
     <site>
       <id>website.fusesource.org</id>
       <name>website</name>
@@ -318,14 +290,6 @@
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
 
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav-jackrabbit</artifactId>
-        <version>${wagon-webdav-plugin-version}</version>
-      </extension>
-    </extensions>
-
     <pluginManagement>
       <plugins>
         <plugin>
@@ -366,7 +330,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${compiler-plugin-version}</version>
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
@@ -377,21 +340,7 @@
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>${source-plugin-version}</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <goals>
-                <goal>jar-no-fork</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>${jar-plugin-version}</version>
           <configuration>
             <archive>
               <manifest>
@@ -409,12 +358,6 @@
           <configuration>
             <attachClasses>true</attachClasses>
           </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>${assembly-plugin-version}</version>
         </plugin>
 
         <plugin>
@@ -517,16 +460,6 @@
           </configuration>
         </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${resources-plugin-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${install-plugin-version}</version>
-        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -569,6 +502,7 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-plugin-version}</version>
         <configuration>
@@ -582,194 +516,8 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${site-plugin-version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.skins</groupId>
-            <artifactId>maven-default-skin</artifactId>
-            <version>1.0</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>1.0-beta-7</version>
-            <exclusions>
-              <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-        </dependencies>
-        <executions>
-          <execution>
-            <id>attach-descriptor</id>
-            <goals>
-              <goal>attach-descriptor</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <reportPlugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-project-info-reports-plugin</artifactId>
-              <version>${project-info-reports-plugin-version}</version>
-              <configuration>
-                <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                <webAccessUrl>http://github.com/scalate/scalate</webAccessUrl>
-              </configuration>
-              <reports>
-                <report>index</report>
-                <report>summary</report>
-                <report>plugins</report>
-                <report>dependencies</report>
-                <report>dependency-convergence</report>
-                <report>dependency-management</report>
-                <report>license</report>
-                <report>mailing-list</report>
-                <report>project-team</report>
-                <report>issue-tracking</report>
-                <report>cim</report>
-                <!--
-                 Doesn't seem to grok git modules etc
-                <report>scm</report>
-                -->
-
-
-              </reports>
-            </plugin>
-          </reportPlugins>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>${release-plugin-version}</version>
-        <configuration>
-          <pushChanges>false</pushChanges>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <allowTimestampedSnapshots>false</allowTimestampedSnapshots>
-          <preparationGoals>clean install</preparationGoals>
-          <goals>deploy</goals>
-          <arguments>-Prelease</arguments>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>${deploy-plugin-version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>${scm-plugin-version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>${scm-plugin-version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${site-plugin-version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>${wagon-webdav-plugin-version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-        </dependencies>
-      </plugin>
-      
-      -->
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <version>${scala-plugin-version}</version>
-        <configuration>
-          <scalaVersion>${scala-version}</scalaVersion>
-          <jvmArgs>
-            <jvmArg>-Xmx850M</jvmArg>
-          </jvmArgs>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
-        <version>${jxr-maven-plugin}</version>
-        <configuration>
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${surefire-report-plugin-vesrion}</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>report-only</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-
-      <!-- Can't use this until it supports scala based mojo extractors
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <version>2.5</version>
-      </plugin>
-      -->
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <version>${changes-plugin-version}</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>jira-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-        <configuration>
-          <filteringChanges>true</filteringChanges>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>taglist-maven-plugin</artifactId>
-        <version>${taglist-plugin-version}</version>
-      </plugin>
-
-    </plugins>
-
-  </reporting>
 
   <profiles>
     <!-- enables extra repositories which may have some
@@ -985,14 +733,6 @@
       -->
     </profile>
 
-    <!-- use plugin versions which work for maven 2.x -->
-    <profile>
-      <id>m2</id>
-      <properties>
-        <site-plugin-version>2.1.1</site-plugin-version>
-      </properties>
-    </profile>
-
     <!-- so we can create a distro on our CI box -->
     <profile>
       <id>distro</id>
@@ -1006,15 +746,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>${source-plugin-version}</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
 
           <!-- Generate the Scala Docs so that they can be included in the javadoc artifact -->
@@ -1057,36 +788,6 @@
       </modules>
       <build>
         <plugins>
-          <!-- We want to sign the artifact, the POM, and all attached artifacts -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.1</version>
-            <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>${source-plugin-version}</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
 
           <!-- Generate the Scala Docs so that they can be included in the javadoc artifact -->
           <plugin>
@@ -1115,30 +816,6 @@
         </plugins>
       </build>
 
-      <!-- TODO remove ASAP! for now use the 2.1 staging release of the mvn release plugin until its released -->
-      <pluginRepositories>
-        <pluginRepository>
-          <id>staging.002.apache.org</id>
-          <url>https://repository.apache.org/content/repositories/maven-002</url>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-
-    <!--
-      To generate a graph of the project dependencies, run: mvn -P graph
-      graph:project
-    -->
-    <profile>
-      <id>graph</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.fusesource.mvnplugins</groupId>
-            <artifactId>maven-graph-plugin</artifactId>
-            <version>${mvnplugins-version}</version>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
 
     <!-- 
