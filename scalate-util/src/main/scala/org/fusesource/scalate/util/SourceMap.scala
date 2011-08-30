@@ -521,13 +521,17 @@ object SourceMapInstaller {
             i += 1
           case 1 =>
             var len: Int = copyShort
-            var data = new Array[Byte](len)
-            dis.readFully(data)
-            var str: String = new String(data, "UTF-8")
-            if (str.equals(nameSDE)) {
-              sdeIndex = i
+            if (len < 0) {
+              warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
+            } else {
+              var data = new Array[Byte](len)
+              dis.readFully(data)
+              var str: String = new String(data, "UTF-8")
+              if (str.equals(nameSDE)) {
+                sdeIndex = i
+              }
+              dos.write(data)
             }
-            dos.write(data)
           case _ =>
             throw new IOException("unexpected tag: " + tag)
         }
