@@ -144,6 +144,12 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
 
     .slide
       :markdown
+        # SSP sample page
+
+      !~~ pygmentizeUri("../scalate-example/src/main/webapp/tableSsp.ssp")
+
+    .slide
+      :markdown
         # Scaml
 
         * Scaml is a Scala port of HAML
@@ -155,6 +161,12 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
             * %foo to indicate <foo>...</foo>
             * \- for statements
             * = expressions
+
+    .slide
+      :markdown
+        # Scaml sample page
+
+      !~~ pygmentizeUri("../scalate-example/src/main/webapp/tableScaml.scaml")
 
     .slide
       :markdown
@@ -173,6 +185,12 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
 
     .slide
       :markdown
+        # Jade sample page
+
+      !~~ pygmentizeUri("../scalate-example/src/main/webapp/tableJade.jade")
+      
+    .slide
+      :markdown
         # Mustache
 
         * no logic in the scripts 
@@ -185,6 +203,12 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
 
     .slide
       :markdown
+        # Mustache sample page
+
+      !~~ pygmentizeUri("../scalate-example/src/main/webapp/tableMustache.mustache", "html")
+      
+    .slide
+      :markdown
         # Scuery
 
         * more of a HTML/XHTML transformation engine really
@@ -193,6 +217,18 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
                 owned by your designer
         * use the transform API (jQuery-ish) to transform the HTML to
                 inject/replace with dynamic data
+
+    .slide
+      :markdown
+        # Scuery sample HTML page
+
+      !~~ pygmentizeUri("../scalate-example/src/main/webapp/tableScuery.html")
+
+    .slide
+      :markdown
+        # Scuery sample Scala transform
+
+      !~~ pygmentizeUri("../scalate-example/src/main/scala/MyTransform.scala")
 
     .slide
       :markdown
