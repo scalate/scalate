@@ -523,15 +523,15 @@ object SourceMapInstaller {
             var len: Int = copyShort
             if (len < 0) {
               warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
-            } else {
-              var data = new Array[Byte](len)
-              dis.readFully(data)
-              var str: String = new String(data, "UTF-8")
-              if (str.equals(nameSDE)) {
-                sdeIndex = i
-              }
-              dos.write(data)
+              len = 0
             }
+            var data = new Array[Byte](len)
+            dis.readFully(data)
+            var str: String = new String(data, "UTF-8")
+            if (str.equals(nameSDE)) {
+              sdeIndex = i
+            }
+            dos.write(data)
           case _ =>
             throw new IOException("unexpected tag: " + tag)
         }
