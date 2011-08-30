@@ -1,0 +1,287 @@
+!!! XML
+!!!
+- attributes("layout") = ""
+- response.setContentType("text/html")
+html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
+  head
+    meta(content="Scalate, see scalate.fusesource.org" name="generator")
+    title Scalate, the Scala Template Engine
+    meta(content="text/html; charset=us-ascii" http-equiv="Content-Type")
+    meta(content="Copyright © 2005-2010 W3C (MIT, ERCIM, Keio)" name="copyright")
+    meta(content="5" name="duration")
+    meta(content="-2" name="font-size-adjustment")
+    link(type="text/css" href="styles/slidy.css" rel="stylesheet")
+    link(type="text/css" href="styles/w3c-blue.css" rel="stylesheet")
+    script(space="preserve" type="text/javascript" charset="utf-8" src="scripts/slidy.js") 
+  body
+    .background
+      img#head-icon(name="head-icon" src="graphics/icon-blue.png" alt="")
+      object#head-logo(title="W3C logo" type="image/svg+xml" data="graphics/w3c-logo-white.svg")
+        a(shape="rect" href="http://www.w3.org/")
+          img#head-logo-fallback(name="head-logo-fallback" src="graphics/w3c-logo-white.gif" alt="W3C logo")
+    .background.slanty
+      img(alt="slanted W3C logo" src="graphics/w3c-logo-slanted.jpg")
+    .slide.cover.title
+      img.hidden(alt="" src="graphics/bullet.png")
+      img.hidden(alt="" src="graphics/fold.gif")
+      img.hidden(alt="" src="graphics/unfold.gif")
+      img.hidden(alt="" src="graphics/fold-dim.gif")
+      img.hidden(alt="" src="graphics/nofold-dim.gif")
+      img.hidden(alt="" src="graphics/unfold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-fold.gif")
+      img.hidden(alt="" src="graphics/bullet-unfold.gif")
+      img.hidden(alt="" src="graphics/bullet-fold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-nofold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-unfold-dim.gif")
+      img.cover(alt="Cover page images (keys)" src="graphics/keys2.jpg")
+      br(clear="all")
+      h1 Scalate: the Scala Template Engine
+      p
+        a(shape="rect" href="http://macstrac.blogspot.com/") James Strachan
+        br(clear="none")
+        a(shape="rect" href="http://fusesource.com/") FuseSource
+        br(clear="none")
+        a(shape="rect" href="http://twitter.com/#!/jstrachan") #jstrachan
+        br(clear="none")
+        a(shape="rect" href="mailto:james@fusesource.com") james@fusesource.com
+    .slide
+      :markdown
+        # Your presenter: James Strachan
+        
+        * James Strachan
+          * twitter: #jstrachan
+          * blog: [http://macstrac.blogspot.com/](http://macstrac.blogspot.com/)
+        * Software Fellow at [FuseSource](http://fusesource.com)
+        * long term Open Source contributor
+          * created Apache Camel
+          * created the Groovy programming language
+          * co-founder of
+            * Apache ActiveMQ, Camel, ServiceMix, Fabric, ...
+            * Scalate
+            
+    .slide
+      :markdown
+        # Scalate Overview
+        
+        * its a **Scala** based **T**emplate **E**ngine
+          * Scala T E => scalate
+
+    .slide
+      :markdown
+        # Design Goals
+        
+        * make an awesome template engine 
+          * framework & container agnostic
+        * support different template flavours under same API
+          * there isn’t really a one size fits all
+        * reuse the power & type safety of Scala
+          * catch errors in templates at edit/build time
+            * templates are for life, not just for Christmas!
+          * IDE friendly for smart completion
+
+    .slide
+      :markdown
+        # Features
+        
+        * Templates are compiled & cached as fast Scala objects
+        * Template objects are statically typed to catch typos
+          * apart from Mustache
+        * Scalate is equivalent to the combination of JSP, JSTL, JSP EL
+                & SiteMesh/Tiles
+          * Scala replaces JSP EL and Scala functions replace JSP
+                    custom tags
+          * Scalate template languages are richer, more powerful &
+                    usually more DRY than JSP + JSTL
+          * Scalate has in built layout support replacing
+                    SiteMesh/Titles
+                      
+
+    .slide
+      :markdown
+        # How Scalate works
+        
+        * TemplateEngine is used to load Templates
+          * typically templates are converted into scala code and
+                    compiled to avoid runtime parsing
+          * can customize various things...
+            * caching & reloading
+            * how URIs are resolved (classpath, file system etc)
+            * internationalisation
+        * RenderContext is used to render a template
+          * has a Map[String,Any] like set of attributes for
+                    passing/sharing state
+          * loads of helper methods for use inside the template
+            * localisation, including other templates, views,
+                        layouts etc
+        * template languages implemented using Scala parser generators
+        
+    .slide
+      :markdown
+        # Scalate Template Languages
+        
+        * SSP
+        * Scaml
+        * Jade
+        * Mustache
+        * Scuery
+        
+    .slide
+      :markdown
+        * SSP
+          * SSP “Scala Server Pages”
+            * like a non-sucky JSP :)
+          * easiest template engine to start with if folks know
+            * ASP, JSP, GSP, Erb, Velocity, FreeMarker style templates
+          * supports JSP / Erb style syntax 
+            * <% statements %>
+            * <%= expression %>
+            * ${expression}
+          * examples:
+            * Dear ${people.map(_.name).mkString(“, “)} how are you?
+        
+    .slide
+      :markdown
+        * SSP also supports Velocity style tokens
+          * #if (lineItems.find(_.price > 10).isDefined)
+          * <b>Welcome big spender!</b>
+          * #end
+        
+    .slide
+      :markdown
+        * Scaml
+          * Scaml is a Scala port of HAML
+            * HAML started in the Rails world and became a very popular
+                      alternative to Erb templates
+            * whitespace sensitive (which is handy for markup, avoids
+                      badly nested markup)
+            * uses %foo to indicate <foo>...</foo>
+            * - for statements
+            * = expressions
+        
+    .slide
+      :markdown
+        * Jade
+          * Jade out in JavaScript / Rails worlds as a simpler more DRY
+                  version of HAML / Scaml 
+            * avoid the % to indicate element name
+              * folks tend to use lots of elements; few are
+                          multi-line text content
+            * use | to indicate text content inside an element when
+                      multiple lines required
+            * Implemented as just a slightly different surface parser
+                      on Scaml
+          * Jade + markdown are the hotness!
+        
+    .slide
+      :markdown
+        * Mustache
+          * no logic in the scripts 
+          * can be used from JavaScript on the client side or Scala /
+                  Scalate on the server side
+          * uses {{foo}} mustaches for values
+          * use {{#foo}} and {{/foo}} for blocks/loops/conditionals
+          * good if you want your designer to own the templates
+            * though dynamically typed
+        
+    .slide
+      :markdown
+        * Scuery
+          * more of a HTML/XHTML transformation engine really
+          * uses CSS3 parser & transformation engine
+          * templates are regular HTML pages (possibly with mock data)
+                  owned by your designer
+          * use the transform API (jQuery-ish) to transform the HTML to
+                  inject/replace with dynamic data
+        
+    .slide
+      :markdown
+        * Tips on picking a template language
+          * If you want your designers to own your templates
+            * consider mustache or scuery
+          * if you want developers to hack your templates
+            * want to generate HTML/XML really DRY? 
+              * use jade
+            * otherwise SSP
+        
+    .slide
+      :markdown
+        # Scalate Layouts
+        
+        * TemplateEngine.layoutStrategy defines the strategy
+        * default implementation uses the “layout” attribute to define
+                the template used for laying out any template
+        * to change the layout you want to use...
+          * - attributes(“layout”) = “/my/layouts/foo.jade”
+        * to disable layouts
+          * - attributes(“layout”) = “”
+          
+    .slide
+      :markdown
+        # Using Scalate
+        
+        * can use TemplateEngine directly if doing code generation
+        * in web applications add this to your 
+
+      :pygmentize
+        <filter>
+          <filter-name>TemplateEngineFilter</filter-name>
+          <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
+        </filter>
+        <filter-mapping>
+          <filter-name>TemplateEngineFilter</filter-name>
+          <url-pattern>/*</url-pattern>
+        </filter-mapping>
+
+    .slide
+      :markdown
+        # Framework support
+        
+        * bowler
+        * jersey
+        * lift
+        * playframework
+        * scalatra
+        * servlets
+        * sbt / lifty
+        * spring mvc
+        * unfiltered
+        
+    .slide
+      :markdown
+        # Getting Started
+        
+        * install Scalate
+          * add SCALATE_HOME/bin to your PATH
+        * scalate create jersey mygroup myartifact
+        * cd myartifact
+        * mvn jetty:run
+        
+    .slide
+      :markdown
+        # Static site generation
+        
+        * maven plugin to generate a complete static website for your
+                project using Scalate
+        * deploy it to some web server using maven’s wagon transports
+          * scp / webdav etc
+        * allows real time updates of templates & layouts while editing
+                docs
+        * your own personal offline wiki using git for source control &
+                versioning
+          * use a text editor to edit, erm, text files! :)
+        
+    .slide
+      :markdown
+        # Demo time!
+        
+        * Demo templates & web app here:
+        
+    .slide
+      :markdown
+        # Any Questions?
+        
+        * Scalate [http://scalate.fusesource.org/](http://scalate.fusesource.org/)
+        * twitter: #jstrachan
+        * blog: [http://macstrac.blogspot.com/](http://macstrac.blogspot.com/)
+        * [FuseSource](http://fusesource.com)
+

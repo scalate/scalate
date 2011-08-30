@@ -1,0 +1,876 @@
+!!! XML
+!!!
+- attributes("layout") = ""
+- response.setContentType("text/html")
+html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
+  head
+    meta(content="Scalate, see scalate.fusesource.org" name="generator")
+    title Scalate, the Scala Template Engine
+    meta(content="text/html; charset=us-ascii" http-equiv="Content-Type")
+    meta(content="Copyright © 2005-2010 W3C (MIT, ERCIM, Keio)" name="copyright")
+    meta(content="5" name="duration")
+    meta(content="-2" name="font-size-adjustment")
+    link(type="text/css" href="styles/slidy.css" rel="stylesheet")
+    link(type="text/css" href="styles/w3c-blue.css" rel="stylesheet")
+    script(space="preserve" type="text/javascript" charset="utf-8" src="scripts/slidy.js") 
+  body
+    .background
+      img#head-icon(name="head-icon" src="graphics/icon-blue.png" alt="")
+      object#head-logo(title="W3C logo" type="image/svg+xml" data="graphics/w3c-logo-white.svg")
+        a(shape="rect" href="http://www.w3.org/")
+          img#head-logo-fallback(name="head-logo-fallback" src="graphics/w3c-logo-white.gif" alt="W3C logo")
+    .background.slanty
+      img(alt="slanted W3C logo" src="graphics/w3c-logo-slanted.jpg")
+    .slide.cover.title
+      img.hidden(alt="" src="graphics/bullet.png")
+      img.hidden(alt="" src="graphics/fold.gif")
+      img.hidden(alt="" src="graphics/unfold.gif")
+      img.hidden(alt="" src="graphics/fold-dim.gif")
+      img.hidden(alt="" src="graphics/nofold-dim.gif")
+      img.hidden(alt="" src="graphics/unfold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-fold.gif")
+      img.hidden(alt="" src="graphics/bullet-unfold.gif")
+      img.hidden(alt="" src="graphics/bullet-fold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-nofold-dim.gif")
+      img.hidden(alt="" src="graphics/bullet-unfold-dim.gif")
+      img.cover(alt="Cover page images (keys)" src="graphics/keys2.jpg")
+      br(clear="all")
+      h1 HTML Slidy: Slide Shows in HTML and XHTML
+      p
+        a(shape="rect" href="http://www.w3.org/People/Raggett/") Dave Raggett
+        | ,
+        | <
+        a(shape="rect" href="mailto:dsr@w3.org") dsr@w3.org
+        | >
+        br(clear="none")
+        br(clear="none")
+        br(clear="none")
+        br(clear="none")
+        br(clear="none")
+        em Hit the space bar for next slide
+    .slide
+      h1 Slide Shows in HTML and XHTML
+      ul
+        li You can now create accessible slide shows with ease
+        li
+          | Works across browsers and is operated like PowerPoint
+          ul
+            li Advance to next slide with mouse click or space bar
+            li
+              | Move forward/backward between slides with Cursor Left, Cursor
+              | Right,
+              strong Pg Up
+              | and
+              strong Pg Dn
+              | keys
+            li
+              strong Home
+              | key for first slide,
+              strong End
+              | key for last slide
+            li
+              | The "
+              strong C
+              | " key for an automatically generated
+              | table of contents (or click on "contents" on the toolbar)
+            li
+              | Function
+              strong F11
+              | to go full screen and back
+            li
+              | The "
+              strong F
+              | " key toggles the display of the
+              | footer
+            li
+              | The "
+              strong A
+              | " key toggles display of current vs all
+              | slides
+              ul
+                li
+                  | Try it now to see how to include notes for handouts (this is
+                  | explained in the notes following this slide)
+            li
+              | Font sizes automatically adapt to browser window size
+              ul
+                li
+                  | use
+                  strong S
+                  | and
+                  strong B
+                  | keys for manual
+                  | control (or < and >, or the
+                  strong -
+                  | and
+                  strong +
+                  | keys on the number pad
+                li
+                  | Use CSS to set a relative font size on a given slide to make
+                  | the content bigger or smaller than on other slides
+            li Switching off JavaScript reveals all slides
+        li
+          em Now move to next slide to see how it works
+      p.copyright
+        a(shape="rect" href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright" rel="Copyright") Copyright
+        | © 2005-2010
+        a(shape="rect" href="/")
+          acronym(title="World Wide Web Consortium") W3C
+        sup ®
+        | (
+        a(shape="rect" href="http://www.csail.mit.edu/")
+          acronym(title="Massachusetts Institute of Technology") MIT
+        | ,
+        a(shape="rect" href="http://www.ercim.org/")
+          acronym(title="European Research Consortium for Informatics and Mathematics") ERCIM
+        | ,
+        a(shape="rect" href="http://www.keio.ac.jp/") Keio
+        | ), All Rights
+        | Reserved.
+    .handout
+      p
+        | For handouts, its often useful to include extra notes using a
+        | div element with class="handout" following each slide, as in:
+      pre(space="preserve")
+        | <div class="slide">
+        em ... your slide content ...
+        | </div>
+        | <div class="handout">
+        em ... stuff that only appears in the handouts ...
+        | </div>
+    .slide
+      h1 What you need to do
+      ul
+        li Each presentation is a single XHTML file
+        li
+          | Each slide is enclosed in
+          em
+            | <div class="slide"> ...
+            | </div>
+          ul
+            li
+              | The div element will be created automatically for h1 elements
+              | that are direct children of the body element.
+        li Use regular markup within each slide
+        li
+          | The document head includes two links:
+          ul
+            li
+              | The slide show style sheet:
+              a(shape="rect" href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css") http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css
+            li
+              | The slide show script:
+              a(shape="rect" href="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js") http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js
+            li
+              | Or you can link to the compressed version of the script which
+              | is about one seventh the size, see
+              a(shape="rect" href="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz") http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz
+            li
+              | If you are using XHTML, remember to use </script> and
+              | </style> as per
+              a(shape="rect" href="http://www.w3.org/TR/xhtml1/#C_3") Appendix C.3
+      pre(space="preserve")
+        | <?xml version="1.0" encoding="utf-8"?>
+        | <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        | "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        | <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+        | <head>
+        | <title>Slide Shows in XHTML</title>
+        | <meta name="copyright"
+        | content="Copyright &#169; 2005 your copyright notice" />
+        | <link rel="stylesheet" type="text/css" media="screen, projection, print"
+        | href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+        | <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+        | charset="utf-8" type="text/javascript"></script>
+        | <style type="text/css">
+        | <!-- your custom style rules -->
+        | </style>
+        | </head>
+        | <body>
+        | ... your slides marked up in XHTML ...
+        | </body>
+        | </html>
+    .slide
+      h1 To get the W3C Blue Style
+      p
+        | The head element should include the following link to the style
+        | sheet:
+      pre(space="preserve")
+        | <link rel="stylesheet" type="text/css" media="screen, projection, print"
+        | href="http://www.w3.org/Talks/Tools/Slidy2/styles/w3c-blue.css" />
+      p
+        | The body element's content should start with the following
+        | markup:
+      pre(space="preserve")
+        | <div class="background">
+        | <img id="head-icon" alt="graphic with four colored squares"
+        | src="http://www.w3.org/Talks/Tools/Slidy2/graphics/icon-blue.png" />
+        | <object id="head-logo" title="W3C logo" type="image/svg+xml"
+        | data="http://www.w3.org/Talks/Tools/Slidy2/graphics/w3c-logo-white.svg"><img
+        | src="http://www.w3.org/Talks/Tools/Slidy2/graphics/w3c-logo-white.gif"
+        | alt="W3C logo" id="head-logo-fallback" /></object>
+        | </div>
+      p
+        | This adds the logos on the top left and right corners of the
+        | slide.
+      p
+        | You are of course welcome to create your own slide designs. You
+        | can provide different styles and backgrounds for different slides
+        | (more details later).
+      p
+        | Use the
+        em meta element
+        | with
+        em name="copyright"
+        | for
+        | use in the slide show footer:
+      pre(space="preserve")
+        | <meta name="copyright"
+        | content="Copyright &#169; 2005-2009 W3C (MIT, ERCIM, Keio)" />
+    .slide
+      h1 Upgrading from previous versions of Slidy
+      ul
+        li This uses a new version of the HTML Slidy script
+        li
+          | It is designed to work better with other scripts, e.g. for UI
+          | controls within your slides
+          ul
+            li Only adds one global name "w3c_slidy"
+            li
+              | Doesn't interfere with other scripts that set event handers
+              | such as onload on body element
+        li
+          | Works for slides delivered as text/html and
+          | application/xhtml+xml
+        li New presentation timer feature
+        li Initial prompt on first slide to help newcomers to Slidy
+        li Better support for styling slides and printing them
+        li
+          | Requires additional style rules, so new script won't work with
+          | old presentations without changes to their style sheets
+          ul
+            li
+              | See
+              a(shape="rect" href="styles/slidy.css") slidy.css
+              | , and
+              a(shape="rect" href="styles/w3c-blue.css") w3c-blue.css
+        li
+          | But old presentations will work unchanged as they refer to the
+          | old script!
+    .slide
+      h1 To use it off-line
+      ul
+        li
+          | You can download
+          a(shape="rect" href="slidy.zip") slidy.zip
+          | and unzip it
+          | to create a Slidy directory on your machine
+        li
+          | If you have cvs access to the W3C site you can check out the
+          | Slidy directory
+        li Remember to periodically check for updates
+        li
+          | You then have two choices:
+          ol
+            li
+              | Use relative URIs depending on your local setup to access the
+              | appropriate files. Use the same directory structure as on the W3C
+              | server, ie, ".../2005/Talks/...".
+            li
+              | Run a Web server on your machine so that the directory above
+              | can be accessed via
+              code http://localhost/Talks/Tools/Slidy2
+              | and use the URIs
+              | of the form "/Talks/Tools/Slidy2/styles/slidy.css",
+              | "/Talks/Tools/Slidy2/scripts/slidy.js".
+        li
+          | In both cases you can then publish your files on the W3C server
+          | unchanged.
+        li
+          strong NOTE
+          | Internet Explorer on Windows XP now
+          | disables scripting for web pages loaded directly from the local
+          | file system, a work around is to use another browser, e.g. Firefox
+          | or Opera
+        li
+          | Please feel free to create your own designs, and help us to
+          | build a gallery of Slidy styles.
+        li
+          | My
+          a(shape="rect" href="/2006/02/woa/") Google TechTalk
+          | (1st Feb 2006)
+          | uses a notebook themed style
+    .slide
+      h1 Timing Your Presentation
+      ul
+        li
+          | Sometimes it is handy to know just how much time you have to
+          | left to finish your presentation
+        li
+          | To get this feature, add the following markup to the content of
+          | the head element, replacing 5 by the duration of your presentation
+          | in minutes
+          pre(space="preserve") <meta name="duration" content="5" />
+        li
+          | The time left in minutes and seconds is shown in the footer
+          | next to the slide number
+        li
+          | The clock starts to run when you move away from the first
+          | slide
+        li Moving back to the first slide pauses the clock
+    .slide.slanty
+      h1 Generate a Title Page
+      p
+        | If you want a separate title page with the W3C blue style, the
+        | first slide should be as follows:
+      pre(space="preserve")
+        | <div class="slide cover">
+        | <img src="http://www.w3.org/Talks/Tools/Slidy2/graphics/keys.jpg"
+        | alt="Cover page images (keys)" class="cover" />
+        | <br clear="all" />
+        | <h1>HTML Slidy: Slide Shows in XHTML</h1>
+        | <p><a href="http://www.w3.org/People/Raggett/">Dave Raggett,</a>
+        | <a href="mailto:dsr@w3.org">dsr@w3.org</a></p>
+        | </div>
+      p
+        | The
+        a(shape="rect" href="http://www.w3.org/Talks/Tools/Slidy2/graphics/w3c-blue.css") w3c-blue.css
+        | style sheet looks for the classes "slide" and "cover" on div and
+        | img elements using the CSS selector
+        em div.slide.cover
+      p
+        | This technique can be used to assign your slides to different
+        | classes with a different appearence for each such class.
+      p
+        | Slidy also allows you to use different background markup for
+        | different slides, based upon shared class names, as in "foo" below.
+        | Backgrounds without additional class names are always shown except
+        | when the slide isn't transparent. You may need to tweak your custom
+        | style sheet.
+      pre(space="preserve")
+        | <div class="background foo">
+        | ... background content ...
+        | <div>
+        | ...
+        | <div class="slide foo">
+        | ... slide content ...
+        | <div>
+    .slide
+      h1 Incremental display of slide contents
+      p
+        | For incremental display, use class="incremental", for
+        | instance:
+      ul.incremental
+        li First bullet point
+        li Second bullet point
+        li Third bullet point
+      p.incremental which is marked up as follows:
+      pre.incremental(space="preserve")
+        | <ul class="incremental">
+        | <li>First bullet point</li>
+        | <li>Second bullet point</li>
+        | <li>Third bullet point</li>
+        | </ul>
+        | <p class="incremental">which is marked up as follows:</p>
+        | <pre class="incremental">
+        | ...
+        | </pre>
+      .footnote
+        p
+          | An element is incrementally revealed if its parent element has
+          | class="incremental" or if itself has that attribute. Text nodes are
+          | not elements and are revealed when their parent element is
+          | revealed. You can use class="incremental" on any element except for
+          | <br />. Use class="non-incremental" to override the effect of
+          | setting the parent element's class to incremental.
+        p
+          | Note: you will see a red asterisk on the left of the toolbar
+          | when there is still something more to reveal.
+    .slide
+      h1 Create outline lists with hidden content
+      p
+        | You can make your bullet points or numbered list items into
+        | outlines that you can expand or collapse
+      ul.outline
+        li
+          | Just add
+          em class="outline"
+          | to the ul or ol element.
+          | Click on this list item for more details.
+          ul
+            li
+              | The Slidy script will then treat the list as an outline
+              | list.
+            li
+              | Clicking on outline list items will expand/collapse block-level
+              | elements within that list item.
+            li Click on the above to make this list item collapse again.
+        li
+          | Users will then see expand/collapse icons as appropriate and
+          | may click anywhere on the list item to change its state. This
+          | particular list item can't be expanded or collapsed.
+        li.expand
+          | Add class="expand" to any li elements that you
+          | want to start in an expanded state.
+          ul
+            li
+              | By default Slidy hides all the block level elements within the
+              | outline list items unless you have specified class="expand".
+            li
+              | Such pre-expanded items can be collapsed by clicking on
+              | them.
+        li
+          | Note expand/collapse icon highlighting requires browser support
+          | for :hover which isn't supported by IE6.
+          ul
+            li
+              | Microsoft says it will be supported by IE7 along with many
+              | fixes for other CSS woes in IE6.
+      pre(space="preserve")
+        | <ol class='outline'>
+        | <!-- topic 1 starts collapsed -->
+        | <li>Topic 1
+        | <ol>
+        | <li>subtopic a</li>
+        | <li>subtopic b</li>
+        | </ol>
+        | </li>
+        | <!-- topic 2 starts expanded -->
+        | <li class="expand">Topic 2
+        | <ol>
+        | <li>subtopic c</li>
+        | <li>subtopic d</li>
+        | </ol>
+        | </li>
+        | </ol>
+    .slide
+      h1 Make your images scale with the browser window size
+      p
+        | For adaptive layout, use percentage widths on images, together
+        | with CSS positioning:
+      ul
+        li
+          | CSS positioning is simpler and more reliable than using
+          | tables
+      pre(space="preserve")
+        | <div class="slide">
+        | <h1>Analysts - "Open standards programming will become
+        | mainstream, focused around VoiceXML"</h1>
+        | <!-- use CSS positioning and scaling for adaptive layout -->
+        | <img src="trends.png" width="50%" style="float:left"
+        | alt="projected growth of VoiceXML" />
+        | <blockquote style="float:right;width: 35%">
+        | VoiceXML will dominate the voice environment, due to its
+        | flexibility and eventual multimodal capabilities
+        | </blockquote><br clear="all" />
+        | <p style="text-align:center">Source Data Monitor, March
+        | 2004</p>
+        | </div>
+      p
+        | To work around a CSS rendering bug in IE relating to margins,
+        | you can set display:inline on floated elements.
+    .slide
+      h1 Incremental display of layered images
+      p These can be marked up using CSS relative positioning, e.g.
+      pre(space="preserve")
+        | <div class="incremental"
+        | style="margin-left: 4em; position: relative">
+        | <img src="graphics/face1.gif" alt="face"
+        | style="position: static; vertical-align: bottom"/>
+        | <img src="graphics/face2.gif" alt="eyes"
+        | style="position: absolute; left: 0; top: 0" />
+        | <img src="graphics/face3.gif" alt="nose"
+        | style="position: absolute; left: 0; top: 0" />
+        | <img src="graphics/face4.gif" alt="mouth"
+        | style="position: absolute; left: 0; top: 0" />
+        | </div>
+      p(style="font-size: smaller;")
+        | You should also use transparent GIF
+        | images to avoid the IE/Win bug for alpha channel in PNG. A fix is
+        | expected in IE 7. A
+        a(shape="rect" href="http://www.skyzyx.com/scripts/sleight.php") work around
+        | is
+        | available on skyzyx.com. My thanks to
+        a(shape="rect" href="http://www.webstandards.org/act/acid2/") ACID2
+        | for the
+        | graphics.
+      .incremental(style="margin-left: 4em; position: relative;")
+        img(style="position: static; vertical-align: bottom;" alt="face" src="graphics/face1.gif")
+        img(style="position: absolute; left: 0pt; top: 0pt;" alt="eyes" src="graphics/face2.gif")
+        img(style="position: absolute; left: 0pt; top: 0pt;" alt="nose" src="graphics/face3.gif")
+        img(style="position: absolute; left: 0pt; top: 0pt;" alt="mouth" src="graphics/face4.gif")
+    .slide
+      h1 How to center content vertically and horizontally
+      .vbox
+      .hbox
+        p Within the div element for your slide:
+        pre(space="preserve")
+          | <div class="vbox"></div>
+          | <div class="hbox">
+          | Place the content here
+          | </div>
+        p and style it with the following:
+        pre(space="preserve")
+          | div.vbox {
+          | float: left;
+          | height: 40%; width: 50%;
+          | margin-top: -220px;
+          | }
+          | div.hbox {
+          | width:60%;  margin-top: 0;
+          | margin-left:auto; margin-right:auto;
+          | height: 60%;
+          | border:1px solid silver;
+          | background:#F0F0F0;
+          | overflow:auto;
+          | text-align:left;
+          | clear:both;
+          | }
+        p
+          | The above styling is included in
+          a(shape="rect" href="styles/w3c-blue.css") w3c-blue.css
+          | , which is designed to be
+          | used with
+          a(shape="rect" href="styles/slidy.css") slidy.css
+          | , but you are
+          | encouraged to develop your own style sheet with your own look and
+          | feel.
+    .slide
+      h1 Include SVG Content
+      p
+        | Inclusion of SVG content can be done using the object element,
+        | for example:
+      div(style="text-align: center;")
+        object(width="50%" height="10%" title="Indian Office logo" type="image/svg+xml" data="graphics/example.svg")
+          img(width="50%" alt="Indian Office logo" src="graphics/example.png")
+      p has been achieved by:
+      pre(space="preserve")
+        | <object data="graphics/example.svg" type="image/svg+xml"
+        | width="50%" height="10%" title="Indian Office logo">
+        | <img src="graphics/example.png" width="50%"
+        | alt="Indian Office logo" />
+        | </object>
+      p
+        | This ensures that the enclosed png is displayed when the browser
+        | has no plugin installed or can't display SVG directly. Providing
+        | such a fall back is very important! Don't forget the alt text for
+        | people who can't see the image.
+      p However, there are caveats, see the next slide!
+    .slide
+      h1 Caveats with SVG+object
+      p
+        | Adobe has recently withdrawn support for its SVG Viewer, so you
+        | are recommended to consider
+        a(shape="rect" href="http://wiki.svg.org/Viewer_Implementations") alternatives
+        | . If
+        | you still using the Adobe SVG viewer you should be aware of bugs
+        | when using the it with IE, Namely:
+      ul
+        li
+          | Most modern browsers generally support SVG SVG Tiny 1.1 or
+          | better natively without the need for a plugin
+        li
+          | If you need to use Internet Explorer you are advised to upgrade
+          | to IE9 which includes native support for SVG.
+        li
+          | Patches to Internet Explorer mean that the Adobe SVG Viewer
+          | version 3.03 no longer works with IE6. You are therefore
+          | recommended to uninstall version 3.03 and instead install
+          a(shape="rect" href="http://www.adobe.com/svg/viewer/install/beta.html")
+            | Adobe SVG
+            | Viewer 6.0 preview
+          | if this is available to to you.
+        li
+          | IE6 makes a
+          em copy
+          | of the SVG file on the local disc
+          | when displaying it; but doesn't pass the original URI to the
+          | plugin
+        li
+          | As a result relative references from within the SVG to external
+          | resources (scripts, CSS, images, other SVG) will break.
+        li
+          | The work around is to use absolute references within your
+          | SVG.
+        li
+          | On Windows, the Adobe SVG plugin doesn't respect the CSS
+          | z-index property, and if used on backgrounds will always show
+          | through other content
+    .slide
+      h1 Additional Remarks
+      ul
+        li Slides are auto-numbered on the slide show footer
+        li
+          | You can link into the
+          a(shape="rect" href="#(2)") middle
+          | of a slide
+          | show:
+          ul
+            li It works out which slide you want and hides the rest
+            li You can even link between slides in the same slide show
+            li
+              | Individual sides can be addressed with the syntax #(
+              em
+                | slide
+                | number
+              | ),
+              br(clear="none")
+              | e.g. slide 3 of this presentation is:
+              a(shape="rect" href="#(3)") http://www.w3.org/Talks/Tools/Slidy#(3)
+              ul
+                li
+                  | Previous versions of Slidy used square brackets, which will
+                  | also work.
+            li
+              | Note that the browser's back/forward buttons may not work as
+              | you might expect due to browser problems.
+        li
+          | Adding "title" to the list of classes for div elements that
+          | serve as title pages will render the corresponding entry in the
+          | table of contents in bold italic text (press "C" now for an
+          | example)
+        li
+          | If your slides have more content than normal, use a
+          em
+            | meta
+            | element
+          | to request a smaller font
+          ul
+            li
+              | the following requests fonts to be one step smaller than the
+              | Slidy default for the current window width, and positive integers
+              | will make the fonts correspondingly larger
+          pre(space="preserve") <meta name="font-size-adjustment" content="-1" />
+          ul
+            li
+              | Slidy uses JavaScript to dynamically set the font size on the
+              | body element, but it is okay to specify relative font changes on
+              | other elements within your own style sheet, e.g.
+          pre(space="preserve") div.slide.large { font-size: 200% }
+        li
+          | You are encouraged to ensure your markup is valid.
+          a(shape="rect" href="http://www.w3.org/People/Raggett/tidy/") HTML Tidy
+          | can be used
+          | to find and correct common markup problems
+        li
+          | The slide show script and style sheet can be used freely under
+          | W3C's
+          a(shape="rect" href="http://www.w3.org/Consortium/Legal/copyright-software")
+            | software
+            | licensing
+          | and
+          a(shape="rect" href="http://www.w3.org/Consortium/Legal/copyright-documents")
+            | document
+            | use
+          | policies
+        li
+          | At
+          a(shape="rect" href="http://xtech06.usefulinc.com/") XTech2006
+          | I gave
+          | this
+          a(shape="rect" href="http://www.w3.org/2006/05/Slidy-XTech/") presentation
+          | on Slidy
+          | (
+          a(shape="rect" href="http://www.w3.org/2006/05/Slidy-XTech/slidy-xtech06-dsr.pdf") Paper
+          | ).
+    .slide
+      h1 Localization and automatic translation
+      p Slidy now includes support for localization
+      | "es":this.strings_es, "ca":this.strings_ca, "cs":this.strings_cs,
+      | "nl":this.strings_nl, "de":this.strings_de, "pl":this.strings_pl,
+      | "fr":this.strings_fr, "hu":this.strings_hu, "it":this.strings_it,
+      | "el":this.strings_el, "jp":this.strings_ja, "zh":this.strings_zh,
+      | "ru":this.strings_ru, "sv":this.strings_sv
+      ul
+        li
+          | The tool bar is localized according to the language of the
+          | presentation
+        li
+          | This is taken from the xml:lang or lang attributes on the html
+          | element
+        li
+          | The
+          a(shape="rect" href="http://www.w3.org/Talks/Tools/Slidy2/help/help.html") help file
+          | is selected based upon your browser's language preferences
+        li
+          | As of 29th July 2010, the languages supported are: English,
+          | Spanish, Catalonian, Czech, Dutch, German, Polish, French,
+          | Hungarian, Italian, Greek, Japanese, Chinese, Russian and
+          | Swedish
+        li
+          | If you would like to contribute localizations for other
+          | languages, please get in touch with Dave Raggett
+          | <dsr@w3.org>
+        li The following illustrates what was used for Spanish
+      pre(space="preserve")
+        | // for each language there is an associative array
+        | strings_es: {
+        | "slide":"pÃ¡g.",
+        | "help?":"Ayuda",
+        | "contents?":"Ãndice",
+        | "table of contents":"tabla de contenidos",
+        | "Table of Contents":"Tabla de Contenidos",
+        | "restart presentation":"Reiniciar presentaciÃ?n",
+        | "restart?":"Inicio"
+        | },
+        | help_es:
+        | "Utilice el ratÃ?n, barra espaciadora, teclas Izda/Dcha, " +
+        | "o Re pÃ¡g y Av pÃ¡g. Use S y B para cambiar el tamaÃ±o de fuente.",
+      p
+        strong Note:
+        | Slidy now works with
+        a(shape="rect" href="http://translate.google.com/translate?js=n&amp;prev=_t&amp;hl=en&amp;ie=UTF-8&amp;u=http%3A%2F%2Fwww.w3.org%2FTalks%2FTools%2FSlidy2%2F&amp;sl=en&amp;tl=fr&amp;history_state0=") current slides translated into French
+        | . Use right mouse button
+        | to open frame without Google header. To disable automatic
+        | translation of the content of particular elements add
+        code class="notranslate"
+        | , see
+        a(shape="rect" href="http://googlewebmastercentral.blogspot.com/2008/10/helping-you-break-language-barrier.html") breaking the language barrier
+        | .
+    .slide
+      h1 Future Plans
+      p
+        | Recent additions have included a table of contents, and a way to
+        | hide and reveal content in the spirit of outline lists. The script
+        | has been rewritten to make it easier to combine with other scripts,
+        | e.g. for UI controls. Further work is anticipated on the
+        | following:
+      ul
+        li
+          | Collecting a gallery of good looking slide themes
+          ul
+            li Opportunities for graphics designers!
+        li
+          | Getting SVG Tiny to work on IE without need for SVG plugin
+          ul
+            li Using scripts to dynamically convert SVG Tiny to VML
+            li
+              | Note that IE9 introduces native SVG support, so it may no
+              | longer be worth working on SVG to VML for rendering of SVG
+        li
+          | Pre-alpha version of wysiwyg slide editor (see
+          a(shape="rect" href="editor/editor-screenshot1.png") screenshot
+          | )
+          ul
+            li
+              | Using contentEditable when available, otherwise falling back to
+              | textarea and plain text conventions
+            li
+              | Using XMLHttpRequest to dynamically reflect changes to
+              | server
+        li
+          | Mechanism for remotely driving Slidy as part of distributed
+          | meetings
+          ul
+            li Using XMLHttpRequest to listen for navigation commands
+            li Using VoIP for accompanying audio and teleconferencing
+            li
+              | Synchronizing recorded spoken presentation with currently
+              | viewed slide
+        li
+          | Filters from PowerPoint and Open Office
+          ul
+            li
+              | and export to PDF via
+              a(shape="rect" href="http://www.princexml.com/") PrinceXML
+      p
+        | If you have comments, suggestions for improvements, or would
+        | like to volunteer your help with further work on Slidy, please
+        | contact
+        a(shape="rect" href="http://www.w3.org/People/Raggett/")
+          | Dave
+          | Raggett
+        | <
+        a(shape="rect" href="mailto:dsr@w3.org") dsr@w3.org
+        | >
+    .slide
+      h1 Acknowledgements
+      ul
+        li
+          | My thanks to everyone who sent in bug reports and feature
+          | requests
+        li
+          | Opera Software for implementing CSS @media projection and
+          | promoting the idea of using the Web for presentations with
+          a(shape="rect" href="http://www.opera.com/support/tutorials/operashow/")
+            | Opera
+            | Show
+        li
+          a(shape="rect" href="http://tantek.com/") Tantek Çelik
+          | for his
+          | pioneering work on applying JavaScript for slide presentations on
+          | other browsers
+        li
+          | Eric Meyer for taking this further with the excellent
+          a(shape="rect" href="http://www.meyerweb.com/eric/tools/s5/s5-intro.html") S5
+        li
+          | W3C's
+          a(shape="rect" href="http://dev.w3.org/cvsweb/slidemaker/")
+            | slidemaker
+            | tool
+          | , which uses a perl script to split an html file up into
+          | one file per slide with navigation buttons
+        li
+          | Early versions of
+          a(shape="rect" href="http://www.w3.org/People/Raggett/tidy/") HTML Tidy
+          | which
+          | supported a means to create presentations via splitting html files
+          | on h2 elements
+        li
+          | Many sites with advice on JavaScript work arounds for browser
+          | variations
+        li
+          | Microsoft for pioneering contentEditable and XMLHTTP which both
+          | provide tremendous opportunities for Web applications
+        li
+          | Microsoft Office which provided the impetus for creating Slidy
+          | as a Web-based alternative to the ubiquitous use of PowerPoint
+      p.smaller
+        strong Note
+        | that while Slidy and S5
+        | were developed independently, both support the use of the class
+        | values "slide" and "handout" for div elements. Slidy doesn't
+        | support the "layout" class featured in S5 and Opera Show, but
+        | instead provides a more flexible alternative with the "background"
+        | class, which enables different backgrounds on different slides.
+    .slide
+      h1 Acknowledgements
+
+      p The following people have contributed localizations:
+      ul
+        li Emmanuelle GutiÃ©rrez y Restrepo, Spanish
+        li Joan V. Baz, Catalan
+        li Jakub VrÃ¡na, Czech
+        li Ruud Steltenpool, Dutch
+        li Beat Vontobel, German
+        li Krzysztof Kotowicz, Polish
+        li Tamas Horvath, Hungarian
+        li Creso Moraes, Brazilian Portuguese
+        li Giuseppe Scollo, Italian
+        li Konstantinos Koukopoulos, Greek
+        li
+          | Yoshikazu Sawa (æ??
+          | ç?©å’Œ), Japanese
+        li Shelley Shyan, Chinese
+        li Andrew Pantyukhin, Russian
+        li Saasha MetsÃ?rantala, Swedish
+      p The following people have contributed bug reports:
+      ul
+        li Ivan Herman
+        li Steve Bratt
+        li Peter Patel-Schneider
+        li Matthew Coller
+        li Rune Heggtveit
+        li Gopal Venkatesan
+        li Cay Horstmann
+        li Schuyler Duveen
+        li Matteo Nannini
+        li Ralph Swick
+        li Jakub VrÃ¡na
+        li Philip Bolt
+        li Jon Frost
+      p
+        | Douglas Crockford for
+        a(shape="rect" href="http://www.crockford.com/javascript/jsmin.html") jsmin
+        | which
+        | was used to minify the script before compressing it with gzip.
