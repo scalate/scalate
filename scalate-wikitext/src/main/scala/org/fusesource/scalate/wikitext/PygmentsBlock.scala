@@ -23,13 +23,13 @@ import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConflue
 import java.lang.String
 import collection.mutable.ListBuffer
 import org.fusesource.scalate.util.Threads._
-import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
-import org.fusesource.scalate.util.{Log, IOUtil}
 import org.fusesource.scalate._
 import org.fusesource.scalate.filter.{Pipeline, Filter}
+import java.io.{File, ByteArrayInputStream, ByteArrayOutputStream}
+import util.{Files, Log, IOUtil}
 
 
 object Pygmentize extends Log with Filter with TemplateEngineAddOn {
@@ -39,7 +39,10 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
    */
   def apply(te: TemplateEngine) = {
     te.filters += "pygmentize" -> Pygmentize
-  }  
+
+    // add the imports
+    te.importStatements :+= "import org.fusesource.scalate.wikitext.PygmentizeHelpers._"
+  }
   
   def filter(context: RenderContext, content: String): String = {
     pygmentize(content)
@@ -90,7 +93,6 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     }
     content.mkString("\n")
   }
-
   object OptionParser extends RegexParsers {
 
     override def skipWhitespace = false
@@ -187,6 +189,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     }
   }
 
+
   def pygmentize(body:String, lang:String, lines:Boolean):String = {
     if (!isInstalled) {
       "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" +RenderHelper.sanitize(body) + "</code></pre>"
@@ -220,6 +223,35 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
 }
 
+/**
+ * View helper methods for use inside templates
+ */
+object PygmentizeHelpers {
+
+  // TODO add the text version and the macro version......
+  // TODO is there a simpler polymophic way to write functions like this
+  // that operate on text content from a String, block, URI, File, Resource etc...
+
+  def pygmentizeFile(file: File, lang: String = "", lines: Boolean = false): String = {
+    val content = IOUtil.loadTextFile(file)
+    val defaultLang = getOrUseExtension(lang, file.toString)
+    Pygmentize.pygmentize(content, defaultLang)
+  }
+
+  def pygmentizeUri(uri: String, lang: String = "", lines: Boolean = false)(implicit resourceContext: RenderContext): String = {
+    val content = resourceContext.load(uri)
+    val defaultLang = getOrUseExtension(lang, uri)
+    Pygmentize.pygmentize(content, defaultLang)
+  }
+
+  protected def getOrUseExtension(lang: String, uri: String): String = {
+    if (lang.isEmpty) {
+      Files.extension(uri)
+    } else {
+      lang
+    }
+  }
+}
 
 class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
 
