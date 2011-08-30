@@ -127,81 +127,88 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
         
     .slide
       :markdown
-        * SSP
-          * SSP “Scala Server Pages”
-            * like a non-sucky JSP :)
-          * easiest template engine to start with if folks know
-            * ASP, JSP, GSP, Erb, Velocity, FreeMarker style templates
-          * supports JSP / Erb style syntax 
-            * <% statements %>
-            * <%= expression %>
-            * ${expression}
-          * examples:
-            * Dear ${people.map(_.name).mkString(“, “)} how are you?
+        # SSP
+        
+        * SSP “Scala Server Pages”
+          * like a non-sucky JSP :)
+        * easiest template engine to start with if folks know
+          * ASP, JSP, GSP, Erb, Velocity, FreeMarker style templates
+        * supports JSP / Erb style syntax 
+          * <% statements %>
+          * <%= expression %>
+          * ${expression}
+        * examples:
+          * Dear ${people.map(_.name).mkString(“, “)} how are you?
         
     .slide
       :markdown
-        * SSP also supports Velocity style tokens
-          * #if (lineItems.find(_.price > 10).isDefined)
-          * <b>Welcome big spender!</b>
-          * #end
+        # SSP also supports Velocity style tokens
+        
+        * #if (lineItems.find(_.price > 10).isDefined)
+        * <b>Welcome big spender!</b>
+        * #end
         
     .slide
       :markdown
-        * Scaml
-          * Scaml is a Scala port of HAML
-            * HAML started in the Rails world and became a very popular
-                      alternative to Erb templates
-            * whitespace sensitive (which is handy for markup, avoids
-                      badly nested markup)
-            * uses %foo to indicate <foo>...</foo>
-            * - for statements
-            * = expressions
+        # Scaml
+        
+        * Scaml is a Scala port of HAML
+          * HAML started in the Rails world and became a very popular
+                    alternative to Erb templates
+          * whitespace sensitive (which is handy for markup, avoids
+                    badly nested markup)
+          * uses %foo to indicate <foo>...</foo>
+          * - for statements
+          * = expressions
         
     .slide
       :markdown
-        * Jade
-          * Jade out in JavaScript / Rails worlds as a simpler more DRY
-                  version of HAML / Scaml 
-            * avoid the % to indicate element name
-              * folks tend to use lots of elements; few are
-                          multi-line text content
-            * use | to indicate text content inside an element when
-                      multiple lines required
-            * Implemented as just a slightly different surface parser
-                      on Scaml
-          * Jade + markdown are the hotness!
+        # Jade
+        
+        * Jade out in JavaScript / Rails worlds as a simpler more DRY
+                version of HAML / Scaml 
+          * avoid the % to indicate element name
+            * folks tend to use lots of elements; few are
+                        multi-line text content
+          * use | to indicate text content inside an element when
+                    multiple lines required
+          * Implemented as just a slightly different surface parser
+                    on Scaml
+        * Jade + markdown are the hotness!
         
     .slide
       :markdown
-        * Mustache
-          * no logic in the scripts 
-          * can be used from JavaScript on the client side or Scala /
-                  Scalate on the server side
-          * uses {{foo}} mustaches for values
-          * use {{#foo}} and {{/foo}} for blocks/loops/conditionals
-          * good if you want your designer to own the templates
-            * though dynamically typed
+        # Mustache
+        
+        * no logic in the scripts 
+        * can be used from JavaScript on the client side or Scala /
+                Scalate on the server side
+        * uses {{foo}} mustaches for values
+        * use {{#foo}} and {{/foo}} for blocks/loops/conditionals
+        * good if you want your designer to own the templates
+          * though dynamically typed
         
     .slide
       :markdown
-        * Scuery
-          * more of a HTML/XHTML transformation engine really
-          * uses CSS3 parser & transformation engine
-          * templates are regular HTML pages (possibly with mock data)
-                  owned by your designer
-          * use the transform API (jQuery-ish) to transform the HTML to
-                  inject/replace with dynamic data
+        # Scuery
+        
+        * more of a HTML/XHTML transformation engine really
+        * uses CSS3 parser & transformation engine
+        * templates are regular HTML pages (possibly with mock data)
+                owned by your designer
+        * use the transform API (jQuery-ish) to transform the HTML to
+                inject/replace with dynamic data
         
     .slide
       :markdown
-        * Tips on picking a template language
-          * If you want your designers to own your templates
-            * consider mustache or scuery
-          * if you want developers to hack your templates
-            * want to generate HTML/XML really DRY? 
-              * use jade
-            * otherwise SSP
+        # Tips on picking a template language
+        
+        * If you want your designers to own your templates
+          * consider mustache or scuery
+        * if you want developers to hack your templates
+          * want to generate HTML/XML really DRY? 
+            * use jade
+          * otherwise SSP
         
     .slide
       :markdown
