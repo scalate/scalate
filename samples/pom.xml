@@ -36,6 +36,7 @@
 
   <modules>
     <module>scalate-sample</module>
+    <module>scalate-presentation</module>
     <module>scalate-sample-precompile</module>
     <module>scalate-sample-sitegen</module>
     <module>scalate-sample-scuery</module>
