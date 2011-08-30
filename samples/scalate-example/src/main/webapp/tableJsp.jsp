@@ -2,6 +2,8 @@
   // TODO lots of Java code here to make the people collection :)
 %>
 
+<h1>Table Example</h1>
+
 <div class="main">
   <table>
     <tr>
