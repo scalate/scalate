@@ -1,4 +1,5 @@
-/* w3c-blue.css
+<% attributes("layout") = "" %>
+/* based on w3c-blue.css
 
    Copyright (c) 2005-2010 W3C (MIT, ERCIM, Keio), All Rights Reserved.
    W3C liability, trademark, document use and software licensing
@@ -270,7 +271,7 @@ ul li {
   list-style: none;
   margin: 0.1em 0em 0.6em 0;
   padding: 0 0 0 40px;
-  background: transparent url(../graphics/bullet.png) no-repeat 5px 0.3em;
+  background: transparent url(${uri("/graphics/bullet.png")}) no-repeat 5px 0.3em;
   line-height: 140%;
 }
 

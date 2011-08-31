@@ -37,11 +37,9 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
       p
         a(shape="rect" href="http://macstrac.blogspot.com/") James Strachan
         br(clear="none")
-        a(shape="rect" href="http://fusesource.com/") FuseSource
-        br(clear="none")
         a(shape="rect" href="http://twitter.com/#!/jstrachan") @jstrachan
         br(clear="none")
-        a(shape="rect" href="mailto:james@fusesource.com") james@fusesource.com
+        a(shape="rect" href="http://fusesource.com/") FuseSource
     .slide
       :markdown
         # Your presenter: James Strachan
@@ -64,7 +62,7 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
         ![Scalate](images/scalate/project-logo.png)
 
         * its a **Scala** based **T**emplate **E**ngine
-          * Scala T E => **Scalate*
+          * Scala T E => **Scalate**
 
     .slide
       :markdown
@@ -171,7 +169,7 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
         * whitespace sensitive (which is handy for markup, avoids
                   badly nested markup)
         * syntax
-            * %foo to indicate <foo>...</foo>
+            * %foo to indicate &lt;foo&gt;...&lt;/foo&gt;
             * \- for statements
             * = expressions
 
@@ -186,7 +184,7 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
       :markdown
         # Jade
 
-        * Jade out in JavaScript / Rails worlds as a simpler more DRY
+        * Jade came from JavaScript / Rails as a simpler more DRY
                 version of HAML / Scaml 
           * avoid the % to indicate element name
               * folks tend to use lots of elements; few are
@@ -358,12 +356,19 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
         * install Scalate
           * [http://scalate.fusesource.org/download.html](http://scalate.fusesource.org/download.html)
           * add **SCALATE_HOME/bin** to your **PATH**
-          * type the following in a command shell
           
+      h3 Create a sample project
+      
       :pygmentize
         scalate create jersey mygroup myartifact
         cd myartifact
         mvn jetty:run
+        
+      h3 To try out the Scalate shell
+
+      :pygmentize
+        scalate
+        help
 
     .slide
       :markdown
@@ -371,13 +376,42 @@ html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
 
         * maven plugin to generate a complete static website for your
                 project using Scalate
-        * deploy it to some web server using maven’s wagon transports
+        * deploy it to some web server using maven's wagon transports
           * scp / webdav etc
         * allows real time updates of templates & layouts while editing
                 docs
         * your own personal offline wiki using git for source control &
                 versioning
           * use a text editor to edit, erm, text files! :)
+
+      h3 Create a website project
+
+      :pygmentize
+        scalate create sitegen mygroup mysite
+        cd mysite
+        mvn jetty:run
+
+      :markdown
+        * now open [http://localhost:8080/scalate](http://localhost:8080/scalate)
+        * click on the top right scalate icon for the [Scalate Console](http://scalate.fusesource.org/documentation/console.html)
+
+    .slide
+      :markdown
+        # Presentation generation
+
+        * this presentation is created by Scalate :)
+        * deployed online [static HTML](http://scalate.fusesource.org/presentations/scalate)
+        * implemented in a [single jade + markdown template](https://github.com/scalate/scalate/blob/master/samples/scalate-presentation/src/scalate.jade)
+        * uses [HTML Slidy](http://www.w3.org/Talks/Tools/Slidy2/) for JavaScript + CSS
+        
+        ### To try it out locally from a scalate checkout
+        
+      :pygmentize
+        cd samples/scalate-presentation
+        mvn jetty:run
+        
+      :markdown
+        * now open [http://localhost:8080/scalate](http://localhost:8080/scalate)
 
     .slide
       :markdown

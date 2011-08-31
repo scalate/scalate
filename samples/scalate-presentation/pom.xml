@@ -89,6 +89,11 @@
         <groupId>org.fusesource.scalate</groupId>
         <artifactId>maven-scalate-plugin</artifactId>
         <version>${project.version}</version>
+        <configuration>
+          <warSourceDirectory>${basedir}/src</warSourceDirectory>
+          <remoteServerId>website.fusesource.org</remoteServerId>
+          <remoteServerUrl>dav:http://fusesource.com/forge/dav/${forge-project-id}/presentations</remoteServerUrl>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -96,10 +101,8 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <warSourceDirectory>${basedir}/src</warSourceDirectory>
-        </configuration>
       </plugin>
+      
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
