@@ -503,6 +503,23 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.scala-tools</groupId>
+              <artifactId>maven-scala-plugin</artifactId>
+              <configuration>
+                <scalaVersion>${scala-version}</scalaVersion>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-plugin-version}</version>
         <configuration>
@@ -719,18 +736,18 @@
               &lt;!&ndash; this snapshot release works with 2.8.0-beta1 &ndash;&gt;
               <scala-plugin-version>2.13.2-SNAPSHOT</scala-plugin-version>
             </properties>
-            <reporting>
-              <plugins>
-                <plugin>
-                  <groupId>org.scala-tools</groupId>
-                  <artifactId>maven-scala-plugin</artifactId>
-                  <configuration>
-                    <scalaVersion>${scala-version}</scalaVersion>
-                  </configuration>
-                </plugin>
-              </plugins>
-            </reporting>
-      -->
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <configuration>
+              <scalaVersion>${scala-version}</scalaVersion>
+            </configuration>
+          </plugin>
+        </plugins>
+      </reporting>
+    -->
     </profile>
 
     <!-- so we can create a distro on our CI box -->
