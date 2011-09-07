@@ -53,11 +53,6 @@
       <artifactId>scalate-page</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.fusesource.scalamd</groupId>
-      <artifactId>scalamd</artifactId>
-      <version>${scalamd-version}</version>
-    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
