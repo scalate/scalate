@@ -20,7 +20,8 @@ package org.fusesource.scalate.mustache
 import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.introspector.Introspector
 
-import collection.JavaConversions._
+import collection.JavaConverters._
+
 import java.{lang => jl, util => ju}
 import xml.{NodeSeq, XML}
 import org.fusesource.scalate.util.Log
@@ -217,7 +218,7 @@ trait Scope {
   def toTraversable(v: Any, block: Scope => Unit): Any = v match {
     case t: Seq[_] => t
     case t: Array[_] => t.toSeq
-    case t: ju.Map[_,_] => mapAsScalaMap(t)
+    case t: ju.Map[_,_] => t.asScala
 
     case f: Function0[_] => toTraversable(f(), block)
     case f: Function1[_, _] =>
@@ -232,9 +233,9 @@ trait Scope {
         f
       }
 
-    case c: ju.Collection[_] => collectionAsScalaIterable(c)
-    case i: ju.Iterator[_] => asScalaIterator(i)
-    case i: jl.Iterable[_] => iterableAsScalaIterable(i)
+    case c: ju.Collection[_] => c.asScala
+    case i: ju.Iterator[_] => i.asScala
+    case i: jl.Iterable[_] => i.asScala
 
     case _ => v
   }

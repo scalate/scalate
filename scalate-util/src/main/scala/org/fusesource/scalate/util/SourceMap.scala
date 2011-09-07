@@ -21,7 +21,7 @@ import java.util.ArrayList
 import java.io._
 import scala.util.parsing.combinator._
 import scala.util.parsing.input._
-import collection.JavaConversions
+import collection.JavaConverters._
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -33,8 +33,8 @@ class SourceMapStratum(val name: String) {
   val lines = new ArrayList[LineInfo]()
 
   def mapToStratum(line:Int):Option[(String, Int)] = {
-    import JavaConversions._
-    val lines = collectionAsScalaIterable(this.lines)
+    
+    val lines = this.lines.asScala
 
     def file(id:Int) = {
       val value = files.get(id)
