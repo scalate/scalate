@@ -36,12 +36,19 @@
 
   <modules>
     <module>scalate-sample</module>
-    <module>scalate-presentation</module>
     <module>scalate-sample-precompile</module>
     <module>scalate-sample-sitegen</module>
     <module>scalate-sample-scuery</module>
     <module>scalate-sample-spring-mvc</module>
     <module>scalate-bookstore</module>
   </modules>
-  
+
+  <profiles>
+    <profile>
+      <id>presentation</id>
+      <modules>
+        <module>scalate-presentation</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

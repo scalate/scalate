@@ -44,13 +44,17 @@ object ScalaCompiler extends Log {
 
 import ScalaCompiler._
 
-class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) {
+trait Compiler {
+  def compile(file: File): Unit
+}
+
+class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Compiler {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
   val compiler = new Global(settings, null)
 
-  def compile(file:File): Unit = {
+  def compile(file: File): Unit = {
     synchronized {
       val messageCollector = new StringWriter
       val messageCollectorWrapper = new PrintWriter(messageCollector)
