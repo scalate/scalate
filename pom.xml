@@ -836,7 +836,9 @@
     <profile>
       <id>release</id>
       <modules>
+        <!--
         <module>scalate-website</module>
+        -->
         <module>scalate-distro</module>
       </modules>
       <build>
