@@ -12,7 +12,6 @@ How to create releases of Scalate
 
 Various documentation changes first (which should be done before the release is cut)
 
-* update the **scalate\_website/src/main/webapp/download.page** page for this release
 * edit the **scalate\_website/src/main/scala/Website.scala** file and change the **project\_version** values
 * blog about the release by creating an entry in **scalate\_website/src/blog/releases** 
 * update the changelog.md file, copying and pasting the section the release highlights from the above blog post
@@ -26,23 +25,7 @@ If the release is a major release then we need to freeze the current website at 
 <remoteServerUrl/>
 {pygmentize}
 
-* add a link to the versions.page to this old version. 
-
-Cutting the release 
-
-* Until [MRELEASE-605](http://jira.codehaus.org/browse/MRELEASE-605) is resolved you need to ensure that you have defined **release-altGitURL** in your **~/.m2/settings.xml** file like this (where /foo/scalate is where your checkout is)
-
-{pygmentize:: xml}
-<settings>
-  <profiles> 
-    <profile>
-      <id>release</id>
-      <properties>
-        <release-altGitURL>scm:git:file:///foo/scalate</release-altGitURL>
-      </properties>
-    </profile>
-  </profiles>	
-{pygmentize}
+Cutting the release
 
 * check your repo is clean and you are on master branch
 * check that we are using the latest versions of dependencies
