@@ -1,0 +1,54 @@
+---
+blog_post: false
+title: Scalate 1.5.2 Released
+author: James Strachan
+author_url: http://macstrac.blogpost.com
+created_at: 2011-08-08 12:06:40 -0000
+--- 
+
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
+availability of Scalate 1.5.2
+
+Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a
+href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
+engine</a> which can be used stand alone, with servlets or web frameworks
+like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
+[Lift](http://scalate.fusesource.org/documentation/lift.html) or
+[Play](http://github.com/pk11/play-scalate) or in integration frameworks
+like [Apache Camel](http://camel.apache.org/scalate.html).
+
+The following template languages are supported through the same common API:
+
+* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)
+  which is like a Scala version of [Velocity](http://velocity.apache.org/),
+  JSP or Erb from Rails
+* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+  which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY
+  markup along with the
+  [Jade](http://scalate.fusesource.org/documentation/jade.html) syntax
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html)
+  which is a Scala dialect of [Mustache](http://mustache.github.com/) for
+  logic-less templates which also work inside the browser using
+  [mustache.js](http://github.com/janl/mustache.js)
+
+All expressions inside
+[Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax),
+[Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+and [Jade](http://scalate.fusesource.org/documentation/jade.html) benefit
+from the full power and expressiveness of Scala plus they are typesafe and
+checked at edit/compile time to ensure you don't leave any mistakes in your
+templates.
+
+
+**Scalate 1.5.2 Highlights**
+
+* Server side compilation of CoffeeScript in the [:coffeescript filter]() - many thanks for the [patch](https://github.com/scalate/scalate/pull/6)
+* Fixed [#260](http://scalate.assembla.com/spaces/scalate/tickets/260) : Scalate distro does not include all the jars required for textile support
+* Minor improvements in the use of the ScalaCompiler to make it easier to support [Lifty](http://lifty.github.com/) as a plugin inside [SBT](https://github.com/harrah/xsbt/wiki) - thanks for the help and welcome to the team [Mads](https://github.com/mads379)
+
+For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/529481-1-5-2)
+
+[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+
+
+
