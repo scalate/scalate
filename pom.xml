@@ -70,6 +70,7 @@
     <karaf-version>2.1.0</karaf-version>
     <logback-version>0.9.26</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
+    <maven-scalate-plugin-version>1.5.1</maven-scalate-plugin-version>
     <org.springframework.version>3.0.6.RELEASE</org.springframework.version>
 
     <osgi-version>4.2.0</osgi-version>
@@ -946,7 +947,7 @@
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
             <artifactId>maven-scalate-plugin</artifactId>
-            <version>${project.version}</version>
+            <version>${maven-scalate-plugin-version}</version>
             <executions>
               <execution>
                 <goals>
