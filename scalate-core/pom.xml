@@ -94,10 +94,10 @@
 
     <!-- Coffescript compiler -->
     <dependency>
-        <groupId>rhino</groupId>
-        <artifactId>js</artifactId>
-        <version>1.7R2</version>
-        <optional>true</optional>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>${rhino-version}</version>
+      <optional>true</optional>
     </dependency>
 
     <!-- testing -->
