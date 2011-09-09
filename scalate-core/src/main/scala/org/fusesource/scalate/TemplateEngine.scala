@@ -36,6 +36,7 @@ import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 import collection.generic.TraversableForwarder
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.ConcurrentHashMap
 
 object TemplateEngine {
   val log = Log(getClass); import log._
@@ -222,6 +223,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   var bindings = Binding("context", "_root_."+classOf[RenderContext].getName, true, None, "val", false) :: Nil
   
+  val finderCache = new ConcurrentHashMap[String, String]
   private val templateCache = new HashMap[String, CacheEntry]
   private var _cacheHits = 0
   private var _cacheMisses = 0
@@ -340,6 +342,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def generateScala(uri: String): Code = {
     generateScala(uriToSource(uri))
   }
+
+
 
   /**
    * The number of times a template load request was serviced from the cache.
@@ -493,6 +497,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
       templateCache.clear
+      finderCache.clear
       IOUtil.recursiveDelete(sourceDirectory)
       IOUtil.recursiveDelete(bytecodeDirectory)
       sourceDirectory.mkdirs
