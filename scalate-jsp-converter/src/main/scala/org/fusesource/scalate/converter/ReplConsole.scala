@@ -27,6 +27,6 @@ object ReplConsole {
   def main(args: Array[String]) {
 
     MainGenericRunner.main(args ++ Array("-i", "src/test/repl/ConsoleImports.scala"))
-    sys.exit(0)
+    System.exit(0)
   }
 }

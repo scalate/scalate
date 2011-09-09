@@ -5,6 +5,7 @@ import java.io.{StringWriter, File}
 import scala.collection
 import org.jruby.RubyInstanceConfig
 import org.jruby.embed.{LocalContextScope, ScriptingContainer}
+import collection.JavaConverters._
 
 /**
  * A simple interface to the jruby interpreter
@@ -12,7 +13,7 @@ import org.jruby.embed.{LocalContextScope, ScriptingContainer}
 class JRuby(loadPaths:List[File]) extends Log {
 
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
-  container.getProvider.setLoadPaths(collection.JavaConversions.seqAsJavaList(loadPaths))
+  container.getProvider.setLoadPaths(loadPaths.asJava)
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)
 
   RubyInstanceConfig.FASTCASE_COMPILE_ENABLED = true
