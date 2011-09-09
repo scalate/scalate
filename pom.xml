@@ -73,7 +73,7 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.9.0-1</scala-version>
+    <scala-version>2.8.1</scala-version>
 
     <scalatest-version>1.4.1</scalatest-version>
 

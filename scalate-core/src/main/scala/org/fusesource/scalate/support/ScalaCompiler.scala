@@ -99,12 +99,13 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
     val pathSeparator = File.pathSeparator
 
-    val classPathFromClassLoader = (new ClassPathBuilder).addPathFromContextClassLoader()
+    val classPathFromClassLoader = (new ClassPathBuilder)
+            .addEntry(classpath)
+            .addPathFromContextClassLoader()
             .addPathFrom(classOf[Product])
             .addPathFrom(classOf[Global])
             .addPathFrom(getClass)
             .addPathFromSystemClassLoader()
-            .addEntry(classpath)
             .addJavaPath()
             .classPath
 
