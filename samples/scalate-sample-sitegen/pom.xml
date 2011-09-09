@@ -88,7 +88,7 @@
       <plugin>
         <groupId>org.fusesource.scalate</groupId>
         <artifactId>maven-scalate-plugin</artifactId>
-        <version>${project.version}</version>
+        <version>${maven-scalate-plugin-version}</version>
         <executions>
           <execution>
             <goals>
