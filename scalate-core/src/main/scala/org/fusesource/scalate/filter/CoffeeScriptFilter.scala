@@ -21,6 +21,7 @@ package filter
 import org.fusesource.scalate.support.RenderHelper
 import org.mozilla.javascript._
 import java.io.InputStreamReader
+import util.Log
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
@@ -29,12 +30,19 @@ import java.io.InputStreamReader
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object CoffeeScriptFilter extends Filter {
+object CoffeeScriptFilter extends Filter with Log {
+
+  /**
+   * Server side compilation of coffeescript is enabled by default. Disable this flag
+   * if you want to disable it (for example to avoid the optional dependency on rhino)
+   */
+  val serverSideCompile = true
 
   def filter(context: RenderContext, content: String) = {
 
-    if( !context.engine.isDevelopmentMode )
+    if (serverSideCompile)
       Compiler.compile(content, Some(context.currentTemplate)).fold({ error =>
+        warn("Could not compile coffeescript: " + error, error)
         throw new CompilerException(error.message, Nil)
       }, { coffee =>
         """<script type='text/javascript'>
@@ -51,7 +59,7 @@ object CoffeeScriptFilter extends Filter {
          |  #]]>
          |</script>""".stripMargin
     }
-  }
+      }
 
   /**
    * A Scala / Rhino Coffeescript compiler.
