@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.fusesource.scalate.tooling</groupId>
     <artifactId>archetypes</artifactId>
-    <version>1.5.2-scala_2.8.1</version>
+    <version>1.6.0-scala_2.8.1</version>
   </parent>
 
   <artifactId>scalate-archetype-jersey</artifactId>
