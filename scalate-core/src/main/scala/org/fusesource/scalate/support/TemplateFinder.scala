@@ -18,8 +18,6 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.TemplateEngine
-import util.matching.Regex
-
 /**
  * A helper object to find a template from a URI using a number of possible extensions and directories
  */
@@ -29,7 +27,18 @@ class TemplateFinder(engine: TemplateEngine) {
   var replacedExtensions = List(".html", ".htm")
   lazy val extensions = engine.extensions
 
-  def findTemplate(rootOrPath: String): Option[String] = {
+  def findTemplate(path: String): Option[String] = {
+    var rc = Option(engine.finderCache.get(path))
+    if( rc.isEmpty ) {
+      rc = search(path)
+      if( rc.isDefined && !engine.isDevelopmentMode ) {
+        engine.finderCache.put(path, rc.get)
+      }
+    }
+    rc
+  }
+
+  def search(rootOrPath: String): Option[String] = {
     val path = if (rootOrPath == "/") "/index" else rootOrPath
 
     for( p <- hiddenPatterns ; if p.findFirstIn(path).isDefined ) {
