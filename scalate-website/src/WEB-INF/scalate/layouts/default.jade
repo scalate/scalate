@@ -23,6 +23,16 @@
 -@ var blog: String = null
 -@ var head: String = null
 - val include_console = engine.isDevelopmentMode && engine.resourceLoader.exists("/org/fusesource/scalate/console/console_head.scaml")
+-
+  def templates: List[String] = attributes.get("scalateTemplates") match {
+    case Some(list: List[String]) => list.map(_.stripPrefix("/")).distinct.reverse
+    case _ => Nil
+  }
+  def layouts: List[String] = attributes.get("scalateLayouts") match {
+    case Some(list: List[String]) => list.map(_.stripPrefix("/")).distinct.reverse
+    case _ => Nil
+  }
+
 !!! Basic
 html(lang="en")
   head
@@ -30,6 +40,15 @@ html(lang="en")
     meta(content="scala template engine implementing HAML, JSP, Erb style templates" name="description")
     meta(content="scalate,scala,template engine,haml,erb,jsp" name="keywords")
     meta(content="Scalate" name="author")
+    script(src={uri("/scripts/jquery.js")})
+    :javascript
+      $(function() {
+        $("#navigation div.edit img").click(function() {
+          $("#files_popup").toggle("slow");
+          return false;
+        });
+      });    
+    -# link(type="text/css" rel="stylesheet" href={uri("/styles/bootstrap-1.2.0.min.css")})
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/pygmentize.css")})
     link(type="text/css" rel="stylesheet" href={uri("/styles/impact/css/site.css")})
 
@@ -43,10 +62,25 @@ html(lang="en")
     
     title= title
   body
-    div#navigation
-      div.wrapper
+    
+    #navigation
+      .edit
+        img(src={uri("/images/edit.png")})
+      .wrapper
         - include("/_navigation.ssp.md")
-        
+
+    #files_popup.popover.top
+      .inner
+        h3.title Fork this page on GitHub
+        .content
+          ul
+            - for( file <- templates)
+              li
+                a(href={git_edit_page_base+"/"+file}) = file
+            - for( file <- layouts)
+              li
+                a(href={git_edit_page_base+"/"+file}) = file          
+                
     - if (overview!=null)
       div#overview
         div.wrapper
@@ -60,7 +94,7 @@ html(lang="en")
       div#spot
         div.wrapper
           !~~ spot
-          
+
     - if (body!=null)
       div#content
         div.wrapper
