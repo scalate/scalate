@@ -29,6 +29,8 @@ html(lang="en")
         p You are amazing
       - else
         p Get on it!
+    :coffeescript
+      alert "Hello, Coffee!"
 -----------------------------
 xml: the generated HTML
 -----------------------------
@@ -49,6 +51,14 @@ xml: the generated HTML
     <div id="container">
       <p>You are amazing</p>
     </div>
+    <script type='text/javascript'>
+      #<![CDATA[
+        (function() {
+          alert("Hello, Coffee!");
+        }).call(this);
+
+      #]]>
+    </script>  
   </body>
 </html>
 {pygmentize_and_compare}
