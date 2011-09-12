@@ -80,7 +80,7 @@
     -->
 
     <scalatest-artifact>scalatest_${scala-version}</scalatest-artifact>
-    <scalatest-version>1.5.1</scalatest-version>
+    <scalatest-version>1.6.1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd-version>1.5</scalamd-version>
