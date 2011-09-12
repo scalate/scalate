@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import org.yaml.snakeyaml.Yaml
 import scala.util.parsing.input.{NoPosition, CharSequenceReader}
+import collection.JavaConverters._
 
 case class Attribute(key:Text, value:Text)
 
@@ -183,7 +184,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
       case Some(PagePart(Nil, content))  =>
         val yaml = new Yaml();
         val data = context.engine.filter("ssp").map( _.filter(context, content.value) ).getOrElse(content.value)
-        val result = collection.JavaConversions.mapAsScalaMap(yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]])
+        val result = yaml.load(data).asInstanceOf[java.util.Map[String, AnyRef]].asScala
         Option(result)
       case _ =>
         None
