@@ -36,13 +36,17 @@
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-core</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>${rhino-version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-wikitext</artifactId>

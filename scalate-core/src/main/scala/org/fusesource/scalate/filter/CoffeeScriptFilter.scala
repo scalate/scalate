@@ -22,6 +22,7 @@ import org.fusesource.scalate.support.RenderHelper
 import org.mozilla.javascript._
 import java.io.InputStreamReader
 import util.Log
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
@@ -37,29 +38,51 @@ object CoffeeScriptFilter extends Filter with Log {
    * if you want to disable it (for example to avoid the optional dependency on rhino)
    */
   val serverSideCompile = true
+  protected val warnedMissingRhino = new AtomicBoolean()
 
   def filter(context: RenderContext, content: String) = {
 
-    if (serverSideCompile)
-      Compiler.compile(content, Some(context.currentTemplate)).fold({ error =>
-        warn("Could not compile coffeescript: " + error, error)
-        throw new CompilerException(error.message, Nil)
-      }, { coffee =>
-        """<script type='text/javascript'>
-           |  #<![CDATA[
-           |    """.stripMargin+RenderHelper.indent("    ", coffee)+"""
-           |  #]]>
-           |</script>""".stripMargin
-      })
-    else {
+    def clientSideCompile: String = {
       context.attributes("REQUIRES_COFFEE_SCRIPT_JS") = "true"
       """<script type='text/coffeescript'>
-         |  #<![CDATA[
-         |    """.stripMargin+RenderHelper.indent("    ", content)+"""
-         |  #]]>
+         |  //<![CDATA[
+         |    """.stripMargin + RenderHelper.indent("    ", content) + """
+         |  //]]>
          |</script>""".stripMargin
     }
+
+    def missingRhino(e: Throwable): String = {
+      // we don't have rhino on the classpath
+      // so lets do client side compilation
+      if (warnedMissingRhino.compareAndSet(false, true)) {
+        warn("No Rhino on the classpath: " + e + ". Using client side CoffeeScript compile", e)
       }
+      clientSideCompile
+    }
+
+    if (serverSideCompile) {
+      try {
+        Compiler.compile(content, Some(context.currentTemplate)).fold({
+          error =>
+            warn("Could not compile coffeescript: " + error, error)
+            throw new CompilerException(error.message, Nil)
+        }, {
+          coffee =>
+            """<script type='text/javascript'>
+            |  //<![CDATA[
+            |    """.stripMargin + RenderHelper.indent("    ", coffee) + """
+            |  //]]>
+            |</script>""".stripMargin
+        })
+      }
+      catch {
+        case e: NoClassDefFoundError => missingRhino(e)
+        case e: ClassNotFoundException => missingRhino(e)
+      }
+    } else {
+      clientSideCompile
+    }
+  }
 
   /**
    * A Scala / Rhino Coffeescript compiler.
