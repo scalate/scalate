@@ -55,6 +55,7 @@ object Website {
   val git_commiter_url= "git@github.com:scalate/scalate.git"
   val git_branch= "master"
   val git_edit_page_base = github_page+"/edit/"+git_branch+"/scalate-website/src"
+  val disqus_shortname = project_id
 
   // -------------------------------------------------------------------
   val project_svn_url= "http://fusesource.com/forge/svn/%s/trunk".format(project_id)
