@@ -5,7 +5,7 @@
 ----
 
 * Server side compilation of CoffeeScript in the [:coffeescript filter](http://scalate.fusesource.org/documentation/jade-syntax.html#filters) - many thanks for the [patch](https://github.com/scalate/scalate/pull/6)
-* Provide a Scala 2.8.1 distribution of Scalate too for easier [Play](http://www.playframework.org/) integration and working with other Scala 2.8.x projects.
+* Provide a Scala 2.8.1 distribution of Scalate too (version **1.5.2-scala_2.8.1**) for easier [Play](http://www.playframework.org/) integration and working with other Scala 2.8.x projects.
 * Minor improvements in the use of the ScalaCompiler to make it easier to support [Lifty](http://lifty.github.com/) as a plugin inside [SBT](https://github.com/harrah/xsbt/wiki) - thanks for the help and welcome to the team [Mads](https://github.com/mads379)
 * Fixed [#260](http://scalate.assembla.com/spaces/scalate/tickets/260) : Scalate distro does not include all the jars required for textile support
 

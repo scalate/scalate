@@ -1201,6 +1201,30 @@ xml: renders to
 </p>
 {pygmentize_and_compare}
 
+Or if you want to generate JavaScript from CoffeeScript...
+
+{pygmentize_and_compare::}
+-----------------------------
+jade: example
+-----------------------------
+body
+  :coffeescript
+    alert "Hello, Coffee!"
+-----------------------------
+xml: renders to
+-----------------------------
+<body>
+  <script type='text/javascript'>
+    #<![CDATA[
+      (function() {
+        alert("Hello, Coffee!");
+      }).call(this);
+
+    #]]>
+  </script>
+</body>
+{pygmentize_and_compare}
+
 ## Filter Interpolation
 
 If you use the `!` or `&` filter flags, you can have Scala code 

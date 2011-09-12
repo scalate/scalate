@@ -698,7 +698,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       // Can we use a pipeline to process the request?
       pipeline(source) match {
         case Some(p)=>
-          return (new PipelineTemplate(p, text), Set(uri))
+          val template = new PipelineTemplate(p, text)
+          template.source = source
+          return (template, Set(uri))
         case None=>
       }
 
