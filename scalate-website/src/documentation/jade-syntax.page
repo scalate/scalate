@@ -1215,12 +1215,12 @@ xml: renders to
 -----------------------------
 <body>
   <script type='text/javascript'>
-    #<![CDATA[
+    //<![CDATA[
       (function() {
         alert("Hello, Coffee!");
       }).call(this);
 
-    #]]>
+    //]]>
   </script>
 </body>
 {pygmentize_and_compare}

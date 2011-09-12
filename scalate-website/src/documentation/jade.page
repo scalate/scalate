@@ -52,12 +52,12 @@ xml: the generated HTML
       <p>You are amazing</p>
     </div>
     <script type='text/javascript'>
-      #<![CDATA[
+      //<![CDATA[
         (function() {
           alert("Hello, Coffee!");
         }).call(this);
-
-      #]]>
+        
+      //]]>
     </script>  
   </body>
 </html>

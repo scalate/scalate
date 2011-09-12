@@ -21,7 +21,7 @@ Download it today!
 
   - for( version <- project_versions )
     :&markdown
-      * [#{version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz) - [Release Notes](blog/releases/release-#{version.replace('.','-')}.html)
+      * [#{version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz) - [Release Notes](blog/releases/release-#{version}.html)
 
   :&markdown
   
