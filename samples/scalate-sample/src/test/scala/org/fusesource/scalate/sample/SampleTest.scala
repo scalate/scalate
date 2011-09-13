@@ -117,7 +117,7 @@ class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     "- for (i &lt;-")
 
   testPageContains("scaml/errors/templateCompileError.scaml",
-    "Inconsistent indent level detected: intended too shallow",
+    "Inconsistent indent level detected: indented too shallow",
     "in /scaml/errors/templateCompileError.scaml near line 23 col 4",
     "%h1 Template Compiler Error")
 

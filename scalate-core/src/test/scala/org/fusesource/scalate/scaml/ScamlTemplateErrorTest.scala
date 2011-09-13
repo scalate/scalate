@@ -57,32 +57,32 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
 </html>
 """)
 
-  testInvalidSyntaxException("Inconsistent indent level detected: intended too shallow",
+  testInvalidSyntaxException("Inconsistent indent level detected: indented too shallow",
 """
 %html
   %two
    %tooshallow
   %two
 """,
-"Inconsistent indent level detected: intended too shallow at 3.4")
+"Inconsistent indent level detected: indented too shallow at 3.4")
 
-  testInvalidSyntaxException("Inconsistent indent level detected: intended too shallow at root",
+  testInvalidSyntaxException("Inconsistent indent level detected: indented too shallow at root",
 """
 %html
   %two
  %toodeep
   %two
 """,
-"Inconsistent indent level detected: intended too shallow at 3.2")
+"Inconsistent indent level detected: indented too shallow at 3.2")
 
-  testInvalidSyntaxException("Inconsistent indent level detected: intended too deep",
+  testInvalidSyntaxException("Inconsistent indent level detected: indented too deep",
 """
 %html
   %two
      %toodeep
   %two
 """,
-"Inconsistent indent level detected: intended too deep at 3.6")
+"Inconsistent indent level detected: indented too deep at 3.6")
 
   testInvalidSyntaxException("Inconsistent indent detected: indented with spaces but previous lines were indented with tabs",
 """
