@@ -74,9 +74,18 @@
       <version>${servlet-api-version}</version>
       <scope>provided</scope>
     </dependency>
+    
+    <!-- for wiki markup -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-page</artifactId>
+      <version>${scalate-version}</version>
+    </dependency>
+    
+    <!-- for sass/scss -->
+    <dependency>
+      <groupId>org.fusesource.scalate</groupId>
+      <artifactId>scalate-jruby</artifactId>
       <version>${scalate-version}</version>
     </dependency>
     <dependency>

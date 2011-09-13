@@ -1,0 +1,26 @@
+/* 
+  SCSS flavour of SASS 
+  http://sass-lang.com/
+*/
+#sidebar {
+  a { text-decoration: none; }
+}
+
+#footer {
+  border: {
+    width: 1px;
+    color: #ccc;
+    style: solid;
+  }
+}
+
+@mixin rounded($amount) {
+  -moz-border-radius: $amount;
+  -webkit-border-radius: $amount;
+  border-radius: $amount;
+}
+
+.box {
+  border: 3px solid #777;
+  @include rounded(0.5em);
+}
