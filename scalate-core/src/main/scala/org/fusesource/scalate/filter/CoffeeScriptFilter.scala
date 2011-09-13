@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
- * 
+ *
  * <p>Useful for including inline Javascript.</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -62,7 +62,7 @@ object CoffeeScriptFilter extends Filter with Log {
 
     if (serverSideCompile) {
       try {
-        Compiler.compile(content, Some(context.currentTemplate)).fold({
+        CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
           error =>
             warn("Could not compile coffeescript: " + error, error)
             throw new CompilerException(error.message, Nil)
@@ -83,22 +83,48 @@ object CoffeeScriptFilter extends Filter with Log {
       clientSideCompile
     }
   }
+}
+
+/**
+ * Compiles a .coffee file into JS on the server side
+ */
+object CoffeeScriptPipeline extends Filter with Log {
 
   /**
-   * A Scala / Rhino Coffeescript compiler.
+   * Installs the coffeescript pipeline
    */
-  object Compiler {
+  def apply(engine: TemplateEngine) {
+    engine.pipelines += "coffee" -> List(NoLayoutFilter(this, "text/javascript"))
+    engine.templateExtensionsFor("js") += "coffee"
+  }
 
-    /**
-     * Compiles a string of Coffeescript code to Javascript.
-     *
-     * @param code the Coffeescript code
-     * @param sourceName a descriptive name for the code unit under compilation (e.g a filename)
-     * @param bare if true, no function wrapper will be generated
-     * @return the compiled Javascript code
-     */
-    def compile(code: String, sourceName: Option[String] = None, bare : Boolean = false)
-      : Either[CompilationError, String] = withContext { ctx =>
+  def filter(context: RenderContext, content: String) = {
+    CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
+      error =>
+        warn("Could not compile coffeescript: " + error, error)
+        throw new CompilerException(error.message, Nil)
+    }, {
+      coffee => coffee
+    })
+  }
+}
+
+/**
+ * A Scala / Rhino Coffeescript compiler.
+ */
+object CoffeeScriptCompiler {
+
+  /**
+   * Compiles a string of Coffeescript code to Javascript.
+   *
+   * @param code the Coffeescript code
+   * @param sourceName a descriptive name for the code unit under compilation (e.g a filename)
+   * @param bare if true, no function wrapper will be generated
+   * @return the compiled Javascript code
+   */
+  def compile(code: String, sourceName: Option[String] = None, bare: Boolean = false)
+  : Either[CompilationError, String] = withContext {
+    ctx =>
       val scope = ctx.initStandardObjects()
       ctx.evaluateReader(
         scope,
@@ -113,22 +139,20 @@ object CoffeeScriptFilter extends Filter with Log {
       try {
         Right(compileFunc.call(ctx, scope, coffee, Array(code, opts)).asInstanceOf[String])
       } catch {
-        case e : JavaScriptException =>
+        case e: JavaScriptException =>
           Left(CompilationError(sourceName, e.getValue.toString))
       }
-    }
-
-    def withContext[T](f: Context => T): T = {
-      val ctx = Context.enter()
-      try {
-        ctx.setOptimizationLevel(-1) // Do not compile to byte code (max 64kb methods)
-        f(ctx)
-      } finally {
-        Context.exit()
-      }
-    }
   }
 
-  case class CompilationError(sourceName: Option[String], message: String)
+  def withContext[T](f: Context => T): T = {
+    val ctx = Context.enter()
+    try {
+      ctx.setOptimizationLevel(-1) // Do not compile to byte code (max 64kb methods)
+      f(ctx)
+    } finally {
+      Context.exit()
+    }
+  }
 }
 
+case class CompilationError(sourceName: Option[String], message: String)

@@ -18,6 +18,8 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.util.Files
+
 /**
  * A helper object to find a template from a URI using a number of possible extensions and directories
  */
@@ -29,9 +31,9 @@ class TemplateFinder(engine: TemplateEngine) {
 
   def findTemplate(path: String): Option[String] = {
     var rc = Option(engine.finderCache.get(path))
-    if( rc.isEmpty ) {
+    if (rc.isEmpty) {
       rc = search(path)
-      if( rc.isDefined && !engine.isDevelopmentMode ) {
+      if (rc.isDefined && !engine.isDevelopmentMode) {
         engine.finderCache.put(path, rc.get)
       }
     }
@@ -41,7 +43,7 @@ class TemplateFinder(engine: TemplateEngine) {
   def search(rootOrPath: String): Option[String] = {
     val path = if (rootOrPath == "/") "/index" else rootOrPath
 
-    for( p <- hiddenPatterns ; if p.findFirstIn(path).isDefined ) {
+    for (p <- hiddenPatterns; if p.findFirstIn(path).isDefined) {
       return None
     }
 
@@ -72,16 +74,40 @@ class TemplateFinder(engine: TemplateEngine) {
     // Lets try to find the template by replacing the extension
     // i.e: /path/page.html -> /path/page.jade
     def findReplaced(): Option[String] = {
-      replacedExtensions.foreach {ext =>
-        if (path.endsWith(ext)) {
-          val rc = findAppended(path.stripSuffix(ext))
-          if (rc != None)
-            return rc
+      replacedExtensions.foreach {
+        ext =>
+          if (path.endsWith(ext)) {
+            val rc = findAppended(path.stripSuffix(ext))
+            if (rc != None)
+              return rc
+          }
+      }
+      None
+    }
+
+    // Lets try to find the template for well known template extensions
+    // i.e:
+    // /path/page.css -> List(/path/page.sass, /path/page.scss)
+    // /path/page.js -> List(/path/page.coffee)
+    def findTemplateAlias(uri: String): Option[String] = {
+      val ext = Files.extension(uri)
+      lazy val remaining = path.stripSuffix(ext)
+      if (ext.size > 0) {
+        engine.extensionToTemplateExtension.get(ext) match {
+          case Some(set) =>
+            for (base <- engine.templateDirectories; ext <- set) {
+              val path = base + remaining + ext
+              if (engine.resourceLoader.exists(path)) {
+                return Some(path)
+              }
+            }
+            None
+          case _ => None
         }
       }
       None
     }
 
-    findDirect(path).orElse(findAppended(path).orElse(findReplaced()))
+    findDirect(path).orElse(findAppended(path).orElse(findTemplateAlias(path).orElse(findReplaced())))
   }
 }

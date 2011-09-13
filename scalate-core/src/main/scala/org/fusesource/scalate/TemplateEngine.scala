@@ -177,6 +177,19 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   var pipelines: Map[String, List[Filter]] = Map()
 
+  /**
+   * Maps file extensions to possible template extensions for custom mappins such as for
+   * Map("js" -> Set("coffee"), "css" => Set("sass", "scss"))
+   */
+  var extensionToTemplateExtension: collection.mutable.Map[String, collection.mutable.Set[String]] = collection.mutable.Map()
+
+  /**
+   * Returns the mutable set of template extensions which are mapped to the given URI extension.
+   */
+  def templateExtensionsFor(extension: String): collection.mutable.Set[String] = {
+    extensionToTemplateExtension.getOrElseUpdate(extension, collection.mutable.Set())
+  }
+
   private val attempt = Exception.ignoring(classOf[Throwable])
 
   /**
@@ -187,12 +200,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
-  attempt( filters += "plain" -> PlainFilter )
-  attempt( filters += "javascript"-> JavascriptFilter )
-  attempt( filters += "coffeescript"-> CoffeeScriptFilter )
-  attempt( filters += "css"-> CssFilter )
-  attempt( filters += "cdata"-> CdataFilter )
-  attempt( filters += "escaped"->EscapedFilter )
+  attempt(filters += "plain" -> PlainFilter)
+  attempt(filters += "javascript" -> JavascriptFilter)
+  attempt(filters += "coffeescript" -> CoffeeScriptFilter)
+  attempt(filters += "css" -> CssFilter)
+  attempt(filters += "cdata" -> CdataFilter)
+  attempt(filters += "escaped" -> EscapedFilter)
+
+  attempt{
+    CoffeeScriptPipeline(this)
+  }
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
