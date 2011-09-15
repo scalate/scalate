@@ -4,7 +4,7 @@ import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{TemplateException, RenderContext, TemplateEngine, TemplateEngineAddOn}
 import java.io.File
 import org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.filter.{CssFilter, Pipeline, Filter}
+import org.fusesource.scalate.filter.{NoLayoutFilter, CssFilter, Pipeline, Filter}
 
 /**
  * <p>
@@ -19,25 +19,16 @@ object Sass extends TemplateEngineAddOn with Log {
     if (!te.filters.contains("sass")) {
       val sass = new Sass(jruby, te)
       te.filters += "sass" -> Pipeline(List(sass, CssFilter))
-      te.pipelines += "sass" -> List(NoLayout(sass))
+      te.pipelines += "sass" -> List(NoLayoutFilter(sass, "text/css"))
+      te.templateExtensionsFor("css") += "sass"
     }
 
     if (!te.filters.contains("scss")) {
       val scss = new Scss(jruby, te)
       te.filters += "scss" -> Pipeline(List(scss, CssFilter))
-      te.pipelines += "scss" -> List(NoLayout(scss))
+      te.pipelines += "scss" -> List(NoLayoutFilter(scss, "text/css"))
+      te.templateExtensionsFor("css") += "scss"
     }
-  }
-}
-
-case class NoLayout(val next: Sass) extends Filter {
-  def filter(context: RenderContext, content: String) = {
-    context.attributes("layout")="" // disable the layout
-    context match {
-      case x:ServletRenderContext => x.response.setContentType("text/css")
-      case _ =>
-    }
-    next.filter(context, content)
   }
 }
 

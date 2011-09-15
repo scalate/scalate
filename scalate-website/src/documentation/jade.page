@@ -85,7 +85,7 @@ Here's an example of some text markup with hyperlinks using vanilla jade
     | link.
 {pygmentize}
 
-Now lets use markdown - which is great for concise DRY text with markup effects and embedded links..
+Now lets use [markdown](http://daringfireball.net/projects/markdown/) - which is great for concise DRY text with markup effects and embedded links..
 
 {pygmentize:: jade}
 .foo
@@ -107,6 +107,7 @@ Both of which should generate something like this
 ## See Also
 
 * [Jade Syntax](jade-syntax.html)
+* [Markdown Syntax](http://daringfireball.net/projects/markdown/syntax)
 * [User Guide](user-guide.html)
 * [Documentation](index.html)
 
