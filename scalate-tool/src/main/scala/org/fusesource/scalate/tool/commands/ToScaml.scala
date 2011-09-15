@@ -22,43 +22,94 @@ import org.apache.felix.gogo.commands.{Action, Option => option, Argument => arg
 import scala.xml._
 import java.io._
 import java.net.URL
-import org.fusesource.scalate.util.{Threads, IOUtil}
-import Threads._
+import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.InvalidSyntaxException
+import util.parsing.input.CharSequenceReader
+import org.fusesource.scalate.support.{Text=>SSPText, ScalaParseSupport}
+import org.fusesource.scalate.ssp._
+import org.w3c.tidy.Tidy
 
-object Tidy {
+/* an even simpler ssp parser */
+class SspParser extends ScalaParseSupport {
+  var skipWhitespaceOn = false
 
-  val installed = {
-    try {
-      var process = Runtime.getRuntime.exec(Array("tidy", "--version"))
-      process.getErrorStream.close
-      process.getOutputStream.close
-      process.getInputStream.close
-      process.waitFor
-      process.exitValue == 0
-    } catch {
-      case e:Throwable =>
-        false
+  override def skipWhitespace = skipWhitespaceOn
+
+  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] {
+    in =>
+      skipWhitespaceOn = true
+      val result = p(in)
+      skipWhitespaceOn = false
+      result
+  }
+
+  val anySpace = text("""[ \t]*""".r)
+  val identifier = text("""[a-zA-Z0-9\$_]+""".r)
+  val typeName = text(scalaType)
+  val someText = text(""".+""".r)
+
+  val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
+    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => ScriptletFragment(p_kind+" "+p_name+":"+p_type+" //attribute")
+  }
+
+  val literalPart: Parser[SSPText] =
+  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
+          opt(
+            """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
+                    """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
+                    """\#""" ~ opt(literalPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
+                    """\\""" ^^ {s => """\"""}
+            ) ^^ {
+    case x ~ Some(y) => x + y
+    case x ~ None => x
+  }
+
+  val tagEnding = "+%>" | """%>[ \t]*\r?\n""".r | "%>"
+  val commentFragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
+  val altCommentFragment = wrapped("<%#", "%>") ^^ {CommentFragment(_)}
+  val dollarExpressionFragment = wrapped("${", "}") ^^ {ExpressionFragment(_)}
+  val expressionFragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+  val attributeFragement = prefixed("<%@", attribute <~ anySpace ~ tagEnding)
+  val scriptletFragment = wrapped("<%", tagEnding) ^^ {ScriptletFragment(_)}
+  val textFragment = literalPart ^^ {TextFragment(_)}
+
+
+  def directives = ("#" ~> identifier ~ anySpace ~ opt("(" ~> scalaExpression <~ ")")) ^^ {
+    case a ~ b ~ c => ScriptletFragment(a+c.map("("+_+")").getOrElse(""))
+  } | "#(" ~> identifier <~ ")" ^^ {ScriptletFragment(_)}
+
+  def scalaExpression: Parser[SSPText] = {
+    text(
+      (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
+        case a ~ b ~ c =>
+          val mid = b match {
+            case Some(tb) => "(" + tb + ")"
+            case tb => ""
+          }
+          a.mkString("") + mid + c.mkString("")
+      })
+  }
+
+  val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
+
+  val pageFragment: Parser[PageFragment] = directives | commentFragment | altCommentFragment | dollarExpressionFragment |
+          attributeFragement | expressionFragment | scriptletFragment |
+          textFragment
+
+  val pageFragments = rep(pageFragment)
+
+  private def phraseOrFail[T](p: Parser[T], in: String): T = {
+    var x = phrase(p)(new CharSequenceReader(in))
+    x match {
+      case Success(result, _) => result
+      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
-  def process(value:Array[Byte]):Array[Byte] = {
-    var process = Runtime.getRuntime.exec(Array("tidy", "-asxhtml", "-numeric", "-q"))
-    thread("tidy err handler") {
-      IOUtil.copy(process.getErrorStream, System.err)
-    }
-    thread("tidy in handler") {
-      IOUtil.copy(new ByteArrayInputStream(value), process.getOutputStream)
-      process.getOutputStream.close
-    }
-
-    val out = new ByteArrayOutputStream()
-    IOUtil.copy(process.getInputStream, out)
-    process.waitFor
-    if (process.exitValue != 0 && process.exitValue != 1) {
-      throw new RuntimeException("'tidy' execution failed: %d.".format(process.exitValue))
-    }
-    out.toByteArray
+  def getPageFragments(in: String): List[PageFragment] = {
+    phraseOrFail(pageFragments, in)
   }
+
 }
 
 /**
@@ -69,6 +120,9 @@ object Tidy {
  */
 @command(scope = "scalate", name = "toscaml", description = "Converts an XML or HTML file to Scaml")
 class ToScaml extends Action {
+
+  @option(name = "--tidy", description = "Should html be tidied first?")
+  var tidy = true
 
   @argument(index = 0, name = "from", description = "The input file or http URL. If ommited, input is read from the console")
   var from: String = _
@@ -94,12 +148,31 @@ class ToScaml extends Action {
 
       var data = IOUtil.loadBytes(in)
 
+      // Parse out the code bits and wrap them in script tags so that
+      // we can tidy the document.
+      val fragments = (new SspParser).getPageFragments(new String(data, "UTF-8"))
+      data = ("<div>" + (fragments.map(_ match {
+        case ExpressionFragment(code) => """<expression><![CDATA[""" + code.value + """]]></expression>"""
+        case ScriptletFragment(code) => """<scriptlet><![CDATA[""" + code.value + """]]></scriptlet>"""
+        case CommentFragment(comment) => """<!--""" + comment.value + """-->"""
+        case TextFragment(text) => text.value
+        case _ => error("Unexpected case")
+      }).mkString("")) + "</div>").getBytes("UTF-8")
+      //println(new String(data, "UTF-8"))
+
       // try to tidy the html first before we try to parse it as XML
-      if( Tidy.installed ) {
-        System.err.println("Cleaning up html with tidy...")
-        data = Tidy.process(data)
-      } else {
-        System.err.println("tidy is not installed... conversion will only work if input is XHTML")
+      if (tidy) {
+        val tidy = new Tidy
+        tidy.setXHTML(true)
+        tidy.setXmlTags(true)
+        tidy.setIndentCdata(false)
+        tidy.setEscapeCdata(false)
+
+        val out = new ByteArrayOutputStream()
+        tidy.parse(new ByteArrayInputStream(data), out);
+        data = out.toByteArray
+
+        //println(new String(data, "UTF-8"))
       }
 
       // Try to strip out the doc type... stuff..
@@ -126,7 +199,7 @@ class ToScaml extends Action {
           return
       }
       System.err.println("Converting...")
-      process(doc)
+      doc.child.foreach(process(_))
     }
 
     if( to!=null ) {
@@ -203,28 +276,38 @@ class ToScaml extends Action {
           }
         }
 
-        pi.p(to_element(tag(x.label)+id+clazz))
-        if( atts!="" ) {
-          p("("+atts+")")
-        }
+        if(x.label=="expression") {
+          pi.pl(to_text("#{"+x.child.text.trim()+"}"))
+        } else if(x.label=="scriptlet") {
+          for( line <- x.child.text.trim().split("""\r?\n""").filter( _.length()!=0) ) {
+            pi.pl("- "+line)
+          }
+        } else {
 
-        x.child match {
-          case Seq(x:Text) =>
-            val value = x.text.trim
-            if (value.contains("\n")) {
+          pi.p(to_element(tag(x.label)+id+clazz))
+          if( atts!="" ) {
+            p("("+atts+")")
+          }
+
+          x.child match {
+            case Seq(x:Text) =>
+              val value = x.text.trim
+              if (value.contains("\n")) {
+                pl()
+                indent {
+                  process(x)
+                }
+              } else {
+                pl(" "+value)
+              }
+            case x =>
               pl()
               indent {
-                process(x)
+                x.foreach{ process _ }
               }
-            } else {
-              pl(" "+value)
-            }
-          case x =>
-            pl()
-            indent {
-              x.foreach{ process _ }
-            }
+          }
         }
+
 
       case x:Text =>
         val value = x.text.trim

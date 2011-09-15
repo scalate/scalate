@@ -32,6 +32,7 @@
       <includes>
         <include>org.fusesource.scalate:scalate-jsp-converter</include>
         <include>org.fusesource.scalate:scalate-tool</include>
+        <include>net.sf.jtidy:jtidy</include>
         <!-- confexport -->
         <include>org.codehaus.swizzle:swizzle-confluence</include>
         <include>xmlrpc:xmlrpc</include>
