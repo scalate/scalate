@@ -152,7 +152,7 @@ class ToScaml extends Action {
       // we can tidy the document.
       val fragments = (new SspParser).getPageFragments(new String(data, "UTF-8"))
       data = ("<div>" + (fragments.map(_ match {
-        case ExpressionFragment(code) => """<expression><![CDATA[""" + code.value + """]]></expression>"""
+        case ExpressionFragment(code) => "#{" + code.value + "}"
         case ScriptletFragment(code) => """<scriptlet><![CDATA[""" + code.value + """]]></scriptlet>"""
         case CommentFragment(comment) => """<!--""" + comment.value + """-->"""
         case TextFragment(text) => text.value
@@ -276,9 +276,7 @@ class ToScaml extends Action {
           }
         }
 
-        if(x.label=="expression") {
-          pi.pl(to_text("#{"+x.child.text.trim()+"}"))
-        } else if(x.label=="scriptlet") {
+        if(x.label=="scriptlet") {
           for( line <- x.child.text.trim().split("""\r?\n""").filter( _.length()!=0) ) {
             pi.pl("- "+line)
           }
