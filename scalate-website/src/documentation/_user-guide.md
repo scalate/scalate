@@ -636,7 +636,7 @@ You might want to refer to the [Frameworks Documentation](frameworks.html) to se
 
 * Add something like the following to your web.xml file to support Scalate templates:
 
-  {pygmentize:: {lang: xml, lines: true}}
+{pygmentize:: xml}
   <filter>
     <filter-name>TemplateEngineFilter</filter-name>
     <filter-class>org.fusesource.scalate.servlet.TemplateEngineFilter</filter-class>
@@ -645,7 +645,7 @@ You might want to refer to the [Frameworks Documentation](frameworks.html) to se
     <filter-name>TemplateEngineFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  {pygmentize}
+{pygmentize}
 
 *  Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
     * scala-compiler.jar
