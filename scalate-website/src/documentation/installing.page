@@ -31,8 +31,9 @@ Lets set up scalate!
   :&markdown
 
     ### Windows 2000/XP
-
-    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
+    
+    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip)
+    
     1. Unzip the distribution archive, i.e. `scalate-#{project_version}-windows-bin.zip` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `C:\Program Files\Scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
     1. Add the `C:\Program Files\Scala\scalate-#{project_version}\bin` directory to the `PATH` environment variable:
       1. Opening up the system properties using (**WinKey + Pause**).
@@ -51,7 +52,7 @@ Lets set up scalate!
   
     ### Unix-based Operating Systems (Linux, Solaris and Mac OS X)
 
-    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
+    1. [Download a distribution](../download.html) such as [#{project_version} tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
     1. Extract the distribution archive, i.e. `scalate-#{project_version}-unix-bin.tar.gz` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `/usr/local/scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
     1. In a command terminal, prepend the `PATH` variable with the `bin` directory in the scalate release.
 
@@ -89,33 +90,31 @@ Lets set up scalate!
     # Maven
 
 .right
-  :markdown
+  :&markdown
     Scalate can be used as part of a Maven build by adding the following dependencies into your POM:
     
+    {pygmentize:: xml}
         <dependencies>
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
             <artifactId>scalate-wikitext</artifactId>
-            <version>${project.version}</version>
+            <version>#{project_version}</version>  
           </dependency>
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
             <artifactId>scalate-page</artifactId>
-            <version>${project.version}</version>
+            <version>#{project_version}</version>  
           </dependency>
-          <dependency>
-            <groupId>org.fusesource.scalamd</groupId>
-            <artifactId>scalamd</artifactId>
-            <version>${scalamd-version}</version>
-          </dependency>
+
           <!-- testing -->
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
             <artifactId>scalate-test</artifactId>
-            <version>${project.version}</version>
+            <version>#{project_version}</version>  
             <scope>test</scope>
           </dependency>
         </dependencies>
+      {pygmentize}
 
     **Note:** The path to your local Maven repository `.m2` cannot have any spaces.
     
