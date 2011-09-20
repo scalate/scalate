@@ -120,7 +120,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     protected def popScope = scopes.pop
   }
 
-  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding]): Code = {
+  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding]): Code = {
 
     // Load the translation unit
     val content = source.text

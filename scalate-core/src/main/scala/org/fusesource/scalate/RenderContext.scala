@@ -284,7 +284,7 @@ trait RenderContext {
    *
    * @param layout if true then applying the layout the included template
    */
-  def include(path: String, layout: Boolean, extraBindings: List[Binding]): Unit = {
+  def include(path: String, layout: Boolean, extraBindings: Traversable[Binding]): Unit = {
     val uri = resolveUri(path)
 
     withUri(uri) {

@@ -116,7 +116,6 @@
 
   <build>
     <plugins>
-
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -130,6 +129,78 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <classpathScope>test</classpathScope>
+          <mainClass>org.fusesource.scalate.demo.UseScalateFromJava</mainClass>
+          <arguments>
+            <argument>org/fusesource/scalate/demo/sample.jade</argument>
+          </arguments>
+          <!--
+                    <systemProperties>
+                      <systemProperty>
+                        <key>myproperty</key>
+                        <value>myvalue</value>
+                      </systemProperty>
+                    </systemProperties>
+          -->
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+
+        </executions>
+        <configuration>
+          <scalaVersion>${scala-version}</scalaVersion>
+          <args>
+<!--
+            <arg>-source:5</arg>
+            <arg>-target:jvm-1.5</arg>
+-->
+            <!-- to support mix java/scala only -->
+<!--
+            <arg>-make:transitivenocp</arg>
+            <arg>-dependencyfile</arg>
+            <arg>${project.build.directory}/.scala_dependencies</arg>
+-->
+          </args>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
