@@ -22,7 +22,7 @@ import java.{util => ju, lang => jl}
 import java.io.File
 import collection.JavaConversions._
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
-import org.osgi.service.command.CommandSession
+import org.apache.felix.service.command.CommandSession
 
 
 /**

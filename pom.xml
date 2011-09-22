@@ -63,11 +63,7 @@
     <jetty-version>7.2.1.v20101111</jetty-version>
     <jline-version>0.9.95.20100209</jline-version>
     <junit-version>4.5</junit-version>
-    <!--
-      TODO build fails with latest greatest karaf
-      <karaf-version>2.2.0-fuse-00-53</karaf-version>
-      -->
-    <karaf-version>2.1.0</karaf-version>
+    <karaf-version>2.2.0-fuse-00-43</karaf-version>
     <logback-version>0.9.26</logback-version>
     <markdownj-version>0.3.0-1.0.2b4</markdownj-version>
     <org.springframework.version>3.0.6.RELEASE</org.springframework.version>

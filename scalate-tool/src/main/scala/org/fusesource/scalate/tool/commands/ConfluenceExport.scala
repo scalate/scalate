@@ -24,7 +24,7 @@ import java.util.zip.ZipInputStream
 import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
 import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
-import org.osgi.service.command.CommandSession
+import org.apache.felix.service.command.CommandSession
 import org.codehaus.swizzle.confluence.{Page, PageSummary, Confluence}
 import collection.mutable.{HashMap, ListBuffer}
 import org.fusesource.scalate.util.IOUtil

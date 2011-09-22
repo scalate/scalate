@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import org.osgi.service.command.CommandSession
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
 import scala.xml._
 import java.io._
@@ -27,7 +26,8 @@ import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.CharSequenceReader
 import org.fusesource.scalate.support.{Text=>SSPText, ScalaParseSupport}
 import org.fusesource.scalate.ssp._
-import org.w3c.tidy.Tidy
+import org.w3c.tidy.{TidyMessage, TidyMessageListener, Tidy}
+import org.apache.felix.service.command.CommandSession
 
 /* an even simpler ssp parser */
 class SspParser extends ScalaParseSupport {
@@ -147,6 +147,7 @@ class ToScaml extends Action {
       }
 
       var data = IOUtil.loadBytes(in)
+      //println("original: "+new String(data, "UTF-8"))
 
       // Parse out the code bits and wrap them in script tags so that
       // we can tidy the document.
@@ -158,7 +159,7 @@ class ToScaml extends Action {
         case TextFragment(text) => text.value
         case _ => error("Unexpected case")
       }).mkString("")) + "</div>").getBytes("UTF-8")
-      //println(new String(data, "UTF-8"))
+      // println("escaped: "+new String(data, "UTF-8"))
 
       // try to tidy the html first before we try to parse it as XML
       if (tidy) {
@@ -167,12 +168,13 @@ class ToScaml extends Action {
         tidy.setXmlTags(true)
         tidy.setIndentCdata(false)
         tidy.setEscapeCdata(false)
+        tidy.setQuiet(true)
 
         val out = new ByteArrayOutputStream()
         tidy.parse(new ByteArrayInputStream(data), out);
         data = out.toByteArray
 
-        //println(new String(data, "UTF-8"))
+        // println("tidy: "+new String(data, "UTF-8"))
       }
 
       // Try to strip out the doc type... stuff..
@@ -180,10 +182,10 @@ class ToScaml extends Action {
         val text = new String(data, "UTF-8").trim
         if( text.startsWith("<!DOCTYPE") ) {
           data = text.substring(text.indexOf('>')+1).getBytes("UTF-8")
+          // println("doctype: "+new String(data, "UTF-8"))
         }
       }
 
-      System.err.println("Parsing html...")
       val doc = try {
         XML.load(new ByteArrayInputStream(data))
       } catch {
@@ -198,7 +200,6 @@ class ToScaml extends Action {
           out.write(data)
           return
       }
-      System.err.println("Converting...")
       doc.child.foreach(process(_))
     }
 
