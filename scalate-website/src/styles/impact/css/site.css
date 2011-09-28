@@ -235,3 +235,15 @@ th.confluenceTh {
     background-color: #f0f0f0;
     text-align: center;
 }
+
+table.download {
+  width: 100%;
+  font-size: 90%;
+  padding: .5em;
+}
+table.download td {
+  padding: .4em;
+}
+.hide {
+  display:none;
+}
