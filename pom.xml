@@ -204,7 +204,6 @@
     <module>scalate-web</module>
     <module>scalate-spring-mvc</module>
     <module>scalate-guice</module>
-    <module>scalate-camel</module>
     <module>scalate-jrebel</module>
     <module>scalate-war</module>
     <module>samples</module>
@@ -967,6 +966,17 @@
           <version>${project.version}</version>
         </dependency>
       </dependencies>
+    </profile>
+
+    <!-- the camel module requires JDK 1.6 -->
+    <profile>
+      <id>jdk6</id>
+      <activation>
+        <jdk>[1.6,)</jdk>
+      </activation>
+      <modules>
+        <module>scalate-camel</module>
+      </modules>
     </profile>
   </profiles>
 </project>
