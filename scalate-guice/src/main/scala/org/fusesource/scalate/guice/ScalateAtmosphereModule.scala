@@ -24,8 +24,9 @@ class ScalateAtmosphereModule extends ScalateModule {
       "org.atmosphere.useNative" -> "true"
     )
 
-    // This regex matches everything except when the URI ends with common file extensions (.js, .css, etc)
-    val regex = "^/.*(?<!\\.%s)$" format fileExtensionsExcludedFromJersey.mkString("(?:", "|", ")")
+    // This regex matches everything except when the URI ends with common file extensions (.js, .css, etc).
+    // The outer group is required by Guice's servlet configuration and matches the whole URI
+    val regex = "(^/.*(?<!\\.%s)$)" format fileExtensionsExcludedFromJersey.mkString("(?:", "|", ")")
     serveRegex(regex).`with`(classOf[ScalateAtmosphereServlet], props.asJava)
   }
 }
