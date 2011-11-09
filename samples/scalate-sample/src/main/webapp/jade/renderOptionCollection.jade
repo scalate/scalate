@@ -1,0 +1,15 @@
+- import org.fusesource.scalate.sample.Person
+- val p1 = None
+- val p2 = Some(Person("James", "Strachan"))
+
+h2 Render Option[T]
+
+p Shows how we can render an optional value using a collection
+
+h3 Rendering a None
+
+- collection(p1)
+
+h3 Rendering a Some
+
+- collection(p2)

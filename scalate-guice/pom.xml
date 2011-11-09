@@ -54,6 +54,13 @@
       <version>${jersey-version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.atmosphere</groupId>
+      <artifactId>atmosphere-jersey</artifactId>
+      <version>0.8.0-RC1</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- testing -->
     <dependency>
       <groupId>org.scalatest</groupId>
