@@ -15,7 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.jade
+package org.fusesource.scalate
+package jade
 
 import org.fusesource.scalate.scaml._
 

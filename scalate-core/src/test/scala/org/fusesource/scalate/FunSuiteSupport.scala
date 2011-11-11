@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate
 
-import _root_.org.junit.runner.RunWith
+import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 import java.io.File
