@@ -26,7 +26,7 @@ val output = engine.layout("/path/to/template.ssp")
 
 Variables can passed as attributes to the template via the render context.  For example:
 {pygmentize:: scala}
-val output = engine.layout("/foo/bar.scaml", Map("name" -> "Hiram", "city" -> "Tampa"))
+val output = engine.layout("/foo/bar.scaml", Map("name" -> ("Hiram", "Chirino"), "city" -> "Tampa"))
 {pygmentize}
 
 A template can then access those attributes once they declare a variable binding.  For example:
