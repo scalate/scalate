@@ -145,6 +145,9 @@ The following use the Scala version of <a href="http://haml-lang.com/">Haml</a> 
     <a href="jade/measurements.jade">measurements</a>
   </li>
   <li>
+    <a href="jade/coffee.jade">CoffeeScript alert</a>
+  </li>
+  <li>
     <a href="jade/renderOptionCollection.jade">renderOptionCollection</a>
   </li>
 </ul>
