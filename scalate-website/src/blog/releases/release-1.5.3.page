@@ -1,0 +1,55 @@
+---
+blog_post: true
+title: Scalate 1.5.3 Released
+author: James Strachan
+author_url: http://macstrac.blogpost.com
+created_at: 2011-11-14 12:06:40 -0000
+layout: /WEB-INF/scalate/layouts/blog-post.jade
+--- 
+
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
+availability of Scalate 1.5.3
+
+Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a
+href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
+engine</a> which can be used stand alone, with servlets or web frameworks
+like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
+[Lift](http://scalate.fusesource.org/documentation/lift.html) or
+[Play](http://github.com/pk11/play-scalate) or in integration frameworks
+like [Apache Camel](http://camel.apache.org/scalate.html).
+
+The following template languages are supported through the same common API:
+
+* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)
+  which is like a Scala version of [Velocity](http://velocity.apache.org/),
+  JSP or Erb from Rails
+* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+  which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY
+  markup along with the
+  [Jade](http://scalate.fusesource.org/documentation/jade.html) syntax
+* [Mustache](http://scalate.fusesource.org/documentation/mustache.html)
+  which is a Scala dialect of [Mustache](http://mustache.github.com/) for
+  logic-less templates which also work inside the browser using
+  [mustache.js](http://github.com/janl/mustache.js)
+
+All expressions inside
+[Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax),
+[Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+and [Jade](http://scalate.fusesource.org/documentation/jade.html) benefit
+from the full power and expressiveness of Scala plus they are typesafe and
+checked at edit/compile time to ensure you don't leave any mistakes in your
+templates.
+
+
+**Scalate 1.5.3 Highlights**
+
+* Scalate now uses the [Scala Presentation Compiler](https://groups.google.com/d/msg/scalate/3mrkmrXK7vs/7nBh96DPT4YJ) to boost performance of template compilation 3-10X
+* Support for compiling stand alone CoffeeScript files on the server, CoffeeScript filters and various CoffeeScript related bug fixes 
+* A [pure Java API](http://www.assembla.com/spaces/scalate/tickets/129) to working with Scalate
+
+For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/531621-1-5-3)
+
+[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+
+
+
