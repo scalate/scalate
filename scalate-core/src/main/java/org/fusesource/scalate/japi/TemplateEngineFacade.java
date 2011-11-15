@@ -110,7 +110,7 @@ public class TemplateEngineFacade {
     }
 
     protected scala.collection.immutable.Map<String, Object> asScalaImmutableMap(Map<String, Object> attributes) {
-        scala.collection.mutable.Map<String, Object> mutableAttributes = JavaConversions.mapAsScalaMap(attributes);
+        scala.collection.mutable.Map<String, Object> mutableAttributes = JavaConversions.asScalaMap(attributes);
         return JavaInterops.toImmutableMap(mutableAttributes);
     }
 
