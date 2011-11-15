@@ -67,6 +67,7 @@ git rebase --hard
 git push --tags
 {pygmentize}
   
+* make sure scalate-website/ext/Website.scala has the latest version information.
 * update the website (see below on making a branch)
 * announce the release on the [mailing list](../community.html)
 * drink beers!

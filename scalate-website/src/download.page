@@ -2,6 +2,18 @@
 title: Download
 in_menu: true
 sort_info: 5
+--- name:head pipeline:jade
+:javascript
+  $(function(){
+    $("body").find(".accordion").click(function() {
+      $(this).next().toggle("slow");
+      $(this).toggleClass("accordion-opened");
+      return false;
+    }).each(function(){
+      $(this).toggleClass("accordion-opened", !$(this).next().is(":visible") && !$(this).next().is(".hide"))
+    });
+  });
+
 --- name:overview
 
 # ${project_name}
@@ -19,9 +31,45 @@ Download it today!
 
     Download a distribution:
 
-  - for( version <- project_versions )
-    :&markdown
-      * [#{version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz) - [Release Notes](blog/releases/release-#{version.replace('.','-')}.html)
+  - for( version <- project_versions.headOption )
+    h3 #{project_name} #{version} 
+    
+    table.download
+      tr 
+        td 
+          | Unix:
+        td 
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz") scalate-distro-#{version}-unix-bin.tar.gz
+        td
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz.asc") GPG
+      tr 
+        td 
+          | Windows:
+        td 
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip") scalate-distro-#{version}-windows-bin.zip
+        td
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip.asc") GPG
+    
+    
+  - if( !project_versions.drop(1).isEmpty )
+    h3.accordion <a href="#">Older Versions</a>
+    table.download.hide
+      - for( version <- project_versions.drop(1) )
+        tr 
+          td 
+            | Unix:
+          td 
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz") scalate-distro-#{version}-unix-bin.tar.gz
+          td
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz.asc") GPG
+        tr 
+          td 
+            | Windows:
+          td 
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip") scalate-distro-#{version}-windows-bin.zip
+          td
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip.asc") GPG
+
 
   :&markdown
   

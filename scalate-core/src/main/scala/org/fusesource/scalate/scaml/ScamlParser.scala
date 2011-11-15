@@ -88,7 +88,7 @@ class IndentedParser extends RegexParsers() {
       var rc: Parser[Any] = mismatch_indent ~ err("Inconsistent indent detected: indented with "+mismatch_indent_desc+" but previous lines were indented with "+indent_desc)
       if( strict ) {
         // Look for indents that are too deep.
-        rc |= repN(indent_level,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: intended too deep")
+        rc |= repN(indent_level,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: indented too deep")
         // eat empty lines..
         rc |= rep(indent_unit) ~ """\r?\n""".r ~> current_indent(strict)
       }
@@ -103,7 +103,7 @@ class IndentedParser extends RegexParsers() {
 
       if( indent_level > 0 ) {
         // Look for indents that are too shallow
-        rc |= repN(indent_level-1,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: intended too shallow")
+        rc |= repN(indent_level-1,indent_unit)~"""[ \t]+""".r~err("Inconsistent indent level detected: indented too shallow")
       }
 
       rc | failure("Inconsistent indent detected: "+indent_level+" indent level(s) were expected");
@@ -359,7 +359,7 @@ class ScamlParser(val upto_type:String=UPTO_TYPE_SINGLE_LINE) extends IndentedPa
   def statement_block = rep(indent(statement, true))
 
   def parser = rep(
-    space ~ err("Inconsistent indent level detected: intended too shallow") ^^ { null } |
+    space ~ err("Inconsistent indent level detected: indented too shallow") ^^ { null } |
     nl ^^ { x=> Newline() } |
     statement
   ) ^^ { case x=> x.filter(_ != Newline()) } 

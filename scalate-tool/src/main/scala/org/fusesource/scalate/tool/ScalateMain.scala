@@ -19,14 +19,14 @@ package org.fusesource.scalate.tool
 
 import org.fusesource.scalate.util.IOUtil
 
-import org.osgi.service.command.CommandSession
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
-import org.apache.felix.gogo.runtime.shell.CommandShellImpl
 import org.apache.karaf.shell.console.Main
 import org.apache.karaf.shell.console.jline.Console
 import jline.Terminal
 import java.io.{PrintStream, InputStream}
 import org.fusesource.jansi.Ansi
+import org.apache.felix.service.command.CommandSession
+import org.apache.felix.gogo.runtime.CommandProcessorImpl
 
 object ScalateMain {
   def main(args: Array[String]) = {
@@ -54,10 +54,9 @@ class ScalateMain extends Main with Action {
   override def isMultiScopeMode() = false
 
 
-  protected override def createConsole(commandProcessor: CommandShellImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal)  = {
+  override def createConsole(commandProcessor: CommandProcessorImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal) = {
     new Console(commandProcessor, in, out, err, terminal, null) {
       protected override def getPrompt = BOLD+"scalate> "+RESET
-      protected override def isPrintStackTraces = debug
       protected override def welcome = {
          session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")))
       }

@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream
 import java.io._
 import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues}
-import org.osgi.service.command.CommandSession
+import org.apache.felix.service.command.CommandSession
 import java.util.regex.Pattern
 import org.fusesource.scalate.util.IOUtil._
 

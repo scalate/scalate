@@ -19,10 +19,11 @@ package org.fusesource.scalate.wikitext
 
 import collection.mutable.HashMap
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
 import io.Source
 import scala.Option
 import java.io.File
+import java.util.regex.{Pattern, Matcher}
 import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
 import org.fusesource.scalate.util.{Log, Logging}
 
@@ -98,8 +99,10 @@ import Snippets.log._
 /**
  * Represents a {snippet} block in the wiki markup
  */
-class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
+class SnippetBlock extends ParameterizedBlock {
 
+  var pattern: Pattern = Pattern.compile("\\s*\\{snippet(?::([^\\}]*))?\\}(.*)")
+  var matcher: Matcher = null
   var lang:Option[String] = None
   var url: String = _
   var id:Option[String] = None
@@ -117,25 +120,36 @@ class SnippetBlock extends AbstractConfluenceDelimitedBlock("snippet") {
     }
   }
 
-  override def beginBlock() = handler.begin
-
-  override def handleBlockContent(value:String) = {
-    // graciously do nothing 
+  override def canStart(line: String, lineOffset: Int) = {
+    matcher = pattern.matcher(line)
+    if (lineOffset > 0) {
+      matcher.region(lineOffset, line.length)
+    }
+    matcher.matches()
   }
 
-  override def endBlock() = {
+  override def processLineContent(line: String, offset: Int) = {
+    setOptions(matcher.group(1))
+    val end = matcher.start(2)
+
+    handler.begin
     try {
-      for (line <- getSnippet) {
-        handler.addLine(line)
+      for (snippetLine <- getSnippet) {
+        handler.addLine(snippetLine)
       }
     }
     catch {
-      case e =>
-        Snippets.errorHandler(this, e)
+      case e => Snippets.errorHandler(this, e)
     }
     handler.done
+    
+    if (end < line.length) {
+        state.setLineSegmentEndOffset(end)
+    }
+    setClosed(true)
+    if (end == line.length) { -1 } else { end }
   }
-
+  
   /**
    * Extract the snippet from the Source file
    */

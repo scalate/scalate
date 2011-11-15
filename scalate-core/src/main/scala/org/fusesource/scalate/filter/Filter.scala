@@ -18,6 +18,8 @@
 package org.fusesource.scalate
 package filter
 
+import servlet.ServletRenderContext
+
 /**
  * Represents a request to filter content.
  *
@@ -34,3 +36,16 @@ trait Filter {
   def filter(context: RenderContext, content: String): String
 }
 
+/**
+ * A useful filter for wrapping other filters as a Pipeline (a top level processor of stand alone resources)
+ */
+case class NoLayoutFilter(val next: Filter, contentType: String) extends Filter {
+  def filter(context: RenderContext, content: String) = {
+    context.attributes("layout") = "" // disable the layout
+    context match {
+      case x: ServletRenderContext => x.response.setContentType(contentType)
+      case _ =>
+    }
+    next.filter(context, content)
+  }
+}

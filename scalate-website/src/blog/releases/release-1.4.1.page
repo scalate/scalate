@@ -1,13 +1,14 @@
 ---
-blog_post: false
-title: Scalate 1.4.0 Released
+blog_post: true
+title: Scalate 1.4.1 Released
 author: Hiram Chirino
 author_url: http://hiramchirino.com/blog
-created_at: 2011-02-10 12:06:40 -0000
+created_at: 2011-02-25 12:06:40 -0000
+layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
-availability of Scalate 1.4.0
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce
+the availability of Scalate 1.4.1.
 
 Scalate is a [Scala 2.8.1](http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
@@ -39,26 +40,23 @@ from the full power and expressiveness of Scala plus they are typesafe and
 checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
 
+**Scalate 1.4.1 Highlights**
 
-**Scalate 1.4.0 Highlights**
+This is a bug fix release:
 
-* Upgraded to Scala 2.8.1
-* [Added](http://www.assembla.com/spaces/scalate/tickets/211) new SBT plugins for precompiling templates and [site generation](http://scalate.fusesource.org/documentation/siteGen.html)
-* [Site generation](http://scalate.fusesource.org/documentation/siteGen.html) is [now](http://www.assembla.com/spaces/scalate/tickets/196) available in the [scalate command line tool and shell](http://scalate.fusesource.org/documentation/tool.html) and it also [now](http://www.assembla.com/spaces/scalate/tickets/195) supports a simpler directory layout.
-* Added pygmentize, css, and cdata filters
-* Added [Textile](http://textile.thresholdstate.com/) support and filters
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) can
-  [now](http://www.assembla.com/spaces/scalate/tickets/122) be used for
-  creating layouts and refer to parts of the generated template by
-  [navigating the **html**
-  section](http://scalate.fusesource.org/documentation/mustache.html#Layouts).
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) [automatically](http://www.assembla.com/spaces/scalate/tickets/198) [unwraps Option](http://www.assembla.com/spaces/scalate/tickets/197) types.
-* Improved OSGi support
+* Fixes [#219](http://scalate.assembla.com/spaces/scalate/tickets/219) removes the error attributes from the request context if scalate directly rendered the error page.
+* Fixes [#221](http://scalate.assembla.com/spaces/scalate/tickets/221) to add a scalate-web dependency and use it in scalate-war for simplicity
+* Added scala-library dependency to scalate-util; if you want to exclude this dependency due to different scala versions you can add an exclusion easily. scala-compiler is an optional dependency on scala-core now
+* Fixes [#220](http://scalate.assembla.com/spaces/scalate/tickets/220) so that we can use tomcat:run inside archetypes and projects inside scalate
+* Fixes to the spring mvc integration to make the contentType works
+* Fixes scalate core so it can run on Java 1.5 once again
+* Fixes [#216](http://scalate.assembla.com/spaces/scalate/tickets/216) to let users properly override the number format
+* Fixes [#199](http://scalate.assembla.com/spaces/scalate/tickets/199) to treat java collections and Maps better in mustache
+* Fixes SBT pre-compiler and sitegen plugins
 
-For more detail see the [Full Change
-Log](http://www.assembla.com/spaces/scalate/milestones/315531-1-4)
+For more detail see the [Issue Log](http://www.assembla.com/spaces/scalate/milestones/351597-1-4-1)
 
-[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+[Feedback](${uri("/community.html")}) is always welcome! 
 
 
 

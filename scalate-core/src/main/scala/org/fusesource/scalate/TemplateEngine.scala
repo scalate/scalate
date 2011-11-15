@@ -41,6 +41,10 @@ import java.util.concurrent.ConcurrentHashMap
 object TemplateEngine {
   val log = Log(getClass); import log._
 
+  def apply(sourceDirectories: Traversable[File],  mode: String): TemplateEngine = {
+    new TemplateEngine(sourceDirectories, mode)
+  }
+
   /**
    * The default template types available in Scalate
    */
@@ -177,6 +181,19 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   var pipelines: Map[String, List[Filter]] = Map()
 
+  /**
+   * Maps file extensions to possible template extensions for custom mappins such as for
+   * Map("js" -> Set("coffee"), "css" => Set("sass", "scss"))
+   */
+  var extensionToTemplateExtension: collection.mutable.Map[String, collection.mutable.Set[String]] = collection.mutable.Map()
+
+  /**
+   * Returns the mutable set of template extensions which are mapped to the given URI extension.
+   */
+  def templateExtensionsFor(extension: String): collection.mutable.Set[String] = {
+    extensionToTemplateExtension.getOrElseUpdate(extension, collection.mutable.Set())
+  }
+
   private val attempt = Exception.ignoring(classOf[Throwable])
 
   /**
@@ -187,12 +204,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   // Attempt to load all the built in filters.. Some may not load do to missing classpath
   // dependencies.
-  attempt( filters += "plain" -> PlainFilter )
-  attempt( filters += "javascript"-> JavascriptFilter )
-  attempt( filters += "coffeescript"-> CoffeeScriptFilter )
-  attempt( filters += "css"-> CssFilter )
-  attempt( filters += "cdata"-> CdataFilter )
-  attempt( filters += "escaped"->EscapedFilter )
+  attempt(filters += "plain" -> PlainFilter)
+  attempt(filters += "javascript" -> JavascriptFilter)
+  attempt(filters += "coffeescript" -> CoffeeScriptFilter)
+  attempt(filters += "css" -> CssFilter)
+  attempt(filters += "cdata" -> CdataFilter)
+  attempt(filters += "escaped" -> EscapedFilter)
+
+  attempt{
+    CoffeeScriptPipeline(this)
+  }
 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
@@ -278,21 +299,21 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Compiles the given Moustache template text and returns the template
    */
-  def compileMoustache(text: String, extraBindings:List[Binding] = Nil):Template = {
+  def compileMoustache(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
     compileText("mustache", text, extraBindings)
   }
 
   /**
    * Compiles the given SSP template text and returns the template
    */
-  def compileSsp(text: String, extraBindings:List[Binding] = Nil):Template = {
+  def compileSsp(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
     compileText("ssp", text, extraBindings)
   }
 
   /**
    * Compiles the given SSP template text and returns the template
    */
-  def compileScaml(text: String, extraBindings:List[Binding] = Nil):Template = {
+  def compileScaml(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
     compileText("scaml", text, extraBindings)
   }
 
@@ -300,7 +321,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
    * and return the template
    */
-  def compileText(extension: String, text: String, extraBindings:List[Binding] = Nil):Template = {
+  def compileText(extension: String, text: String, extraBindings:Traversable[Binding] = Nil):Template = {
     tmpDirectory.mkdirs()
     val file = File.createTempFile("_scalate_tmp_", "." + extension, tmpDirectory)
     IOUtil.writeText(file, text)
@@ -313,7 +334,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Compiles a template source without placing it in the template cache. Useful for temporary
    * templates or dynamically created template
    */
-  def compile(source: TemplateSource, extraBindings:List[Binding] = Nil):Template = {
+  def compile(source: TemplateSource, extraBindings:Traversable[Binding] = Nil):Template = {
     compileAndLoad(source, extraBindings, 0)._1
   }
 
@@ -321,9 +342,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(source: TemplateSource, extraBindings:List[Binding] = Nil) = {
+  def generateScala(source: TemplateSource, extraBindings:Traversable[Binding] = Nil) = {
     source.engine = this
-    generator(source).generate(this, source, bindings ::: extraBindings)
+    generator(source).generate(this, source, bindings ++ extraBindings)
   }
 
 
@@ -331,7 +352,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(uri: String, extraBindings:List[Binding]): Code = {
+  def generateScala(uri: String, extraBindings:Traversable[Binding]): Code = {
     generateScala(uriToSource(uri), extraBindings)
   }
 
@@ -364,7 +385,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(source: TemplateSource, extraBindings:List[Binding]= Nil): Template = {
+  def load(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Template = {
     source.engine = this
     templateCache.synchronized {
 
@@ -414,7 +435,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(file: File, extraBindings: List[Binding]): Template = {
+  def load(file: File, extraBindings: Traversable[Binding]): Template = {
     load(TemplateSource.fromFile(file), extraBindings)
   }
 
@@ -438,7 +459,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(uri: String, extraBindings: List[Binding]): Template = {
+  def load(uri: String, extraBindings: Traversable[Binding]): Template = {
     load(uriToSource(uri), extraBindings)
   }
 
@@ -467,7 +488,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Returns true if the URI can be loaded as a template
    */
-  def canLoad(source: TemplateSource, extraBindings:List[Binding]= Nil): Boolean = {
+  def canLoad(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Boolean = {
     try {
       load(source, extraBindings) != null
     } catch {
@@ -486,7 +507,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Returns true if the URI can be loaded as a template
    */
-  def canLoad(uri: String, extraBindings:List[Binding]): Boolean = {
+  def canLoad(uri: String, extraBindings:Traversable[Binding]): Boolean = {
     canLoad(uriToSource(uri), extraBindings)
   }
 
@@ -513,7 +534,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    *  Renders the given template URI using the current layoutStrategy
    */
-  def layout(uri: String, context: RenderContext, extraBindings:List[Binding]): Unit = {
+  def layout(uri: String, context: RenderContext, extraBindings:Traversable[Binding]): Unit = {
     val template = load(uri, extraBindings)
     layout(template, context)
   }
@@ -540,9 +561,22 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Renders the given template URI returning the output
    */
-  def layout(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): String = {
+  def layout(uri: String, attributes: Map[String,Any] = Map(), extraBindings: Traversable[Binding] = Nil): String = {
     val template = load(uri, extraBindings)
     layout(uri, template, attributes)
+  }
+
+  def layout(uri: String, out: PrintWriter, attributes: Map[String, Any]) {
+    val template = load(uri)
+    layout(uri, template, out, attributes)
+  }
+
+  protected def layout(uri: String, template: Template, out: PrintWriter, attributes: Map[String, Any]) {
+    val context = createRenderContext(uri, out)
+    for ((key, value) <- attributes) {
+      context.attributes(key) = value
+    }
+    layout(template, context)
   }
 
   /**
@@ -551,11 +585,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def layout(uri: String, template: Template, attributes: Map[String,Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val context = createRenderContext(uri, out)
-    for ((key, value) <- attributes) {
-      context.attributes(key) = value
-    }
-    layout(template, context)
+    layout(uri, template, out, attributes)
     buffer.toString
   }
 
@@ -577,7 +607,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    *  Renders the given template source using the current layoutStrategy
    */
-  def layout(source: TemplateSource, context: RenderContext, extraBindings:List[Binding]): Unit = {
+  def layout(source: TemplateSource, context: RenderContext, extraBindings:Traversable[Binding]): Unit = {
     val template = load(source, extraBindings)
     layout(template, context)
   }
@@ -600,7 +630,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Renders the given template URI returning the output
    */
-  def layoutAsNodes(uri: String, attributes: Map[String,Any] = Map(), extraBindings:List[Binding] = Nil): NodeSeq = {
+  def layoutAsNodes(uri: String, attributes: Map[String,Any] = Map(), extraBindings:Traversable[Binding] = Nil): NodeSeq = {
     val template = load(uri, extraBindings)
     layoutAsNodes(uri, template, attributes)
   }
@@ -633,7 +663,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(uri, this, out)
 
-  private def loadPrecompiledEntry(source: TemplateSource, extraBindings:List[Binding]) = {
+  private def loadPrecompiledEntry(source: TemplateSource, extraBindings:Traversable[Binding]) = {
     source.engine = this
     val uri = source.uri
     val className = source.className
@@ -657,7 +687,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     }
   }
 
-  private def compileAndLoadEntry(source:TemplateSource, extraBindings:List[Binding]) = {
+  private def compileAndLoadEntry(source:TemplateSource, extraBindings:Traversable[Binding]) = {
     val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
@@ -688,7 +718,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   protected val sourceMapLog = Log(getClass, "SourceMap")
 
-  private def compileAndLoad(source: TemplateSource, extraBindings: List[Binding], attempt: Int): (Template, Set[String]) = {
+  private def compileAndLoad(source: TemplateSource, extraBindings: Traversable[Binding], attempt: Int): (Template, Set[String]) = {
     source.engine = this
     var code: Code = null
     try {
@@ -710,7 +740,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
       val g = generator(source);
       // Generate the scala source code from the template
-      code = g.generate(this, source, bindings ::: extraBindings)
+      code = g.generate(this, source, bindings ++ extraBindings)
 
       val sourceFile = sourceFileName(uri)
       sourceFile.getParentFile.mkdirs

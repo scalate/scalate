@@ -97,7 +97,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
 
     def indent[T](op: => T): T = {indentLevel += 1; val rc = op; indentLevel -= 1; rc}
 
-    def generate(engine: TemplateEngine, source: TemplateSource, bindings: List[Binding], statements: List[T]): Unit = {
+    def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding], statements: List[T]): Unit = {
 
       val packageName = source.packageName
       val className = source.simpleClassName
@@ -153,7 +153,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
 
     def generate(statements: List[T]): Unit
 
-    def generateBindings(bindings: List[Binding])(body: => Unit): Unit = {
+    def generateBindings(bindings: Traversable[Binding])(body: => Unit): Unit = {
       bindings.foreach(arg => {
         this << ";{"
         indentLevel += 1
@@ -198,9 +198,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       }
     }
 
-    protected def generateTemplatePackage(source: TemplateSource, bindings: List[Binding]): Unit = {
+    protected def generateTemplatePackage(source: TemplateSource, bindings: Traversable[Binding]): Unit = {
       val templatePackage = TemplatePackage.findTemplatePackage(source).getOrElse(new DefaultTemplatePackage())
-      this << templatePackage.header(source, bindings)
+      this << templatePackage.header(source, bindings.toList)
       this <<;
     }
 

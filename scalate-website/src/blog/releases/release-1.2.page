@@ -4,6 +4,7 @@ title: Scalate 1.2 Released
 author: James Strachan
 author_url: http://macstrac.blogspot.com
 created_at: 2010-07-30 12:06:40 -0000
+layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
 The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.2. 

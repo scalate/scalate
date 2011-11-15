@@ -266,15 +266,12 @@ li { margin-left: 0.5em; margin-top: 0.5em; }
 li li { font-size: 85%; font-style: italic }
 li li li { font-size: 85%; font-style: normal }
 
-
-ul li { 
-  list-style: none;
-  margin: 0.1em 0em 0.6em 0;
-  padding: 0 0 0 40px;
-  background: transparent url(${uri("/graphics/bullet.png")}) no-repeat 5px 0.3em;
-  line-height: 140%;
+ul li {
+    list-style: none;
+    background: transparent url(../graphics/bullet.png) no-repeat 0em .45em;
+    background-size: .6em; -webkit-background-size: .6em;  -o-background-size: .6em; -khtml-background-size: .6em;
+    padding: 0 0 0 1.2em;
 }
-
 /* workaround IE's failure to support background on li for print media */
 @media print { ul li { list-style: disc; padding-left: 0; background: none; } }
 

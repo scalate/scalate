@@ -35,10 +35,11 @@ object Website {
   val project_forums_url= "http://scalate.fusesource.org/community.html"
   val project_wiki_url= "http://wiki.github.com/scalate/scalate/"
   val project_logo= "/images/project-logo.png"
-  val project_version= "1.5.2"
+  val project_version= "1.5.3"
   val project_snapshot_version= "1.6.0-SNAPSHOT"
   val project_versions = List(
         project_version,
+        "1.5.2",
         "1.5.1",
         "1.5.0",
         "1.4.1",
@@ -55,6 +56,7 @@ object Website {
   val git_commiter_url= "git@github.com:scalate/scalate.git"
   val git_branch= "master"
   val git_edit_page_base = github_page+"/edit/"+git_branch+"/scalate-website/src"
+  val disqus_shortname = project_id
 
   // -------------------------------------------------------------------
   val project_svn_url= "http://fusesource.com/forge/svn/%s/trunk".format(project_id)

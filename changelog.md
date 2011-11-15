@@ -1,6 +1,14 @@
 ![Scalate][logo]
 ===============================
 
+
+[Scalate 1.5.3](http://scalate.fusesource.org/blog/releases/release-1.5.3.html), released 2011-11-14
+----
+
+* Scalate now uses the [Scala Presentation Compiler](https://groups.google.com/d/msg/scalate/3mrkmrXK7vs/7nBh96DPT4YJ) to boost performance of template compilation 3-10X
+* Support for compiling stand alone CoffeeScript files on the server, CoffeeScript filters and various CoffeeScript related bug fixes 
+* A [pure Java API](http://www.assembla.com/spaces/scalate/tickets/129) to working with Scalate
+
 [Scalate 1.5.2](http://scalate.fusesource.org/blog/releases/release-1.5.2.html), released 2011-09-09
 ----
 

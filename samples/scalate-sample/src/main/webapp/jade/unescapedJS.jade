@@ -1,0 +1,6 @@
+h1 Unescape JS
+
+table
+  tr
+    - val bar = Unescaped("attr: {class: a() > b() ? 'green' : 'red'}")
+    td(foo={bar}) Something

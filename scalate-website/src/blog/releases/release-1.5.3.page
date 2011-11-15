@@ -1,15 +1,16 @@
 ---
 blog_post: true
-title: Scalate 1.4.1 Released
-author: Hiram Chirino
-author_url: http://hiramchirino.com/blog
-created_at: 2011-02-25 12:06:40 -0000
+title: Scalate 1.5.3 Released
+author: James Strachan
+author_url: http://macstrac.blogpost.com
+created_at: 2011-11-14 12:06:40 -0000
+layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce
-the availability of Scalate 1.4.1.
+The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
+availability of Scalate 1.5.3
 
-Scalate is a [Scala 2.8.1](http://www.scala-lang.org) based <a
+Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
 engine</a> which can be used stand alone, with servlets or web frameworks
 like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
@@ -39,23 +40,16 @@ from the full power and expressiveness of Scala plus they are typesafe and
 checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
 
-**Scalate 1.4.1 Highlights**
 
-This is a bug fix release:
+**Scalate 1.5.3 Highlights**
 
-* Fixes [#219](http://scalate.assembla.com/spaces/scalate/tickets/219) removes the error attributes from the request context if scalate directly rendered the error page.
-* Fixes [#221](http://scalate.assembla.com/spaces/scalate/tickets/221) to add a scalate-web dependency and use it in scalate-war for simplicity
-* Added scala-library dependency to scalate-util; if you want to exclude this dependency due to different scala versions you can add an exclusion easily. scala-compiler is an optional dependency on scala-core now
-* Fixes [#220](http://scalate.assembla.com/spaces/scalate/tickets/220) so that we can use tomcat:run inside archetypes and projects inside scalate
-* Fixes to the spring mvc integration to make the contentType works
-* Fixes scalate core so it can run on Java 1.5 once again
-* Fixes [#216](http://scalate.assembla.com/spaces/scalate/tickets/216) to let users properly override the number format
-* Fixes [#199](http://scalate.assembla.com/spaces/scalate/tickets/199) to treat java collections and Maps better in mustache
-* Fixes SBT pre-compiler and sitegen plugins
+* Scalate now uses the [Scala Presentation Compiler](https://groups.google.com/d/msg/scalate/3mrkmrXK7vs/7nBh96DPT4YJ) to boost performance of template compilation 3-10X
+* Support for compiling stand alone CoffeeScript files on the server, CoffeeScript filters and various CoffeeScript related bug fixes 
+* A [pure Java API](http://www.assembla.com/spaces/scalate/tickets/129) to working with Scalate
 
-For more detail see the [Issue Log](http://www.assembla.com/spaces/scalate/milestones/351597-1-4-1)
+For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/531621-1-5-3)
 
-[Feedback](${uri("/community.html")}) is always welcome! 
+[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
 
 
 

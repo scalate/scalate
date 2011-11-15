@@ -20,12 +20,9 @@ package maven
 
 import collection.JavaConversions._
 
-import java.util.zip.ZipInputStream
-import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
-import java.lang.StringBuilder
-import org.codehaus.swizzle.confluence.{Page, PageSummary, Confluence}
-import collection.mutable.{HashMap, ListBuffer}
-import org.fusesource.scalate.util.IOUtil
+import org.codehaus.swizzle.confluence.{PageSummary, Confluence}
+import collection.mutable.ListBuffer
+import java.io._
 
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.project.MavenProject
@@ -133,7 +130,7 @@ page_modifier: """+page.getModifier+"""
 
         val file = new File(dir, sanitized_title + file_suffix)
         getLog.info("downloading: "+file)
-        IOUtil.writeText(file, content)
+        writeText(file, content)
         rc += 1
         if( !node.children.isEmpty ) {
           rc += export(new File(dir, sanitized_title), node.children)
@@ -154,6 +151,16 @@ page_modifier: """+page.getModifier+"""
     val total = export(target, rootNodes);
     getLog.info("Exported page(s) "+ total);
     null
+  }
+
+  def writeText(path: String, text: String): Unit = writeText(new File(path), text)
+  def writeText(path: File, text: String): Unit = writeText(new FileWriter(path), text)
+  def writeText(out: Writer, text: String): Unit = {
+    try {
+      out.write(text)
+    } finally {
+      out.close
+    }
   }
 
 }

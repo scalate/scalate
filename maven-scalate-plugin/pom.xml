@@ -60,33 +60,6 @@
     </dependency>
     
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-    <!-- TODO ideally we'd not have to use this but for some reason classloader issues with mojo -->
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-wikitext</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.fusesource.scalamd</groupId>
-      <artifactId>scalamd</artifactId>
-      <version>${scalamd-version}</version>
-    </dependency>
-    
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-nop</artifactId>
       <version>${slf4j-version}</version>
@@ -149,13 +122,6 @@
       <version>1.4</version>
     </dependency>
 
-    <!-- testing -->
-    <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
