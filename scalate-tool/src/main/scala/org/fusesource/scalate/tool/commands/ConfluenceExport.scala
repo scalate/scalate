@@ -25,9 +25,10 @@ import java.io.{FileInputStream, FileWriter, File, ByteArrayOutputStream}
 import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
 import org.apache.felix.service.command.CommandSession
-import org.codehaus.swizzle.confluence.{Page, PageSummary, Confluence}
+import org.swift.common.soap.confluence.{RemotePage, RemotePageSummary, ConfluenceSoapService, ConfluenceSoapServiceServiceLocator}
 import collection.mutable.{HashMap, ListBuffer}
 import org.fusesource.scalate.util.IOUtil
+
 
 /**
  * <p>
@@ -43,7 +44,7 @@ import org.fusesource.scalate.util.IOUtil
 class ConfluenceExport extends Action {
 
   @argument(index = 0, required = true, name = "url", description = "URL to confluence RPC service")
-  var url: String = "https://cwiki.apache.org/confluence/rpc/xmlrpc"
+  var url: String = "https://cwiki.apache.org/confluence"
   @argument(index = 1, required = true, name = "space", description = "The confluence space key")
   var space: String = "SM"
   @argument(index = 2, required = false, name = "target", description = "The target directory")
@@ -60,7 +61,7 @@ page - for page files suitable for rendering in a Scalate web site. Suffix is .p
 conf - for a plain confluence text file without metadata. Suffix is .conf""")
   var format: String = "page"
 
-  case class Node(summary:PageSummary) {
+  case class Node(summary:RemotePageSummary) {
     val children = ListBuffer[Node]()
   }
 
@@ -71,11 +72,12 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
     import JavaConversions._
 
     println("downloading space index...")
-    val confluence = new Confluence(url);
+    var confluence = serviceSetup(url + defaultConfluenceServiceExtension)
     if( user!=null && password!=null ) {
-      confluence.login(user, password);
+      loginToken = confluence.login(user, password);
     }
-    val pageList = confluence.getPages(space).asInstanceOf[java.util.List[PageSummary]]
+    val pageList: java.util.List[RemotePageSummary]
+        = confluence.getPages(loginToken,space).toList
 
     var pageMap = Map( pageList.map(x=> (x.getId, Node(x))) : _ * )
     val rootNodes = ListBuffer[Node]()
@@ -83,7 +85,7 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
     // add each node to the appropriate child collection.
     for( (key,node) <- pageMap ) {
       node.summary.getParentId match {
-        case "0" => rootNodes += node
+        case 0 => rootNodes += node
         case parentId => pageMap.get(parentId).foreach( _.children += node )
       }
     }
@@ -93,7 +95,7 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
       dir.mkdirs
       nodes.foreach { node=>
         val sanitized_title = sanitize(node.summary.getTitle);
-        val page = confluence.getPage(node.summary.getId);
+        val page = confluence.getPage(loginToken, node.summary.getId);
         var content:String = "";
         var file_suffix = ".page";
         if (format.equalsIgnoreCase("page")) {
@@ -133,9 +135,18 @@ page_modifier: """+page.getModifier+"""
 
     val total = export(target, rootNodes);
     println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
+    confluence.logout(loginToken)
     null
   }
 
+  var confluence: ConfluenceSoapService = null
+  var loginToken: String = null
+  val defaultConfluenceServiceExtension = "/rpc/soap-axis/confluenceservice-v1" // Confluence soap service
 
+  def serviceSetup(address: String): ConfluenceSoapService = {
+    var serviceLocator = new ConfluenceSoapServiceServiceLocator
+    serviceLocator.setConfluenceserviceV2EndpointAddress(address);
+    serviceLocator.getConfluenceserviceV2();
+  }
 
 }

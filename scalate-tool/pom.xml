@@ -50,10 +50,28 @@
       <version>${karaf-version}</version>
     </dependency>
       
-    <dependency>
+    <!--dependency>
       <groupId>org.codehaus.swizzle</groupId>
       <artifactId>swizzle-confluence</artifactId>
       <version>1.4</version>
+    </dependency-->
+
+    <dependency>
+      <groupId>org.swift.common</groupId>
+      <artifactId>confluence-soap</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis-wsdl4j</artifactId>
+      <version>1.2</version>
     </dependency>
 
     <dependency>
