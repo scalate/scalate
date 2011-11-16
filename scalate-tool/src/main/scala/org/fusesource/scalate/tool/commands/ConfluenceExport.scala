@@ -34,7 +34,7 @@ import org.fusesource.scalate.util.IOUtil
  * <p>
  * Adding a tool that allows you to export confluence sites.  Example usage:
  *
- * <code>confexport --user user --password pass https://cwiki.apache.org/confluence/rpc/xmlrpc SM ./out</code>
+ * <code>confexport --user user --password pass https://cwiki.apache.org/confluence SM ./out</code>
  * 
  * </p>
  *
@@ -43,7 +43,7 @@ import org.fusesource.scalate.util.IOUtil
 @command(scope = "scalate", name = "confexport", description = "Exports a confluence space.")
 class ConfluenceExport extends Action {
 
-  @argument(index = 0, required = true, name = "url", description = "URL to confluence RPC service")
+  @argument(index = 0, required = true, name = "url", description = "The confluence base URL (e.g. https://cwiki.apache.org/confluence)")
   var url: String = "https://cwiki.apache.org/confluence"
   @argument(index = 1, required = true, name = "space", description = "The confluence space key")
   var space: String = "SM"
@@ -54,13 +54,15 @@ class ConfluenceExport extends Action {
   var user: String = _
   @option(name = "--password", description = "Login password")
   var password: String = _
-  @option(name = "--allow-spaces", description = "Whether to allow spaces in filenames (boolean). Only use if the O/S supports spaces in file names (e.g. on Windows). If false, file names are modified to be non-colonised names (NCName).")
-  var allow_spaces: String = "false";
+  @option(name = "--allow-spaces", description = "(no arg) Allow spaces and other irregular chars in filenames. Use only if the O/S supports spaces in file names (e.g. Windows).")
+  var allow_spaces: Boolean = false
   @option(name = "--format", description = """The format of the downloaded pages. Possible values are:
 page - for page files suitable for rendering in a Scalate web site. Suffix is .page
 conf - for a plain confluence text file without metadata. Suffix is .conf""")
   var format: String = "page"
-
+  @option(name = "--target-db", description = "(no arg) Generate a link database for DocBook.")
+  var target_db: Boolean = false
+  
   case class Node(summary:RemotePageSummary) {
     val children = ListBuffer[Node]()
   }
@@ -117,15 +119,24 @@ page_modifier: """+page.getModifier+"""
         println("downloading: \u001B[1;32m"+file+"\u001B[0m")
         IOUtil.writeText(file, content)
         rc += 1
+        if (target_db) {
+          TargetDB.startDiv(
+              sanitized_title,  // targetptr (used in DocBook olinks)
+              page.getTitle     // Page title
+          )
+        }
         if( !node.children.isEmpty ) {
           rc += export(new File(dir, sanitized_title), node.children)
+        }
+        if (target_db) {
+          TargetDB.endDiv()
         }
       }
       rc
     }
     
     def sanitize(title:String): String = {
-        if (allow_spaces.equalsIgnoreCase("true")) {
+        if (allow_spaces) {
             title.replaceAll("\\\"", "")
         }
         else {
@@ -133,12 +144,23 @@ page_modifier: """+page.getModifier+"""
         }
     }
 
+    if (target_db) {
+      TargetDB.rootDir = target
+      TargetDB.init(space, space)
+    }
     val total = export(target, rootNodes);
+    if (target_db) {
+      TargetDB.close()
+    }
     println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
     confluence.logout(loginToken)
     null
   }
 
+  //-----
+  // Definitions to set up the Confluence SOAP-RPC service
+  //
+  
   var confluence: ConfluenceSoapService = null
   var loginToken: String = null
   val defaultConfluenceServiceExtension = "/rpc/soap-axis/confluenceservice-v1" // Confluence soap service
@@ -147,6 +169,78 @@ page_modifier: """+page.getModifier+"""
     var serviceLocator = new ConfluenceSoapServiceServiceLocator
     serviceLocator.setConfluenceserviceV2EndpointAddress(address);
     serviceLocator.getConfluenceserviceV2();
+  }
+
+  //-----
+  // The TargetDB object enables the generation of a DocBook
+  // link database, target.db. Using the link database, a DocBook
+  // document can then easily cross-reference a confluence page.
+  
+  object TargetDB {
+    var rootDir = new File(".")
+    var rootFileName = "index.html"
+    var targetDBFileName = "target.db"
+    var level: Int = 0
+    var targetContent: StringBuffer = new StringBuffer
+    var hrefStack = new java.util.Stack[String]
+    
+    def init(targetptr: String, title: String) {
+      targetContent.append(
+          "<div element=\"book\" href=\"" + rootFileName
+          + "\" number=\"\" targetptr=\""
+          + targetptr + "\">\n"
+          + "    <ttl>" + title + "</ttl>\n"
+          + "    <xreftext>" + title + "</xreftext>\n"
+          )
+      level = 1
+    }
+    
+    def close() {
+      while (level > 0) { endDiv() }
+      val file= new File(rootDir, targetDBFileName)
+      IOUtil.writeText(file, targetContent.toString())
+    }
+    
+    def startDiv(targetptr: String, title: String) {
+      val indent = "    " * level
+      var escTitle = escapeXml(title)
+      appendAndPush(hrefStack, targetptr)
+      var href = hrefStack.peek + ".html"
+      targetContent.append(
+            indent + "<div element=\"" + getDivElementName() + "\" href=\""
+                   + href + "\" number=\"\" targetptr=\""
+                   + targetptr + "\">\n"
+          + indent + "    <ttl>" + escTitle + "</ttl>\n"
+          + indent + "    <xreftext>" + escTitle + "</xreftext>\n"
+          )
+      level += 1
+    }
+  
+    def endDiv() {
+      level -= 1
+      if ( ! hrefStack.empty) hrefStack.pop
+      targetContent.append("    " * level + "</div>\n")
+    }
+    
+    protected def getDivElementName(): String = {
+      if (level==0) { "book" }
+      else if (level==1) { "chapter" }
+      else { "section" }
+    }
+    
+    protected def escapeXml(text: String): String = {
+      text.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+    }
+    
+    protected def appendAndPush(stack: java.util.Stack[String], segment: String) {
+      if (stack.empty) {
+        stack.push(segment)
+      }
+      else {
+        stack.push(stack.peek() + "/" + segment)
+      }
+    }
+    
   }
 
 }
