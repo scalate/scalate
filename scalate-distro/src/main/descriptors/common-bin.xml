@@ -22,6 +22,8 @@
       <scope>runtime</scope>
       <includes>
         <include>org.apache.karaf.shell:org.apache.karaf.shell.console</include>
+        <!-- confexport -->
+        <include>org.apache.axis:axis-jaxrpc</include>
       </includes>
     </dependencySet>
     <dependencySet>
@@ -34,8 +36,12 @@
         <include>org.fusesource.scalate:scalate-tool</include>
         <include>net.sf.jtidy:jtidy</include>
         <!-- confexport -->
-        <include>org.codehaus.swizzle:swizzle-confluence</include>
-        <include>xmlrpc:xmlrpc</include>
+        <include>org.swift.common:confluence-soap</include>
+        <include>axis:axis</include>
+        <include>axis:axis-wsdl4j</include>
+        <include>commons-discovery:commons-discovery</include>
+        <include>commons-logging:commons-logging</include>
+        <include>log4j:log4j</include>
       </includes>
     </dependencySet>
     <dependencySet>

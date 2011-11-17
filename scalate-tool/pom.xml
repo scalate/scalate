@@ -75,6 +75,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.apache.axis</groupId>
+      <artifactId>axis-jaxrpc</artifactId>
+      <version>1.4</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
       <groupId>net.sf.jtidy</groupId>
       <artifactId>jtidy</artifactId>
       <version>r938</version>
