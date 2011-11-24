@@ -166,36 +166,56 @@ class Transformer {
       attribute(name).value = value
     }
 
+    def selectiveAttribute(name: String, value: String): SelectiveAttributeRuleFactory = {
+      selectiveAttribute(name).value = value
+    }
+
     /**
      * Adds rules on the named attribute matching the current selections
      */
     def attribute(name: String): AttributeRuleFactory = new AttributeRuleFactory(name)
 
+    def selectiveAttribute(name: String): SelectiveAttributeRuleFactory = new SelectiveAttributeRuleFactory(name)
+
 
     class AttributeRuleFactory(name: String) {
-      def value: AttributeRuleFactory = this
+      def value = this
 
-      def value_=(text: String): AttributeRuleFactory = {
+      def value_=(text: String) = {
         def fn(node: Node) = text
         addRule(selector, SetAttributeRule(name, fn))
         this
       }
 
-      def update(text: String): AttributeRuleFactory = {
+      def update(text: String) = {
         def fn(node: Node) = text
         addRule(selector, SetAttributeRule(name, fn))
         this
       }
 
-      def apply(fn: Node => String): AttributeRuleFactory = {
+      def apply(fn: Node => String) = {
         addRule(selector, SetAttributeRule(name, fn))
         this
-
       }
 
-      def apply(text: => String): AttributeRuleFactory = {
+      def apply(text: => String) = {
         def fn(node: Node): String = text
         addRule(selector, SetAttributeRule(name, fn))
+        this
+      }
+    }
+
+    class SelectiveAttributeRuleFactory(name: String) extends AttributeRuleFactory(name) {
+      override def value: SelectiveAttributeRuleFactory = this
+
+      override def value_=(text: String): SelectiveAttributeRuleFactory = {
+        def fn(node: Node) = text
+        addRule(selector, SetSelectiveAttributeRule(name, fn))
+        this
+      }
+
+      override def apply(fn: Node => String): SelectiveAttributeRuleFactory = {
+        addRule(selector, SetSelectiveAttributeRule(name, fn))
         this
       }
     }
