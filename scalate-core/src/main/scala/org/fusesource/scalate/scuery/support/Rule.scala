@@ -104,3 +104,16 @@ case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
 
   override def order = -1
 }
+
+case class SetSelectiveAttributeRule(name: String, fn: (Node) => String) extends Rule {
+  def apply(node: Node) = node match {
+    case e: Elem =>
+      val value = fn(e)
+      debug("Selectively setting attribute %s to %s",name,value)
+      if (e.attribute(name).isDefined) setAttribute(e, name, value) else e
+
+    case n => n
+  }
+
+  override def order = -1
+}
