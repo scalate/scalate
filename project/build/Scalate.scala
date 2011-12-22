@@ -15,6 +15,8 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   lazy val scalate_war = project("scalate-war", "scalate-war", new ScalateWar(_), scalate_core, scalate_test)
   lazy val scalate_sample = project("scalate-sample", "scalate-sample", new ScalateSample(_), scalate_core, scalate_test, scalate_war)
   lazy val scalate_bookstore = project("scalate-bookstore", "scalate-bookstore", new ScalateBookstore(_), scalate_core, scalate_test, scalate_war)
+  lazy val scalate_pegdown = project("scalate-pegdown", "scalate-pegdown", new ScalatePegdown(_), scalate_core, scalate_test)
+  lazy val scalate_less = project("scalate-less", "scalate-less", new ScalateLess(_), scalate_core, scalate_test)
 
   class ScalateProject(info: ProjectInfo) extends DefaultProject(info) { 
 
@@ -61,6 +63,12 @@ class ScalateParentProject(info: ProjectInfo) extends ParentProject(info) {
   }
 
   class ScalateBookstore(info: ProjectInfo) extends ScalateWebProject(info) {
+  }
+
+  class ScalatePegdown(info: ProjectInfo) extends ScalateWebProject(info) {
+  }
+
+  class ScalateLess(info: ProjectInfo) extends ScalateWebProject(info) {
   }
 
 }

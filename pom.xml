@@ -214,6 +214,8 @@
     <module>scalate-jsp-converter</module>
     <module>scalate-markdownj</module>
     <module>scalate-jruby</module>
+    <module>scalate-pegdown</module>
+    <module>scalate-less</module>
   </modules>
 
 
