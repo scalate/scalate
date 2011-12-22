@@ -18,40 +18,30 @@
 package org.fusesource.scalate.filter
 
 import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
-import org.fusesource.scalate.filter.Filter
-import org.pegdown.{Extensions, PegDownProcessor}
+import com.asual.lesscss.LessEngine
 
 /**
- * Renders markdown syntax with multi-markdown like extras.
+ * Renders Less syntax.
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
-object PegDownFilter extends Filter with TemplateEngineAddOn {
+object LessFilter extends Filter with TemplateEngineAddOn {
 
-  private val pegDownProcessor = new PegDownProcessor(
-    Extensions.ABBREVIATIONS |
-      Extensions.AUTOLINKS |
-      Extensions.DEFINITIONS |
-      Extensions.FENCED_CODE_BLOCKS |
-      Extensions.QUOTES |
-      Extensions.SMARTS |
-      Extensions.TABLES |
-      Extensions.WIKILINKS
-  )
+  private val lessEngine = new LessEngine
 
   def filter(context: RenderContext, content: String) = {
     synchronized {
-      // This code block is synchronized as the PegDownProcessor is not thread safe.
-      pegDownProcessor.markdownToHtml(content).stripLineEnd
+      // This code block is synchronized as I'm not confident that the Less filter is thread safe.
+      val css = lessEngine.compile(content).stripLineEnd
+      """<style type="text/css">%n%s%n</style>""".format(css)
     }
   }
 
   /**
-   * Add the markdown filter to the template engine.
+   * Add the less filter to the template engine.
    */
-  def apply(te: TemplateEngine) = {
-    te.filters += "multimarkdown" -> PegDownFilter
-    te.pipelines += "mmd" -> List(PegDownFilter)
-    te.pipelines += "multimarkdown" -> List(PegDownFilter)
+  def apply(te: TemplateEngine) {
+    te.filters += "less" -> LessFilter
+    te.pipelines += "less" -> List(LessFilter)
   }
 }
