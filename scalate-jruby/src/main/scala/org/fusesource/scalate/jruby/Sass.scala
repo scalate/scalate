@@ -38,13 +38,12 @@ class Sass(val jruby:JRuby, val engine: TemplateEngine) extends Filter {
 
   def filter(context: RenderContext, content: String) = {
 
-    val sassPaths = List[String]()
     var result: StringBuffer = new StringBuffer
     jruby.put("@result", result)
     jruby.run(
       "require 'haml-3.0.25/lib/sass'",
       "options = {}",
-      "options[:load_paths] = ["+sassPaths.map("'"+_+"'").mkString(",")+"]",
+      "options[:load_paths] = ["+context.engine.sourceDirectories.map("'"+_+"'").mkString(",")+"]",
       "options[:cache_location] = '"+engine.workingDirectory+"/sass'",
       "options[:style] = " + (if (engine.isDevelopmentMode) ":expanded" else ":compressed") + "",
       "options[:line_comments] = " + (if (engine.isDevelopmentMode) "true" else "false") + "",
