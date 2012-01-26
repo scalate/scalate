@@ -15,14 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate
-package maven
+package org.fusesource.scalate.maven
 
 import collection.JavaConversions._
 
-import org.codehaus.swizzle.confluence.{PageSummary, Confluence}
-import collection.mutable.ListBuffer
-import java.io._
+import java.{util => ju}
+import java.io.File
+import java.net.{URLClassLoader, URL}
 
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.project.MavenProject
@@ -35,11 +34,12 @@ import org.scala_tools.maven.mojo.annotations._
  * copied from the ConfluenceExport command. This should be made more 
  * modular.
  *
- * @author Eric Johnson
+ * @author Eric Johnson, Fintan Bolton
  */
-@goal("conf-export")
+@goal("confexport")
 @phase("generate-resources")
 @requiresProject
+@requiresDependencyResolution("test")
 class ConfExportMojo extends AbstractMojo {
   @parameter
   @expression("${project}")
@@ -48,24 +48,33 @@ class ConfExportMojo extends AbstractMojo {
   var project: MavenProject = _
 
   @parameter
-  @required
-  @description("URL to confluence RPC service")
-  var url: String = "https://cwiki.apache.org/confluence/rpc/xmlrpc"
+  @description("Confluence base URL")
+  @expression("${scalate.url}")
+  var url: String = "https://cwiki.apache.org/confluence/"
 
   @parameter
   @required
   @description("The confluence space key")
-  var space: String = "SM"
+  @expression("${scalate.space}")
+  var space: String = "XB"
 
   @parameter
+  @description("The directory where the exported pages will land.")
+  @expression("${project.build.directory}/${project.build.finalName}")
+  var target: File = _
+  
+  @parameter
   @description("The Confluence username to access the wiki.")
+  @expression("${scalate.user}")
   var user : String = _
 
   @parameter
   @description("The password used to access the wiki.")
+  @expression("${scalate.password}")
   var password : String = _
 
   @parameter
+  @alias("allow-spaces")
   @description("Whether to allow spaces in filenames (boolean)")
   var allow_spaces: String = "false"
   
@@ -74,93 +83,68 @@ class ConfExportMojo extends AbstractMojo {
   var format: String = "page"
 
   @parameter
-  @description("The directory where the exported pages will land.")
-  @expression("${project.build.directory}/generated-sources/confluence")
-  var target: File = _
-  
-  case class Node(summary:PageSummary) {
-    val children = ListBuffer[Node]()
-  }
+  @alias("target-db")
+  @description("Generate a link database for DocBook.")
+  var target_db: String = "false"
 
-  def execute() = {
-    target.mkdirs();
+  @parameter
+  @description("Disable the confexport goal.")
+  @expression("${scalate.confexport.skip}")
+  var skip: String = "false"
 
-    getLog.info("Extracting pages from " + url + "/" + space);
+  @parameter
+  @description("The test project classpath elements.")
+  @expression("${project.testClasspathElements}")
+  var testClassPathElements: ju.List[_] = _
 
-    getLog.info("downloading space index...")
-    val confluence = new Confluence(url);
-    if( user!=null && password!=null ) {
-      confluence.login(user, password);
-    }
-    val pageList = confluence.getPages(space).asInstanceOf[java.util.List[PageSummary]]
+  def execute() {
 
-    var pageMap = Map( pageList.map(x=> (x.getId, Node(x))) : _ * )
-    val rootNodes = ListBuffer[Node]()
+    if (skip.toBoolean) { return }
 
-    // add each node to the appropriate child collection.
-    for( (key,node) <- pageMap ) {
-      node.summary.getParentId match {
-        case "0" => rootNodes += node
-        case parentId => pageMap.get(parentId).foreach( _.children += node )
-      }
-    }
+    //
+    // Lets use project's classpath when we run the site gen tool
+    //
+    val urls: Array[URL] = testClassPathElements.map { d =>
+      new File(d.toString).toURI.toURL
+    }.toArray
 
-    def export(dir:File, nodes:ListBuffer[Node]):Int = {
-      var rc = 0
-      dir.mkdirs
-      nodes.foreach { node=>
-        val sanitized_title = sanitize(node.summary.getTitle);
-        val page = confluence.getPage(node.summary.getId);
-        var content:String = "";
-        var file_suffix = ".page";
-        if (format.equalsIgnoreCase("page")) {
-            file_suffix = ".page"
-            content = """---
-title: """+page.getTitle+"""
-page_version: """+page.getVersion+"""
-page_creator: """+page.getCreator+"""
-page_modifier: """+page.getModifier+"""
---- pipeline:conf
-"""
-        }
-        else if (format.equalsIgnoreCase("conf")) {
-            file_suffix = ".conf"
-        }
-        content += page.getContent
+    getLog.debug("Found project class loader URLs: " + urls.toList)
+    val loader = new URLClassLoader(urls, Thread.currentThread.getContextClassLoader)
 
-        val file = new File(dir, sanitized_title + file_suffix)
-        getLog.info("downloading: "+file)
-        writeText(file, content)
-        rc += 1
-        if( !node.children.isEmpty ) {
-          rc += export(new File(dir, sanitized_title), node.children)
-        }
-      }
-      rc
-    }
-    
-    def sanitize(title:String): String = {
-        if (allow_spaces.equalsIgnoreCase("true")) {
-            title.replaceAll("\\\"", "")
-        }
-        else {
-            title.toLowerCase.replaceAll(" ","-").replaceAll("[^a-zA-Z_0-9\\-\\.]", "")
-        }
-    }
-
-    val total = export(target, rootNodes);
-    getLog.info("Exported page(s) "+ total);
-    null
-  }
-
-  def writeText(path: String, text: String): Unit = writeText(new File(path), text)
-  def writeText(path: File, text: String): Unit = writeText(new FileWriter(path), text)
-  def writeText(out: Writer, text: String): Unit = {
+    val oldLoader = Thread.currentThread.getContextClassLoader
+    Thread.currentThread.setContextClassLoader(loader)
     try {
-      out.write(text)
+      
+      // Structural Typing FTW (avoids us doing manual reflection)
+      type ConfluenceExport = {
+        var url: String
+        var space: String
+        var target: File
+        var user: String
+        var password: String
+        var allow_spaces: Boolean
+        var format: String
+        var target_db: Boolean
+        def execute(p: String => Unit): AnyRef 
+      }
+
+      val className = "org.fusesource.scalate.tool.commands.ConfluenceExport"
+      val exporter = loader.loadClass(className).newInstance.asInstanceOf[ConfluenceExport]
+
+      exporter.url = this.url
+      exporter.space = this.space
+      exporter.target = this.target
+      exporter.user = this.user
+      exporter.password = this.password
+      exporter.allow_spaces = this.allow_spaces.toBoolean
+      exporter.format = this.format
+      exporter.target_db = this.target_db.toBoolean
+      exporter.execute(value => getLog.info(value) )
+
     } finally {
-      out.close
+      Thread.currentThread.setContextClassLoader(oldLoader)
     }
+
   }
 
 }

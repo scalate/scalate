@@ -68,8 +68,11 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
   }
 
   def execute(session: CommandSession): AnyRef = {
-
     def println(value:Any) = session.getConsole.println(value)
+    this.execute(value => println(value) )
+  }
+
+  def execute(println: String => Unit): AnyRef = {
 
     import JavaConversions._
 

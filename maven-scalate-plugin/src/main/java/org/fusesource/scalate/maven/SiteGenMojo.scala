@@ -74,6 +74,11 @@ class SiteGenNoForkMojo extends AbstractMojo {
   var targetDirectory: File = _
 
   @parameter
+  @description("Disable the sitegen goal.")
+  @expression("${scalate.sitegen.skip}")
+  var skip: String = "false"
+
+  @parameter
   @description("The test project classpath elements.")
   @expression("${project.testClasspathElements}")
   var testClassPathElements: ju.List[_] = _
@@ -86,7 +91,9 @@ class SiteGenNoForkMojo extends AbstractMojo {
   @description("The class name of the Boot class to use.")
   var bootClassName:String = _
 
-  def execute() = {
+  def execute() {
+
+    if (skip.toBoolean) { return }
 
     //
     // Lets use project's classpath when we run the site gen tool
