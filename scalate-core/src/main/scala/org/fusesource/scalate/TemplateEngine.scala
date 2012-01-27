@@ -20,6 +20,7 @@ package org.fusesource.scalate
 import filter._
 import layout.{NullLayoutStrategy, LayoutStrategy}
 import mustache.MustacheCodeGenerator
+import osgi.BundleClassLoader
 import scaml.ScamlCodeGenerator
 import ssp.SspCodeGenerator
 import jade.JadeCodeGenerator
@@ -237,7 +238,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   
   private var _workingDirectory: File = null
 
-  var classLoader = this.getClass.getClassLoader
+  var classLoader = Thread.currentThread.getContextClassLoader match {
+    case BundleClassLoader(_) => Thread.currentThread.getContextClassLoader()
+    case _ => getClass().getClassLoader()
+  }
 
   /**
    * By default lets bind the context so we get to reuse its methods in a template
