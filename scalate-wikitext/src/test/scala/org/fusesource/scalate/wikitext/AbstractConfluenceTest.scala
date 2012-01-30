@@ -29,7 +29,7 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
 
   protected def renderConfluence(source: String): String = {
     debug("Converting: %s", source)
-    val context = new DefaultRenderContext("foo.conf", new TemplateEngine())
+    val context = new DefaultRenderContext("foo.html", new TemplateEngine())
     val actual = filter.filter(context, source)
     info("Generated: %s", actual)
     println

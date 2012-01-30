@@ -23,20 +23,20 @@ import java.io.File
 class ChildrenTest extends TemplateTestSupport {
 
   test("children depth 1") {
-    assertUriOutputContains("foo.conf", """<a href="foo/a.conf">""",
-      """<a href="foo/b.conf">""",
-      """<a href="foo/user-guide.conf">""", "User Guide")
+    assertUriOutputContains("foo.conf", """<a href="foo/a.html">""",
+      """<a href="foo/b.html">""",
+      """<a href="foo/user-guide.html">""", "User Guide")
   }
 
 
   test("children all") {
-    assertUriOutputContains("all.conf", """<a href="foo/a.conf">""", """<a href="foo/b.conf">""",
-      """<a href="foo/b/b1.conf">""", """<a href="foo/b/b2.conf">""")
+    assertUriOutputContains("all.conf", """<a href="foo/a.html">""", """<a href="foo/b.html">""",
+      """<a href="foo/b/b1.html">""", """<a href="foo/b/b2.html">""")
   }
 
 
   test("children of b") {
-    assertUriOutputContains("foo/b.conf", """<a href="b/b1.conf">""", """<a href="b/b2.conf">""")
+    assertUriOutputContains("foo/b.conf", """<a href="b/b1.html">""", """<a href="b/b2.html">""")
   }
 
 

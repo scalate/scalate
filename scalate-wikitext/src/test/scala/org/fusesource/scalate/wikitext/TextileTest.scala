@@ -49,7 +49,11 @@ Hello
 * two
 """,
 
-"""<h1 id="Title">Title</h1><p>Hello</p><ul><li>one</li><li>two</li></ul>""")
+"""<h1 id="Title">Title</h1><p>Hello</p>
+<ul><li>one</li>
+<li>two</li>
+</ul>
+""")
   }
 
 }

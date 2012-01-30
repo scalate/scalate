@@ -56,7 +56,7 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
             debug("{children} processing file '%s'", f)
             if (f.isFile) {
               val title = Pages.title(f)
-              val link = Files.relativeUri(rootDir, f)
+              val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
               val child = new File(f.getParentFile, Files.dropExtension(f))
               debug("{children} checking child '%s'", child)
               val dirXml = if (child.isDirectory) {
