@@ -805,8 +805,8 @@ xml: renders to
 
 When a Scalate template is rendered, the caller can pass an attribute map
 which the template in charge of rendering. To bind the attribute to a Scala
-variable, a Scaml template uses the hyphen character followed by a ampersand 
-character and then a scala variable declaration statement.
+variable, a Scaml template uses the hyphen character followed by an at sign 
+and then a Scala variable declaration statement.
 
 For example To define an attribute use the following declaration
 {pygmentize:: scaml}
