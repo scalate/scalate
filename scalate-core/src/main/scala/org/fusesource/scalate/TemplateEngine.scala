@@ -218,6 +218,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var layoutStrategy: LayoutStrategy = NullLayoutStrategy
 
   lazy val compiler = createCompiler
+  var compilerInitialized = false
 
   /**
    * Factory method to create a compiler for this TemplateEngine.
@@ -225,8 +226,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * such as in side SBT or something.
    */
   protected def createCompiler: Compiler = {
+    compilerInitialized = true
     ScalaCompiler.create(this)
   }
+
+  def shutdown = if (compilerInitialized) compiler.asInstanceOf[ScalaCompiler].compiler.askShutdown
 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
