@@ -230,7 +230,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     ScalaCompiler.create(this)
   }
 
-  def shutdown = if (compilerInitialized) compiler.asInstanceOf[ScalaCompiler].compiler.askShutdown
+  def shutdown = if (compilerInitialized) compiler.shutdown
 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
