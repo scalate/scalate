@@ -46,7 +46,7 @@ import ScalaCompiler._
 
 trait Compiler {
   def compile(file: File): Unit
-  def shutdown {
+  def shutdown() {
   	// noop
   }
 }
@@ -95,7 +95,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     }
   }
 
-  override def shutdown = compiler.askShutdown
+  override def shutdown() = compiler.askShutdown()
 
   private def errorHandler(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
