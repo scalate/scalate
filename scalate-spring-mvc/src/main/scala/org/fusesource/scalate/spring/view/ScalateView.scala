@@ -21,6 +21,7 @@ import _root_.java.util.Locale
 import _root_.javax.servlet.ServletConfig
 import _root_.javax.servlet.http.HttpServletRequest
 import _root_.javax.servlet.http.HttpServletResponse
+import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
 import _root_.org.springframework.web.context.ServletConfigAware
@@ -81,7 +82,9 @@ class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
                                          response: HttpServletResponse) : Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
-    render(context, model.asInstanceOf[java.util.Map[String,Any]].toMap)
+    RenderContext.using(context) {
+      render(context, model.asInstanceOf[java.util.Map[String,Any]].toMap)
+    }
   }
 
   override def checkResource(locale: Locale): Boolean = try {
@@ -106,7 +109,9 @@ class ScalateView extends AbstractScalateView with ViewScalateRenderStrategy {
                                          response: HttpServletResponse) : Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
-    render(context, model.asInstanceOf[java.util.Map[String,Any]].toMap)
+    RenderContext.using(context) {
+      render(context, model.asInstanceOf[java.util.Map[String,Any]].toMap)
+    }
   }
 
 }
