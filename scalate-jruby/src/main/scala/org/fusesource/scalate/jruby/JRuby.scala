@@ -16,11 +16,7 @@ class JRuby(loadPaths:List[File]) extends Log {
   container.getProvider.setLoadPaths(loadPaths.asJava)
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)
 
-  RubyInstanceConfig.FASTCASE_COMPILE_ENABLED = true
   RubyInstanceConfig.FASTEST_COMPILE_ENABLED = true
-  RubyInstanceConfig.FRAMELESS_COMPILE_ENABLED = true
-  RubyInstanceConfig.POSITIONLESS_COMPILE_ENABLED = true
-  RubyInstanceConfig.FASTCASE_COMPILE_ENABLED = true
   RubyInstanceConfig.FASTSEND_COMPILE_ENABLED = true
   RubyInstanceConfig.INLINE_DYNCALL_ENABLED = true
 
