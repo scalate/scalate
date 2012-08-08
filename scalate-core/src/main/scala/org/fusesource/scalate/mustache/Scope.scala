@@ -174,10 +174,7 @@ trait Scope {
           // lets treat anything as an an object rather than a collection
           case a =>
         }
-      case None => parent match {
-        case Some(ps) => ps.invertedSection(name)(block)
-        case None => block(this)
-      }
+      case None => block(this)
     }
   }
 
