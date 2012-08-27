@@ -191,7 +191,7 @@ trait Scope {
     block(scope)
   }
 
-  def foreachScope(name: String, s: Traversable[_])(block: Scope => Unit): Unit = {
+  def foreachScope[T](name: String, s: Traversable[T])(block: Scope => Unit): Unit = {
     for (i <- s) {
       debug("Creating traversiable scope for: " + i)
       val scope = createScope(name, i)
