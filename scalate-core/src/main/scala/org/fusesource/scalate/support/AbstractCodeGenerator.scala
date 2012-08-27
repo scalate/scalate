@@ -49,7 +49,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       this
     }
 
-    def <<(list: List[_]): this.type = {
+    def <<[T](list: List[T]): this.type = {
       for (i <- 0 until indentLevel) {
         code += "  ";
       }
