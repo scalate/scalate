@@ -159,7 +159,7 @@ object BundleClassPathBuilder {
        */
       def isDirectory: Boolean = true
 
-      override def elements: Iterator[AbstractFile] = {
+      override def iterator: Iterator[AbstractFile] = {
         new Iterator[AbstractFile]() {
           val dirs = bundle.getEntryPaths(fullName)
           var nextEntry = prefetch()
@@ -230,8 +230,6 @@ object BundleClassPathBuilder {
       override def lookupPathUnchecked(path: String, directory: Boolean) = lookupPath(path, directory)
       def lookupNameUnchecked(name: String, directory: Boolean) = lookupName(path, directory)
 
-      def iterator = elements
-
       def absolute = unsupported("absolute() is unsupported")
       def create = unsupported("create() is unsupported")
       def delete = unsupported("create() is unsupported")
@@ -244,13 +242,12 @@ object BundleClassPathBuilder {
        */
       def isDirectory: Boolean = false
       override def sizeOption: Option[Int] = Some(bundle.getEntry(fullName).openConnection().getContentLength())
-      override def elements: Iterator[AbstractFile] = Iterator.empty
       def lookupName(name: String, directory: Boolean): AbstractFile = null
 
       override def lookupPathUnchecked(path: String, directory: Boolean) = lookupPath(path, directory)
       def lookupNameUnchecked(name: String, directory: Boolean) = lookupName(path, directory)
 
-      def iterator = elements
+      def iterator = Iterator.empty
 
       def absolute = unsupported("absolute() is unsupported")
       def create = unsupported("create() is unsupported")
