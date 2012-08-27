@@ -46,6 +46,7 @@
       <groupId>org.fusesource.scalate</groupId>
       <artifactId>scalate-util</artifactId>
       <version>${project.version}</version>
+      <type>bundle</type>
     </dependency>
 
     <dependency>
