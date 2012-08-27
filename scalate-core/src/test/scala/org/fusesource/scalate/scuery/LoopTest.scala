@@ -47,6 +47,7 @@ class LoopTest extends FunSuiteSupport {
   </html>
 
 
+  /*
   test("loop using new transformer on each person") {
     object transformer1 extends Transformer {
       $(".person") { node =>
@@ -61,6 +62,7 @@ class LoopTest extends FunSuiteSupport {
     }
     assertTransformed(transformer1(xml))
   }
+  */
 
   test("loop using new Transform statement on each person") {
     object transformer2 extends Transformer {
