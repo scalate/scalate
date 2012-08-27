@@ -19,7 +19,7 @@ package org.fusesource.scalate.support
 
 import org.fusesource.scalate._
 import osgi.{BundleHeaders, BundleClassPathBuilder, BundleClassLoader}
-import scala.tools.nsc.interactive.Global
+import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.io.AbstractFile
 import scala.tools.nsc.reporters.ConsoleReporter
@@ -95,7 +95,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     }
   }
 
-  override def shutdown() = compiler.askShutdown()
+  override def shutdown() = Unit // = compiler.askShutdown()
 
   private def errorHandler(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 
@@ -153,7 +153,7 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
       createClassPath(super.classPath)
     }
 
-    override def rootLoader = new loaders.JavaPackageLoader(internalClassPath.asInstanceOf[ClassPath[AbstractFile]])
+    override def classPath = internalClassPath
 
     def createClassPath[T](original: ClassPath[T]) = {
       var result = ListBuffer(original)
