@@ -778,57 +778,51 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         }
 
       case e: CompilerException =>
-        // TODO: figure out why scala.tools.nsc.Global sometimes returns
-        // false compile errors that go away if you redo
-        if (attempt == 0) {
-          compileAndLoad(source, extraBindings, 1)
-        } else {
-          // Translate the scala error location info
-          // to the template locations..
-          def template_pos(pos:Position) = {
-            pos match {
-              case p:OffsetPosition => {
-                val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
-                if( filtered.isEmpty ) {
-                  null
+        // Translate the scala error location info
+        // to the template locations..
+        def template_pos(pos:Position) = {
+          pos match {
+            case p:OffsetPosition => {
+              val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
+              if( filtered.isEmpty ) {
+                null
+              } else {
+                val (key,value) = filtered.last
+                // TODO: handle the case where the line is different too.
+                val colChange = pos.column - key.column
+                if( colChange >=0 ) {
+                  OffsetPosition(value.source, value.offset+colChange)
                 } else {
-                  val (key,value) = filtered.last
-                  // TODO: handle the case where the line is different too.
-                  val colChange = pos.column - key.column
-                  if( colChange >=0 ) {
-                    OffsetPosition(value.source, value.offset+colChange)
-                  } else {
-                    pos
-                  }
+                  pos
                 }
               }
-              case _=> null
             }
+            case _=> null
           }
+        }
 
-          var newmessage = "Compilation failed:\n"
-          val errors = e.errors.map {
-            (olderror) =>
-              val uri = source.uri
-              val pos =  template_pos(olderror.pos)
-              if( pos==null ) {
-                newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
-                newmessage += olderror.pos.longString+"\n"
-                olderror
-              } else {
-                newmessage += uri+":"+pos+" "+olderror.message+"\n"
-                newmessage += pos.longString+"\n"
-                // TODO should we pass the source?
-                CompilerError(uri, olderror.message, pos, olderror)
-              }
-          }
-          error(e)
-          if (e.errors.isEmpty) {
-            throw e
-          }
-          else {
-            throw new CompilerException(newmessage, errors)
-          }
+        var newmessage = "Compilation failed:\n"
+        val errors = e.errors.map {
+          (olderror) =>
+            val uri = source.uri
+            val pos =  template_pos(olderror.pos)
+            if( pos==null ) {
+              newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
+              newmessage += olderror.pos.longString+"\n"
+              olderror
+            } else {
+              newmessage += uri+":"+pos+" "+olderror.message+"\n"
+              newmessage += pos.longString+"\n"
+              // TODO should we pass the source?
+              CompilerError(uri, olderror.message, pos, olderror)
+            }
+        }
+        error(e)
+        if (e.errors.isEmpty) {
+          throw e
+        }
+        else {
+          throw new CompilerException(newmessage, errors)
         }
       case e: InvalidSyntaxException =>
         e.source = source
