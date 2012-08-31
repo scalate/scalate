@@ -194,7 +194,14 @@ case class URLResource(url: URL) extends WriteableResource {
 case class SourceResource(uri: String, source: Source) extends TextResource {
   override def text = {
     val builder = new StringBuilder
-    for (c <- source) {
+    val s: Source = source.pos match {
+      case 0 => source
+      case _ => {
+        source.close()
+        source.reset()
+      }
+    }
+    for (c <- s) {
       builder.append(c)
     }
     builder.toString
