@@ -102,6 +102,7 @@
     <scala-plugin-version>2.15.0</scala-plugin-version>
     <tomcat-plugin-version>1.1</tomcat-plugin-version>
     <war-plugin-version>2.1.1</war-plugin-version>
+    <buildhelper-plugin-version>1.7</buildhelper-plugin-version>
 
 
     <!-- osgi settings -->
@@ -566,6 +567,25 @@
           <useFile>${test.useFile}</useFile>
           <failIfNoTests>false</failIfNoTests>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${buildhelper-plugin-version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
