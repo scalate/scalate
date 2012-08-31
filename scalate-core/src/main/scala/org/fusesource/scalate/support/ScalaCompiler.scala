@@ -55,7 +55,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
-  val compiler = new Global(settings, null)
+  val compiler = createCompiler(settings)
 
   def compile(file: File): Unit = {
     synchronized {
@@ -140,6 +140,10 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     //settings.make.value = "transitivenocp"
     settings
   }
+
+  protected def createCompiler(settings: Settings): Global = {
+    new Global(settings, null)
+  }
 }
 
 class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
@@ -147,27 +151,29 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
 
   debug("Using OSGi-enabled Scala compiler")
 
-  override val compiler = new Global(settings, null) {
-    lazy val internalClassPath = {
-      require(!forMSIL, "MSIL not supported")
-      createClassPath(super.classPath)
-    }
+  override protected def createCompiler(settings: Settings) = {
+    new Global(settings, null) {
+        lazy val internalClassPath = {
+          require(!forMSIL, "MSIL not supported")
+          createClassPath(super.classPath)
+        }
 
-    override def rootLoader = new loaders.JavaPackageLoader(internalClassPath.asInstanceOf[ClassPath[AbstractFile]])
+        override def rootLoader = new loaders.JavaPackageLoader(internalClassPath.asInstanceOf[ClassPath[AbstractFile]])
 
-    def createClassPath[T](original: ClassPath[T]) = {
-      var result = ListBuffer(original)
-      val files = List.concat(
-        BundleClassPathBuilder.fromBundle(bundle),
-        List(BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[scala.Application].getClassLoader).get.getBundle),
-             BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ScalaCompiler].getClassLoader).get.getBundle),
-             BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ClassPathBuilder].getClassLoader).get.getBundle)))
-      files.foreach(file => {
-        debug("Adding bundle " + file + " to the Scala compiler classpath")
-        result += original.context.newClassPath(file)
-      })
-      new MergedClassPath(result.toList.reverse, original.context)
-    }
+        def createClassPath[T](original: ClassPath[T]) = {
+          var result = ListBuffer(original)
+          val files = List.concat(
+            BundleClassPathBuilder.fromBundle(bundle),
+            List(BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[scala.Application].getClassLoader).get.getBundle),
+                 BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ScalaCompiler].getClassLoader).get.getBundle),
+                 BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ClassPathBuilder].getClassLoader).get.getBundle)))
+          files.foreach(file => {
+            debug("Adding bundle " + file + " to the Scala compiler classpath")
+            result += original.context.newClassPath(file)
+          })
+          new MergedClassPath(result.toList.reverse, original.context)
+        }
+      }
   }
 
   override protected def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
