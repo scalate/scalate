@@ -18,6 +18,7 @@
 package org.fusesource.scalate.util
 
 import java.lang.reflect.Constructor
+import scala.reflect.ClassTag
 
 /**
  * Helper object for working with objects using reflection
@@ -42,7 +43,7 @@ object Objects {
     value
   }
 
-  def assertInjected[T <: AnyRef](value: T)(implicit m: ClassManifest[T]): T = notNull(value, "Value of type " + m.erasure.getName + " has not been injected!")
+  def assertInjected[T <: AnyRef](value: T)(implicit m: ClassTag[T]): T = notNull(value, "Value of type " + m.runtimeClass.getName + " has not been injected!")
 
   /**
    * Instantiates the given object class using the possible list of values to be injected.
