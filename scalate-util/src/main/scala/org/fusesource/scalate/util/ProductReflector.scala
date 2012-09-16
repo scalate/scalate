@@ -39,9 +39,9 @@ object ProductReflector {
     c.getMethods.toList.filter {
       n =>
         (n.getParameterTypes.size == 0) &&
-                (n.getDeclaringClass != classOf[Object]) &&
-                (!predefined.exists(_ == n.getName))
-
+          (n.getDeclaringClass != classOf[Object]) &&
+          !predefined.exists(_ == n.getName) &&
+          !n.getName.matches("_\\d+") 
     }
   }
 }
