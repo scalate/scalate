@@ -82,7 +82,6 @@ class ParserTest extends ParserTestSupport {
     expect(1) {count(classOf[ScriptletFragment])}
     expect(1) {count(classOf[DollarExpressionFragment])}
     expect(1) {count(classOf[ExpressionFragment])}
-    lines
   }
 
   test("parse valid SSP files without newlines") {
@@ -115,7 +114,6 @@ class ParserTest extends ParserTestSupport {
   </body>
 </html>
 """)
-    lines
   }
 
   test("parse simple valid SSP files") {

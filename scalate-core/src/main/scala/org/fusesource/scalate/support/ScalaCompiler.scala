@@ -23,7 +23,8 @@ import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.io.AbstractFile
 import scala.tools.nsc.reporters.ConsoleReporter
-import scala.tools.nsc.util._
+import scala.tools.nsc.util.{ClassPath, MergedClassPath}
+import scala.reflect.internal.util.{Position, NoPosition, FakePos}
 import scala.util.parsing.input.OffsetPosition
 import collection.mutable.ListBuffer
 import org.osgi.framework.Bundle
