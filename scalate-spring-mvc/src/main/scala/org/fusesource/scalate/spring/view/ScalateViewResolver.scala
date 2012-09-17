@@ -18,16 +18,28 @@
 package org.fusesource.scalate.spring.view
 
 import java.util.Locale
+
 import org.springframework.web.servlet.View
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver
 import org.springframework.web.servlet.view.AbstractUrlBasedView
+import org.springframework.web.context.ServletConfigAware
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import javax.servlet.ServletConfig
 
-class ScalateViewResolver() extends AbstractTemplateViewResolver {
+class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletConfigAware {
+
+  var templateEngine: ServletTemplateEngine = _
+
+  override def setServletConfig(config: ServletConfig) {
+    val ste = new ServletTemplateEngine(config)
+    ServletTemplateEngine(config.getServletContext()) = ste
+    templateEngine = ste;
+  }
 
   setViewClass(requiredViewClass())
 
   override def requiredViewClass(): java.lang.Class[_] = classOf[org.fusesource.scalate.spring.view.ScalateView]
-  
+
   override def buildView(viewName: String): AbstractUrlBasedView = {
     var view: AbstractScalateView = null
 
@@ -42,6 +54,8 @@ class ScalateViewResolver() extends AbstractTemplateViewResolver {
       urlView.setUrl(getPrefix() + viewName + getSuffix())
       view = urlView
     }
+
+    view.templateEngine = templateEngine
 
     val contentType = getContentType
     if (contentType != null) {
