@@ -552,11 +552,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
         def write_expression(expression: Any) = {
           expression match {
-            case s: String => s
-            this << asString(s)
-            case s: Text => s
-            this << s.pos
-            this << asString(s)
+            case s: String =>
+              this << asString(s)
+            case s: Text =>
+              this << s.pos
+              this << asString(s)
             case s: LiteralText =>
               this << s.pos
               var literal = true;

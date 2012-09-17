@@ -19,6 +19,7 @@ package org.fusesource.scalate
 
 import scala.util.parsing.input.Positional
 import ssp.SspParser
+import scala.reflect.ClassTag
 
 /**
  * Describes a variable binding that a Scalate template defines.
@@ -58,6 +59,6 @@ object Binding {
           importMembers: Boolean = false,
           defaultValue: Option[String] = None,
           kind: String = "val",
-          isImplicit: Boolean = false)(implicit m: Manifest[T]) =
-    new Binding(name, m.erasure.getName, importMembers, defaultValue, kind, isImplicit)
+          isImplicit: Boolean = false)(implicit m: ClassTag[T]) =
+    new Binding(name, m.runtimeClass.getName, importMembers, defaultValue, kind, isImplicit)
 }

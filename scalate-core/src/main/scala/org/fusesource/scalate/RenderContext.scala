@@ -29,6 +29,7 @@ import java.text.{DateFormat, NumberFormat}
 import java.util.{Locale, Date}
 import xml.{Node, PCData, NodeSeq, NodeBuffer}
 import collection.mutable.{ListMap, LinkedHashSet, ListBuffer, HashMap}
+import reflect.ClassTag
 
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
@@ -200,8 +201,8 @@ trait RenderContext {
    * Creates an instance of the given given type using dependency injection to inject the necessary values into
    * the object
    */
-  def inject[T](implicit manifest: Manifest[T]): T = {
-    val clazz = manifest.erasure
+  def inject[T](implicit manifest: ClassTag[T]): T = {
+    val clazz = manifest.runtimeClass
     Objects.tryInstantiate(clazz, List(this)) match {
       case Some(t) => t.asInstanceOf[T]
       case _ => throw new NoInjectionException(clazz)
