@@ -158,15 +158,13 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
           createClassPath(super.classPath)
         }
 
+        override def classPath = internalClassPath
+        
         override def rootLoader = new loaders.JavaPackageLoader(internalClassPath.asInstanceOf[ClassPath[AbstractFile]])
 
         def createClassPath[T](original: ClassPath[T]) = {
           var result = ListBuffer(original)
-          val files = List.concat(
-            BundleClassPathBuilder.fromBundle(bundle),
-            List(BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[scala.Application].getClassLoader).get.getBundle),
-                 BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ScalaCompiler].getClassLoader).get.getBundle),
-                 BundleClassPathBuilder.create(BundleClassLoader.unapply(classOf[ClassPathBuilder].getClassLoader).get.getBundle)))
+          val files = BundleClassPathBuilder.fromBundle(bundle)
           files.foreach(file => {
             debug("Adding bundle " + file + " to the Scala compiler classpath")
             result += original.context.newClassPath(file)
