@@ -110,7 +110,9 @@ class SiteGenerator {
             }
             catch {
               case e: NoValueSetException => info(e.getMessage + ". Ignored template file due to missing attributes: " + file.getCanonicalPath)
-              case e => throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
+              case e: VirtualMachineError => throw e
+              case e: ThreadDeath => throw e
+              case e: Throwable => throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
             }
           } else {
             // let's copy the file across if its not a template

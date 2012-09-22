@@ -46,7 +46,7 @@ case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeas
       try {
         apply(text.toDouble, defaultExpression)
       } catch {
-        case e => log.debug("Could not convert " + text + " to a number: " + e, e)
+        case e: Exception => log.debug("Could not convert " + text + " to a number: " + e, e)
         defaultExpression
       }
     case _ => defaultExpression
