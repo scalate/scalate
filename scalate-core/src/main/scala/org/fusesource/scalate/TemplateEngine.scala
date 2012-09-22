@@ -894,11 +894,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           throw e
         } else {
           // Try without the package prefix.
-          try {
-            cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
-          } catch {
-            case _ => throw e
-          }
+          cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
         }
     }
     return clazz.asInstanceOf[Class[Template]].newInstance
