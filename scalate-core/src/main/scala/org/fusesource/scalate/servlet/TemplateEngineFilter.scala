@@ -108,20 +108,15 @@ class TemplateEngineFilter extends Filter {
     errorUris.find( x=>findTemplate(x).isDefined ) match {
       case Some(template)=>
         val context = new ServletRenderContext(engine, request, response, config.getServletContext)
-        try {
-          context.include(template, true)
-          // since we directly rendered the error page.. remove the attributes
-          // since they screw /w tomcat.
-          request.removeAttribute("javax.servlet.error.exception")
-          request.removeAttribute("javax.servlet.error.exception_type")
-          request.removeAttribute("javax.servlet.error.message")
-          request.removeAttribute("javax.servlet.error.request_uri")
-          request.removeAttribute("javax.servlet.error.servlet_name")
-          request.removeAttribute("javax.servlet.error.status_code")
-        } catch {
-          case _ =>
-            throw e;
-        }
+        context.include(template, true)
+	    // since we directly rendered the error page.. remove the attributes
+	    // since they screw /w tomcat.
+	    request.removeAttribute("javax.servlet.error.exception")
+	    request.removeAttribute("javax.servlet.error.exception_type")
+	    request.removeAttribute("javax.servlet.error.message")
+	    request.removeAttribute("javax.servlet.error.request_uri")
+	    request.removeAttribute("javax.servlet.error.servlet_name")
+	    request.removeAttribute("javax.servlet.error.status_code")
       case None =>
         throw e;
     }
