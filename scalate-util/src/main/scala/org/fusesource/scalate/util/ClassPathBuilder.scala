@@ -105,7 +105,7 @@ class ClassPathBuilder {
         }
       }
       catch {
-        case e => // ignore any errors probably due to non-jar
+        case e: Exception => // ignore any errors probably due to non-jar
           debug(e, "Ignoring exception trying to open jar file: %s", f)
       }
     }

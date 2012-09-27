@@ -20,13 +20,17 @@ object Boots {
     val o = try {
       Objects.instantiate(clazz, injectionParameters).asInstanceOf[Boot]
     } catch {
-      case e => throw new TemplateException("Failed to create the instance of class " + bootClassName, e)
+      case e: VirtualMachineError => throw e
+      case e: ThreadDeath => throw e      
+      case e: Throwable => throw new TemplateException("Failed to create the instance of class " + bootClassName, e)
     }
 
     try {
       o.run
     } catch {
-      case e => throw new TemplateException("Failed to invoke " + bootClassName + ".run() : " + e, e)
+      case e: VirtualMachineError => throw e
+      case e: ThreadDeath => throw e   
+      case e: Throwable => throw new TemplateException("Failed to invoke " + bootClassName + ".run() : " + e, e)
     }
   }
 }

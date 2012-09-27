@@ -180,7 +180,9 @@ case class URLResource(url: URL) extends WriteableResource {
           case e: URISyntaxException => f = new File(url.getPath)
         }
       } catch {
-        case e => debug(e, "While converting " + url + " to a File I caught: " + e)
+  	    case e: ThreadDeath => throw e
+  	    case e: VirtualMachineError => throw e
+        case e: Exception => debug(e, "While converting " + url + " to a File I caught: " + e)
       }
     }
     if (f != null && f.exists && f.isFile) {

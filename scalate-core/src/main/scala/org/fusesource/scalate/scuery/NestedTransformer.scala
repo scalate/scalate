@@ -54,7 +54,7 @@ class NestedTransformer {
       childTransform(nodes, ancestors)
     }
     catch {
-      case e => threadLocal.set(currentTransform)
+      case e: Throwable => threadLocal.set(currentTransform)
       throw e
 
     }

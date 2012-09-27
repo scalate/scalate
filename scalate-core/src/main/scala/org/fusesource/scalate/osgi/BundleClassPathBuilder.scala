@@ -118,7 +118,7 @@ object BundleClassPathBuilder {
        */
       def lastModified: Long =
         try { url.openConnection.getLastModified }
-        catch { case _ => 0 }
+        catch { case _: Exception => 0 }
 
       @throws(classOf[IOException])
       def container: AbstractFile =

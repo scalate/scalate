@@ -149,7 +149,7 @@ object IOUtil {
       try {
         c.close
       } catch {
-        case _ => // ignore
+        case _: Exception => // ignore
       }
     }
   }
