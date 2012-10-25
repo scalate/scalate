@@ -22,7 +22,7 @@ import scala.tools.nsc.io.AbstractFile
 import java.net.URL
 import java.lang.String
 import org.osgi.framework.{ServiceReference, Bundle}
-import collection.mutable.ListBuffer
+import collection.mutable.{ListBuffer,LinkedHashSet}
 import org.osgi.service.packageadmin.PackageAdmin
 import org.fusesource.scalate.util.{Log, Strings}
 
@@ -76,7 +76,7 @@ object BundleClassPathBuilder {
                                                                                                                                                                 
   def fromWires(admin: PackageAdmin, bundle: Bundle) : List[AbstractFile] = {
     val exported = admin.getExportedPackages(null : Bundle)
-    val list = new ListBuffer[Bundle]
+    val set = new LinkedHashSet[Bundle]
     for (pkg <- exported; if pkg.getExportingBundle.getBundleId != 0) {
         val bundles = pkg.getImportingBundles();
         if (bundles != null) {
@@ -85,12 +85,12 @@ object BundleClassPathBuilder {
               if (b.getBundleId == 0) {
                 debug("Ignoring system bundle")
               } else {
-                list += pkg.getExportingBundle
+                set += pkg.getExportingBundle
               }
             }
         }
     }
-    list.map(create(_)).toList
+    set.map(create(_)).toList
   }
 
 
@@ -118,7 +118,7 @@ object BundleClassPathBuilder {
        */
       def lastModified: Long =
         try { url.openConnection.getLastModified }
-        catch { case _ => 0 }
+        catch { case _: Exception => 0 }
 
       @throws(classOf[IOException])
       def container: AbstractFile =

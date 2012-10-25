@@ -180,7 +180,9 @@ case class URLResource(url: URL) extends WriteableResource {
           case e: URISyntaxException => f = new File(url.getPath)
         }
       } catch {
-        case e => debug(e, "While converting " + url + " to a File I caught: " + e)
+  	    case e: ThreadDeath => throw e
+  	    case e: VirtualMachineError => throw e
+        case e: Exception => debug(e, "While converting " + url + " to a File I caught: " + e)
       }
     }
     if (f != null && f.exists && f.isFile) {
@@ -194,7 +196,14 @@ case class URLResource(url: URL) extends WriteableResource {
 case class SourceResource(uri: String, source: Source) extends TextResource {
   override def text = {
     val builder = new StringBuilder
-    for (c <- source) {
+    val s: Source = source.pos match {
+      case 0 => source
+      case _ => {
+        source.close()
+        source.reset()
+      }
+    }
+    for (c <- s) {
       builder.append(c)
     }
     builder.toString
