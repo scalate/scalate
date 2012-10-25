@@ -121,7 +121,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
             TemplateEngineServlet.render(uri, engine, servletContext, request, response)
             notFound = false            
           } catch {
-            case _ =>
+            case _: Exception =>
           }
         }
         if (notFound) {

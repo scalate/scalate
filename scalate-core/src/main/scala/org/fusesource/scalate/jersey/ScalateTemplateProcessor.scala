@@ -183,7 +183,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
 
             notFound = false
           } catch {
-            case _ =>
+            case _: Exception =>
           }
         }
         if (notFound) {
