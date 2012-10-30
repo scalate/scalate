@@ -22,9 +22,11 @@ import osgi.{BundleHeaders, BundleClassPathBuilder, BundleClassLoader}
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.io.AbstractFile
-import scala.tools.nsc.reporters.ConsoleReporter
+import scala.tools.nsc.backend.JavaPlatform
+import tools.nsc.reporters.{Reporter, ConsoleReporter}
 import scala.tools.nsc.util.{ClassPath, MergedClassPath}
 import scala.reflect.internal.util.{Position, NoPosition, FakePos}
+import scala.runtime.ByteRef
 import scala.util.parsing.input.OffsetPosition
 import collection.mutable.ListBuffer
 import org.osgi.framework.Bundle
@@ -56,33 +58,41 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
-  val compiler = createCompiler(settings)
+  val messageCollector = new StringWriter
+  val messageCollectorWrapper = new PrintWriter(messageCollector)
+
+  class LoggingReporter(settings: scala.tools.nsc.Settings, reader: java.io.BufferedReader,
+      writer: java.io.PrintWriter) extends ConsoleReporter(settings, reader, writer) {
+
+    var messages = List[CompilerError]()
+
+    def clear() = messages.drop(messages.size)
+
+    override def printMessage(posIn: Position, msg: String) {
+      val pos = if (posIn eq null) NoPosition
+      else if (posIn.isDefined) posIn.inUltimateSource(posIn.source)
+      else posIn
+      pos match {
+        case FakePos(fmsg) =>
+          super.printMessage(posIn, msg);
+        case NoPosition =>
+          super.printMessage(posIn, msg);
+        case _ =>
+          messages = CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point)) :: messages
+          super.printMessage(posIn, msg);
+      }
+
+    }
+  }
+
+  val reporter = new LoggingReporter(settings, Console.in, messageCollectorWrapper)
+
+  val compiler = createCompiler(settings, reporter)
 
   def compile(file: File): Unit = {
     synchronized {
-      val messageCollector = new StringWriter
-      val messageCollectorWrapper = new PrintWriter(messageCollector)
 
-      var messages = List[CompilerError]()
-      val reporter = new ConsoleReporter(settings, Console.in, messageCollectorWrapper) {
-
-        override def printMessage(posIn: Position, msg: String) {
-          val pos = if (posIn eq null) NoPosition
-                    else if (posIn.isDefined) posIn.inUltimateSource(posIn.source)
-                    else posIn
-          pos match {
-            case FakePos(fmsg) =>
-              super.printMessage(posIn, msg);
-            case NoPosition =>
-              super.printMessage(posIn, msg);
-            case _ =>
-              messages = CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point)) :: messages
-              super.printMessage(posIn, msg);
-          }
-
-        }
-      }
-      compiler.reporter = reporter
+      reporter.clear()
 
       // Attempt compilation
       (new compiler.Run).compile(List(file.getCanonicalPath))
@@ -91,7 +101,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       if (reporter.hasErrors) {
         reporter.printSummary
         messageCollectorWrapper.close
-        throw new CompilerException("Compilation failed:\n" +messageCollector, messages)
+        throw new CompilerException("Compilation failed:\n" +messageCollector, reporter.messages)
       }
     }
   }
@@ -110,6 +120,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
             .addPathFromContextClassLoader()
             .addPathFrom(classOf[Product])
             .addPathFrom(classOf[Global])
+            .addPathFrom(classOf[ByteRef])
             .addPathFrom(getClass)
             .addPathFromSystemClassLoader()
             .addJavaPath()
@@ -137,13 +148,12 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     settings.dependenciesFile.value = "none"
     settings.debug.value = false
 
-    // TODO not sure if these changes make much difference?
-    //settings.make.value = "transitivenocp"
     settings
   }
 
-  protected def createCompiler(settings: Settings): Global = {
-    new Global(settings, null)
+  protected def createCompiler(settings: Settings, reporter: Reporter): Global = {
+    debug("creating non-OSGi compiler")
+    new Global(settings, reporter)
   }
 }
 
@@ -152,25 +162,33 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
 
   debug("Using OSGi-enabled Scala compiler")
 
-  override protected def createCompiler(settings: Settings) = {
-    new Global(settings, null) {
-        lazy val internalClassPath = {
-          require(!forMSIL, "MSIL not supported")
-          createClassPath(super.classPath)
-        }
+  override protected def createCompiler(settings: Settings, reporter: Reporter) = {
+    debug("creating OSGi compiler")
 
-	    override def classPath = internalClassPath
-	
-	    def createClassPath[T](original: ClassPath[T]) = {
-	      var result = ListBuffer(original)
-	      val files = BundleClassPathBuilder.fromBundle(bundle)
-	      files.foreach(file => {
-	        debug("Adding bundle " + file + " to the Scala compiler classpath")
-	        result += original.context.newClassPath(file)
-	      })
-	      new MergedClassPath(result.toList.reverse, original.context)
-	    }
+    new Global(settings, reporter) { self =>
+
+      override lazy val platform: ThisPlatform = {
+        new { val global: self.type = self } with JavaPlatform {
+          override lazy val classPath = {
+            createClassPath[AbstractFile](super.classPath)
+          }
+        }
+      }
+
+      override def classPath = platform.classPath
+
+      def createClassPath[T](original: ClassPath[T]) = {
+        var result = ListBuffer(original)
+        val files = BundleClassPathBuilder.fromBundle(bundle)
+        files.foreach(file => {
+          debug("Adding bundle " + file + " to the Scala compiler classpath")
+          result += original.context.newClassPath(file)
+        })
+        new MergedClassPath(result.toList.reverse, original.context)
+      }
+
     }
+
   }
 
   override protected def generateSettings(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean): Settings = {
