@@ -674,23 +674,9 @@
         </repository>
 
         <repository>
-          <id>scala</id>
-          <name>Scala Tools</name>
-          <!--
-                    <url>http://nexus.scala-tools.org/content/repositories/releases</url>
-          -->
-          <url>http://scala-tools.org/repo-releases</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-        </repository>
-        <repository>
-          <id>snapshots.scala-tools.org</id>
-          <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots</url>
+          <id>sonatype-oss-snapshots</id>
+          <name>Sonatype OSS Snapshots</name>
+          <url>http://oss.sonatype.org/content/repositories/snapshots</url>
           <snapshots>
             <enabled>true</enabled>
             <checksumPolicy>fail</checksumPolicy>
@@ -736,31 +722,15 @@
 
       <pluginRepositories>
         <pluginRepository>
-          <id>scala</id>
-          <name>Scala Tools</name>
-          <!--
-                    <url>http://nexus.scala-tools.org/content/repositories/releases</url>
-          -->
-          <url>http://scala-tools.org/repo-releases</url>
+          <id>sonatype-oss-snapshots</id>
+          <name>Sonatype OSS Snapshots</name>
+          <url>http://oss.sonatype.org/content/repositories/snapshots</url>
           <releases>
             <enabled>true</enabled>
           </releases>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-          <id>snapshots.scala-tools.org</id>
-          <name>Scala-Tools Maven2 Snapshot Repository</name>
-          <url>http://scala-tools.org/repo-snapshots</url>
-          <snapshots>
-            <enabled>true</enabled>
-            <checksumPolicy>fail</checksumPolicy>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-            <checksumPolicy>fail</checksumPolicy>
-          </releases>
         </pluginRepository>
 
         <!-- TODO remove ASAP! for now use the 2.1 staging release of the mvn release plugin until its released -->
