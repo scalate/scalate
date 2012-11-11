@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.filter
+package org.fusesource.scalate.filter.markdownj
 
 /**
  * Copyright (C) 2009-2010 the original author or authors.
@@ -36,6 +36,7 @@ package org.fusesource.scalate.filter
  */
 import com.petebevin.markdown.MarkdownProcessor
 import org.fusesource.scalate.{RenderContext, TemplateEngine, TemplateEngineAddOn}
+import org.fusesource.scalate.filter.Filter
 
 /**
  * Renders markdown syntax.
