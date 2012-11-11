@@ -99,7 +99,7 @@
 -->
     <surefire-plugin-version>2.6</surefire-plugin-version>
     <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
-    <scala-plugin-version>2.15.0</scala-plugin-version>
+    <scala-plugin-version>3.1.0</scala-plugin-version>
     <tomcat-plugin-version>1.1</tomcat-plugin-version>
     <war-plugin-version>2.1.1</war-plugin-version>
     <buildhelper-plugin-version>1.7</buildhelper-plugin-version>
@@ -299,8 +299,8 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.scala-tools</groupId>
-          <artifactId>maven-scala-plugin</artifactId>
+          <groupId>net.alchim31.maven</groupId>
+          <artifactId>scala-maven-plugin</artifactId>
           <version>${scala-plugin-version}</version>
           <executions>
             <execution>
@@ -330,6 +330,7 @@
               <arg>-deprecation</arg>
             </args>
             <scalaVersion>${scala-version}</scalaVersion>
+            <recompileMode>incremental</recompileMode>
           </configuration>
         </plugin>
 
@@ -471,8 +472,8 @@
 
     <plugins>
       <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -544,8 +545,8 @@
               </reports>
             </plugin>
             <plugin>
-              <groupId>org.scala-tools</groupId>
-              <artifactId>maven-scala-plugin</artifactId>
+              <groupId>net.alchim31.maven</groupId>
+              <artifactId>scala-maven-plugin</artifactId>
               <configuration>
                 <scalaVersion>${scala-version}</scalaVersion>
               </configuration>
@@ -764,8 +765,8 @@
       <reporting>
         <plugins>
           <plugin>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
             <configuration>
               <scalaVersion>${scala-version}</scalaVersion>
             </configuration>
@@ -792,8 +793,8 @@
 
           <!-- Generate the Scala Docs so that they can be included in the javadoc artifact -->
           <plugin>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
             <version>${scala-plugin-version}</version>
             <executions>
               <execution>
@@ -833,8 +834,8 @@
 
           <!-- Generate the Scala Docs so that they can be included in the javadoc artifact -->
           <plugin>
-            <groupId>org.scala-tools</groupId>
-            <artifactId>maven-scala-plugin</artifactId>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
             <version>${scala-plugin-version}</version>
             <executions>
               <execution>
