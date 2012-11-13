@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.filter
+package org.fusesource.scalate.filter.less
 
 import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
 import com.asual.lesscss.LessEngine
+import org.fusesource.scalate.filter.Filter
 
 /**
  * Renders Less syntax.
