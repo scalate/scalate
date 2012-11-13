@@ -37,7 +37,7 @@ package org.fusesource.scalate.maven;
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.artifact.manager.WagonConfigurationException;
+import org.apache.maven.repository.legacy.WagonConfigurationException;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;

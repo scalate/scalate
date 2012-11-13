@@ -79,7 +79,9 @@
     <scalatest-version>1.6.1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
-    <scalamd-version>1.5</scalamd-version>
+    <!-- Temporary, upstream is org.fusesource.scalamd -->
+    <scalamd.groupId>org.scalatra</scalamd.groupId>
+    <scalamd-version>1.6-SNAPSHOT</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
     <wikitext-version>1.4-SNAPSHOT</wikitext-version>
@@ -90,7 +92,11 @@
     <changes-plugin-version>2.3</changes-plugin-version>
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
-    <mvnplugins-version>1.16</mvnplugins-version>
+
+    <!-- Temporary, upstream is com.jsuereth -->
+    <scala-mojo-support.groupId>${scalamd.groupId}</scala-mojo-support.groupId>
+    <scala-mojo-support.artifactId>scala-mojo-support_2.9</scala-mojo-support.artifactId>
+    <scala-mojo-support.version>0.5-SNAPSHOT</scala-mojo-support.version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
 

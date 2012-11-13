@@ -54,7 +54,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalamd</groupId>
+      <groupId>${scalamd.groupId}</groupId>
       <artifactId>scalamd</artifactId>
       <version>${scalamd-version}</version>
     </dependency>
