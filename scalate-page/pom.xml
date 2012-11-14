@@ -61,7 +61,7 @@
     
     <dependency>
       <groupId>${scalamd.groupId}</groupId>
-      <artifactId>scalamd</artifactId>
+      <artifactId>scalamd_2.9</artifactId>
       <version>${scalamd-version}</version>
     </dependency>
     

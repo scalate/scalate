@@ -79,8 +79,7 @@
     <scalatest-version>1.6.1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
-    <!-- Temporary, upstream is org.fusesource.scalamd -->
-    <scalamd.groupId>org.scalatra</scalamd.groupId>
+    <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
     <scalamd-version>1.6-SNAPSHOT</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
