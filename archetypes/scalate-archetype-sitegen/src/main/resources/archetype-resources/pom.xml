@@ -49,12 +49,12 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-wikitext</artifactId>
+      <artifactId>scalate-wikitext_2.10.0-RC2</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page</artifactId>
+      <artifactId>scalate-page_2.10.0-RC2</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
@@ -203,7 +203,7 @@
 
       <plugin>
         <groupId>org.fusesource.scalate</groupId>
-        <artifactId>maven-scalate-plugin</artifactId>
+        <artifactId>maven-scalate-plugin_2.10.0-RC2</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>

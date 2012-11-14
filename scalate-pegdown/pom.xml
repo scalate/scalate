@@ -22,11 +22,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project</artifactId>
+    <artifactId>scalate-project_2.10.0-RC2</artifactId>
     <version>1.6.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-pegdown</artifactId>
+  <artifactId>scalate-pegdown_2.10.0-RC2</artifactId>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>
@@ -39,7 +39,7 @@
 
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-core_2.10.0-RC2</artifactId>
       <version>${project.version}</version>
     </dependency>
     
@@ -52,7 +52,7 @@
     <!-- testing -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test</artifactId>
+      <artifactId>scalate-test_2.10.0-RC2</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

@@ -74,8 +74,8 @@ class MustacheParser extends RegexParsers  {
 
   def someText = upto(open)
 
-  def statement = guarded(open, unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
-          failure("invalid statement"))
+  def statement = unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
+          failure("invalid statement")
 
   def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
 
@@ -157,12 +157,7 @@ class MustacheParser extends RegexParsers  {
   def eval[T](p: => Parser[T]):Parser[T] = Parser{ in => p(in) }
 
   def upto[T](p: Parser[T]): Parser[Text] = text("""\z""".r) ~ failure("end of file") ^^ {null} |
-          guard(p) ^^ {_ => Text("")} |
           rep1(not(p) ~> ".|\r|\n".r) ^^ {t => Text(t.mkString(""))}
-
-
-  /**Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2 */
-  def guarded[T, U](p1: Parser[T], p2: Parser[U]) = guard(p1) ~! p2 ^^ {case _ ~ x => x}
 
   def error(message: String, pos: Position) = {
     throw new InvalidSyntaxException(message, pos);
