@@ -23,11 +23,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate.samples</groupId>
-    <artifactId>samples</artifactId>
+    <artifactId>samples_2.9</artifactId>
     <version>1.6.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-sample-spring-mvc</artifactId>
+  <artifactId>scalate-sample-spring-mvc_2.9</artifactId>
   <packaging>war</packaging>
 
   <name>${project.artifactId}</name>
@@ -41,7 +41,7 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-spring-mvc</artifactId>
+      <artifactId>scalate-spring-mvc_2.9</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

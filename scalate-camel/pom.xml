@@ -22,11 +22,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project</artifactId>
+    <artifactId>scalate-project_2.9</artifactId>
     <version>1.6.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-camel</artifactId>
+  <artifactId>scalate-camel_2.9</artifactId>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>
@@ -40,7 +40,7 @@
     
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core</artifactId>
+      <artifactId>scalate-core_2.9</artifactId>
       <version>${project.version}</version>
     </dependency>
     

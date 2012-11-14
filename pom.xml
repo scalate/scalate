@@ -29,7 +29,7 @@
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project</artifactId>
+  <artifactId>scalate-project_2.9</artifactId>
   <version>1.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -936,7 +936,7 @@
         <plugins>
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin</artifactId>
+            <artifactId>maven-scalate-plugin_2.9</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -955,7 +955,7 @@
       <dependencies>
         <dependency>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel</artifactId>
+          <artifactId>scalate-jrebel_2.9</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>
