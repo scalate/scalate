@@ -58,15 +58,18 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
-  val messageCollector = new StringWriter
-  val messageCollectorWrapper = new PrintWriter(messageCollector)
+  class LoggingReporter(writer: StringWriter = new StringWriter)
+    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
 
-  class LoggingReporter(settings: scala.tools.nsc.Settings, reader: java.io.BufferedReader,
-      writer: java.io.PrintWriter) extends ConsoleReporter(settings, reader, writer) {
+    var compilerErrors: List[CompilerError] = Nil
+    def messages = writer.toString
 
-    var messages = List[CompilerError]()
-
-    def clear() = messages.drop(messages.size)
+    override def reset() {
+      compilerErrors = Nil
+      writer.getBuffer.setLength(0)
+      writer.getBuffer.trimToSize()
+      super.reset()
+    }
 
     override def printMessage(posIn: Position, msg: String) {
       val pos = if (posIn eq null) NoPosition
@@ -78,30 +81,28 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
         case NoPosition =>
           super.printMessage(posIn, msg);
         case _ =>
-          messages = CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point)) :: messages
+          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point))
           super.printMessage(posIn, msg);
       }
 
     }
   }
 
-  val reporter = new LoggingReporter(settings, Console.in, messageCollectorWrapper)
+  private val reporter = new LoggingReporter
 
   val compiler = createCompiler(settings, reporter)
 
   def compile(file: File): Unit = {
     synchronized {
-
-      reporter.clear()
+      reporter.reset()
 
       // Attempt compilation
       (new compiler.Run).compile(List(file.getCanonicalPath))
 
       // Bail out if compilation failed
       if (reporter.hasErrors) {
-        reporter.printSummary
-        messageCollectorWrapper.close
-        throw new CompilerException("Compilation failed:\n" +messageCollector, reporter.messages)
+        reporter.printSummary()
+        throw new CompilerException("Compilation failed:\n" +reporter.messages, reporter.compilerErrors)
       }
     }
   }
