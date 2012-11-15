@@ -93,7 +93,7 @@
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
 
     <!-- Temporary, upstream is com.jsuereth -->
-    <scala-mojo-support.groupId>${scalamd.groupId}</scala-mojo-support.groupId>
+    <scala-mojo-support.groupId>org.scalatra</scala-mojo-support.groupId>
     <scala-mojo-support.artifactId>scala-mojo-support_2.10.0-RC2</scala-mojo-support.artifactId>
     <scala-mojo-support.version>0.5-SNAPSHOT</scala-mojo-support.version>
 <!--
