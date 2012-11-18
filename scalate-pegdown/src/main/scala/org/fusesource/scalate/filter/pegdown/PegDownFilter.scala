@@ -21,23 +21,32 @@ import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngin
 import org.fusesource.scalate.filter.Filter
 import org.pegdown.{Extensions, PegDownProcessor}
 
+object PegDownFilter extends TemplateEngineAddOn {
+
+  /**
+   * Add the markdown filter to the template engine.
+   */
+  def apply(te: TemplateEngine) = {
+    val filter = new PegDownFilter()
+    filter.registerWith(te)
+  }
+}
+
 /**
  * Renders markdown syntax with multi-markdown like extras.
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
-object PegDownFilter extends Filter with TemplateEngineAddOn {
+class PegDownFilter(val extensions: Int = Extensions.ABBREVIATIONS |
+  Extensions.AUTOLINKS |
+  Extensions.DEFINITIONS |
+  Extensions.FENCED_CODE_BLOCKS |
+  Extensions.QUOTES |
+  Extensions.SMARTS |
+  Extensions.TABLES |
+  Extensions.WIKILINKS) extends Filter {
 
-  private val pegDownProcessor = new PegDownProcessor(
-    Extensions.ABBREVIATIONS |
-      Extensions.AUTOLINKS |
-      Extensions.DEFINITIONS |
-      Extensions.FENCED_CODE_BLOCKS |
-      Extensions.QUOTES |
-      Extensions.SMARTS |
-      Extensions.TABLES |
-      Extensions.WIKILINKS
-  )
+  private val pegDownProcessor = new PegDownProcessor(extensions)
 
   def filter(context: RenderContext, content: String) = {
     synchronized {
@@ -46,12 +55,9 @@ object PegDownFilter extends Filter with TemplateEngineAddOn {
     }
   }
 
-  /**
-   * Add the markdown filter to the template engine.
-   */
-  def apply(te: TemplateEngine) = {
-    te.filters += "multimarkdown" -> PegDownFilter
-    te.pipelines += "mmd" -> List(PegDownFilter)
-    te.pipelines += "multimarkdown" -> List(PegDownFilter)
+  def registerWith(te: TemplateEngine) {
+    te.filters += "multimarkdown" -> this
+    te.pipelines += "mmd" -> List(this)
+    te.pipelines += "multimarkdown" -> List(this)
   }
 }
