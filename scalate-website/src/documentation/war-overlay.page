@@ -27,7 +27,7 @@ Adding Scalate console to your web application
       ...
       <dependency>
         <groupId>org.fusesource.scalate</groupId>
-        <artifactId>scalate-war</artifactId>
+        <artifactId>scalate-war_${scala_compat_tag}</artifactId>
         <version>${project_version}</version>
         <type>war</type>
       </dependency>

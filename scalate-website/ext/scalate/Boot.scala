@@ -36,7 +36,8 @@ class Boot(engine: TemplateEngine) {
         MacroDefinition("""\{pygmentize\_and\_compare::(.*?)\}(.*?)\{pygmentize\_and\_compare\}""", "s", pygmentize, true),
         MacroDefinition("""\$\{project_version\}""", "", _ => project_version.toString, true),
         MacroDefinition("""\$\{project_name\}""", "", _ => project_name.toString, true),
-        MacroDefinition("""\$\{project_id\}""", "", _ => project_id.toString, true)
+        MacroDefinition("""\$\{project_id\}""", "", _ => project_id.toString, true),
+        MacroDefinition("""\$\{scala_compat_tag\}""", "", _ => scala_compat_tag, true)
       )
 
       for( ssp <- engine.filter("ssp"); md <- engine.filter("markdown") ) {

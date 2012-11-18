@@ -97,19 +97,19 @@ Lets set up scalate!
         <dependencies>
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>scalate-wikitext</artifactId>
+            <artifactId>scalate-wikitext_#{scala_compat_tag}</artifactId>
             <version>#{project_version}</version>  
           </dependency>
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>scalate-page</artifactId>
+            <artifactId>scalate-page_#{scala_compat_tag}</artifactId>
             <version>#{project_version}</version>  
           </dependency>
 
           <!-- testing -->
           <dependency>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>scalate-test</artifactId>
+            <artifactId>scalate-test_#{scala_compat_tag}</artifactId>
             <version>#{project_version}</version>  
             <scope>test</scope>
           </dependency>

@@ -21,7 +21,7 @@ Maven users will need to add the following dependency to their {{pom.xml}} for t
 {pygmentize:lang=xml}
 <dependency>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-camel</artifactId>
+    <artifactId>scalate-camel_${scala_compat_tag}</artifactId>
     <version>${scalate.version}</version>
 </dependency>
 {pygmentize}

@@ -58,6 +58,8 @@ object Website {
   val git_edit_page_base = github_page+"/edit/"+git_branch+"/scalate-website/src"
   val disqus_shortname = project_id
 
+  val scala_compat_tag = "2.9"
+
   // -------------------------------------------------------------------
   val project_svn_url= "http://fusesource.com/forge/svn/%s/trunk".format(project_id)
   val project_svn_branches_url= "http://fusesource.com/forge/svn/%s/branches".format(project_id)
