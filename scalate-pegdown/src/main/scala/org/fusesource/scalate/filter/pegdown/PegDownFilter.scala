@@ -19,6 +19,7 @@ package org.fusesource.scalate.filter.pegdown
 
 import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
 import org.fusesource.scalate.filter.Filter
+import org.fusesource.scalate.util.ObjectPool
 import org.pegdown.{Extensions, PegDownProcessor}
 
 object PegDownFilter extends TemplateEngineAddOn {
@@ -44,14 +45,18 @@ class PegDownFilter(val extensions: Int = Extensions.ABBREVIATIONS |
   Extensions.QUOTES |
   Extensions.SMARTS |
   Extensions.TABLES |
-  Extensions.WIKILINKS) extends Filter {
+  Extensions.WIKILINKS, processorPoolSize: Int = 10) extends Filter {
 
-  private val pegDownProcessor = new PegDownProcessor(extensions)
+  private val pegDownProcessorPool = new ObjectPool[PegDownProcessor](processorPoolSize, () => {
+    new PegDownProcessor(extensions)
+  })
 
   def filter(context: RenderContext, content: String) = {
-    synchronized {
-      // This code block is synchronized as the PegDownProcessor is not thread safe.
+    val pegDownProcessor = pegDownProcessorPool.fetch()
+    try {
       pegDownProcessor.markdownToHtml(content).stripLineEnd
+    } finally {
+      pegDownProcessorPool.release(pegDownProcessor)
     }
   }
 
