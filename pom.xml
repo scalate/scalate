@@ -194,6 +194,13 @@
       <url>http://www.tzavellas.com</url>
       <timezone>+2</timezone>
     </developer>
+    <developer>
+      <id>rossabaker</id>
+      <name>Ross A. Baker</name>
+      <url>http://www.rossabaker.com/</url>
+      <organization>CrowdStrike</organization>
+      <organizationUrl>http://www.crowdstrike.com/</organizationUrl>
+    </developer>
   </developers>
 
   <modules>
