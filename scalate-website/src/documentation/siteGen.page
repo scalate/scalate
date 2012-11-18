@@ -75,7 +75,7 @@ Create that static website with Scalate
     `project/plugins/Plugins.scala`:
 
     {pygmentize:: scala}
-    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project_version}"
+    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin_${scala_compat_tag}" % "${project_version}"
     {pygmentize}
 
     Then mix the `org.fusesource.scalate.sbt.SiteGenWebProject` into your
@@ -88,7 +88,7 @@ Create that static website with Scalate
           DefaultWebProject(info) with
           SiteGenWebProject {
 
-      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "${project_version}"
+      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core_${scala_compat_tag}" % "${project_version}"
       lazy val servlet = "javax.servlet" % "servlet-api"% "2.5"
       lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
 
@@ -162,7 +162,7 @@ Create that static website with Scalate
       <plugins>
         <plugin>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>maven-scalate-plugin</artifactId>
+          <artifactId>maven-scalate-plugin_#{scala_compat_tag}</artifactId>
           <version>${project_version}</version>
         </plugin>
       </plugins>

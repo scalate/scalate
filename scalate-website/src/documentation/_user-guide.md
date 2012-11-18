@@ -747,7 +747,7 @@ Otherwise you can just add this to your pom.xml
   <plugins>
     <plugin>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>maven-scalate-plugin</artifactId>
+      <artifactId>maven-scalate-plugin_#{scala_compat_tag}</artifactId>
       <version>${project_version}</version>
       <executions>
         <execution>
@@ -769,7 +769,7 @@ precompiled before they are packaged.  If you need to add the precompiler
 to an existing sbt project then you need to first add the plugin
 dependency:
 
-    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin" % "${project_version}"
+    lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin_${scala_compat_tag}" % "${project_version}"
 
 And then in your WebProject, you will need to add the
 `org.fusesource.scalate.sbt.PrecompilerWebProject` trait.  And then make sure
@@ -779,7 +779,7 @@ the Scalate dependencies are added to the project.  For example:
           DefaultWebProject(info) with 
           PrecompilerWebProject {
       
-      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core" % "${project_version}" 
+      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core_${scala_compat_tag}" % "${project_version}" 
       lazy val servlet = "javax.servlet" % "servlet-api"% "2.5" 
       lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
       

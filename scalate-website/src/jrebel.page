@@ -47,7 +47,7 @@ So for example if you are using maven then add this profile to your web applicat
     <dependencies>
       <dependency>
         <groupId>org.fusesource.scalate</groupId>
-        <artifactId>scalate-jrebel</artifactId>
+        <artifactId>scalate-jrebel_${scala_compat_tag}</artifactId>
         <version>\${scalate-version}</version>
       </dependency>
     </dependencies>

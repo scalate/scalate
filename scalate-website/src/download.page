@@ -92,7 +92,7 @@ Download it today!
     {pygmentize:: xml}
     <dependency>
       <groupId>org.fusesource.#{project_id}</groupId>
-      <artifactId>#{project_id}-core</artifactId>
+      <artifactId>#{project_id}-core_#{scala_compat_tag}</artifactId>
       <version>#{project_version}</version>  
     </dependency>
     {pygmentize}
