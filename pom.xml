@@ -29,7 +29,7 @@
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project_2.10.0-RC2</artifactId>
+  <artifactId>scalate-project_2.10.0-RC3</artifactId>
   <version>1.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -70,13 +70,13 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.10.0-RC2</scala-version>
+    <scala-version>2.10.0-RC3</scala-version>
     <!--
     <scala-version>2.8.1</scala-version>
     -->
 
     <scalatest-artifact>scalatest_${scala-version}</scalatest-artifact>
-    <scalatest-version>1.8</scalatest-version>
+    <scalatest-version>1.8-B1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
@@ -94,7 +94,7 @@
 
     <!-- Temporary, upstream is com.jsuereth -->
     <scala-mojo-support.groupId>org.scalatra</scala-mojo-support.groupId>
-    <scala-mojo-support.artifactId>scala-mojo-support_2.10.0-RC2</scala-mojo-support.artifactId>
+    <scala-mojo-support.artifactId>scala-mojo-support_2.10.0-RC3</scala-mojo-support.artifactId>
     <scala-mojo-support.version>0.5-SNAPSHOT</scala-mojo-support.version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
@@ -948,7 +948,7 @@
         <plugins>
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin_2.10.0-RC2</artifactId>
+            <artifactId>maven-scalate-plugin_2.10.0-RC3</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -967,7 +967,7 @@
       <dependencies>
         <dependency>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel_2.10.0-RC2</artifactId>
+          <artifactId>scalate-jrebel_2.10.0-RC3</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>

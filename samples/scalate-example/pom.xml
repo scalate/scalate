@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.fusesource.scalate.samples</groupId>
-  <artifactId>scalate-example_2.10.0-RC2</artifactId>
+  <artifactId>scalate-example_2.10.0-RC3</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -78,14 +78,14 @@
     <!-- for wiki markup -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page_2.10.0-RC2</artifactId>
+      <artifactId>scalate-page_2.10.0-RC3</artifactId>
       <version>${scalate-version}</version>
     </dependency>
     
     <!-- for sass/scss -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-jruby_2.10.0-RC2</artifactId>
+      <artifactId>scalate-jruby_2.10.0-RC3</artifactId>
       <version>${scalate-version}</version>
     </dependency>
     <dependency>
@@ -104,7 +104,7 @@
     <!-- testing -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test_2.10.0-RC2</artifactId>
+      <artifactId>scalate-test_2.10.0-RC3</artifactId>
       <version>${scalate-version}</version>
       <scope>test</scope>
     </dependency>
@@ -312,7 +312,7 @@
 
       <plugin>
         <groupId>org.fusesource.scalate</groupId>
-        <artifactId>maven-scalate-plugin_2.10.0-RC2</artifactId>
+        <artifactId>maven-scalate-plugin_2.10.0-RC3</artifactId>
         <version>${scalate-version}</version>
         <executions>
           <execution>

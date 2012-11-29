@@ -23,11 +23,11 @@
 
   <parent>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.10.0-RC2</artifactId>
+    <artifactId>scalate-project_2.10.0-RC3</artifactId>
     <version>1.6.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-distro_2.10.0-RC2</artifactId>
+  <artifactId>scalate-distro_2.10.0-RC3</artifactId>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
@@ -49,47 +49,47 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core_2.10.0-RC2</artifactId>
+      <artifactId>scalate-core_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-camel_2.10.0-RC2</artifactId>
+      <artifactId>scalate-camel_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-guice_2.10.0-RC2</artifactId>
+      <artifactId>scalate-guice_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-spring-mvc_2.10.0-RC2</artifactId>
+      <artifactId>scalate-spring-mvc_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test_2.10.0-RC2</artifactId>
+      <artifactId>scalate-test_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-tool_2.10.0-RC2</artifactId>
+      <artifactId>scalate-tool_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-jsp-converter_2.10.0-RC2</artifactId>
+      <artifactId>scalate-jsp-converter_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page_2.10.0-RC2</artifactId>
+      <artifactId>scalate-page_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-markdownj_2.10.0-RC2</artifactId>
+      <artifactId>scalate-markdownj_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -147,17 +147,17 @@
     <!-- archetypes to include -->
     <dependency>
       <groupId>org.fusesource.scalate.tooling</groupId>
-      <artifactId>scalate-archetype-jersey_2.10.0-RC2</artifactId>
+      <artifactId>scalate-archetype-jersey_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-core_2.10.0-RC2</artifactId>
+          <artifactId>scalate-core_2.10.0-RC3</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-war_2.10.0-RC2</artifactId>
+          <artifactId>scalate-war_2.10.0-RC3</artifactId>
         </exclusion>
         <exclusion>
           <groupId>com.sun.jersey</groupId>
@@ -172,17 +172,17 @@
 
     <dependency>
       <groupId>org.fusesource.scalate.tooling</groupId>
-      <artifactId>scalate-archetype-guice_2.10.0-RC2</artifactId>
+      <artifactId>scalate-archetype-guice_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-guice_2.10.0-RC2</artifactId>
+          <artifactId>scalate-guice_2.10.0-RC3</artifactId>
         </exclusion>
         <exclusion>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-war_2.10.0-RC2</artifactId>
+          <artifactId>scalate-war_2.10.0-RC3</artifactId>
         </exclusion>
         <exclusion>
           <groupId>com.sun.jersey</groupId>
@@ -197,13 +197,13 @@
     
     <dependency>
       <groupId>org.fusesource.scalate.tooling</groupId>
-      <artifactId>scalate-archetype-sitegen_2.10.0-RC2</artifactId>
+      <artifactId>scalate-archetype-sitegen_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-war_2.10.0-RC2</artifactId>
+          <artifactId>scalate-war_2.10.0-RC3</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -211,14 +211,14 @@
     <!-- TODO include examples
     <dependency>
       <groupId>org.fusesource.scalate.examples</groupId>
-      <artifactId>scalate-sample_2.10.0-RC2</artifactId>
+      <artifactId>scalate-sample_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <classifier>project</classifier>
       <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.fusesource.meshkeeper.examples</groupId>
-      <artifactId>scalate-sample_2.10.0-RC2</artifactId>
+      <artifactId>scalate-sample_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <classifier>project</classifier>
       <type>tar.gz</type>
@@ -226,14 +226,14 @@
 
     <dependency>
       <groupId>org.fusesource.scalate.examples</groupId>
-      <artifactId>scalate-bookstore_2.10.0-RC2</artifactId>
+      <artifactId>scalate-bookstore_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <classifier>project</classifier>
       <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.fusesource.meshkeeper.examples</groupId>
-      <artifactId>scalate-bookstore_2.10.0-RC2</artifactId>
+      <artifactId>scalate-bookstore_2.10.0-RC3</artifactId>
       <version>${project.version}</version>
       <classifier>project</classifier>
       <type>tar.gz</type>
