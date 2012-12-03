@@ -677,12 +677,18 @@
           </snapshots>
         </repository>
 
+        <!-- A transitive dependency defines this repo in its pom, however, the repo
+           has moved and causes dependency resolutions for 'maven-scalate-plugin'. Here we
+           disable the repo as we prefer to use central anyway. -->
         <repository>
           <id>glassfish-repo-archive</id>
           <name>Nexus repository collection for Glassfish</name>
           <url>http://maven.glassfish.org/content/groups/glassfish</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
           <snapshots>
-            <updatePolicy>never</updatePolicy>
+            <enabled>false</enabled>
           </snapshots>
         </repository>
 
