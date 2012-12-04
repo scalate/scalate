@@ -92,10 +92,6 @@
     <eclipse-plugin-version>2.8</eclipse-plugin-version>
     <idea-plugin-version>2.3-20100704</idea-plugin-version>
 
-    <!-- Temporary, upstream is com.jsuereth -->
-    <scala-mojo-support.groupId>org.scalatra</scala-mojo-support.groupId>
-    <scala-mojo-support.artifactId>scala-mojo-support_2.9</scala-mojo-support.artifactId>
-    <scala-mojo-support.version>0.5-SNAPSHOT</scala-mojo-support.version>
 <!--
     Don't use latest Jetty plugin as it requires Servlet 3.0 I think...
 
