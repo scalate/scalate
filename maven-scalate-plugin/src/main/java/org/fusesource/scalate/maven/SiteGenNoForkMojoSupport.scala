@@ -31,7 +31,7 @@ import java.net.{URLClassLoader, URL}
  */
 class SiteGenNoForkMojoSupport {
 
-  def execute(mojo:SiteGenNoForkMojo) {
+  def apply(mojo:SiteGenNoForkMojo) {
     import mojo._
     import scala.collection.JavaConversions._
 
