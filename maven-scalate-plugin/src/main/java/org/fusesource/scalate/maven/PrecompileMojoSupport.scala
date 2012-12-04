@@ -18,13 +18,8 @@
 package org.fusesource.scalate.maven
 
 import java.io.File
-import java.util.ArrayList
 
-import org.apache.maven.plugin.AbstractMojo
-import org.apache.maven.project.MavenProject
-import org.scala_tools.maven.mojo.annotations._
 import java.net.{URL, URLClassLoader}
-import collection.JavaConversions._
 
 
 /**
@@ -33,57 +28,11 @@ import collection.JavaConversions._
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-@goal("precompile")
-@phase("prepare-package")
-@requiresProject
-@requiresDependencyResolution("test")
-class PrecompileMojo extends AbstractMojo {
+class PrecompileMojoSupport {
 
-  @parameter
-  @expression("${project}")
-  @readOnly
-  @required
-  var project: MavenProject = _
-
-  @parameter
-  @description("The directory where the templates files are located.")
-  @expression("${basedir}/src/main/webapp")
-  var warSourceDirectory: File = _
-
-  @parameter
-  @description("The directory where resources are located.")
-  @expression("${basedir}/src/main/resources")
-  var resourcesSourceDirectory: File = _
-
-  @parameter
-  @description("The directory where the scala code will be generated into.")
-  @expression("${project.build.directory}/generated-sources/scalate")
-  var targetDirectory: File = _
-
-  @parameter
-  @description("The directory containing generated classes .")
-  @expression("${project.build.outputDirectory}")
-  var classesDirectory:File = _
-
-  @parameter
-  @description("Additional template paths to compile.")
-  var templates:ArrayList[String] = new ArrayList[String]()
-
-  @parameter
-  @description("The class name of the render context.")
-  var contextClass:String = _
-
-  @parameter
-  @description("The class name of the Boot class to use.")
-  var bootClassName:String = _
-
-  @parameter
-  @description("The test project classpath elements.")
-  @expression("${project.testClasspathElements}")
-  var classPathElements: java.util.List[_] = _
-
-
-  def execute() = {
+  def apply(mojo:PrecompileMojo) = {
+    import mojo._;
+    import scala.collection.JavaConversions._
 
     //
     // Lets use project's classpath when we run the pre-compiler tool
@@ -116,12 +65,12 @@ class PrecompileMojo extends AbstractMojo {
 
       precompiler.info = (value:String)=>getLog.info(value)
       
-      precompiler.sources = Array(this.warSourceDirectory, this.resourcesSourceDirectory)
-      precompiler.workingDirectory = this.targetDirectory
-      precompiler.targetDirectory = this.classesDirectory      
-      precompiler.templates = this.templates.toList.toArray
-      precompiler.contextClass = this.contextClass
-      precompiler.bootClassName = this.bootClassName
+      precompiler.sources = Array(mojo.warSourceDirectory, mojo.resourcesSourceDirectory)
+      precompiler.workingDirectory = mojo.targetDirectory
+      precompiler.targetDirectory = mojo.classesDirectory      
+      precompiler.templates = mojo.templates.toList.toArray
+      precompiler.contextClass = mojo.contextClass
+      precompiler.bootClassName = mojo.bootClassName
       precompiler.execute
     } finally {
       Thread.currentThread.setContextClassLoader(oldLoader)
