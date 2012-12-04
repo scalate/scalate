@@ -742,7 +742,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       }
 
       if( !compilerInstalled ) {
-        throw new TemplateException("Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
+        throw new ResourceNotFoundException("Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
       val g = generator(source);
