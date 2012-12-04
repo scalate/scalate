@@ -121,7 +121,7 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
     try {
       builder.addPathFrom(classOf[Global])
     } catch {
-      case x: Exception => // the scala compiler might not be on the path.
+      case x: Throwable => // the scala compiler might not be on the path.
     }
 
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
