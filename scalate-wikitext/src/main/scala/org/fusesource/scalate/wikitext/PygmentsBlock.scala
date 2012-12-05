@@ -71,7 +71,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       }
     }
     catch {
-      case e => debug(e, "Failed to start pygmetize: " + e)
+      case e: Exception => debug(e, "Failed to start pygmetize: " + e)
       false
     }
   }
