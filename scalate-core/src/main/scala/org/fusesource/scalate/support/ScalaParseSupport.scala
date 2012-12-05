@@ -53,6 +53,7 @@ case class Text(value: String) extends Positional {
  * @version $Revision : 1.1 $
  */
 trait ScalaParseSupport extends RegexParsers {
+  import scala.language.postfixOps
 
   val scalaTypeChar = """a-zA-Z0-9\$_\[\]\.\(\)\#\:\<\>\+\-"""
   val scalaType = ("[" + scalaTypeChar + """]+([ \t\,]+[""" + scalaTypeChar + """]+)*""").r

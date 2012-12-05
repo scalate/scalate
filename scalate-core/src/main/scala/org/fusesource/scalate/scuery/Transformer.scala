@@ -29,6 +29,8 @@ import XmlHelper._
  * @version $Revision : 1.1 $
  */
 class Transformer {
+  import scala.language.implicitConversions
+  
   protected val _rules = new HashMap[Selector, Rule]
 
   implicit def toSXml(node: Node) = SXml(node)

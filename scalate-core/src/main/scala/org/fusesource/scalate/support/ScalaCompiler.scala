@@ -37,6 +37,8 @@ import util.{Log, IOUtil, ClassPathBuilder}
 object ScalaCompiler extends Log {
 
   def create(engine: TemplateEngine) : ScalaCompiler = {
+    import scala.language.reflectiveCalls
+    
     Thread.currentThread.getContextClassLoader match {
       case BundleClassLoader(loader) => new OsgiScalaCompiler(engine, loader.getBundle)
       case _ => new ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath)

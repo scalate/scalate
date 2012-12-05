@@ -30,6 +30,7 @@ object MustacheCodeGenerator extends Log
  */
 class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
   import MustacheCodeGenerator._
+  import scala.language.implicitConversions
 
   override val stratumName = "MSC"
 

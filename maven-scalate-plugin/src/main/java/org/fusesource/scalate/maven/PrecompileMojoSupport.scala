@@ -48,6 +48,8 @@ class PrecompileMojoSupport {
     val oldLoader = Thread.currentThread.getContextClassLoader
     Thread.currentThread.setContextClassLoader(loader)
     try {
+      import scala.language.reflectiveCalls
+
       // Structural Typing FTW (avoids us doing manual reflection)
       type Precompiler = {
         var sources: Array[File]

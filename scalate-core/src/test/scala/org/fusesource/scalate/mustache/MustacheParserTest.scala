@@ -26,6 +26,7 @@ import java.io.File
  */
 
 class MustacheParserTest extends FunSuiteSupport {
+  import scala.language.implicitConversions
 
   implicit def stringToText(x: String) = Text(x)
 

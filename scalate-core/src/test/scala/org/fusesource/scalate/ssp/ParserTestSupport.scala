@@ -25,6 +25,7 @@ import org.fusesource.scalate.support.Text
  * @version $Revision : 1.1 $
  */
 abstract class ParserTestSupport extends FunSuiteSupport {
+  import scala.language.implicitConversions
 
   implicit def stringToText(x: String) = Text(x)
 

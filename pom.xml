@@ -336,6 +336,7 @@
             <args>
               <!-- arg>-unchecked</arg -->
               <arg>-deprecation</arg>
+              <arg>-feature</arg>
             </args>
             <scalaVersion>${scala-version}</scalaVersion>
             <recompileMode>incremental</recompileMode>

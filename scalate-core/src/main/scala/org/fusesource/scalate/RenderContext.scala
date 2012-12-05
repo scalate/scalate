@@ -63,6 +63,8 @@ object RenderContext {
  * @see org.fusesource.scalate.servlet.ServletRenderContext
  */
 trait RenderContext {
+  import scala.language.implicitConversions
+  
   /**
    * Default string used to output null values
    */

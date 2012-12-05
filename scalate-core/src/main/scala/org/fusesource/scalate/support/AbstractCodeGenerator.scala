@@ -98,6 +98,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     def indent[T](op: => T): T = {indentLevel += 1; val rc = op; indentLevel -= 1; rc}
 
     def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding], statements: List[T]): Unit = {
+      import scala.language.postfixOps
 
       val packageName = source.packageName
       val className = source.simpleClassName
@@ -199,6 +200,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
     }
 
     protected def generateTemplatePackage(source: TemplateSource, bindings: Traversable[Binding]): Unit = {
+      import scala.language.postfixOps
+      
       val templatePackage = TemplatePackage.findTemplatePackage(source).getOrElse(new DefaultTemplatePackage())
       this << templatePackage.header(source, bindings.toList)
       this <<;

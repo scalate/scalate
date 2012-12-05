@@ -881,6 +881,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   }
 
   private def loadCompiledTemplate(className:String, from_cache:Boolean=true):Template = {
+    import scala.language.existentials
+    
     val cl = if(from_cache) {
       new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     } else {

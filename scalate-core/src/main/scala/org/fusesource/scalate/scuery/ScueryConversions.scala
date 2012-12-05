@@ -23,6 +23,8 @@ import xml.{Node, NodeSeq}
  * All the various implicit conversions for the scuery package
  */
 trait ScueryConversions {
+  import scala.language.implicitConversions
+  
   implicit def toNodes(transform: Transform): NodeSeq = transform()
 
   implicit def toSXml(node: Node) = SXml(node)
