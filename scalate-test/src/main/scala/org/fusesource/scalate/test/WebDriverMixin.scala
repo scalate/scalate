@@ -124,7 +124,7 @@ trait WebDriverMixin extends BeforeAndAfterAll {
       answer
     }
     catch {
-      case e => println("Failed to find xpath: " + selector + " on page due to: " + e)
+      case e: Exception => println("Failed to find xpath: " + selector + " on page due to: " + e)
       println(pageSource)
       throw e
     }
