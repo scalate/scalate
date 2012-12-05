@@ -139,7 +139,7 @@ class SnippetBlock extends ParameterizedBlock {
       }
     }
     catch {
-      case e => Snippets.errorHandler(this, e)
+      case e: Exception => Snippets.errorHandler(this, e)
     }
     handler.done
     
