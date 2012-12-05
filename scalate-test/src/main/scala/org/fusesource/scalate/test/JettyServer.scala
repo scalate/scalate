@@ -88,7 +88,7 @@ class JettyServer {
     LOG.info("Defaulting the web app dir to: " + webAppDir + " with overlayDir: " + overlayWebAppDir)
     context.setContextPath(webAppContext)
     if (overlayWebAppDir != null) {
-      def toUriString(name: String) = new File(name).getCanonicalFile.toURL.toString
+      def toUriString(name: String) = new File(name).getCanonicalFile.toURI.toURL.toString
       val array: Array[String] = Array(toUriString(webAppDir), toUriString(overlayWebAppDir))
       println("Using base resource URIs: " + array.mkString(" | "))
       context.setBaseResource(new ResourceCollection(array))
