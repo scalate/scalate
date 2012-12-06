@@ -339,6 +339,7 @@
             </args>
             <scalaVersion>${scala-version}</scalaVersion>
             <recompileMode>incremental</recompileMode>
+            <useZincServer>true</useZincServer>
           </configuration>
         </plugin>
 
