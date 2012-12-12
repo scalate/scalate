@@ -223,11 +223,100 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
   }
 
-  protected def transformSyntax(fragments: List[PageFragment]) = {
+  private def stripEscapedNewlines(str: String): String = {
+    val transformed = new StringBuffer
+
+    var i = 0
+    while (i < str.length) {
+      val pos = {
+        val nPos = str.indexOf('\n', i)
+        val rPos = str.indexOf('\r', i)
+        if (nPos >= 0 && rPos >= 0)
+          math.min(nPos, rPos)
+        else if (nPos >= 0)
+          nPos
+        else if (rPos >= 0)
+          rPos
+        else
+          -1
+      }
+
+      if (pos >= 0) {
+        if (pos >= 1 && str.charAt(pos - 1) == '\\') {
+          // Possible escape sequence. Check if the escape is itself escaped.
+          if (pos >= 2 && str.charAt(pos - 2) == '\\') {
+            // Escaped escape. Copy prior data, then a single backslash, then the newline.
+            transformed.append(str.substring(i, pos - 2))
+            transformed.append('\\')
+
+            i = str.charAt(pos) match {
+              case '\n' =>
+                transformed.append('\n')
+                pos + 1
+
+              case '\r' =>
+               if ((pos + 1) < str.length && str.charAt(pos + 1) == '\n') {
+                  transformed.append("\r\n")
+                  pos + 2
+                } else {
+                  transformed.append('\r')
+                  pos + 1
+                }
+
+            case ch =>
+              throw new IllegalStateException("unexpected character '%c'" format ch)
+            }
+          } else {
+            // Unescaped escape. Copy prior data and skip the newline.
+            transformed.append(str.substring(i, pos - 1))
+            i = str.charAt(pos) match {
+              case '\n' =>
+                pos + 1
+
+              case '\r' =>
+                if ((pos + 1) < str.length && str.charAt(pos + 1) == '\n') {
+                  pos + 2
+                } else {
+                  pos + 1
+                }
+
+              case ch =>
+                throw new IllegalStateException("unexpected character '%c'" format ch)
+            }
+          }
+        } else {
+          // This newline is not escaped. Copy it and everything else prior to it.
+          str.charAt(pos) match {
+            case '\n' =>
+              transformed.append(str.substring(i, pos + 1))
+              i = pos + 1
+            case '\r' =>
+              val j = if ((pos + 1) < str.length && str.charAt(pos + 1) == '\n') {
+                pos + 2
+              } else {
+                pos + 1
+              }
+              transformed.append(str.substring(i, j))
+              i = j
+            case ch =>
+              throw new IllegalStateException("unexpected character '%c'" format ch)
+          }
+        }
+      } else {
+        // No more newlines. Copy the remainder of the string.
+        transformed.append(str.substring(i, str.length))
+        i = str.length
+      }
+    }
+
+    transformed.toString
+  }
+
+  protected def transformSyntax(fragments: List[PageFragment]): List[PageFragment] = {
     var last: PageFragment = null
     def isMatch = last != null && last.isInstanceOf[MatchFragment]
 
-    fragments.filter {
+    val pass1 = fragments.filter {
       _ match {
         case t: TextFragment if (isMatch) =>
           val trim = t.text.trim
@@ -248,6 +337,25 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           true
       }
     }
+
+    val pass2 = pass1.flatMap { _ match {
+      case t: TextFragment =>
+        val str = t.text.value
+        val transformed = stripEscapedNewlines(t.text.value)
+        if (str != transformed) {
+          if (transformed.isEmpty) {
+            None
+          } else {
+            Some(TextFragment(Text(transformed).setPos(t.pos)))
+          }
+        } else {
+          Some(t)
+        }
+
+      case p => Some(p)
+    } }
+
+    pass2
   }
 }
 
