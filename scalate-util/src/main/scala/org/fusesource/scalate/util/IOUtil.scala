@@ -21,10 +21,13 @@ package org.fusesource.scalate.util
 import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
 import java.net.URL
+import scala.util.parsing.input.{Position, OffsetPosition}
 
 object IOUtil {
 
   val log = Log(getClass); import log._
+
+  class InvalidDirectiveException(directive: String, pos: Position) extends RuntimeException(directive + " at " + pos, null)
 
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files
@@ -77,6 +80,8 @@ object IOUtil {
             val includeRegEx(fileName) = include
             loadTextFile(new java.io.File(fileName), encoding)
           } catch {
+            case m: MatchError =>
+              throw new InvalidDirectiveException("include", OffsetPosition(include, 0))
             case n: FileNotFoundException => throw n
           }
         result.replace(include, includeSource)
