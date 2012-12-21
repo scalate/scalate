@@ -10,7 +10,7 @@ layout: /WEB-INF/scalate/layouts/blog-post.jade
 The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
 availability of Scalate 1.6.0
 
-Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a
+Scalate is a [Scala 2.9 and 2.10] (http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
 engine</a> which can be used stand alone, with servlets or web frameworks
 like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
