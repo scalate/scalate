@@ -157,7 +157,9 @@ class ToScaml extends Action {
         case ScriptletFragment(code) => """<scriptlet><![CDATA[""" + code.value + """]]></scriptlet>"""
         case CommentFragment(comment) => """<!--""" + comment.value + """-->"""
         case TextFragment(text) => text.value
-        case _ => System.err.println("Unexpected case")
+        case unexpected: PageFragment => 
+          System.err.println("Unexpected page fragment " + unexpected)
+          "" // skip it
       }).mkString("")) + "</div>").getBytes("UTF-8")
       // println("escaped: "+new String(data, "UTF-8"))
 

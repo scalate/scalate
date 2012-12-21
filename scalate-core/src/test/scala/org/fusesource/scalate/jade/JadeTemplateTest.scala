@@ -1161,6 +1161,16 @@ item 1
 item 2
 <p>test</p>
 """)
+
+  // https://groups.google.com/group/scalate/browse_thread/thread/fb0816c388936541
+  testRender("Supports consecutive includes",
+"""
+- include("/jade-include-1.jade")
+- include("/jade-include-2.jade")
+""","""
+<p>1</p>
+<p>2</p>
+""")
 }
 
 case class Bean(color:String, size:Int) {
