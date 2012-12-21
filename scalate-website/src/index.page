@@ -16,7 +16,7 @@ sort_info: 1
 Scalate: Scala Template Engine
 ==============================
 
-Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> for generating text and markup which can be used in the following [frameworks](documentation/frameworks.html) and environments:
+Scalate is a [Scala 2.9 and 2.10](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> for generating text and markup which can be used in the following [frameworks](documentation/frameworks.html) and environments:
 
 * stand alone in any JVM or as a [Servlet Filter](documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application) in any Java in a web application 
 * with JAXRS with [Jersey](https://jersey.dev.java.net/)

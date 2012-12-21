@@ -35,10 +35,11 @@ object Website {
   val project_forums_url= "http://scalate.fusesource.org/community.html"
   val project_wiki_url= "http://wiki.github.com/scalate/scalate/"
   val project_logo= "/images/project-logo.png"
-  val project_version= "1.5.3"
-  val project_snapshot_version= "1.6.0-SNAPSHOT"
+  val project_version= "1.6.0"
+  val project_snapshot_version= "1.7.0-SNAPSHOT"
   val project_versions = List(
         project_version,
+        "1.5.3",
         "1.5.2",
         "1.5.1",
         "1.5.0",
@@ -50,6 +51,9 @@ object Website {
         "1.2", 
         "1.1", 
         "1.0")  
+        
+  val non_tagged_versions = Set("1.5.3","1.5.2","1.5.1","1.5.0","1.4.1",
+        "1.4.0","1.3.2","1.3.1","1.3","1.2","1.1","1.0")  
 
   val github_page= "https://github.com/scalate/scalate"
   val git_user_url= "git://github.com/scalate/scalate.git"
@@ -57,8 +61,7 @@ object Website {
   val git_branch= "master"
   val git_edit_page_base = github_page+"/edit/"+git_branch+"/scalate-website/src"
   val disqus_shortname = project_id
-
-  val scala_compat_tag = "2.9"
+  val scala_compat_tag = "2.10"
 
   // -------------------------------------------------------------------
   val project_svn_url= "http://fusesource.com/forge/svn/%s/trunk".format(project_id)

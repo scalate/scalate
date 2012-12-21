@@ -33,42 +33,43 @@ Download it today!
 
   - for( version <- project_versions.headOption )
     h3 #{project_name} #{version} 
-    
+    - val compat_tag = if(non_tagged_versions.contains(version)) "" else "_"+scala_compat_tag
     table.download
       tr 
         td 
           | Unix:
         td 
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz") scalate-distro-#{version}-unix-bin.tar.gz
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz") scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz
         td
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz.asc") GPG
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz.asc") GPG
       tr 
         td 
           | Windows:
         td 
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip") scalate-distro-#{version}-windows-bin.zip
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-windows-bin.zip") scalate-distro#{compat_tag}-#{version}-windows-bin.zip
         td
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip.asc") GPG
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-windows-bin.zip.asc") GPG
     
     
   - if( !project_versions.drop(1).isEmpty )
     h3.accordion <a href="#">Older Versions</a>
     table.download.hide
       - for( version <- project_versions.drop(1) )
+        - val compat_tag = if(non_tagged_versions.contains(version)) "" else "_"+scala_compat_tag
         tr 
           td 
             | Unix:
           td 
-            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz") scalate-distro-#{version}-unix-bin.tar.gz
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz") scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz
           td
-            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz.asc") GPG
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz.asc") GPG
         tr 
           td 
             | Windows:
           td 
-            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip") scalate-distro-#{version}-windows-bin.zip
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-windows-bin.zip") scalate-distro#{compat_tag}-#{version}-windows-bin.zip
           td
-            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip.asc") GPG
+            a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-windows-bin.zip.asc") GPG
 
 
   :&markdown
@@ -79,7 +80,7 @@ Download it today!
 
     You can download a recent snapshot from the [Snapshot Maven Repository](http://repo.fusesource.com/nexus/content/repositories/snapshots/) in the [Scalate area](http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/).
 
-    * [#{project_snapshot_version} zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=#{project_snapshot_version}&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro&v=#{project_snapshot_version}&e=tar.gz&c=unix-bin)
+    * [#{project_snapshot_version} zip](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro_#{scala_compat_tag}&v=#{project_snapshot_version}&e=zip&c=windows-bin) or [tar.gz](http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&g=org.fusesource.scalate&a=scalate-distro_#{scala_compat_tag}&v=#{project_snapshot_version}&e=tar.gz&c=unix-bin)
 
 
 .left
