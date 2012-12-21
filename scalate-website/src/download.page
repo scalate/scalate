@@ -39,9 +39,9 @@ Download it today!
         td 
           | Unix:
         td 
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro-#{version}-unix-bin.tar.gz") scalate-distro-#{version}-unix-bin.tar.gz
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz") scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz
         td
-          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro-#{version}-unix-bin.tar.gz.asc") GPG
+          a(href="http://repo.fusesource.com/nexus/content/groups/public/org/fusesource/#{project_id}/scalate-distro#{compat_tag}/#{version}/scalate-distro#{compat_tag}-#{version}-unix-bin.tar.gz.asc") GPG
       tr 
         td 
           | Windows:
