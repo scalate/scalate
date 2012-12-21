@@ -1,6 +1,105 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.6](http://scalate.fusesource.org/blog/releases/release-1.6.0.html), released 2012-12-21
+----
+
+* Built against scala 2.10
+* support stripping newlines from output in SSP templates
+* Test that consecutive Jade includes work.
+* unexpected fragment in parse results: improved error reporting, empty string is emitted instead of "()" - representation of Unit returned from println
+* use zinc server for incremental compilation when available
+* java.io.File.toUrl is deprecated
+* Predef.error is deprecated in Scala 2.10
+* Applications should never catch subclasses of java.lang.Error
+* Remove unused scala-mojo-support from POM.
+* Precompiled template loading was broken.  If the compiler is not installed, throws a ResourceNotFoundException instead of a TemplateException since we don't want to short circuit attempting to load other templates which might be precompiled.
+* When Global is not on the classpath, a Throwable is thrown, not an Exception.
+* disable maven.glassfish.org (nexus is now maven.java.net), there's some transitive dependency calling this that causes problems for maven-scalate-plugin if you don't have it cached locally
+* Fix method name used in reflection.
+* convert to mixed java/scala module so we can use the standard Maven Java Mojo extractors.  Drop use the the scala-mojo support.
+* It's a jar not a bundle.
+* Fix maven-compat version.
+* Clean up pom so that build works.
+* Fix bad group ID on scalatra-mojo-support.
+* scalamd has been published upstream, roll back to it.
+* Use public versions of all plugins; now builds clean with -Pdownload.
+* Removed pure expression in statement position, according to scalac warning.
+* Hide Tuple style accessors _1, _2 etc because IntrospectorTest does not expect to see them. The test failure could be fixed the other way around, but my feeling is that named properties are more useful inside a template than numbered ones.
+* Adjusted to scala.tools.nsc.io.AbstractFile API change
+* Fixed "missing parameter type" error.
+* scalate-util module declares packaging type bundle. Update dependency coordinate to match that.
+* Update artifactIDs on website with Scala binary compatability tag.
+* Vainly add self to pom.
+* Add pooling for pegdown
+* Add a test for pegdown filtering
+* Fix package name in pegdown addon.index
+* Make Pegdown filter a class so extensions can be configured
+* Clean up pom so that build works.
+* Pickup some wikitext snapshot changes.
+* Fix bad group ID on scalatra-mojo-support.
+* Reset the Scala Compiler between runs.
+* Append _${scala-version} tag to all artifact IDs to denote Scala binary compatibility.
+* Don't depend on backout after fatal errors, it's a Scala bug.
+* scalamd has been published upstream, roll back to it.
+* Use public versions of all plugins; now builds clean with -Pdownload.
+* Upgrade to scala-maven-plugin 3.1.0 for incremental compilation.
+* Revert "Enable commented LoopTest."
+* Make scalate-archetypes-itests versions match.
+* Move addon filters into their own subpackages
+* Enable commented LoopTest.
+* Scala Tools is dead. Long live Sonatype.
+* Changes to support OSGi with 2.10.0
+* Discarding exception: let all subclasses of Error pass unaffected. When a class is found on the classpath but could not be loaded due to an LinkageError, the developer needs to know about this.
+* Discarding caught exception: let subclasses of Error pass unaffected
+* Rethrowing excpetion: use explicit Throwable type ascription to pacify the compiler
+* Exception wrapping: let VirtualMachineError and ThreadDeath pass unaffected
+* Removed redundant try/catch
+* updated mvnplugins to 1.27-SNAPSHOT, awaiting Scala 2.10 compatible release
+* Removed pure expression in statement position, according to scalac warning.
+* Fixed a deprecation warning: pass on minimizeEmpty property of Element being processed
+* Hide Tuple style accessors _1, _2 etc because IntrospectorTest does not expect to see them. The test failure could be fixed the other way around, but my feeling is that named properties are more useful inside a template than numbered ones.
+* Fixed some deprecation warnings in the compiler
+* Scala 2.10: scala.reflect.ClassTag instead of scala.reflect.Manifest
+* Removed explicit adding of scala-library, scala-compiler and scalate-core bundles to compiler classpath. Client bundle needs to import relevant packages anyway to load the classes later, so the necessary bundles will be added by ClassPathBuilder.fromBundle.
+* Add bundle to classpath only once irregardles of the number of imported packages. LinkedHashSet is used to preserve correct order.
+* Override Global.classPath to our generated classpath.
+* Do not create ServletTemplateEngine for every view, reuse once created one. Invoke boot class.
+* Switched from presentation compiler to regular one to get around bytecode generation problem. See: https://gist.github.com/3488314
+* Adjust to scala compiler API change.
+* Adjusted to scala.tools.nsc.io.AbstractFile API change
+* Commented out a test that breaks Scala compiler. See: https://gist.github.com/3488124
+* Fixed "missing parameter type" error.
+* scalate-util module declares packaging type bundle. Update dependency coordinate to match that.
+* Update scala version to 2.10.0-M7, scalate-test to 1.9-2.10.0-M7-B1
+* Treat None case with and without parents the same in invertedSection
+* Upgrade to latest jruby
+* Have ScalateView properly register its ServletRenderContext objects
+* Change jrebel maven repo as the older does not longer exist, add option <updatePolicy> = always
+* Add parens to effectful shutdown methods.
+* Add a shutdown method on Compiler
+* Now that TemplateEngine uses a ScalaCompiler, it needs a method for shutting it down.
+* Scaml declarations use at signs, not ampersands. Thanks, josiahg.
+* Update 500.scaml to import scala.util.parsing.input.Position by full name instead of relative package.
+* Avoid duplicate TemplateSource reads unless using pipeline
+* Reset scala Source before read to support multiple reads
+* Do not retry template compilation twice
+* Use buildhelper plugin to include src/main/scala as source dir
+* Fixed {children} macro to work with static web sites.
+* Switching to the 1.4-SNAPSHOT release of wikitext
+* [#120] Made some classloader changes for running in an OSGi environment.
+* Refactored ConfExport Mojo so that it re-uses code from scalate-tool.
+* Add support for sass/scss @import
+* Comment out the support bits as it's not official.
+* Added Less Filter and attempted to modify the sbt and Maven builds to match this and the previous Pegdown filter.
+* Added PegDown filter
+* selective scuery attribute updates (update attribute if it exists)
+* Fixed bug introduced in last commit - removing org.apache.axis:axis-jaxrpc dependency from POM
+* Updated assembly descriptor for refactored confexport command
+* Upgraded axis-wsdl4j dependency from 1.2 to 1.5.1
+* Added --target-db switch to generate DocBook link database.
+* Refactored confexport command to use the libraries from the Confluence Command Line Interface (CLI).
+* updated site to redeploy to main home page
 
 [Scalate 1.5.3](http://scalate.fusesource.org/blog/releases/release-1.5.3.html), released 2011-11-14
 ----
@@ -199,3 +298,4 @@ Initial release with support for the following template languages
 * [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
 
 [logo]: http://scalate.fusesource.org/images/project-logo.png "Scalate"
+
