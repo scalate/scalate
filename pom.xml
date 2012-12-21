@@ -25,11 +25,11 @@
   <parent>
     <groupId>org.fusesource</groupId>
     <artifactId>fusesource-pom</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project_2.10.0-RC5</artifactId>
+  <artifactId>scalate-project_2.10</artifactId>
   <version>1.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -70,20 +70,17 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.10.0-RC5</scala-version>
-    <!--
-    <scala-version>2.8.1</scala-version>
-    -->
+    <scala-version>2.10.0</scala-version>
 
     <scalatest-artifact>scalatest_${scala-version}</scalatest-artifact>
-    <scalatest-version>1.8-B1</scalatest-version>
+    <scalatest-version>1.8</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
-    <scalamd-version>1.6-SNAPSHOT</scalamd-version>
+    <scalamd-version>1.6</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
-    <wikitext-version>1.4-SNAPSHOT</wikitext-version>
+    <wikitext-version>1.4</wikitext-version>
 
 
     <!-- plugin version info -->
@@ -951,7 +948,7 @@
         <plugins>
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin_2.10.0-RC5</artifactId>
+            <artifactId>maven-scalate-plugin_2.10</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -970,7 +967,7 @@
       <dependencies>
         <dependency>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel_2.10.0-RC5</artifactId>
+          <artifactId>scalate-jrebel_2.10</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>
