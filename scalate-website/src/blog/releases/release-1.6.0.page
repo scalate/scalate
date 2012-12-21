@@ -43,16 +43,17 @@ templates.
 
 **Scalate 1.6.0 Highlights**
 
-* Built against scala 2.10
+* Cross built against Scala 2.9 and 2.10.
+* Dropped support for Scala 2.8.
+* Append _[scala-version] tag to all artifact IDs to denote Scala binary compatibility.
 * support stripping newlines from output in SSP templates
-* use zinc server for incremental compilation when available
 * Upgraded versions of scalamd and wikitext
 * Add pooling for pegdown
 * Make Pegdown filter a class so extensions can be configured
-* Append _[scala-version] tag to all artifact IDs to denote Scala binary compatibility.
 * Changes to support OSGi with 2.10.0
 * Do not create ServletTemplateEngine for every view, reuse once created one. Invoke boot class.
 * Upgrade to latest jruby
+* Add a shutdown method on Compiler
 * Have ScalateView properly register its ServletRenderContext objects
 * Now that TemplateEngine uses a ScalaCompiler, it needs a method for shutting it down.
 * Reset scala Source before read to support multiple reads
