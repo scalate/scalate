@@ -337,6 +337,13 @@
               <!-- arg>-unchecked</arg -->
               <arg>-deprecation</arg>
             </args>
+            <javacArgs>
+              <javacArg>-g</javacArg>
+              <javacArg>-target</javacArg>
+              <javacArg>1.6</javacArg>
+              <javacArg>-source</javacArg>
+              <javacArg>1.6</javacArg>
+            </javacArgs>
             <scalaVersion>${scala-version}</scalaVersion>
             <recompileMode>incremental</recompileMode>
             <useZincServer>true</useZincServer>
