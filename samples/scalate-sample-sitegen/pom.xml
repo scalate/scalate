@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.fusesource.scalate.samples</groupId>
     <artifactId>samples_2.9</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <version>1.6.1</version>
   </parent>
   
   <artifactId>scalate-sample-sitegen_2.9</artifactId>
