@@ -1,14 +1,14 @@
 ---
 blog_post: true
-title: Scalate 1.6.0 Released
+title: Scalate 1.6.1 Released
 author: James Strachan
 author_url: http://macstrac.blogpost.com
-created_at: 2012-12-21 12:06:40 -0000
+created_at: 2012-12-29 12:06:40 -0000
 layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
 The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
-availability of Scalate 1.6.0
+availability of Scalate 1.6.1
 
 Scalate is a [Scala 2.9 and 2.10] (http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
@@ -41,7 +41,7 @@ checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
 
 
-**Scalate 1.6.0 Highlights**
+**Scalate 1.6.1 Highlights**
 
 * Cross built against Scala 2.9 and 2.10.
 * Dropped support for Scala 2.8.
@@ -70,7 +70,7 @@ templates.
 * Added --target-db switch to generate DocBook link database.
 * Refactored confexport command to use the libraries from the Confluence Command Line Interface (CLI).
 
-For more detail see the [Full Commit History](https://github.com/scalate/scalate/commits/scalate-project_2.10-1.6.0)
+For more detail see the [Full Commit History](https://github.com/scalate/scalate/commits/scalate-project_2.10-1.6.1)
 
 [Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
 
