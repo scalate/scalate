@@ -1,6 +1,10 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.6.1](http://scalate.fusesource.org/blog/releases/release-1.6.1.html), released 2012-12-29
+
+* Make sure Java 1.6 is targeted (1.6 release only worked with 1.7)
+
 [Scalate 1.6](http://scalate.fusesource.org/blog/releases/release-1.6.0.html), released 2012-12-21
 ----
 
