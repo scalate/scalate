@@ -44,6 +44,46 @@ class FileTest extends FunSuiteSupport {
     info("Loaded file: " + file + " as text: " + t)
   }
 
+  test("getting text of a file with include") {
+    val file: File = baseDir / "src/test/resources/dummyWithInclude.txt"
+
+    val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
+
+    expect("My header 1\nhello world!") {t}
+
+    info("Loaded file: " + file + " as text: " + t)
+  }
+
+  test("getting text of a file with two includes") {
+    val file: File = baseDir / "src/test/resources/dummyWithTwoIncludes.txt"
+
+    val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
+
+    expect("My header 1\nMy Second Header\ngood bye world!") {t}
+
+    info("Loaded file: " + file + " as text: " + t)
+  }
+
+  test("getting text of a file with include in the middle") {
+    val file: File = baseDir / "src/test/resources/dummyWithIncludeInMiddle.txt"
+
+    val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
+
+    expect("hello world!\nMy header 1\nAFTER WORLD!") {t}
+
+    info("Loaded file: " + file + " as text: " + t)
+  }
+
+  test("getting text of a file with nested include") {
+    val file: File = baseDir / "src/test/resources/dummyWithNestedInclude.txt"
+
+    val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
+
+    expect("My header 1\nhello world!\nEnd of 2012 is here") {t}
+
+    info("Loaded file: " + file + " as text: " + t)
+  }
+
   test("working with names") {
     val file = baseDir / "foo.txt"
 
