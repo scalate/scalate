@@ -465,7 +465,7 @@ object SourceMapInstaller {
     def store: Array[Byte] = {
       copy(4 + 2 + 2)
       var constantPoolCountPos: Int = baos.position
-      var constantPoolCount: Int = copyShort
+      var constantPoolCount: Int = copyShort & 0xFFFF
       sdeIndex = copyConstantPool(constantPoolCount)
       if (sdeIndex < 0) {
         writeSourceDebugConstant
@@ -520,7 +520,7 @@ object SourceMapInstaller {
             copy(8)
             i += 1
           case 1 =>
-            var len: Int = copyShort
+            var len: Int = copyShort & 0xFFFF
             if (len < 0) {
               warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
               len = 0
@@ -605,7 +605,7 @@ object SourceMapInstaller {
     def readConstantPoolStrings(): Map[String,Short] = {
       var rc = Map[String,Short]()
       var i = 1
-      val count = dis.readShort
+      val count = dis.readShort & 0xFFFF
       while (i < count ) {
         var tag = dis.readByte
         tag match {
@@ -617,7 +617,7 @@ object SourceMapInstaller {
             dis.skip(8)
             i += 1;
           case 1 =>
-            var len: Int = dis.readShort
+            var len: Int = dis.readShort & 0xFFFF
             var data = new Array[Byte](len)
             dis.readFully(data)
             var str: String = new String(data, "UTF-8")
