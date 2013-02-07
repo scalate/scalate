@@ -74,6 +74,7 @@
     <!--
     <scala-version>2.8.1</scala-version>
     -->
+    <scala-version-suffix>2.9</scala-version-suffix>
 
     <scalatest-artifact>scalatest_${scala-version}</scalatest-artifact>
     <scalatest-version>1.6.1</scalatest-version>
