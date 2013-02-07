@@ -7,6 +7,7 @@
       <outputDirectory>/lib</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.fusesource.scalate:scalate-core_${scala-version-suffix}</include>
         <include>org.fusesource.scalate:scalate-util_${scala-version-suffix}</include>
@@ -20,6 +21,7 @@
       <outputDirectory>/lib/tool</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.apache.karaf.shell:org.apache.karaf.shell.console</include>
         <!-- confexport -->
@@ -48,6 +50,7 @@
       <outputDirectory>/lib/optional</outputDirectory>
       <unpack>false</unpack>
       <scope>compile</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <useTransitiveDependencies>true</useTransitiveDependencies>
       <includes>
         <include>org.fusesource.scalate:scalate-camel_${scala-version-suffix}</include>
@@ -69,6 +72,7 @@
       <outputDirectory>archetypes</outputDirectory>
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <unpack>false</unpack>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.fusesource.scalate.tooling:scalate-archetype-jersey_${scala-version-suffix}</include>
         <include>org.fusesource.scalate.tooling:scalate-archetype-guice_${scala-version-suffix}</include>
