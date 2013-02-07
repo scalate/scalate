@@ -7,9 +7,10 @@
       <outputDirectory>/lib</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
-        <include>org.fusesource.scalate:scalate-core</include>
-        <include>org.fusesource.scalate:scalate-util</include>
+        <include>org.fusesource.scalate:scalate-core_2.10</include>
+        <include>org.fusesource.scalate:scalate-util_2.10</include>
         <include>org.scala-lang:scala-library</include>
         <include>org.scala-lang:scala-compiler</include>
         <include>org.slf4j:slf4j-api</include>
@@ -20,6 +21,7 @@
       <outputDirectory>/lib/tool</outputDirectory>
       <unpack>false</unpack>
       <scope>runtime</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
         <include>org.apache.karaf.shell:org.apache.karaf.shell.console</include>
         <!-- confexport -->
@@ -32,8 +34,8 @@
       <scope>compile</scope>
       <useTransitiveDependencies>true</useTransitiveDependencies>
       <includes>
-        <include>org.fusesource.scalate:scalate-jsp-converter</include>
-        <include>org.fusesource.scalate:scalate-tool</include>
+        <include>org.fusesource.scalate:scalate-jsp-converter_2.10</include>
+        <include>org.fusesource.scalate:scalate-tool_2.10</include>
         <include>net.sf.jtidy:jtidy</include>
         <!-- confexport -->
         <include>org.swift.common:confluence-soap</include>
@@ -48,16 +50,17 @@
       <outputDirectory>/lib/optional</outputDirectory>
       <unpack>false</unpack>
       <scope>compile</scope>
+      <useStrictFiltering>true</useStrictFiltering>
       <useTransitiveDependencies>true</useTransitiveDependencies>
       <includes>
-        <include>org.fusesource.scalate:scalate-camel</include>
-        <include>org.fusesource.scalate:scalate-test</include>
-        <include>org.fusesource.scalate:scalate-guice</include>
-        <include>org.fusesource.scalate:scalate-spring-mvc</include>
-        <include>org.fusesource.scalate:scalate-page</include>
-        <include>org.fusesource.scalate:scalate-wikitext</include>
-        <include>org.fusesource.scalate:scalate-markdownj</include>
-        <include>org.fusesource.scalamd:scalamd</include>
+        <include>org.fusesource.scalate:scalate-camel_2.10</include>
+        <include>org.fusesource.scalate:scalate-test_2.10</include>
+        <include>org.fusesource.scalate:scalate-guice_2.10</include>
+        <include>org.fusesource.scalate:scalate-spring-mvc_2.10</include>
+        <include>org.fusesource.scalate:scalate-page_2.10</include>
+        <include>org.fusesource.scalate:scalate-wikitext_2.10</include>
+        <include>org.fusesource.scalate:scalate-markdownj_2.10</include>
+        <include>org.fusesource.scalamd:scalamd_2.10</include>
         <include>org.fusesource.wikitext:wikitext-core</include>
         <include>org.fusesource.wikitext:confluence-core</include>
         <include>org.fusesource.wikitext:textile-core</include>
@@ -69,10 +72,11 @@
       <outputDirectory>archetypes</outputDirectory>
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <unpack>false</unpack>
+      <useStrictFiltering>true</useStrictFiltering>
       <includes>
-        <include>org.fusesource.scalate.tooling:scalate-archetype-jersey</include>
-        <include>org.fusesource.scalate.tooling:scalate-archetype-guice</include>
-        <include>org.fusesource.scalate.tooling:scalate-archetype-sitegen</include>
+        <include>org.fusesource.scalate.tooling:scalate-archetype-jersey_2.10</include>
+        <include>org.fusesource.scalate.tooling:scalate-archetype-guice_2.10</include>
+        <include>org.fusesource.scalate.tooling:scalate-archetype-sitegen_2.10</include>
       </includes>
     </dependencySet>
   </dependencySets>
