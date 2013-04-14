@@ -132,9 +132,9 @@
       <version>${wikitext-version}</version>
     </dependency>
     <dependency>
-      <groupId>rhino</groupId>
-      <artifactId>js</artifactId>
-      <version>${rhino-version}</version>
+      <groupId>tv.cntt</groupId>
+      <artifactId>rhinocoffeescript</artifactId>
+      <version>${rhinocoffeescript-version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
