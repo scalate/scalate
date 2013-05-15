@@ -53,9 +53,9 @@ class Create extends Action {
   var homeDir = System.getProperty("scalate.home", "")
   
   val archetypes = Map(
-    "jersey" -> "scalate-archetype-jersey",
-    "guice" -> "scalate-archetype-guice",
-    "sitegen" -> "scalate-archetype-sitegen"
+    "jersey" -> "scalate-archetype-jersey_2.10",
+    "guice" -> "scalate-archetype-guice_2.10",
+    "sitegen" -> "scalate-archetype-sitegen_2.10"
   )
 
   var archetypeGroupId = "org.fusesource.scalate.tooling"
