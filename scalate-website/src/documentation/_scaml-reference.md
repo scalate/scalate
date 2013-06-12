@@ -6,7 +6,7 @@ Scaml is a very DRY way of writing XHTML templates.  It is Scala
 version of [Haml](http://haml-lang.com/). Scaml functions as a replacement
 for inline page templating systems such as PHP, ERB, and ASP. However,
 Scaml avoids the need for explicitly coding XHTML into the template,
-because it uses a very concise white space active XHMLT notation.
+because it uses a very concise white space active XHTML notation.
 
 ## Features
 
@@ -15,7 +15,7 @@ because it uses a very concise white space active XHMLT notation.
 * DRY
 * Follows CSS conventions
 * Integrates Scala code
-* [Haml](http://haml-lang.com/) or [Jade](http://jade-lang.com/) style 
+* [Haml](http://haml-lang.com/) or [Jade](http://jade-lang.com/) style
   notation
 
 ## Haml vs Jade Notation {#jade}
@@ -33,14 +33,14 @@ scaml: An example .scaml file
 -----------------------------
 %html
   %body
-    The quick brown fox jumps 
+    The quick brown fox jumps
     over the lazy dog
 -----------------------------
 jade: An equivalent .jade file
 -----------------------------
 html
   body
-    | The quick brown fox jumps 
+    | The quick brown fox jumps
     | over the lazy dog
 {pygmentize_and_compare}
 
@@ -49,7 +49,7 @@ Both examples above will render to the following:
 {pygmentize:: xml}
 <html>
   <body>
-    The quick brown fox jumps 
+    The quick brown fox jumps
     over the lazy dog
   </body>
 </html>
@@ -165,7 +165,7 @@ Scaml will automatically generate opening and closing tags for any element.
 
 Brackets represent a Scala Map
 that is used for specifying the attributes of an element.
-Ruby hash syntax is used instead of Scala syntax to 
+Ruby hash syntax is used instead of Scala syntax to
 preserve a higher level of compatibility with the original
 Haml implementation.
 It is translated and evaluated as a Scala Map,
@@ -201,7 +201,7 @@ xml: renders to
 <script type="text/javascript" src="javascripts/script"/>
 {pygmentize_and_compare}
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expression are supported if you wrap them between the `{`
 and `}` characters.
 
 {pygmentize_and_compare::}
@@ -238,7 +238,7 @@ This is the same as:
 %a{:title =>title, :href => href} Stuff
 {pygmentize}
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expression are supported if you wrap them between the `{`
 and `}` characters.
 
 {pygmentize_and_compare::}
@@ -258,7 +258,7 @@ You can use both syntaxes together:
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
 
-You can also use `\#{}` interpolation to insert complicated expressions
+You can also use `#{}` interpolation to insert complicated expressions
 in a HTML-style attribute:
 
 {pygmentize:: scaml}
@@ -420,7 +420,7 @@ xml: renders to
 ### Weird Element Names: `'`element`'`
 
 Sometimes you have to generate markup with weird element names.  Element names
-like `<funny.element/>`.  Since Scaml interprets the period as a class name for the 
+like `<funny.element/>`.  Since Scaml interprets the period as a class name for the
 element, the following example:
 
 {pygmentize_and_compare::}
@@ -435,7 +435,7 @@ xml: renders to
 {pygmentize_and_compare}
 
 does not give you the desired result of `<funny.element/>`.  In these cases you must single
-quote the element name. 
+quote the element name.
 
 Example:
 
@@ -804,16 +804,16 @@ xml: renders to
 ### Binding Attributes `-@` {#bindings}
 
 When a Scalate template is rendered, the caller can pass an attribute map
-which the template in charge of rendering. To bind the attribute to a Scala
-variable, a Scaml template uses the hyphen character followed by an at sign 
+to the template in charge of rendering. To bind the attribute to a Scala
+variable, a Scaml template uses the hyphen character followed by an at sign
 and then a Scala variable declaration statement.
 
 For example To define an attribute use the following declaration
 {pygmentize:: scaml}
--@ val foo: MyType 
+-@ val foo: MyType
 {pygmentize}
 
-If the attribute map does not contain a "foo" entry, then a 
+If the attribute map does not contain a "foo" entry, then a
 NoValueSetException is thrown when the the template is rendered.
 
 To avoid this exception, a default value can be configured.  For
@@ -822,10 +822,10 @@ example:
 -@ val bar: String = "this is the default value"
 {pygmentize}
 
-The attribute is now available for use as an expression. 
+The attribute is now available for use as an expression.
 
-Its very common to have a template based on a single object who's members are f
-frequently accessed.  In this cases, it's convenient to import all the object's 
+Its very common to have a template based on a single object who's members are
+frequently accessed.  In these cases, it's convenient to import all the object's
 members.  This can be done by adding the import keyword to the attribute declaration.
 
 For example:
@@ -869,9 +869,9 @@ xml: renders to
 </p>
 {pygmentize_and_compare}
 
-The default setting for the [`TemplateEngine.escapeMarkup`](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) option is 
+The default setting for the [`TemplateEngine.escapeMarkup`](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html) option is
 true.  When `TemplateEngine.escapeMarkup` is enabled, `=` will sanitize any
-HTML-sensitive characters generated by the script. 
+HTML-sensitive characters generated by the script.
 
 {pygmentize_and_compare::wide=true}
 -----------------------------
@@ -985,16 +985,16 @@ xml: renders to
   two
 </p>
 {pygmentize_and_compare}
-    
+
 When inserting evaluated statements, it can also take advantage of Scala blocks. It can be handy
-for passing partial functions.  
+for passing partial functions.
 
 For example:
 {pygmentize:: scaml}
 %p
   = List(1,2,3).foldLeft("result: ")
     - (a,x)=>
-      - a+x 
+      - a+x
 {pygmentize}
 
 is the same as:
@@ -1009,15 +1009,15 @@ would be rendered to:
   result: 123
 </p>
 {pygmentize}
-    
+
 ### Whitespace Preservation: `~` {#tilde}
 
-`~` works just like `=`, except that it preserves the white space 
+`~` works just like `=`, except that it preserves the white space
 formating on its input.
 
 Scaml always produces HTML source which is easy to read since
-it properly indented.  Even dynamically generated output is 
-properly indented. 
+it properly indented.  Even dynamically generated output is
+properly indented.
 
 {pygmentize_and_compare::}
 -----------------------------
@@ -1044,7 +1044,7 @@ indenting the text makes them render wrong.
 
 When you use `~` instead of `=`,
 Scaml will convert newlines to the XHTML newline escape code, `&#x000A;` and avoid
-adding spaces for indentation.  
+adding spaces for indentation.
 
 {pygmentize_and_compare::}
 -----------------------------
@@ -1108,7 +1108,7 @@ and renders to
 {pygmentize:: xml}
 <p>This is scrumptious cake!</p>
 {pygmentize}
-    
+
 Backslashes can be used to escape `#{` strings,
 but they don't act as escapes anywhere else in the string.
 
@@ -1237,7 +1237,7 @@ scaml: example
   :markdown
     Markdown
     ========
-    
+
     Hello, *World*
 -----------------------------
 xml: renders to
@@ -1251,11 +1251,11 @@ xml: renders to
 
 ### Filter Interpolation
 
-If you use the `!` or `&` filter flags, you can have Scala code 
+If you use the `!` or `&` filter flags, you can have Scala code
 interpolated with `#{}` expressions.  It is invalid to use both
-the `!` and `&` flags at the same time. 
+the `!` and `&` flags at the same time.
 
-The `&` flag enables sanitized interpolations.  
+The `&` flag enables sanitized interpolations.
 
 {pygmentize_and_compare::wide=true}
 -----------------------------
@@ -1356,8 +1356,7 @@ Scaml has the following filters defined:
 > Surrounds the filtered text with `<style>` and CDATA tags.
 Useful for including inline CSS.
 
-{#cdata-filter}
-#### `:cdata`
+#### `:cdata` {#cdata-filter}
 > Surrounds the filtered text with CDATA tags.
 
 #### `:escaped` {#escaped-filter}
@@ -1379,13 +1378,13 @@ Embedded Ruby code is evaluated in the same context as the Haml template.
 -->
 
 #### `:sass` {#sass-filter}
-> Parses the filtered text with [Sass](http://sass-lang.com/) to produce CSS output.  
-Only works if you have the `scalate-jruby` module on the class path.  You normally 
+> Parses the filtered text with [Sass](http://sass-lang.com/) to produce CSS output.
+Only works if you have the `scalate-jruby` module on the class path.  You normally
 want to combine with the `:css` filter.  For example `:css:sass`
 
 #### `:scss` {#scss-filter}
 > Parses the filtered text with [Scss](http://sass-lang.com/) to produce CSS output.
-Only works if you have the `scalate-jruby` module on the class path.  You normally 
+Only works if you have the `scalate-jruby` module on the class path.  You normally
 want to combine with the `:css` filter.  For example `:css:scss`
 
 #### `:textile` {#textile-filter}
@@ -1410,7 +1409,7 @@ as they affect the generated scala template classes.
 
 ### `ScamlOptions.indent`
 
-The `ScamlOptions.indent` option is used to control what kind of indenting characters to 
+The `ScamlOptions.indent` option is used to control what kind of indenting characters to
 use in the rendered markup.  It defaults to two spaces but can be set to the tab character
 or set to the empty string to disable indenting alltogether.
 
@@ -1433,7 +1432,7 @@ Wow this is cool!
 
 ### `ScamlOptions.nl`
 
-The `ScamlOptions.nl` option is used to control what kind of new line seperator to 
+The `ScamlOptions.nl` option is used to control what kind of new line seperator to
 use in the rendered markup.  It defaults to `\n`.  Some folks may want to set it and the indent
 to the empty string to reduce the generated document sizes.
 
