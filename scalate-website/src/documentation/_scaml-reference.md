@@ -6,7 +6,7 @@ Scaml is a very DRY way of writing XHTML templates.  It is Scala
 version of [Haml](http://haml-lang.com/). Scaml functions as a replacement
 for inline page templating systems such as PHP, ERB, and ASP. However,
 Scaml avoids the need for explicitly coding XHTML into the template,
-because it uses a very concise white space active XHMLT notation.
+because it uses a very concise white space active XHTML notation.
 
 ## Features
 
@@ -258,7 +258,7 @@ You can use both syntaxes together:
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 {pygmentize}
 
-You can also use `\#{}` interpolation to insert complicated expressions
+You can also use `#{}` interpolation to insert complicated expressions
 in a HTML-style attribute:
 
 {pygmentize:: scaml}
@@ -804,7 +804,7 @@ xml: renders to
 ### Binding Attributes `-@` {#bindings}
 
 When a Scalate template is rendered, the caller can pass an attribute map
-which the template in charge of rendering. To bind the attribute to a Scala
+to the template in charge of rendering. To bind the attribute to a Scala
 variable, a Scaml template uses the hyphen character followed by an at sign 
 and then a Scala variable declaration statement.
 
@@ -824,8 +824,8 @@ example:
 
 The attribute is now available for use as an expression. 
 
-Its very common to have a template based on a single object who's members are f
-frequently accessed.  In this cases, it's convenient to import all the object's 
+Its very common to have a template based on a single object who's members are
+frequently accessed.  In these cases, it's convenient to import all the object's 
 members.  This can be done by adding the import keyword to the attribute declaration.
 
 For example:
@@ -1356,8 +1356,7 @@ Scaml has the following filters defined:
 > Surrounds the filtered text with `<style>` and CDATA tags.
 Useful for including inline CSS.
 
-{#cdata-filter}
-#### `:cdata`
+#### `:cdata` {#cdata-filter}
 > Surrounds the filtered text with CDATA tags.
 
 #### `:escaped` {#escaped-filter}
