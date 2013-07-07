@@ -38,13 +38,13 @@ class IndexController {
   def view: ModelAndView = {
     val mav = new ModelAndView
     mav.addObject("it", new SomeClass)
-	mav.setViewName("layout:view")
+    mav.setViewName("layout:view")
     mav
   }
 
   @RequestMapping(Array("/form"))
   def form(@ModelAttribute("form") form: SomeForm, @ModelAttribute("messages") messages: SomeMessages, mav: ModelAndView): ModelAndView = {
-	mav.setViewName("layout:form")
+    mav.setViewName("layout:form")
     mav
   }
 
@@ -52,12 +52,12 @@ class IndexController {
   def formSubmit(@ModelAttribute("form") form: SomeForm, @ModelAttribute("messages") messages: SomeMessages, ra: RedirectAttributes, mav: ModelAndView): String = {
     if (form.s == null || form.s.length < 10) {
       ra.addFlashAttribute("form", form);
-	  val messages = new SomeMessages()
-	  messages.setMessages(List(SomeMessage("Please enter a longer string")))
+      val messages = new SomeMessages()
+      messages.setMessages(List(SomeMessage("Please enter a longer string")))
       ra.addFlashAttribute("messages", messages);
-	  "redirect:/form"
-	} else {
-	  "redirect:/view"
-	}
+      "redirect:/form"
+    } else {
+      "redirect:/view"
+    }
   }
 }

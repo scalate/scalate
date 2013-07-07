@@ -42,11 +42,11 @@ class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletCon
   override def initServletContext(servletContext: ServletContext) {
     super.initServletContext(servletContext);
 
-	setServletConfig(new ServletConfig() {
-      def getServletName(): String  = "unknown"
+    setServletConfig(new ServletConfig() {
+      def getServletName(): String = "unknown"
       def getServletContext(): ServletContext = servletContext
       def getInitParameterNames(): Enumeration[String] = List[String]().iterator.asJavaEnumeration
-	  def getInitParameter(s: String)  = null;
+      def getInitParameter(s: String) = null;
     });
   }
 
