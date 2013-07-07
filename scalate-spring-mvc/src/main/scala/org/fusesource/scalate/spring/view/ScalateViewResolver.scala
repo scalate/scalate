@@ -25,6 +25,9 @@ import org.springframework.web.servlet.view.AbstractUrlBasedView
 import org.springframework.web.context.ServletConfigAware
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import javax.servlet.ServletConfig
+import javax.servlet.ServletContext
+import java.util.Enumeration
+import scala.collection.JavaConverters.asJavaEnumerationConverter
 
 class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletConfigAware {
 
@@ -34,6 +37,17 @@ class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletCon
     val ste = new ServletTemplateEngine(config)
     ServletTemplateEngine(config.getServletContext()) = ste
     templateEngine = ste;
+  }
+
+  override def initServletContext(servletContext: ServletContext) {
+    super.initServletContext(servletContext);
+
+    setServletConfig(new ServletConfig() {
+      def getServletName(): String = "unknown"
+      def getServletContext(): ServletContext = servletContext
+      def getInitParameterNames(): Enumeration[String] = List[String]().iterator.asJavaEnumeration
+      def getInitParameter(s: String) = null;
+    });
   }
 
   setViewClass(requiredViewClass())
