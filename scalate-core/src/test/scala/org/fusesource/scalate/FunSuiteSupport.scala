@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends Log with FunSuite with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends FunSuite with Log with  BeforeAndAfterAll {
 
   protected var _basedir = "."
 

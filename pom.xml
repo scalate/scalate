@@ -70,11 +70,11 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.10.0</scala-version>
+    <scala-version>2.10.2</scala-version>
     <scala-version-suffix>2.10</scala-version-suffix>
 
-    <scalatest-artifact>scalatest_${scala-version}</scalatest-artifact>
-    <scalatest-version>1.8</scalatest-version>
+    <scalatest-artifact>scalatest_${scala-version-suffix}</scalatest-artifact>
+    <scalatest-version>1.9.2-SNAP1</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
@@ -106,8 +106,7 @@
 
     <!-- osgi settings -->
     <scalate.osgi.import>*</scalate.osgi.import>
-
-    <rhinocoffeescript-version>1.6.2</rhinocoffeescript-version>
+    <rhino-version>1.7R2</rhino-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
