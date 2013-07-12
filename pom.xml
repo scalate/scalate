@@ -106,7 +106,8 @@
 
     <!-- osgi settings -->
     <scalate.osgi.import>*</scalate.osgi.import>
-    <rhino-version>1.7R2</rhino-version>
+
+    <rhinocoffeescript-version>1.6.2</rhinocoffeescript-version>
   </properties>
 
   <url>http://scalate.fusesource.org/</url>
