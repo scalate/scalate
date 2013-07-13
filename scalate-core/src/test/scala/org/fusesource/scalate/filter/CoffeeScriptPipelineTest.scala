@@ -10,9 +10,7 @@ class CoffeeScriptPipelineTest extends TemplateTestSupport {
 
   test("coffeescript pipeline") {
     assertUriOutputContains("/org/fusesource/scalate/filter/sample.js",
-"""(function() {
-  alert("Hello, Coffee!");
-}).call(this);
+"""alert("Hello, Coffee!");
 """)
   }
 

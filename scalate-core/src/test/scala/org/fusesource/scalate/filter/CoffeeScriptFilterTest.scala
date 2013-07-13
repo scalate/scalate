@@ -6,9 +6,7 @@ class CoffeeScriptFilterTest extends TemplateTestSupport {
   test("coffeescript filter") {
     assertUriOutputContains("/org/fusesource/scalate/scaml/coffee.scaml", """<script type='text/javascript'>
   //<![CDATA[
-    (function() {
-      alert("Hello, Coffee!");
-    }).call(this);
+    alert("Hello, Coffee!");
 
   //]]>
 </script>
