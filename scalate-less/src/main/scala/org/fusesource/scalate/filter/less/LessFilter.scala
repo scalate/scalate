@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.filter.less
 
-import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
+import org.fusesource.scalate.{ TemplateEngineAddOn, RenderContext, TemplateEngine }
 import com.asual.lesscss.LessEngine
 import org.fusesource.scalate.filter.Filter
 
@@ -26,10 +26,7 @@ import org.fusesource.scalate.filter.Filter
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
-object LessFilter extends Filter with TemplateEngineAddOn {
-
-  private val lessEngine = new LessEngine
-
+class LessFilter(lessEngine: LessEngine) extends Filter {
   def filter(context: RenderContext, content: String) = {
     synchronized {
       // This code block is synchronized as I'm not confident that the Less filter is thread safe.
@@ -37,12 +34,16 @@ object LessFilter extends Filter with TemplateEngineAddOn {
       """<style type="text/css">%n%s%n</style>""".format(css)
     }
   }
+}
 
-  /**
-   * Add the less filter to the template engine.
-   */
+/**
+ * Engine add-on for processing lesscss.
+ *
+ * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
+ */
+object LessAddOn extends TemplateEngineAddOn {
   def apply(te: TemplateEngine) {
-    te.filters += "less" -> LessFilter
-    te.pipelines += "less" -> List(LessFilter)
+    val lessEngine = new LessEngine
+    te.filters += "less" -> new LessFilter(lessEngine)
   }
 }
