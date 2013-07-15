@@ -20,9 +20,10 @@ package org.fusesource.scalate.filter.less
 import org.fusesource.scalate.{ TemplateEngineAddOn, RenderContext, TemplateEngine }
 import com.asual.lesscss.LessEngine
 import org.fusesource.scalate.filter.Filter
+import org.fusesource.scalate.filter.NoLayoutFilter
 
 /**
- * Renders Less syntax.
+ * Renders Less syntax inside templates.
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
@@ -37,6 +38,19 @@ class LessFilter(lessEngine: LessEngine) extends Filter {
 }
 
 /**
+ * Renders standalone less files
+ *
+ * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
+ */
+class LessPipeline(private val lessEngine: LessEngine) extends Filter {
+  def filter(context: RenderContext, content: String) = synchronized {
+    synchronized {
+    	lessEngine.compile(content)
+    }
+  }
+}
+
+/**
  * Engine add-on for processing lesscss.
  *
  * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
@@ -45,5 +59,7 @@ object LessAddOn extends TemplateEngineAddOn {
   def apply(te: TemplateEngine) {
     val lessEngine = new LessEngine
     te.filters += "less" -> new LessFilter(lessEngine)
+    te.pipelines += "less" -> List(NoLayoutFilter(new LessPipeline(lessEngine), "text/css"))
+    te.templateExtensionsFor("css") += "less"    
   }
 }
