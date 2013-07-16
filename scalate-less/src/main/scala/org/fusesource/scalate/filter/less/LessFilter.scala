@@ -33,7 +33,7 @@ class LessFilter(lessEngine: LessEngine) extends Filter {
   def filter(context: RenderContext, content: String) = {
     synchronized {
       // This code block is synchronized as I'm not confident that the Less filter is thread safe.
-      val css = lessEngine.compile(content).stripLineEnd
+      val css = lessEngine.compile(content, context.currentTemplate).stripLineEnd
       """<style type="text/css">%n%s%n</style>""".format(css)
     }
   }
