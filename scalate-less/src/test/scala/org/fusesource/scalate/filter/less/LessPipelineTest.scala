@@ -17,6 +17,15 @@ class LessPipelineTest extends TemplateTestSupport {
   text-color: #0000ff;
 }
 """)
-
+  }
+  
+  test("server side includes") {
+     assertUriOutputContains("org/fusesource/scalate/filter/less/server_side_include.css", """div.section {
+  border: solid 1px blue;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+""")
   }
 }

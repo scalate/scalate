@@ -18,9 +18,11 @@
 package org.fusesource.scalate.filter.less
 
 import org.fusesource.scalate.{ TemplateEngineAddOn, RenderContext, TemplateEngine }
-import com.asual.lesscss.LessEngine
-import org.fusesource.scalate.filter.Filter
-import org.fusesource.scalate.filter.NoLayoutFilter
+import com.asual.lesscss.{ LessEngine, LessOptions }
+import com.asual.lesscss.loader.ResourceLoader
+import org.fusesource.scalate.filter.{ Filter, NoLayoutFilter }
+import org.fusesource.scalate.util.IOUtil
+import java.io.IOException
 
 /**
  * Renders Less syntax inside templates.
@@ -45,7 +47,7 @@ class LessFilter(lessEngine: LessEngine) extends Filter {
 class LessPipeline(private val lessEngine: LessEngine) extends Filter {
   def filter(context: RenderContext, content: String) = synchronized {
     synchronized {
-    	lessEngine.compile(content)
+    	lessEngine.compile(content, context.currentTemplate)
     }
   }
 }
@@ -57,9 +59,27 @@ class LessPipeline(private val lessEngine: LessEngine) extends Filter {
  */
 object LessAddOn extends TemplateEngineAddOn {
   def apply(te: TemplateEngine) {
-    val lessEngine = new LessEngine
+    val lessEngine = new LessEngine(new LessOptions, new ScalateResourceLoader(te))
     te.filters += "less" -> new LessFilter(lessEngine)
     te.pipelines += "less" -> List(NoLayoutFilter(new LessPipeline(lessEngine), "text/css"))
     te.templateExtensionsFor("css") += "less"    
+  }
+
+  /**
+   * Bridge between Scalate and less resource loading.
+   */
+  class ScalateResourceLoader(private val engine: TemplateEngine) extends ResourceLoader {
+    def exists(path: String): Boolean = {
+      engine.resourceLoader.resource(path).isDefined
+    }
+
+    def load(path: String, charset: String): String = {
+      engine.resourceLoader.resource(path) match {
+        case Some(r) =>
+          IOUtil.loadText(r.inputStream, charset)
+        case _ =>
+          throw new IOException("No such file: " + path)
+      }
+    }
   }
 }
