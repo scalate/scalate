@@ -14,7 +14,7 @@ class LessPipelineTest extends TemplateTestSupport {
 
   test("standalone") {
     assertUriOutputContains("org/fusesource/scalate/filter/less/standalone.css", """p {
-  text-color: blue;
+  text-color: #0000ff;
 }
 """)
 
