@@ -293,7 +293,7 @@ Given how common object views are and templates where you pass in an object to r
 
 For example if your template matches the name **package/className.viewName.extension** then the className is implicitly imported into your template as a typesafe attribute.
 
-For example if you're template is org/fusesource/scalate/sample/Person.index.ssp then it can look like this
+For example if your template is org/fusesource/scalate/sample/Person.index.ssp then it can look like this
 
 {pygmentize:: ssp}
 name: ${firstName} ${surname}
