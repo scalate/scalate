@@ -535,7 +535,7 @@ For example you could add the following Scala code to a file called **src/main/s
 package foo
 
 import org.fusesource.scalate.TemplateSource
-import org.fusesource.scalate.support.TemplatePackage
+import org.fusesource.scalate.{Binding, TemplateSource}
 
 
 /**
