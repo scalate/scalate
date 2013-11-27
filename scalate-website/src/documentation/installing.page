@@ -32,7 +32,9 @@ Lets set up scalate!
 
     ### Windows 2000/XP
     
-    1. [Download a distribution](../download.html) such as [#{project_version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-windows-bin.zip)
+    1. [Download a distribution](../download.html) corresponding to your scala version :
+      1. Scala 2.9 : [#{project_version} zip](https://repository.jboss.org/nexus/content/repositories/fs-public/org/fusesource/scalate/scalate-distro_2.9/#{project_version}/scalate-distro_2.9-#{project_version}-windows-bin.zip)
+      1. Scala 2.10 : [#{project_version} zip](https://repository.jboss.org/nexus/content/repositories/fs-public/org/fusesource/scalate/scalate-distro_2.10/#{project_version}/scalate-distro_2.10-#{project_version}-windows-bin.zip)
     
     1. Unzip the distribution archive, i.e. `scalate-#{project_version}-windows-bin.zip` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `C:\Program Files\Scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
     1. Add the `C:\Program Files\Scala\scalate-#{project_version}\bin` directory to the `PATH` environment variable:
@@ -52,7 +54,9 @@ Lets set up scalate!
   
     ### Unix-based Operating Systems (Linux, Solaris and Mac OS X)
 
-    1. [Download a distribution](../download.html) such as [#{project_version} tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{project_version}/scalate-distro-#{project_version}-unix-bin.tar.gz)
+    1. [Download a distribution](../download.html)  cooresponding to your scala version :
+      1. Scale 2.9 : such as [#{project_version} tar.gz](https://repository.jboss.org/nexus/content/repositories/fs-public/org/fusesource/scalate/scalate-distro_2.9/#{project_version}/scalate-distro_2.9-#{project_version}-unix-bin.tar.gz)
+      1. Scale 2.10 : such as [#{project_version} tar.gz](https://repository.jboss.org/nexus/content/repositories/fs-public/org/fusesource/scalate/scalate-distro_2.10/#{project_version}/scalate-distro_2.10-#{project_version}-unix-bin.tar.gz)
     1. Extract the distribution archive, i.e. `scalate-#{project_version}-unix-bin.tar.gz` to the directory you wish to install Scalate #{project_version}. These instructions assume you chose `/usr/local/scala`. The subdirectory `scalate-#{project_version}` will be created from the archive.
     1. In a command terminal, prepend the `PATH` variable with the `bin` directory in the scalate release.
 
