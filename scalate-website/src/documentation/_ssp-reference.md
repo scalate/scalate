@@ -362,7 +362,7 @@ Ssp comments prevent everything inside the comment markers from being inserted i
 You can include other scripts in your page using the include method
 
 {pygmentize:: ssp}
-${include("relativeOrAbsoluteURL"}
+${include("relativeOrAbsoluteURL")}
 {pygmentize}
 
 The URL is then evaluated and included in place in your template.
