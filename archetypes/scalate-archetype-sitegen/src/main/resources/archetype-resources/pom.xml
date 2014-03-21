@@ -49,17 +49,17 @@
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-wikitext_2.10</artifactId>
+      <artifactId>scalate-wikitext_2.11.0-RC3</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page_2.10</artifactId>
+      <artifactId>scalate-page_2.11.0-RC3</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
       <groupId>${scalamd.groupId}</groupId>
-      <artifactId>scalamd_2.10</artifactId>
+      <artifactId>scalamd_2.11.0-RC3</artifactId>
       <version>${scalamd-version}</version>
     </dependency>
     
@@ -192,7 +192,7 @@
 
       <plugin>
         <groupId>org.fusesource.scalate</groupId>
-        <artifactId>maven-scalate-plugin_2.10</artifactId>
+        <artifactId>maven-scalate-plugin_2.11.0-RC3</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>

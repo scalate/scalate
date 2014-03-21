@@ -29,7 +29,7 @@
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project_2.10</artifactId>
+  <artifactId>scalate-project_2.11.0-RC3</artifactId>
   <version>1.7.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -70,11 +70,11 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.10.4-RC3</scala-version>
-    <scala-version-suffix>2.10</scala-version-suffix>
+    <scala-version>2.11.0-RC3</scala-version>
+    <scala-version-suffix>2.11.0-RC3</scala-version-suffix>
 
     <scalatest-artifact>scalatest_${scala-version-suffix}</scalatest-artifact>
-    <scalatest-version>1.9.2-SNAP1</scalatest-version>
+    <scalatest-version>2.1.2</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
     <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
@@ -98,7 +98,7 @@
 -->
     <surefire-plugin-version>2.6</surefire-plugin-version>
     <jetty-plugin-version>7.2.1.v20101111</jetty-plugin-version>
-    <scala-plugin-version>3.1.0</scala-plugin-version>
+    <scala-plugin-version>3.1.6</scala-plugin-version>
     <tomcat-plugin-version>1.1</tomcat-plugin-version>
     <war-plugin-version>2.1.1</war-plugin-version>
     <buildhelper-plugin-version>1.7</buildhelper-plugin-version>
@@ -344,7 +344,10 @@
               <javacArg>1.6</javacArg>
             </javacArgs>
             <scalaVersion>${scala-version}</scalaVersion>
-            <recompileMode>incremental</recompileMode>
+            <!-- Disabled in Scala 2.11.0-RC3 because compiler-interface
+                 didn't work. Would be nice to re-enable once versions
+                 catch up.
+            <recompileMode>incremental</recompileMode>-->
             <useZincServer>true</useZincServer>
           </configuration>
         </plugin>
@@ -946,7 +949,7 @@
         <plugins>
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin_2.10</artifactId>
+            <artifactId>maven-scalate-plugin_2.11.0-RC3</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -965,7 +968,7 @@
       <dependencies>
         <dependency>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel_2.10</artifactId>
+          <artifactId>scalate-jrebel_2.11.0-RC3</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>

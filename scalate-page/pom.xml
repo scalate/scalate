@@ -22,11 +22,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.10</artifactId>
+    <artifactId>scalate-project_2.11.0-RC3</artifactId>
     <version>1.7.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-page_2.10</artifactId>
+  <artifactId>scalate-page_2.11.0-RC3</artifactId>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>
@@ -38,7 +38,7 @@
   <dependencies>
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-core_2.10</artifactId>
+      <artifactId>scalate-core_2.11.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-wikitext_2.10</artifactId>
+      <artifactId>scalate-wikitext_2.11.0-RC3</artifactId>
       <version>${project.version}</version>
     </dependency>
     
@@ -61,14 +61,14 @@
     
     <dependency>
       <groupId>${scalamd.groupId}</groupId>
-      <artifactId>scalamd_2.10</artifactId>
+      <artifactId>scalamd_2.11.0-RC3</artifactId>
       <version>${scalamd-version}</version>
     </dependency>
     
     <!-- testing -->
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test_2.10</artifactId>
+      <artifactId>scalate-test_2.11.0-RC3</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
