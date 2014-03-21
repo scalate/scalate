@@ -70,7 +70,7 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.10.2</scala-version>
+    <scala-version>2.10.4-RC3</scala-version>
     <scala-version-suffix>2.10</scala-version-suffix>
 
     <scalatest-artifact>scalatest_${scala-version-suffix}</scalatest-artifact>
