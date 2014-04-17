@@ -29,7 +29,7 @@
   </parent>
 
   <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project_2.11.0-RC3</artifactId>
+  <artifactId>scalate-project_2.11</artifactId>
   <version>1.7.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -70,8 +70,8 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.11.0-RC3</scala-version>
-    <scala-version-suffix>2.11.0-RC3</scala-version-suffix>
+    <scala-version>2.11.0</scala-version>
+    <scala-version-suffix>2.11</scala-version-suffix>
 
     <scalatest-artifact>scalatest_${scala-version-suffix}</scalatest-artifact>
     <scalatest-version>2.1.2</scalatest-version>
@@ -344,7 +344,7 @@
               <javacArg>1.6</javacArg>
             </javacArgs>
             <scalaVersion>${scala-version}</scalaVersion>
-            <!-- Disabled in Scala 2.11.0-RC3 because compiler-interface
+            <!-- Disabled in Scala 2.11.0 because compiler-interface
                  didn't work. Would be nice to re-enable once versions
                  catch up.
             <recompileMode>incremental</recompileMode>-->
@@ -949,7 +949,7 @@
         <plugins>
           <plugin>
             <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin_2.11.0-RC3</artifactId>
+            <artifactId>maven-scalate-plugin_2.11</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -968,7 +968,7 @@
       <dependencies>
         <dependency>
           <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel_2.11.0-RC3</artifactId>
+          <artifactId>scalate-jrebel_2.11</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>

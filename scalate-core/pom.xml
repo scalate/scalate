@@ -22,11 +22,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.11.0-RC3</artifactId>
+    <artifactId>scalate-project_2.11</artifactId>
     <version>1.7.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-core_2.11.0-RC3</artifactId>
+  <artifactId>scalate-core_2.11</artifactId>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>
@@ -44,7 +44,7 @@
     
     <dependency>
       <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-util_2.11.0-RC3</artifactId>
+      <artifactId>scalate-util_2.11</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -74,7 +74,7 @@
 
     <dependency>
       <groupId>${scalamd.groupId}</groupId>
-      <artifactId>scalamd_2.11.0-RC3</artifactId>
+      <artifactId>scalamd_2.11</artifactId>
       <version>${scalamd-version}</version>
       <optional>true</optional>
     </dependency>
