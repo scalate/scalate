@@ -19,6 +19,7 @@ package org.fusesource.scalate
 
 import collection.immutable.Map
 import java.io.File
+import org.scalatest.ConfigMap
 
 class TemplateEngineHelpersTest extends TemplateTestSupport {
 
@@ -32,7 +33,7 @@ class TemplateEngineHelpersTest extends TemplateTestSupport {
 
   def context = new DefaultRenderContext("/foo", engine)
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     super.beforeAll(configMap)
 
     engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))

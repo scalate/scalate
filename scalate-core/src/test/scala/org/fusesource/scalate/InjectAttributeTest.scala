@@ -20,6 +20,7 @@ package org.fusesource.scalate
 import java.lang.String
 import collection.immutable.Map
 import java.io.File
+import org.scalatest.ConfigMap
 
 class InjectAttributeTest extends TemplateTestSupport {
   test("Using render context directly") {
@@ -46,7 +47,7 @@ class InjectAttributeTest extends TemplateTestSupport {
 
   def context = new DefaultRenderContext("dummy.ssp", engine)
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     super.beforeAll(configMap)
     engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
   }
