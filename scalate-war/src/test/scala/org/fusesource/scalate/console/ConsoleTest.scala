@@ -19,7 +19,7 @@ package org.fusesource.scalate.console
 
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
-import _root_.org.scalatest.{FunSuite}
+import org.scalatest.{ConfigMap, FunSuite}
 
 import _root_.org.fusesource.scalate.test._
 import java.lang.String
@@ -56,7 +56,7 @@ class ConsoleTest extends FunSuite with WebServerMixin with WebDriverMixin {
   }
 
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     System.setProperty("scalate.mode", "development")
     super.beforeAll(configMap)
 

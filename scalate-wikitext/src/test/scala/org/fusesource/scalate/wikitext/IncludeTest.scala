@@ -19,6 +19,7 @@ package org.fusesource.scalate.wikitext
 
 import org.fusesource.scalate.test.TemplateTestSupport
 import java.io.File
+import org.scalatest.ConfigMap
 
 class IncludeTest extends TemplateTestSupport {
 
@@ -26,7 +27,7 @@ class IncludeTest extends TemplateTestSupport {
     assertUriOutputContains("include/test.conf", "Testing include", "Included1", "Included2")
   }
 
-  override protected def beforeAll(map: Map[String, Any]) = {
+  override protected def beforeAll(map: ConfigMap) = {
     super.beforeAll(map)
 
     engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))

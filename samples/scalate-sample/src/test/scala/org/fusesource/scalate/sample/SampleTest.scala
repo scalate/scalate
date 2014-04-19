@@ -19,7 +19,7 @@ package org.fusesource.scalate.sample
 
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
-import _root_.org.scalatest.{FunSuite}
+import org.scalatest.{ConfigMap, FunSuite}
 
 import _root_.org.fusesource.scalate.test._
 
@@ -29,7 +29,7 @@ import _root_.org.fusesource.scalate.test._
 @RunWith(classOf[JUnitRunner])
 class SampleTest extends FunSuite with WebServerMixin with WebDriverMixin {
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     System.setProperty("scalate.mode", "development")
     super.beforeAll(configMap)
   }

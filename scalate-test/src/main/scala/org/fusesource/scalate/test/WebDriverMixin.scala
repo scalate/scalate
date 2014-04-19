@@ -20,7 +20,7 @@ package org.fusesource.scalate.test
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import java.lang.String
 import collection.immutable.Map
-import org.scalatest.{FunSuite, BeforeAndAfterAll}
+import org.scalatest.{ConfigMap, FunSuite, BeforeAndAfterAll}
 import org.openqa.selenium.{WebDriver, WebElement}
 import org.openqa.selenium.internal.FindsByXPath
 
@@ -38,7 +38,7 @@ trait WebDriverMixin extends BeforeAndAfterAll {
 
   def xpathDriver = webDriver.asInstanceOf[FindsByXPath]
 
-  override protected def afterAll(configMap: Map[String, Any]) = webDriver.close
+  override protected def afterAll(configMap: ConfigMap) = webDriver.close
 
   /*
     def pageContains(text: String): Unit = {

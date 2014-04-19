@@ -19,7 +19,7 @@ package org.fusesource.scalate.test
 
 import _root_.org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
+import org.scalatest.{ConfigMap, BeforeAndAfterAll, FunSuite}
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
@@ -37,7 +37,7 @@ abstract class FunSuiteSupport extends FunSuite with BeforeAndAfterAll with Log 
    */
   def baseDir =  new File(Config.baseDir)
 
-  override protected def beforeAll(map: Map[String, Any]): Unit = {
+  override protected def beforeAll(map: ConfigMap): Unit = {
     map.get("basedir") match {
       case Some(basedir) => Config.baseDir = basedir.toString
       case _ =>
