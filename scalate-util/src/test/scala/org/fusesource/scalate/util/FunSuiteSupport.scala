@@ -24,7 +24,7 @@ import xml.NodeSeq
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfterAll, ConfigMap, FunSuite}
+import org.scalatest.{ConfigMap, BeforeAndAfterAll, FunSuite}
 import org.slf4j.LoggerFactory
 
 /**
