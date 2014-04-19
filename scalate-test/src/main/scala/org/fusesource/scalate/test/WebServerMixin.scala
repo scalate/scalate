@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.test
 
-import org.scalatest.{Suite, BeforeAndAfterAll}
+import org.scalatest.{ConfigMap, Suite, BeforeAndAfterAll}
 
 
 /**
@@ -30,7 +30,7 @@ trait WebServerMixin extends BeforeAndAfterAll {
 
   val webServer = new JettyServer
 
-  override protected def beforeAll(configMap: Map[String, Any]): Unit = {
+  override protected def beforeAll(configMap: ConfigMap): Unit = {
     configMap.get("basedir") match {
       case Some(basedir) => val text = basedir.toString
       println("Setting basedir to: " + text)
@@ -43,7 +43,7 @@ trait WebServerMixin extends BeforeAndAfterAll {
     webServer.start
   }
 
-  override protected def afterAll(configMap: Map[String, Any]) = webServer.stop
+  override protected def afterAll(configMap: ConfigMap) = webServer.stop
 
   def rootUrl = webServer.rootUrl
 }

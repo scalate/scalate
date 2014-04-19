@@ -21,6 +21,7 @@ package rest
 import collection.immutable.Map
 import java.io.File
 import support.DefaultTemplatePackage
+import org.scalatest.ConfigMap
 
 class DefaultTemplatePackageTest extends TemplateTestSupport {
 
@@ -30,7 +31,7 @@ class DefaultTemplatePackageTest extends TemplateTestSupport {
       "name: James town: Mells")
   }
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     super.beforeAll(configMap)
     engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))
   }

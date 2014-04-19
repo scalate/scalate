@@ -19,6 +19,7 @@ package org.fusesource.scalate.wikitext
 
 import org.fusesource.scalate.test.TemplateTestSupport
 import java.io.File
+import org.scalatest.ConfigMap
 
 class ChildrenTest extends TemplateTestSupport {
 
@@ -40,7 +41,7 @@ class ChildrenTest extends TemplateTestSupport {
   }
 
 
-  override protected def beforeAll(map: Map[String, Any]) = {
+  override protected def beforeAll(map: ConfigMap) = {
     super.beforeAll(map)
 
     engine.sourceDirectories = List(new File(baseDir, "src/test/resources"))

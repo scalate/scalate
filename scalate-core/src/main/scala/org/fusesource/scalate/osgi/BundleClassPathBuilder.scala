@@ -18,7 +18,7 @@
 package org.fusesource.scalate.osgi
 
 import java.io.{InputStream, IOException, File}
-import scala.tools.nsc.io.AbstractFile
+import scala.reflect.io.AbstractFile
 import java.net.URL
 import java.lang.String
 import org.osgi.framework.{ServiceReference, Bundle}

@@ -23,13 +23,14 @@ import java.lang.String
 import collection.immutable.Map
 import util.{Log, IOUtil}
 import org.slf4j.LoggerFactory
+import org.scalatest.ConfigMap
 
 abstract class TemplateTestSupport extends FunSuiteSupport with Log {
 
   var showOutput = false
   var engine: TemplateEngine = _
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     super.beforeAll(configMap)
 
     engine = createTemplateEngine

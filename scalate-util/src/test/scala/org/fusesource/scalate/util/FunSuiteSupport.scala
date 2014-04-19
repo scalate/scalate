@@ -24,7 +24,7 @@ import xml.NodeSeq
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfterAll, FunSuite}
+import org.scalatest.{ConfigMap, BeforeAndAfterAll, FunSuite}
 import org.slf4j.LoggerFactory
 
 /**
@@ -40,7 +40,7 @@ abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll 
   def baseDir = new File(_basedir)
 
 
-  override protected def beforeAll(map: Map[String, Any]): Unit = {
+  override protected def beforeAll(map: ConfigMap): Unit = {
     _basedir = map.get("basedir") match {
       case Some(basedir) => basedir.toString
       case _ => System.getProperty("basedir", ".")

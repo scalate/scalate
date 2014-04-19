@@ -20,6 +20,7 @@ package test
 
 import java.io.File
 import util.IOUtil
+import org.scalatest.ConfigMap
 
 /**
  * A useful base class for testing templates
@@ -28,7 +29,7 @@ class TemplateTestSupport extends FunSuiteSupport {
   var engine: TemplateEngine = _
   var showOutput = false
 
-  override protected def beforeAll(configMap: Map[String, Any]) = {
+  override protected def beforeAll(configMap: ConfigMap) = {
     super.beforeAll(configMap)
 
     engine = createTemplateEngine
