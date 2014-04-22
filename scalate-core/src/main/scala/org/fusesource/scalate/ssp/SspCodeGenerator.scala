@@ -22,6 +22,8 @@ import collection.mutable.Stack
 import support.{Text, Code, AbstractCodeGenerator}
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
+  import scala.language.implicitConversions
+  
   override val stratumName = "SSP"
 
   implicit def textToString(text: Text) = text.value

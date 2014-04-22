@@ -135,7 +135,6 @@ private object ClassPathBuilder extends Log {
   }
   
   def getClassPathFrom(classLoader: ClassLoader): Seq[String] = classLoader match {
-    
     case null => Nil
     
     case cl: URLClassLoader =>
@@ -150,6 +149,7 @@ private object ClassPathBuilder extends Log {
       }
 
     case AntLikeClassLoader(acp) =>
+      import scala.language.reflectiveCalls
       val cp = acp.getClasspath
       cp.split(File.pathSeparator)
 

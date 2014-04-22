@@ -30,6 +30,8 @@ import scala.util.parsing.input.OffsetPosition
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
+  import scala.language.implicitConversions
+  
   override val stratumName = "SCAML"
 
   implicit def textToString(text: Text) = text.value

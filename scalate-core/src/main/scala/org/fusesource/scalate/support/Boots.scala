@@ -11,6 +11,8 @@ import util.Objects
 object Boots {
 
   def invokeBoot(clazz: Class[_], injectionParameters: List[AnyRef]): Unit = {
+    import scala.language.reflectiveCalls
+    
     // Structural Typing to make Reflection easier.
     type Boot = {
       def run: Unit

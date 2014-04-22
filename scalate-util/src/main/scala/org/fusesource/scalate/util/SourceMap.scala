@@ -463,6 +463,7 @@ object SourceMapInstaller {
     }    
     
     def store: Array[Byte] = {
+      import scala.language.reflectiveCalls
       copy(4 + 2 + 2)
       var constantPoolCountPos: Int = baos.position
       var constantPoolCount: Int = copyShort

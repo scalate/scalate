@@ -35,6 +35,8 @@ object ClassLoaders {
    * Tries to load the named class on the given class loaders
    */
   def findClass(className: String, classLoaders: Traversable[ClassLoader] = defaultClassLoaders): Option[Class[_]] = {
+	import scala.language.existentials
+
     def tryLoadClass(classLoader: ClassLoader) = {
       try {
         Some(classLoader.loadClass(className))

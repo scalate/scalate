@@ -20,6 +20,8 @@ package org.fusesource.scalate.scuery
 import xml.{Attribute, Document, Elem, Node, NodeSeq, Null, Text}
 
 object Transform {
+  import scala.language.implicitConversions
+  
   implicit def toNodes(transform: Transform): NodeSeq = transform()
   implicit def toTraversable(transform: Transform): Traversable[Node] = transform()
 }

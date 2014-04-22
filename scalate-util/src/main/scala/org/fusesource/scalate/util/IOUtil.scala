@@ -23,6 +23,7 @@ import java.util.zip.{ZipEntry, ZipInputStream}
 import java.net.URL
 
 object IOUtil {
+  import scala.language.implicitConversions
 
   val log = Log(getClass); import log._
 

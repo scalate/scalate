@@ -41,6 +41,7 @@ class Precompiler {
   var bootClassName:String = _
 
   def execute() = {
+    import scala.language.reflectiveCalls
 
     if(sources==null || sources.isEmpty ) {
       throw new IllegalArgumentException("The sources property not properly set")

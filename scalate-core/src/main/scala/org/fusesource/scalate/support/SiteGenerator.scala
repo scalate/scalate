@@ -45,6 +45,8 @@ class SiteGenerator {
 
 
   def execute() = {
+    import scala.language.reflectiveCalls
+
     targetDirectory.mkdirs();
 
     if (webappDirectory == null || !webappDirectory.exists) {

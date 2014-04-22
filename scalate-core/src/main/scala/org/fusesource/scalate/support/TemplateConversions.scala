@@ -23,8 +23,9 @@ import org.fusesource.scalate.util.Log
  * A number of helper implicit conversions for use in templates
  */
 object TemplateConversions {
-  val log = Log(getClass); import log._
+  import scala.language.implicitConversions
 
+  val log = Log(getClass); import log._
 
   /**
    * Provide access to the elvis operator so that we can use it to provide null handling nicely

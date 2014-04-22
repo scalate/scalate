@@ -21,6 +21,8 @@ import java.util.Enumeration
 import javax.servlet.{FilterConfig, ServletContext, ServletConfig}
 
 object Config {
+  import scala.language.implicitConversions
+  
   implicit def servletConfig2Config(servletConfig: ServletConfig) = new Config {
     def getName = servletConfig.getServletName
     def getServletContext = servletConfig.getServletContext
