@@ -276,7 +276,12 @@
 
       <dependency>
         <groupId>org.scala-lang.modules</groupId>
-	<artifactId>scala-xml_2.11</artifactId>
+          <artifactId>scala-xml_2.11</artifactId>
+        <version>1.0.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang.modules</groupId>
+          <artifactId>scala-parser-combinators_2.11</artifactId>
         <version>1.0.1</version>
       </dependency>
 
