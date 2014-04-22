@@ -21,7 +21,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fusesource.scalate.samples</groupId>
+    <groupId>org.scalatra.scalate.samples</groupId>
     <artifactId>samples_2.10</artifactId>
     <version>1.7.0-SNAPSHOT</version>
   </parent>
@@ -38,7 +38,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
+      <groupId>org.scalatra.scalate</groupId>
       <artifactId>scalate-war_2.10</artifactId>
       <version>${project.version}</version>
       <type>war</type>
@@ -50,7 +50,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
+      <groupId>org.scalatra.scalate</groupId>
       <artifactId>scalate-guice_2.10</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -66,7 +66,7 @@
 
     <!-- testing -->
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
+      <groupId>org.scalatra.scalate</groupId>
       <artifactId>scalate-test_2.10</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

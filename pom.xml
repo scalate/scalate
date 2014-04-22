@@ -28,7 +28,7 @@
     <version>1.9</version>
   </parent>
 
-  <groupId>org.fusesource.scalate</groupId>
+  <groupId>org.scalatra.scalate</groupId>
   <artifactId>scalate-project_2.10</artifactId>
   <version>1.7.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -945,7 +945,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.fusesource.scalate</groupId>
+            <groupId>org.scalatra.scalate</groupId>
             <artifactId>maven-scalate-plugin_2.10</artifactId>
             <version>${project.version}</version>
             <executions>
@@ -964,7 +964,7 @@
       <id>jrebel</id>
       <dependencies>
         <dependency>
-          <groupId>org.fusesource.scalate</groupId>
+          <groupId>org.scalatra.scalate</groupId>
           <artifactId>scalate-jrebel_2.10</artifactId>
           <version>${project.version}</version>
         </dependency>
