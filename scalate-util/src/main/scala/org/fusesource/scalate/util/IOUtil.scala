@@ -21,11 +21,13 @@ package org.fusesource.scalate.util
 import java.io._
 import java.util.zip.{ZipEntry, ZipInputStream}
 import java.net.URL
+import scala.util.parsing.input.{Position, OffsetPosition}
 
 object IOUtil {
 
   val log = Log(getClass); import log._
 
+  class InvalidDirectiveException(directive: String, pos: Position) extends RuntimeException(directive + " at " + pos, null)
 
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files
@@ -63,10 +65,39 @@ object IOUtil {
     return file.delete
   }
 
+  val includeRegEx = """@@include\(\"(.+)\"\)""".r
 
-  def loadText(in: InputStream, encoding: String = "UTF-8"): String = new String(loadBytes(in), encoding)
+  /**
+   * TODO: maybe we want other precompile directives at some point,
+   * so this may need to be made more flexible
+   */
+  def mergeIncludes(sourceCode: String, encoding: String = "UTF-8"): String = {
+    val matches = includeRegEx.findAllIn(sourceCode)
+    if (!matches.hasNext) sourceCode
+    else {
+      matches.foldLeft(sourceCode) { (result, include) =>
+        val includeSource: String = try {
+            val includeRegEx(fileName) = include
+            loadTextFile(new java.io.File(fileName), encoding)
+          } catch {
+            case m: MatchError =>
+              throw new InvalidDirectiveException("include", OffsetPosition(include, 0))
+            case n: FileNotFoundException => throw n
+          }
+        result.replace(include, includeSource)
+      }
+    }
+  }
 
-  def loadTextFile(path: File, encoding: String = "UTF-8") = new String(loadBinaryFile(path), encoding)
+  def loadText(in: InputStream, encoding: String = "UTF-8"): String = {
+    val sourceCode = new String(loadBytes(in), encoding)
+    mergeIncludes(sourceCode, encoding)
+  }
+
+  def loadTextFile(path: File, encoding: String = "UTF-8") = {
+    val sourceCode = new String(loadBinaryFile(path), encoding)
+    mergeIncludes(sourceCode, encoding)
+  }
 
   def loadBinaryFile(path: File): Array[Byte] = {
     val baos = new ByteArrayOutputStream

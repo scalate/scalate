@@ -8,7 +8,7 @@ Scalate is a template engine based on the Scala language.
 ## Features
 
 * Supports multiple template syntaxes
-  * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+  * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails
   * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](jade.html)
   * [Mustache](mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
@@ -81,7 +81,7 @@ xml: produces
 
 For full documentation of the Scaml syntax see the [Scaml Reference Guide](scaml-reference.html)
 
-### Jade 
+### Jade
 
 The [Jade syntax](jade.html) is similar to [Scaml](scaml-reference.html), its a [modified dialect](http://jade-lang.com/) of [Haml](http://haml-lang.com/) where element names do not require a leading % symbol which can make it a little easier to read.
 
@@ -104,11 +104,11 @@ xml: produces
 <p>See, I can count!</p>
 {pygmentize_and_compare}
 
-For more details see the [Jade reference](jade.html) 
- 
+For more details see the [Jade reference](jade.html)
+
 ### Mustache
 
-The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](http://mustache.github.com/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). 
+The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](http://mustache.github.com/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js).
 
 Mustache is logic-less, using simple tags which can be used to represent loops, expressions or logical branching.
 
@@ -152,7 +152,7 @@ For example the following function creates a hypertext link using Scala's XML su
 
 {pygmentize:: scala}
 object Cheese {
-  def foo(productId: Int) = 
+  def foo(productId: Int) =
     <a href={"/products/" + productId} title="Product link">My Product</a>
 }
 {pygmentize}
@@ -170,7 +170,7 @@ The [Scaml](scaml-reference.html) version is
 
 {pygmentize:: scaml}
 - import Cheese._
-= foo(123)    
+= foo(123)
 {pygmentize}
 
 
@@ -188,7 +188,7 @@ object MySnippets {
     // thanks to the import I now have access to the renderContext
     // along with the standard servlet objects:
     // request, response, servletContext, servletConfig
-    request.getParameter("foo") 
+    request.getParameter("foo")
   }
 }
 {pygmentize}
@@ -206,7 +206,7 @@ This can be done by just adding a parameter list of the form <b>(body: => Unit)<
 import org.fusesource.scalate.RenderContext.capture
 
 object Cheese {
-  def foo(productId: Int)(body: => Unit) = 
+  def foo(productId: Int)(body: => Unit) =
     <a href={"/products/" + productId} title="Product link">capture(body)</a>
 }
 {pygmentize}
@@ -243,8 +243,8 @@ The [Scaml](scaml-reference.html) version is
 -@ val id: Int = 123
 - import Cheese._
 
-= foo(id)  
-  product #{id}  
+= foo(id)
+  product #{id}
 {pygmentize}
 
 Notice the [Scaml](scaml-reference.html) version is simpler, not requiring the open and close { } tokens as it uses indentation.
@@ -252,7 +252,7 @@ Notice the [Scaml](scaml-reference.html) version is simpler, not requiring the o
 
 ## Views
 
-From within your Scala code or inside a template you often want to render an object or collection of objects. 
+From within your Scala code or inside a template you often want to render an object or collection of objects.
 Scalate uses a convention over configuration mechanism so that you can render any object using a simple method call in your template. e.g. in SSP
 
 {pygmentize:: ssp}
@@ -483,7 +483,7 @@ Foo
 
 Both will generate the same response.
 
-Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background. 
+Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background.
 
 The nice thing is there's really no difference technically between a regular template, a layout or a 'tag' template or a 'partial' (to use Rails terminology), they are all just templates which can have parameters which can be mandatory or optional.
 
@@ -511,7 +511,7 @@ The [Scaml](scaml-reference.html) version of this is a bit more concise
 {pygmentize:: scaml}
 - var foo = capture
   hello there #{user.name} how are you?
-    
+
 ...
 = foo
 ...
@@ -525,7 +525,7 @@ When you create a number of templates in a directory you might find you are repe
 
 So Scalate supports a similar feature for templates which are code generated like [SSP](ssp-reference.html), [Scaml](scaml-reference.html) and [Jade](jade.html).
 
-The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). 
+The basic idea is Scalate will look in the same package as the template for a Scala/Java class called **ScalatePackage** which must extend [TemplatePackage](http://scalate.fusesource.org/maven/${project_version}/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html). If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name).
 
 If a ScalatePackage class is found then its **header** method is invoked to generate any shared imports, variables or methods across templates.
 
@@ -561,6 +561,25 @@ def time = new java.util.Date()
 
 You can then use the usual expressive composition features of Scala to use inheritance, traits, delegation and so forth to decide how to spread this code across your templates and decide how to combine these things at the package level to be inherited by all child packages and templates. You might find moving templates into functional directories makes it easier to reuse common boilerplate imports, values and methods across templates.
 
+### Includes {#includes}
+
+You can also include other templates or text files (any template format can be used) that you want processed after the include takes place.  This is done as follows:
+
+globals.scaml:
+
+{pygmentize:: scaml}
+- lazy val name = "Robbie"
+- lazy val address = "123 Main St."
+{pygmentize}
+
+template.scaml:
+
+{pygmentize:: scaml}
+@@include("globals.scaml")
+The address for #{name} is #{address}
+{pygmentize}
+
+Templates may have any number of includes, and they can appear anywhere in the template.  They can also be nested, such that an included template may also have includes inside it.
 
 ## Scalate Samples
 
@@ -579,7 +598,7 @@ Scalate can be built either using Maven or SBT
 General Requirements:
 
 * Java 5 runtime or Newer
-* Scala 2.8 
+* Scala 2.8
 
 Web Container Requirements:
 
@@ -619,7 +638,7 @@ Then to build the code type
 compile
 {pygmentize}
 
-to run the tests 
+to run the tests
 
 {pygmentize:: text}
 test
@@ -656,7 +675,7 @@ You could add one or more of the above to your servlet container's server-wide c
 
 #### Mapping URIs to templates with the Filter
 
-The Scalate template filter looks for templates in several locations to satisfy a request.  
+The Scalate template filter looks for templates in several locations to satisfy a request.
 For example, if requested URI is `/path/file.html`, then it will for templates in this order:
 
 1. `/path/file.html.${ext}`
@@ -676,7 +695,7 @@ To get up to speed quickly with JOG try the [Getting Started Guide](getting-star
 ### Embedding Scalate in your Application or Framework
 
 Scalate does not have any hard dependencies on a web framework or even HTTP.  It can be used as a standalone
-rendering engine in your application.  For more information on how to embed in your application, please reference the 
+rendering engine in your application.  For more information on how to embed in your application, please reference the
 [Scalate Embedding Guide](scalate-embedding-guide.html)
 
 ### Working Directory, Caching, Reloading
@@ -775,17 +794,17 @@ And then in your WebProject, you will need to add the
 `org.fusesource.scalate.sbt.PrecompilerWebProject` trait.  And then make sure
 the Scalate dependencies are added to the project.  For example:
 
-    class Project(info: ProjectInfo) extends 
-          DefaultWebProject(info) with 
+    class Project(info: ProjectInfo) extends
+          DefaultWebProject(info) with
           PrecompilerWebProject {
-      
-      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core_${scala_compat_tag}" % "${project_version}" 
-      lazy val servlet = "javax.servlet" % "servlet-api"% "2.5" 
+
+      lazy val scalate_core = "org.fusesource.scalate" % "scalate-core_${scala_compat_tag}" % "${project_version}"
+      lazy val servlet = "javax.servlet" % "servlet-api"% "2.5"
       lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
-      
+
     }
 
-### Using Scalate on GAE 
+### Using Scalate on GAE
 
 If you are using Scalate on [Google AppEngine](http://code.google.com/appengine/) (GAE) then you will probably want to precompile all your templates before you deploy them; so that each request is processed very quickly - so app engine won't kill your thread midway through.
 
@@ -795,9 +814,9 @@ To see an example of a Scalate project already setup using GAE try the [the hell
 
 #### Class Loaders
 
-Scalate can sometimes struggle with ClassLoaders. This is due to the Scala compiler requiring an explicit class path to be specified as a String of names rather than taking an actual ClassLoader object. 
+Scalate can sometimes struggle with ClassLoaders. This is due to the Scala compiler requiring an explicit class path to be specified as a String of names rather than taking an actual ClassLoader object.
 
-So Scalate works fine with expanded WARs, or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing or the Play Framework. But you might be able to find some application server that doens't provide an easy-to-diagnose ClassLoader object which may require an explicitly configured class path for compiling. 
+So Scalate works fine with expanded WARs, or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing or the Play Framework. But you might be able to find some application server that doens't provide an easy-to-diagnose ClassLoader object which may require an explicitly configured class path for compiling.
 
 A work around is to precompile your templates with the maven plugin (see the section above).
 
@@ -832,7 +851,7 @@ cd ~/Library/Application\ Support/TextMate/Bundles/
 git clone git://github.com/deanwampler/Scala.tmbundle.git
 {pygmentize}
 
-When you restart TextMate you should now get syntax highlighting and more when you open up either a [Ssp](ssp-reference.html) or  [Scaml](scaml-reference.html) file. 
+When you restart TextMate you should now get syntax highlighting and more when you open up either a [Ssp](ssp-reference.html) or  [Scaml](scaml-reference.html) file.
 
 The current plugin does not highlight Scala expressions terribly well with the default Mac Classic colour scheme in TextMate. We found that it helps to add an extra colour to your scheme.
 

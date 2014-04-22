@@ -17,32 +17,69 @@
  */
 package org.fusesource.scalate.filter.less
 
-import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
-import com.asual.lesscss.LessEngine
-import org.fusesource.scalate.filter.Filter
+import org.fusesource.scalate.{ TemplateEngineAddOn, RenderContext, TemplateEngine }
+import com.asual.lesscss.{ LessEngine, LessOptions }
+import com.asual.lesscss.loader.ResourceLoader
+import org.fusesource.scalate.filter.{ Filter, NoLayoutFilter }
+import org.fusesource.scalate.util.IOUtil
+import java.io.IOException
 
 /**
- * Renders Less syntax.
+ * Renders Less syntax inside templates.
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
-object LessFilter extends Filter with TemplateEngineAddOn {
-
-  private val lessEngine = new LessEngine
-
+class LessFilter(lessEngine: LessEngine) extends Filter {
   def filter(context: RenderContext, content: String) = {
     synchronized {
       // This code block is synchronized as I'm not confident that the Less filter is thread safe.
-      val css = lessEngine.compile(content).stripLineEnd
+      val css = lessEngine.compile(content, context.currentTemplate).stripLineEnd
       """<style type="text/css">%n%s%n</style>""".format(css)
     }
   }
+}
+
+/**
+ * Renders standalone less files
+ *
+ * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
+ */
+class LessPipeline(private val lessEngine: LessEngine) extends Filter {
+  def filter(context: RenderContext, content: String) = synchronized {
+    synchronized {
+    	lessEngine.compile(content, context.currentTemplate)
+    }
+  }
+}
+
+/**
+ * Engine add-on for processing lesscss.
+ *
+ * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
+ */
+object LessAddOn extends TemplateEngineAddOn {
+  def apply(te: TemplateEngine) {
+    val lessEngine = new LessEngine(new LessOptions, new ScalateResourceLoader(te))
+    te.filters += "less" -> new LessFilter(lessEngine)
+    te.pipelines += "less" -> List(NoLayoutFilter(new LessPipeline(lessEngine), "text/css"))
+    te.templateExtensionsFor("css") += "less"    
+  }
 
   /**
-   * Add the less filter to the template engine.
+   * Bridge between Scalate and less resource loading.
    */
-  def apply(te: TemplateEngine) {
-    te.filters += "less" -> LessFilter
-    te.pipelines += "less" -> List(LessFilter)
+  class ScalateResourceLoader(private val engine: TemplateEngine) extends ResourceLoader {
+    def exists(path: String): Boolean = {
+      engine.resourceLoader.resource(path).isDefined
+    }
+
+    def load(path: String, charset: String): String = {
+      engine.resourceLoader.resource(path) match {
+        case Some(r) =>
+          IOUtil.loadText(r.inputStream, charset)
+        case _ =>
+          throw new IOException("No such file: " + path)
+      }
+    }
   }
 }
