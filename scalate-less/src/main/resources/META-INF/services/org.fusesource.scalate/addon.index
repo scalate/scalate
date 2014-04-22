@@ -16,4 +16,4 @@
 # limitations under the License.
 #
 
-org.fusesource.scalate.filter.LessFilter
+org.fusesource.scalate.filter.less.LessAddOn
