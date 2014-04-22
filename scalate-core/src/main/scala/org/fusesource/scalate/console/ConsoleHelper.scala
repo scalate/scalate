@@ -19,7 +19,7 @@ package org.fusesource.scalate.console
 
 import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
-import _root_.org.fusesource.scalate.{DefaultRenderContext, RenderContext}
+import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.scala.Option
 import java.io.File
@@ -63,7 +63,7 @@ object ConsoleHelper extends Log
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: DefaultRenderContext) extends ConsoleSnippets {
+class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
   import ConsoleHelper._
   import context._
 

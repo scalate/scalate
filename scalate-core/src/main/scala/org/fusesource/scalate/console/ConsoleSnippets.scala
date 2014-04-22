@@ -19,7 +19,7 @@ package org.fusesource.scalate.console
 
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.servlet.{ServletResourceLoader, ServletRenderContext}
-import _root_.org.fusesource.scalate.DefaultRenderContext
+import _root_.org.fusesource.scalate.RenderContext
 import java.io.File
 import scala.xml.NodeSeq
 
@@ -29,7 +29,7 @@ import scala.xml.NodeSeq
 trait ConsoleSnippets {
   def servletContext: ServletContext
 
-  def renderContext: DefaultRenderContext
+  def renderContext: RenderContext
 
 
   def realPath(uri: String) = ServletResourceLoader(servletContext).realPath(uri)
