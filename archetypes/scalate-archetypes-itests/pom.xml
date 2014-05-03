@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.scalatra.scalate.tooling</groupId>
-    <artifactId>archetypes_2.10</artifactId>
+    <artifactId>archetypes_2.11</artifactId>
     <version>1.6.0-SNAPSHOT</version>
   </parent>
 
@@ -53,7 +53,7 @@
 
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-core_2.10</artifactId>
+      <artifactId>scalate-core_2.11</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -65,7 +65,7 @@
     
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-test_2.10</artifactId>
+      <artifactId>scalate-test_2.11</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.scalatra.scalate</groupId>
-    <artifactId>scalate-project_2.10</artifactId>
+    <artifactId>scalate-project_2.11</artifactId>
     <version>1.7.0</version>
   </parent>
 
@@ -39,7 +39,7 @@
 
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-core_2.10</artifactId>
+      <artifactId>scalate-core_2.11</artifactId>
       <version>${project.version}</version>
     </dependency>
 

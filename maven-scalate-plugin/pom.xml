@@ -23,7 +23,7 @@
 
   <parent>
     <groupId>org.scalatra.scalate</groupId>
-    <artifactId>scalate-project_2.10</artifactId>
+    <artifactId>scalate-project_2.11</artifactId>
     <version>1.7.0</version>
   </parent>
 

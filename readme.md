@@ -18,6 +18,14 @@ Building
 
 To build Scalate from the source please see the [building instructions](http://scalate.fusesource.org/building.html)
 
+Current version
+---------------
+
+The current version of Scalate is 1.7.0, available for Scala 2.10.x 
+and 2.11.x.
+
+    libraryDependencies += "org.scalatra.scalate" %% "scalate-core" % "1.7.0"
+
 Links
 -----
 
