@@ -22,9 +22,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.11</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <groupId>org.scalatra.scalate</groupId>
+    <artifactId>scalate-project_2.10</artifactId>
+    <version>1.7.0</version>
   </parent>
 
   <artifactId>maven-scalate-plugin_2.11</artifactId>

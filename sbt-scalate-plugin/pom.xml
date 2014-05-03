@@ -22,9 +22,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.11</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <groupId>org.scalatra.scalate</groupId>
+    <artifactId>scalate-project_2.10</artifactId>
+    <version>1.7.0</version>
   </parent>
 
   <artifactId>sbt-scalate-plugin_2.11</artifactId>
@@ -45,7 +45,7 @@
   <dependencies>
     <!--
       The official SBT distribution is not deployed to a Maven repository.
-      The org.fusesource.scalate.sbt jars should be identical to the stock
+      The org.scalatra.scalate.sbt jars should be identical to the stock
       version, but use a custom POM to make them available to a Maven build.
      -->
     <dependency>

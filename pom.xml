@@ -28,9 +28,9 @@
     <version>1.9</version>
   </parent>
 
-  <groupId>org.fusesource.scalate</groupId>
-  <artifactId>scalate-project_2.11</artifactId>
-  <version>1.7.0-SNAPSHOT</version>
+  <groupId>org.scalatra.scalate</groupId>
+  <artifactId>scalate-project_2.10</artifactId>
+  <version>1.7.0</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
@@ -77,8 +77,8 @@
     <scalatest-version>2.1.3</scalatest-version>
 
     <sbt-version>0.7.3</sbt-version>
-    <scalamd.groupId>org.fusesource.scalamd</scalamd.groupId>
-    <scalamd-version>1.6</scalamd-version>
+    <scalamd.groupId>org.scalatra.scalate</scalamd.groupId>
+    <scalamd-version>1.6.1</scalamd-version>
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-version>1.6.1</slf4j-version>
     <wikitext-version>1.4</wikitext-version>
@@ -327,6 +327,12 @@
                 <goal>testCompile</goal>
               </goals>
             </execution>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>doc-jar</goal>
+              </goals>
+            </execution>
           </executions>
           <configuration>
             <!-- lets disable vscaladoc -->
@@ -387,6 +393,19 @@
           </configuration>
         </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
@@ -959,8 +978,8 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.fusesource.scalate</groupId>
-            <artifactId>maven-scalate-plugin_2.11</artifactId>
+            <groupId>org.scalatra.scalate</groupId>
+            <artifactId>maven-scalate-plugin_2.10</artifactId>
             <version>${project.version}</version>
             <executions>
               <execution>
@@ -978,8 +997,8 @@
       <id>jrebel</id>
       <dependencies>
         <dependency>
-          <groupId>org.fusesource.scalate</groupId>
-          <artifactId>scalate-jrebel_2.11</artifactId>
+          <groupId>org.scalatra.scalate</groupId>
+          <artifactId>scalate-jrebel_2.10</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>

@@ -48,13 +48,13 @@
       <version>\${scala-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-wikitext_2.11</artifactId>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-wikitext_2.10</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-page_2.11</artifactId>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-page_2.10</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
@@ -191,8 +191,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.fusesource.scalate</groupId>
-        <artifactId>maven-scalate-plugin_2.11</artifactId>
+        <groupId>org.scalatra.scalate</groupId>
+        <artifactId>maven-scalate-plugin_2.10</artifactId>
         <version>${project.version}</version>
         <executions>
           <execution>

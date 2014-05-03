@@ -21,9 +21,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fusesource.scalate</groupId>
-    <artifactId>scalate-project_2.11</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <groupId>org.scalatra.scalate</groupId>
+    <artifactId>scalate-project_2.10</artifactId>
+    <version>1.7.0</version>
   </parent>
 
   <artifactId>scalate-war_2.11</artifactId>
@@ -38,8 +38,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-web_2.11</artifactId>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-web_2.10</artifactId>
       <version>${project.version}</version>
       <type>pom</type>
     </dependency>
@@ -58,8 +58,8 @@
 
     <!-- testing -->
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-test_2.11</artifactId>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-test_2.10</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
@@ -120,7 +120,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>org.fusesource.scalate.test.Main</mainClass>
+          <mainClass>org.scalatra.scalate.test.Main</mainClass>
           <classpathScope>test</classpathScope>
         </configuration>
       </plugin>

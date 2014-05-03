@@ -22,9 +22,9 @@
 
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.fusesource.scalate.samples</groupId>
-    <artifactId>samples_2.11</artifactId>
-    <version>1.7.0-SNAPSHOT</version>
+    <groupId>org.scalatra.scalate.samples</groupId>
+    <artifactId>samples_2.10</artifactId>
+    <version>1.7.0</version>
   </parent>
 
   <artifactId>scalate-sample-spring-mvc_2.11</artifactId>
@@ -40,8 +40,8 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.fusesource.scalate</groupId>
-      <artifactId>scalate-spring-mvc_2.11</artifactId>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-spring-mvc_2.10</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
