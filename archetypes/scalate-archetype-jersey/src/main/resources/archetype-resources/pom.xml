@@ -76,7 +76,7 @@
     </dependency>
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-page_2.10</artifactId>
+      <artifactId>scalate-page_2.11</artifactId>
       <version>\${scalate-version}</version>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <!-- testing -->
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-test_2.10</artifactId>
+      <artifactId>scalate-test_2.11</artifactId>
       <version>\${scalate-version}</version>
       <scope>test</scope>
     </dependency>
@@ -292,7 +292,7 @@
 
       <plugin>
         <groupId>org.scalatra.scalate</groupId>
-        <artifactId>maven-scalate-plugin_2.10</artifactId>
+        <artifactId>maven-scalate-plugin_2.11</artifactId>
         <version>\${scalate-version}</version>
         <executions>
           <execution>

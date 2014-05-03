@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.scalatra.scalate</groupId>
-    <artifactId>scalate-project_2.10</artifactId>
+    <artifactId>scalate-project_2.11</artifactId>
     <version>1.7.0</version>
   </parent>
 
@@ -38,7 +38,7 @@
   <dependencies>
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-core_2.10</artifactId>
+      <artifactId>scalate-core_2.11</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-wikitext_2.10</artifactId>
+      <artifactId>scalate-wikitext_2.11</artifactId>
       <version>${project.version}</version>
     </dependency>
     
@@ -68,7 +68,7 @@
     <!-- testing -->
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-test_2.10</artifactId>
+      <artifactId>scalate-test_2.11</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

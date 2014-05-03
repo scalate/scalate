@@ -23,7 +23,7 @@
 
   <parent>
     <groupId>org.scalatra.scalate.tooling</groupId>
-    <artifactId>archetypes_2.10</artifactId>
+    <artifactId>archetypes_2.11</artifactId>
     <version>1.7.0</version>
   </parent>
 
