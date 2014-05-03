@@ -30,7 +30,7 @@
 
   <groupId>org.scalatra.scalate</groupId>
   <artifactId>scalate-project_2.11</artifactId>
-  <version>1.7.0</version>
+  <version>1.7.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>${project.artifactId}</name>
