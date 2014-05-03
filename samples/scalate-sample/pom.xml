@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.scalatra.scalate.samples</groupId>
     <artifactId>samples_2.10</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>scalate-sample_2.10</artifactId>

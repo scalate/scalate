@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.scalatra.scalate</groupId>
     <artifactId>scalate-project_2.10</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1-SNAPSHOT</version>
   </parent>
 
   <groupId>org.scalatra.scalate.samples</groupId>
