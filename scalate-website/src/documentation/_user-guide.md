@@ -264,9 +264,20 @@ Scalate uses a convention over configuration mechanism so that you can render an
 <p>... more stuff </p>
 {pygmentize}
 
+or in [Scaml](scaml-reference.html)
+
+{pygmentize:: scaml}
+-@ val user = new User("foo")
+%p Something...
+
+~ view(user) 
+
+%p ... more stuff
+{pygmentize}
+
 ### View names
 
-The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For exmaple you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
+The view method takes a model object and an optional view name. The view name defaults to _"index"_ if you do not specify one. For example you could have various views for an object such as _"index", "edit", "detail", etc._ Then you might want to show the edit view of an object via
 
 {pygmentize:: ssp}
 <% val user = new User("foo") %>
@@ -349,34 +360,53 @@ collection(people, separator = {x += 1; <h3>Person {x}</h3>})
 
 ## Render templates
 
-It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the *render* method as follows
+It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the *render* method. In SSP
 
 {pygmentize:: ssp}
 <% render("foo.ssp") %>
 {pygmentize}
 
-This will render a template called *foo.ssp* relative to the current template. You can use absolute names if you prefer
+In SCAML
+
+{pygmentize:: scaml}
+- render("/foo.scaml")
+{pygmentize}
+
+Note that, in both cases, the markup used is the 'running Scala but with no insertion' command.
+
+This will render a template called *foo.ssp* (or *foo.scaml*) relative to the current template. Since the convention is to use the _/WEB-INF/scalate/views/_ directory for template calls, the search would usually be in _/WEB-INF/scalate/views/_. If you have templates in a super-directory, a side-by-side directory, or simply prefer, you can use absolute paths. In SSP
 
 {pygmentize:: ssp}
 <% render("/customers/contact.ssp") %>
 {pygmentize}
 
-You can also pass parameters into the template if it takes any
+You can also pass parameters into the template
 
 {pygmentize:: ssp}
 <% render("/customers/contact.ssp", Map("customer" -> c, "title" -> "Customer")) %>
 {pygmentize}
 
-When passing attributes you can use the Scala symbol notation for keys if you prefer...
+When passing parameters you can use the Scala symbol notation for keys if you prefer...
 
 {pygmentize:: ssp}
 <% render("/customers/contact.ssp", Map('customer -> c, 'title -> "Customer")) %>
 {pygmentize}
 
-If you prefer you can pass in a body to the template using the *layout* method as described in [using explicit layouts inside a template](#explicit_layouts_inside_a_template).
+Remember, in Scalate, template parameters must be declared within the targeted template. If the render above was called in [Scaml](scaml-reference.html) the template _/customers/contact.scaml_ must declare the parameters to retrieve data
+
+{pygmentize:: scaml}
+-@ val customer: String
+-@ val title: String
+
+...
+
+{pygmentize}
 
 
-## Layouts {#layouts}
+There are conventions in calling and routing, but the effect is the same as a layout. If you prefer you can pass a body to the template using the *layout* method as described in [layouts inside a template](#layouts_inside_a_template).
+
+
+## Default Layouts {#layouts}
 
 Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.
 
@@ -403,17 +433,19 @@ All you need to do is create a layout template in _/WEB-INF/scalate/layouts/defa
 
 Then all pages will be wrapped in this layout by default.
 
-This means your templates don't need to include the whole html/head/body stuff, typically you'll just want the actual content to be displayed in the part of the layout you need. So a typical page might look like this...
+This means your templates don't need to include the whole html/head/body stuff. The default layout wraps every page (unless a request is made not to). So a typical page might look like this...
 
 {pygmentize:: ssp}
 <h3>My Page</h3>
 <p>This is some text</p>
 {pygmentize}
 
+Besides the default layout, other layouts can be defined.
 
-### Changing the title or layout template
+## Controlling layouts from templates
+### Changing the layout template or title
 
-To set parameters on a layout or to change the layout template used, just output attribute values in your template.
+To change the layout template used, or other attributes, explicitly set attribute values
 
 {pygmentize:: ssp}
 <% attributes("layout") = "/WEB-INF/layouts/custom.ssp" %>
@@ -425,7 +457,7 @@ To set parameters on a layout or to change the layout template used, just output
 
 ### Disabling layouts
 
-If you wish to disable the use of the layout on a template, just set the layout attribute to "" the empty string.
+If you wish to disable the use of layouts, set the 'layout' attribute to "", the empty string
 
 {pygmentize:: ssp}
 <% attributes("layout") = "" %>
@@ -439,9 +471,9 @@ If you wish to disable the use of the layout on a template, just set the layout 
 
 To see examples of layouts in use, try running the sample web application and looking at the layout related example pages.
 
-### Explicit layouts inside a template {#explicit_layouts_inside_a_template}
+## Layouts inside a template {#layouts_inside_a_template}
 
-You may want to layout some content within part of your template explicitly rather than just applying a layout to an entire page.
+You may want to layout some content within part of your template. This 'helper' layout is not a page-wrapping layout, like the default layout, or a full view. It will format some part of a page in a DRY way.
 
 For example you may want to create a layout as follows in file _foo.ssp_
 
@@ -471,7 +503,7 @@ Foo
 <%}%>
 {pygmentize}
 
-Or using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
+Using [Velocity style directives](ssp-reference.html#velocity_style_directives) this might look like this
 
 {pygmentize:: ssp}
 #do( layout("foo.ssp") )
@@ -485,7 +517,7 @@ Both will generate the same response.
 
 Using the above mechanism via either the *render* or *layout* methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background.
 
-The nice thing is there's really no difference technically between a regular template, a layout or a 'tag' template or a 'partial' (to use Rails terminology), they are all just templates which can have parameters which can be mandatory or optional.
+The nice thing is there's really no difference technically between a regular template, a layout, a 'tag' template, or a 'partial' (to use Rails terminology). Only the default layout stands out because it is placed in the _/layout_ directory, and applies unless code explicitly asks it not to. Otherwise, they are all templates with mandatory or optional parameters.
 
 
 ## Capturing output
@@ -575,7 +607,7 @@ globals.scaml:
 template.scaml:
 
 {pygmentize:: scaml}
-@@include("globals.scaml")
+
 The address for #{name} is #{address}
 {pygmentize}
 
