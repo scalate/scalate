@@ -11,7 +11,9 @@ The way most developers get started contributing to a project.
 
 Scalate uses [Maven](http://maven.apache.org/) as its primary build tool for performing releases and uses the pom.xml to describe dependencies between modules. 
 
-If you don't fancy using Maven you can try using [sbt](sbt.html) which is particularly good for rapid edit-compile-test cycles or use your IDE directly or [Download](download.html) a distribution or JAR.
+After the source code is built, either Maven or SBT can be used for rebuilding code. Maven is the standard Java tool, but [SBT](sbt.html) is the usual Scala tool, because it can perform rapid edit-compile-test cycles.
+
+You can [download](download.html) a distro directly, ask your IDE to  [download](download.html) via Maven, or download/build, then integrate into an IDE (see below).
 
 ### Prequisites
 
