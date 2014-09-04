@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/site.css"/>
+    <title>Creating an IDE for Scalate</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="index.html">Scalate 1.4.0</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="source.html">Source</a></li>
+<li><a href="community.html">Community</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "How_to_create_a_Scalate_IDE">How to create a Scalate IDE</h1>
+
+<p>We love awesome IDEs! :)</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<h1 id = "Scalate_the_IDE_friendly_template_language">Scalate the IDE friendly template language</h1>
+
+<p>We specifically designed Scalate so that it should work amazingly well in an IDE since all expressions in the templates are Scala using static typing so that when you are editing a template the IDE knows all of the attributes and their types. </p>
+
+<p>Your IDE should be capable of great completion and error checking; plus at edit time your IDE should know if you have made any typos in any of your expressions such as maybe getting the property name wrong on a bean you are displaying. Its very easy to make typos in templates!</p>
+
+<h2 id = "Making_it_easier_on_the_IDE_hacker">Making it easier on the IDE hacker</h2>
+
+<p>Making great IDE plugins is a lot of work, but we hope we can cut some corners making great IDE plugins for Scalate because:</p>
+
+<ul>
+<li>most IDEs already have a plugin to support JSP or Erb editing and dealing with the syntax of mixing HTML/XML markup with a language (Java/Ruby). So for <a href="documentation/ssp-reference.html">Ssp</a> its just a case of reusing the core JSP/Erb editor with Scala language instead. JSP is pretty complex; Ssp is probably closer to the simplicity of Erb really</li>
+<li>for IDEs which support HAML already it should be relatively easy to provide <a href="documentation/scaml-reference.html">Scaml</a> support by just switching the language from Ruby to Scala for a very quick win (other than the change to Scala the differences are minimal).</li>
+<li>both <a href="documentation/ssp-reference.html">Ssp</a> and <a href="documentation/scaml-reference.html">Scaml</a> have very simple surface syntaxes that are easy for IDEs to parse; plus both parsers are implemented using Scala's excellent combinator parser libraries so they should be easy to reuse if you need them. Check out the source code for <a href="http://github.com/scalate/scalate/blob/master/scalate-core/src/main/scala/org/fusesource/scalate/ssp/SspParser.scala">SspParser</a>
+and <a href="http://github.com/scalate/scalate/blob/master/scalate-core/src/main/scala/org/fusesource/scalate/scaml/ScamlParser.scala">ScamlParser</a></li>
+<li>all the clever stuff in a Scalate template is done by the Scala language which already has great IDE support.</li>
+</ul>
+
+<h2 id = "JSR_45_Support">JSR 45 Support</h2>
+
+<p>Scalate adds <a href="http://jcp.org/aboutJava/communityprocess/final/jsr045/index.html">JSR 45</a> metadata to the template classes that it generates.  This means that, when running in Java a debugger, browsing through stack frames of generated template classes will take you to the template file instead of the generated scala file.  This feature should also allow IDE implementors to create Ssp and Scaml editors which allow you to set debugging breakpoints in the templates.</p>
+
+<h2 id = "Types_in_scope_for_the_Scala_language_completion">Types in scope for the Scala language completion</h2>
+
+<p>Other than detecting when there is a Scala code block or expression in the  <a href="documentation/ssp-reference.html">Ssp</a> and <a href="documentation/scaml-reference.html">Scaml</a> template languages, the main thing for the IDE to do is to configure which variables are available and their types for error checking and completion. Here's a break down&hellip;</p>
+
+<ul>
+<li>the RenderContext is imported so its methods are available. Typically in web applications the ServletRenderContext is imported which adds a few Servlet specific methods (like request/response/session/servletContext/servletConfig); though in some uses and frameworks just a RenderContext that is in scope.</li>
+<li>each attribute declaration is available in scope (which maybe be imported too if the 'import' keyword is used)</li>
+</ul>
+
+<p>For example the following <a href="documentation/ssp-reference.html">Ssp</a> script:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">bar:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;this is the default value&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%@</span> <span class="kn">import</span> <span class="nn">val</span> <span class="nl">foo:</span> <span class="n">Customer</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>hello there ${name} and ${bar}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>could be considered to mean the following scala code (using <strong>&lt;&lt;</strong> to refer to rendering output)</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">def</span> <span class="n">render</span><span class="o">(</span><span class="n">context</span><span class="k">:</span> <span class="kt">ServletRenderContext</span><span class="o">,</span> &#x000A;           <span class="n">bar</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;this is the default value&quot;</span><span class="o">,</span> &#x000A;           <span class="n">foo</span><span class="k">:</span> <span class="kt">Customer</span><span class="o">)</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>&#x000A;&#x000A;  <span class="k">import</span> <span class="nn">context._</span>&#x000A;  <span class="k">import</span> <span class="nn">foo._</span>&#x000A;  &#x000A;  <span class="o">&lt;&lt;</span> <span class="s">&quot;&lt;p&gt; hello there&quot;</span>&#x000A;  <span class="o">&lt;&lt;</span> <span class="n">name</span>&#x000A;  <span class="o">&lt;&lt;</span> <span class="s">&quot; and &quot;</span>&#x000A;  <span class="o">&lt;&lt;</span> <span class="n">bar</span>&#x000A;  <span class="o">&lt;&lt;</span> <span class="s">&quot;&lt;/p&gt;&quot;</span>&#x000A;<span class="o">}</span> &#x000A;</pre></div>&#x000A;</div>
+
+<p>The purpose of the above isn't to give a faithful representation of how output is generated (its similar to the above but you could always look at the actual generated scala code in <strong>WEB-INF/&#95;scalate/src/foo.ssp.scala</strong> to see for sure) - its more to show what variables are in context for the purpose of compiler warnings and method completion.</p>
+
+<p>So in the above the &ldquo;name&rdquo; expression is resoved by the foo variable's import for example.</p>
+
+<h2 id = "We_re_here_to_help_">We're here to help!</h2>
+
+<p>If you are considering hacking an IDE plugin for Scalate we're more than happy to help you out, please <a href="community.html">get in touch</a>! Many thanks!</p>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.fusesource.scalate.introspector</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.fusesource" class="extype" href="../../package.html">fusesource</a>.<a name="org.fusesource.scalate" class="extype" href="../package.html">scalate</a></p>
+        <h1>introspector</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">introspector</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.introspector.BeanIntrospector" data-isabs="false">
+      <a id="BeanIntrospector:BeanIntrospector[T]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="BeanIntrospector.html"><span class="name">BeanIntrospector</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends Introspector[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.BeanProperty" data-isabs="false">
+      <a id="BeanProperty:BeanProperty[T]"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="BeanProperty.html"><span class="name">BeanProperty</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="descriptor">descriptor: PropertyDescriptor</span>)</span><span class="result"> extends Property[T] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A property for a Java Bean property
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.Expression" data-isabs="true">
+      <a id="Expression:Expression[T]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Expression.html"><span class="name">Expression</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.Introspector" data-isabs="true">
+      <a id="Introspector:Introspector[T]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Introspector.html"><span class="name">Introspector</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.MethodProperty" data-isabs="false">
+      <a id="MethodProperty:MethodProperty[T]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="MethodProperty.html"><span class="name">MethodProperty</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends Property[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A property which just maps to a method with no arguments
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.ProductIntrospector" data-isabs="false">
+      <a id="ProductIntrospector:ProductIntrospector[T]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ProductIntrospector.html"><span class="name">ProductIntrospector</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends Introspector[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.Property" data-isabs="true">
+      <a id="Property:Property[T]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Property.html"><span class="name">Property</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends Expression[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.introspector.StringFunctorProperty" data-isabs="false">
+      <a id="StringFunctorProperty:StringFunctorProperty[T]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="StringFunctorProperty.html"><span class="name">StringFunctorProperty</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends MethodProperty[T]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A property which returns a Function which when invoked it invokes the underlying
+method on the given object
+</p>
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.introspector.Introspector" data-isabs="false">
+      <a id="Introspector:Introspector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Introspector$.html"><span class="name">Introspector</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

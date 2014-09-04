@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Download</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate 1.1</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Download</span></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='scalate'>scalate</h1>
+
+<p>Download it today!</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Download</h1>
+</div><div class='right'>
+<p>You can download <strong>Scalate</strong> from the <a href='http://repo.fusesource.com/nexus/content/repositories/public/'>Maven Repository</a> in the <a href='http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/'>Scalate area</a>.</p>
+
+<p>Download a distribution:</p>
+
+<ul>
+<li><a href='http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-windows-bin.zip'>1.1 zip</a> or <a href='http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.1/scalate-distro-1.1-unix-bin.tar.gz'>tar.gz</a> - <a href='blog/releases/2010/04/release-1-1.html'>Release Notes</a></li>
+
+<li><a href='http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-windows-bin.zip'>1.0 zip</a> or <a href='http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.0/scalate-distro-1.0-unix-bin.tar.gz'>tar.gz</a> - <a href='blog/releases/2010/04/release-1-0.html'>Release Notes</a></li>
+</ul>
+
+<p>You can now <a href='documentation/tool.html'>install the Scalate Tool</a></p>
+
+<h2>Snapshots</h2>
+
+<p>You can download a recent snapshot from the <a href='http://repo.fusesource.com/nexus/content/repositories/snapshots/'>Snapshot Maven Repository</a> in the <a href='http://repo.fusesource.com/nexus/content/repositories/snapshots/org/fusesource/scalate/'>Scalate area</a>.</p>
+
+<ul>
+<li><a href='http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&amp;g=org.fusesource.scalate&amp;a=scalate-distro&amp;v=1.2-SNAPSHOT&amp;e=zip&amp;c=windows-bin'>1.2-SNAPSHOT zip</a> or <a href='http://repo.fusesource.com/nexus/service/local/artifact/maven/redirect?r=snapshots&amp;g=org.fusesource.scalate&amp;a=scalate-distro&amp;v=1.2-SNAPSHOT&amp;e=tar.gz&amp;c=unix-bin'>tar.gz</a></li>
+</ul>
+</div><div class='left'>
+<h1>Maven</h1>
+</div><div class='right'>
+<p>If you build your project using <a href='http://maven.apache.org/'>Maven</a> then just add the following to your <em>pom.xml</em></p>
+</div><div class='right'>
+<div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;dependency&gt;</span>&#x000A;  <span class='nt'>&lt;groupId&gt;</span>org.fusesource.scalate<span class='nt'>&lt;/groupId&gt;</span>&#x000A;  <span class='nt'>&lt;artifactId&gt;</span>scalate-core<span class='nt'>&lt;/artifactId&gt;</span>&#x000A;  <span class='nt'>&lt;version&gt;</span>${scalate-version}<span class='nt'>&lt;/version&gt;</span>  &#x000A;<span class='nt'>&lt;/dependency&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+</div><div class='right'>
+<p>The releases should be synchronized to the <a href='http://repo1.maven.org/maven2/org/fusesource/scalate/'>central maven repository</a> so you should not need to add a maven repository to your pom.xml.</p>
+
+<p>However if a release has not yet made it to the central repository or you want to add a repository for completeness, add the following to your <em>pom.xml</em></p>
+</div><div class='right'>
+<div class='syntax'><div class='highlight'><pre>  &#x000A;<span class='nt'>&lt;repositories&gt;</span>&#x000A;   <span class='nt'>&lt;repository&gt;</span>&#x000A;     <span class='nt'>&lt;id&gt;</span>fusesource.m2<span class='nt'>&lt;/id&gt;</span>&#x000A;     <span class='nt'>&lt;name&gt;</span>FuseSource Public Repository<span class='nt'>&lt;/name&gt;</span>&#x000A;     <span class='nt'>&lt;url&gt;</span>http://repo.fusesource.com/nexus/content/repositories/public<span class='nt'>&lt;/url&gt;</span>&#x000A;     <span class='nt'>&lt;snapshots&gt;</span>&#x000A;       <span class='nt'>&lt;enabled&gt;</span>false<span class='nt'>&lt;/enabled&gt;</span>&#x000A;     <span class='nt'>&lt;/snapshots&gt;</span>&#x000A;     <span class='nt'>&lt;releases&gt;</span>&#x000A;       <span class='nt'>&lt;enabled&gt;</span>true<span class='nt'>&lt;/enabled&gt;</span>&#x000A;     <span class='nt'>&lt;/releases&gt;</span>&#x000A;   <span class='nt'>&lt;/repository&gt;</span>&#x000A; <span class='nt'>&lt;/repositories&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+</div><div class='right'>
+<h2>Snapshots</h2>
+
+<p>If you want to use a <strong>snapshot version</strong> you should ensure you have the Scalate Snapshot Maven repository defined in your <em>pom.xml</em></p>
+</div><div class='right'>
+<div class='syntax'><div class='highlight'><pre>  &#x000A;<span class='nt'>&lt;repositories&gt;</span>&#x000A;   <span class='nt'>&lt;repository&gt;</span>&#x000A;     <span class='nt'>&lt;id&gt;</span>fusesource.snapshots<span class='nt'>&lt;/id&gt;</span>&#x000A;     <span class='nt'>&lt;name&gt;</span>FuseSource Snapshot Repository<span class='nt'>&lt;/name&gt;</span>&#x000A;     <span class='nt'>&lt;url&gt;</span>http://repo.fusesource.com/nexus/content/repositories/snapshots<span class='nt'>&lt;/url&gt;</span>&#x000A;     <span class='nt'>&lt;snapshots&gt;</span>&#x000A;       <span class='nt'>&lt;enabled&gt;</span>true<span class='nt'>&lt;/enabled&gt;</span>&#x000A;     <span class='nt'>&lt;/snapshots&gt;</span>&#x000A;     <span class='nt'>&lt;releases&gt;</span>&#x000A;       <span class='nt'>&lt;enabled&gt;</span>false<span class='nt'>&lt;/enabled&gt;</span>&#x000A;     <span class='nt'>&lt;/releases&gt;</span>&#x000A;   <span class='nt'>&lt;/repository&gt;</span>&#x000A; <span class='nt'>&lt;/repositories&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+</div><div class='left'>
+<h1>Building</h1>
+</div><div class='right'>
+<p>If you prefer you can try building from <a href='source.html'>the source code</a> and <a href='building.html'>building it</a></p>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

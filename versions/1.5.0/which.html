@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/site.css"/>
+    <title>Which template engine?</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="index.html">Scalate 1.5.0</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="source.html">Source</a></li>
+<li><a href="community.html">Community</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Which_template_engine_should_I_use_">Which template engine should I use?</h1>
+
+<p>So which template engine should I use?</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>Scalate offers a number of different template engines. Template engines have different strengths and weaknesses, it depends on your requirements and the make up of your team as to which is the best choice for you.</p>
+
+<p>This page tries to help guide you towards the template engine thats right for you.</p>
+
+<h2 id = "Quick_Start_">Quick Start?</h2>
+
+<p>If you already know JSP, Erb or Velocity and want to get started quickly on using an expressive template engine with static typing using the powerful Scala programming language, which detects errors in your templates on each save along with a nice <a href="documentation/console.html">error console</a> in development mode you might find  <a href="documentation/ssp-reference.html">SSP</a> to be the simplest to get started.</p>
+
+<h2 id = "Who_edits_the_templates_">Who edits the templates?</h2>
+
+<p>The make up of your team and the people who own or edit the templates can affect which style of template engine is the most suitable. </p>
+
+<p>You may even choose to use a mixture of template engines based on the split of who edits the templates across designers and developers.</p>
+
+<h3 id = "Designers_edit_templates">Designers edit templates</h3>
+
+<p>If you have a designer who doesn't write Java or Scala code who wants to own the templates then <a href="documentation/mustache.html">Mustache</a> is well worth a look. Mustache provides logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a>. </p>
+
+<p>You can use a regular HTML file as the template and let your designer own and edit it, using a little JavaScript file inject the template with sample data. There is no need for your designer to use a mock or test server; they can just work on a static HTML page with JavaScript.</p>
+
+<p>Your Scala/Java developers can then just reuse the template and inject the values on the server side using the real services and domain model. Scala/Java developers then just focus on populating the context with the right objects that render the template nicely.</p>
+
+<h3 id = "Java___Scala_developers_edit_templates">Java / Scala developers edit templates</h3>
+
+<p>If Java/Scala developers maintain the templates then you probably want to use a DRY approach that uses the minimum amount of expressive code - plus minimise the glue code required to bind template to domain objects and services.</p>
+
+<p>Using static typing can boost performance, detect any typos in a template as soon as you save changes and hopefully <a href="creating-ide.html">soon</a> can help with powerful IDE completion.</p>
+
+<p>So a template engine which reuses the Scala programming language for expressions is worth a look; you get fast static code with lots of error checking as you save your templates.</p>
+
+<p>Choosing the best template engine for your team then depends on the kind of output you are generating&hellip;</p>
+
+<h4 id = "DRY_HTML___XHTML_">DRY HTML / XHTML?</h4>
+
+<p>If you are mostly generating HTML or XHTML then we highly recommend you take a look at <a href="documentation/scaml-reference.html">Scaml</a> which is the most DRY and concise template language we've ever seen for Scala. It combines the best of Scala, CSS selector syntax and whitespace indentation allow you to generate dynamic HTML / XHTML in a very clean, concise and DRY way.</p>
+
+<p><a href="documentation/scaml-reference.html">Scaml</a> can be a little bit of an acquired taste; at first it can look a bit odd until you start to recognise the use of CSS style symbols for ID / class attributes and so on. So rather than just turning away as soon as you see the use of the . # = and @ symbols on the first line of the templates, please give Scaml a try - we're sure you'll like it if you give it some time to sink in! :-)</p>
+
+<h4 id = "Generating_arbitrary_text_">Generating arbitrary text?</h4>
+
+<p>If you are generating arbitrary text (not just HTML/XHTML) you might want to take a look at <a href="documentation/ssp-reference.html">SSP</a> which should feel very familiar if you've ever used JSP, Erb or Velocity before.</p>
+
+<p>Its main strengths are its flexibility; it can generate any kind of textual output - though its not quite as DRY as <a href="documentation/scaml-reference.html">Scaml</a> if you are solely creating HTML / XHTML.</p>
+
+<p>If you are put off the JSP / Erb style  notation, please be aware you can always use <a href="documentation/ssp-reference.html#velocity&#95;style&#95;directives">Velocity style directives</a> which are much easier on the eye.</p>
+
+<h2 id = "Summary">Summary</h2>
+
+<table cellspacing="4">
+  <tr>
+    <th align="left">Template</th>
+    <th>Pros</th>
+    <th>Cons</th>
+  </tr>
+  <tr valign="middle">
+    <td valign="middle">
+      <p>
+        <a href="documentation/mustache.html">Mustache</a>
+      </p>
+    </td>
+    <td>
+      <ul>
+        <li>great for designers</li>
+        <li>no code in views</li>
+        <li>works in static HTML in browser using <a href="http://github.com/janl/mustache.js">mustache.js</a></li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>uses reflection and no static typing</li>
+        <li>easy to have typos in deeply nested templates</li>
+        <li>harder to test all paths through template</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td valign="middle">
+      <p>
+        <a href="documentation/scaml-reference.html">Scaml</a>
+      </p>
+    </td>
+    <td>
+      <ul>
+        <li>very DRY for HTML / XHTML</li>
+        <li>static typing for speed and to catch all typos on save</li>
+        <li>easy to test</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>not suitable for non HTML/XML output</li>
+        <li>little bit of an acquired taste; can take a few days to really get it</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td valign="middle">
+      <p>
+        <a href="documentation/ssp-reference.html">SSP</a>
+      </p>
+    </td>
+    <td>
+      <ul>
+        <li>easy to pick up if you know JSP, Erb or Velocity</li>
+        <li>static typing for speed and to catch all typos on save</li>
+        <li>easy to test</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Not as DRY as Scaml for HTML generation</li>
+        <li>some don't like the use of &lt;%= exp %&gt; notation, though there is always the <a href="documentation/ssp-reference.html#velocity&#95;style&#95;directives">velocity directive style</a> for that</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Spring MVC</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Spring_MVC">Spring MVC</h1>
+
+<p>Using Scalate with Spring MVC</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Overview">Overview</h1>
+</div>
+<div class="right">
+  <p>Scalate with the <a href="http://www.springsource.org/go-webflow2">Spring MVC framework</a>. Spring MVC is a flexible MVC web
+  application framework, built on core <a href="http://www.springsource.org/">Spring</a> functionality.</p>
+
+  <p>The ScalateViewResolver is an
+  (AbstractCachingViewResolver)[http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/web/servlet/view/AbstractCachingViewResolver.html]
+  that works similarly to an (UrlBasedViewResolver)[http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/web/servlet/view/UrlBasedViewResolver.html]
+  to render Scalate templates.</p>
+</div>
+<div class="left">
+  <h1 id = "View_Resolver">View Resolver</h1>
+</div>
+<div class="right">
+  <p>The prefix and suffix properties are supported and default to empty Strings. The order property is also supported
+  and defaults to <a href="http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/core/Ordered.html#HIGHEST&#95;PRECEDENCE">org.springframework.core.Ordered.HIGHEST_PRECEDENCE</a>.</p>
+
+  <p>The forward: and redirect: prefixes are not currently supported.</p>
+
+  <p>The ScalateViewResolver is configured as follows:</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.fusesource.scalate.spring.view.ScalateViewResolver&quot;</span><span class="nt">&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;prefix&quot;</span> <span class="na">value=</span><span class="s">&quot;/WEB-INF/views/scalate/&quot;</span> <span class="nt">/&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;suffix&quot;</span> <span class="na">value=</span><span class="s">&quot;.jade&quot;</span> <span class="nt">/&gt;</span>&#x000A;<span class="nt">&lt;/bean&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+  <p>View resolver chaining is configured as follows (ScalateViewResolver is tried before InternalResourceViewResolver):</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.fusesource.scalate.spring.view.ScalateViewResolver&quot;</span><span class="nt">&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;order&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span> <span class="nt">/&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;prefix&quot;</span> <span class="na">value=</span><span class="s">&quot;/WEB-INF/views/scalate/&quot;</span> <span class="nt">/&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;suffix&quot;</span> <span class="na">value=</span><span class="s">&quot;.jade&quot;</span> <span class="nt">/&gt;</span>&#x000A;<span class="nt">&lt;/bean&gt;</span>&#x000A;&#x000A;<span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;</span><span class="nt">&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;order&quot;</span> <span class="na">value=</span><span class="s">&quot;2&quot;</span> <span class="nt">/&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;prefix&quot;</span> <span class="na">value=</span><span class="s">&quot;/WEB-INF/views/jsp/&quot;</span> <span class="nt">/&gt;</span>&#x000A;    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;suffix&quot;</span> <span class="na">value=</span><span class="s">&quot;.jsp&quot;</span> <span class="nt">/&gt;</span>&#x000A;<span class="nt">&lt;/bean&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

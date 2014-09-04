@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.fusesource.scalate</groupId>
+  <artifactId>scalate-project</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <buildNumber>77</buildNumber>
+    </snapshot>
+    <lastUpdated>20100909021715</lastUpdated>
+  </versioning>
+</metadata>

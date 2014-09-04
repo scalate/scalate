@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Getting Started</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.0</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Getting_Started">Getting Started</h1>
+
+<p>Lets get scalating!</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Introduction">Introduction</h1>
+</div>
+<div class="right">
+  <p>Lets try and get you up to speed using Scalate as quickly as possible.</p>
+
+  <p>This guide will assume you have a reasonably recent installation of <a href="http://maven.apache.org">Maven</a>, say 
+  version 2.0.9 or later. If you don't, please <a href="http://maven.apache.org/download.html">install one now</a>.</p>
+
+  <p>Note that if you hit any issues during this guide you might want to check out the <a href="../faq.html">FAQ</a>.</p>
+</div>
+<div class="left">
+  <h1 id = "Create_a_project">Create a project</h1>
+</div>
+<div class="right">
+  <p>Lets create a new webapp project that we can use as a base on which to build. If you have not done so already,
+  <a href="installing.html">install the Scalate Tool</a>.  Now to create a new project run:</p>
+
+  <pre><code>  scalate create jersey mygroup myartifactid</code></pre>
+
+  <p>Change the <strong>mygroup</strong> and <strong>myartifactid</strong> to whatever maven group id and artifact id you want to use. </p>
+
+  <p>Now change directory to the newly created <strong>myartifactid</strong> directory (or whatever name you used for the artifact id)  </p>
+
+  <pre><code>  cd myartifactid</code></pre>
+
+  <p>You should now see a directory tree something like this</p>
+
+  <pre><code>  src
+    +--main
+    |  |--resources
+    |  +--scala
+    |  |  |--mygroup
+    |  +--webapp
+    |     |--WEB-INF
+    +--test
+       +--scala
+          |--mygroup</code></pre>
+
+  <p>If this step didn't work, <a href="../community.html">let us know</a>!</p>
+
+  <p>This has created a basic skeleton module that be be built using SBT or Maven which generates a web application which
+  has Scalate integrated.</p>
+</div>
+<div class="left">
+  <h1 id = "Building_with_Maven">Building with Maven</h1>
+</div>
+<div class="right">
+  <p>To run the project run the following <a href="http://maven.apache.org/">Maven</a> command</p>
+
+  <pre><code>  mvn jetty:run</code></pre>
+
+  <p>Now when the application starts up you should be able to point your browser at 
+  <a href="http://localhost:8080">http://localhost:8080</a> to run the application.</p>
+
+  <p>Your application is now ready for you to create new JAXRS resource beans (in Scala 
+  or Java code) as well as rendering any Scalate templates in the <strong>src/main/webapp</strong> directory.</p>
+
+  <p>To start hacking on a template, try editing the <strong>src/main/webapp/index.scaml</strong> file which is 
+  used to render the home page (a <a href="scaml-reference.html">Scaml</a> template). Or try adding new templates.</p>
+</div>
+<div class="left">
+  <h1 id = "Building_with_SBT">Building with SBT</h1>
+</div>
+<div class="right">
+  <p>You can also compile the code with SBT (or <a href="http://code.google.com/p/simple-build-tool/">Simple build tool</a>) 
+  if you prefer instead of Maven. Type the following commands into a terminal (the first command enters the SBT shell)</p>
+
+  <pre><code>  sbt
+    update
+    compile</code></pre>
+</div>
+<div class="left">
+  <h1 id = "Scalate_Console">Scalate Console</h1>
+</div>
+<div class="right">
+  <p>While looking at the <a href="http://localhost:8080">home page</a> of your running application 
+  you should see a little icon near the top right of the screen which opens/closes 
+  the <a href="console.html">Scalate Console</a>. Try opening it and try out its links.</p>
+
+  <p>The <a href="console.html">Scalate Console</a> provides nice error messages if you make a typo 
+  in a template together with edit links to the source code, plus provides handy links 
+  to the current source, templates and layouts you are viewing in development mode along 
+  with a number of other features. </p>
+
+  <p>Please refer to the <a href="console.html">Console documentation</a> for more detail.</p>
+</div>
+<div class="left">
+  <h1 id = "Diving_deeper">Diving deeper</h1>
+</div>
+<div class="right">
+  <p>Once you have the application working and you've played with the <a href="console.html">Console</a> you 
+  might want to dive deeper into Scalate and understand how it works.</p>
+
+  <ul>
+  <li><a href="console.html">Scalate Console</a></li>
+  <li><a href="index.html">Documentation</a> for further information on user guides and template references</li>
+  <li><a href="../faq.html">FAQ</a> if you hit any issues along the way</li>
+  </ul>
+  <div></div>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

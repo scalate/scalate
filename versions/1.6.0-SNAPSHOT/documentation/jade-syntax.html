@@ -1,0 +1,938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Jade Syntax</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.6.0</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/jade-syntax.page">documentation/jade-syntax.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Jade_Syntax">Jade Syntax</h1>
+
+<p>Jade is the daddy of HTML template engines for Scala</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p><div class="toc"><ul style="list-style:none;">
+  <li><a href="#HTML_Elements">HTML Elements</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#HTML-style_Attributes:__code_____code_">HTML-style Attributes: <code>()</code></a></li>
+    <li><a href="#attributes">Attributes: <code>{</code> <code>}</code> or <code>(</code> <code>)</code></a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Boolean_Attributes">Boolean Attributes</a></li>
+    </ul></li>
+    <li><a href="#Class_and_ID:__code____code__and__code____code_">Class and ID: <code>.</code> and <code>#</code></a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Implicit_Div_Elements">Implicit Div Elements</a></li>
+      <li><a href="#Weird_Element_Names:__code____code_element_code____code_">Weird Element Names: <code>'</code>element<code>'</code></a></li>
+      <li><a href="#Self-Closing_Tags:__code____code_">Self-Closing Tags: <code>/</code></a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="#Plain_Text">Plain Text</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#Whitespace_Removal:__code__gt___code__and__code__lt___code_">Whitespace Removal: <code>&gt;</code> and <code>&lt;</code></a></li>
+    <li><a href="#Doctype:__code_____format__code_">Doctype: <code>!!! format</code></a></li>
+  </ul></li>
+  <li><a href="#Comments">Comments</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#HTML_Comments:__code____code_">HTML Comments: <code>/</code></a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Conditional_Comments:__code______code_">Conditional Comments: <code>/[]</code></a></li>
+    </ul></li>
+    <li><a href="#Jade_Comments:__code_-___code_">Jade Comments: <code>-#</code></a></li>
+  </ul></li>
+  <li><a href="#Scala_Evaluation">Scala Evaluation</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#bindings">Binding Attributes <code>-@</code></a></li>
+    <li><a href="#Inserting_Scala:__code____code_">Inserting Scala: <code>=</code></a></li>
+    <li><a href="#Running_Scala:__code_-__code_">Running Scala: <code>-</code></a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Scala_Blocks">Scala Blocks</a></li>
+    </ul></li>
+    <li><a href="#Scala_Interpolation:__code______code_">Scala Interpolation: <code>#{}</code></a></li>
+    <li><a href="#tilde">Whitespace Preservation in expressions: <code>~</code></a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#tilde-tilde">Ugly Preservation: <code>~~</code></a></li>
+      <li><a href="#escaping_html">Escaping HTML: <code>&amp;=</code></a></li>
+      <li><a href="#unescaping_html">Unescaping HTML: <code>!=</code></a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="#filters">Filters: <code>:</code></a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#Filter_Interpolation">Filter Interpolation</a></li>
+    <li><a href="#Filter_Whitespace_Preservation">Filter Whitespace Preservation</a></li>
+    <li><a href="#Filter_Chaining">Filter Chaining</a></li>
+    <li><a href="#Available_Filters">Available Filters</a></li>
+    <li><a href="#Global_Jade_and_Scaml_Options">Global Jade and Scaml Options</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#_code_ScamlOptions_indent__code_"><code>ScamlOptions.indent</code></a></li>
+      <li><a href="#_code_ScamlOptions_nl__code_"><code>ScamlOptions.nl</code></a></li>
+      <li><a href="#_code_ScamlOptions_ugly__code_"><code>ScamlOptions.ugly</code></a></li>
+    </ul></li>
+    <li><a href="#Differences_from_JavaScript_Jade">Differences from JavaScript Jade</a></li>
+    <li><a href="#Other_Resources">Other Resources</a></li>
+  </ul></li>
+</ul></div></p>
+
+<p>Like <a href="http://haml-lang.com/">Haml</a> and <a href="scaml-reference.html">Scaml</a>, Jade uses whitespace indentation to represent nested markup blocks.</p>
+
+<h1 id = "HTML_Elements">HTML Elements</h1>
+
+<p>The common case in Jade is a line starts with an element name followed by a space and any text content to put in the element.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">one</span>&#x000A;  <span class="nt">two</span>&#x000A;    <span class="nt">three</span> Hey there&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;one&gt;</span>&#x000A;  <span class="nt">&lt;two&gt;</span>&#x000A;    <span class="nt">&lt;three&gt;</span>Hey there<span class="nt">&lt;/three&gt;</span>&#x000A;  <span class="nt">&lt;/two&gt;</span>&#x000A;<span class="nt">&lt;/one&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Any string is a valid element name;
+Jade will automatically generate opening and closing tags for any element.</p>
+
+<h2 id = "HTML-style_Attributes:__code_____code_">HTML-style Attributes: <code>()</code></h2>
+
+<p>You can use HTML style attributes with elements by placing them inside <strong>()</strong></p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">html</span>(<span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span> <span class="na">xml:lang=</span><span class="s">&quot;en&quot;</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<p>Scala variables can be used by omitting the quotes.
+For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">a</span>(<span class="na">title=</span><span class="nv">title</span> <span class="na">href=</span><span class="nv">href</span>) Stuff&#x000A;</pre></div>&#x000A;</div>
+
+<p>Complex expression are supported if you wrap them between the <code>{</code> 
+and <code>}</code> characters.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">li</span>(<span class="na">counter=</span><span class="err">{</span><span class="nv">3</span><span class="err">+</span><span class="na">4</span><span class="err">}</span>) Stuff&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;li</span> <span class="na">counter=</span><span class="s">&quot;7&quot;</span><span class="nt">&gt;</span>Stuff<span class="nt">&lt;/li&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>You can also use <code>#{}</code> interpolation to insert complicated expressions
+in a HTML-style attribute:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">span</span>(<span class="na">class=</span><span class="s">&quot;widget_#{widget.number}&quot;</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<p>HTML-style attributes can be stretched across multiple lines
+just like hash-style attributes:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">script</span>(<span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span>&#x000A;        <span class="na">src=</span><span class="s">&quot;javascripts/script&quot;</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "attributes">Attributes: <code>{</code> <code>}</code> or <code>(</code> <code>)</code></h2>
+
+<p>This style of attributes comes from Haml / Jade. Brackets represent a Scala Map
+that is used for specifying the attributes of an element.
+Ruby hash syntax is used instead of Scala syntax to 
+preserve a higher level of compatibility with the original
+Haml / Jade implementation.
+It is translated and evaluated as a Scala Map,
+so logic will work in it and local variables may be used.
+Quote characters within the attribute
+will be replaced by appropriate escape sequences.
+The hash is placed after the tag is defined.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span><span class="o">{</span><span class="k">:</span><span class="kt">xmlns</span> <span class="o">=&gt;</span> <span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="o">,</span> <span class="s">&quot;xml:lang&quot;</span> <span class="k">=&gt;</span> <span class="s">&quot;en&quot;</span><span class="o">,</span> <span class="k">:</span><span class="kt">lang</span> <span class="o">=&gt;</span> <span class="s">&quot;en&quot;</span><span class="o">}</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span> <span class="na">xml:lang=</span><span class="s">&quot;en&quot;</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>Attribute hashes can also be stretched out over multiple lines
+to accommodate many attributes.
+However, newlines may only be placed immediately after commas.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">script</span><span class="o">{</span><span class="k">:type</span> <span class="o">=&gt;</span> <span class="s">&quot;text/javascript&quot;</span><span class="o">,</span>&#x000A;        <span class="k">:</span><span class="kt">src</span>  <span class="o">=&gt;</span> <span class="s">&quot;javascripts/script&quot;</span><span class="o">}</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/script&quot;</span><span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>This is the same the following</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">script</span>(<span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span>&#x000A;        <span class="na">src=</span><span class="s">&quot;javascripts/script&quot;</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<p>You can use both attribute syntaxes together if you really want:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">a</span>(<span class="na">title=</span><span class="s">&quot;Hello&quot;</span>)<span class="o">{</span><span class="k">:</span><span class="kt">href</span> <span class="o">=&gt;</span> <span class="s">&quot;http://scalate.fusesource.org&quot;</span><span class="o">}</span> Stuff&#x000A;</pre></div>&#x000A;</div>
+
+<p>Complex expression are supported if you wrap them between the <code>{</code> 
+and <code>}</code> characters.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">li</span><span class="o">{</span><span class="k">:</span><span class="kt">counter</span><span class="o">={</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="o">}</span>} Stuff&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;li</span> <span class="na">counter=</span><span class="s">&quot;7&quot;</span><span class="nt">&gt;</span>Stuff<span class="nt">&lt;/li&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<!-- TODO
+#### Attribute Methods
+
+A Scala method call that returns a hash
+can be substituted for the hash contents.
+For example, Scaml::Helpers defines the following method:
+
+    def html_attrs(lang = "en-US")
+      {:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => lang, :lang => lang}
+    end
+
+This can then be used in Scaml, like so:
+
+    html{html_attrs("fr-fr")}
+
+This is rendered to:
+
+    <html lang="fr-fr" xml:lang="fr-fr" xmlns="http://www.w3.org/1999/xhtml">
+    </html>
+
+You can use as many such attribute methods as you want
+by separating them with commas,
+like a Scala argument list.
+All the hashes will me merged together, from left to right.
+For example, if you defined
+
+    def hash1
+      {:bread => "white", :filling => "peanut butter and jelly"}
+    end
+
+    def hash2
+      {:bread => "whole wheat"}
+    end
+
+then
+
+    sandwich{hash1, hash2, :delicious => true}/
+
+would render to:
+
+    <sandwich bread="whole wheat" delicious="true" filling="peanut butter and jelly" />
+
+Note that the Scaml attributes list has the same syntax as a Scala method call.
+This means that any attribute methods must come before the hash literal.
+
+Attribute methods aren't supported for HTML-style attributes.
+-->
+
+<h3 id = "Boolean_Attributes">Boolean Attributes</h3>
+
+<p>Some attributes, such as &ldquo;checked&rdquo; for <code>input</code> tags or &ldquo;selected&rdquo; for <code>option</code> tags,
+are &ldquo;boolean&rdquo; in the sense that their values don't matter -
+it only matters whether or not they're present.
+In HTML (but not XHTML), these attributes can be written as</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;input</span> <span class="err">selected</span><span class="nt">&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>To do this in Jade using hash-style attributes, just assign a Scala
+<code>true</code> value to the attribute:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">input</span><span class="o">{</span><span class="k">:</span><span class="kt">selected</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>In XHTML, the only valid value for these attributes is the name of the
+attribute.  Thus this will render in XHTML as</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;input</span> <span class="na">selected=</span><span class="s">&quot;selected&quot;</span><span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>To set these attributes to false, simply assign them to a Scala false value.
+In both XHTML and HTML</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">input</span><span class="o">{</span><span class="k">:</span><span class="kt">selected</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>will just render as</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;input/&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>HTML-style boolean attributes can be written just like HTML:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">input</span>(<span class="na">selected</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<p>or using <code>true</code> and <code>false</code>:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">input</span>(<span class="na">selected=</span><span class="nv">true</span>)&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "Class_and_ID:__code____code__and__code____code_">Class and ID: <code>.</code> and <code>#</code></h2>
+
+<p>The period and pound sign are borrowed from CSS.
+They are used as shortcuts to specify the <code>class</code>
+and <code>id</code> attributes of an element, respectively.
+Multiple class names can be specified in a similar way to CSS,
+by chaining the class names together with periods.
+They are placed immediately after the tag and before an attributes hash.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">div</span><span class="nf">#things</span>&#x000A;  <span class="nt">span</span><span class="nf">#rice</span> Chicken Fried&#x000A;  <span class="nt">p</span><span class="nc">.beans</span><span class="o">{</span> <span class="k">:</span><span class="kt">food</span> <span class="o">=&gt;</span> <span class="s">&quot;true&quot;</span> <span class="o">}</span> The magical fruit&#x000A;  <span class="nt">h1</span><span class="nc">.class.otherclass</span><span class="nf">#id</span> La La La&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;things&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;rice&quot;</span><span class="nt">&gt;</span>Chicken Fried<span class="nt">&lt;/span&gt;</span>&#x000A;  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;beans&quot;</span> <span class="na">food=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>The magical fruit<span class="nt">&lt;/p&gt;</span>&#x000A;  <span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;id&quot;</span> <span class="na">class=</span><span class="s">&quot;class otherclass&quot;</span><span class="nt">&gt;</span>La La La<span class="nt">&lt;/h1&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>And,</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nf">#content</span>&#x000A;  <span class="nc">.articles</span>&#x000A;    <span class="nc">.article.title</span> Doogie Howser Comes Out&#x000A;    <span class="nc">.article.date</span> 2006-11-05&#x000A;    <span class="nc">.article.entry</span>&#x000A;      <span class="nt">Neil</span> Patrick Harris would like to dispel any rumors that he is straight&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;articles&quot;</span><span class="nt">&gt;</span>&#x000A;    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;article title&quot;</span><span class="nt">&gt;</span>Doogie Howser Comes Out<span class="nt">&lt;/div&gt;</span>&#x000A;    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;article date&quot;</span><span class="nt">&gt;</span>2006-11-05<span class="nt">&lt;/div&gt;</span>&#x000A;    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;article entry&quot;</span><span class="nt">&gt;</span>&#x000A;      Neil Patrick Harris would like to dispel any rumors that he is straight&#x000A;    <span class="nt">&lt;/div&gt;</span>&#x000A;  <span class="nt">&lt;/div&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "Implicit_Div_Elements">Implicit Div Elements</h3>
+
+<p>Because divs are used so often, they're the default elements.
+If you only define a class and/or id using <code>.</code> or <code>#</code>,
+a div is automatically used.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nf">#collection</span>&#x000A;  <span class="nc">.item</span>&#x000A;    <span class="nc">.description</span> What a cool item!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>is the same as</h3><div class="syntax"><div class="highlight"><pre><span class="nt">div</span><span class="nf">#collection</span>&#x000A;  <span class="nt">div</span><span class="nc">.item</span>&#x000A;    <span class="nt">div</span><span class="nc">.description</span> What a cool item!&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>and is rendered to:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;collection&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;item&quot;</span><span class="nt">&gt;</span>&#x000A;    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;description&quot;</span><span class="nt">&gt;</span>What a cool item!<span class="nt">&lt;/div&gt;</span>&#x000A;  <span class="nt">&lt;/div&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Weird_Element_Names:__code____code_element_code____code_">Weird Element Names: <code>'</code>element<code>'</code></h3>
+
+<p>Sometimes you have to generate markup with weird element names.  Element names
+like <code>&lt;funny.element/&gt;</code>.  Since Jade interprets the period as a class name for the 
+element, the following example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">funny</span><span class="nc">.element</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;funny</span> <span class="na">class=</span><span class="s">&quot;element&quot;</span><span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>does not give you the desired result of <code>&lt;funny.element/&gt;</code>.  In these cases you must single
+quote the element name. </p>
+
+<p>Example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre>&#39;funny.element&#39;&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;funny.element/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "Self-Closing_Tags:__code____code_">Self-Closing Tags: <code>/</code></h3>
+
+<p>The forward slash character, when placed at the end of a tag definition,
+causes the tag to be self-closed.
+For example:</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">br</span><span class="p">/</span>&#x000A;<span class="nt">meta</span><span class="o">{</span><span class="s">&quot;http-equiv&quot;</span> <span class="k">=&gt;</span> <span class="s">&quot;Content-Type&quot;</span><span class="o">,</span> <span class="k">:</span><span class="kt">content</span> <span class="o">=&gt;</span> <span class="s">&quot;text/html&quot;</span><span class="o">}</span><span class="p">/</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;br/&gt;</span>&#x000A;<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html&quot;</span><span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>Some tags are automatically closed, as long as they have no content.
+<code>meta</code>, <code>img</code>, <code>link</code>, <code>script</code>, <code>br</code>, and <code>hr</code> tags are closed by default.
+This list can be customized by setting the <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/scaml/ScamlOptions$.html"><code>ScamlOptions.autoclose</code></a> option.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">br</span>&#x000A;<span class="nt">meta</span><span class="o">{</span><span class="s">&quot;http-equiv&quot;</span> <span class="k">=&gt;</span> <span class="s">&quot;Content-Type&quot;</span><span class="o">,</span> <span class="k">:</span><span class="kt">content</span> <span class="o">=&gt;</span> <span class="s">&quot;text/html&quot;</span><span class="o">}</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;br/&gt;</span>&#x000A;<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;Content-Type&quot;</span> <span class="na">content=</span><span class="s">&quot;text/html&quot;</span><span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<h1 id = "Plain_Text">Plain Text</h1>
+
+<p>A substantial portion of any HTML document is its content, which is plain old
+text. To add text to an element either add it after the element name (and optional attributes) or add it on a newline with the | prefix.</p>
+
+<p>For example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">gee</span>&#x000A;  <span class="nt">whiz</span>&#x000A;    | Wow this is cool!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;gee&gt;</span>&#x000A;  <span class="nt">&lt;whiz&gt;</span>&#x000A;    Wow this is cool!&#x000A;  <span class="nt">&lt;/whiz&gt;</span>&#x000A;<span class="nt">&lt;/gee&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Note that HTML tags are passed through unmodified as well.
+If you have some HTML you don't want to convert to Jade,
+or you're converting a file line-by-line,
+you can just include it as-is.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  &lt;div id=&quot;blah&quot;&gt;Blah!&lt;/div&gt;&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;blah&quot;</span><span class="nt">&gt;</span>Blah!<span class="nt">&lt;/div&gt;</span>&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<!-- TODO
+### Escaping: `\`
+
+The backslash character escapes the first character of a line,
+allowing use of otherwise interpreted characters as plain text.
+
+
+55jhdfej60138h1c3a033
+
+
+
+-->
+
+<h2 id = "Whitespace_Removal:__code__gt___code__and__code__lt___code_">Whitespace Removal: <code>&gt;</code> and <code>&lt;</code></h2>
+
+<p><code>&gt;</code> and <code>&lt;</code> give you more control over the whitespace near a tag.
+<code>&gt;</code> will remove all whitespace surrounding a tag,
+while <code>&lt;</code> will remove all whitespace immediately within a tag.
+You can think of them as alligators eating the whitespace:
+<code>&gt;</code> faces out of the tag and eats the whitespace on the outside,
+and <code>&lt;</code> faces into the tag and eats the whitespace on the inside.
+They're placed at the end of a tag definition,
+after class, id, and attribute declarations
+but before <code>/</code> or <code>=</code>.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">blockquote</span>&lt;&#x000A;  <span class="nt">div</span>&#x000A;    | Foo!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;blockquote&gt;&lt;div&gt;</span>&#x000A;  Foo!&#x000A;<span class="nt">&lt;/div&gt;&lt;/blockquote&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>And:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">img</span>&#x000A;<span class="nt">img</span>&gt;&#x000A;<span class="nt">img</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;img/&gt;&lt;img/&gt;&lt;img/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>And:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span><span class="p">&lt;=</span> <span class="s">&quot;Foo\nBar&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Foo&#x000A;Bar<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>And finally:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">img</span>&#x000A;<span class="nt">pre</span>&gt;&lt;&#x000A;  | foo&#x000A;  | bar&#x000A;<span class="nt">img</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;img</span> <span class="nt">/&gt;&lt;pre&gt;</span>foo&#x000A;bar<span class="nt">&lt;/pre&gt;&lt;img</span> <span class="nt">/&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Doctype:__code_____format__code_">Doctype: <code>!!! format</code></h2>
+
+<p>When describing HTML documents with Jade,
+you can have a document type or XML prolog generated automatically
+by including the characters <code>!!!</code>.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nn">!!! XML</span>&#x000A;<span class="nn">!!!</span>&#x000A;<span class="nt">html</span>&#x000A;  <span class="nt">head</span>&#x000A;    <span class="nt">title</span> Myspace&#x000A;  <span class="nt">body</span>&#x000A;    <span class="nt">h1</span> I am the international space station&#x000A;    <span class="nt">p</span> Sign my guestbook&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span>&#x000A;<span class="cp">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>&#x000A;<span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;head&gt;</span>&#x000A;    <span class="nt">&lt;title&gt;</span>Myspace<span class="nt">&lt;/title&gt;</span>&#x000A;  <span class="nt">&lt;/head&gt;</span>&#x000A;  <span class="nt">&lt;body&gt;</span>&#x000A;    <span class="nt">&lt;h1&gt;</span>I am the international space station<span class="nt">&lt;/h1&gt;</span>&#x000A;    <span class="nt">&lt;p&gt;</span>Sign my guestbook<span class="nt">&lt;/p&gt;</span>&#x000A;  <span class="nt">&lt;/body&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>You can also specify the specific doctype after the <code>!!!</code>
+When the <code>format</code> is set to <code>:xhtml</code> (the default),
+the following doctypes are supported:</p>
+
+<h4 id = "_code______code_"><code>!!!</code></h4>
+
+<blockquote>
+<p>XHTML 1.0 Transitional
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Strict__code_"><code>!!! Strict</code></h4>
+
+<blockquote>
+<p>XHTML 1.0 Strict
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Frameset__code_"><code>!!! Frameset</code></h4>
+
+<blockquote>
+<p>XHTML 1.0 Frameset<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____1_1__code_"><code>!!! 1.1</code></h4>
+
+<blockquote>
+<p>XHTML 1.1<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Basic__code_"><code>!!! Basic</code></h4>
+
+<blockquote>
+<p>XHTML Basic 1.1<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Mobile__code_"><code>!!! Mobile</code></h4>
+
+<blockquote>
+<p>XHTML Mobile 1.2<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd"&gt;</code></p>
+</blockquote>
+
+<p>When the <code>format</code> option is set to <code>:html4</code>,
+the following doctypes are supported:</p>
+
+<h4 id = "_code______code_"><code>!!!</code></h4>
+
+<blockquote>
+<p>HTML 4.01 Transitional<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Strict__code_"><code>!!! Strict</code></h4>
+
+<blockquote>
+<p>HTML 4.01 Strict<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____Frameset__code_"><code>!!! Frameset</code></h4>
+
+<blockquote>
+<p>HTML 4.01 Frameset<br/>
+<code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd"&gt;</code></p>
+</blockquote>
+
+<h4 id = "_code_____5__code_"><code>!!! 5</code></h4>
+
+<blockquote>
+<p>HTML 5<br/>
+<code>&lt;!DOCTYPE html&gt;</code><br/></p>
+</blockquote>
+
+<p>When the <code>format</code> option is set to <code>:html5</code>,
+<code>!!!</code> is always <code>&lt;!DOCTYPE html&gt;</code>.</p>
+
+<p>If you're not using the UTF-8 character set for your document,
+you can specify which encoding should appear
+in the XML prolog in a similar way.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nn">!!! XML iso-8859-1</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; ?&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h1 id = "Comments">Comments</h1>
+
+<p>Jade supports two sorts of comments:
+those that show up in the HTML output
+and those that don't.</p>
+
+<h2 id = "HTML_Comments:__code____code_">HTML Comments: <code>/</code></h2>
+
+<p>The forward slash character, when placed at the beginning of a line,
+wraps all text after it in an HTML comment.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">peanutbutterjelly</span>&#x000A;  <span class="c">/ This is the comment</span>&#x000A;  | I like sandwiches!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;peanutbutterjelly&gt;</span>&#x000A;  <span class="c">&lt;!-- This is the comment --&gt;</span>&#x000A;  I like sandwiches!&#x000A;<span class="nt">&lt;/peanutbutterjelly&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>The forward slash can also wrap indented sections of code. For example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="c">/</span>&#x000A;  <span class="c">p This doesn&#39;t render...</span>&#x000A;  <span class="c">div</span>&#x000A;    <span class="c">h1 Because it&#39;s commented out!</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="c">&lt;!--</span>&#x000A;<span class="c">  &lt;p&gt;This doesn&#39;t render...&lt;/p&gt;</span>&#x000A;<span class="c">  &lt;div&gt;</span>&#x000A;<span class="c">    &lt;h1&gt;Because it&#39;s commented out!&lt;/h1&gt;</span>&#x000A;<span class="c">  &lt;/div&gt;</span>&#x000A;<span class="c">--&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "Conditional_Comments:__code______code_">Conditional Comments: <code>/[]</code></h3>
+
+<p>You can also use <a href="http://www.quirksmode.org/css/condcom.html">Internet Explorer conditional comments</a>
+by enclosing the condition in square brackets after the <code>/</code>.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="c">/</span><span class="cs">[if IE]</span><span class="c"></span>&#x000A;  <span class="nt">a</span><span class="o">{</span> <span class="k">:</span><span class="kt">href</span> <span class="o">=&gt;</span> <span class="s">&quot;http://www.mozilla.com/en-US/firefox/&quot;</span> <span class="o">}</span>&#x000A;    <span class="nt">h1</span> Get Firefox&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="c">&lt;!--[if IE]&gt;</span>&#x000A;<span class="c">  &lt;a href=&quot;http://www.mozilla.com/en-US/firefox/&quot;&gt;</span>&#x000A;<span class="c">    &lt;h1&gt;Get Firefox&lt;/h1&gt;</span>&#x000A;<span class="c">  &lt;/a&gt;</span>&#x000A;<span class="c">&lt;![endif]--&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<h2 id = "Jade_Comments:__code_-___code_">Jade Comments: <code>-#</code></h2>
+
+<p>The hyphen followed immediately by the pound sign
+signifies a silent comment.
+Any text following this isn't rendered in the resulting document
+at all.</p>
+
+<p>For example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span> foo&#x000A;<span class="cp">-# This is a comment</span>&#x000A;<span class="nt">p</span> bar&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>foo<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>bar<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>You can also nest text beneath a silent comment.
+None of this text will be rendered.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span> foo&#x000A;<span class="cp">-#</span>&#x000A;  <span class="cp">This won&#39;t be displayed</span>&#x000A;    <span class="cp">Nor will this</span>&#x000A;<span class="nt">p</span> bar&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>foo<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>bar<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h1 id = "Scala_Evaluation">Scala Evaluation</h1>
+
+<h2 id = "bindings">Binding Attributes <code>-@</code></h2>
+
+<p>When a Scalate template is rendered, the caller can pass an attribute map
+which the template in charge of rendering. To bind the attribute to a Scala
+variable, a Jade template uses the hyphen character followed by a ampersand 
+character and then a scala variable declaration statement.</p>
+
+<p>For example To define an attribute use the following declaration</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">val</span> <span class="n">foo</span><span class="k">:</span> <span class="kt">MyType</span> &#x000A;</pre></div>&#x000A;</div>
+
+<p>If the attribute map does not contain a &ldquo;foo&rdquo; entry, then a 
+NoValueSetException is thrown when the the template is rendered.</p>
+
+<p>To avoid this exception, a default value can be configured.  For
+example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">val</span> <span class="n">bar</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">&quot;this is the default value&quot;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>The attribute is now available for use as an expression. </p>
+
+<p>Its very common to have a template based on a single object who's members are f
+frequently accessed.  In this cases, it's convenient to import all the object's 
+members.  This can be done by adding the import keyword to the attribute declaration.</p>
+
+<p>For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">import</span> <span class="k">val</span> <span class="n">model</span><span class="k">:</span> <span class="kt">Person</span>&#x000A;<span class="nt">p</span> Hello <span class="si">#{</span><span class="n">name</span><span class="si">}</span>, what is the weather like in <span class="si">#{</span><span class="n">city</span><span class="si">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>is the same as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">val</span> <span class="n">model</span><span class="k">:</span> <span class="kt">Person</span>&#x000A;<span class="p">-</span> <span class="k">import</span> <span class="nn">model._</span>&#x000A;<span class="nt">p</span> Hello <span class="si">#{</span><span class="n">name</span><span class="si">}</span>, what is the weather like in <span class="si">#{</span><span class="n">city</span><span class="si">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Which is the same as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">val</span> <span class="n">model</span><span class="k">:</span> <span class="kt">Person</span>&#x000A;<span class="nt">p</span> Hello <span class="si">#{</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="si">}</span>, what is the weather like in <span class="si">#{</span><span class="n">model</span><span class="o">.</span><span class="n">city</span><span class="si">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "Inserting_Scala:__code____code_">Inserting Scala: <code>=</code></h2>
+
+<p>The equals character is followed by Scala code.
+This code is evaluated and the output is inserted into the document.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="p">=</span> <span class="nc">List</span><span class="o">(</span><span class="s">&quot;hi&quot;</span><span class="o">,</span> <span class="s">&quot;there&quot;</span><span class="o">,</span> <span class="s">&quot;reader!&quot;</span><span class="o">).</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">)</span>&#x000A;  <span class="p">=</span> <span class="s">&quot;yo&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  hi there reader!&#x000A;  yo&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>The default setting for the <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html"><code>TemplateEngine.escapeMarkup</code></a> option is 
+true.  When <code>TemplateEngine.escapeMarkup</code> is enabled, <code>=</code> will sanitize any
+HTML-sensitive characters generated by the script. </p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">=</span> <span class="s">&quot;&quot;&quot;&lt;script&gt;alert(&quot;I&#39;m evil!&quot;);&lt;/script&gt;&quot;&quot;&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="ni">&amp;lt;</span>script<span class="ni">&amp;gt;</span>alert(<span class="ni">&amp;quot;</span>I&#39;m evil!<span class="ni">&amp;quot;</span>);<span class="ni">&amp;lt;</span>/script<span class="ni">&amp;gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p><code>=</code> can also be used at the end of a tag to insert Scala code within that tag.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span><span class="p">=</span> <span class="s">&quot;hello&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>hello<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Running_Scala:__code_-__code_">Running Scala: <code>-</code></h2>
+
+<p>The hyphen character is also followed by Scala code.
+This code is evaluated but <em>not</em> inserted into the document.</p>
+
+<p>**It is not recommended that you use this widely;
+almost all processing code and logic should be restricted
+to the Controller, the Helper, or partials.**</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">var</span> <span class="n">foo</span> <span class="k">=</span> <span class="s">&quot;hello&quot;</span>&#x000A;<span class="p">-</span> <span class="n">foo</span> <span class="o">+=</span> <span class="s">&quot; there&quot;</span>&#x000A;<span class="p">-</span> <span class="n">foo</span> <span class="o">+=</span> <span class="s">&quot; you!&quot;</span>&#x000A;<span class="nt">p</span><span class="p">=</span> <span class="n">foo</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>hello there you!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Or alternatively, if you have a large block of Scala code, you can
+nest it under the hyphen character as demonstrated by the following example:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">-</span>&#x000A;  <span class="nt">var</span> foo = &quot;hello&quot;&#x000A;      <span class="nt">foo</span> += &quot; there&quot;&#x000A;  <span class="nt">foo</span> += &quot; you!&quot;&#x000A;<span class="nt">p</span><span class="p">=</span> <span class="n">foo</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>hello there you!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "Scala_Blocks">Scala Blocks</h3>
+
+<p>Scala blocks, like XHTML tags, don't need to be explicitly closed in Jade.
+Rather, they're automatically closed, based on indentation.
+A block begins whenever the indentation is increased
+after a Scala insertion or evaluation command.
+It ends when the indentation decreases.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">42</span> <span class="n">to</span> <span class="mi">46</span><span class="o">)</span>&#x000A;  <span class="nt">p</span><span class="p">=</span> <span class="n">i</span>&#x000A;<span class="nt">p</span> See, I can count!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>42<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>43<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>44<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>45<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>46<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>See, I can count!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>And,</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="p">-</span> <span class="mi">2</span> <span class="k">match</span>&#x000A;    <span class="p">-</span> <span class="k">case</span> <span class="mi">1</span> <span class="k">=&gt;</span>&#x000A;      <span class="p">=</span> <span class="s">&quot;one&quot;</span>&#x000A;    <span class="p">-</span> <span class="k">case</span> <span class="mi">2</span> <span class="k">=&gt;</span>&#x000A;      <span class="p">=</span> <span class="s">&quot;two&quot;</span>&#x000A;    <span class="p">-</span> <span class="k">case</span> <span class="mi">3</span> <span class="k">=&gt;</span>&#x000A;      <span class="p">=</span> <span class="s">&quot;three&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  two&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>When inserting evaluated statements, it can also take advantage of Scala blocks. It can be handy
+for passing partial functions.  </p>
+
+<p>For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="p">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">).</span><span class="n">foldLeft</span><span class="o">(</span><span class="s">&quot;result: &quot;</span><span class="o">)</span>&#x000A;    <span class="p">-</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">x</span><span class="o">)</span><span class="k">=&gt;</span>&#x000A;      <span class="p">-</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> &#x000A;</pre></div>&#x000A;</div>
+
+<p>is the same as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="p">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">).</span><span class="n">foldLeft</span><span class="o">(</span><span class="s">&quot;result: &quot;</span><span class="o">)</span> <span class="o">{</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span><span class="n">x</span><span class="o">)</span><span class="k">=&gt;</span> <span class="o">{</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="o">}</span> <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>would be rendered to:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  result: 123&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "Scala_Interpolation:__code______code_">Scala Interpolation: <code>#{}</code></h2>
+
+<p>Scala code can be interpolated within plain text using <code>#{}</code>.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span> This is <span class="si">#{</span><span class="n">quality</span><span class="si">}</span> cake!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>is the same as</h3><div class="syntax"><div class="highlight"><pre>p= &quot;This is the &quot;+(quality)+&quot; cake!&quot;&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>and renders to</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>This is scrumptious cake!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Backslashes can be used to escape <code>#{</code> strings,
+but they don't act as escapes anywhere else in the string.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="nt">A</span> slash make a difference here: \<span class="si">#{</span><span class="n">name</span><span class="si">}</span> is set to: \\<span class="si">#{</span><span class="n">name</span><span class="si">}</span>&#x000A;  <span class="nt">But</span> is ignored for: \# or \\&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  A slash make a difference here: #{name} is set to: \Hiram&#x000A;  But is ignored for: \# or \\&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<!--
+Interpolation can also be used within [filters](#filters).
+For example:
+
+    :javascript
+      $(document).ready(function() {
+        alert(#{message.to_json});
+      });
+
+might compile to
+
+    <script type="text/javascript">
+      //<![CDATA[
+        $(document).ready(function() {
+          alert("Hi there!");
+        });
+      //]]>
+    </script>
+-->
+
+<h2 id = "tilde">Whitespace Preservation in expressions: <code>~</code></h2>
+
+<p><code>~</code> works just like <code>=</code>, except that it preserves the white space 
+formating on its input.</p>
+
+<p>Jade always produces HTML source which is easy to read since
+it properly indented.  Even dynamically generated output is 
+properly indented. </p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span>&#x000A;  <span class="nt">p</span>&#x000A;    <span class="p">=</span> <span class="s">&quot;line1\nline2\nline3&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>&#x000A;    line1&#x000A;    line2&#x000A;    line3&#x000A;  <span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Sometimes you don't want Jade to indent the dynamically generated content.
+For example, tags like <code>pre</code> and <code>textarea</code> are whitespace-sensitive;
+indenting the text makes them render wrong.</p>
+
+<p>When you use <code>~</code> instead of <code>=</code>,
+Jade will convert newlines to the XHTML newline escape code, <code>&#x000A;</code> and avoid
+adding spaces for indentation.  </p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span>&#x000A;  <span class="nt">pre</span>&#x000A;    <span class="p">~</span> <span class="s">&quot;line1\nline2\nline3&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;pre&gt;</span>&#x000A;    line1<span class="ni">&amp;#x000A;</span>line2<span class="ni">&amp;#x000A;</span>line3&#x000A;  <span class="nt">&lt;/pre&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "tilde-tilde">Ugly Preservation: <code>~~</code></h3>
+
+<p>Sometimes, you don't want Jade to indent or apply the whitespace transformation on
+the evaluated expression. When this is the case, use <code>~~</code> to use ugly whitespace
+preservation.  We call it ugly because the produce HTML will not properly indented.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span>&#x000A;  <span class="nt">p</span>&#x000A;    <span class="p">~</span><span class="o">~</span> <span class="s">&quot;line1\nline2\nline3&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>&#x000A;line1&#x000A;line2&#x000A;line3&#x000A;  <span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "escaping_html">Escaping HTML: <code>&amp;=</code></h3>
+
+<p>An ampersand followed by one or two equals characters
+evaluates Scala code just like the equals without the ampersand,
+but sanitizes any HTML-sensitive characters in the result of the code.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">&amp;=</span> <span class="s">&quot;I like cheese &amp; crackers&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre>I like cheese <span class="ni">&amp;amp;</span> crackers&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>When the <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html"><code>TemplateEngine.escapeMarkup</code></a> option is set
+to true, <code>=</code> behaves identically to <code>&amp;=</code>.</p>
+
+<p><code>&amp;</code> can also be used on its own so that <code>#{}</code> interpolation is escaped.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre>&amp; I like <span class="si">#{</span><span class="s">&quot;cheese &amp; crackers&quot;</span><span class="si">}</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre>I like cheese <span class="ni">&amp;amp;</span> crackers&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "unescaping_html">Unescaping HTML: <code>!=</code></h3>
+
+<p>An exclamation mark followed by one or two equals characters
+evaluates Scala code just like the equals would,
+but never sanitizes the HTML.</p>
+
+<p>When the <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html"><code>TemplateEngine.escapeMarkup</code></a> option is set to false, <code>=</code> behaves identically to <code>!=</code>.</p>
+
+<p>However, if the <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html"><code>TemplateEngine.escapeMarkup</code></a> option is set to true, <code>=</code> will sanitize the HTML, but <code>!=</code> still won't.</p>
+
+<p>For example, if <code>TemplateEngine.escapeMarkup</code> is true:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">=</span> <span class="s">&quot;I feel &lt;strong&gt;!&quot;</span>&#x000A;<span class="p">!=</span> <span class="s">&quot;I feel &lt;strong&gt;!&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre>I feel <span class="ni">&amp;lt;</span>strong<span class="ni">&amp;gt;</span>!&#x000A;I feel <span class="nt">&lt;strong&gt;</span>!&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p><code>!</code> can also be used on its own so that <code>#{}</code> interpolation is unescaped.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre>! I feel <span class="si">#{</span><span class="s">&quot;&lt;strong&gt;&quot;</span><span class="si">}</span>!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre>I feel <span class="nt">&lt;strong&gt;</span>!&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h1 id = "filters">Filters: <code>:</code></h1>
+
+<p>The colon character designates a filter.
+This allows you to pass an indented block of text as input
+to another filtering program and add the result to the output of Haml.</p>
+
+<p>The syntax is a colon followed by an optional list of filter flags and then a colon
+separated list of filter names.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">p</span>&#x000A;  <span class="nd">:markdown</span>&#x000A;    <span class="nd">Markdown</span>&#x000A;    <span class="nd">========</span>&#x000A;    &#x000A;    <span class="nd">Hello, *World*</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  <span class="nt">&lt;h1&gt;</span>Markdown<span class="nt">&lt;/h1&gt;</span>&#x000A;&#x000A;  <span class="nt">&lt;p&gt;</span>Hello, <span class="nt">&lt;em&gt;</span>World<span class="nt">&lt;/em&gt;&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Or if you want to generate JavaScript from CoffeeScript&hellip;</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">body</span>&#x000A;  <span class="nd">:coffeescript</span>&#x000A;    <span class="nd">alert &quot;Hello, Coffee!&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;body&gt;</span>&#x000A;  <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&#39;text/javascript&#39;</span><span class="nt">&gt;</span>&#x000A;    //<span class="cp">&lt;![CDATA[</span>&#x000A;<span class="cp">      (function() {</span>&#x000A;<span class="cp">        alert(&quot;Hello, Coffee!&quot;);</span>&#x000A;<span class="cp">      }).call(this);</span>&#x000A;&#x000A;<span class="cp">    //]]&gt;</span>&#x000A;  <span class="nt">&lt;/script&gt;</span>&#x000A;<span class="nt">&lt;/body&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Filter_Interpolation">Filter Interpolation</h2>
+
+<p>If you use the <code>!</code> or <code>&amp;</code> filter flags, you can have Scala code 
+interpolated with <code>#{}</code> expressions.  It is invalid to use both
+the <code>!</code> and <code>&amp;</code> flags at the same time. </p>
+
+<p>The <code>&amp;</code> flag enables sanitized interpolations.  </p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">var</span> <span class="n">flavor</span> <span class="k">=</span> <span class="s">&quot;&lt;raspberry/&gt;&quot;</span>&#x000A;<span class="nf">#content</span>&#x000A;  <span class="nd">:&amp;markdown</span>&#x000A;    <span class="nd">I *really* prefer </span><span class="si">#{</span><span class="n">flavor</span><span class="si">}</span><span class="nd"> jam.</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>I <span class="nt">&lt;em&gt;</span>really<span class="nt">&lt;/em&gt;</span> prefer <span class="ni">&amp;lt;</span>raspberry/<span class="ni">&amp;gt;</span> jam.<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<p>The <code>!</code> flag enables non-sanitized interpolations.</p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">var</span> <span class="n">flavor</span> <span class="k">=</span> <span class="s">&quot;&lt;raspberry/&gt;&quot;</span>&#x000A;<span class="nf">#content</span>&#x000A;  <span class="nd">:!markdown</span>&#x000A;    <span class="nd">I *really* prefer </span><span class="si">#{</span><span class="n">flavor</span><span class="si">}</span><span class="nd"> jam.</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>I <span class="nt">&lt;em&gt;</span>really<span class="nt">&lt;/em&gt;</span> prefer <span class="nt">&lt;raspberry/&gt;</span>; jam.<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<h2 id = "Filter_Whitespace_Preservation">Filter Whitespace Preservation</h2>
+
+<p>The <code>~</code> filter flag enables preserves the white space of the content.
+The indent level is left unchanged and newlines are converted to <code>&#x000A;</code></p>
+
+<div class="wide"><div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span>&#x000A;  <span class="nt">p</span>&lt;&#x000A;    <span class="nd">:~plain</span>&#x000A;          <span class="nd">Indentation levels are not enforced in filters.</span>&#x000A;        <span class="si">#{</span><span class="nc">Interpolation</span><span class="si">}</span><span class="nd"> is disabled by default</span>&#x000A;      <span class="nd">Last line</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>    Indentation levels are not enforced in filters.<span class="ni">&amp;#x000A;</span>  #{Interpolation} is disabled by default<span class="ni">&amp;#x000A;</span>Last line<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+</div>
+
+<h2 id = "Filter_Chaining">Filter Chaining</h2>
+
+<p>More than one filter can be be used by separating each filter name with a colon.  When
+this is done, the filters are chained together so that the output of filter on right, is
+passed as input to the filter on the left.</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">pre</span>&#x000A;  <span class="nd">:escaped :javascript</span>&#x000A;    <span class="nd">alert(&quot;Hello&quot;);</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;pre&gt;</span>&#x000A;  <span class="ni">&amp;lt;</span>script type=&#39;text/javascript&#39;<span class="ni">&amp;gt;</span>&#x000A;    //<span class="ni">&amp;lt;</span>![CDATA[&#x000A;      alert(<span class="ni">&amp;quot;</span>Hello<span class="ni">&amp;quot;</span>);&#x000A;    //]]<span class="ni">&amp;gt;</span>&#x000A;  <span class="ni">&amp;lt;</span>/script<span class="ni">&amp;gt;</span>&#x000A;<span class="nt">&lt;/pre&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Available_Filters">Available Filters</h2>
+
+<p>Scalate has the following filters defined:</p>
+
+<h4 id = "plain-filter"><code>:plain</code></h4>
+
+<blockquote>
+<p>Does not parse the filtered text.
+This is useful for large blocks of text or HTML.  Really handy when
+when you don't want lines starting with <code>.</code> or <code>-</code> to be parsed.</p>
+</blockquote>
+
+<h4 id = "javascript-filter"><code>:javascript</code></h4>
+
+<blockquote>
+<p>Surrounds the filtered text with <code>&lt;script&gt;</code> and CDATA tags.
+Useful for including inline Javascript.</p>
+</blockquote>
+
+<h4 id = "css-filter"><code>:css</code></h4>
+
+<blockquote>
+<p>Surrounds the filtered text with <code>&lt;style&gt;</code> and CDATA tags.
+Useful for including inline CSS.</p>
+</blockquote>
+
+<h4 id = "cdata-filter"><code>:cdata</code></h4>
+
+<blockquote>
+<p>Surrounds the filtered text with CDATA tags.</p>
+</blockquote>
+
+<h4 id = "escaped-filter"><code>:escaped</code></h4>
+
+<blockquote>
+<p>Works the same as plain, but HTML-escapes the text
+before placing it in the document.</p>
+</blockquote>
+
+<!--
+#### `:ruby` {#ruby-filter}
+Parses the filtered text with the normal Ruby interpreter.
+All output sent to `$stdout`, like with `puts`,
+is output into the Haml document.
+Not available if the [`:suppress_eval`](#suppress_eval-option) option is set to true.
+The Ruby code is evaluated in the same context as the Haml template.
+
+#### `:erb` {#erb-filter}
+Parses the filtered text with ERb, like an RHTML template.
+Not available if the [`:suppress_eval`](#suppress_eval-option) option is set to true.
+Embedded Ruby code is evaluated in the same context as the Haml template.
+-->
+
+<h4 id = "sass-filter"><code>:sass</code></h4>
+
+<blockquote>
+<p>Parses the filtered text with <a href="http://sass-lang.com/">Sass</a> to produce CSS output. <br/>
+Only works if you have the <code>scalate-jruby</code> module on the class path.  You normally 
+want to combine with the <code>:css</code> filter.  For example <code>:css:sass</code></p>
+</blockquote>
+
+<h4 id = "scss-filter"><code>:scss</code></h4>
+
+<blockquote>
+<p>Parses the filtered text with <a href="http://sass-lang.com/">Scss</a> to produce CSS output.
+Only works if you have the <code>scalate-jruby</code> module on the class path.  You normally 
+want to combine with the <code>:css</code> filter.  For example <code>:css:scss</code></p>
+</blockquote>
+
+<h4 id = "textile-filter"><code>:textile</code></h4>
+
+<blockquote>
+<p>Parses the filtered text with <a href="http://www.textism.com/tools/textile">Textile</a>.
+Only works the scalate-wikitext module is found on the class path.</p>
+</blockquote>
+
+<h4 id = "markdown-filter"><code>:markdown</code></h4>
+
+<blockquote>
+<p>Parses the filtered text with <a href="http://daringfireball.net/projects/markdown">Markdown</a>.
+Only works if <a href="http://scalamd.fusesource.org/">scalamd</a> or <a href="http://markdownj.org/">MarkdownJ</a> is found on the class path.</p>
+</blockquote>
+
+<!--
+## Custom Filters
+
+You can also define your own filters. See Haml::Filters for details.
+-->
+
+<h2 id = "Global_Jade_and_Scaml_Options">Global Jade and Scaml Options</h2>
+
+<p>There  are several global options you can configure to customize how Jade and Scaml renders the
+output.  You will need to configure these before any of your scaml templates are compiled
+as they affect the generated scala template classes.</p>
+
+<h3 id = "_code_ScamlOptions_indent__code_"><code>ScamlOptions.indent</code></h3>
+
+<p>The <code>ScamlOptions.indent</code> option is used to control what kind of indenting characters to 
+use in the rendered markup.  It defaults to two spaces but can be set to the tab character
+or set to the empty string to disable indenting alltogether.</p>
+
+<div class="compare"><div class="compare-left"><h3>ScamlOptions.indent = ""</h3><div class="syntax"><div class="highlight"><pre><span class="nt">gee</span>&#x000A;  <span class="nt">whiz</span>&#x000A;    | Wow this is cool!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;gee&gt;</span>&#x000A;<span class="nt">&lt;whiz&gt;</span>&#x000A;Wow this is cool!&#x000A;<span class="nt">&lt;/whiz&gt;</span>&#x000A;<span class="nt">&lt;/gee&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "_code_ScamlOptions_nl__code_"><code>ScamlOptions.nl</code></h3>
+
+<p>The <code>ScamlOptions.nl</code> option is used to control what kind of new line seperator to 
+use in the rendered markup.  It defaults to <code>\n</code>.  Some folks may want to set it and the indent
+to the empty string to reduce the generated document sizes.</p>
+
+<p>For example, if <code>ScamlOptions.indent = ""</code> and <code>ScamlOptions.nl = ""</code> then:</p>
+
+<div class="compare"><div class="compare-left"><h3>example</h3><div class="syntax"><div class="highlight"><pre><span class="nt">gee</span>&#x000A;  <span class="nt">whiz</span>&#x000A;    | Wow this is cool!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;gee&gt;&lt;whiz&gt;</span>Wow this is cool!<span class="nt">&lt;/whiz&gt;&lt;/gee&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h3 id = "_code_ScamlOptions_ugly__code_"><code>ScamlOptions.ugly</code></h3>
+
+<p>Enabling the <code>ScamlOptions.ugly</code> option makes <code>=</code> statements work like <code>~~</code> statements.  The dynamic expressions
+will not be indented and they the new line preservation transformation method will not be applied.  Enabling the
+ugly option will significantly reduce the CPU overhead of processing dynamic expressions.</p>
+
+<div class="compare"><div class="compare-left"><h3>ScamlOptions.ugly = true</h3><div class="syntax"><div class="highlight"><pre><span class="nt">html</span>&#x000A;  <span class="nt">p</span>&#x000A;    <span class="p">=</span> <span class="s">&quot;line1\nline2\nline3&quot;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>renders to</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>&#x000A;line1&#x000A;line2&#x000A;line3&#x000A;  <span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Differences_from_JavaScript_Jade">Differences from JavaScript Jade</h2>
+
+<p>The Scalate flavour of Jade diverges a little in a few places from <a href="http://jade-lang.com/">Jade implementation in JavaScript</a> mostly around the area of filters.</p>
+
+<p>In Scalate, the contents of a filter (like <strong>:markdown</strong> or <strong>:javascript</strong>) is assumed to be text, so there is no need to prepend the | symbol to each line.</p>
+
+<div class="compare"><div class="compare-left"><h3>Scalate Jade</h3><div class="syntax"><div class="highlight"><pre><span class="nn">!!! 5</span>&#x000A;<span class="nt">html</span>(<span class="na">lang=</span><span class="s">&quot;en&quot;</span>)&#x000A;  <span class="nt">head</span>&#x000A;    <span class="nt">title</span><span class="p">=</span> <span class="n">pageTitle</span>&#x000A;    <span class="nd">:javascript</span>&#x000A;      <span class="nd">if (foo) {</span>&#x000A;         <span class="nd">bar()</span>&#x000A;      <span class="nd">}</span>&#x000A;  <span class="nt">body</span>&#x000A;    <span class="nt">h1</span> Jade - node template engine&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>JavaScript Jade</h3><div class="syntax"><div class="highlight"><pre><span class="nn">!!! 5</span>&#x000A;<span class="nt">html</span>(<span class="na">lang=</span><span class="s">&quot;en&quot;</span>)&#x000A;  <span class="nt">head</span>&#x000A;    <span class="nt">title</span><span class="p">=</span> <span class="n">pageTitle</span>&#x000A;    <span class="nd">:javascript</span>&#x000A;      <span class="nd">| if (foo) {</span>&#x000A;      <span class="nd">|    bar()</span>&#x000A;      <span class="nd">| }</span>&#x000A;  <span class="nt">body</span>&#x000A;    <span class="nt">h1</span> Jade - node template engine&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h2 id = "Other_Resources">Other Resources</h2>
+
+<ul>
+<li><a href="user-guide.html">User Guide</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

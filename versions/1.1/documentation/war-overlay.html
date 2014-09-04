@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>WAR Overlay</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='war_overlay'>WAR Overlay</h1>
+
+<p>Adding Scalate console to your web application</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Overview</h1>
+</div><div class='right'>
+<p>The Scalate War Overlay is a <a href='http://maven.apache.org/plugins/maven-war-plugin/overlays.html'>feature</a> of the <a href='http://maven.apache.org/plugins/maven-war-plugin/'>maven war plugin</a> which allows you to depend on a WAR in your maven dependencies.</p>
+
+<p>The war plugin then copies all the contents of the war overlay into your web application. This saves you copy and pasting various shared resources and templates across web applications.</p>
+
+<p>For example to use the Scalate WAR overlay in any maven web application just add this section to your pom.xml</p>
+</div><div class='right'>
+<div class='CodeRay'>
+  <div class='code'><pre>  <span style='color:#070'>&lt;dependencies&gt;</span>
+    <span style='color:#070'>&lt;dependency&gt;</span>
+      <span style='color:#070'>&lt;groupId&gt;</span>org.fusesource.scalate<span style='color:#070'>&lt;/groupId&gt;</span>
+      <span style='color:#070'>&lt;artifactId&gt;</span>scalate-war<span style='color:#070'>&lt;/artifactId&gt;</span>
+      <span style='color:#070'>&lt;version&gt;</span>1.1<span style='color:#070'>&lt;/version&gt;</span>
+      <span style='color:#070'>&lt;type&gt;</span>war<span style='color:#070'>&lt;/type&gt;</span>
+    <span style='color:#070'>&lt;/dependency&gt;</span>
+    ...
+  <span style='color:#070'>&lt;/dependencies&gt;</span>
+</pre></div>
+</div>
+
+</div><div class='right'>
+<p>Note that if you are already using one of the <a href='getting-started.html'>scalate archetypes</a> you don&#8217;t have to worry about this; your archetype is already setup correctly for you.</p>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

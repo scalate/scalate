@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>OSGi</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "OSGi">OSGi</h1>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Overview">Overview</h1>
+</div>
+<div class="right">
+  <p><a href="http://www.osgi.org/">OSGi</a> is a module system and service platform for the Java programming language.  It uses a more modular classloader hierarchy, which requires
+  some additional configuration when using Scalate.</p>
+</div>
+<div class="left">
+  <h1 id = "Required_imports">Required imports</h1>
+</div>
+<div class="right">
+  <p>When deploying a WAR file in Karaf using a <code>war:</code> URL, the bundle automatically gets imports for <code>javax.servlet</code> and <code>javax.servlet.http</code>.</p>
+
+  <p>In order for Scalate to work properly, a few additional imports are required.</p>
+
+  <ul>
+  <li><code>org.osgi.platform</code></li>
+  <li><code>org.osgi.services.packageadmin</code></li>
+  <li><code>javax.swing.tree</code></li>
+  </ul>
+
+  <p>When using Apache Karaf (or another environment that uses Pax Logging), you can optionally add:</p>
+
+  <ul>
+  <li><code>org.slf4j</code> to allow Scalate to use the provided logging services</li>
+  </ul>
+</div>
+<div class="left">
+  <h1 id = "Using_war:">Using war:</h1>
+</div>
+<div class="right">
+  <p>The required imports can be added dynamically when installing the WAR file by using these options on the <code>war:</code> URL:</p>
+
+  <ul>
+  <li><code>Import-Package</code> to specify the required imports</li>
+  <li><code>Webapp-Context</code> to specify the web application context root</li>
+  </ul>
+
+  <p>Example: to install a file name documentation.war on Karaf</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="err">osgi:install -s war:file:documentation.war?Webapp-Context=documentation&amp;Import-Package=org.slf4j,javax.servlet,javax.servlet.http,org.osgi.framework,org.osgi.service.packageadmin</span>&#x000A;</pre></div>&#x000A;</div>
+</div>
+<div class="left">
+  <h1 id = "Maven_bundle_plugin">Maven bundle plugin</h1>
+</div>
+<div class="right">
+  <p>Another way to add the required imports, is by including the necessary configuration in your WAR file directly at build time.  This can be done with the Maven bundle plugin:</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;plugin&gt;</span>&#x000A;  <span class="nt">&lt;artifactId&gt;</span>maven-war-plugin<span class="nt">&lt;/artifactId&gt;</span>&#x000A;  <span class="nt">&lt;configuration&gt;</span>&#x000A;    <span class="nt">&lt;archive&gt;</span>&#x000A;      <span class="nt">&lt;manifestFile&gt;</span>&#x000A;        ${project.build.outputDirectory}/META-INF/MANIFEST.MF&#x000A;      <span class="nt">&lt;/manifestFile&gt;</span>&#x000A;    <span class="nt">&lt;/archive&gt;</span>&#x000A;  <span class="nt">&lt;/configuration&gt;</span>&#x000A;<span class="nt">&lt;/plugin&gt;</span>&#x000A;<span class="nt">&lt;plugin&gt;</span>&#x000A;  <span class="nt">&lt;groupId&gt;</span>org.apache.felix<span class="nt">&lt;/groupId&gt;</span>&#x000A;  <span class="nt">&lt;artifactId&gt;</span>maven-bundle-plugin<span class="nt">&lt;/artifactId&gt;</span>&#x000A;  <span class="nt">&lt;executions&gt;</span>&#x000A;    <span class="nt">&lt;execution&gt;</span>&#x000A;      <span class="nt">&lt;id&gt;</span>bundle-manifest<span class="nt">&lt;/id&gt;</span>&#x000A;      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>&#x000A;      <span class="nt">&lt;goals&gt;</span>&#x000A;        <span class="nt">&lt;goal&gt;</span>manifest<span class="nt">&lt;/goal&gt;</span>&#x000A;      <span class="nt">&lt;/goals&gt;</span>&#x000A;    <span class="nt">&lt;/execution&gt;</span>&#x000A;  <span class="nt">&lt;/executions&gt;</span>&#x000A;  <span class="nt">&lt;configuration&gt;</span>&#x000A;    <span class="nt">&lt;supportedProjectTypes&gt;</span>&#x000A;      <span class="nt">&lt;supportedProjectType&gt;</span>jar<span class="nt">&lt;/supportedProjectType&gt;</span>&#x000A;      <span class="nt">&lt;supportedProjectType&gt;</span>bundle<span class="nt">&lt;/supportedProjectType&gt;</span>&#x000A;      <span class="nt">&lt;supportedProjectType&gt;</span>war<span class="nt">&lt;/supportedProjectType&gt;</span>&#x000A;    <span class="nt">&lt;/supportedProjectTypes&gt;</span>&#x000A;    <span class="nt">&lt;instructions&gt;</span>&#x000A;      <span class="nt">&lt;Import-Package&gt;</span>&#x000A;        javax.servlet,javax.servlet.http,&#x000A;        org.osgi.framework,org.osgi.service.packageadmin,&#x000A;        javax.swing.tree,&#x000A;        org.slf4j&#x000A;      <span class="nt">&lt;/Import-Package&gt;</span>&#x000A;      <span class="nt">&lt;Bundle-ClassPath&gt;</span>.,WEB-INF/classes<span class="nt">&lt;/Bundle-ClassPath&gt;</span>&#x000A;      <span class="nt">&lt;Embed-Directory&gt;</span>WEB-INF/lib<span class="nt">&lt;/Embed-Directory&gt;</span>&#x000A;      <span class="nt">&lt;Embed-Dependency&gt;</span>&#x000A;        *;scope=compile|runtime&#x000A;      <span class="nt">&lt;/Embed-Dependency&gt;</span>&#x000A;      <span class="nt">&lt;Embed-Transitive&gt;</span>true<span class="nt">&lt;/Embed-Transitive&gt;</span>&#x000A;      <span class="nt">&lt;Webapp-Context&gt;</span>documentation<span class="nt">&lt;/Webapp-Context&gt;</span>&#x000A;    <span class="nt">&lt;/instructions&gt;</span>&#x000A;  <span class="nt">&lt;/configuration&gt;</span>&#x000A;<span class="nt">&lt;/plugin&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

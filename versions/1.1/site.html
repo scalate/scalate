@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Building</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="download.html">Download</a></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='scalate_site'>scalate Site</h1>
+
+<p>How the website works</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>How it works</h1>
+</div><div class='right'>
+<p>The <em>scalate</em> documentation and site is created using <a href='http://webgen.rubyforge.org/'>WebGen</a> and is stored in git in the same <a href='source.html'>source control system as the code</a></p>
+</div><div class='left'>
+<h1>Editing the source code</h1>
+</div><div class='right'>
+<p>If you <a href='source.html'>grab the source code</a> you can get the site source in the <em>webgen</em> directory. If you have webgen installed (see below for instructions) then you can build the website from <a href='source.html'>the code</a> as follows</p>
+
+<pre><code>cd scalate/webgen
+webgen</code></pre>
+
+<p>If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use</p>
+
+<pre><code>webgen</code></pre>
+
+<p>You can now surf the site and see changes immediately.</p>
+
+<p>If you are on OS X then we highly recommend <a href='http://macromates.com/'>TextMate</a> as a great editor which supports Textile and Markdown</p>
+</div><div class='left'>
+<h1>Editing the site in your browser</h1>
+</div><div class='right'>
+<p>The generated HTML has a link at the bottom of the page to</p>
+<b>
+<p>Edit This Page!</p>
+</b>
+<p>as well as supporting the <a href='http://universaleditbutton.org/'>Universal Edit Button</a> if your browser supports it. There is also a link to the page source if you are wondering where it is kept in subversion.</p>
+
+<p>If you use FireFox you might want to install the <a href='https://addons.wikihow.com/univedit.xpi'>Edit Page Plugin</a></p>
+
+<p>This feature depends on having a restful resource which will accept posted changes to the page.</p>
+</div><div class='left'>
+<h1>Installing WebGen</h1>
+</div><div class='right'>
+<p>Before running the webgen command above you need to install it by <a href=''>following these instructions</a></p>
+
+<pre><code>sudo gem install webgen</code></pre>
+
+<p>You also need to install the following gems</p>
+
+<pre><code>sudo gem install --source http://gems.github.com FooBarWidget-mizuho
+sudo gem install coderay
+sudo gem install feedtools
+sudo gem install haml</code></pre>
+
+<p>To be able to deploy the site you will need</p>
+
+<pre><code>sudo port install sitecopy</code></pre>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

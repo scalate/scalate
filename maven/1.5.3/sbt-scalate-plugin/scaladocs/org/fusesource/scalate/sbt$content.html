@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>All classes and objects in org.fusesource.scalate.sbt</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.7.final)" name="generator"></meta><link href="../../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../../script.js"></script>
+        </head>
+        <body onload="init()"><div class="page-title"><div>sbt-scalate-plugin 1.5.3 API</div></div><p><div>This document is the API specification for sbt-scalate-plugin 1.5.3 API</div></p><table summary="" cellpadding="3" class="member">
+        <tr><td class="title" colspan="2">Class Summary</td></tr>
+        <tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/fusesource/scalate/sbt/PrecompilerProject.html" target="_self">PrecompilerProject</a></em>
+        <code> extends </code><a href="../../../org/fusesource/scalate/sbt/ScalateProject.html" target="_self">ScalateProject</a>
+        
+        <div>Precompiles the templates as a dependency of the package action.  Web
+ projects should instead mix in
+ [[org.fusesource.scalate.sbt.PrecompilerWebProject]]</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/fusesource/scalate/sbt/PrecompilerWebProject.html" target="_self">PrecompilerWebProject</a></em>
+        <code> extends </code><a href="../../../org/fusesource/scalate/sbt/PrecompilerProject.html" target="_self">PrecompilerProject</a><code> with </code><a href="../../../org/fusesource/scalate/sbt/ScalateWebProject.html" target="_self">ScalateWebProject</a>
+        
+        <div>Supports precompilation of templates in a web project.  Differs from
+ [[PrecompilerProject]] by also looking for templates in the webapp directory.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/fusesource/scalate/sbt/ScalateProject.html" target="_self">ScalateProject</a></em>
+        <code> extends </code><a href="" target="contentFrame" class="sbt/BasicScalaProject">sbt.BasicScalaProject</a><code> with </code><a href="" target="contentFrame" class="sbt/MavenStyleScalaPaths">sbt.MavenStyleScalaPaths</a>
+        
+        <div>Base trait for Scalate tool support.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/fusesource/scalate/sbt/ScalateWebProject.html" target="_self">ScalateWebProject</a></em>
+        <code> extends </code><a href="../../../org/fusesource/scalate/sbt/ScalateProject.html" target="_self">ScalateProject</a><code> with </code><a href="" target="contentFrame" class="sbt/MavenStyleWebScalaPaths">sbt.MavenStyleWebScalaPaths</a>
+        
+        <div>Base trait for Scalate tool support in a web project.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/fusesource/scalate/sbt/SiteGenWebProject.html" target="_self">SiteGenWebProject</a></em>
+        <code> extends </code><a href="" target="contentFrame" class="sbt/BasicWebScalaProject">sbt.BasicWebScalaProject</a><code> with </code><a href="../../../org/fusesource/scalate/sbt/ScalateWebProject.html" target="_self">ScalateWebProject</a>
+        
+        <div>Generates static HTML files for your website using the Scalate templates.
+ It runs as a dependency of the package action.</div>
+      </td>
+    </tr>        
+        </table>
+</body>
+      </html>

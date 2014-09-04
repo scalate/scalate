@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/site.css"/>
+    <title>Using JRebel with Scalate</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="index.html">Scalate 1.5.2</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="source.html">Source</a></li>
+<li><a href="community.html">Community</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Dynamically_reload_code">Dynamically reload code</h1>
+
+<p>Reload Java or Scala code without restarting your web app</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>If you are building a web application you want to be able to create and edit Java and Scala code on the fly without having to stop and restart your web container for each code change.</p>
+
+<h2 id = "JRebel_to_the_rescue_">JRebel to the rescue!</h2>
+
+<p><a href="http://www.zeroturnaround.com/jrebel">JRebel</a> allows you to hot reload bytecode on the fly in your application without having to restart your web container.</p>
+
+<p>Here's how you can use it in a web application with Scalate.</p>
+
+<ul>
+<li><a href="http://www.zeroturnaround.com/blog/free-javarebel-for-scala-users-zeroturnaround-announces/">Download JRebel</a></li>
+<li><p>set your <strong>MAVEN&#95;OPTS</strong> environment variable to point to where you installed the jrebel jar. For example:</p>
+
+<p>export MAVEN<em>OPTS="-noverify -javaagent:$JREBEL</em>HOME/jrebel.jar&rdquo;</p></li>
+<li><p>run your web application in maven</p>
+
+<p>mvn jetty:run</p></li>
+</ul>
+
+<p>Now if your code is compiled by your IDE or a build process, the classes are automatically reloaded on the fly. Neat eh!</p>
+
+<p>For example if you run the following in another shell</p>
+
+<pre><code>mvn scala:cc</code></pre>
+
+<p>Then as you edit your scala code it will be recompiled using Scala's incremental compiler, then JRebel will auto-reload any recompiled classes.</p>
+
+<h2 id = "Using_the_Scalate_JRebel_plugin">Using the Scalate JRebel plugin</h2>
+
+<p>If you have templates which depend on Scala code thats reloaded by JRebel, it might be that the templates by default are not auto-reloaded by JRebel. This is because by default JRebel is not aware of the source <span class="amp">&amp;</span> classes directories used by Scalate to generate Scala code for each template and compile it.</p>
+
+<p>The easiest thing to do is to just depend on the scalate-jrebel plugin in your web application. This is a JRebel plugin which listens to classes being reloaded in JRebel and it flushes all the Scalate template classes to ensure that your template is recompiled against the latest code.</p>
+
+<p>So for example if you are using maven then add this profile to your web application pom.xml</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;profiles&gt;</span>&#x000A;  <span class="nt">&lt;profile&gt;</span>&#x000A;    <span class="nt">&lt;id&gt;</span>jrebel<span class="nt">&lt;/id&gt;</span>&#x000A;    <span class="nt">&lt;dependencies&gt;</span>&#x000A;      <span class="nt">&lt;dependency&gt;</span>&#x000A;        <span class="nt">&lt;groupId&gt;</span>org.fusesource.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;        <span class="nt">&lt;artifactId&gt;</span>scalate-jrebel<span class="nt">&lt;/artifactId&gt;</span>&#x000A;        <span class="nt">&lt;version&gt;</span>${scalate-version}<span class="nt">&lt;/version&gt;</span>&#x000A;      <span class="nt">&lt;/dependency&gt;</span>&#x000A;    <span class="nt">&lt;/dependencies&gt;</span>&#x000A;  <span class="nt">&lt;/profile&gt;</span>&#x000A;<span class="nt">&lt;/profiles&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>If you then run your web application as follows (assuming you've defined <strong>MAVEN_OPTS</strong>) as specified above)</p>
+
+<pre><code>mvn jetty:run -Pjrebel</code></pre>
+
+<h2 id = "Things_to_watch">Things to watch</h2>
+
+<p>We've found that if you use <strong>&#95;scalate</strong> directory in the <strong>WEB-INF</strong> directory when running your web app using <strong>jetty:run</strong> JRebel really slows down the Scalate recompile step hugely; so its better to let Scalate use a work directory outside of the web application.</p>
+
+<p>This should happen by default now; if not specify the <strong>scalate.workdir</strong> system property to be the work directory you want scalate to use. For example</p>
+
+<pre><code>mvn -Dscalate.workdir=/tmp/_scalate jetty:run</code></pre>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

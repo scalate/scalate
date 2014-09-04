@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.mustache</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <h1>mustache</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">mustache</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"></div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+                
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.mustache.ChildScope">
+      <h4 class="signature"><a href="ChildScope.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ChildScope</span><span class="result"> extends Scope</span>
+      </span>
+      </a></h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: abstract 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Comment">
+      <h4 class="signature"><a href="Comment.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Comment</span><span class="params">(<span name="comment">comment: Text</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.EmptyScope">
+      <h4 class="signature"><a href="EmptyScope.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">EmptyScope</span><span class="result"> extends ChildScope</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.FunctionResult">
+      <h4 class="signature"><a href="FunctionResult.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">FunctionResult</span><span class="params">(<span name="value">value: Any</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.ImplicitIterator">
+      <h4 class="signature"><a href="ImplicitIterator.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ImplicitIterator</span><span class="params">(<span name="name">name: String</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.InvertSection">
+      <h4 class="signature"><a href="InvertSection.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">InvertSection</span><span class="params">(<span name="name">name: Text</span>, <span name="body">body: List[Statement]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.MapScope">
+      <h4 class="signature"><a href="MapScope.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">MapScope</span><span class="result"> extends ChildScope</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.MustacheCodeGenerator">
+      <h4 class="signature"><a href="MustacheCodeGenerator.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">MustacheCodeGenerator</span><span class="result"> extends AbstractCodeGenerator[Statement]</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">no summary matey</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.MustacheParser">
+      <h4 class="signature"><a href="MustacheParser.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">MustacheParser</span><span class="result"> extends RegexParsers with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Parser for the Mustache template language
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.ObjectScope">
+      <h4 class="signature"><a href="ObjectScope.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ObjectScope</span><span class="tparams">[<span name="T">T &lt;: AnyRef</span>]</span><span class="result"> extends ChildScope</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Constructs a scope for a non-null and not None value
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Partial">
+      <h4 class="signature"><a href="Partial.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Partial</span><span class="params">(<span name="name">name: Text</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Pragma">
+      <h4 class="signature"><a href="Pragma.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Pragma</span><span class="params">(<span name="name">name: Text</span>, <span name="options">options: Map[String, String]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.RenderContextScope">
+      <h4 class="signature"><a href="RenderContextScope.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">RenderContextScope</span><span class="params">(<span name="context">context: RenderContext</span>, <span name="defaultObjectName">defaultObjectName: Option[String] = <span class="default">new Some[java.lang.String](&quot;it&quot;)</span></span>)</span><span class="result"> extends Scope with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Scope">
+      <h4 class="signature"><a href="Scope.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">Scope</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Represents a variable scope
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Section">
+      <h4 class="signature"><a href="Section.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Section</span><span class="params">(<span name="name">name: Text</span>, <span name="body">body: List[Statement]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.SetDelimiter">
+      <h4 class="signature"><a href="SetDelimiter.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SetDelimiter</span><span class="params">(<span name="open">open: Text</span>, <span name="close">close: Text</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Statement">
+      <h4 class="signature"><a href="Statement.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Statement</span><span class="result"> extends Positional</span>
+      </span>
+      </a></h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: sealed abstract 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Text">
+      <h4 class="signature"><a href="Text.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Text</span><span class="params">(<span name="value">value: String</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Is a String with positioning information
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.mustache.Variable">
+      <h4 class="signature"><a href="Variable.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Variable</span><span class="params">(<span name="name">name: Text</span>, <span name="unescape">unescape: Boolean = <span class="default">false</span></span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.mustache.Scope">
+      <h4 class="signature"><a href="Scope$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Scope</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

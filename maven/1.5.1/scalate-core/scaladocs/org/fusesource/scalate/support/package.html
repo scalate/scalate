@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.fusesource.scalate.support</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.fusesource" class="extype" href="../../package.html">fusesource</a>.<a name="org.fusesource.scalate" class="extype" href="../package.html">scalate</a></p>
+        <h1>support</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">support</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.support.AbstractCodeGenerator" data-isabs="true">
+      <a id="AbstractCodeGenerator:AbstractCodeGenerator[T]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="AbstractCodeGenerator.html"><span class="name">AbstractCodeGenerator</span></a>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="result"> extends CodeGenerator</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides a common base class for CodeGenerator implementations.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.AttributesHashMap" data-isabs="false">
+      <a id="AttributesHashMap:AttributesHashMap"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="AttributesHashMap.html"><span class="name">AttributesHashMap</span></a>
+        
+        <span class="result"> extends AttributeMap</span>
+      </span>
+      </h4>
+      <p class="comment cmt">The default implementation for <code>AttributeMap</code> backed
+by a map like collection.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Code" data-isabs="false">
+      <a id="Code:Code"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="Code.html"><span class="name">Code</span></a>
+        
+        <span class="params">(<span name="className">className: String</span>, <span name="source">source: String</span>, <span name="dependencies">dependencies: Set[String]</span>, <span name="positions">positions: TreeMap[OffsetPosition, OffsetPosition]</span>)</span><span class="result"> extends Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CodeGenerator" data-isabs="true">
+      <a id="CodeGenerator:CodeGenerator"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="CodeGenerator.html"><span class="name">CodeGenerator</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CompilerError" data-isabs="false">
+      <a id="CompilerError:CompilerError"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="CompilerError.html"><span class="name">CompilerError</span></a>
+        
+        <span class="params">(<span name="file">file: String</span>, <span name="message">message: String</span>, <span name="pos">pos: Position</span>, <span name="original">original: CompilerError</span>)</span><span class="result"> extends Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CustomExtensionTemplateSource" data-isabs="false">
+      <a id="CustomExtensionTemplateSource:CustomExtensionTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="CustomExtensionTemplateSource.html"><span class="name">CustomExtensionTemplateSource</span></a>
+        
+        <span class="result"> extends DelegateResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DefaultTemplatePackage" data-isabs="false">
+      <a id="DefaultTemplatePackage:DefaultTemplatePackage"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="DefaultTemplatePackage.html"><span class="name">DefaultTemplatePackage</span></a>
+        
+        <span class="result"> extends TemplatePackage</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A TemplatePackage where we try and find an object/controller/resource type based on the name of the current template and if we can
+find it then we create a variable called **it** of the controller type and import its values into the template.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DummyRenderContext" data-isabs="false">
+      <a id="DummyRenderContext:DummyRenderContext"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="DummyRenderContext.html"><span class="name">DummyRenderContext</span></a>
+        
+        <span class="result"> extends DefaultRenderContext</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DummyResponse" data-isabs="false">
+      <a id="DummyResponse:DummyResponse"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="DummyResponse.html"><span class="name">DummyResponse</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DummyTemplateEngine" data-isabs="false">
+      <a id="DummyTemplateEngine:DummyTemplateEngine"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="DummyTemplateEngine.html"><span class="name">DummyTemplateEngine</span></a>
+        
+        <span class="result"> extends TemplateEngine</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Elvis" data-isabs="false">
+      <a id="Elvis:Elvis"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="Elvis.html"><span class="name">Elvis</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Implements the Groovy style Elvis operator in Scala
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.FileTemplateSource" data-isabs="false">
+      <a id="FileTemplateSource:FileTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="FileTemplateSource.html"><span class="name">FileTemplateSource</span></a>
+        
+        <span class="result"> extends FileResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.MapEntry" data-isabs="false">
+      <a id="MapEntry:MapEntry[A, B]"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="MapEntry.html"><span class="name">MapEntry</span></a>
+        <span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span>
+        <span class="params">(<span name="key">key: A</span>, <span name="value">value: B</span>)</span><span class="result"> extends Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A helper class useful for implicit conversions when legacy code iterates over a Map without explicitly
+decomposing the iterator value to a tuple
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.OsgiScalaCompiler" data-isabs="false">
+      <a id="OsgiScalaCompiler:OsgiScalaCompiler"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="OsgiScalaCompiler.html"><span class="name">OsgiScalaCompiler</span></a>
+        
+        <span class="result"> extends ScalaCompiler</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.PipelineTemplate" data-isabs="false">
+      <a id="PipelineTemplate:PipelineTemplate"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="PipelineTemplate.html"><span class="name">PipelineTemplate</span></a>
+        
+        <span class="result"> extends Template</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Implements a Template using a list of filters
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Precompiler" data-isabs="false">
+      <a id="Precompiler:Precompiler"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="Precompiler.html"><span class="name">Precompiler</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This class can precompile Scalate templates into JVM
+classes.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaCompiler" data-isabs="false">
+      <a id="ScalaCompiler:ScalaCompiler"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ScalaCompiler.html"><span class="name">ScalaCompiler</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport" data-isabs="true">
+      <a id="ScalaParseSupport:ScalaParseSupport"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="ScalaParseSupport.html"><span class="name">ScalaParseSupport</span></a>
+        
+        <span class="result"> extends RegexParsers</span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.SiteGenerator" data-isabs="false">
+      <a id="SiteGenerator:SiteGenerator"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="SiteGenerator.html"><span class="name">SiteGenerator</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">This class generates static HTML files for your website using the Scalate templates, filters and wiki markups
+you are using.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.SourceTemplateSource" data-isabs="false">
+      <a id="SourceTemplateSource:SourceTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="SourceTemplateSource.html"><span class="name">SourceTemplateSource</span></a>
+        
+        <span class="result"> extends SourceResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.StringTemplateSource" data-isabs="false">
+      <a id="StringTemplateSource:StringTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="StringTemplateSource.html"><span class="name">StringTemplateSource</span></a>
+        
+        <span class="result"> extends StringResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplateFinder" data-isabs="false">
+      <a id="TemplateFinder:TemplateFinder"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="TemplateFinder.html"><span class="name">TemplateFinder</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A helper object to find a template from a URI using a number of possible extensions and directories
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplatePackage" data-isabs="true">
+      <a id="TemplatePackage:TemplatePackage"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="TemplatePackage.html"><span class="name">TemplatePackage</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">The base class for any **ScalatePackage** class added to the classpath to customize the templates
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Text" data-isabs="false">
+      <a id="Text:Text"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="Text.html"><span class="name">Text</span></a>
+        
+        <span class="params">(<span name="value">value: String</span>)</span><span class="result"> extends Positional with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Is a String with positioning information
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.URLTemplateSource" data-isabs="false">
+      <a id="URLTemplateSource:URLTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="URLTemplateSource.html"><span class="name">URLTemplateSource</span></a>
+        
+        <span class="result"> extends URLResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.UriTemplateSource" data-isabs="false">
+      <a id="UriTemplateSource:UriTemplateSource"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="UriTemplateSource.html"><span class="name">UriTemplateSource</span></a>
+        
+        <span class="result"> extends UriResource with TemplateSource</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.support.AbstractCodeGenerator" data-isabs="false">
+      <a id="AbstractCodeGenerator:AbstractCodeGenerator"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="AbstractCodeGenerator$.html"><span class="name">AbstractCodeGenerator</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Boots" data-isabs="false">
+      <a id="Boots:Boots"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Boots$.html"><span class="name">Boots</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A helper class for working with Boot style classes which
+take a TemplateEngine as a constructor argument and have a zero argument
+run method.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CharData" data-isabs="false">
+      <a id="CharData:CharData"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="CharData$.html"><span class="name">CharData</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DefaultTemplatePackage" data-isabs="false">
+      <a id="DefaultTemplatePackage:DefaultTemplatePackage"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="DefaultTemplatePackage$.html"><span class="name">DefaultTemplatePackage</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Links" data-isabs="false">
+      <a id="Links:Links"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Links$.html"><span class="name">Links</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.RenderHelper" data-isabs="false">
+      <a id="RenderHelper:RenderHelper"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="RenderHelper$.html"><span class="name">RenderHelper</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaCompiler" data-isabs="false">
+      <a id="ScalaCompiler:ScalaCompiler"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="ScalaCompiler$.html"><span class="name">ScalaCompiler</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.SiteGenerator" data-isabs="false">
+      <a id="SiteGenerator:SiteGenerator"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="SiteGenerator$.html"><span class="name">SiteGenerator</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplateConversions" data-isabs="false">
+      <a id="TemplateConversions:TemplateConversions"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="TemplateConversions$.html"><span class="name">TemplateConversions</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A number of helper implicit conversions for use in templates
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplatePackage" data-isabs="false">
+      <a id="TemplatePackage:TemplatePackage"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="TemplatePackage$.html"><span class="name">TemplatePackage</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

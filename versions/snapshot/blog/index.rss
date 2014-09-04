@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<rss version="2.0">
+        <channel>
+          <title>The Scalate Blog</title>
+          <link>http://scalate.fusesource.org/blog/</link>
+          <description>Scala Template Engine: like JSP without the crap but with added Scala coolness</description>
+          <pubDate>Wed, 9 Feb 2011 22:31:44 -0500</pubDate>
+          <lastBuildDate>Wed, 9 Feb 2011 22:31:44 -0500</lastBuildDate>
+          <generator>Scalate - http://scalate.fusesource.org/</generator>
+          <item>
+              <title>Scalate 1.4.0 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-4-0.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the
+availability of Scalate 1.4.0&lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8.1&lt;/a&gt; based &lt;a
+href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template
+engine&lt;/a&gt; which can be used stand alone, with servlets or web frameworks
+like &lt;a href=&quot;http://scalate.fusesource.org/documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;,
+&lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or
+&lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; or in integration frameworks
+like &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following template languages are supported through the same common API:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;
+which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;,
+JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt;
+which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY
+markup along with the
+&lt;a href=&quot;http://scalate.fusesource.org/documentation/jade.html&quot;&gt;Jade&lt;/a&gt; syntax&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt;
+which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for
+logic-less templates which also work inside the browser using
+&lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All expressions inside
+&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;,
+&lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt;
+and &lt;a href=&quot;http://scalate.fusesource.org/documentation/jade.html&quot;&gt;Jade&lt;/a&gt; benefit
+from the full power and expressiveness of Scala plus they are typesafe and
+checked at edit/compile time to ensure you don't leave any mistakes in your
+templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.4.0 Highlights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;upgraded to Scala 2.8.1&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; can
+&lt;a href=&quot;http://www.assembla.com/spaces/scalate/tickets/122&quot;&gt;now&lt;/a&gt; be used for
+creating layouts and refer to parts of the generated template by
+&lt;a href=&quot;http://scalate.fusesource.org/documentation/mustache.html#Layouts&quot;&gt;navigating the &lt;strong&gt;html&lt;/strong&gt;
+section&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Added pygmentize, css, and cdata filters&lt;/li&gt;
+&lt;li&gt;Added Textile support&lt;/li&gt;
+&lt;li&gt;Added SBT plugins to support precompiling templates and executing sitegen projects&lt;/li&gt;
+&lt;li&gt;Improved OSGi support&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://www.assembla.com/spaces/scalate/milestones/315531-1-4&quot;&gt;Full Change
+Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.3.2 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-3-2.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.3.2&lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets or web frameworks like &lt;a href=&quot;../documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;, &lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; or in integration frameworks like &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following template languages are supported through the same common API:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;, JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup along with the &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; syntax&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for logic-less templates which also work inside the browser using &lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All expressions inside &lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;, &lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; and &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.3.2 Highlights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;new &lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#set&quot;&gt;set&lt;/a&gt; &lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#velocity&amp;#95;style&amp;#95;directives&quot;&gt;velocity directive&lt;/a&gt; in &lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which lets you assign sections of the template output to attributes so you can more easily pass information into layouts.&lt;/li&gt;
+&lt;li&gt;minor refactoring of internal classes such as Resource and ResourceLoader from the org.fusesource.scalate.support package into the org.fusesource.scalate.util package to make the util package more stand alone and reuseable outside of Scalate.&lt;/li&gt;
+&lt;li&gt;scalate-util module now refactored out of scalate-core&lt;/li&gt;
+&lt;li&gt;both scalate-core and scalate-util now OSGi bundles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://www.assembla.com/spaces/scalate/milestones/289473-1-3-2&quot;&gt;Full Change Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.3.1 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-3-1.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.3.1. &lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets or web frameworks like &lt;a href=&quot;../documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;, &lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; or in integration frameworks like &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following template languages are supported through the same common API:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;, JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup along with the &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; syntax&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for logic-less templates which also work inside the browser using &lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All expressions inside &lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;, &lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; and &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.3.1 Highlights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This release is mostly a bug fix release.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;for folks migrating from Erb, &lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; now supports Erb style comments e.g. &lt;/p&gt;
+
+&lt;p&gt;&amp;lt;%# this is a comment %&amp;gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;../documentation/user-guide.html#dry&quot;&gt;ScalatePackage classes&lt;/a&gt; can now be properly auto-detected for templates which reside in the WEB-INF directory in a web application.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;works inside OSGi containers&lt;/li&gt;
+&lt;li&gt;all documentation now correctly included in the distro&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/milestones/300141-1-3-1&quot;&gt;Full Change Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.3 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-3.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.3. &lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets or web frameworks like &lt;a href=&quot;../documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;, &lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; or in integration frameworks like &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following template languages are supported through the same common API:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;, JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup along with the &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; syntax&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for logic-less templates which also work inside the browser using &lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All expressions inside &lt;a href=&quot;../documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;, &lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; and &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.3 Highlights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; template syntax is now supported which is a dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; or &lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;New &lt;a href=&quot;../documentation/user-guide.html#using&amp;#95;scalate&amp;#95;as&amp;#95;servlet&amp;#95;filter&amp;#95;in&amp;#95;your&amp;#95;web&amp;#95;application&quot;&gt;Servlet Filter&lt;/a&gt; which allows more flexible mapping of templates in a web application. For example you can have the request &lt;em&gt;/foo.xml&lt;/em&gt; automatically bound to &lt;em&gt;/foo.xml.ssp&lt;/em&gt; if the template exists letting you easily implement views without requiring a controller or routing in your MVC layer.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/jspConvert.html&quot;&gt;JSP Converter&lt;/a&gt; helps you migrate your existing JSP web application across to Scalate&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/htmlConvert.html&quot;&gt;HTML Converter&lt;/a&gt; lets you migrate your existing HTML files easily to &lt;a href=&quot;../documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; or &lt;a href=&quot;../documentation/jade.html&quot;&gt;Jade&lt;/a&gt; for extra DRY markup&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/user-guide.html#dry&quot;&gt;DRY template imports, values and logic&lt;/a&gt; thanks to Scalate Package objects which allow imports, values and methods to be shared across some or all of your templates to reduce noise inside your templates.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/siteGen.html&quot;&gt;Site Generator&lt;/a&gt; lets you generate static or dynamic websites using templates and/or wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository. You can also use &lt;a href=&quot;../documentation/siteGen.html#bootstrapping&quot;&gt;a common bootstrap approach&lt;/a&gt; now across both static website generation and web applications - such as to configure wiki macros in a canonical way. We now eat our own dog food and generate this site using Scalate.&lt;/li&gt;
+&lt;li&gt;More filters and pipelines supported such as confluence as well as the existing markdown which are particularly useful for website generation (static or semi-static).&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;../documentation/tool.html&quot;&gt;Scalate Tool&lt;/a&gt; now comes with a full interactive shell with full tab completion to make it easier to use the tool either for ad hoc or interactive shell use.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3&quot;&gt;Full Change Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.2 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-2.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.2. &lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets or web frameworks like &lt;a href=&quot;http://scalate.fusesource.org/documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;, &lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; or in integration frameworks like &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The following template languages are supported through the same common API:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;, JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for logic-less templates which also work inside the browser using &lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All expressions inside &lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt;  and &lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.2 Highlights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Scalate now supports the &lt;a href=&quot;http://scalate.fusesource.org/documentation/mustache.html&quot;&gt;Mustache&lt;/a&gt; template language which is a Scala dialect of &lt;a href=&quot;http://mustache.github.com/&quot;&gt;Mustache&lt;/a&gt; for logic-less templates which also work inside the browser using &lt;a href=&quot;http://github.com/janl/mustache.js&quot;&gt;mustache.js&lt;/a&gt;. Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, &lt;a href=&quot;http://scalate.fusesource.org/documentation/jog.html&quot;&gt;JAXRS&lt;/a&gt;, &lt;a href=&quot;http://scalate.fusesource.org/documentation/lift.html&quot;&gt;Lift&lt;/a&gt; or &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play&lt;/a&gt; and &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Scalate is &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/tickets/70&quot;&gt;now built&lt;/a&gt; on top of &lt;a href=&quot;http://www.scala-lang.org/node/7009&quot;&gt;Scala 2.8.0 final release&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/scuery.html&quot;&gt;Scuery&lt;/a&gt; for jQuery style transformation of HTML or XHTML using CSS3 selectors&lt;/li&gt;
+&lt;li&gt;the &lt;a href=&quot;http://scalate.fusesource.org/documentation/console.html&quot;&gt;console&lt;/a&gt; can be more easily reused in your application &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/tickets/105&quot;&gt;without using WAR overlays&lt;/a&gt; and templates can be loaded via the classloader to help make more modular web applications without relying on WAR overlays&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/tickets/94&quot;&gt;improvements&lt;/a&gt; in associating different template languages to files/URIs/strings/streams in a more flexible API&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/tickets/108&quot;&gt;various&lt;/a&gt; &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/tickets/109&quot;&gt;improvements&lt;/a&gt; in the accuracy of the mapping of scala compiler errors to positions in the template source file which are then shown and linked in the &lt;a href=&quot;http://scalate.fusesource.org/documentation/console.html&quot;&gt;console&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;improved &lt;a href=&quot;http://scalate.fusesource.org/documentation/user-guide.html#precompiling&amp;#95;templates&quot;&gt;maven plugin&lt;/a&gt; for precompiling templates&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/milestones/191841-1-2&quot;&gt;Full Change Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.1 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-1.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.1. &lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets, in JAXRS, with the &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play Framework&lt;/a&gt; or in &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;. (Work on lift integration is &lt;a href=&quot;https://liftweb.assembla.com/spaces/liftweb/tickets/475&quot;&gt;in progress&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;All expressions inside Scalate benefit from the full power of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;Two template languages are currently supported:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of &lt;a href=&quot;http://velocity.apache.org/&quot;&gt;Velocity&lt;/a&gt;, JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalate 1.1 Highlights&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; now supports &lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#velocity&amp;#95;style&amp;#95;directives&quot;&gt;Velocity style directives&lt;/a&gt; for more concise looping and branching.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;new &lt;a href=&quot;http://scalate.fusesource.org/documentation/tool.html&quot;&gt;Scalate Tool&lt;/a&gt; for creating new projects with Scalate more easily&lt;/li&gt;
+&lt;li&gt;improved API for working with templates from different sources (file, URL, Source, String etc) via the helper methods on &lt;a href=&quot;http://scalate.fusesource.org/maven/1.2/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html&quot;&gt;TemplateSource object&lt;/a&gt; and methods on &lt;a href=&quot;http://scalate.fusesource.org/maven/1.2/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html&quot;&gt;TemplateEngine&lt;/a&gt; which take a &lt;a href=&quot;http://scalate.fusesource.org/maven/1.2/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource.html&quot;&gt;TemplateSource&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;easier to configure whitespace handling via the &lt;strong&gt;escapeMarkup&lt;/strong&gt; property on &lt;a href=&quot;http://scalate.fusesource.org/maven/1.2/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html&quot;&gt;TemplateEngine&lt;/a&gt; and &lt;a href=&quot;http://scalate.fusesource.org/maven/1.2/scalate-core/scaladocs/org/fusesource/scalate/RenderContext.html&quot;&gt;RenderContext&lt;/a&gt; so its easy to configure markup escaping for an entire project or enable/disable it within templates.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For more detail see the &lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/milestones/191837-1-1&quot;&gt;Full Change Log&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item><item>
+              <title>Scalate 1.0 Released</title>
+              <link>http://scalate.fusesource.org/blog/releases/release-1-0.html</link>
+              <description>&lt;p&gt;The &lt;a href=&quot;http://scalate.fusesource.org&quot;&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.0. &lt;/p&gt;
+
+&lt;p&gt;Scalate is a &lt;a href=&quot;http://www.scala-lang.org&quot;&gt;Scala 2.8&lt;/a&gt; based &lt;a href=&quot;http://en.wikipedia.org/wiki/Template&amp;#95;engine&amp;#95;(web)&quot;&gt;template engine&lt;/a&gt; which can be used stand alone, with servlets, in JAXRS, with the &lt;a href=&quot;http://github.com/pk11/play-scalate&quot;&gt;Play Framework&lt;/a&gt; or in &lt;a href=&quot;http://camel.apache.org/scalate.html&quot;&gt;Apache Camel&lt;/a&gt;. (Work on lift integration is in progress).&lt;/p&gt;
+
+&lt;p&gt;All expressions inside Scalate benefit from the full power of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.&lt;/p&gt;
+
+&lt;p&gt;Two template languages are currently supported:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/ssp-reference.html#syntax&quot;&gt;Ssp&lt;/a&gt; which is like a Scala version of JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/scaml-reference.html&quot;&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href=&quot;http://haml-lang.com/&quot;&gt;Haml&lt;/a&gt; for very DRY markup&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Further information:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.assembla.com/spaces/scalate/milestones/191839-1-0&quot;&gt;Change Log&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/community.html&quot;&gt;Community&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/documentation/&quot;&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://scalate.fusesource.org/download.html&quot;&gt;Download&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://scalate.fusesource.org/community.html&quot;&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+            </item>
+        </channel>
+      </rss>

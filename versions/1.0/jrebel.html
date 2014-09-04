@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Using JRebel with Scalate</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate</a></li><li class="webgen-menu-level1"><a href="download.html">Download</a></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='dynamically_reload_code'>Dynamically reload code</h1>
+
+<p>Reload Java or Scala code without restarting your web app</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <p>If you are building a web application you want to be able to create and edit Java and Scala code on the fly without having to stop and restart your web container for each code change.</p>
+
+<h2 id='jrebel_to_the_rescue'>JRebel to the rescue!</h2>
+
+<p><a href='http://www.zeroturnaround.com/jrebel'>JRebel</a> allows you to hot reload bytecode on the fly in your application without having to restart your web container.</p>
+
+<p>Here&#8217;s how you can use it in a web application with Scalate.</p>
+
+<ul>
+<li>
+<p><a href='http://www.zeroturnaround.com/blog/free-javarebel-for-scala-users-zeroturnaround-announces/'>Download JRebel</a></p>
+</li>
+
+<li>
+<p>set your <strong>MAVEN_OPTS</strong> environment variable to point to where you installed the jrebel jar. For example:</p>
+
+<p>export MAVEN<em>OPTS=&#8221;-noverify -javaagent:$JREBEL</em>HOME/jrebel.jar&#8221;</p>
+</li>
+
+<li>
+<p>run your web application in maven</p>
+
+<p>mvn jetty:run</p>
+</li>
+</ul>
+
+<p>Now if your code is compiled by your IDE or a build process, the classes are automatically reloaded on the fly. Neat eh!</p>
+
+<p>For example if you run the following in another shell</p>
+
+<pre><code>mvn scala:cc</code></pre>
+
+<p>Then as you edit your scala code it will be recompiled using Scala&#8217;s incremental compiler, then JRebel will auto-reload any recompiled classes.</p>
+
+<h2 id='things_to_watch'>Things to watch</h2>
+
+<p>We&#8217;ve found that if you use <strong>_scalate</strong> directory in the <strong>WEB-INF</strong> directory when running your web app using <strong>jetty:run</strong> JRebel really slows down the Scalate recompile step hugely; so its better to let Scalate use a temporary file outside of the web application.</p>
+
+<p>This should happen by default now; if not specify the <strong>scalate.temp.workingdir</strong> system property to be true instead of false. For example</p>
+
+<pre><code>mvn -Dscalate.temp.workingdir=true jetty:run</code></pre>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

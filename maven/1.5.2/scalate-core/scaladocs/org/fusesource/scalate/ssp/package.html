@@ -1,0 +1,298 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.fusesource.scalate.ssp</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.fusesource" class="extype" href="../../package.html">fusesource</a>.<a name="org.fusesource.scalate" class="extype" href="../package.html">scalate</a></p>
+        <h1>ssp</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">ssp</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.ssp.AttributeFragment" data-isabs="false">
+      <a id="AttributeFragment:AttributeFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="AttributeFragment.html"><span class="name">AttributeFragment</span></a>
+        
+        <span class="params">(<span name="kind">kind: Text</span>, <span name="name">name: Text</span>, <span name="className">className: Text</span>, <span name="defaultValue">defaultValue: Option[Text]</span>, <span name="autoImport">autoImport: Boolean</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.CaseFragment" data-isabs="false">
+      <a id="CaseFragment:CaseFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="CaseFragment.html"><span class="name">CaseFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.CommentFragment" data-isabs="false">
+      <a id="CommentFragment:CommentFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="CommentFragment.html"><span class="name">CommentFragment</span></a>
+        
+        <span class="params">(<span name="comment">comment: Text</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.Directive" data-isabs="true">
+      <a id="Directive:Directive"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="Directive.html"><span class="name">Directive</span></a>
+        
+        <span class="result"> extends PageFragment</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.DoFragment" data-isabs="false">
+      <a id="DoFragment:DoFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="DoFragment.html"><span class="name">DoFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.DollarExpressionFragment" data-isabs="false">
+      <a id="DollarExpressionFragment:DollarExpressionFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="DollarExpressionFragment.html"><span class="name">DollarExpressionFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ElseFragment" data-isabs="false">
+      <a id="ElseFragment:ElseFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ElseFragment.html"><span class="name">ElseFragment</span></a>
+        
+        <span class="params">()</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ElseIfFragment" data-isabs="false">
+      <a id="ElseIfFragment:ElseIfFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ElseIfFragment.html"><span class="name">ElseIfFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.EndFragment" data-isabs="false">
+      <a id="EndFragment:EndFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="EndFragment.html"><span class="name">EndFragment</span></a>
+        
+        <span class="params">()</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ExpressionFragment" data-isabs="false">
+      <a id="ExpressionFragment:ExpressionFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ExpressionFragment.html"><span class="name">ExpressionFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ForFragment" data-isabs="false">
+      <a id="ForFragment:ForFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ForFragment.html"><span class="name">ForFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.IfFragment" data-isabs="false">
+      <a id="IfFragment:IfFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="IfFragment.html"><span class="name">IfFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ImportFragment" data-isabs="false">
+      <a id="ImportFragment:ImportFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ImportFragment.html"><span class="name">ImportFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.MatchFragment" data-isabs="false">
+      <a id="MatchFragment:MatchFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="MatchFragment.html"><span class="name">MatchFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.OtherwiseFragment" data-isabs="false">
+      <a id="OtherwiseFragment:OtherwiseFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="OtherwiseFragment.html"><span class="name">OtherwiseFragment</span></a>
+        
+        <span class="params">()</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.PageFragment" data-isabs="true">
+      <a id="PageFragment:PageFragment"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="PageFragment.html"><span class="name">PageFragment</span></a>
+        
+        <span class="result"> extends Positional</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>sealed abstract </dd></dl></div>
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.ScriptletFragment" data-isabs="false">
+      <a id="ScriptletFragment:ScriptletFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ScriptletFragment.html"><span class="name">ScriptletFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SetFragment" data-isabs="false">
+      <a id="SetFragment:SetFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="SetFragment.html"><span class="name">SetFragment</span></a>
+        
+        <span class="params">(<span name="code">code: Text</span>)</span><span class="result"> extends Directive with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspCodeGenerator" data-isabs="false">
+      <a id="SspCodeGenerator:SspCodeGenerator"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="SspCodeGenerator.html"><span class="name">SspCodeGenerator</span></a>
+        
+        <span class="result"> extends AbstractCodeGenerator[PageFragment]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser" data-isabs="false">
+      <a id="SspParser:SspParser"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="SspParser.html"><span class="name">SspParser</span></a>
+        
+        <span class="result"> extends ScalaParseSupport</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Parser for the SSP template language
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.TextFragment" data-isabs="false">
+      <a id="TextFragment:TextFragment"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="TextFragment.html"><span class="name">TextFragment</span></a>
+        
+        <span class="params">(<span name="text">text: Text</span>)</span><span class="result"> extends PageFragment with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+        
+        
+
+        
+
+        
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

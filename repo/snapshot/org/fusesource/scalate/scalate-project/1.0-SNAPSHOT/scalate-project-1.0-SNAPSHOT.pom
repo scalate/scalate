@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.fusesource.scalate</groupId>
+  <artifactId>scalate-project</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Scalate Project</name>
+  <description>Scalate Project POM</description>
+
+  <prerequisites>
+    <maven>2.0.9</maven>
+  </prerequisites>
+
+  <properties>
+    <compiler.fork>false</compiler.fork>
+
+    <!-- Note that activemq dependency is only used for testing! -->
+    <commons-logging-version>1.1.1</commons-logging-version>
+    <commons-logging-api-version>1.1</commons-logging-api-version>
+
+    <jersey-version>1.1.5</jersey-version>
+
+    <jetty-port>8080</jetty-port>
+    <jetty-version>6.1.19</jetty-version>
+
+    <log4j-version>1.2.14</log4j-version>
+    <junit-version>4.5</junit-version>
+
+    <sitemesh-version>2.3</sitemesh-version>
+
+    <scalaTest-version>1.0</scalaTest-version>
+    <scalaVersion>2.7.7</scalaVersion>
+
+    <scala-plugin-version>2.9.1</scala-plugin-version>
+    <slf4j-version>1.5.6</slf4j-version>
+
+    <!-- vscaladoc settings -->
+    <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
+  </properties>
+
+  <url>http://scalate.fusesource.org/</url>
+
+  <organization>
+    <name>FuseSource</name>
+    <url>http://fusesource.com/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <mailingLists>
+    <mailingList>
+      <name>Development List</name>
+      <subscribe>scalate-dev-subscribe@fusesource.org</subscribe>
+      <unsubscribe>scalate-dev-unsubscribe@fusesource.org</unsubscribe>
+      <post>scalate-dev@fusesource.org</post>
+    </mailingList>
+    <mailingList>
+      <name>Commits List</name>
+      <subscribe>scalate-commits-subscribe@fusesource.org</subscribe>
+      <unsubscribe>scalate-commits-unsubscribe@fusesource.org</unsubscribe>
+      <post>scalate-commits@fusesource.org</post>
+    </mailingList>
+  </mailingLists>
+
+  <scm>
+    <connection>scm:git:git://github.com/scalate/scalate.git</connection>
+    <developerConnection>scm:git:git@github.com:scalate/scalate.git</developerConnection>
+    <url>http://github.com/scalate/scalate</url>
+  </scm>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://fusesource.com/issues/browse/SCALATE</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>teamcity</system>
+    <url>http://ci.fusesource.com/teamcity/project.html?projectId=project33</url>
+  </ciManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>release.fusesource.org</id>
+      <name>SSP Release Repository</name>
+      <url>dav:http://fusesource.com/forge/dav/scalate/repo/release</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>snapshot.fusesource.org</id>
+      <name>SSP Snapshot Repository</name>
+      <url>dav:http://fusesource.com/forge/dav/scalate/repo/snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>website.fusesource.org</id>
+      <name>website</name>
+      <url>dav:http://fusesource.com/forge/dav/scalate/maven/${project.version}</url>
+    </site>
+  </distributionManagement>
+
+  <developers>
+    <developer>
+      <id>chirino</id>
+      <name>Hiram Chirino</name>
+      <organization>FuseSource</organization>
+      <organizationUrl>http://fusesource.com/</organizationUrl>
+    </developer>
+    <developer>
+      <id>jstrachan</id>
+      <name>James Strachan</name>
+      <organization>FuseSource</organization>
+      <organizationUrl>http://fusesource.com/</organizationUrl>
+    </developer>
+    <developer>
+      <id>matthild</id>
+      <name>Matt Hildebrand</name>
+    </developer>
+    <developer>
+      <id>PaulSandoz</id>
+      <name>Paul Sandoz</name>
+      <organization>Oracle</organization>
+      <organizationUrl>http://oracle.com/</organizationUrl>
+    </developer>
+  </developers>
+
+  <repositories>
+    <repository>
+      <id>repo1.maven</id>
+      <name>Maven Central Repo</name>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>fusesource.m2</id>
+      <name>FuseSource Community Release Repository</name>
+      <url>http://repo.fusesource.com/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>fusesource.m2-snapshot</id>
+      <name>FuseSource Community Snapshot Repository</name>
+      <url>http://repo.fusesource.com/maven2-snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+
+    <repository>
+      <id>java.net.m2</id>
+      <name>java.net Maven 2 Repo</name>
+      <url>http://download.java.net/maven/2</url>
+    </repository>
+    <repository>
+      <id>openqa-releases</id>
+      <name>OpenQA Releases</name>
+      <url>http://archiva.openqa.org/repository/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>scala-tools.org</id>
+      <name>Scala Tools Maven2 Repository</name>
+      <url>http://scala-tools.org/repo-releases</url>
+    </repository>
+    <repository>
+      <id>scala-tools-snapshots.org</id>
+      <name>Scala Tools Maven2 Snapshot Repository</name>
+      <url>http://scala-tools.org/repo-snapshots</url>
+    </repository>
+
+    <repository>
+      <id>scala</id>
+      <name>Scala Tools</name>
+      <url>http://scala-tools.org/repo-releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>snapshots.scala-tools.org</id>
+      <name>Scala-Tools Maven2 Snapshot Repository</name>
+      <url>http://scala-tools.org/repo-snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <!--updatePolicy>never</updatePolicy-->
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <!--updatePolicy>never</updatePolicy-->
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+    </repository>
+    <repository>
+      <id>nexus.snapshots.scala-tools.org</id>
+      <name>Scala-Tools Maven2 Snapshot Repository</name>
+      <url>http://nexus.scala-tools.org/content/repositories/snapshots/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <!--updatePolicy>never</updatePolicy-->
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+        <!--updatePolicy>never</updatePolicy-->
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>java.net.m2</id>
+      <name>java.net Maven 2 Repo</name>
+      <url>http://download.java.net/maven/2</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <modules>
+    <module>scalate-core</module>
+    <module>scalate-camel</module>
+    <module>scalate-sample</module>
+  </modules>
+
+
+  <dependencies>
+    <!--
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.5.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.5.2</version>
+    </dependency>
+    -->
+
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scalaVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scalaVersion}</version>
+    </dependency>
+
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest</artifactId>
+      <version>${scalaTest-version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.jersey</groupId>
+        <artifactId>jersey-server</artifactId>
+        <version>${jersey-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>opensymphony</groupId>
+        <artifactId>sitemesh</artifactId>
+        <version>${sitemesh-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.14</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav-jackrabbit</artifactId>
+        <version>1.0-beta-5</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-idea-plugin</artifactId>
+          <configuration>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>true</downloadJavadocs>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <outputDirectory>${basedir}/eclipse-classes</outputDirectory>
+            <downloadSources>true</downloadSources>
+
+            <!-- Eclipse update site for the Checkstyle plugin is http://eclipse-cs.sourceforge.net/update -->
+            <!-- Eclipse update site for the PMD plugin is http://pmd.sf.net/eclipse -->
+            <buildcommands>
+              <java.lang.String>org.eclipse.jdt.core.javabuilder</java.lang.String>
+              <java.lang.String>com.atlassw.tools.eclipse.checkstyle.CheckstyleBuilder</java.lang.String>
+              <!-- Lets not enable the PMD buidler just yet..
+              <java.lang.String>net.sourceforge.pmd.runtime.pmdBuilder</java.lang.String>
+              -->
+            </buildcommands>
+            <projectnatures>
+              <nature>org.eclipse.jdt.core.javanature</nature>
+              <nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
+              <!-- Lets not enable the PMD buidler just yet..
+              <nature>net.sourceforge.pmd.runtime.pmdNature</nature>
+              -->
+            </projectnatures>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>maven-jetty-plugin</artifactId>
+          <version>${jetty-version}</version>
+        </plugin>
+
+        <!--
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-release-plugin</artifactId>
+                  <configuration>
+                    <tagBase>https://svn.apache.org/repos/asf/activemq/camel/tags</tagBase>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <preparationGoals>clean install</preparationGoals>
+                    <goals>deploy</goals>
+                    <arguments>-Prelease,deploy</arguments>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                  </configuration>
+                </plugin>
+        -->
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.13.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jvmArgs>
+            <jvmArg>-Xmx1024m</jvmArg>
+          </jvmArgs>
+          <args>
+            <!-- arg>-unchecked</arg -->
+            <arg>-deprecation</arg>
+            <arg>-Xno-varargs-conversion</arg>
+          </args>
+          <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <filteringChanges>true</filteringChanges>
+        </configuration>
+      </plugin>
+
+
+      <!--
+          <plugin>
+                  <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <version>${felix-version}</version>
+            <extensions>true</extensions>
+            <configuration>
+                    <excludeDependencies>${scalate.osgi.exclude.dependencies}</excludeDependencies>
+              <instructions>
+                <Bundle-Name>${artifactId}</Bundle-Name>
+                <Bundle-SymbolicName>${scalate.osgi.symbolic.name}</Bundle-SymbolicName>
+                      <Bundle-Activator>${scalate.osgi.activator}</Bundle-Activator>
+                <Export-Package>${scalate.osgi.export}</Export-Package>
+                <Import-Package>${scalate.osgi.import}</Import-Package>
+                <Private-Package>${scalate.osgi.private.pkg}</Private-Package>
+                <Implementation-Title>restmix Camel</Implementation-Title>
+                <Implementation-Version>${project.version}</Implementation-Version>
+              </instructions>
+            </configuration>
+            </plugin>
+      -->
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- we must turn off the use of system class loader so our tests can find stuff - otherwise scala compiler can't find stuff -->
+          <useSystemClassLoader>false</useSystemClassLoader>
+
+
+          <!--forkMode>pertest</forkMode-->
+          <childDelegation>false</childDelegation>
+          <useFile>true</useFile>
+          <failIfNoTests>false</failIfNoTests>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <!--
+            <plugin>
+              <groupId>org.scala-tools</groupId>
+              <artifactId>maven-scala-plugin</artifactId>
+              <version>2.13.1</version>
+            </plugin>
+      -->
+      <!--
+              <configuration>
+                <scaladocClassName>org.scala_tools.vscaladoc.Main</scaladocClassName>
+                <scalaJars>
+                  <scalaJar>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>vscaladoc</artifactId>
+                    <version>1.1</version>
+                  </scalaJar>
+                </scalaJars>
+              </configuration>
+      -->
+      <!--
+      <configuration>
+        <vscalaVersion>1.1</vscalaVersion>
+      </configuration>
+      -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.3</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jira-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <filteringChanges>true</filteringChanges>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>dependencies</report>
+              <report>dependency-convergence</report>
+              <report>dependency-management</report>
+              <report>index</report>
+              <report>license</report>
+              <report>mailing-list</report>
+              <report>project-team</report>
+              <!--
+                             Doesn't seem to grok git modules etc
+
+                            <report>scm</report>
+              -->
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <webAccessUrl>http://github.com/scalate/scalate</webAccessUrl>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <generateSitemap>true</generateSitemap>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+
+<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.6.1</version>
+        <configuration>
+          <detectLinks>true</detectLinks>
+          <linksource>true</linksource>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+              &lt;!&ndash;<report>aggregate</report>&ndash;&gt;
+              <report>test-javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.5</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report-only</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+    </plugins>
+  </reporting>
+
+  <profiles>
+
+    <profile>
+      <!-- endable the checkstyle source code checking -->
+      <id>sourcecheck</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+          </plugin>
+          <!--plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            </plugin-->
+        </plugins>
+      </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+              <formats>
+                <format>html</format>
+              </formats>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+
+
+    <profile>
+      <id>integration</id>
+      <!--The profile for running the unit and integration test-->
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <childDelegation>false</childDelegation>
+              <useFile>true</useFile>
+              <includes>
+                <include>**/*Test.*</include>
+                <include>**/*Integration.*</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>deploy</id>
+      <build>
+        <defaultGoal>deploy</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.0.4</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.4</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+</project>

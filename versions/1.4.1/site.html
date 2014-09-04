@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/site.css"/>
+    <title>Building</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="index.html">Scalate 1.4.1</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="source.html">Source</a></li>
+<li><a href="community.html">Community</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Scalate_Site">Scalate Site</h1>
+
+<p>How the website works</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "How_it_works">How it works</h1>
+</div>
+<div class="right">
+  <p>The <em>Scalate</em> documentation and site is created using Scalate and is stored in git in the same <a href="source.html">source control system as the code</a></p>
+
+  <p><strong>Note:</strong> For code highlighting you will need to <a href="http://pygments.org/download/">install</a> <a href="http://pygments.org">http://pygments.org/</a>.</p>
+</div>
+<div class="left">
+  <h1 id = "Editing_the_source_code">Editing the source code</h1>
+</div>
+<div class="right">
+  <p>If you <a href="source.html">grab the source code</a> you can get the site source in the <em>scalate-website</em> directory.
+  If you <a href="documentation/installing.html">have Scalate installed</a> then you can build the website from <a href="source.html">the code</a> as follows</p>
+
+  <div class="syntax"><div class="highlight"><pre>cd scalate-website&#x000A;mvn install&#x000A;</pre></div>&#x000A;</div>
+
+  <p>If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use</p>
+
+  <div class="syntax"><div class="highlight"><pre>mvn jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+  <p>You can now surf the site and see changes immediately.</p>
+
+  <p>If you are on OS X then we highly recommend <a href="http://macromates.com/">TextMate</a> as a great editor which supports Textile and Markdown</p>
+</div>
+<div class="left">
+  <h1 id = "Deploying_the_site">Deploying the site</h1>
+</div>
+<div class="right">
+  <p>The site is automatically deployed by the CI builds, so you can simply wait for the changes to be automatically pushed 
+  to the project site.</p>
+
+  <p>You can manually deploy the site using Maven:</p>
+
+  <div class="syntax"><div class="highlight"><pre>mvn scalate:deploy&#x000A;</pre></div>&#x000A;</div>
+
+  <p>Though website deployment also occurs by default using the <strong>deploy</strong> goal in maven</p>
+
+  <p>You will need to add the Scalate project's Web server to your Maven configuration:</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;server&gt;</span>&#x000A;  <span class="nt">&lt;id&gt;</span>website.fusesource.org<span class="nt">&lt;/id&gt;</span>&#x000A;  <span class="nt">&lt;username&gt;</span>xxxx<span class="nt">&lt;/username&gt;</span>&#x000A;  <span class="nt">&lt;password&gt;</span>xxxxx<span class="nt">&lt;/password&gt;</span>&#x000A;<span class="nt">&lt;/server&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

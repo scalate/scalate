@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>WAR Overlay</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.3</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/war-overlay.page">documentation/war-overlay.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "WAR_Overlay">WAR Overlay</h1>
+
+<p>Adding Scalate console to your web application</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Overview">Overview</h1>
+</div>
+<div class="right">
+  <p>The Scalate War Overlay is a <a href="http://maven.apache.org/plugins/maven-war-plugin/overlays.html">feature</a> of the <a href="http://maven.apache.org/plugins/maven-war-plugin/">maven war plugin</a> which allows you to depend on a WAR in your maven dependencies.</p>
+
+  <p>The war plugin then copies all the contents of the war overlay into your web application. This saves you copy and pasting various shared resources and templates across web applications.</p>
+
+  <p>For example to use the Scalate WAR overlay in any maven web application just add this section to your pom.xml</p>
+
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;dependencies&gt;</span>&#x000A;  ...&#x000A;  <span class="nt">&lt;dependency&gt;</span>&#x000A;    <span class="nt">&lt;groupId&gt;</span>org.fusesource.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;    <span class="nt">&lt;artifactId&gt;</span>scalate-war<span class="nt">&lt;/artifactId&gt;</span>&#x000A;    <span class="nt">&lt;version&gt;</span>1.5.3<span class="nt">&lt;/version&gt;</span>&#x000A;    <span class="nt">&lt;type&gt;</span>war<span class="nt">&lt;/type&gt;</span>&#x000A;  <span class="nt">&lt;/dependency&gt;</span>&#x000A;  ...&#x000A;<span class="nt">&lt;/dependencies&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+  <p>Note that if you are already using one of the <a href="getting-started.html">scalate archetypes</a> you don't have to worry about this; your archetype is already setup correctly for you.</p>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

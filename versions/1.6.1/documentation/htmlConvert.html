@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>JSP Converter</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.6.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/htmlConvert.page">documentation/htmlConvert.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "HTML_Convert">HTML Convert</h1>
+
+<p>Lets get that HTML markup nice and DRY!</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Overview">Overview</h1>
+</div>
+<div class="right">
+  <p>HTML Converter is a little tool for converting your HTML into the nice DRY form using either <a href="jade.html">Jade</a> or <a href="scaml-reference.html">Scaml</a> syntax.</p>
+
+  <p>First you need to install the <a href="tool.html">Scalate tool</a></p>
+</div>
+<div class="left">
+  <h1 id = "Using_HTML_Converter">Using HTML Converter</h1>
+</div>
+<div class="right">
+  <p>To convert the HTML files in a directory just type</p>
+
+  <pre><code>scalate tojade foo.html bar.jade</code></pre>
+
+  <p>To convert a HTML file to the <a href="jade.html">Jade</a> syntax or use </p>
+
+  <pre><code>scalate toscaml foo.html bar.scaml</code></pre>
+
+  <p>To convert to <a href="scaml-reference.html">Scaml</a> syntax.</p>
+
+  <p>For more details refer to the <a href="tool.html">Scalate tool</a></p>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Maven Archetypes</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.0</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Maven_Archetypes">Maven Archetypes</h1>
+
+<p>Scalate Maven Archetypes</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left" markdown="1">
+# Maven Archetypes
+</div>
+
+<div class="right" markdown="1">
+Scalate provides a number of [Maven](http://maven.apache.org/) archetypes to kick start you creating new projects using Scalate.
+
+The easiest way to get started is to install the [Scalate Tool](tool.html) and use that as described in the [Getting Started Guice](getting-started.html)
+
+However if you want to miss out the [installation step for Scalate Tool](tool.html) you can just use Maven directly - though be aware it is a little more brittle and verbose!. The rest of this page describes how to use maven directly to create projects using the archetypes.
+
+If you have Maven installed you should be able to create a new project by typing this
+
+    mvn org.apache.maven.plugins:maven-archetype-plugin:2.0:generate \
+      -DarchetypeGroupId=org.fusesource.scalate.tooling \
+      -DarchetypeArtifactId=scalate-archetype-guice \
+      -DarchetypeVersion=1.5.0 \
+      -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/public \
+      -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT
+
+You might want to change the last line changing **myGroup** and **myArtifact** to whatever maven groupId and artifactId you want to use.
+
+The maven archetype plugin will ask you to hit enter to confirm those settings.
+
+For detail see the [Getting Started Guide](getting-started.html)
+
+
+## Using the latest snapshot
+
+If you want to take advantage of any improvements in the console and archetypes since the 1.5.0 release you can use this mechanism of creating the archetype
+
+      mvn archetype:generate \
+        -DarchetypeGroupId=org.fusesource.scalate.tooling \
+        -DarchetypeArtifactId=scalate-archetype-guice \
+        -DarchetypeVersion=1.6.0-SNAPSHOT \
+        -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/snapshots \
+        -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT
+
+This will use the latest snapshot of the archetype instead.
+</div>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

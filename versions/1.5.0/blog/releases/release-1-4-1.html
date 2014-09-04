@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/site.css"/>
+    <title>Scalate 1.4.1 Released</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../../index.html">Scalate 1.5.0</a></li>
+<li><a href="../../download.html">Download</a></li>
+<li><a href="../../source.html">Source</a></li>
+<li><a href="../../community.html">Community</a></li>
+<li><a href="../../support.html">Support</a></li>
+<li><a href="../../documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>The <a href="http://scalate.fusesource.org">Scalate team</a> is pleased to announce
+the availability of Scalate 1.4.1.</p>
+
+<p>Scalate is a <a href="http://www.scala-lang.org">Scala 2.8.1</a> based <a
+href="http://en.wikipedia.org/wiki/Template&#95;engine&#95;(web)">template
+engine</a> which can be used stand alone, with servlets or web frameworks
+like <a href="http://scalate.fusesource.org/documentation/jog.html">JAXRS</a>,
+<a href="http://scalate.fusesource.org/documentation/lift.html">Lift</a> or
+<a href="http://github.com/pk11/play-scalate">Play</a> or in integration frameworks
+like <a href="http://camel.apache.org/scalate.html">Apache Camel</a>.</p>
+
+<p>The following template languages are supported through the same common API:</p>
+
+<ul>
+<li><a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a>
+which is like a Scala version of <a href="http://velocity.apache.org/">Velocity</a>,
+JSP or Erb from Rails</li>
+<li><a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a>
+which is a Scala dialect of <a href="http://haml-lang.com/">Haml</a> for very DRY
+markup along with the
+<a href="http://scalate.fusesource.org/documentation/jade.html">Jade</a> syntax</li>
+<li><a href="http://scalate.fusesource.org/documentation/mustache.html">Mustache</a>
+which is a Scala dialect of <a href="http://mustache.github.com/">Mustache</a> for
+logic-less templates which also work inside the browser using
+<a href="http://github.com/janl/mustache.js">mustache.js</a></li>
+</ul>
+
+<p>All expressions inside
+<a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a>,
+<a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a>
+and <a href="http://scalate.fusesource.org/documentation/jade.html">Jade</a> benefit
+from the full power and expressiveness of Scala plus they are typesafe and
+checked at edit/compile time to ensure you don't leave any mistakes in your
+templates.</p>
+
+<p><strong>Scalate 1.4.1 Highlights</strong></p>
+
+<p>This is a bug fix release:</p>
+
+<ul>
+<li>Fixes <a href="http://scalate.assembla.com/spaces/scalate/tickets/219">#219</a> removes the error attributes from the request context if scalate directly rendered the error page.</li>
+<li>Fixes <a href="http://scalate.assembla.com/spaces/scalate/tickets/221">#221</a> to add a scalate-web dependency and use it in scalate-war for simplicity</li>
+<li>Added scala-library dependency to scalate-util; if you want to exclude this dependency due to different scala versions you can add an exclusion easily. scala-compiler is an optional dependency on scala-core now</li>
+<li>Fixes <a href="http://scalate.assembla.com/spaces/scalate/tickets/220">#220</a> so that we can use tomcat:run inside archetypes and projects inside scalate</li>
+<li>Fixes to the spring mvc integration to make the contentType works</li>
+<li>Fixes scalate core so it can run on Java 1.5 once again</li>
+<li>Fixes <a href="http://scalate.assembla.com/spaces/scalate/tickets/216">#216</a> to let users properly override the number format</li>
+<li>Fixes <a href="http://scalate.assembla.com/spaces/scalate/tickets/199">#199</a> to treat java collections and Maps better in mustache</li>
+<li>Fixes SBT pre-compiler and sitegen plugins</li>
+</ul>
+
+<p>For more detail see the <a href="http://www.assembla.com/spaces/scalate/milestones/351597-1-4-1">Issue Log</a></p>
+
+<p><a href="../../community.html">Feedback</a> is always welcome!</p>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

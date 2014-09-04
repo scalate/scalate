@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Console</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='console'>Console</h1>
+
+<p>The console that helps you scalate!</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Features</h1>
+</div><div class='right'>
+<p>The Scalate console is designed to make it easier to work on your Scalate web application. The console is implemented using a <a href='war-overlay.html'>WAR Overlay</a>, so its as simple as adding a single dependency to your maven pom.xml.</p>
+
+<p>The console provides edit links to the current JAXRS resource class (if it can figure it out) together with all the templates that have been used to render the current page; including any includes and layout files. If you want to edit one of the files you can just click on the links.</p>
+
+<p>If you make a typo in a template, the console will render a nice error page together with the line and column where the error occurred and edit links so you can fix the mistake quickly.</p>
+
+<p>If you get a stack trace, Scalate will show the line/column of the template in the stack trace, so you can easily click and edit the template which caused an exception to occur.</p>
+
+<p>In addition the console provides easy access to view</p>
+
+<ul>
+<li>the source of the main output of the current template (before layout)</li>
+
+<li>the attributes available to Scalate when rendering occurred</li>
+
+<li>the system properties in the JVM</li>
+
+<li>links to let you create new resources and templates from archetype templates</li>
+</ul>
+
+<p>The best way to get started with the Scalate Console is to try out the <a href='getting-started.html'>Getting Started Guide</a></p>
+</div><div class='left'>
+<h1>How edit links work</h1>
+</div><div class='right'>
+<p>The Scalate Console is a web application that uses hypertext links to the source code, so that its easy in development mode to navigate from a browser page in your web application to the relevant source code.</p>
+
+<p>If you are on OS X and have <a href='http://macromates.com/'>TextMate</a> installed (in <em>/Applications/TextMate.app</em> or <em>~/Applications/TextMate.app</em>) then by default the links will cause the file to be opened in TextMate. Otherwise the default behaviour is to use regular file:/// links.</p>
+
+<p>If you want to open scala and template files in <a href='http://eclipse.org/'>Eclipse</a> or <a href='http://www.jetbrains.com/idea/index.html'>IDEA</a> then</p>
+
+<ul>
+<li>
+<p>install the <a href='http://www.atlassian.com/software/ideconnector/'>Atlassian IDE Connector</a> which provides a URL scheme for opening files in your IDE</p>
+</li>
+
+<li>
+<p>either</p>
+
+<ul>
+<li>set the system property <strong>scalate.editor</strong> to be <strong>ide</strong> when you run your web app in tomcat/jetty</li>
+
+<li>set the environment variable <strong>SCALATE_EDITOR</strong> to <strong>ide</strong> when running your application via <em>mvn jetty:run</em></li>
+</ul>
+</li>
+
+<li>
+<p>restart your application, now all source code links in the Scalate console will open the files inside your IDE (assuming you have the project already open that is)</p>
+</li>
+</ul>
+</div><div class='left'>
+<h1>See Also</h1>
+</div><div class='right'>
+<ul>
+<li><a href='war-overlay.html'>WAR Overlay</a> describes how we use a WAR overlay to include the <a href='console.html'>Console</a> in your application</li>
+
+<li><a href='documentation.html'>Documentation</a> for further information on user guides and template references</li>
+</ul>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

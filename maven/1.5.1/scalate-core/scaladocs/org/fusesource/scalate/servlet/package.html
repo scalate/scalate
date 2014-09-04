@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.fusesource.scalate.servlet</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../package.html">org</a>.<a name="org.fusesource" class="extype" href="../../package.html">fusesource</a>.<a name="org.fusesource.scalate" class="extype" href="../package.html">scalate</a></p>
+        <h1>servlet</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">servlet</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.servlet.Config" data-isabs="true">
+      <a id="Config:Config"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Config.html"><span class="name">Config</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Provides a unified view of a ServletConfig or a FilterConfig.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletRenderContext" data-isabs="false">
+      <a id="ServletRenderContext:ServletRenderContext"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ServletRenderContext.html"><span class="name">ServletRenderContext</span></a>
+        
+        <span class="result"> extends DefaultRenderContext</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A template context for use in servlets
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletResourceLoader" data-isabs="false">
+      <a id="ServletResourceLoader:ServletResourceLoader"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ServletResourceLoader.html"><span class="name">ServletResourceLoader</span></a>
+        
+        <span class="result"> extends ResourceLoader</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Loads files using <code>ServletContext</code>.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletTemplateEngine" data-isabs="false">
+      <a id="ServletTemplateEngine:ServletTemplateEngine"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ServletTemplateEngine.html"><span class="name">ServletTemplateEngine</span></a>
+        
+        <span class="result"> extends TemplateEngine</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A Servlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.TemplateEngineFilter" data-isabs="false">
+      <a id="TemplateEngineFilter:TemplateEngineFilter"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="TemplateEngineFilter.html"><span class="name">TemplateEngineFilter</span></a>
+        
+        <span class="result"> extends Filter</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Servlet filter which auto routes to the scalate engines for paths which have a scalate template
+defined.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.TemplateEngineServlet" data-isabs="false">
+      <a id="TemplateEngineServlet:TemplateEngineServlet"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="TemplateEngineServlet.html"><span class="name">TemplateEngineServlet</span></a>
+        
+        <span class="result"> extends HttpServlet</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Servlet which renders the requested Scalate template.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.WrappedRequest" data-isabs="false">
+      <a id="WrappedRequest:WrappedRequest"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="WrappedRequest.html"><span class="name">WrappedRequest</span></a>
+        
+        <span class="result"> extends HttpServletRequestWrapper</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.WrappedResponse" data-isabs="false">
+      <a id="WrappedResponse:WrappedResponse"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="WrappedResponse.html"><span class="name">WrappedResponse</span></a>
+        
+        <span class="result"> extends HttpServletResponseWrapper</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.servlet.Config" data-isabs="false">
+      <a id="Config:Config"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Config$.html"><span class="name">Config</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletHelper" data-isabs="false">
+      <a id="ServletHelper:ServletHelper"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="ServletHelper$.html"><span class="name">ServletHelper</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Some helper methods for servlet and web app based code
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletRenderContext" data-isabs="false">
+      <a id="ServletRenderContext:ServletRenderContext"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="ServletRenderContext$.html"><span class="name">ServletRenderContext</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Easy access to servlet request state.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletResourceLoader" data-isabs="false">
+      <a id="ServletResourceLoader:ServletResourceLoader"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="ServletResourceLoader$.html"><span class="name">ServletResourceLoader</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.ServletTemplateEngine" data-isabs="false">
+      <a id="ServletTemplateEngine:ServletTemplateEngine"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="ServletTemplateEngine$.html"><span class="name">ServletTemplateEngine</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.TemplateEngineFilter" data-isabs="false">
+      <a id="TemplateEngineFilter:TemplateEngineFilter"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="TemplateEngineFilter$.html"><span class="name">TemplateEngineFilter</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.servlet.TemplateEngineServlet" data-isabs="false">
+      <a id="TemplateEngineServlet:TemplateEngineServlet"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="TemplateEngineServlet$.html"><span class="name">TemplateEngineServlet</span></a>
+        
+        <span class="result"> extends Log with Serializable</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

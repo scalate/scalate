@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/site.css"/>
+    <title>Scalate 1.2 Released</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../../index.html">Scalate 1.5.3</a></li>
+<li><a href="../../download.html">Download</a></li>
+<li><a href="../../source.html">Source</a></li>
+<li><a href="../../community.html">Community</a></li>
+<li><a href="../../support.html">Support</a></li>
+<li><a href="../../documentation/index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/blog/releases/release-1.2.page">blog/releases/release-1.2.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/blog-post.jade">WEB-INF/scalate/layouts/blog-post.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>The <a href="http://scalate.fusesource.org">Scalate team</a> is pleased to announce the availability of Scalate 1.2. </p>
+
+<p>Scalate is a <a href="http://www.scala-lang.org">Scala 2.8</a> based <a href="http://en.wikipedia.org/wiki/Template&#95;engine&#95;(web)">template engine</a> which can be used stand alone, with servlets or web frameworks like <a href="http://scalate.fusesource.org/documentation/jog.html">JAXRS</a>, <a href="http://scalate.fusesource.org/documentation/lift.html">Lift</a> or <a href="http://github.com/pk11/play-scalate">Play</a> or in integration frameworks like <a href="http://camel.apache.org/scalate.html">Apache Camel</a>.</p>
+
+<p>The following template languages are supported through the same common API:</p>
+
+<ul>
+<li><a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a> which is like a Scala version of <a href="http://velocity.apache.org/">Velocity</a>, JSP or Erb from Rails</li>
+<li><a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a> which is a Scala dialect of <a href="http://haml-lang.com/">Haml</a> for very DRY markup</li>
+<li><a href="http://scalate.fusesource.org/documentation/mustache.html">Mustache</a> which is a Scala dialect of <a href="http://mustache.github.com/">Mustache</a> for logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a></li>
+</ul>
+
+<p>All expressions inside <a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a>  and <a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a> benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.</p>
+
+<p><strong>Scalate 1.2 Highlights</strong></p>
+
+<ul>
+<li>Scalate now supports the <a href="http://scalate.fusesource.org/documentation/mustache.html">Mustache</a> template language which is a Scala dialect of <a href="http://mustache.github.com/">Mustache</a> for logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a>. Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, <a href="http://scalate.fusesource.org/documentation/jog.html">JAXRS</a>, <a href="http://scalate.fusesource.org/documentation/lift.html">Lift</a> or <a href="http://github.com/pk11/play-scalate">Play</a> and <a href="http://camel.apache.org/scalate.html">Apache Camel</a></li>
+<li>Scalate is <a href="http://scalate.assembla.com/spaces/scalate/tickets/70">now built</a> on top of <a href="http://www.scala-lang.org/node/7009">Scala 2.8.0 final release</a></li>
+<li><a href="http://scalate.fusesource.org/documentation/scuery.html">Scuery</a> for jQuery style transformation of HTML or XHTML using CSS3 selectors</li>
+<li>the <a href="http://scalate.fusesource.org/documentation/console.html">console</a> can be more easily reused in your application <a href="http://scalate.assembla.com/spaces/scalate/tickets/105">without using WAR overlays</a> and templates can be loaded via the classloader to help make more modular web applications without relying on WAR overlays</li>
+<li><a href="http://scalate.assembla.com/spaces/scalate/tickets/94">improvements</a> in associating different template languages to files/URIs/strings/streams in a more flexible API</li>
+<li><a href="http://scalate.assembla.com/spaces/scalate/tickets/108">various</a> <a href="http://scalate.assembla.com/spaces/scalate/tickets/109">improvements</a> in the accuracy of the mapping of scala compiler errors to positions in the template source file which are then shown and linked in the <a href="http://scalate.fusesource.org/documentation/console.html">console</a></li>
+<li>improved <a href="http://scalate.fusesource.org/documentation/user-guide.html#precompiling&#95;templates">maven plugin</a> for precompiling templates</li>
+</ul>
+
+<p>For more detail see the <a href="http://scalate.assembla.com/spaces/scalate/milestones/191841-1-2">Full Change Log</a></p>
+
+<p><a href="http://scalate.fusesource.org/community.html">Feedback</a> is always welcome!</p>
+<br/>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'scalate';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

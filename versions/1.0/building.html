@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Building</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate</a></li><li class="webgen-menu-level1"><a href="download.html">Download</a></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='how_to_build_scalate'>How to Build scalate</h1>
+
+<p>The way most developers get started contributing to a project.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <h2 id='building'>Building</h2>
+
+<p>scalate uses <a href='http://maven.apache.org/'>Maven</a> as its build tool. If you don&#8217;t fancy using Maven you can use your IDE directly or <a href='download.html'>Download</a> a distribution or JAR.</p>
+
+<p>Alternatively you can try using <a href='sbt.html'>sbt</a> which is particularly good for rapid edit-compile-test cycles</p>
+
+<h3 id='prequisites'>Prequisites</h3>
+
+<p><em>Required:</em></p>
+
+<ul>
+<li>Download and <a href='http://maven.apache.org/download.html'>install Maven</a></li>
+
+<li>Get the latest <a href='source.html'>Source</a></li>
+
+<li>Java 1.5</li>
+</ul>
+
+<h3 id='maven_options'>Maven options</h3>
+
+<p>To build scalate maven has to be configured to use more memory</p>
+
+<pre><code>set MAVEN_OPTS=-Xmx512m -XX:MaxPermSize=128m</code></pre>
+
+<h3 id='a_normal_build'>A normal build</h3>
+
+<pre><code>mvn install -Pdownload</code></pre>
+
+<p>The last argument, <strong>-Pdownload</strong>, is optional and typically only used on the first build as it adds some extra repos to the project just in case our dependencies have not quite reached the central Maven repository yet.</p>
+
+<h3 id='doing_a_quick_build'>Doing a Quick Build</h3>
+
+<p>The following avoids running all the unit test cases, we just skip the test running phase and not the building part</p>
+
+<pre><code>mvn -Dtest=false clean install</code></pre>
+
+<h3 id='using_an_ide'>Using an IDE</h3>
+
+<p>If you prefer to use an IDE then you can auto-generate the IDE&#8217;s project files using maven plugins. e.g.</p>
+
+<pre><code>mvn eclipse:eclipse</code></pre>
+
+<p>or</p>
+
+<pre><code>mvn idea:idea</code></pre>
+
+<h3 id='importing_into_eclipse'>Importing into Eclipse</h3>
+
+<p>If you have not already done so, you will need to make Eclipse aware of the Maven repository so that it can build everything. In the preferences, go to <code>Java -&gt; Build Path -&gt; Classpath</code> and define a new Classpath Variable named <code>M2_REPO</code> that points to your local Maven repository. i.e. <code>~/.m2/repository</code> on Unix and <code>c:\Documents and Settings\$username\.m2\repository</code> on Windows).</p>
+
+<p>You can also get Maven to do this for you:</p>
+
+<pre><code>mvn eclipse:add-maven-repo -Declipse.workspace=/path/to/the/workspace/ </code></pre>
+
+<h3 id='see_also'>See Also</h3>
+
+<ul>
+<li><a href='source.html'>Source</a></li>
+
+<li><a href='developers.html'>Developer Links</a></li>
+</ul>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

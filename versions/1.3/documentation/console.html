@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title></title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.3</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Console">Console</h1>
+
+<p>The console that helps you scalate!</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left" markdown="1">
+# Features
+</div>
+
+<div class="right" markdown="1">
+The Scalate console is designed to make it easier to work on your Scalate web application. The console is implemented using a [WAR Overlay](war-overlay.html), so its as simple as adding a single dependency to your maven pom.xml.
+
+The console provides edit links to the current JAXRS resource class (if it can figure it out) together with all the templates that have been used to render the current page; including any includes and layout files. If you want to edit one of the files you can just click on the links.
+
+If you make a typo in a template, the console will render a nice error page together with the line and column where the error occurred and edit links so you can fix the mistake quickly.
+
+If you get a stack trace, Scalate will show the line/column of the template in the stack trace, so you can easily click and edit the template which caused an exception to occur.
+
+In addition the console provides easy access to view
+
+* the source of the main output of the current template (before layout) 
+* the attributes available to Scalate when rendering occurred
+* the system properties in the JVM
+* links to let you create new resources and templates from archetype templates
+
+The best way to get started with the Scalate Console is to try out the [Getting Started Guide](getting-started.html)
+</div>
+
+<div class="left" markdown="1">
+# How edit links work
+</div>
+
+<div class="right" markdown="1">
+The Scalate Console is a web application that uses hypertext links to the source code, so that its easy in development mode to navigate from a browser page in your web application to the relevant source code. 
+
+If you are on OS X and have [TextMate](http://macromates.com/) installed (in */Applications/TextMate.app* or *~/Applications/TextMate.app*) then by default the links will cause the file to be opened in TextMate. Otherwise the default behaviour is to use regular file:/// links.
+
+If you want to open scala and template files in [Eclipse](http://eclipse.org/) or [IDEA](http://www.jetbrains.com/idea/index.html) then 
+
+* install the [Atlassian IDE Connector](http://www.atlassian.com/software/ideconnector/) which provides a URL scheme for opening files in your IDE
+* either
+  * set the system property **scalate.editor** to be **ide** when you run your web app in tomcat/jetty
+  * set the environment variable **SCALATE\_EDITOR** to **ide** when running your application via *mvn jetty:run*
+* restart your application, now all source code links in the Scalate console will open the files inside your IDE (assuming you have the project already open that is)
+
+</div>
+
+<div class="left" markdown="1">
+# See Also
+</div>
+
+<div class="right" markdown="1">
+
+* [WAR Overlay](war-overlay.html) describes how we use a WAR overlay to include the [Console](console.html) in your application
+* [Documentation](documentation.html) for further information on user guides and template references
+
+</div>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

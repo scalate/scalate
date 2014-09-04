@@ -1,0 +1,1780 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.ssp.SspParser</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="type">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a>.<a href="package.html" class="extype" name="org.fusesource.scalate.ssp">ssp</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/class_big.png" />
+        <h1>SspParser</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SspParser</span><span class="result"> extends <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a></span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"><div class="comment cmt"><p>Parser for the SSP template language
+</p></div>
+            
+            
+            
+            
+          </div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="ancestors">
+                <span class="filtertype">Inherited</span>
+                <ol><li class="hideall">Hide All</li><li class="showall">Show all</li></ol>
+                <ol id="linearization"><li class="in" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</li><li class="in" name="scala.util.parsing.combinator.RegexParsers">RegexParsers</li><li class="in" name="scala.util.parsing.combinator.Parsers">Parsers</li><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
+              </div>
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+        <div class="members" id="constructors">
+              <h3>Instance constructors</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#this">
+      <h4 class="signature">
+      <span class="kind">new</span>
+      <span class="symbol">
+        <span class="name">SspParser</span><span class="params">()</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>        
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#Elem">
+      <h4 class="signature">
+      <span class="kind">type</span>
+      <span class="symbol">
+        <span class="name">Elem</span><span class="result"> = <span class="extype" name="scala.Char">Char</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers → Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#Input">
+      <h4 class="signature">
+      <span class="kind">type</span>
+      <span class="symbol">
+        <span class="name">Input</span><span class="result"> = <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.Any#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the receiver object is equivalent to the argument; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef###">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef → Any
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#EofCh">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">EofCh</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#OnceParser">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">OnceParser</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]) ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T] with <span class="extype" name="scala.util.parsing.combinator.Parsers.OnceParser">OnceParser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#Parser">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">Parser</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]) ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#accept">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">accept</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="java.lang.String">String</span></span>, <span name="f">f: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Char">Char</span>, U]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a> → Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#accept">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">accept</span><span class="tparams">[<span name="ES">ES</span>]</span><span class="params">(<span name="es">es: ES</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (ES) ⇒ <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.Char">Char</span>]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#accept">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">accept</span><span class="params">(<span name="e">e: <span class="extype" name="scala.Char">Char</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#acceptIf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">acceptIf</span><span class="params">(<span name="p">p: (<span class="extype" name="scala.Char">Char</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span name="err">err: (<span class="extype" name="scala.Char">Char</span>) ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#acceptMatch">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">acceptMatch</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="java.lang.String">String</span></span>, <span name="f">f: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Char">Char</span>, U]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#acceptSeq">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">acceptSeq</span><span class="tparams">[<span name="ES">ES</span>]</span><span class="params">(<span name="es">es: ES</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: (ES) ⇒ <span class="extype" name="scala.collection.Iterable">Iterable</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.Char">Char</span>]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#anyChar">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">anyChar</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#anySpace">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">anySpace</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.Any#asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to cast the receiver object to be of type <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to cast the receiver object to be of type <code>T0</code>.</p><p>Note that the success of a cast at runtime is modulo Scala's erasure semantics.  Therefore the expression<code>1.asInstanceOf[String]</code> will throw a <code>ClassCastException</code> at runtime, while the expression<code>List(1).asInstanceOf[List[String]]</code> will not.  In the latter example, because the type argument is erased as
+part of compilation it is not possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#attribute">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">attribute</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="AttributeFragment.html" class="extype" name="org.fusesource.scalate.ssp.AttributeFragment">AttributeFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#attributeFragement">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">attributeFragement</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="AttributeFragment.html" class="extype" name="org.fusesource.scalate.ssp.AttributeFragment">AttributeFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#caseExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">caseExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="CaseFragment.html" class="extype" name="org.fusesource.scalate.ssp.CaseFragment">CaseFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#chainl1">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chainl1</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span name="first">first: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>, <span name="q">q: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[(T, U) ⇒ T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#chainl1">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chainl1</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="q">q: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[(T, T) ⇒ T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#chainr1">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chainr1</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="q">q: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[(T, U) ⇒ U]</span>, <span name="combine">combine: (T, U) ⇒ U</span>, <span name="first">first: U</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#charEscapeSeq">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">charEscapeSeq</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#characterLiteral">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">characterLiteral</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#chrExcept">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chrExcept</span><span class="params">(<span name="cs">cs: <span class="extype" name="scala.Char">Char</span>*</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#chrOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chrOf</span><span class="params">(<span name="cs">cs: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#chrOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">chrOf</span><span class="params">(<span name="cs">cs: <span class="extype" name="scala.Char">Char</span>*</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="prt" name="scala.AnyRef#clone">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method creates and returns a copy of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method creates and returns a copy of the receiver object.</p><p>The default implementation of the <code>clone</code> method is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the receiver object.</p></dd></dl><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#commentFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">commentFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="CommentFragment.html" class="extype" name="org.fusesource.scalate.ssp.CommentFragment">CommentFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#commit">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">commit</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#directives">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">directives</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="PageFragment.html" class="extype" name="org.fusesource.scalate.ssp.PageFragment">PageFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#doExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">doExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="DoFragment.html" class="extype" name="org.fusesource.scalate.ssp.DoFragment">DoFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#dollarExpressionFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">dollarExpressionFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="DollarExpressionFragment.html" class="extype" name="org.fusesource.scalate.ssp.DollarExpressionFragment">DollarExpressionFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#doubleQuotedChars">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">doubleQuotedChars</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#dquoted">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">dquoted</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#elem">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">elem</span><span class="params">(<span name="e">e: <span class="extype" name="scala.Char">Char</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#elem">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">elem</span><span class="params">(<span name="kind">kind: <span class="extype" name="java.lang.String">String</span></span>, <span name="p">p: (<span class="extype" name="scala.Char">Char</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#elseExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">elseExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ElseFragment.html" class="extype" name="org.fusesource.scalate.ssp.ElseFragment">ElseFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#elseIfExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">elseIfExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ElseIfFragment.html" class="extype" name="org.fusesource.scalate.ssp.ElseIfFragment">ElseIfFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#emptyDirective">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">emptyDirective</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#endExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">endExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="EndFragment.html" class="extype" name="org.fusesource.scalate.ssp.EndFragment">EndFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#eq">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p><p>The <code>eq</code> method implements an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence relation] on
+non-null instances of <code>AnyRef</code>:
+ * It is reflexive: for any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(x)</code> returns <code>true</code>.
+ * It is symmetric: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, <code>x.eq(y)</code> returns <code>true</code> if and
+   only if <code>y.eq(x)</code> returns <code>true</code>.
+ * It is transitive: for any non-null instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.eq(y)</code> returns <code>true</code>   and <code>y.eq(z)</code> returns <code>true</code>, then <code>x.eq(z)</code> returns <code>true</code>.</p><p>Additionally, the <code>eq</code> method has three other properties.
+ * It is consistent: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, multiple invocations of
+   <code>x.eq(y)</code> consistently returns <code>true</code> or consistently returns <code>false</code>.
+ * For any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(null)</code> and <code>null.eq(x)</code> returns <code>false</code>.
+ * <code>null.eq(null)</code> returns <code>true</code>.</p><p>When overriding the <code>equals</code> or <code>hashCode</code> methods, it is important to ensure that their behavior is
+consistent with reference equality.  Therefore, if two objects are references to each other (<code>o1 eq o2</code>), they
+should be equal to each other (<code>o1 == o2</code>) and they should hash to the same value (<code>o1.hashCode == o2.hashCode</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the argument is a reference to the receiver object; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#equals">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p><p>The default implementations of this method is an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence
+relation]:
+ * It is reflexive: for any instance <code>x</code> of type <code>Any</code>, <code>x.equals(x)</code> should return <code>true</code>.
+ * It is symmetric: for any instances <code>x</code> and <code>y</code> of type <code>Any</code>, <code>x.equals(y)</code> should return <code>true</code> if and
+   only if <code>y.equals(x)</code> returns <code>true</code>.
+ * It is transitive: for any instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.equals(y)</code> returns <code>true</code> and
+   <code>y.equals(z)</code> returns <code>true</code>, then <code>x.equals(z)</code> should return <code>true</code>.</p><p>If you override this method, you should verify that your implementation remains an equivalence relation.
+Additionally, when overriding this method it is often necessary to override <code>hashCode</code> to ensure that objects
+that are &quot;equal&quot; (<code>o1.equals(o2)</code> returns <code>true</code>) hash to the same 
+scala.Int
+(<code>o1.hashCode.equals(o2.hashCode)</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#err">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">err</span><span class="params">(<span name="msg">msg: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#expressionDirective">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">expressionDirective</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#expressionDirective">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">expressionDirective</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#expressionFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">expressionFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ExpressionFragment.html" class="extype" name="org.fusesource.scalate.ssp.ExpressionFragment">ExpressionFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#failure">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">failure</span><span class="params">(<span name="msg">msg: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="prt" name="scala.AnyRef#finalize">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p><p>The details of when and if the <code>finalize</code> method are invoked, as well as the interaction between <code>finalize</code>and non-local returns and exceptions, are all platform dependent.</p></div><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#forExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">forExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ForFragment.html" class="extype" name="org.fusesource.scalate.ssp.ForFragment">ForFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#getClass">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a representation that corresponds to the dynamic class of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a representation that corresponds to the dynamic class of the receiver object.</p><p>The nature of the representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation that corresponds to the dynamic class of the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#getPageFragments">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">getPageFragments</span><span class="params">(<span name="in">in: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="PageFragment.html" class="extype" name="org.fusesource.scalate.ssp.PageFragment">PageFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#guard">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">guard</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#guarded">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">guarded</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span name="p1">p1: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="p2">p2: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Once p1 is matched, disable backtracking.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Once p1 is matched, disable backtracking. Does not consume p1 and yields the result of p2</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="scala.util.parsing.combinator.RegexParsers#handleWhiteSpace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">handleWhiteSpace</span><span class="params">(<span name="source">source: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>, <span name="offset">offset: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#hashCode">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a hash code value for the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a hash code value for the object.</p><p>The default hashing algorithm is platform dependent.</p><p>Note that it is allowed for two objects to have identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>) yet
+not be equal (<code>o1.equals(o2)</code> returns <code>false</code>).  A degenerate implementation could always return <code>0</code>.
+However, it is required that if two objects are equal (<code>o1.equals(o2)</code> returns <code>true</code>) that they have
+identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>).  Therefore, when overriding this method, be sure
+to verify that the behavior is consistent with the <code>equals</code> method.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the hash code value for the object.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#hexDigit">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">hexDigit</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#identifier">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">identifier</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#ifExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">ifExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="IfFragment.html" class="extype" name="org.fusesource.scalate.ssp.IfFragment">IfFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#importExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">importExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ImportFragment.html" class="extype" name="org.fusesource.scalate.ssp.ImportFragment">ImportFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.Any#isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p><p>Note that the test result of the test is modulo Scala's erasure semantics.  Therefore the expression<code>1.isInstanceOf[String]</code> will return <code>false</code>, while the expression <code>List(1).isInstanceOf[List[String]]</code> will
+return <code>true</code>.  In the latter example, because the type argument is erased as part of compilation it is not
+possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is an instance of erasure of type <code>T0</code>; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#lastNoSuccess">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">lastNoSuccess</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.NoSuccess">NoSuccess</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#literal">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">literal</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#litteralPart">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">litteralPart</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#log">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">log</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#matchExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">matchExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="MatchFragment.html" class="extype" name="org.fusesource.scalate.ssp.MatchFragment">MatchFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#mkList">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">mkList</span><span class="tparams">[<span name="T">T</span>]</span><span class="result">: (<span class="extype" name="scala.util.parsing.combinator.Parsers.~">~</span>[T, <span class="extype" name="scala.collection.immutable.List">List</span>[T]]) ⇒ <span class="extype" name="scala.collection.immutable.List">List</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#multiLineChars">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">multiLineChars</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#ne">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the argument is not a reference to the receiver object; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#nonParenText">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">nonParenText</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#not">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">not</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notify">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up a single thread that is waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up a single thread that is waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up all threads that are waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up all threads that are waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#octalDigit">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">octalDigit</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#octalEscapeSeq">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">octalEscapeSeq</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#opt">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">opt</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Option">Option</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#otherwiseExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">otherwiseExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="OtherwiseFragment.html" class="extype" name="org.fusesource.scalate.ssp.OtherwiseFragment">OtherwiseFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#pageFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">pageFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="PageFragment.html" class="extype" name="org.fusesource.scalate.ssp.PageFragment">PageFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#pageFragments">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">pageFragments</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[<a href="PageFragment.html" class="extype" name="org.fusesource.scalate.ssp.PageFragment">PageFragment</a>]]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parse">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="java.io.Reader">Reader</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parse">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parse">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parseAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parseAll</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parseAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parseAll</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="java.io.Reader">Reader</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#parseAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">parseAll</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#phrase">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">phrase</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers → Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#positioned">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">positioned</span><span class="tparams">[<span name="T">T &lt;: <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: RegexParsers → Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#prefixed">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">prefixed</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span name="p1">p1: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="p2">p2: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Once p1 is matched, disable backtracking.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Once p1 is matched, disable backtracking. Consumes p1 and yields the result of p2</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.RegexParsers#regex">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">regex</span><span class="params">(<span name="r">r: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#rep">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">rep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#rep1">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">rep1</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="first">first: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#rep1">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">rep1</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#rep1sep">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">rep1sep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="q">q: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#repN">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">repN</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="num">num: <span class="extype" name="scala.Int">Int</span></span>, <span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#repsep">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">repsep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="q">q: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[T]]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#scalaExpression">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">scalaExpression</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#scalaType">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">scalaType</span><span class="result">: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#scalaTypeChar">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">scalaTypeChar</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#scriptletFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">scriptletFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ScriptletFragment.html" class="extype" name="org.fusesource.scalate.ssp.ScriptletFragment">ScriptletFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#skipWhitespace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">skipWhitespace</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="" class="extype" name="org.fusesource.scalate.ssp.SspParser">SspParser</a> → RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#skipWhitespaceOn">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">skipWhitespaceOn</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#skip_whitespace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">skip_whitespace</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#someText">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">someText</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#squoted">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">squoted</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#stringLiteral">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">stringLiteral</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.util.parsing.combinator.Parsers#success">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">success</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="v">v: T</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: Parsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#surround">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">surround</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="delim">delim: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Any">Any</span>]</span>, <span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#surround">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">surround</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="c">c: <span class="extype" name="scala.Char">Char</span></span>, <span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#synchronized">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#tagEnding">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">tagEnding</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#takeUntil">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">takeUntil</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Any">Any</span>]</span>, <span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#takeUntil">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">takeUntil</span><span class="params">(<span name="cond">cond: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#takeWhile">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">takeWhile</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#text">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">text</span><span class="params">(<span name="p1">p1: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="java.lang.String">String</span>]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#textFragment">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">textFragment</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="TextFragment.html" class="extype" name="org.fusesource.scalate.ssp.TextFragment">TextFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#toString">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a string representation of the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a string representation of the object.</p><p>The default representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a string representation of the object.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#tquoted">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">tquoted</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#tripleQuote">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">tripleQuote</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#typeName">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">typeName</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport#uniEscapeSeq">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">uniEscapeSeq</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<span class="extype" name="scala.Char">Char</span>]</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          definition classes: <a href="../support/ScalaParseSupport.html" class="extype" name="org.fusesource.scalate.support.ScalaParseSupport">ScalaParseSupport</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#upto">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">upto</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p1">p1: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#velocityScriplet">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">velocityScriplet</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="ScriptletFragment.html" class="extype" name="org.fusesource.scalate.ssp.ScriptletFragment">ScriptletFragment</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="prt" name="scala.util.parsing.combinator.RegexParsers#whiteSpace">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">whiteSpace</span><span class="result">: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: RegexParsers
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.ssp.SspParser#wrapped">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wrapped</span><span class="tparams">[<span name="T">T</span>, <span name="U">U</span>]</span><span class="params">(<span name="prefix">prefix: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[T]</span>, <span name="postfix">postfix: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[U]</span>)</span><span class="result">: <span class="extype" name="scala.util.parsing.combinator.Parsers.Parser">Parser</span>[<a href="Text.html" class="extype" name="org.fusesource.scalate.ssp.Text">Text</a>]</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

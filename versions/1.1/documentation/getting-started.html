@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Getting Started</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='getting_started'>Getting Started</h1>
+
+<p>Lets get scalating!</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Introduction</h1>
+</div><div class='right'>
+<p>Lets try and get you up to speed using Scalate as quickly as possible.</p>
+
+<p>This guide will assume you have a reasonably recent installation of <a href='http://maven.apache.org'>Maven</a>, say version 2.0.9 or later. If you don&#8217;t, please <a href='http://maven.apache.org/download.html'>install one now</a>.</p>
+</div><div class='left'>
+<h1>Create a project</h1>
+</div><div class='right'>
+<p>Lets create a new <a href='jog.html'>Jog</a> project that we can use as a base on which to build.</p>
+
+<p>If you have not done so already <a href='tool.html'>install the Scalate Tool</a>. If you prefer you can create projects using the <a href='archetypes.html'>Scalate Maven archetypes via maven</a> instead of using Scalate Tool</p>
+
+<p>To see all of the available commands type this command into a command terminal</p>
+
+<pre><code>  scalate</code></pre>
+
+<p>Now to create a new project type</p>
+
+<pre><code>  scalate create guice myGroup myArtifact</code></pre>
+
+<p>You might want to change <strong>myGroup</strong> and <strong>myArtifact</strong> to whatever maven groupId and artifactId you want to use.</p>
+
+<p>Now change directory to the newly created <strong>myArtifact</strong> directory (or whatever name you used for the artifactId)</p>
+
+<pre><code>  cd myArtifact  </code></pre>
+
+<p>You should now see a directory tree something like this</p>
+
+<pre><code>  src
+  +--main
+  |  |--resources
+  |  +--scala
+  |  |  |--myGroup
+  |  +--webapp
+  |     |--WEB-INF
+  +--test
+     +--scala
+        |--myGroup</code></pre>
+
+<p>If this step didn&#8217;t work, <a href='../community.html'>let us know</a>!</p>
+
+<p>Hopefully you now have a base <a href='jog.html'>Jog</a> project using Scalate, Scala, <a href='https://jersey.dev.java.net/'>Jersey</a> and <a href='http://code.google.com/p/google-guice/'>Guice</a>.</p>
+</div><div class='left'>
+<h1>Run the new project</h1>
+</div><div class='right'>
+<p>To run the project run the following <a href='http://maven.apache.org/'>Maven</a> command</p>
+
+<pre><code>  mvn jetty:run</code></pre>
+
+<p>Now when the application starts up you should be able to point your browser at <a href='http://localhost:8080'>http://localhost:8080</a> to run the application.</p>
+
+<p>Your application is now ready for you to create new JAXRS resource beans (in Scala or Java code) as well as rendering any Scalate templates in the <strong>src/main/webapp</strong> directory.</p>
+
+<p>To start hacking on a template, try editing the <strong>src/main/webapp/index.scaml</strong> file which is used to render the home page (a <a href='scaml-reference.html'>Scaml</a> template). Or try adding new templates.</p>
+
+<p>For more detail on how the web application works please refer to the <a href='jog.html'>Jog documentation</a></p>
+</div><div class='left'>
+<h1>Scalate console</h1>
+</div><div class='right'>
+<p>While looking at the <a href='http://localhost:8080'>home page</a> of your running application you should see a little icon near the top right of the screen which opens/closes the <a href='console.html'>Scalate Console</a>. Try opening it and try out its links.</p>
+
+<p>The <a href='console.html'>Scalate Console</a> provides nice error messages if you make a typo in a template together with edit links to the source code, plus provides handy links to the current source, templates and layouts you are viewing in development mode along with a number of other features.</p>
+
+<p>Please refer to the <a href='console.html'>Console documentation</a> for more detail.</p>
+</div><div class='left'>
+<h1>Using SBT</h1>
+</div><div class='right'>
+<p>You can also compile the code with SBT (or <a href='http://code.google.com/p/simple-build-tool/'>Simple build tool</a>) if you prefer instead of Maven. Type the following commands into a terminal (the first command enters the SBT shell)</p>
+
+<pre><code>  sbt
+  update
+  compile</code></pre>
+
+<p>At the time of writing there are <a href='http://code.google.com/p/simple-build-tool/issues/detail?id=87'>some issues with WAR overlays and SBT</a> so jetty-run might not work correctly.</p>
+</div><div class='left'>
+<h1>Diving deeper</h1>
+</div><div class='right'>
+<p>Once you have the application working and you&#8217;ve played with the <a href='console.html'>Console</a> you might want to dive deeper into Scalate and understand how it works.</p>
+
+<ul>
+<li><a href='war-overlay.html'>WAR Overlay</a> describes how we use a WAR overlay to include the <a href='console.html'>Console</a> in your application</li>
+
+<li><a href='console.html'>Scalate Console</a></li>
+
+<li><a href='documentation.html'>Documentation</a> for further information on user guides and template references</li>
+</ul>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

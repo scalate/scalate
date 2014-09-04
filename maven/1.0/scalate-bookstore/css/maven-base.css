@@ -1,0 +1,220 @@
+/*
+ *  Copyright 2009 Simone Tripodi
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+body {
+    background-color: #f2f2f2;
+}
+
+body, td, select, input, li {
+    font-family: "Trebuchet MS", "Geneva", "Arial", "Helvetica", "SunSans-Regular", sans-serif;
+    color: #555555;
+}
+
+h2, h3, h4 {
+    color: #265fc2;
+    background: none;
+    border: none;
+}
+
+a, a.externalLink, a:active, a:hover {
+    color: #265fc2;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#wrapper {
+    width: 80%;
+    margin: 1em auto 1em;
+    background-color: #ffffff;
+    padding: 1em;
+}
+
+img {
+    border: none;
+}
+
+table {
+    padding: 0px;
+    width: 100%;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+acronym {
+    cursor: help;
+    border-bottom: 1px dotted #feb;
+}
+
+table.bodyTable th,table.bodyTable td {
+    padding: 2px 4px 2px 4px;
+    vertical-align: top;
+}
+
+div.clear {
+    clear: both;
+    visibility: hidden;
+}
+
+div.clear hr {
+    display: none;
+}
+
+#bannerLeft,#bannerRight {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+#bannerLeft img,#bannerRight img {
+    margin: 8px;
+}
+
+.xleft,#bannerLeft img {
+    float: left;
+    text-shadow: #7CFC00;
+}
+
+.xright,#bannerRight img {
+    float: right;
+    text-shadow: #7CFC00;
+}
+
+#banner {
+    border-bottom: 1px solid #fff;
+}
+
+#banner img {
+    border: none;
+}
+
+#footer,#breadcrumbs {
+    padding: 3px 10px 3px 10px;
+}
+
+#leftColumn {
+    width: 18%;
+    float: left;
+    background-color: #EAEAEA;
+    margin: 1.5em 0.5em;
+}
+
+#bodyColumn {
+    margin-left: 20%;
+}
+
+#legend {
+    padding: 8px 0 8px 0;
+}
+
+#navcolumn {
+    padding: 1em;
+    margin: 0;
+    line-height: 150%;
+    border: 0;
+    background-color: #EAEAEA;
+}
+
+#navcolumn h5,#navcolumn ul {
+    margin: 0;
+    padding: 0;
+    font-size: small;
+}
+
+#navcolumn li {
+    background: transparent;
+    list-style-type: none;
+    padding-left: 0.7em;
+    list-style-position: ouside;
+    font-size: smaller;
+}
+
+#navcolumn li.expanded {
+    background: url("../images/collapsed.png") no-repeat left top;
+}
+
+#navcolumn li.collapsed {
+    background: url("../images/expanded.png") no-repeat left top;
+}
+
+#poweredBy {
+    text-align: center;
+}
+
+#navcolumn img {
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+
+#poweredBy img {
+    display: block;
+    margin: 20px 0 20px 17px;
+    border: 1px solid black;
+    width: 90px;
+    height: 30px;
+}
+
+#search img {
+    margin: 0px;
+    display: block;
+}
+
+#search #q,#search #btnG {
+    border: 1px solid #999;
+    margin-bottom: 10px;
+}
+
+#search form {
+    margin: 0px;
+}
+
+#lastPublished {
+    font-size: x-small;
+}
+
+.navSection {
+    margin-bottom: 2px;
+    padding: 8px;
+}
+
+.navSectionHead {
+    font-weight: bold;
+    font-size: x-small;
+}
+
+.section {
+    padding: 4px;
+}
+
+#footer {
+    font-size: x-small;
+}
+
+#breadcrumbs {
+    background-color: #EAEAEA;
+    font-size: x-small;
+    margin: 0pt;
+    border: none;
+}
+
+.source {
+    padding: 12px;
+    margin: 1em 7px 1em 7px;
+}
+
+.source pre {
+    margin: 0px;
+    padding: 0px;
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="styles/impact/css/site.css"/>
+    <title>Why use Scalate?</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="index.html">Scalate 1.5.3</a></li>
+<li><a href="download.html">Download</a></li>
+<li><a href="source.html">Source</a></li>
+<li><a href="community.html">Community</a></li>
+<li><a href="support.html">Support</a></li>
+<li><a href="documentation/index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/why.page">why.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Why_use_Scalate_">Why use Scalate?</h1>
+
+<p>So why should I use Scalate?</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>Most other template engines use runtime introspection to evaluate expressions which is slower and can hide errors in your pages. However all expressions inside Scalate templates are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages. </p>
+
+<p>Scalate lets you reuse the concise and expressive power of Scala in your templates rather than using a severely limited expression language which is common in most other template engines. So you can easily reuse Scala's powerful functions, expressions and pattern matching as well as invoking Scala methods which can use Scala's XML support to return markup fragments.</p>
+
+<p>Scalate templates generate Scala code which is compiled to fast statically typed bytecode rather than using dynamic dispatch or reflection. Hopefully <a href="creating-ide.html">IDEs will soon</a> be able to support full completion of all scala expressions within Scalate template files since the templates are statically typed so the types of all variables and expressions are known at edit/compile time.</p>
+
+<h2 id = "Features">Features</h2>
+
+<p>Scalate provides a <a href="documentation/console.html">Console</a> to make it easy to deal with typos in templates together with making it easy to edit source code, templates and layouts inside your web application.</p>
+
+<p><a href="compare-jsp.html">Compared to JSP</a>, Scalate misses out lots of stuff like EL, JSTL, tag libraries, tag files, JSP header files and lots of other stuff. In its place, Scalate reuses the <a href="http://www.scala-lang.org">Scala</a> language which is way more powerful and expressive than the EL in JSP.</p>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

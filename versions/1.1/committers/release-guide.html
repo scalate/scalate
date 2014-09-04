@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Release Guide</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='release_guide'>Release Guide</h1>
+
+<p>How to create releases of Scalate</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <h1 id='release_steps'>Release Steps</h1>
+
+<p>Various documentation changes first (which should be done before the release is cut)</p>
+
+<ul>
+<li>update the download.page on the wiki</li>
+
+<li>replace the use of any <strong>project_new_version</strong> variables in the website documentation with <strong>project_version</strong></li>
+
+<li>check the <strong>scalate_website/src/download.page</strong> and <strong>scalate_website/src/tool.page</strong> files are accurate for this release</li>
+
+<li>edit the <strong>scalate_website/src/metainf</strong> file and change the <strong>project_version</strong> and <strong>project_new_version</strong> values</li>
+
+<li>blog about the release by creating an entry in <strong>scalate_website/src/blog/releases</strong></li>
+</ul>
+
+<p>Cutting the release</p>
+
+<ul>
+<li>
+<p><strong>NOTE</strong> make sure you are using a clone of your local git repository for doing the release! See below on the use of temporary local repo&#8230;</p>
+</li>
+
+<li>
+<p>check your repo is clean and you are on master branch</p>
+</li>
+
+<li>
+<p>until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment/uncomment the snapshot version in the root pom.xml</p>
+</li>
+
+<li>
+<p>prepare the release</p>
+
+<pre><code>mvn release:prepare -P release</code></pre>
+</li>
+
+<li>
+<p>perform the release</p>
+
+<pre><code>mvn release:perform -P release</code></pre>
+</li>
+
+<li>
+<p>open <a href='http://repo.fusesource.com/nexus/index.html#staging'>Nexus Staging</a> and close the Staging release of scalate</p>
+</li>
+
+<li>
+<p>now Promote the closed release</p>
+</li>
+
+<li>
+<p>now you&#8217;ll need to tidy up your local repo (the real clone of github) and push changes back to github</p>
+
+<pre><code>git rebase --hard
+git push
+git push origin scalate-project-1.1</code></pre>
+</li>
+
+<li>
+<p>announce the release on the <a href='community.html'>mailing list</a></p>
+</li>
+</ul>
+
+<h2 id='switching_website_generation_to_the_last_release_branch'>Switching website generation to the last release branch</h2>
+
+<ul>
+<li>
+<p>if the release is a major release then deploy the current website in branch scalate-1.1.x to scalate.fusesource.org/version/1.1</p>
+</li>
+
+<li>
+<p>create a branch for this new release if its a major release. Typically this will be a branch from master as you&#8217;ll have made some changes above to update the website to point to the new release etc. For example if you&#8217;ve just done 1.1 then do this&#8230;</p>
+
+<pre><code>git co scalate-project-1.1 -b scalate-1.1.x
+git push scalate-1.1.x origin</code></pre>
+</li>
+
+<li>
+<p>amend the last-release webgen CI build to use the new branch scalate-1.1.x to update the website. That lets us update the documentation for the current release using this branch while master can become new features which don&#8217;t make it to the public site yet - but are available to surf in the scalate.fusesource.org/version/1.2-SNAPSHOT area of the site.</p>
+</li>
+</ul>
+
+<h2 id='using_a_temporary_local_repo'>Using a temporary local repo</h2>
+
+<p>To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo&#8230;</p>
+
+<pre><code>git clone file:///foo/scalate scalate-release</code></pre>
+
+<p>You probably want to set this property too if you&#8217;re using git 1.6 or later to avoid your release prepare barfing&#8230;</p>
+
+<pre><code>git config receive.denycurrentbranch warn</code></pre>
+
+<p>then edit your <strong>~/.m2/settings.xml</strong> file and add this&#8230;</p>
+
+<pre><code>&lt;settings&gt;
+  &lt;profiles&gt; 
+    &lt;profile&gt;
+      &lt;id&gt;release&lt;/id&gt;
+      &lt;properties&gt;
+        &lt;release-altGitURL&gt;scm:git:file:///foo/scalate&lt;/release-altGitURL&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;	</code></pre>
+
+<p>then perform a release in this new <strong>scala-release</strong> directory. This will then push to your local repo, not the remote one.</p>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

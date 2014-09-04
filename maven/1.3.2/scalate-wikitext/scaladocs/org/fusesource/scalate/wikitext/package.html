@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.wikitext</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <h1>wikitext</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">wikitext</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"></div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+                
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.wikitext.AbstractConfluenceTagSupport">
+      <h4 class="signature"><a href="AbstractConfluenceTagSupport.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">AbstractConfluenceTagSupport</span><span class="result"> extends ParameterizedBlock with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Base class for any confluence tag which is a single tag not a AbstractConfluenceDelimitedBlock
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.AttributesTag">
+      <h4 class="signature"><a href="AttributesTag.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">AttributesTag</span><span class="result"> extends AbstractConfluenceTagSupport</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Allows Scalate attributes to be defined inside a confluence template.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.ChildrenTag">
+      <h4 class="signature"><a href="ChildrenTag.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ChildrenTag</span><span class="result"> extends AbstractConfluenceTagSupport with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Implements the **children** macro in confluence
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.ColumnBlock">
+      <h4 class="signature"><a href="ColumnBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ColumnBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock with Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.DefaultSnippetHandler">
+      <h4 class="signature"><a href="DefaultSnippetHandler.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">DefaultSnippetHandler</span><span class="params">(<span name="builder">builder: DocumentBuilder</span>, <span name="language">language: String</span>)</span><span class="result"> extends SnippetHandler with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Default handler for the {snippet} code (renders a</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.DivBlock">
+      <h4 class="signature"><a href="DivBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">DivBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock with Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.HtmlBlock">
+      <h4 class="signature"><a href="HtmlBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">HtmlBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock with Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.IncludeTag">
+      <h4 class="signature"><a href="IncludeTag.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">IncludeTag</span><span class="result"> extends AbstractConfluenceTagSupport with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Implements the &quot;include&quot; macro
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.PygementsBlock">
+      <h4 class="signature"><a href="PygementsBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">PygementsBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.PygmentizeSnippetHandler">
+      <h4 class="signature"><a href="PygmentizeSnippetHandler.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">PygmentizeSnippetHandler</span><span class="params">(<span name="block">block: PygementsBlock</span>)</span><span class="result"> extends SnippetHandler with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Uses pygmentize to handles syntax coloring for the {snippet}'s code
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.ScalateConfluenceLanguage">
+      <h4 class="signature"><a href="ScalateConfluenceLanguage.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ScalateConfluenceLanguage</span><span class="result"> extends ConfluenceLanguage</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Adds extendsions to the Confluence language such as support for a 'pygmentize' macro</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.SectionBlock">
+      <h4 class="signature"><a href="SectionBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SectionBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock with Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.SnippetBlock">
+      <h4 class="signature"><a href="SnippetBlock.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SnippetBlock</span><span class="result"> extends AbstractConfluenceDelimitedBlock with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Represents a {snippet} block in the wiki markup
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.SnippetHandler">
+      <h4 class="signature"><a href="SnippetHandler.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">SnippetHandler</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Trait to define a {snippet} handler
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.SwizzleLinkFilter">
+      <h4 class="signature"><a href="SwizzleLinkFilter.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SwizzleLinkFilter</span><span class="params">(<span name="sourceDirectories">sourceDirectories: Traversable[File]</span>, <span name="extensions">extensions: Set[String]</span>)</span><span class="result"> extends Filter with Logging with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Converts links used in wiki notation to find the template or wiki markup files on the file system.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.WikiTextFilter">
+      <h4 class="signature"><a href="WikiTextFilter.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">WikiTextFilter</span><span class="result"> extends Filter</span>
+      </span>
+      </a></h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: abstract 
+        </div></div>
+          
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.wikitext.Blocks">
+      <h4 class="signature"><a href="Blocks$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Blocks</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.ConfluenceFilter">
+      <h4 class="signature"><a href="ConfluenceFilter$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">ConfluenceFilter</span><span class="result"> extends WikiTextFilter with TemplateEngineAddOn</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Renders a Confluence filter
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.Links">
+      <h4 class="signature"><a href="Links$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Links</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.Pages">
+      <h4 class="signature"><a href="Pages$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Pages</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Helper class for working with wiki pages
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.Pygmentize">
+      <h4 class="signature"><a href="Pygmentize$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Pygmentize</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.Snippets">
+      <h4 class="signature"><a href="Snippets$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Snippets</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Helper class to access file containing snippets of code:
+- on the local file system
+- using a full URL
+- using a URL that starts with a predefined prefix
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.StringConverter">
+      <h4 class="signature"><a href="StringConverter$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">StringConverter</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.SwizzleLinkFilter">
+      <h4 class="signature"><a href="SwizzleLinkFilter$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">SwizzleLinkFilter</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.wikitext.WikiTextFilter">
+      <h4 class="signature"><a href="WikiTextFilter$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">WikiTextFilter</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

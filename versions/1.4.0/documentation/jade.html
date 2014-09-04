@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Jade Reference</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.4.0</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Jade_Reference_Guide">Jade Reference Guide</h1>
+
+<p>Jade is the daddy of HTML template engines for Scala</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p><a href="http://jade-lang.com/">Jade</a> is a <a href="jade-syntax.html">neater</a> dialect of <a href="http://haml-lang.com/">Haml</a> / <a href="scaml-reference.html">Scaml</a> which is a very DRY template language for creating HTML markup.</p>
+
+<p>Here's a simple Jade example</p>
+
+<div class="compare"><div class="compare-left"><h3>An example .jade file</h3><div class="syntax"><div class="highlight"><pre><span class="nn">!!! 5</span>&#x000A;<span class="nt">html</span>(<span class="na">lang=</span><span class="s">&quot;en&quot;</span>)&#x000A;  <span class="nt">head</span>&#x000A;    <span class="nt">title</span><span class="p">=</span> <span class="n">pageTitle</span>&#x000A;    <span class="nd">:javascript</span>&#x000A;      <span class="nd">if (foo) {</span>&#x000A;         <span class="nd">bar()</span>&#x000A;      <span class="nd">}</span>&#x000A;  <span class="nt">body</span>&#x000A;    <span class="nt">h1</span> Jade - node template engine&#x000A;    <span class="nf">#container</span>&#x000A;      <span class="p">-</span> <span class="k">if</span> <span class="o">(</span><span class="n">youAreUsingJade</span><span class="o">)</span>&#x000A;        <span class="nt">p</span> You are amazing&#x000A;      <span class="p">-</span> <span class="k">else</span>&#x000A;        <span class="nt">p</span> Get on it!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>the generated HTML</h3><div class="syntax"><div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>&#x000A;<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;head&gt;</span>&#x000A;    <span class="nt">&lt;title&gt;</span>Jade<span class="nt">&lt;/title&gt;</span>&#x000A;    <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>&#x000A;      //<span class="cp">&lt;![CDATA[</span>&#x000A;<span class="cp">      if (foo) {</span>&#x000A;<span class="cp">          bar()</span>&#x000A;<span class="cp">      }</span>&#x000A;<span class="cp">      //]]&gt;</span>&#x000A;    <span class="nt">&lt;/script&gt;</span>&#x000A;  <span class="nt">&lt;/head&gt;</span>&#x000A;  <span class="nt">&lt;body&gt;</span>&#x000A;    <span class="nt">&lt;h1&gt;</span>Jade - node template engine<span class="nt">&lt;/h1&gt;</span>&#x000A;    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>&#x000A;      <span class="nt">&lt;p&gt;</span>You are amazing<span class="nt">&lt;/p&gt;</span>&#x000A;    <span class="nt">&lt;/div&gt;</span>&#x000A;  <span class="nt">&lt;/body&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>If you already know <a href="http://haml-lang.com/">Haml</a> / <a href="scaml-reference.html">Scaml</a> then Jade which basically avoids the use of % before element names making things a little easier to read; then for text content on a new line you either prefix the text with the <strong>|</strong> symbol or you use a markup format like markdown.</p>
+
+<p>If you don't know <a href="http://haml-lang.com/">Haml</a> / <a href="scaml-reference.html">Scaml</a>, please refer to the <a href="jade-syntax.html">Jade Syntax</a>.</p>
+
+<h2 id = "Markdown_and_Jade_rock">Markdown and Jade rock</h2>
+
+<p>Jade and markdown are the perfect couple for your HTML templating needs; Jade provides the very DRY and concise HTML markup using concise CSS aware markup, markdown provides the wiki formatting of text blocks.</p>
+
+<p>Jade by itself is great for structural markup and layouts but is not always optimal for lots of text with embedded markup like bold and hyperlinks.</p>
+
+<p>Here's an example of some text markup with hyperlinks using vanilla jade</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nc">.foo</span>&#x000A;  <span class="nt">p</span>&#x000A;    | This is some &#x000A;    <span class="nt">b</span> text &#x000A;    | with a&#x000A;    <span class="nt">a</span>(<span class="na">href=</span><span class="s">&quot;http://fusesource.com&quot;</span>) FuseSource&#x000A;    | link.&#x000A;</pre></div>&#x000A;</div>
+
+<p>Now lets use markdown - which is great for concise DRY text with markup effects and embedded links..</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nc">.foo</span>&#x000A;  <span class="nd">:markdown</span>&#x000A;    <span class="nd">This is some **text** with a [FuseSource](http://fusesource.com) link.    </span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Both of which should generate something like this</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;foo&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>&#x000A;    This is some <span class="nt">&lt;b&gt;</span>text<span class="nt">&lt;/b&gt;</span> with a <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://fusesource.com&quot;</span><span class="nt">&gt;</span>FuseSource<span class="nt">&lt;/a&gt;</span> link.&#x000A;  <span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "See_Also">See Also</h2>
+
+<ul>
+<li><a href="jade-syntax.html">Jade Syntax</a></li>
+<li><a href="user-guide.html">User Guide</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

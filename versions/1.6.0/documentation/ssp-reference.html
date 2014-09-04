@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Ssp Reference</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.6.0</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/ssp-reference.page">documentation/ssp-reference.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/_ssp-reference.md">documentation/_ssp-reference.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Ssp_Reference_Guide">Ssp Reference Guide</h1>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<h1 id = "Ssp__Scala_Server_Pages_">Ssp (Scala Server Pages)</h1>
+
+<p><div class="toc"><ul style="list-style:none;">
+  <li><a href="#syntax">Syntax</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#Expressions:__code_______code__or__code__lt______gt___code_">Expressions: <code>${ }</code> or <code>&lt;%= %&gt;</code></a></li>
+    <li><a href="#Scala_code:__code__lt_____gt___code_">Scala code: <code>&lt;% %&gt;</code></a></li>
+    <li><a href="#bindings">Attributes: <code>&lt;%@ %&gt;</code></a></li>
+    <li><a href="#velocity_style_directives">Velocity style directives</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#_code__for__code_"><code>#for</code></a></li>
+      <li><a href="#_code__if__code_"><code>#if</code></a></li>
+      <li><a href="#set"><code>#set</code></a></li>
+      <li><a href="#_code__match__code_"><code>#match</code></a></li>
+      <li><a href="#do"><code>#do</code></a></li>
+      <li><a href="#_code__import__code_"><code>#import</code></a></li>
+      <li><a href="#velocity_block"><code>#{</code> and <code>}#</code> scriplets</a></li>
+    </ul></li>
+    <li><a href="#Comments:__code__lt__--_--__gt___code_">Comments: <code>&lt;%-- --%&gt;</code></a></li>
+    <li><a href="#Includes__code___include_someUri____code_">Includes <code>${include(someUri)}</code></a></li>
+  </ul></li>
+  <li><a href="#Other_Resources">Other Resources</a></li>
+</ul></div></p>
+
+<p>Ssp pages are like a Scala version of <a href="#velocity&#95;style&#95;directives">Velocity</a>, JSP or Erb from Rails in syntax but using Scala code for expressions instead of Java/EL/Ruby.</p>
+
+<p>If you know Velocity, JSP or Erb then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.</p>
+
+<h2 id = "syntax">Syntax</h2>
+
+<p>A Ssp template consists of plain text, usually an HTML document, which has special Ssp tags embedded in it so that
+portions of the document are rendered dynamically.  Everything outside of a <code>&lt;% ... %&gt;</code> and <code>${ ... }</code> sequence 
+are considered literal text and are generally passed through to the rendered document unmodified.</p>
+
+<h3 id = "Expressions:__code_______code__or__code__lt______gt___code_">Expressions: <code>${ }</code> or <code>&lt;%= %&gt;</code></h3>
+
+<p>Code wrapped by <code>&lt;%=</code> and <code>%&gt;</code> or with '${' and '}' is evaluated and  the output is inserted into the document.</p>
+
+<p>For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  <span class="k">&lt;%=</span> <span class="n">List</span><span class="o">(</span><span class="s">&quot;hi&quot;</span><span class="o">,</span> <span class="s">&quot;there&quot;</span><span class="o">,</span> <span class="s">&quot;reader!&quot;</span><span class="o">).</span><span class="na">mkString</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;  ${ &quot;yo &quot;+(3+4) } &#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>is rendered as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  hi there reader!&#x000A;  yo 7&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Scala_code:__code__lt_____gt___code_">Scala code: <code>&lt;% %&gt;</code></h3>
+
+<p>Code wrapped by <code>&lt;%</code> and <code>%&gt;</code> is evaluated but <em>not</em> inserted into the document.</p>
+
+<p>For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span>&#x000A;  <span class="n">var</span> <span class="n">foo</span> <span class="o">=</span> <span class="s">&quot;hello&quot;</span>&#x000A;  <span class="n">foo</span> <span class="o">+=</span> <span class="s">&quot; there&quot;</span>&#x000A;  <span class="n">foo</span> <span class="o">+=</span> <span class="s">&quot; you!&quot;</span>&#x000A;<span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>${foo}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>is rendered as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>hello there you!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>If you like to use <a href="#velocity&#95;style&#95;directives">Velocity style directives</a> you can also use <a href="#velocity&#95;block"><code>#{</code> <code>}#</code></a></p>
+
+<h3 id = "bindings">Attributes: <code>&lt;%@ %&gt;</code></h3>
+
+<p>When a Scalate template is rendered, the caller can pass an attribute map
+which the template is in charge of rendering. To bind an attribute to a type safe Scala
+variable an SSP template uses the following syntax to declare the attribute:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">foo:</span> <span class="n">MyType</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>If the attribute map does not contain a &ldquo;foo&rdquo; entry, then a 
+NoValueSetException is thrown when the the template is rendered.</p>
+
+<p>To avoid this exception, a default value can be configured.  For
+example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">bar:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;this is the default value&quot;</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>The attribute is now available for use as an expression. </p>
+
+<p>Its very common to have a template based on a single object who's members are
+frequently accessed.  In this cases, it's convenient to import all the object's 
+members.  This can be done by adding the import keyword to the attribute declaration.</p>
+
+<p>For example:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="kn">import</span> <span class="nn">val</span> <span class="nl">model:</span> <span class="n">Person</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>Hello ${name}, what is the weather like in ${city}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>is the same as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">model:</span> <span class="n">Person</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%</span> <span class="kn">import</span> <span class="nn">model._</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>Hello ${name}, what is the weather like in ${city}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Which is the same as:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">model:</span> <span class="n">Person</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>Hello ${model.name}, what is the weather like in ${model.city}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "velocity_style_directives">Velocity style directives</h3>
+
+<p>To perform logical branching or looping Scalate supports <a href="http://velocity.apache.org/">Velocity</a> style directives.</p>
+
+<p>The velocity style directives all start with a <code>#</code> and either take an expression in parens, or don't.</p>
+
+<p>For example <code>#if</code> takes an expression, such as <code>#if (x &gt; 5)</code>. There can be whitespace between the directive name and the parens if required. So you can use any of these</p>
+
+<ul>
+<li><code>#if(x &gt; 5)</code></li>
+<li><code>#if (x &gt; 5)</code></li>
+<li><code>#if( x &gt; 5 )</code></li>
+</ul>
+
+<p>When a directive doesn't take an expression you can use parens around the directive name to separate it more clearly from text.</p>
+
+<p>For example if you want to generate an if/else in a single line: <code>#if (x &gt; 5)a#(else)b#end</code></p>
+
+<h4 id = "_code__for__code_"><code>#for</code></h4>
+
+<p>The <code>#for</code> directive is used to iterate over expressions in a Scala like way. </p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;#for (i <span class="nt">&lt;-</span> <span class="err">1</span> <span class="err">to</span> <span class="err">5)</span>&#x000A;  <span class="err">&lt;li</span><span class="nt">&gt;</span>${i}<span class="nt">&lt;/li&gt;</span>&#x000A;#end&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>1<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>2<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>3<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>4<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>5<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Just like in the Scala language you can perform multiple nested loops using <a href="http://www.scala-lang.org/node/111">sequence comprehensions</a>.</p>
+
+<p>For example for a nested loop of both x and y&hellip;</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;#for (x <span class="nt">&lt;-</span> <span class="err">1</span> <span class="err">to</span> <span class="err">2;</span> <span class="err">y</span> <span class="err">&lt;-</span> <span class="err">1</span> <span class="err">to</span> <span class="err">2)</span>&#x000A;  <span class="err">&lt;li</span><span class="nt">&gt;</span>(${x}, ${y})<span class="nt">&lt;/li&gt;</span>&#x000A;#end&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>(1, 1)<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>(1, 2)<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>(1, 1)<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>(2, 1)<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h4 id = "_code__if__code_"><code>#if</code></h4>
+
+<p>You can perform if/elseif/else branches using the <code>#if</code>, <code>#elseif</code> (or <code>#elif</code>), <code>#else</code> and <code>#end</code> directives.</p>
+
+<p>The use of <code>#elseif</code> and <code>#else</code> are optional. You can just use <code>#if</code> and <code>#end</code> if you like</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;#if (customer.type == &quot;Gold&quot;)&#x000A;  Special stuff...&#x000A;#end&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  Special stuff...&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>Or you can use each directive together, using as many <code>#elseif</code> directives as you like</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;#if (n == &quot;James&quot;)&#x000A;  Hey James&#x000A;#elseif (n == &quot;Hiram&quot;)&#x000A;  Yo Hiram&#x000A;#else&#x000A;  Dunno&#x000A;#end&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  Hey James&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h4 id = "set"><code>#set</code></h4>
+
+<p>You often want to take a section of a template and assign it to an attribute which you can then pass into a <a href="" title="user-guide.html#layouts">layout</a> or some other template.</p>
+
+<p>For example you might wish to define a head section to allow a page to define custom output to go into the HTML head element&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre>#set (head)&#x000A;  ... some page specific JavaScript includes here...&#x000A;#end&#x000A;...rest of the page here...&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then in the <a href="" title="user-guide.html#layouts">layout</a> we could use</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">body:</span> <span class="n">String</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">title:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Some Default Title&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">head:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;html&gt;</span>&#x000A;<span class="nt">&lt;head&gt;</span>&#x000A;  <span class="nt">&lt;title&gt;</span>${title}<span class="nt">&lt;/title&gt;</span>&#x000A;  &#x000A;  <span class="k">&lt;%-</span><span class="o">-</span> <span class="n">page</span> <span class="n">specific</span> <span class="n">head</span> <span class="n">goes</span> <span class="n">here</span> <span class="o">--</span><span class="k">%&gt;</span>&#x000A;  ${unescape(head)}&#x000A;<span class="nt">&lt;/head&gt;</span>&#x000A;<span class="nt">&lt;body&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>layout header goes here...<span class="nt">&lt;/p&gt;</span>&#x000A;&#x000A;  ${unescape(body)}&#x000A;  &#x000A;  <span class="nt">&lt;p&gt;</span>layout footer goes here...<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/body&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h4 id = "_code__match__code_"><code>#match</code></h4>
+
+<p>You can perform Scala style pattern matching using the <code>#match</code>, <code>#case</code>, <code>#otherwise</code> and <code>#end</code> directives.</p>
+
+<p>You can think of matching in Scala as being like a Java switch statement only way more powerful. </p>
+
+<p>The <code>#match</code> takes an expression to match on, then each <code>#case</code> takes a value, filter or type expression to match on.</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;#match (customer.type)&#x000A;#case(&quot;Gold&quot;)&#x000A;  Great stuff&#x000A;#case(&quot;Silver&quot;)&#x000A;  Good stuff&#x000A;#otherwise&#x000A;  No stuff&#x000A;#end&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  Special stuff...&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>This example shows how you can use type expressions instead to match on</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;#match (person)&#x000A;#case(m: Manager)&#x000A;  ${m.name} manages ${m.manages.size} people&#x000A;#case(p: Person)&#x000A;  ${p.name} is not a manager&#x000A;#otherwise&#x000A;  Not a person&#x000A;#end&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>&#x000A;  Hey James&#x000A;<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h4 id = "do"><code>#do</code></h4>
+
+<p>The <code>#do</code> directive can be used to invoke a function passing a block of template as an argument such as when you want to apply a specific <a href="user-guide.html#explicit&#95;layouts&#95;inside&#95;a&#95;template">layout to a block of template</a> or want to call a <a href="user-guide.html#passing&#95;a&#95;template&#95;block&#95;to&#95;a&#95;scala&#95;function">function passing a template block</a>, a little like you might do using custom tags in JSP.</p>
+
+<div class="syntax"><div class="highlight"><pre>#do(layout(&quot;someLayout.ssp&quot;))&#x000A; this is some template output...&#x000A;#end&#x000A;</pre></div>&#x000A;</div>
+
+<h4 id = "_code__import__code_"><code>#import</code></h4>
+
+<p>The <code>#import</code> directive can be used as an alternative to using <code>&lt;% import somePackage %&gt;</code> to import Scala/Java packages, classes or methods.</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre>#import(java.util.Date)&#x000A;&#x000A;<span class="nt">&lt;p&gt;</span>The time is now ${new Date}<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>The time is now Thu Apr 15 15:19:41 IST 2010<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<h4 id = "velocity_block"><code>#{</code> and <code>}#</code> scriplets</h4>
+
+<p>Sometimes you just want to include a couple of lines of Scala code in a template such as to define a few variables, add a few imports or whatever.</p>
+
+<p>If you don't like the JSP / Erb style <code>&lt;%</code> .. <code>%&gt;</code> tags you can use velocity style <code>#{</code> .. <code>}#</code> instead</p>
+
+<div class="syntax"><div class="highlight"><pre>#{&#x000A;  import java.util.Date&#x000A;  val now = new Date &#x000A;}#&#x000A;Hello the time is ${now}&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Comments:__code__lt__--_--__gt___code_">Comments: <code>&lt;%-- --%&gt;</code></h3>
+
+<p>Ssp comments prevent everything inside the comment markers from being inserted in to the rendered document.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%-</span><span class="o">-</span> <span class="k">this</span> <span class="n">is</span> <span class="n">a</span> <span class="n">comment</span> <span class="o">--</span><span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Includes__code___include_someUri____code_">Includes <code>${include(someUri)}</code></h3>
+
+<p>You can include other scripts in your page using the include method</p>
+
+<div class="syntax"><div class="highlight"><pre>${include(&quot;relativeOrAbsoluteURL&quot;}&#x000A;</pre></div>&#x000A;</div>
+
+<p>The URL is then evaluated and included in place in your template.</p>
+
+<h2 id = "Other_Resources">Other Resources</h2>
+
+<ul>
+<li><a href="user-guide.html">User Guide</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

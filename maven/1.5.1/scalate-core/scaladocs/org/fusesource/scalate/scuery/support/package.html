@@ -1,0 +1,595 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>org.fusesource.scalate.scuery.support</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../../../lib/template.css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../../../lib/package_big.png" />
+        <p id="owner"><a name="org" class="extype" href="../../../../package.html">org</a>.<a name="org.fusesource" class="extype" href="../../../package.html">fusesource</a>.<a name="org.fusesource.scalate" class="extype" href="../../package.html">scalate</a>.<a name="org.fusesource.scalate.scuery" class="extype" href="../package.html">scuery</a></p>
+        <h1>support</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">support</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scuery.support.AdjacentSiblingSelector" data-isabs="false">
+      <a id="AdjacentSiblingSelector:AdjacentSiblingSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="AdjacentSiblingSelector.html"><span class="name">AdjacentSiblingSelector</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>, <span name="ancestorSelector">ancestorSelector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E + F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.AdjacentSiblingdCombinator" data-isabs="false">
+      <a id="AdjacentSiblingdCombinator:AdjacentSiblingdCombinator"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="AdjacentSiblingdCombinator.html"><span class="name">AdjacentSiblingdCombinator</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>)</span><span class="result"> extends Combinator with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E + F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.AnyElementSelector" data-isabs="false">
+      <a id="AnyElementSelector:AnyElementSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="AnyElementSelector.html"><span class="name">AnyElementSelector</span></a>
+        
+        <span class="params">()</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.AttributeNameSelector" data-isabs="false">
+      <a id="AttributeNameSelector:AttributeNameSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="AttributeNameSelector.html"><span class="name">AttributeNameSelector</span></a>
+        
+        <span class="params">(<span name="name">name: String</span>, <span name="matcher">matcher: Matcher</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Matches the current element if it has an attribute name
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ChildCombinator" data-isabs="false">
+      <a id="ChildCombinator:ChildCombinator"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ChildCombinator.html"><span class="name">ChildCombinator</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>)</span><span class="result"> extends Combinator with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E &gt; F</&gt;</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ChildSelector" data-isabs="false">
+      <a id="ChildSelector:ChildSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ChildSelector.html"><span class="name">ChildSelector</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>, <span name="ancestorSelector">ancestorSelector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E &gt; F</&gt;</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ChildrenSelector" data-isabs="false">
+      <a id="ChildrenSelector:ChildrenSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ChildrenSelector.html"><span class="name">ChildrenSelector</span></a>
+        
+        <span class="params">(<span name="selector">selector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ClassSelector" data-isabs="false">
+      <a id="ClassSelector:ClassSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ClassSelector.html"><span class="name">ClassSelector</span></a>
+        
+        <span class="params">(<span name="className">className: String</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Matches if the CSS class attribute contains the given class name word
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.Combinator" data-isabs="true">
+      <a id="Combinator:Combinator"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="Combinator.html"><span class="name">Combinator</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.CompositeRule" data-isabs="false">
+      <a id="CompositeRule:CompositeRule"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="CompositeRule.html"><span class="name">CompositeRule</span></a>
+        
+        <span class="params">(<span name="first">first: Rule</span>, <span name="second">second: Rule</span>)</span><span class="result"> extends Rule with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.CompositeSelector" data-isabs="false">
+      <a id="CompositeSelector:CompositeSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="CompositeSelector.html"><span class="name">CompositeSelector</span></a>
+        
+        <span class="params">(<span name="selectors">selectors: Seq[Selector]</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.CssParser" data-isabs="false">
+      <a id="CssParser:CssParser"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="CssParser.html"><span class="name">CssParser</span></a>
+        
+        <span class="result"> extends CssScanner</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Parser of <a href="http://www.w3.org/TR/css3-syntax">CSS3 selectors</a>
+</a href="http://www.w3.org/TR/css3-syntax"></p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.CssScanner" data-isabs="false">
+      <a id="CssScanner:CssScanner"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="CssScanner.html"><span class="name">CssScanner</span></a>
+        
+        <span class="result"> extends RegexParsers</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.DashMatch" data-isabs="false">
+      <a id="DashMatch:DashMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="DashMatch.html"><span class="name">DashMatch</span></a>
+        
+        <span class="params">(<span name="value">value: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Matches text starting with the given value or with
+value immediately followed by &quot;-&quot; (U+002D)
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.DescendantCombinator" data-isabs="false">
+      <a id="DescendantCombinator:DescendantCombinator"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="DescendantCombinator.html"><span class="name">DescendantCombinator</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>)</span><span class="result"> extends Combinator with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.DescendantSelector" data-isabs="false">
+      <a id="DescendantSelector:DescendantSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="DescendantSelector.html"><span class="name">DescendantSelector</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>, <span name="ancestorSelector">ancestorSelector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ElementNameSelector" data-isabs="false">
+      <a id="ElementNameSelector:ElementNameSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ElementNameSelector.html"><span class="name">ElementNameSelector</span></a>
+        
+        <span class="params">(<span name="name">name: String</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.EqualsMatch" data-isabs="false">
+      <a id="EqualsMatch:EqualsMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="EqualsMatch.html"><span class="name">EqualsMatch</span></a>
+        
+        <span class="params">(<span name="expected">expected: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.GeneralSiblingCombinator" data-isabs="false">
+      <a id="GeneralSiblingCombinator:GeneralSiblingCombinator"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="GeneralSiblingCombinator.html"><span class="name">GeneralSiblingCombinator</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>)</span><span class="result"> extends Combinator with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E ~ F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.GeneralSiblingSelector" data-isabs="false">
+      <a id="GeneralSiblingSelector:GeneralSiblingSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="GeneralSiblingSelector.html"><span class="name">GeneralSiblingSelector</span></a>
+        
+        <span class="params">(<span name="childSelector">childSelector: Selector</span>, <span name="ancestorSelector">ancestorSelector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents selector: E ~ F</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.IdSelector" data-isabs="false">
+      <a id="IdSelector:IdSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="IdSelector.html"><span class="name">IdSelector</span></a>
+        
+        <span class="params">(<span name="className">className: String</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.IncludesMatch" data-isabs="false">
+      <a id="IncludesMatch:IncludesMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="IncludesMatch.html"><span class="name">IncludesMatch</span></a>
+        
+        <span class="params">(<span name="word">word: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Matches a whole word after splitting up the value by whitespace
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.InvalidCssSelectorException" data-isabs="false">
+      <a id="InvalidCssSelectorException:InvalidCssSelectorException"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="InvalidCssSelectorException.html"><span class="name">InvalidCssSelectorException</span></a>
+        
+        <span class="result"> extends TemplateException</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.Matcher" data-isabs="true">
+      <a id="Matcher:Matcher"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Matcher.html"><span class="name">Matcher</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents a matcher on a set of nodes, typically used on attributes in CSS3 selectors
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NamespacePrefixSelector" data-isabs="false">
+      <a id="NamespacePrefixSelector:NamespacePrefixSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="NamespacePrefixSelector.html"><span class="name">NamespacePrefixSelector</span></a>
+        
+        <span class="params">(<span name="prefix">prefix: String</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NamespacedAttributeNameSelector" data-isabs="false">
+      <a id="NamespacedAttributeNameSelector:NamespacedAttributeNameSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="NamespacedAttributeNameSelector.html"><span class="name">NamespacedAttributeNameSelector</span></a>
+        
+        <span class="params">(<span name="name">name: String</span>, <span name="prefix">prefix: String</span>, <span name="matcher">matcher: Matcher</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Matches the current element if it has a namespaced attribute name
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NotSelector" data-isabs="false">
+      <a id="NotSelector:NotSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="NotSelector.html"><span class="name">NotSelector</span></a>
+        
+        <span class="params">(<span name="selector">selector: Selector</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NthChildSelector" data-isabs="false">
+      <a id="NthChildSelector:NthChildSelector"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="NthChildSelector.html"><span class="name">NthChildSelector</span></a>
+        
+        <span class="params">(<span name="counter">counter: NthCounter</span>)</span><span class="result"> extends Selector with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NthCounter" data-isabs="false">
+      <a id="NthCounter:NthCounter"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="NthCounter.html"><span class="name">NthCounter</span></a>
+        
+        <span class="params">(<span name="a">a: Int</span>, <span name="b">b: Int</span>)</span><span class="result"> extends Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Used for the <a href="http://www.w3.org/TR/css3-selectors/#nth-child-pseudo">nth</a>
+calculations representing an + b
+</a href="http://www.w3.org/TR/css3-selectors/#nth-child-pseudo"></p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.PrefixMatch" data-isabs="false">
+      <a id="PrefixMatch:PrefixMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="PrefixMatch.html"><span class="name">PrefixMatch</span></a>
+        
+        <span class="params">(<span name="prefix">prefix: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ReplaceContentRule" data-isabs="false">
+      <a id="ReplaceContentRule:ReplaceContentRule"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ReplaceContentRule.html"><span class="name">ReplaceContentRule</span></a>
+        
+        <span class="params">(<span name="fn">fn: (Node) ⇒ NodeSeq</span>)</span><span class="result"> extends Rule with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.ReplaceRule" data-isabs="false">
+      <a id="ReplaceRule:ReplaceRule"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ReplaceRule.html"><span class="name">ReplaceRule</span></a>
+        
+        <span class="params">(<span name="fn">fn: (Node) ⇒ NodeSeq</span>)</span><span class="result"> extends Rule with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.Rule" data-isabs="true">
+      <a id="Rule:Rule"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Rule.html"><span class="name">Rule</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents manipuluation rules
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.SetAttributeRule" data-isabs="false">
+      <a id="SetAttributeRule:SetAttributeRule"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="SetAttributeRule.html"><span class="name">SetAttributeRule</span></a>
+        
+        <span class="params">(<span name="name">name: String</span>, <span name="fn">fn: (Node) ⇒ String</span>)</span><span class="result"> extends Rule with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.SubstringMatch" data-isabs="false">
+      <a id="SubstringMatch:SubstringMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="SubstringMatch.html"><span class="name">SubstringMatch</span></a>
+        
+        <span class="params">(<span name="substring">substring: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.SuffixMatch" data-isabs="false">
+      <a id="SuffixMatch:SuffixMatch"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="SuffixMatch.html"><span class="name">SuffixMatch</span></a>
+        
+        <span class="params">(<span name="suffix">suffix: String</span>)</span><span class="result"> extends TextMatcher with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.TextMatcher" data-isabs="true">
+      <a id="TextMatcher:TextMatcher"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="TextMatcher.html"><span class="name">TextMatcher</span></a>
+        
+        <span class="result"> extends Matcher</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scuery.support.AnyElementSelector" data-isabs="false">
+      <a id="AnyElementSelector:AnyElementSelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="AnyElementSelector$.html"><span class="name">AnyElementSelector</span></a>
+        
+        <span class="result"> extends Selector with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.AnySelector" data-isabs="false">
+      <a id="AnySelector:AnySelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="AnySelector$.html"><span class="name">AnySelector</span></a>
+        
+        <span class="result"> extends Selector</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.EvenCounter" data-isabs="false">
+      <a id="EvenCounter:EvenCounter"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="EvenCounter$.html"><span class="name">EvenCounter</span></a>
+        
+        <span class="result"> extends NthCounter</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.FirstChildSelector" data-isabs="false">
+      <a id="FirstChildSelector:FirstChildSelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="FirstChildSelector$.html"><span class="name">FirstChildSelector</span></a>
+        
+        <span class="result"> extends Selector</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.LastChildSelector" data-isabs="false">
+      <a id="LastChildSelector:LastChildSelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="LastChildSelector$.html"><span class="name">LastChildSelector</span></a>
+        
+        <span class="result"> extends Selector</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.MatchesAny" data-isabs="false">
+      <a id="MatchesAny:MatchesAny"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="MatchesAny$.html"><span class="name">MatchesAny</span></a>
+        
+        <span class="result"> extends TextMatcher</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.NoNamespaceSelector" data-isabs="false">
+      <a id="NoNamespaceSelector:NoNamespaceSelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="NoNamespaceSelector$.html"><span class="name">NoNamespaceSelector</span></a>
+        
+        <span class="result"> extends Selector</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.OddCounter" data-isabs="false">
+      <a id="OddCounter:OddCounter"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="OddCounter$.html"><span class="name">OddCounter</span></a>
+        
+        <span class="result"> extends NthCounter</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.RootSelector" data-isabs="false">
+      <a id="RootSelector:RootSelector"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="RootSelector$.html"><span class="name">RootSelector</span></a>
+        
+        <span class="result"> extends Selector</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support.Rule" data-isabs="false">
+      <a id="Rule:Rule"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Rule$.html"><span class="name">Rule</span></a>
+        
+        <span class="result"> extends Log</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

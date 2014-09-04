@@ -1,0 +1,1 @@
+Index.PACKAGES = {"scalate" : [{"class" : "scalate\/Boot.html", "object" : "scalate\/Boot$.html", "name" : "scalate.Boot"}]};

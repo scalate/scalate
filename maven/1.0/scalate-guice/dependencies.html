@@ -1,0 +1,935 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Scalate Project - Project Dependencies</title>
+    <link rel="stylesheet" href="./css/maven-theme.css" type="text/css" />
+    <link rel="stylesheet" href="./css/maven-base.css" type="text/css"/>
+    <link rel="stylesheet" href="./css/prettify.css" type="text/css"/>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+    <script type="text/javascript" src="./js/prettify.js"></script>
+    <script type="text/javascript" src="./js/niftycube.js"></script>
+    <script type="text/javascript">
+        window.onload=function() {
+            Nifty("div\#wrapper", "big");
+            Nifty("div#breadcrumbs", "small");
+            Nifty("div\#navcolumn", "small");
+            Nifty("div.source", "medium");
+            prettyPrint();
+        }
+    </script>
+          </head>
+  <body>
+    <div id="wrapper">
+        <div id="banner">
+                      <a href="../" id="bannerLeft"  >
+    
+                                            <img src="../images/project-logo.png" alt="Scalate Project" />
+    
+            </a>
+                            <div class="clear">
+            <hr/>
+          </div>
+        </div>
+        <div id="breadcrumbs">
+              
+  
+
+  
+    
+            
+  
+    
+            <div class="xleft">
+        <span id="publishDate">Last Published: 2010-07-19</span>
+                  &nbsp;| <span id="projectVersion">Version: 1.0</span>
+                      </div>
+                <div class="xright">      
+  
+
+  
+    
+            
+  
+    
+  </div>
+          <div class="clear">
+            <hr/>
+          </div>
+        </div>
+        <div id="leftColumn">
+          <div id="navcolumn">
+               
+  
+
+  
+    
+            
+  
+    
+                       <h5>Project Documentation</h5>
+            <ul>
+              
+                
+                    
+                  
+                        
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+              
+            <li class="expanded">
+                    <a href="project-info.html">Project Information</a>
+                  <ul>
+                  
+    <li class="none">
+                    <a href="index.html">About</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="integration.html">Continuous Integration</a>
+          </li>
+                  
+    <li class="none">
+              <strong>Dependencies</strong>
+        </li>
+                  
+    <li class="none">
+                    <a href="dependency-convergence.html">Dependency Convergence</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="dependency-management.html">Dependency Management</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="issue-tracking.html">Issue Tracking</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="mail-lists.html">Mailing Lists</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="license.html">Project License</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="plugins.html">Project Plugins</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="project-summary.html">Project Summary</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="team-list.html">Project Team</a>
+          </li>
+              </ul>
+        </li>
+              
+                
+                    
+                  
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">Project Reports</a>
+                </li>
+          </ul>
+                                               <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img class="poweredBy"
+                 alt="Built by Maven"
+                 src="./images/logos/maven-feather.png"
+                 width="90"
+                 height="30"
+                 border="1" />
+          </a>
+                           
+  
+
+  
+    
+            
+  
+    
+            </div>
+        </div>
+        <div id="bodyColumn">
+          <div id="contentBox">
+            <a name="Project_Dependencies"></a><div class="section"><h2>Project Dependencies</h2>
+<a name="compile"></a><div class="section"><h3>compile</h3>
+<p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p>
+<table class="bodyTable"><tr class="a"><th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+</tr>
+<tr class="b"><td>com.sun.jersey.contribs</td>
+<td><a class="externalLink" href="https://jersey.dev.java.net/jersey-contribs/jersey-guice">jersey-guice</a></td>
+<td>1.1.5.1</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>javax.servlet</td>
+<td>servlet-api</td>
+<td>2.5</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.fusesource.scalate</td>
+<td><a class="externalLink" href="http://scalate.fusesource.org/scalate-core">scalate-core</a></td>
+<td>1.0</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>org.scala-lang</td>
+<td><a class="externalLink" href="http://www.scala-lang.org/">scala-compiler</a></td>
+<td>2.8.0.Beta1</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.scala-lang</td>
+<td><a class="externalLink" href="http://www.scala-lang.org/">scala-library</a></td>
+<td>2.8.0.Beta1</td>
+<td>jar</td>
+</tr>
+</table>
+</div>
+<a name="test"></a><div class="section"><h3>test</h3>
+<p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
+<table class="bodyTable"><tr class="a"><th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+</tr>
+<tr class="b"><td>ch.qos.logback</td>
+<td><a class="externalLink" href="http://logback.qos.ch">logback-classic</a></td>
+<td>0.9.18</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>junit</td>
+<td><a class="externalLink" href="http://junit.org">junit</a></td>
+<td>4.7</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.scalatest</td>
+<td><a class="externalLink" href="http://www.artima.com/scalatest/">scalatest</a></td>
+<td>1.0.1-for-scala-2.8.0.Beta1-NQRFPT</td>
+<td>jar</td>
+</tr>
+</table>
+</div>
+</div>
+<a name="Project_Transitive_Dependencies"></a><div class="section"><h2>Project Transitive Dependencies</h2>
+<p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p>
+<a name="compile"></a><div class="section"><h3>compile</h3>
+<p>The following is a list of compile dependencies for this project. These dependencies are required to compile and run the application:</p>
+<table class="bodyTable"><tr class="a"><th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+</tr>
+<tr class="b"><td>aopalliance</td>
+<td><a class="externalLink" href="http://aopalliance.sourceforge.net">aopalliance</a></td>
+<td>1.0</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>asm</td>
+<td><a class="externalLink" href="http://asm.objectweb.org/asm">asm</a></td>
+<td>3.1</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>com.sun.jersey</td>
+<td><a class="externalLink" href="https://jersey.dev.java.net/jersey-core">jersey-core</a></td>
+<td>1.1.5.1</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>com.sun.jersey</td>
+<td><a class="externalLink" href="https://jersey.dev.java.net/jersey-server">jersey-server</a></td>
+<td>1.1.5.1</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>javax.ws.rs</td>
+<td><a class="externalLink" href="https://jsr311.dev.java.net">jsr311-api</a></td>
+<td>1.1.1</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>org.guiceyfruit</td>
+<td>guice-all</td>
+<td>2.0</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.guiceyfruit</td>
+<td>guice-servlet</td>
+<td>2.0</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>org.slf4j</td>
+<td><a class="externalLink" href="http://www.slf4j.org">slf4j-api</a></td>
+<td>1.5.11</td>
+<td>jar</td>
+</tr>
+</table>
+</div>
+<a name="test"></a><div class="section"><h3>test</h3>
+<p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
+<table class="bodyTable"><tr class="b"><th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+</tr>
+<tr class="a"><td>ch.qos.logback</td>
+<td><a class="externalLink" href="http://logback.qos.ch">logback-core</a></td>
+<td>0.9.18</td>
+<td>jar</td>
+</tr>
+</table>
+</div>
+</div>
+<a name="Project_Dependency_Graph"></a><div class="section"><h2>Project Dependency Graph</h2>
+<script language="javascript" type="text/javascript">
+      function toggleDependencyDetail( divId, imgId )
+      {
+        var div = document.getElementById( divId );
+        var img = document.getElementById( imgId );
+        if( div.style.display == '' )
+        {
+          div.style.display = 'none';
+          img.src='./images/icon_info_sml.gif';
+        }
+        else
+        {
+          div.style.display = '';
+          img.src='./images/close.gif';
+        }
+      }
+</script>
+<a name="Dependency_Tree"></a><div class="section"><h3>Dependency Tree</h3>
+<ul><li>org.fusesource.scalate:scalate-guice:jar:1.0 <img id="_964488023" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1381614350', '_964488023' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1381614350" style="display:none"><table class="bodyTable"><tr class="b"><th>Scalate :: Guice</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Guice integration for a Jersey based Scalate web application</p>
+<p><b>URL: </b><a class="externalLink" href="http://scalate.fusesource.org/scalate-guice">http://scalate.fusesource.org/scalate-guice</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>javax.servlet:servlet-api:jar:2.5 (compile) <img id="_1265410362" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1146441377', '_1265410362' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1146441377" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - javax.servlet:servlet-api:jar:2.5</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.fusesource.scalate:scalate-core:jar:1.0 (compile) <img id="_653866195" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1791471691', '_653866195' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1791471691" style="display:none"><table class="bodyTable"><tr class="b"><th>Scalate :: Core</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Scalate Core</p>
+<p><b>URL: </b><a class="externalLink" href="http://scalate.fusesource.org/scalate-core">http://scalate.fusesource.org/scalate-core</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>org.slf4j:slf4j-api:jar:1.5.11 (compile) <img id="_2141989910" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1113068940', '_2141989910' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1113068940" style="display:none"><table class="bodyTable"><tr class="b"><th>SLF4J API Module</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>The slf4j API</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>ch.qos.logback:logback-classic:jar:0.9.18 (runtime) <img id="_25178647" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_853816324', '_25178647' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_853816324" style="display:none"><table class="bodyTable"><tr class="b"><th>Logback Classic Module</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Logback: the reliable, generic, fast and flexible logging library for Java.</p>
+<p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch">http://logback.qos.ch</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a><a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.scala-lang:scala-library:jar:2.8.0.Beta1 (compile) <img id="_740649184" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1919507256', '_740649184' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1919507256" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.scala-lang:scala-library:jar:2.8.0.Beta1</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.scala-lang.org/">http://www.scala-lang.org/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.scala-lang.org/downloads/license.html">BSD-like</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.scala-lang:scala-compiler:jar:2.8.0.Beta1 (compile) <img id="_219273890" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_646357281', '_219273890' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_646357281" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.scala-lang:scala-compiler:jar:2.8.0.Beta1</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.scala-lang.org/">http://www.scala-lang.org/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.scala-lang.org/downloads/license.html">BSD-like</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>com.sun.jersey.contribs:jersey-guice:jar:1.1.5.1 (compile) <img id="_172518715" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_2146874539', '_172518715' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_2146874539" style="display:none"><table class="bodyTable"><tr class="b"><th>jersey-guice</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Projects that provide additional functionality to jersey, like integration
+        with other projects/frameworks.</p>
+<p><b>URL: </b><a class="externalLink" href="https://jersey.dev.java.net/jersey-contribs/jersey-guice">https://jersey.dev.java.net/jersey-contribs/jersey-guice</a></p>
+<p><b>Project License: </b><a class="externalLink" href="https://jersey.dev.java.net/CDDL+GPL.html">CDDL+GPL License</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>com.sun.jersey:jersey-server:jar:1.1.5.1 (compile) <img id="_832623935" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_543659445', '_832623935' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_543659445" style="display:none"><table class="bodyTable"><tr class="b"><th>jersey-server</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Jersey is the open source (under dual CDDL+GPL license) JAX-RS (JSR 311)
+        production quality Reference Implementation for building
+        RESTful Web services.</p>
+<p><b>URL: </b><a class="externalLink" href="https://jersey.dev.java.net/jersey-server">https://jersey.dev.java.net/jersey-server</a></p>
+<p><b>Project License: </b><a class="externalLink" href="https://jersey.dev.java.net/CDDL+GPL.html">CDDL+GPL License</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>com.sun.jersey:jersey-core:jar:1.1.5.1 (compile) <img id="_933074567" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_693598032', '_933074567' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_693598032" style="display:none"><table class="bodyTable"><tr class="b"><th>jersey-core</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Jersey is the open source (under dual CDDL+GPL license) JAX-RS (JSR 311)
+        production quality Reference Implementation for building
+        RESTful Web services.</p>
+<p><b>URL: </b><a class="externalLink" href="https://jersey.dev.java.net/jersey-core">https://jersey.dev.java.net/jersey-core</a></p>
+<p><b>Project License: </b><a class="externalLink" href="https://jersey.dev.java.net/CDDL+GPL.html">CDDL+GPL License</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>javax.ws.rs:jsr311-api:jar:1.1.1 (compile) <img id="_132115214" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1407267397', '_132115214' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1407267397" style="display:none"><table class="bodyTable"><tr class="b"><th>jsr311-api</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="https://jsr311.dev.java.net">https://jsr311.dev.java.net</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cddl1.php">CDDL License</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>asm:asm:jar:3.1 (compile) <img id="_1592016386" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1582765057', '_1592016386' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1582765057" style="display:none"><table class="bodyTable"><tr class="b"><th>ASM Core</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>A very small and fast Java bytecode manipulation framework</p>
+<p><b>URL: </b><a class="externalLink" href="http://asm.objectweb.org/asm">http://asm.objectweb.org/asm</a></p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>aopalliance:aopalliance:jar:1.0 (compile) <img id="_1226337433" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1727371901', '_1226337433' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1727371901" style="display:none"><table class="bodyTable"><tr class="b"><th>AOP alliance</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>AOP Alliance</p>
+<p><b>URL: </b><a class="externalLink" href="http://aopalliance.sourceforge.net">http://aopalliance.sourceforge.net</a></p>
+<p><b>Project License: </b>Public Domain</p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.guiceyfruit:guice-all:jar:2.0 (compile) <img id="_1658618620" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_17728729', '_1658618620' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_17728729" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.guiceyfruit:guice-all:jar:2.0</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.guiceyfruit:guice-servlet:jar:2.0 (compile) <img id="_227694866" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_2080596012', '_227694866' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_2080596012" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.guiceyfruit:guice-servlet:jar:2.0</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>org.scalatest:scalatest:jar:1.0.1-for-scala-2.8.0.Beta1-NQRFPT (test) <img id="_356030419" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_2103907932', '_356030419' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_2103907932" style="display:none"><table class="bodyTable"><tr class="b"><th>ScalaTest</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>ScalaTest is a free, open-source testing toolkit for Scala and Java programmers.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.artima.com/scalatest/">http://www.artima.com/scalatest/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0">the Apache License, ASL Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>junit:junit:jar:4.7 (test) <img id="_209316890" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_889530721', '_209316890' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_889530721" style="display:none"><table class="bodyTable"><tr class="b"><th>JUnit</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>JUnit is a regression testing framework written by Erich Gamma and Kent Beck. It is used by the developer who implements unit tests in Java.</p>
+<p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>ch.qos.logback:logback-classic:jar:0.9.18 (test) <img id="_1491992532" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1801318601', '_1491992532' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1801318601" style="display:none"><table class="bodyTable"><tr class="b"><th>Logback Classic Module</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Logback: the reliable, generic, fast and flexible logging library for Java.</p>
+<p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch">http://logback.qos.ch</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a><a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>ch.qos.logback:logback-core:jar:0.9.18 (test) <img id="_923440387" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1592058573', '_923440387' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1592058573" style="display:none"><table class="bodyTable"><tr class="b"><th>Logback Core Module</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>Logback: the generic, reliable, fast and flexible logging library for Java.</p>
+<p><b>URL: </b><a class="externalLink" href="http://logback.qos.ch">http://logback.qos.ch</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License - v 1.0</a><a class="externalLink" href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.slf4j:slf4j-api:jar:1.5.11 (test) <img id="_1722773518" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_3904783', '_1722773518' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_3904783" style="display:none"><table class="bodyTable"><tr class="b"><th>SLF4J API Module</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>The slf4j API</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.slf4j.org">http://www.slf4j.org</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>org.scala-lang:scala-library:jar:2.8.0.Beta1 (compile) <img id="_1626419564" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_951280252', '_1626419564' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_951280252" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.scala-lang:scala-library:jar:2.8.0.Beta1</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.scala-lang.org/">http://www.scala-lang.org/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.scala-lang.org/downloads/license.html">BSD-like</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.scala-lang:scala-compiler:jar:2.8.0.Beta1 (compile) <img id="_1627270081" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_629622795', '_1627270081' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_629622795" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.scala-lang:scala-compiler:jar:2.8.0.Beta1</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.scala-lang.org/">http://www.scala-lang.org/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.scala-lang.org/downloads/license.html">BSD-like</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>org.scala-lang:scala-library:jar:2.8.0.Beta1 (compile) <img id="_54487538" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1284350592', '_54487538' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1284350592" style="display:none"><table class="bodyTable"><tr class="b"><th>Unnamed - org.scala-lang:scala-library:jar:2.8.0.Beta1</th>
+</tr>
+<tr class="a"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://www.scala-lang.org/">http://www.scala-lang.org/</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.scala-lang.org/downloads/license.html">BSD-like</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<a name="Licenses"></a><div class="section"><h2>Licenses</h2>
+<p><b>Public Domain: </b>AOP alliance</p>
+<p><b>Unknown: </b>ASM Core, Unnamed - javax.servlet:servlet-api:jar:2.5, Unnamed - org.guiceyfruit:guice-all:jar:2.0, Unnamed - org.guiceyfruit:guice-servlet:jar:2.0</p>
+<p><b>Eclipse Public License - v 1.0: </b>Logback Classic Module, Logback Core Module</p>
+<p><b>CDDL+GPL License: </b>jersey-core, jersey-guice, jersey-server</p>
+<p><b>Common Public License Version 1.0: </b>JUnit</p>
+<p><b>GNU Lesser General Public License: </b>Logback Classic Module, Logback Core Module</p>
+<p><b>MIT License: </b>SLF4J API Module</p>
+<p><b>The Apache Software License, Version 2.0: </b>Scalate :: Core, Scalate :: Guice</p>
+<p><b>CDDL License: </b>jsr311-api</p>
+<p><b>the Apache License, ASL Version 2.0: </b>ScalaTest</p>
+<p><b>BSD-like: </b>Unnamed - org.scala-lang:scala-compiler:jar:2.8.0.Beta1, Unnamed - org.scala-lang:scala-library:jar:2.8.0.Beta1</p>
+</div>
+<a name="Dependency_File_Details"></a><div class="section"><h2>Dependency File Details</h2>
+<table class="bodyTable"><tbody><tr class="b"><th align="left">Filename</th>
+<th align="right">Size</th>
+<th align="right">Entries</th>
+<th align="right">Classes</th>
+<th align="right">Packages</th>
+<th align="center">JDK Rev</th>
+<th align="center">Debug</th>
+</tr>
+<tr class="a"><td align="left">aopalliance-1.0.jar</td>
+<td align="right">4.36 kB</td>
+<td align="right">15</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="center">1.3</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">asm-3.1.jar</td>
+<td align="right">42.02 kB</td>
+<td align="right">24</td>
+<td align="right">23</td>
+<td align="right">2</td>
+<td align="center">1.2</td>
+<td align="center">release</td>
+</tr>
+<tr class="a"><td align="left">logback-classic-0.9.18.jar</td>
+<td align="right">166.67 kB</td>
+<td align="right">153</td>
+<td align="right">123</td>
+<td align="right">18</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">logback-core-0.9.18.jar</td>
+<td align="right">252.35 kB</td>
+<td align="right">240</td>
+<td align="right">207</td>
+<td align="right">23</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">jersey-core-1.1.5.1.jar</td>
+<td align="right">336.22 kB</td>
+<td align="right">302</td>
+<td align="right">258</td>
+<td align="right">21</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">jersey-server-1.1.5.1.jar</td>
+<td align="right">567.17 kB</td>
+<td align="right">536</td>
+<td align="right">454</td>
+<td align="right">53</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">jersey-guice-1.1.5.1.jar</td>
+<td align="right">11.63 kB</td>
+<td align="right">20</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">servlet-api-2.5.jar</td>
+<td align="right">102.87 kB</td>
+<td align="right">68</td>
+<td align="right">42</td>
+<td align="right">2</td>
+<td align="center">1.4</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">jsr311-api-1.1.1.jar</td>
+<td align="right">45.28 kB</td>
+<td align="right">67</td>
+<td align="right">55</td>
+<td align="right">3</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">junit-4.7.jar</td>
+<td align="right">226.91 kB</td>
+<td align="right">261</td>
+<td align="right">225</td>
+<td align="right">29</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">scalate-core-1.0.jar</td>
+<td align="right">855.41 kB</td>
+<td align="right">742</td>
+<td align="right">719</td>
+<td align="right">12</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">guice-all-2.0.jar</td>
+<td align="right">653.07 kB</td>
+<td align="right">570</td>
+<td align="right">547</td>
+<td align="right">11</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">guice-servlet-2.0.jar</td>
+<td align="right">50.34 kB</td>
+<td align="right">56</td>
+<td align="right">48</td>
+<td align="right">1</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">scala-compiler-2.8.0.Beta1.jar</td>
+<td align="right">7.67 MB</td>
+<td align="right">5,366</td>
+<td align="right">5,298</td>
+<td align="right">37</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">scala-library-2.8.0.Beta1.jar</td>
+<td align="right">4.59 MB</td>
+<td align="right">3,382</td>
+<td align="right">3,327</td>
+<td align="right">51</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">scalatest-1.0.1-for-scala-2.8.0.Beta1-NQRFPT.jar</td>
+<td align="right">1.64 MB</td>
+<td align="right">1,194</td>
+<td align="right">1,156</td>
+<td align="right">11</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">slf4j-api-1.5.11.jar</td>
+<td align="right">23.12 kB</td>
+<td align="right">32</td>
+<td align="right">21</td>
+<td align="right">3</td>
+<td align="center">1.3</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><th align="left">Total</th>
+<th align="right">Size</th>
+<th align="right">Entries</th>
+<th align="right">Classes</th>
+<th align="right">Packages</th>
+<th align="center">JDK Rev</th>
+<th align="center">Debug</th>
+</tr>
+<tr class="a"><td align="right">17</td>
+<td align="right">17.16 MB</td>
+<td align="right">13,028</td>
+<td align="right">12,518</td>
+<td align="right">281</td>
+<td align="center">1.5</td>
+<td align="right">16</td>
+</tr>
+<tr class="b"><td align="right">compile: 13</td>
+<td align="right">compile: 14.89 MB</td>
+<td align="right">compile: 11,180</td>
+<td align="right">compile: 10,807</td>
+<td align="right">compile: 200</td>
+<td align="center">-</td>
+<td align="right">compile: 12</td>
+</tr>
+<tr class="a"><td align="right">test: 4</td>
+<td align="right">test: 2.27 MB</td>
+<td align="right">test: 1,848</td>
+<td align="right">test: 1,711</td>
+<td align="right">test: 81</td>
+<td align="center">-</td>
+<td align="right">test: 4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a name="Dependency_Repository_Locations"></a><div class="section"><h2>Dependency Repository Locations</h2>
+<table class="bodyTable"><tbody><tr class="b"><th align="left">Repo ID</th>
+<th align="left">URL</th>
+<th align="center">Release</th>
+<th align="center">Snapshot</th>
+</tr>
+<tr class="a"><td align="left">guice-maven</td>
+<td align="left"><a class="externalLink" href="http://guiceyfruit.googlecode.com/svn/repo/releases">http://guiceyfruit.googlecode.com/svn/repo/releases</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="b"><td align="left">m1.dev.java.net</td>
+<td align="left"><a class="externalLink" href="http://download.java.net/maven/1">http://download.java.net/maven/1</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="a"><td align="left">glassfish-repository</td>
+<td align="left"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish">http://maven.glassfish.org/content/groups/glassfish</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="b"><td align="left">m2.dev.java.net</td>
+<td align="left"><a class="externalLink" href="http://download.java.net/maven/2">http://download.java.net/maven/2</a></td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="a"><td align="left">central</td>
+<td align="left"><a class="externalLink" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a></td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+<p>Repository locations for each of the Dependencies.</p>
+<table class="bodyTable"><tbody><tr class="b"><th align="left">Artifact</th>
+<th align="center">guice-maven</th>
+<th align="center">m1.dev.java.net</th>
+<th align="center">glassfish-repository</th>
+<th align="center">m2.dev.java.net</th>
+<th align="center">central</th>
+</tr>
+<tr class="a"><td align="left">aopalliance:aopalliance:jar:1.0</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">asm:asm:jar:3.1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/asm/asm/3.1/asm-3.1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/asm/asm/3.1/asm-3.1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">ch.qos.logback:logback-classic:jar:0.9.18</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/ch/qos/logback/logback-classic/0.9.18/logback-classic-0.9.18.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/0.9.18/logback-classic-0.9.18.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">ch.qos.logback:logback-core:jar:0.9.18</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/ch/qos/logback/logback-core/0.9.18/logback-core-0.9.18.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/ch/qos/logback/logback-core/0.9.18/logback-core-0.9.18.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">com.sun.jersey:jersey-core:jar:1.1.5.1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/com/sun/jersey/jersey-core/1.1.5.1/jersey-core-1.1.5.1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://download.java.net/maven/2/com/sun/jersey/jersey-core/1.1.5.1/jersey-core-1.1.5.1.jar"><img alt="Found at http://download.java.net/maven/2" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+</tr>
+<tr class="b"><td align="left">com.sun.jersey:jersey-server:jar:1.1.5.1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/com/sun/jersey/jersey-server/1.1.5.1/jersey-server-1.1.5.1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://download.java.net/maven/2/com/sun/jersey/jersey-server/1.1.5.1/jersey-server-1.1.5.1.jar"><img alt="Found at http://download.java.net/maven/2" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+</tr>
+<tr class="a"><td align="left">com.sun.jersey.contribs:jersey-guice:jar:1.1.5.1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/com/sun/jersey/contribs/jersey-guice/1.1.5.1/jersey-guice-1.1.5.1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://download.java.net/maven/2/com/sun/jersey/contribs/jersey-guice/1.1.5.1/jersey-guice-1.1.5.1.jar"><img alt="Found at http://download.java.net/maven/2" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+</tr>
+<tr class="b"><td align="left">javax.servlet:servlet-api:jar:2.5</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://download.java.net/maven/1/javax.servlet/jars/servlet-api-2.5.jar"><img alt="Found at http://download.java.net/maven/1" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">javax.ws.rs:jsr311-api:jar:1.1.1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://download.java.net/maven/2/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar"><img alt="Found at http://download.java.net/maven/2" src="images/icon_success_sml.gif" /></a></td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">junit:junit:jar:4.7</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/junit/junit/4.7/junit-4.7.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/junit/junit/4.7/junit-4.7.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">org.fusesource.scalate:scalate-core:jar:1.0</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/org/fusesource/scalate/scalate-core/1.0/scalate-core-1.0.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/1.0/scalate-core-1.0.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">org.guiceyfruit:guice-all:jar:2.0</td>
+<td align="center"><a class="externalLink" href="http://guiceyfruit.googlecode.com/svn/repo/releases/org/guiceyfruit/guice-all/2.0/guice-all-2.0.jar"><img alt="Found at http://guiceyfruit.googlecode.com/svn/repo/releases" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="a"><td align="left">org.guiceyfruit:guice-servlet:jar:2.0</td>
+<td align="center"><a class="externalLink" href="http://guiceyfruit.googlecode.com/svn/repo/releases/org/guiceyfruit/guice-servlet/2.0/guice-servlet-2.0.jar"><img alt="Found at http://guiceyfruit.googlecode.com/svn/repo/releases" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="b"><td align="left">org.scala-lang:scala-compiler:jar:2.8.0.Beta1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/org/scala-lang/scala-compiler/2.8.0.Beta1/scala-compiler-2.8.0.Beta1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.8.0.Beta1/scala-compiler-2.8.0.Beta1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">org.scala-lang:scala-library:jar:2.8.0.Beta1</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/org/scala-lang/scala-library/2.8.0.Beta1/scala-library-2.8.0.Beta1.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.8.0.Beta1/scala-library-2.8.0.Beta1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">org.scalatest:scalatest:jar:1.0.1-for-scala-2.8.0.Beta1-NQRFPT</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr class="a"><td align="left">org.slf4j:slf4j-api:jar:1.5.11</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://maven.glassfish.org/content/groups/glassfish/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar"><img alt="Found at http://maven.glassfish.org/content/groups/glassfish" src="images/icon_success_sml.gif" /></a></td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.5.11/slf4j-api-1.5.11.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><th align="left">Total</th>
+<th align="center">guice-maven</th>
+<th align="center">m1.dev.java.net</th>
+<th align="center">glassfish-repository</th>
+<th align="center">m2.dev.java.net</th>
+<th align="center">central</th>
+</tr>
+<tr class="a"><td align="left">17 (compile: 13, test: 4)</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">14</td>
+<td align="center">4</td>
+<td align="center">11</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+          </div>
+        </div>
+        <div class="clear">
+          <hr/>
+        </div>
+        <div id="footer">
+          <div class="xright">Copyright &#169;          
+   
+          2010
+    
+                    <a href="http://fusesource.com/">FuseSource</a>.
+            All Rights Reserved.    
+  
+
+  
+    
+            
+  
+    
+  </div>
+          <div class="clear">
+            <hr/>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

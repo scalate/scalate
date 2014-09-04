@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../../../../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../../../../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Scalate 1.3 Released</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../../../../index.html">Scalate 1.3-SNAPSHOT</a></li><li class="webgen-menu-level1"><a href="../../../../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../../../../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../../../../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../../../../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../../../../documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class="post"> 
+  <h2>Scalate 1.3 Released</h2>
+  <div class="details">Posted by James Strachan on Sun Sep 05 12:06:40 +0000 2010 </div>
+  <p>The <a href='http://scalate.fusesource.org'>Scalate team</a> is pleased to announce the availability of Scalate 1.3.</p>
+
+<p>Scalate is a <a href='http://www.scala-lang.org'>Scala 2.8</a> based <a href='http://en.wikipedia.org/wiki/Template_engine_(web)'>template engine</a> which can be used stand alone, with servlets or web frameworks like <a href='http://scalate.fusesource.org/documentation/jog.html'>JAXRS</a>, <a href='(http://scalate.fusesource.org/documentation/lift.html'>Lift</a> or <a href='http://github.com/pk11/play-scalate'>Play</a> or in integration frameworks like <a href='http://camel.apache.org/scalate.html'>Apache Camel</a>.</p>
+
+<p>The following template languages are supported through the same common API:</p>
+
+<ul>
+<li><a href='http://scalate.fusesource.org/documentation/ssp-reference.html#syntax'>Ssp</a> which is like a Scala version of <a href='http://velocity.apache.org/'>Velocity</a>, JSP or Erb from Rails</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/scaml-reference.html'>Scaml</a> which is a Scala dialect of <a href='http://haml-lang.com/'>Haml</a> for very DRY markup along with the <a href='http://scalate.fusesource.org/documentation/scaml-reference.html#jade'>Jade</a> syntax</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/mustache.html'>Mustache</a> which is a Scala dialect of <a href='http://mustache.github.com/'>Mustache</a> for logic-less templates which also work inside the browser using <a href='http://github.com/janl/mustache.js'>mustache.js</a></li>
+</ul>
+
+<p>All expressions inside <a href='http://scalate.fusesource.org/documentation/ssp-reference.html#syntax'>Ssp</a> and <a href='http://scalate.fusesource.org/documentation/scaml-reference.html'>Scaml</a> benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don&#8217;t leave any mistakes in your templates.</p>
+
+<p><strong>Scalate 1.3 Highlights</strong></p>
+
+<ul>
+<li><a href='http://scalate.fusesource.org/documentation/scaml-reference.html#jade'>Jade</a> template syntax is now supported which is a dialect of <a href='http://haml-lang.com/'>Haml</a> or <a href='http://scalate.fusesource.org/documentation/scaml-reference.html'>Scaml</a></li>
+
+<li>New <a href='http://scalate.fusesource.org/documentation/user-guide.html#using_scalate_as_servlet_filter_in_your_web_application'>Servlet Filter</a> which allows more flexible mapping of templates in a web application. For example you can have the request <em>/foo.xml</em> automatically bound to <em>/foo.xml.ssp</em> if the template exists letting you easily implement views requiring a controller or explicit routing in your MVC layer.</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/jspConvert.html'>JSP Converter</a> lets you migrate your existing JSP web application across to Scalate</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/htmlConvert.html'>HTML Converter</a> lets you migrate your existing HTML files easily to <a href='http://scalate.fusesource.org/documentation/scaml-reference.html'>Scaml</a> or <a href='http://scalate.fusesource.org/documentation/scaml-reference.html#jade'>Jade</a> for extra DRY markup</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/user-guide.html#dry'>DRY template imports, values and logic</a> thanks to Scalate Package objects which allow imports, values and methods to be shared across templates some or all of your templates to reduce noise inside your templates.</li>
+
+<li><a href='http://scalate.fusesource.org/documentation/siteGen.html'>Site Generator</a> lets you generate static or dynamic websites using wiki markup together with exporting wiki content from Confluence wikis to migrate to using git/svn as your wiki content repository. You can also use <a href='http://scalate.fusesource.org/documentation/siteGen.html#bootstrapping'>a common bootstrap approach</a> now across both static website generation and web applications - such as to configure wiki macros in a canonical way.</li>
+
+<li>More filters and pipelines supported such as confluence as well as the existing markdown which are particularly useful for website generation (static or semi-static).</li>
+
+<li>The <a href='http://scalate.fusesource.org/documentation/tool.html'>Scalate Tool</a> now comes with a full interactive shell with full tab completion to make it easier to use the tool either for one off or interactive use.</li>
+</ul>
+
+<p>For more detail see the <a href='http://scalate.assembla.com/spaces/scalate/milestones/208429-1-3'>Full Change Log</a></p>
+
+<p><a href='http://scalate.fusesource.org/community.html'>Feedback</a> is always welcome!</p>
+  
+</div>
+
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

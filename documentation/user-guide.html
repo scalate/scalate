@@ -1,0 +1,687 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Scalate User Guide</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.6.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/user-guide.page">documentation/user-guide.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/_user-guide.md">documentation/_user-guide.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Scalate_User_Guide">Scalate User Guide</h1>
+
+<p>Scala Template Engine: like HAML or JSP without the crap but with added Scala coolness</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<h1 id = "Scalate_User_Guide">Scalate User Guide</h1>
+
+<ul>
+<li>Table of contents
+<div class="toc"><ul style="list-style:none;">
+  <li><a href="#Scalate_User_Guide">Scalate User Guide</a></li>
+  <li><ul style="list-style:none;">
+    <li><a href="#Features">Features</a></li>
+    <li><a href="#Template_Languages">Template Languages</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Ssp__Scala_Server_Pages_">Ssp (Scala Server Pages)</a></li>
+      <li><a href="#Scaml__Scala_Markup_Language_">Scaml (Scala Markup Language)</a></li>
+      <li><a href="#Jade">Jade</a></li>
+      <li><a href="#Mustache">Mustache</a></li>
+    </ul></li>
+    <li><a href="#Calling_Scala_functions">Calling Scala functions</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#accessing_request_state_inside_a_scala_function">Accessing request state inside a Scala function</a></li>
+      <li><a href="#passing_a_template_block_to_a_scala_function">Passing a template block to a Scala function</a></li>
+    </ul></li>
+    <li><a href="#Views">Views</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#View_names">View names</a></li>
+      <li><a href="#The__it__variable">The 'it' variable</a></li>
+      <li><a href="#DRY_IT">DRY IT</a></li>
+      <li><a href="#Collections">Collections</a></li>
+    </ul></li>
+    <li><a href="#Render_templates">Render templates</a></li>
+    <li><a href="#layouts">Layouts</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Changing_the_title_or_layout_template">Changing the title or layout template</a></li>
+      <li><a href="#Disabling_layouts">Disabling layouts</a></li>
+      <li><a href="#explicit_layouts_inside_a_template">Explicit layouts inside a template</a></li>
+    </ul></li>
+    <li><a href="#Capturing_output">Capturing output</a></li>
+    <li><a href="#dry">Making templates more DRY</a></li>
+    <li><a href="#Scalate_Samples">Scalate Samples</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#Getting_Started">Getting Started</a></li>
+      <li><a href="#Running_the_Sample_Web_Application">Running the Sample Web Application</a></li>
+    </ul></li>
+    <li><a href="#Using_Scalate">Using Scalate</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#using_scalate_as_servlet_filter_in_your_web_application">Using Scalate as Servlet filter in your Web Application</a></li>
+      <li><a href="#Using_Scalate_with_JAXRS_Jersey">Using Scalate with JAXRS/Jersey</a></li>
+      <li><a href="#Embedding_Scalate_in_your_Application_or_Framework">Embedding Scalate in your Application or Framework</a></li>
+      <li><a href="#Working_Directory__Caching__Reloading">Working Directory, Caching, Reloading</a></li>
+      <li><a href="#Configuring_the_TemplateEngine_in_your_web_app">Configuring the TemplateEngine in your web app</a></li>
+      <li><a href="#precompiling_templates">Precompiling Templates</a></li>
+      <li><a href="#Using_Scalate_on_GAE">Using Scalate on GAE</a></li>
+      <li><a href="#Possible_Gotchas">Possible Gotchas</a></li>
+    </ul></li>
+    <li><a href="#IDE_plugins">IDE plugins</a></li>
+    <li><ul style="list-style:none;">
+      <li><a href="#TextMate_plugin">TextMate plugin</a></li>
+      <li><a href="#If_you_are_an_IDE_hacker">If you are an IDE hacker</a></li>
+    </ul></li>
+  </ul></li>
+</ul></div></li>
+</ul>
+
+<p>Scalate is a template engine based on the Scala language.</p>
+
+<h2 id = "Features">Features</h2>
+
+<ul>
+<li><p>Supports multiple template syntaxes</p>
+
+<ul>
+<li><a href="ssp-reference.html">SSP</a> which is like <a href="http://velocity.apache.org/">Velocity</a>, JSP or Erb from Rails</li>
+<li><a href="scaml-reference.html">Scaml</a> which is a Scala dialect of <a href="http://haml-lang.com/">Haml</a> along with the <a href="jade.html">Jade syntax</a></li>
+<li><a href="mustache.html">Mustache</a> which is a Scala dialect of <a href="http://mustache.github.com/">Mustache</a> for logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a></li>
+</ul></li>
+<li><p>Support for <a href="#layouts">layouts</a> of templates and wiki markup</p></li>
+<li>Has a powerful <a href="console.html">console</a> and <a href="tool.html">command line shell</a> with Scalate converters for <a href="jspConvert.html">JSP</a> or <a href="htmlConvert.html">HTML</a></li>
+<li>Works well with a number of <a href="frameworks.html">frameworks</a> or easily <a href="scalate-embedding-guide.html">embed into your application</a></li>
+<li>Can be used in any web application or used in a standalone application to generate things like emails or source code or even used to generate your <a href="siteGen.html">static or semi-static website</a>.</li>
+</ul>
+
+<h2 id = "Template_Languages">Template Languages</h2>
+
+<p>Scalate supports a number of different template languages as template languages have various different sweet spots depending on your requirements.</p>
+
+<h3 id = "Ssp__Scala_Server_Pages_">Ssp (Scala Server Pages)</h3>
+
+<p>If you know <a href="http://velocity.apache.org/">Velocity</a>, JSP or Erb from Rails then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.</p>
+
+<div class="compare"><div class="compare-left"><h3>.ssp file</h3><div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">user:</span> <span class="n">User</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>Hi ${user.name},<span class="nt">&lt;/p&gt;</span>&#x000A;#for (i <span class="nt">&lt;-</span> <span class="err">1</span> <span class="err">to</span> <span class="err">3)</span>&#x000A;<span class="err">&lt;p</span><span class="nt">&gt;</span>${i}<span class="nt">&lt;/p&gt;</span>&#x000A;#end&#x000A;<span class="nt">&lt;p&gt;</span>See, I can count!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Hi James,<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>1<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>2<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>3<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>See, I can count!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>For full documentation of the Ssp syntax see the <a href="ssp-reference.html">Ssp Reference Guide</a></p>
+
+<h3 id = "Scaml__Scala_Markup_Language_">Scaml (Scala Markup Language)</h3>
+
+<p>Scaml is a markup language
+that's used to cleanly and simply describe the XHTML of any web document,
+without the use of inline code.  It is Scala version of
+<a href="http://haml-lang.com/">Haml</a>.
+Scaml functions as a replacement
+for inline page templating systems such as PHP, ERB, and ASP.
+However, Scaml avoids the need for explicitly coding XHTML into the template,
+because it is actually an abstract description of the XHTML,
+with some code to generate dynamic content.</p>
+
+<div class="compare"><div class="compare-left"><h3>.scaml file</h3><div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">var</span> <span class="n">user</span><span class="k">:</span> <span class="kt">User</span>&#x000A;<span class="nt">%p</span> Hi <span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="si">}</span>,&#x000A;<span class="p">-</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">3</span><span class="o">)</span>&#x000A;  <span class="nt">%p</span><span class="p">=</span> <span class="n">i</span>&#x000A;<span class="nt">%p</span> See, I can count!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Hi James,<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>1<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>2<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>3<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>See, I can count!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>For full documentation of the Scaml syntax see the <a href="scaml-reference.html">Scaml Reference Guide</a></p>
+
+<h3 id = "Jade">Jade</h3>
+
+<p>The <a href="jade.html">Jade syntax</a> is similar to <a href="scaml-reference.html">Scaml</a>, its a <a href="http://jade-lang.com/">modified dialect</a> of <a href="http://haml-lang.com/">Haml</a> where element names do not require a leading % symbol which can make it a little easier to read.</p>
+
+<div class="compare"><div class="compare-left"><h3>.jade file</h3><div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">var</span> <span class="n">user</span><span class="k">:</span> <span class="kt">User</span>&#x000A;<span class="nt">p</span> Hi <span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="si">}</span>,&#x000A;<span class="p">-</span> <span class="k">for</span><span class="o">(</span><span class="n">i</span> <span class="k">&lt;-</span> <span class="mi">1</span> <span class="n">to</span> <span class="mi">3</span><span class="o">)</span>&#x000A;  <span class="nt">p</span><span class="p">=</span> <span class="n">i</span>&#x000A;<span class="nt">p</span> See, I can count!&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;p&gt;</span>Hi James,<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>1<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>2<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>3<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>See, I can count!<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>For more details see the <a href="jade.html">Jade reference</a> </p>
+
+<h3 id = "Mustache">Mustache</h3>
+
+<p>The <a href="mustache.html">Scalate Mustache</a> template language is a Scala dialect of cross-language <a href="http://mustache.github.com/">Mustache</a> template engine for logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a>. </p>
+
+<p>Mustache is logic-less, using simple tags which can be used to represent loops, expressions or logical branching.</p>
+
+<p>Given the following attributes:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nc">Map</span><span class="o">(</span>&#x000A;  <span class="s">&quot;name&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Chris&quot;</span><span class="o">,</span>&#x000A;  <span class="s">&quot;value&quot;</span> <span class="o">-&gt;</span> <span class="mi">10000</span><span class="o">,</span>&#x000A;  <span class="s">&quot;taxed_value&quot;</span> <span class="o">-&gt;</span> <span class="mi">10000</span> <span class="o">-</span> <span class="o">(</span><span class="mi">10000</span> <span class="o">*</span> <span class="mf">0.4</span><span class="o">),</span>&#x000A;  <span class="s">&quot;in_ca&quot;</span> <span class="o">-&gt;</span> <span class="kc">true</span>&#x000A;  <span class="o">)</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then the following mustache file will generate</p>
+
+<div class="compare"><div class="compare-left"><h3>.mustache file</h3><div class="syntax"><div class="highlight"><pre>Hello {{name}}&#x000A;You have just won ${{value}}!&#x000A;{{#in_ca}}&#x000A;Well, ${{taxed_value}}, after taxes.&#x000A;{{/in_ca}}&#x000A;</pre></div>&#x000A;</div></div><div class="compare-right"><h3>produces</h3><div class="syntax"><div class="highlight"><pre>Hello Chris&#x000A;You have just won $10000!&#x000A;Well, $6000.0, after taxes.&#x000A;</pre></div>&#x000A;</div></div><br class="clear"/></div>
+
+<p>For more detail see the <a href="mustache.html">Mustache Reference</a></p>
+
+<h2 id = "Calling_Scala_functions">Calling Scala functions</h2>
+
+<p>Its very simple to invoke any scala function inside Scalate. By default if the function you call returns NodeSeq then the output will already be properly XML encoded; so things output nicely without any possible cross scripting hacks etc.</p>
+
+<p>For example the following function creates a hypertext link using Scala's XML support</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">object</span> <span class="nc">Cheese</span> <span class="o">{</span>&#x000A;  <span class="k">def</span> <span class="n">foo</span><span class="o">(</span><span class="n">productId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> &#x000A;    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">={</span><span class="s">&quot;/products/&quot;</span> <span class="o">+</span> <span class="n">productId</span><span class="o">}</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Product link&quot;</span><span class="o">&gt;</span><span class="nc">My</span> <span class="nc">Product</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>This function can be invoked in your <a href="ssp-reference.html">Ssp</a> code as</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="kn">import</span> <span class="nn">Cheese._</span>  <span class="k">%&gt;</span>&#x000A;${foo(123)}&#x000A;</pre></div>&#x000A;</div>
+
+<p>If your template is in the same package as the <b>Cheese</b> class then the import is not required.</p>
+
+<p>The <a href="scaml-reference.html">Scaml</a> version is</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">import</span> <span class="nn">Cheese._</span>&#x000A;<span class="p">=</span> <span class="n">foo</span><span class="o">(</span><span class="mi">123</span><span class="o">)</span>    &#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "accessing_request_state_inside_a_scala_function">Accessing request state inside a Scala function</h3>
+
+<p>As you write snippet functions for use in your templates you might find yourself needing to access the current HttpServletRequest or HttpServletResponse.</p>
+
+<p>There is a simple helper import you can use&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">import</span> <span class="nn">org.fusesource.scalate.servlet.ServletRenderContext._</span>&#x000A;&#x000A;<span class="k">object</span> <span class="nc">MySnippets</span> <span class="o">{</span>&#x000A;  <span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="o">{</span>&#x000A;    <span class="c1">// thanks to the import I now have access to the renderContext</span>&#x000A;    <span class="c1">// along with the standard servlet objects:</span>&#x000A;    <span class="c1">// request, response, servletContext, servletConfig</span>&#x000A;    <span class="n">request</span><span class="o">.</span><span class="n">getParameter</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">)</span> &#x000A;  <span class="o">}</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>This helps you keep your snippet functions nice and small.</p>
+
+<h3 id = "passing_a_template_block_to_a_scala_function">Passing a template block to a Scala function</h3>
+
+<p>To use the JSP concept of custom tags, you might want to pass a block of template to a function for further processing or transformation.</p>
+
+<p>This can be done by just adding a parameter list of the form <b>(body: => Unit)</b> to your method. For example</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">import</span> <span class="nn">org.fusesource.scalate.RenderContext.capture</span>&#x000A;&#x000A;<span class="k">object</span> <span class="nc">Cheese</span> <span class="o">{</span>&#x000A;  <span class="k">def</span> <span class="n">foo</span><span class="o">(</span><span class="n">productId</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)(</span><span class="n">body</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Unit</span><span class="o">)</span> <span class="k">=</span> &#x000A;    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">={</span><span class="s">&quot;/products/&quot;</span> <span class="o">+</span> <span class="n">productId</span><span class="o">}</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Product link&quot;</span><span class="o">&gt;</span><span class="n">capture</span><span class="o">(</span><span class="n">body</span><span class="o">)&lt;/</span><span class="n">a</span><span class="o">&gt;</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>See how the body is captured using the <b>capture(body)</b> function. Now the text of the hypertext link can be specified as a block of template in <a href="ssp-reference.html">Ssp</a></p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">id:</span> <span class="n">Int</span> <span class="o">=</span> <span class="mi">123</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%</span> <span class="kn">import</span> <span class="nn">Cheese._</span>  <span class="k">%&gt;</span>&#x000A;&#x000A;<span class="k">&lt;%=</span> <span class="n">foo</span><span class="o">(</span><span class="n">id</span><span class="o">)</span> <span class="o">{</span> <span class="k">%&gt;</span>&#x000A;  product ${id}&#x000A;<span class="k">&lt;%</span> <span class="o">}</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>This should generate something like</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/products/123&quot;</span> <span class="na">title=</span><span class="s">&quot;Product link&quot;</span><span class="nt">&gt;</span>product 123<span class="nt">&lt;/a&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Or using <a href="ssp-reference.html#velocity&#95;style&#95;directives">Velocity style directives</a> this might look like this</p>
+
+<div class="syntax"><div class="highlight"><pre>#do(foo(id))&#x000A;product ${id}&#x000A;#end&#x000A;</pre></div>&#x000A;</div>
+
+<p>The <a href="scaml-reference.html">Scaml</a> version is</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-@ </span><span class="k">val</span> <span class="n">id</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">123</span>&#x000A;<span class="p">-</span> <span class="k">import</span> <span class="nn">Cheese._</span>&#x000A;&#x000A;<span class="p">=</span> <span class="n">foo</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>  &#x000A;  product <span class="si">#{</span><span class="n">id</span><span class="si">}</span>  &#x000A;</pre></div>&#x000A;</div>
+
+<p>Notice the <a href="scaml-reference.html">Scaml</a> version is simpler, not requiring the open and close { } tokens as it uses indentation.</p>
+
+<h2 id = "Views">Views</h2>
+
+<p>From within your Scala code or inside a template you often want to render an object or collection of objects. 
+Scalate uses a convention over configuration mechanism so that you can render any object using a simple method call in your template. e.g. in SSP</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">val</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>Something...<span class="nt">&lt;/p&gt;</span>&#x000A;&#x000A;<span class="k">&lt;%</span> <span class="n">view</span><span class="o">(</span><span class="n">user</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;&#x000A;<span class="nt">&lt;p&gt;</span>... more stuff <span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "View_names">View names</h3>
+
+<p>The view method takes a model object and an optional view name. The view name defaults to <em>"index"</em> if you do not specify one. For exmaple you could have various views for an object such as <em>"index&rdquo;, &ldquo;edit&rdquo;, &ldquo;detail&rdquo;, etc.</em> Then you might want to show the edit view of an object via</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">val</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="n">User</span><span class="o">(</span><span class="s">&quot;foo&quot;</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;&#x000A;${view(user, &quot;edit&quot;)}&#x000A;</pre></div>&#x000A;</div>
+
+<p>Scalate will then look for the template called <em>packageDirectory.ClassName.viewName.(jade|mustache|ssp|scaml)</em> and render that. For example in the sample web application to render an <em>org.fusesource.scalate.sample.Person</em> object Scalate uses the <a href="https://github.com/scalate/scalate/blob/master/samples/scalate-sample/src/main/webapp/WEB-INF/org/fusesource/scalate/sample/Person.index.ssp">org/fusesource/scalate/sample/Person.index.ssp template</a>.</p>
+
+<p>Notice that since the view is defined within the package of the model object, there is no need to import the <em>org.fusesource.scalate.sample.Person</em>, instead you can just refer to the model type directly as <em>Person</em>.</p>
+
+<p>If a template is not found for the exact class name then the class and interface (trait) hierarchies are walked until one is found.</p>
+
+<p>So for example you could provide a template for a generic trait you have - such as a template to render any <a href="https://github.com/scalate/scalate/blob/master/samples/scalate-sample/src/main/webapp/WEB-INF/scala/Product.index.ssp">scala.Product</a> which will then render any case class; then you can customise the view on a class by class basis as required.</p>
+
+<h3 id = "The__it__variable">The 'it' variable</h3>
+
+<p>By default we use the variable named <em>it</em> to refer to the model parameter. This convention means that when working with JAXRS and Jersey's implicit views the model object is implicitly available to any templates using this naming convention.</p>
+
+<h3 id = "DRY_IT">DRY IT</h3>
+
+<p>Given how common object views are and templates where you pass in an object to render, the default behaviour of <a href="#dry">Scalate Packages</a> is to automatically import a value based on the type of the template if you follow the object naming convention shown above.</p>
+
+<p>For example if your template matches the name <strong>package/className.viewName.extension</strong> then the className is implicitly imported into your template as a typesafe attribute.</p>
+
+<p>For example if you're template is org/fusesource/scalate/sample/Person.index.ssp then it can look like this</p>
+
+<div class="syntax"><div class="highlight"><pre>name: ${firstName} ${surname}&#x000A;</pre></div>&#x000A;</div>
+
+<p>Which has an implicit import of the 'it' variable so the above template is equivalent to the more explicit (but less DRY) alternative:</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="kn">import</span> <span class="nn">val</span> <span class="nl">it:</span> <span class="n">Person</span> <span class="k">%&gt;</span>&#x000A;name: ${firstName} ${surname}&#x000A;</pre></div>&#x000A;</div>
+
+<p>Or the even less DRY</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">it:</span> <span class="n">Person</span> <span class="k">%&gt;</span>&#x000A;name: ${it.firstName} ${it.surname}&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Collections">Collections</h3>
+
+<p>If you have a collection of objects you wish to view then you can use a simple helper method called <em>collection</em> which works like the <em>view</em> method described above.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">val</span> <span class="n">people</span> <span class="o">=</span> <span class="n">List</span><span class="o">(</span><span class="n">Person</span><span class="o">(</span><span class="s">&quot;James&quot;</span><span class="o">,</span> <span class="s">&quot;Strachan&quot;</span><span class="o">),</span> <span class="n">Person</span><span class="o">(</span><span class="s">&quot;Hiram&quot;</span><span class="o">,</span> <span class="s">&quot;Chirino&quot;</span><span class="o">))</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%</span> <span class="n">collection</span><span class="o">(</span><span class="n">people</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>As with the <em>view</em> method you can specify an optional view name if you won't want to use the <em>"index"</em> default.</p>
+
+<p>Also you can specify a separator to use between views of objects. The following example shows a horizontal line between views&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">val</span> <span class="n">people</span> <span class="o">=</span> <span class="n">List</span><span class="o">(</span><span class="n">Person</span><span class="o">(</span><span class="s">&quot;James&quot;</span><span class="o">,</span> <span class="s">&quot;Strachan&quot;</span><span class="o">),</span> <span class="n">Person</span><span class="o">(</span><span class="s">&quot;Hiram&quot;</span><span class="o">,</span> <span class="s">&quot;Chirino&quot;</span><span class="o">))</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%</span> <span class="n">collection</span><span class="o">(</span><span class="n">people</span><span class="o">,</span> <span class="n">separator</span> <span class="o">=</span> <span class="s">&quot;&lt;hr/&gt;&quot;</span><span class="o">)</span>  <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Or without using named arguments</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">collection</span><span class="o">(</span><span class="n">people</span><span class="o">,</span> <span class="s">&quot;index&quot;</span><span class="o">,</span> <span class="s">&quot;&lt;hr/&gt;&quot;</span><span class="o">)</span>  <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>If a collection contains different types of objects then the correct view will be used for each element in the collection.</p>
+
+<p>You can also supply a function for the separator if you want it to be dynamic</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">var</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">%&gt;</span>&#x000A;collection(people, separator = {x += 1; <span class="nt">&lt;h3&gt;</span>Person {x}<span class="nt">&lt;/h3&gt;</span>})&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "Render_templates">Render templates</h2>
+
+<p>It is common to want to refactor large templates into smaller reusable pieces. Its easy to render a template from inside another template with the <em>render</em> method as follows</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">render</span><span class="o">(</span><span class="s">&quot;foo.ssp&quot;</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>This will render a template called <em>foo.ssp</em> relative to the current template. You can use absolute names if you prefer</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">render</span><span class="o">(</span><span class="s">&quot;/customers/contact.ssp&quot;</span><span class="o">)</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>You can also pass parameters into the template if it takes any</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">render</span><span class="o">(</span><span class="s">&quot;/customers/contact.ssp&quot;</span><span class="o">,</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;customer&quot;</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">,</span> <span class="s">&quot;title&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Customer&quot;</span><span class="o">))</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>When passing attributes you can use the Scala symbol notation for keys if you prefer&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">render</span><span class="o">(</span><span class="s">&quot;/customers/contact.ssp&quot;</span><span class="o">,</span> <span class="n">Map</span><span class="o">(</span><span class="err">&#39;</span><span class="n">customer</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="o">,</span> <span class="err">&#39;</span><span class="n">title</span> <span class="o">-&gt;</span> <span class="s">&quot;Customer&quot;</span><span class="o">))</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>If you prefer you can pass in a body to the template using the <em>layout</em> method as described in <a href="#explicit&#95;layouts&#95;inside&#95;a&#95;template">using explicit layouts inside a template</a>.</p>
+
+<h2 id = "layouts">Layouts</h2>
+
+<p>Its quite common to want to style all pages in a similar way; such as adding a header and footer, a common navigation bar or including a common set of CSS stylesheets.</p>
+
+<p>You can achieve this using the layout support in Scalate.</p>
+
+<p>All you need to do is create a layout template in <em>/WEB-INF/scalate/layouts/default.ssp</em> (or <em>/WEB-INF/scalate/layouts/default.scaml</em> if you prefer). Here is a simple example layout which lays out the body and lets the title be customized on a per page basis.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">body:</span> <span class="n">String</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%@</span> <span class="n">var</span> <span class="nl">title:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Some Default Title&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;html&gt;</span>&#x000A;<span class="nt">&lt;head&gt;</span>&#x000A;  <span class="nt">&lt;title&gt;</span>${title}<span class="nt">&lt;/title&gt;</span>&#x000A;<span class="nt">&lt;/head&gt;</span>&#x000A;<span class="nt">&lt;body&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>layout header goes here...<span class="nt">&lt;/p&gt;</span>&#x000A;&#x000A;  ${unescape(body)}&#x000A;&#x000A;  <span class="nt">&lt;p&gt;</span>layout footer goes here...<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/body&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then all pages will be wrapped in this layout by default.</p>
+
+<p>This means your templates don't need to include the whole html/head/body stuff, typically you'll just want the actual content to be displayed in the part of the layout you need. So a typical page might look like this&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;h3&gt;</span>My Page<span class="nt">&lt;/h3&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>This is some text<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Changing_the_title_or_layout_template">Changing the title or layout template</h3>
+
+<p>To set parameters on a layout or to change the layout template used, just output attribute values in your template.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">attributes</span><span class="o">(</span><span class="s">&quot;layout&quot;</span><span class="o">)</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/layouts/custom.ssp&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="k">&lt;%</span> <span class="n">attributes</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">)</span> <span class="o">=</span> <span class="s">&quot;This is the custom title&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;h3&gt;</span>Custom page<span class="nt">&lt;/h3&gt;</span>&#x000A;<span class="nt">&lt;p&gt;</span>This is some text<span class="nt">&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "Disabling_layouts">Disabling layouts</h3>
+
+<p>If you wish to disable the use of the layout on a template, just set the layout attribute to &ldquo;" the empty string.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">attributes</span><span class="o">(</span><span class="s">&quot;layout&quot;</span><span class="o">)</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;html&gt;</span>&#x000A;<span class="nt">&lt;body&gt;</span>&#x000A;  <span class="nt">&lt;h1&gt;</span>No Layout<span class="nt">&lt;/h1&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>This page does not use the layout<span class="nt">&lt;/p&gt;</span>&#x000A;<span class="nt">&lt;/body&gt;</span>&#x000A;<span class="nt">&lt;/html&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>To see examples of layouts in use, try running the sample web application and looking at the layout related example pages.</p>
+
+<h3 id = "explicit_layouts_inside_a_template">Explicit layouts inside a template</h3>
+
+<p>You may want to layout some content within part of your template explicitly rather than just applying a layout to an entire page.</p>
+
+<p>For example you may want to create a layout as follows in file <em>foo.ssp</em></p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%@</span> <span class="n">val</span> <span class="nl">body:</span> <span class="n">String</span> <span class="o">=</span> <span class="s">&quot;Bar&quot;</span> <span class="k">%&gt;</span>&#x000A;<span class="nt">&lt;table&gt;</span>&#x000A; <span class="nt">&lt;tr&gt;</span>&#x000A;   <span class="nt">&lt;th&gt;</span>Some Header<span class="nt">&lt;/th&gt;</span>&#x000A; <span class="nt">&lt;/tr&gt;</span>&#x000A; <span class="nt">&lt;tr&gt;</span>&#x000A;   <span class="nt">&lt;td&gt;</span><span class="k">&lt;%=</span> <span class="n">body</span> <span class="k">%&gt;</span><span class="nt">&lt;/td&gt;</span>&#x000A; <span class="nt">&lt;/tr&gt;</span>&#x000A;<span class="nt">&lt;/table&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then we can invoke this template passing in the body as follows in <a href="ssp-reference.html">Ssp</a></p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">render</span><span class="o">(</span><span class="s">&quot;foo.ssp&quot;</span><span class="o">,</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;body&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Foo&quot;</span><span class="o">))</span> <span class="k">%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>However if you want to pass in the body as a block of template you can use the <em>layout</em> method as follows</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">layout</span><span class="o">(</span><span class="s">&quot;foo.ssp&quot;</span><span class="o">)</span> <span class="o">{</span><span class="k">%&gt;</span>&#x000A;Foo&#x000A;<span class="k">&lt;%}%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>Or using <a href="ssp-reference.html#velocity&#95;style&#95;directives">Velocity style directives</a> this might look like this</p>
+
+<div class="syntax"><div class="highlight"><pre>#do( layout(&quot;foo.ssp&quot;) )&#x000A;Foo&#x000A;#end&#x000A;</pre></div>&#x000A;</div>
+
+<p>Both will generate the same response.</p>
+
+<p>Using the above mechanism via either the <em>render</em> or <em>layout</em> methods is quite like creating a JSP custom tag inside a .tag file if you come from a JSP background. </p>
+
+<p>The nice thing is there's really no difference technically between a regular template, a layout or a 'tag' template or a 'partial' (to use Rails terminology), they are all just templates which can have parameters which can be mandatory or optional.</p>
+
+<h2 id = "Capturing_output">Capturing output</h2>
+
+<p>Sometimes you may wish to capture the result of rendering a block of template, assign it to a variable and then pass it as an argument to some method. For this the <em>capture</em> method can be used.</p>
+
+<p>For example</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span> <span class="n">val</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">capture</span> <span class="o">{</span> <span class="k">%&gt;</span>&#x000A;  hello there ${user.name} how are you?&#x000A;<span class="k">&lt;%}%&gt;</span>&#x000A;...&#x000A;${foo}&#x000A;...&#x000A;${foo}&#x000A;</pre></div>&#x000A;</div>
+
+<p>We capture the block which generates a greeting, assign it to the <em>foo</em> variable which we can then render or pass into methods etc.</p>
+
+<p>The <a href="scaml-reference.html">Scaml</a> version of this is a bit more concise</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">var</span> <span class="n">foo</span> <span class="k">=</span> <span class="n">capture</span>&#x000A;  hello there <span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="si">}</span> how are you?&#x000A;    &#x000A;...&#x000A;<span class="p">=</span> <span class="n">foo</span>&#x000A;...&#x000A;<span class="p">=</span> <span class="n">foo</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h2 id = "dry">Making templates more DRY</h2>
+
+<p>When you create a number of templates in a directory you might find you are repeating the same sets of imports across many templates. This doesn't feel terribly DRY. Scala 2.8 supports <a href="http://programming-scala.labs.oreilly.com/ch07.html#PackageObjects">package objects</a> which allows you to define types, variables and methods at the package scope to be reused inside classes and traits defined inside the package.</p>
+
+<p>So Scalate supports a similar feature for templates which are code generated like <a href="ssp-reference.html">SSP</a>, <a href="scaml-reference.html">Scaml</a> and <a href="jade.html">Jade</a>.</p>
+
+<p>The basic idea is Scalate will look in the same package as the template for a Scala/Java class called <strong>ScalatePackage</strong> which must extend <a href="http://scalate.fusesource.org/maven/1.6.1/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html">TemplatePackage</a>. If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). </p>
+
+<p>If a ScalatePackage class is found then its <strong>header</strong> method is invoked to generate any shared imports, variables or methods across templates.</p>
+
+<p>For example you could add the following Scala code to a file called <strong>src/main/scala/foo/ScalatePackage.scala</strong> to add some default imports you want to share across a number of templates in a the <strong>foo</strong> directory and its descendants&hellip;</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">package</span> <span class="nn">foo</span>&#x000A;&#x000A;<span class="k">import</span> <span class="nn">org.fusesource.scalate.TemplateSource</span>&#x000A;<span class="k">import</span> <span class="nn">org.fusesource.scalate.support.TemplatePackage</span>&#x000A;&#x000A;&#x000A;<span class="cm">/**</span>&#x000A;<span class="cm"> * Defines some common imports, attributes and methods across templates in package foo and below</span>&#x000A;<span class="cm"> */</span>&#x000A;<span class="k">class</span> <span class="nc">ScalatePackage</span> <span class="k">extends</span> <span class="nc">TemplatePackage</span> <span class="o">{</span>&#x000A;&#x000A;  <span class="cm">/** Returns the Scala code to add to the top of the generated template method */</span>&#x000A;   <span class="k">def</span> <span class="n">header</span><span class="o">(</span><span class="n">source</span><span class="k">:</span> <span class="kt">TemplateSource</span><span class="o">,</span> <span class="n">bindings</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Binding</span><span class="o">])</span> <span class="k">=</span> <span class="s">&quot;&quot;&quot;</span>&#x000A;&#x000A;<span class="s">// some shared imports</span>&#x000A;<span class="s">import com.acme._</span>&#x000A;<span class="s">import com.acme.something.MyHelper._</span>&#x000A;&#x000A;<span class="s">// some helper methods</span>&#x000A;<span class="s">// would be better being imported from a helper class like MyHelper above</span>&#x000A;<span class="s">def time = new java.util.Date()</span>&#x000A;&#x000A;<span class="s">  &quot;&quot;&quot;</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<p>You can then use the usual expressive composition features of Scala to use inheritance, traits, delegation and so forth to decide how to spread this code across your templates and decide how to combine these things at the package level to be inherited by all child packages and templates. You might find moving templates into functional directories makes it easier to reuse common boilerplate imports, values and methods across templates.</p>
+
+<h2 id = "Scalate_Samples">Scalate Samples</h2>
+
+<h3 id = "Getting_Started">Getting Started</h3>
+
+<p>The easiest way to get started is to try the <a href="getting-started.html">Getting Started Guide</a></p>
+
+<h3 id = "Running_the_Sample_Web_Application">Running the Sample Web Application</h3>
+
+<p>The <a href="../source.html">source code</a> comes with a sample web application called <strong>scalate-sample</strong> which includes a number of exmample templates you can play around with></p>
+
+<p>Scalate can be built either using Maven or SBT</p>
+
+<h4 id = "Requirements">Requirements</h4>
+
+<p>General Requirements:</p>
+
+<ul>
+<li>Java 5 runtime or Newer</li>
+<li>Scala 2.8</li>
+</ul>
+
+<p>Web Container Requirements:</p>
+
+<ul>
+<li>Servlet 2.5 container or Newer</li>
+</ul>
+
+<h4 id = "Using_Maven">Using Maven</h4>
+
+<p>Install <a href="http://maven.apache.org/">Maven</a> version 2.0.9 or later. Then type</p>
+
+<div class="syntax"><div class="highlight"><pre>mvn install&#x000A;</pre></div>&#x000A;</div>
+
+<p>To run the sample web application</p>
+
+<div class="syntax"><div class="highlight"><pre>cd scalate-sample&#x000A;mvn jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then open <a href="http://localhost:8080/">the sample home page</a></p>
+
+<h4 id = "Using_SBT">Using SBT</h4>
+
+<p>You can also use <a href="http://code.google.com/p/simple-build-tool/" title="simple build tool">sbt</a> to build Scalate.</p>
+
+<p>To setup your sbt environment and import the dependencies from the maven pom files type</p>
+
+<div class="syntax"><div class="highlight"><pre>./sbt&#x000A;update&#x000A;</pre></div>&#x000A;</div>
+
+<p>Then to build the code type</p>
+
+<div class="syntax"><div class="highlight"><pre>compile&#x000A;</pre></div>&#x000A;</div>
+
+<p>to run the tests </p>
+
+<div class="syntax"><div class="highlight"><pre>test&#x000A;</pre></div>&#x000A;</div>
+
+<p>For more information see the <a href="../sbt.html">sbt building instructions</a></p>
+
+<h2 id = "Using_Scalate">Using Scalate</h2>
+
+<p>You might want to refer to the <a href="frameworks.html">Frameworks Documentation</a> to see if there is some specific instructions on using Scalate with your favourite web framework.</p>
+
+<h3 id = "using_scalate_as_servlet_filter_in_your_web_application">Using Scalate as Servlet filter in your Web Application</h3>
+
+<ul>
+<li>Add something like the following to your web.xml file to support Scalate templates:</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>  <span class="nt">&lt;filter&gt;</span>&#x000A;    <span class="nt">&lt;filter-name&gt;</span>TemplateEngineFilter<span class="nt">&lt;/filter-name&gt;</span>&#x000A;    <span class="nt">&lt;filter-class&gt;</span>org.fusesource.scalate.servlet.TemplateEngineFilter<span class="nt">&lt;/filter-class&gt;</span>&#x000A;  <span class="nt">&lt;/filter&gt;</span>&#x000A;  <span class="nt">&lt;filter-mapping&gt;</span>&#x000A;    <span class="nt">&lt;filter-name&gt;</span>TemplateEngineFilter<span class="nt">&lt;/filter-name&gt;</span>&#x000A;    <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>&#x000A;  <span class="nt">&lt;/filter-mapping&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>Include the following JARs in your servlet's runtime environment (probably in WEB-INF/lib):
+<ul>
+<li>scala-compiler.jar</li>
+<li>scala-library.jar</li>
+<li>scalate-core.jar</li>
+</ul></li>
+</ul>
+
+<p>You could add one or more of the above to your servlet container's server-wide configuration if you prefer.</p>
+
+<h4 id = "Mapping_URIs_to_templates_with_the_Filter">Mapping URIs to templates with the Filter</h4>
+
+<p>The Scalate template filter looks for templates in several locations to satisfy a request. <br/>
+For example, if requested URI is <code>/path/file.html</code>, then it will for templates in this order:</p>
+
+<ol>
+<li><code>/path/file.html.${ext}</code></li>
+<li><code>/WEB-INF/path/file.html.${ext}</code></li>
+<li><code>/path/file.${ext}</code></li>
+<li><code>/WEB-INF/path/file.${ext}</code></li>
+</ol>
+
+<p>Where <code>${ext}</code> gets replaced with all the template extensions supported by the Template Engine.  If the requested
+URI already ends with template extension then it would get looked up in the root and under the <code>/WEB-INF</code> directory.</p>
+
+<h3 id = "Using_Scalate_with_JAXRS_Jersey">Using Scalate with JAXRS/Jersey</h3>
+
+<p>Our recommendation is to start with <a href="jog.html">JOG</a> (Jersey on Guice).</p>
+
+<p>To get up to speed quickly with JOG try the <a href="getting-started.html">Getting Started Guide</a> which uses the <a href="tool.html">Scalate Tool</a> and <a href="war-overlay.html">WAR Overlay</a> to include the <a href="console.html">Console</a> in your web application.</p>
+
+<h3 id = "Embedding_Scalate_in_your_Application_or_Framework">Embedding Scalate in your Application or Framework</h3>
+
+<p>Scalate does not have any hard dependencies on a web framework or even HTTP.  It can be used as a standalone
+rendering engine in your application.  For more information on how to embed in your application, please reference the 
+<a href="scalate-embedding-guide.html">Scalate Embedding Guide</a></p>
+
+<h3 id = "Working_Directory__Caching__Reloading">Working Directory, Caching, Reloading</h3>
+
+<p>Scalate uses a <em>working directory</em> to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a <a href="http://scalate.fusesource.org/maven/1.6.1/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> using the <strong>workingDirectory</strong> property. If no configuration is made Scalate will use the <em>scalate.workdir</em> system property by default.</p>
+
+<p>The <a href="archetypes.html">archetypes</a> or projects created by the <a href="tool.html">scalate tool</a> or the modules in the <a href="../source.html">scalate source</a> all set the <strong>scalate.workdir</strong> to be the maven property of the same name; which defaults to <em>target/&#95;scalate</em></p>
+
+<p>If you wanted to run a web application using a different directory, such as <em>/tmp</em> you could do</p>
+
+<div class="syntax"><div class="highlight"><pre>mvn -Dscalate.workdir=/tmp jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+<p>In production settings you can disable the caching and reloading of templates if you wish using the <strong>allowCaching</strong> and <strong>allowReload</strong> properties on <a href="http://scalate.fusesource.org/maven/1.6.1/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> which default to <strong>scalate.allowCaching</strong> and <strong>scalate.allowReload</strong> respectively.</p>
+
+<h3 id = "Configuring_the_TemplateEngine_in_your_web_app">Configuring the TemplateEngine in your web app</h3>
+
+<p>Scalate supports a standard bootstrap mechanism which tries to be framework agnostic so it can work in servlets or using the servlet filter or works when generating <a href="siteGen.html">static websites</a> and is easy to plugin to other frameworks.</p>
+
+<p>Just add a class called <strong>scalate.Boot</strong> which should be a class with a method called <strong>run()</strong> which can then do whatever you need to configure things before the template engine starts to render your templates.</p>
+
+<p>If you need access to the TemplateEngine then just add a constructor argument. (You can also pass in ServletContext as a constructor parameter if you are inside a web application and other values which may come from your framework).</p>
+
+<p>e.g.</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="k">package</span> <span class="nn">scalate</span>&#x000A;&#x000A;<span class="k">import</span> <span class="nn">org.fusesource.scalate.TemplateEngine</span>&#x000A;<span class="k">import</span> <span class="nn">java.io.File</span>&#x000A;&#x000A;<span class="k">class</span> <span class="nc">Boot</span><span class="o">(</span><span class="n">engine</span><span class="k">:</span> <span class="kt">TemplateEngine</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">Logging</span> <span class="o">{</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="n">run</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>&#x000A;    <span class="c1">// lets change the workingDirectory</span>&#x000A;    <span class="n">engine</span><span class="o">.</span><span class="n">workingDirectory</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">&quot;myScalateWorkDir&quot;</span><span class="o">)</span>&#x000A;  <span class="o">}</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h3 id = "precompiling_templates">Precompiling Templates</h3>
+
+<p>Scalate currently lazily compiles templates on the fly, then it will cache
+the compiled template and only recompile it if it detects the source template
+has changed.</p>
+
+<p>In production you probably want all your templates to be precompiled so that</p>
+
+<ul>
+<li><p>you can detect at build time any typos in your templates, particularly if
+you are using <a href="scaml-reference.html">Scaml</a> or <a href="ssp-reference.html">Ssp</a>
+which use static type checking for all expressions in your template.</p></li>
+<li><p>all your templates are immediately available as a fast, compiled JVM .class
+file rather than taking the overhead of the first request causing a compile
+phase</p></li>
+</ul>
+
+<p>To do this you just need to include the <em>maven-scalate-plugin</em> into your project. The plugin only precompiles when you are packaging into a war to avoid slowing down your development mode cycles.</p>
+
+<p>The <a href="archetypes.html">archetypes</a> created by the <a href="tool.html">scalate tool</a> come with this plugin enabled already.</p>
+
+<p>Otherwise you can just add this to your pom.xml</p>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;build&gt;</span>&#x000A;  <span class="nt">&lt;plugins&gt;</span>&#x000A;    <span class="nt">&lt;plugin&gt;</span>&#x000A;      <span class="nt">&lt;groupId&gt;</span>org.fusesource.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;      <span class="nt">&lt;artifactId&gt;</span>maven-scalate-plugin_#{scala_compat_tag}<span class="nt">&lt;/artifactId&gt;</span>&#x000A;      <span class="nt">&lt;version&gt;</span>1.6.1<span class="nt">&lt;/version&gt;</span>&#x000A;      <span class="nt">&lt;executions&gt;</span>&#x000A;        <span class="nt">&lt;execution&gt;</span>&#x000A;          <span class="nt">&lt;goals&gt;</span>&#x000A;            <span class="nt">&lt;goal&gt;</span>precompile<span class="nt">&lt;/goal&gt;</span>&#x000A;          <span class="nt">&lt;/goals&gt;</span>&#x000A;        <span class="nt">&lt;/execution&gt;</span>&#x000A;      <span class="nt">&lt;/executions&gt;</span>&#x000A;    <span class="nt">&lt;/plugin&gt;</span>&#x000A;  <span class="nt">&lt;/plugins&gt;</span>&#x000A;<span class="nt">&lt;/build&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<h4 id = "Precompiling_templates_with_SBT">Precompiling templates with SBT</h4>
+
+<p>The <a href="archetypes.html">archetypes</a> created by the <a href="tool.html">scalate tool</a>
+have their SBT build configuration setup so that the templates are
+precompiled before they are packaged.  If you need to add the precompiler
+to an existing sbt project then you need to first add the plugin
+dependency:</p>
+
+<pre><code>lazy val scalate_plugin = "org.fusesource.scalate" % "sbt-scalate-plugin_2.10" % "1.6.1"</code></pre>
+
+<p>And then in your WebProject, you will need to add the
+<code>org.fusesource.scalate.sbt.PrecompilerWebProject</code> trait.  And then make sure
+the Scalate dependencies are added to the project.  For example:</p>
+
+<pre><code>class Project(info: ProjectInfo) extends 
+      DefaultWebProject(info) with 
+      PrecompilerWebProject {
+
+  lazy val scalate_core = "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1" 
+  lazy val servlet = "javax.servlet" % "servlet-api"% "2.5" 
+  lazy val logback = "ch.qos.logback" % "logback-classic" % "0.9.26"
+
+}</code></pre>
+
+<h3 id = "Using_Scalate_on_GAE">Using Scalate on GAE</h3>
+
+<p>If you are using Scalate on <a href="http://code.google.com/appengine/">Google AppEngine</a> (GAE) then you will probably want to precompile all your templates before you deploy them; so that each request is processed very quickly - so app engine won't kill your thread midway through.</p>
+
+<p>To see an example of a Scalate project already setup using GAE try the <a href="http://github.com/Yasushi/hello-scalate-appengine">the hello-scalate-appengine project</a> by Yasushi Abe.</p>
+
+<h3 id = "Possible_Gotchas">Possible Gotchas</h3>
+
+<h4 id = "Class_Loaders">Class Loaders</h4>
+
+<p>Scalate can sometimes struggle with ClassLoaders. This is due to the Scala compiler requiring an explicit class path to be specified as a String of names rather than taking an actual ClassLoader object. </p>
+
+<p>So Scalate works fine with expanded WARs, or servlet containers who's ClassLoader implements URLClassLoader or an AntClassLoader like thing or the Play Framework. But you might be able to find some application server that doens't provide an easy-to-diagnose ClassLoader object which may require an explicitly configured class path for compiling. </p>
+
+<p>A work around is to precompile your templates with the maven plugin (see the section above).</p>
+
+<h4 id = "Character_Encoding">Character Encoding</h4>
+
+<p>Scalate currently assumes that</p>
+
+<ul>
+<li><p>template source files are all UTF-8-encoded.</p></li>
+<li><p>template output is all UTF-8-encoded.</p></li>
+</ul>
+
+<h2 id = "IDE_plugins">IDE plugins</h2>
+
+<p>Using an IDE plugin can make it much easier to view and edit Scalate templates.</p>
+
+<h3 id = "TextMate_plugin">TextMate plugin</h3>
+
+<p>If you use <a href="http://macromates.com/">TextMate</a> (which on OS X is a great text editor) you can install the <a href="http://github.com/scalate/Scalate.tmbundle">Scalate plugin</a> as follows:</p>
+
+<div class="syntax"><div class="highlight"><pre>cd ~/Library/Application\ Support/TextMate/Bundles/&#x000A;git clone git://github.com/scalate/Scalate.tmbundle.git&#x000A;</pre></div>&#x000A;</div>
+
+<p>If you have not already done so you will also need a Scala plugin for TextMate which the <a href="ssp-reference.html">Ssp</a> and <a href="scaml-reference.html">Scaml</a> languages uses for the Scala code blocks.</p>
+
+<p>We like the <a href="http://github.com/deanwampler/Scala.tmbundle">version by Dean Wampler</a> though there's a few around github and one included in sbaz in the Scala distro too.</p>
+
+<div class="syntax"><div class="highlight"><pre>cd ~/Library/Application\ Support/TextMate/Bundles/&#x000A;git clone git://github.com/deanwampler/Scala.tmbundle.git&#x000A;</pre></div>&#x000A;</div>
+
+<p>When you restart TextMate you should now get syntax highlighting and more when you open up either a <a href="ssp-reference.html">Ssp</a> or  <a href="scaml-reference.html">Scaml</a> file. </p>
+
+<p>The current plugin does not highlight Scala expressions terribly well with the default Mac Classic colour scheme in TextMate. We found that it helps to add an extra colour to your scheme.</p>
+
+<ul>
+<li>open TextMate preferences via the TextMate menu or by hitting the apple key and ','</li>
+<li>select Fonts <span class="amp">&amp;</span> Colors</li>
+<li>hit + to add a new entry</li>
+<li>type &ldquo;Scaml expression&rdquo; and pick a colour to use such as dark green (to differentiate from static markup text)</li>
+<li>in the <strong>Scope Selector:</strong> field enter <strong>source.scala</strong></li>
+<li>you now should see Scala expressions in your Scaml file highlighted in green (so you can more easily tell the difference between static text and scala expressions)</li>
+</ul>
+
+<h3 id = "If_you_are_an_IDE_hacker">If you are an IDE hacker</h3>
+
+<p>We created Scalate specifically to be IDE friendly and we'd love to help create more and better IDE plugins (plus we <a href="../contributing.html">love contributions</a>!). It should be easy to reuse any JSP / Erb / HAML IDE plugins but just swizzle them a little to use the Scala language instead - then get all the benefits of smart completion from Scala's static type system.</p>
+
+<p>We've a <a href="../creating-ide.html">page on writing IDE plugins for Scalate</a> which has more details on how an IDE plugin should ideally work for Scalate.</p>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

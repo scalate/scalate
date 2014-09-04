@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>build with SBT</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate</a></li><li class="webgen-menu-level1"><a href="download.html">Download</a></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='how_to_build_scalate_using_sbt'>How to build scalate using SBT</h1>
+
+<p>Using SBT (Simple Build Tool) to build fast</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <h2 id='building_with_sbt'>Building with SBT</h2>
+
+<p>You can use <a href='http://code.google.com/p/simple-build-tool/'>sbt</a> as a build tool - its particularly well suited to rapid edit-compile-test cycles.</p>
+
+<h3 id='setting_up_sbt'>Setting up SBT</h3>
+
+<p>The first time you run <em>sbt</em> you need to tell it to update its dependencies from the maven pom.xml files. So type</p>
+
+<pre><code>./sbt
+update</code></pre>
+
+<p>You should now have the project loaded and the dependencies updated from the maven poms.</p>
+
+<h3 id='a_normal_build'>A normal build</h3>
+
+<p>If you have not done so already, start a sbt shell</p>
+
+<pre><code>./sbt</code></pre>
+
+<p>To build things type</p>
+
+<pre><code>compile</code></pre>
+
+<p>To run the test cases</p>
+
+<pre><code>test</code></pre>
+
+<h3 id='incremental_builds'>Incremental builds</h3>
+
+<p>To sit in incremental mode, re-running all the test cases as you edit code</p>
+
+<pre><code>~ test</code></pre>
+
+<p>Or to just re-run failed test cases interactively</p>
+
+<pre><code>~ test-quick</code></pre>
+
+<h3 id='see_also'>See Also</h3>
+
+<ul>
+<li><a href='source.html'>Source</a></li>
+
+<li><a href='building.html'>Building</a></li>
+
+<li><a href='developers.html'>Developer Links</a></li>
+</ul>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

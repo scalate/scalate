@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.scaml</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <h1>scaml</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">scaml</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"></div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+                
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scaml.Attribute">
+      <h4 class="signature"><a href="Attribute.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Attribute</span><span class="params">(<span name="kind">kind: Text</span>, <span name="name">name: Text</span>, <span name="className">className: Text</span>, <span name="defaultValue">defaultValue: Option[Text]</span>, <span name="autoImport">autoImport: Boolean</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Doctype">
+      <h4 class="signature"><a href="Doctype.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Doctype</span><span class="params">(<span name="line">line: List[Text]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Element">
+      <h4 class="signature"><a href="Element.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Element</span><span class="params">(<span name="tag">tag: Option[Text]</span>, <span name="attributes">attributes: List[(Any, Any)]</span>, <span name="text">text: Option[TextExpression]</span>, <span name="body">body: List[Statement]</span>, <span name="trim">trim: Option[Value]</span>, <span name="close">close: Boolean</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.EvaluatedText">
+      <h4 class="signature"><a href="EvaluatedText.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">EvaluatedText</span><span class="params">(<span name="code">code: Text</span>, <span name="body">body: List[Statement]</span>, <span name="preserve">preserve: Boolean</span>, <span name="sanitize">sanitize: Option[Boolean]</span>, <span name="ugly">ugly: Boolean</span>)</span><span class="result"> extends TextExpression with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Executed">
+      <h4 class="signature"><a href="Executed.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Executed</span><span class="params">(<span name="code">code: List[Text]</span>, <span name="body">body: List[Statement]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.FilterStatement">
+      <h4 class="signature"><a href="FilterStatement.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">FilterStatement</span><span class="params">(<span name="flags">flags: List[Text]</span>, <span name="filters">filters: List[Text]</span>, <span name="body">body: List[Text]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.HtmlComment">
+      <h4 class="signature"><a href="HtmlComment.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">HtmlComment</span><span class="params">(<span name="conditional">conditional: Option[Text]</span>, <span name="text">text: Option[Text]</span>, <span name="body">body: List[Statement]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.IndentedParser">
+      <h4 class="signature"><a href="IndentedParser.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">IndentedParser</span><span class="result"> extends RegexParsers</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Base class for parsers which use indentation to define
+structure.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.LiteralText">
+      <h4 class="signature"><a href="LiteralText.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">LiteralText</span><span class="params">(<span name="text">text: List[Text]</span>, <span name="sanitize">sanitize: Option[Boolean]</span>)</span><span class="result"> extends TextExpression with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Newline">
+      <h4 class="signature"><a href="Newline.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Newline</span><span class="params">(<span name="skip">skip: Boolean = <span class="default">true</span></span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.ScamlCodeGenerator">
+      <h4 class="signature"><a href="ScamlCodeGenerator.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ScamlCodeGenerator</span><span class="result"> extends AbstractCodeGenerator[Statement]</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Generates a scala class given a HAML document
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.ScamlComment">
+      <h4 class="signature"><a href="ScamlComment.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ScamlComment</span><span class="params">(<span name="text">text: Option[Text]</span>, <span name="body">body: List[Text]</span>)</span><span class="result"> extends Statement with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.ScamlParser">
+      <h4 class="signature"><a href="ScamlParser.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ScamlParser</span><span class="result"> extends IndentedParser with ScalaParseSupport</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Parses a HAML/Scala based document.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Statement">
+      <h4 class="signature"><a href="Statement.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">Statement</span><span class="result"> extends Positional</span>
+      </span>
+      </a></h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: sealed 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Text">
+      <h4 class="signature"><a href="Text.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Text</span><span class="params">(<span name="value">value: String</span>)</span><span class="result"> extends Positional with Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.TextExpression">
+      <h4 class="signature"><a href="TextExpression.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">TextExpression</span><span class="result"> extends Statement</span>
+      </span>
+      </a></h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: sealed 
+        </div></div>
+          
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scaml.ScamlOptions">
+      <h4 class="signature"><a href="ScamlOptions$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">ScamlOptions</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">no summary matey</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.ScamlParser">
+      <h4 class="signature"><a href="ScamlParser$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">ScamlParser</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scaml.Trim">
+      <h4 class="signature"><a href="Trim$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Trim</span><span class="result"> extends Enumeration</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Scuery</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.2-SNAPSHOT</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='scuery'>Scuery</h1>
+
+<p>Transform HTML using jQuery style DSL in Scala</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Scuery</h1>
+</div><div class='right'>
+<p><strong>Scuery</strong> provides an XML transformation library which uses a jQuery style approach, using CSS3 selectors to transform HTML or XHTML to inject dynamic information from static HTML/XHTML documents owned by designers.</p>
+
+<p>For example a designer could create a mock up layout in HTML; or have a sample page with mock data. Scuery can then be used to transform the XML, using Scala&#8217;s <a href='http://www.scala-lang.org/api/current/scala/xml/NodeSeq.html'>NodeSeq</a> with CSS3 selectors.</p>
+</div><div class='left'>
+<h1>Simple Example</h1>
+</div><div class='right'>
+  <p>
+If you had the following HTML...
+</p>
+
+<div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;div</span> <span class='na'>id=</span><span class='s'>&quot;content&quot;</span><span class='nt'>&gt;</span>&#x000A;  <span class='nt'>&lt;table</span> <span class='na'>class=</span><span class='s'>&quot;people&quot;</span><span class='nt'>&gt;</span>&#x000A;    <span class='nt'>&lt;tr&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Name<span class='nt'>&lt;/th&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Location<span class='nt'>&lt;/th&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;    <span class='nt'>&lt;tr&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;name&quot;</span><span class='nt'>&gt;</span>DummyName<span class='nt'>&lt;/td&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;location&quot;</span><span class='nt'>&gt;</span>DummyLocation<span class='nt'>&lt;/td&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;  <span class='nt'>&lt;/table&gt;</span>&#x000A;<span class='nt'>&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+
+Then you can transform this with the following code.
+
+<div class='syntax'><div class='highlight'><pre><span class='k'>object</span> <span class='nc'>transformer</span> <span class='k'>extends</span> <span class='nc'>Transformer</span> <span class='o'>{</span>&#x000A;  <span class='n'>$</span><span class='o'>(</span><span class='s'>&quot;table .name&quot;</span><span class='o'>).</span><span class='n'>contents</span> <span class='k'>=</span> <span class='s'>&quot;Hiram&quot;</span>&#x000A;  <span class='n'>$</span><span class='o'>(</span><span class='s'>&quot;.location&quot;</span><span class='o'>).</span><span class='n'>contents</span> <span class='k'>=</span> <span class='s'>&quot;Tampa&quot;</span>&#x000A;<span class='o'>}</span>&#x000A;&#x000A;<span class='k'>val</span> <span class='n'>result</span> <span class='k'>=</span> <span class='n'>transformer</span><span class='o'>(</span><span class='n'>xml</span><span class='o'>)</span>&#x000A;</pre></div>&#x000A;</div>
+
+
+We are creating an object, transformer, which we can then use as a function to transform XML.
+    
+
+</div><div class='left'>
+<h1>More complex example</h1>
+</div><div class='right'>
+  <p>
+Typically you want to iterate through collections so something like this...
+</p>
+
+<div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;div</span> <span class='na'>id=</span><span class='s'>&quot;content&quot;</span><span class='nt'>&gt;</span>&#x000A;  <span class='nt'>&lt;table</span> <span class='na'>class=</span><span class='s'>&quot;people&quot;</span><span class='nt'>&gt;</span>&#x000A;    <span class='nt'>&lt;tr&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Name<span class='nt'>&lt;/th&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Location<span class='nt'>&lt;/th&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;    <span class='nt'>&lt;tr</span> <span class='na'>class=</span><span class='s'>&quot;person&quot;</span><span class='nt'>&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;name&quot;</span><span class='nt'>&gt;</span>DummyName<span class='nt'>&lt;/td&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;location&quot;</span><span class='nt'>&gt;</span>DummyLocation<span class='nt'>&lt;/td&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;  <span class='nt'>&lt;/table&gt;</span>&#x000A;<span class='nt'>&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+
+There's the Scala code to create the transformer...
+
+<div class='syntax'><div class='highlight'><pre><span class='k'>val</span> <span class='n'>people</span> <span class='k'>=</span> <span class='nc'>List</span><span class='o'>(</span><span class='nc'>Person</span><span class='o'>(</span><span class='s'>&quot;James&quot;</span><span class='o'>,</span> <span class='s'>&quot;Mells&quot;</span><span class='o'>),</span> &#x000A;                  <span class='nc'>Person</span><span class='o'>(</span><span class='s'>&quot;Hiram&quot;</span><span class='o'>,</span> <span class='s'>&quot;Tampa&quot;</span><span class='o'>))</span>&#x000A;&#x000A;<span class='k'>object</span> <span class='nc'>transformer</span> <span class='k'>extends</span> <span class='nc'>Transformer</span> <span class='o'>{</span>&#x000A;  <span class='n'>$</span><span class='o'>(</span><span class='s'>&quot;.person&quot;</span><span class='o'>)</span> <span class='o'>{</span> <span class='n'>node</span> <span class='k'>=&gt;</span>&#x000A;    <span class='n'>people</span><span class='o'>.</span><span class='n'>flatMap</span> <span class='o'>{</span> <span class='n'>p</span> <span class='k'>=&gt;</span>&#x000A;      <span class='k'>new</span> <span class='nc'>Transform</span><span class='o'>(</span><span class='n'>node</span><span class='o'>)</span> <span class='o'>{</span>&#x000A;        <span class='n'>$</span><span class='o'>(</span><span class='s'>&quot;.name&quot;</span><span class='o'>).</span><span class='n'>contents</span> <span class='k'>=</span> <span class='n'>p</span><span class='o'>.</span><span class='n'>name</span>&#x000A;        <span class='n'>$</span><span class='o'>(</span><span class='s'>&quot;.location&quot;</span><span class='o'>).</span><span class='n'>contents</span> <span class='k'>=</span> <span class='n'>p</span><span class='o'>.</span><span class='n'>location</span>&#x000A;      <span class='o'>}</span>&#x000A;    <span class='o'>}</span>&#x000A;  <span class='o'>}</span>&#x000A;<span class='o'>}</span>&#x000A;</pre></div>&#x000A;</div>
+
+  
+Which would generate
+
+<div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;div</span> <span class='na'>id=</span><span class='s'>&quot;content&quot;</span><span class='nt'>&gt;</span>&#x000A;  <span class='nt'>&lt;table</span> <span class='na'>class=</span><span class='s'>&quot;people&quot;</span><span class='nt'>&gt;</span>&#x000A;    <span class='nt'>&lt;tr&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Name<span class='nt'>&lt;/th&gt;</span>&#x000A;      <span class='nt'>&lt;th&gt;</span>Location<span class='nt'>&lt;/th&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;    <span class='nt'>&lt;tr</span> <span class='na'>class=</span><span class='s'>&quot;person&quot;</span><span class='nt'>&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;name&quot;</span><span class='nt'>&gt;</span>James<span class='nt'>&lt;/td&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;location&quot;</span><span class='nt'>&gt;</span>Mells<span class='nt'>&lt;/td&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;    <span class='nt'>&lt;tr</span> <span class='na'>class=</span><span class='s'>&quot;person&quot;</span><span class='nt'>&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;name&quot;</span><span class='nt'>&gt;</span>Hiram<span class='nt'>&lt;/td&gt;</span>&#x000A;      <span class='nt'>&lt;td</span> <span class='na'>class=</span><span class='s'>&quot;location&quot;</span><span class='nt'>&gt;</span>Tampa<span class='nt'>&lt;/td&gt;</span>&#x000A;    <span class='nt'>&lt;/tr&gt;</span>&#x000A;  <span class='nt'>&lt;/table&gt;</span>&#x000A;<span class='nt'>&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+
+    
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Ssp Reference</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='ssp_reference_guide'>Ssp Reference Guide</h1>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <h1 id='ssp_scala_server_pages'>Ssp (Scala Server Pages)</h1>
+<div class='maruku_toc'><ul style='list-style: none;'><li><a href='#syntax'>Syntax</a><ul style='list-style: none;'><li><a href='#inserting_scala__or_'>Inserting Scala: <code>&lt;%= %&gt;</code> or <code>${ }</code></a></li><li><a href='#running_scala_'>Running Scala: <code>&lt;% %&gt;</code></a></li><li><a href='#binding_variables_'>Binding Variables: <code>&lt;%@ %&gt;</code></a></li><li><a href='#comments_'>Comments: <code>&lt;%-- --%&gt;</code></a></li><li><a href='#includes_'>Includes <code>&lt;% include ... %&gt;</code></a></li><li><a href='#custom_tags'>Custom tags</a></li></ul></li><li><a href='#other_resources'>Other Resources</a></li></ul></div>
+<p>Ssp pages are like JSP/ASP pages in syntax but using Scala code for expressions instead of Java or EL like in JSP.</p>
+
+<p>If you know JSP or ASP then hopefully the syntax of Ssp is familiar; only using Scala as the language of expressions and method invocations.</p>
+
+<h2 id='syntax'>Syntax</h2>
+
+<p>A Ssp template consists of plain text, usually an HTML document, which has special Ssp tags embedded in it so that portions of the document are rendered dynamically. Everything outside of a <code>&lt;% ... %&gt;</code> and <code>${ ... }</code> sequence are considered literal text and are generally passed through to the rendered document unmodified.</p>
+
+<h3 id='inserting_scala__or_'>Inserting Scala: <code>&lt;%= %&gt;</code> or <code>${ }</code></h3>
+
+<p>Code wrapped by <code>&lt;%=</code> and <code>%&gt;</code> or with &#8216;${&#8217; and &#8217;}&#8217; is evaluated and the output is inserted into the document.</p>
+
+<p>For example: <div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;p&gt;</span>&#x000A;  <span class='k'>&lt;%=</span> <span class='n'>List</span><span class='o'>(</span><span class='s'>&quot;hi&quot;</span><span class='o'>,</span> <span class='s'>&quot;there&quot;</span><span class='o'>,</span> <span class='s'>&quot;reader!&quot;</span><span class='o'>).</span><span class='na'>mkString</span><span class='o'>(</span><span class='s'>&quot; &quot;</span><span class='o'>)</span> <span class='k'>%&gt;</span>&#x000A;  ${ &quot;yo &quot;+(3+4) } &#x000A;<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>is rendered as: <div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;p&gt;</span>&#x000A;  hi there reader!&#x000A;  yo 7&#x000A;<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<h3 id='running_scala_'>Running Scala: <code>&lt;% %&gt;</code></h3>
+
+<p>Code wrapped by <code>&lt;%</code> and <code>%&gt;</code> is evaluated but <em>not</em> inserted into the document.</p>
+
+<p>For example: <div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%</span>&#x000A;  <span class='n'>var</span> <span class='n'>foo</span> <span class='o'>=</span> <span class='s'>&quot;hello&quot;</span>&#x000A;  <span class='n'>foo</span> <span class='o'>+=</span> <span class='s'>&quot; there&quot;</span>&#x000A;  <span class='n'>foo</span> <span class='o'>+=</span> <span class='s'>&quot; you!&quot;</span>&#x000A;<span class='k'>%&gt;</span>&#x000A;<span class='nt'>&lt;p&gt;</span>${foo}<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>is rendered as: <div class='syntax'><div class='highlight'><pre><span class='nt'>&lt;p&gt;</span>hello there you!<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<h3 id='binding_variables_'>Binding Variables: <code>&lt;%@ %&gt;</code></h3>
+
+<p>When a Scalate template is rendered, the caller can pass an attribute map which the template in charge of rendering. To bind the attribute to a Scala variable, a Scaml template uses the following syntax to declare the variable: <div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%@</span> <span class='n'>val</span> <span class='nl'>foo:</span> <span class='n'>MyType</span> <span class='k'>%&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>If the attribute map does not contain a &#8220;foo&#8221; entry, then a NoValueSetException is thrown when the the template is rendered.</p>
+
+<p>To avoid this exception, a default value can be configured. For example: <div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%@</span> <span class='n'>val</span> <span class='nl'>bar:</span> <span class='n'>String</span> <span class='o'>=</span> <span class='s'>&quot;this is the default value&quot;</span> <span class='k'>%&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>The attribute is now available for use as an expression.</p>
+
+<p>Its very common to have a template based on a single object who&#8217;s members are f frequently accessed. In this cases, it&#8217;s convenient to import all the object&#8217;s members. This can be done by adding the import keyword to the attribute declaration.</p>
+
+<p>For example: <div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%@</span> <span class='kn'>import</span> <span class='nn'>val</span> <span class='nl'>model:</span> <span class='n'>Person</span> <span class='k'>%&gt;</span>&#x000A;<span class='nt'>&lt;p&gt;</span>Hello ${name}, what is the weather like in ${city}<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>is the same as: <div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%@</span> <span class='n'>val</span> <span class='nl'>model:</span> <span class='n'>Person</span> <span class='k'>%&gt;</span>&#x000A;<span class='k'>&lt;%</span> <span class='kn'>import</span> <span class='nn'>model._</span> <span class='k'>%&gt;</span>&#x000A;<span class='nt'>&lt;p&gt;</span>Hello ${name}, what is the weather like in ${city}<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<p>Which is the same as:</p>
+
+<p><div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%@</span> <span class='n'>val</span> <span class='nl'>model:</span> <span class='n'>Person</span> <span class='k'>%&gt;</span>&#x000A;<span class='nt'>&lt;p&gt;</span>Hello ${model.name}, what is the weather like in ${model.city}<span class='nt'>&lt;/p&gt;</span>&#x000A;</pre></div>&#x000A;</div></p>
+
+<h3 id='comments_'>Comments: <code>&lt;%-- --%&gt;</code></h3>
+
+<p>Ssp comments prevent everything inside the comment markers from being inserted in to the rendered document.</p>
+<div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%-</span><span class='o'>-</span> <span class='k'>this</span> <span class='n'>is</span> <span class='n'>a</span> <span class='n'>comment</span> <span class='o'>--</span><span class='k'>%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+<h3 id='includes_'>Includes <code>&lt;% include ... %&gt;</code></h3>
+
+<p>You can include other scripts in your page using the include method</p>
+<div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%</span> <span class='n'>include</span> <span class='n'>file</span><span class='o'>=</span><span class='s'>&quot;relativeOrAbsoluteURL&quot;</span> <span class='k'>%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+<p>The URL is then evaluated and included in place in your template.</p>
+
+<h3 id='custom_tags'>Custom tags</h3>
+
+<p>In JSP there is a concept of custom tags which can process a block of the template such as for looping or transforming content.</p>
+
+<p>For example if you want to XML escape a block of a template you can just invoke the <em>xmlEscape</em> method.</p>
+<div class='syntax'><div class='highlight'><pre><span class='k'>&lt;%=</span> <span class='n'>xmlEscape</span> <span class='o'>{</span><span class='k'>%&gt;</span>&#x000A;  I like <span class='nt'>&lt;strong&gt;</span> cheese <span class='err'>&amp;</span> crackers&#x000A;<span class='k'>&lt;%</span> <span class='o'>}</span> <span class='k'>%&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+<p>is rendered as: <div class='syntax'><div class='highlight'><pre>I like <span class='ni'>&amp;lt;</span>strong<span class='ni'>&amp;gt;</span> cheese <span class='ni'>&amp;amp;</span> crackers&#x000A;</pre></div>&#x000A;</div></p>
+
+<h2 id='other_resources'>Other Resources</h2>
+
+<ul>
+<li><a href='scalate-user-guide.html'>Scalate User Guide</a></li>
+</ul>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Documentation</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.6.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/documentation/index.page">documentation/index.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Get_Your_Learn_On">Get Your Learn On</h1>
+
+<p>All the information you need to be become an expert with Scalate</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "_a_href_____faq_html__FAQ__a_"><a href="../faq.html">FAQ</a></h1>
+</div>
+<div class="right">
+  <p>Frequently asked questions on all things Scalate</p>
+</div>
+<div class="left">
+  <h1 id = "_a_href__installing_html__Installing__a_"><a href="installing.html">Installing</a></h1>
+</div>
+<div class="right">
+  <p>Gets you set up to start scalating!</p>
+</div>
+<div class="left">
+  <h1 id = "_a_href__getting-started_html__Getting_Started__a_"><a href="getting-started.html">Getting Started</a></h1>
+</div>
+<div class="right">
+  <p>Lets get you scalating really quickly!</p>
+</div>
+<div class="left">
+  <h1 id = "_a_href__user-guide_html__User_Guide__a_"><a href="user-guide.html">User Guide</a></h1>
+</div>
+<div class="right">
+  <p>A detailed walk through Scalate and how to use it.</p>
+</div>
+<div class="left">
+  <h1 id = "Templates">Templates</h1>
+</div>
+<div class="right">
+  <table cellspacing="20">
+    <tr>
+      <td cellvalign="middle">
+        <h1 id = "_a_href__jade_html__Jade__a_"><a href="jade.html">Jade</a></h1>
+      </td>
+      <td>
+        <p>Reference for the Jade template language. 
+        Jade is a modified dialect of <a href="http://haml-lang.com/">Haml</a> and is a very DRY template engine for generating HTML; its even a little DRYer than <a href="scaml-reference.html">Scaml</a></p>
+      </td>
+    </tr>
+    <tr>
+      <td cellvalign="middle">
+        <h1 id = "_a_href__mustache_html__Mustache__a_"><a href="mustache.html">Mustache</a></h1>
+      </td>
+      <td>
+        <p>Reference for the <a href="http://mustache.github.com/">Mustache</a> template language.
+        Mustache provides logic-less templates which also work inside the browser using <a href="http://github.com/janl/mustache.js">mustache.js</a> - so ideal for HTML templates</p>
+      </td>
+    </tr>
+    <tr>
+      <td cellvalign="middle">
+        <h1 id = "_a_href__scaml-reference_html__Scaml__a_"><a href="scaml-reference.html">Scaml</a></h1>
+      </td>
+      <td>
+        <p>Reference for the Scaml template language. 
+        Scaml is a Scala version of <a href="http://haml-lang.com/">Haml</a> and is a very DRY template engine for generating HTML</p>
+      </td>
+    </tr>
+    <tr>
+      <td cellvalign="middle">
+        <h1 id = "_a_href__ssp-reference_html__SSP__a_"><a href="ssp-reference.html">SSP</a></h1>
+      </td>
+      <td>
+        <p>Reference for the SSP template language. 
+        SSP is a Scala version of <a href="http://velocity.apache.org/">Velocity</a>, JSP or Erb from Rails so its easy to pick up if you've used one of those and can be used to generate any textual output.</p>
+      </td>
+    </tr>
+    <tr>
+      <td cellvalign="middle">
+        <h1 id = "_a_href__scuery_html__Scuery__a_"><a href="scuery.html">Scuery</a></h1>
+      </td>
+      <td>
+        <p>Not really a template language but Scuery provides a way to transform HTML using CSS3 selectors rather like jQuery which can be useful for transforming layouts or pages owned by a designer using a Scala DSL.</p>
+        <div></div>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="left">
+  <h1 id = "_a_href__frameworks_html__Frameworks__a_"><a href="frameworks.html">Frameworks</a></h1>
+</div>
+<div class="right">
+  <p>How to use Scalate with popular web frameworks</p>
+</div>
+<div class="left">
+  <h1 id = "_a_href_____developers_html__Developers__a_"><a href="../developers.html">Developers</a></h1>
+</div>
+<div class="right">
+  <p>ScalaDocs and other developer documentation such as reports generated by Maven</p>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

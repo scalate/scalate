@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="Scalate, see scalate.fusesource.org" name="generator"/>
+    <title>Scalate, the Scala Template Engine</title>
+    <meta content="text/html; charset=us-ascii" http-equiv="Content-Type"/>
+    <meta content="Copyright © 2011, James Strachan" name="copyright"/>
+    <meta content="5" name="duration"/>
+    <meta content="-2" name="font-size-adjustment"/>
+    <link type="text/css" href="styles/slidy.css" rel="stylesheet"/>
+    <link type="text/css" href="styles/w3c-red.css" rel="stylesheet"/>
+    <link href="css/pygmentize.css" rel="stylesheet" type="text/css"/>
+    <script space="preserve" type="text/javascript" charset="utf-8" src="scripts/slidy.js"></script>
+    <style type='text/css'>
+      /* <![CDATA[ */
+        ul li {
+          background: transparent url(../graphics/bullet.png) no-repeat 0em .45em;
+          background-size: .6em; -webkit-background-size: .6em;  -o-background-size: .6em; -khtml-background-size: .6em;
+          padding: 0 0 0 1.2em;
+        }
+        div.slide h1 {
+          display:table-cell;
+          vertical-align:middle;
+          height: 2.2em;
+          margin: 0;
+        }
+      /* ]]> */
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <img id="head-icon" name="head-icon" src="images/scalate/project-icon-107x107.png" alt=""/>
+    </div>
+    <div class="background slanty"></div>
+    <div class="slide">
+      <h1>Scalate: the Scala Template Engine</h1>
+      <img alt="Scalate" src="images/scalate/project-logo.png"/>
+      <br clear="all"/>
+      <p>
+        <a shape="rect" href="http://macstrac.blogspot.com/">James Strachan</a>
+        <br clear="none"/>
+        <a shape="rect" href="http://twitter.com/#!/jstrachan">@jstrachan</a>
+        <br clear="none"/>
+        <a shape="rect" href="http://fusesource.com/">FuseSource</a>
+      </p>
+    </div>
+    <div class="slide">
+      <h1 id = "Your_presenter:_James_Strachan">Your presenter: James Strachan</h1>
+
+      <ul>
+      <li>James Strachan
+      <ul>
+      <li>twitter: @jstrachan</li>
+      <li>blog: <a href="http://macstrac.blogspot.com/">http://macstrac.blogspot.com/</a></li>
+      </ul></li>
+      <li>Software Fellow at <a href="http://fusesource.com">FuseSource</a></li>
+      <li>long term Open Source contributor
+      <ul>
+      <li>created Apache Camel</li>
+      <li>created the Groovy programming language</li>
+      <li>co-founder of 
+      <ul>
+      <li>Apache ActiveMQ, Camel, ServiceMix, Fabric, &hellip;</li>
+      <li>Scalate</li>
+      </ul></li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Scalate_Overview">Scalate Overview</h1>
+
+      <p><img src="images/scalate/project-logo.png" alt="Scalate"/></p>
+
+      <ul>
+      <li>its a <strong>Scala</strong> based <strong>T</strong>emplate <strong>E</strong>ngine
+      <ul>
+      <li>Scala T E => <strong>Scalate</strong></li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Design_Goals">Design Goals</h1>
+
+      <p><img src="images/scalate/project-logo.png" alt="Scalate"/></p>
+
+      <ul>
+      <li>make an awesome template engine 
+      <ul>
+      <li>framework <span class="amp"><span class="amp">&amp;</span></span> container agnostic</li>
+      </ul></li>
+      <li>support different template flavours under same API
+      <ul>
+      <li>there isn't really a one size fits all</li>
+      </ul></li>
+      <li>reuse the power <span class="amp">&amp;</span> type safety of Scala
+      <ul>
+      <li>catch errors in templates at edit/build time
+      <ul>
+      <li>templates are for life, not just for Christmas!</li>
+      </ul></li>
+      <li>IDE friendly for smart completion</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Features">Features</h1>
+
+      <ul>
+      <li>Templates are compiled <span class="amp">&amp;</span> cached as fast Scala objects</li>
+      <li>Template objects are statically typed to catch typos
+      <ul>
+      <li>apart from Mustache</li>
+      </ul></li>
+      <li>Scalate is equivalent to the combination of JSP, JSTL, JSP EL
+          <span class="amp">&amp;</span> SiteMesh/Tiles
+      <ul>
+      <li>Scala replaces JSP EL and Scala functions replace JSP
+          custom tags</li>
+      <li>Scalate template languages are richer, more powerful <span class="amp"><span class="amp">&amp;</span></span>
+          usually more DRY than JSP + JSTL</li>
+      <li>Scalate has in built layout support replacing
+          SiteMesh/Titles</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "How_Scalate_works">How Scalate works</h1>
+
+      <ul>
+      <li>TemplateEngine is used to load Templates
+      <ul>
+      <li>typically templates are converted into scala code and
+          compiled to avoid runtime parsing</li>
+      <li>can customize various things&hellip;
+      <ul>
+      <li>caching <span class="amp"><span class="amp"><span class="amp">&amp;</span></span></span> reloading</li>
+      <li>how URIs are resolved (classpath, file system etc)</li>
+      <li>internationalisation</li>
+      </ul></li>
+      </ul></li>
+      <li>RenderContext is used to render a template
+      <ul>
+      <li>has a Map[String,Any] like set of attributes for
+          passing/sharing state</li>
+      <li>loads of helper methods for use inside the template
+      <ul>
+      <li>localisation, including other templates, views,
+          layouts etc</li>
+      </ul></li>
+      </ul></li>
+      <li>template languages implemented using Scala parser generators</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Scalate_Template_Languages">Scalate Template Languages</h1>
+
+      <ul>
+      <li>SSP</li>
+      <li>Scaml</li>
+      <li>Jade</li>
+      <li>Mustache</li>
+      <li>Scuery</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "SSP">SSP</h1>
+
+      <ul>
+      <li>SSP or <em>Scala Server Pages</em>
+      <ul>
+      <li>like a non-sucky JSP :)</li>
+      </ul></li>
+      <li>easiest template engine to start with if folks know
+      <ul>
+      <li>ASP, JSP, GSP, Erb, Velocity, FreeMarker style templates</li>
+      </ul></li>
+      <li>supports JSP / Erb style syntax 
+      <ul>
+      <li>&lt;% statements %></li>
+      <li>&lt;%= expression %></li>
+      <li>${expression}</li>
+      </ul></li>
+      <li>examples:
+      <ul>
+      <li>Dear ${people.map(_.name).mkString(", &ldquo;)} how are you?</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "SSP_also_supports_Velocity_style_tokens">SSP also supports Velocity style tokens</h1>
+      <div class="compare"><h3>example</h3><div class="syntax"><div class="highlight"><pre>#if (lineItems.find(_.price &gt; 10).isDefined)&#x000A;  <span class="nt">&lt;b&gt;</span>Welcome big spender!<span class="nt">&lt;/b&gt;</span>&#x000A;#end&#x000A;</pre></div>&#x000A;</div></div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "SSP_sample_page">SSP sample page</h1>
+
+      <h3 id = "Sample_page_using_SSP_markup">Sample page using SSP markup</h3>
+<div class="syntax"><div class="highlight"><pre><span class="k">&lt;%</span>&#x000A;  <span class="n">val</span> <span class="n">people</span> <span class="o">=</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;James&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Mells&quot;</span><span class="o">,</span> <span class="s">&quot;Hiram&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Tampa&quot;</span><span class="o">)</span>&#x000A;<span class="k">%&gt;</span>&#x000A;&#x000A;<span class="nt">&lt;h1&gt;</span>Table Example<span class="nt">&lt;/h1&gt;</span>&#x000A;&#x000A;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;table&gt;</span>&#x000A;    <span class="nt">&lt;tr&gt;</span>&#x000A;      <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>&#x000A;      <span class="nt">&lt;th&gt;</span>Location<span class="nt">&lt;/th&gt;</span>&#x000A;    <span class="nt">&lt;/tr&gt;</span>&#x000A;    #for ((name, location) <span class="nt">&lt;-</span> <span class="err">people)</span>&#x000A;    <span class="err">&lt;tr</span><span class="nt">&gt;</span>&#x000A;      <span class="nt">&lt;td&gt;</span>${name}<span class="nt">&lt;/td&gt;</span>&#x000A;      <span class="nt">&lt;td&gt;</span>${location}<span class="nt">&lt;/td&gt;</span>&#x000A;    <span class="nt">&lt;/tr&gt;</span>&#x000A;    #end&#x000A;  <span class="nt">&lt;/table&gt;</span> &#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;&#x000A;<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;description&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;p&gt;</span>&#x000A;    This is lots and lots of text.&#x000A;    <span class="nt">&lt;b&gt;</span>Scalate<span class="nt">&lt;/b&gt;</span> really is rather awesome!&#x000A;  <span class="nt">&lt;/p&gt;</span>      &#x000A;<span class="nt">&lt;/div&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Scaml">Scaml</h1>
+
+      <ul>
+      <li>Scaml is a Scala port of HAML</li>
+      <li>HAML started in the Rails world and became a very popular
+            alternative to Erb templates</li>
+      <li>whitespace sensitive (which is handy for markup, avoids
+            badly nested markup)</li>
+      <li>syntax
+      <ul>
+      <li>%foo to indicate &lt;foo&gt;&hellip;&lt;/foo&gt;</li>
+      <li>&#45; for statements</li>
+      <li>= expressions</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Scaml_sample_page">Scaml sample page</h1>
+
+      <h3 id = "Sample_page_using_Scaml_markup">Sample page using Scaml markup</h3>
+<div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;James&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Mells&quot;</span><span class="o">,</span> <span class="s">&quot;Hiram&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Tampa&quot;</span><span class="o">)</span>&#x000A;&#x000A;<span class="nt">%h1</span> Table Example&#x000A;&#x000A;<span class="nc">.main</span>&#x000A;  <span class="nt">%table</span>&#x000A;    <span class="nt">%tr</span>&#x000A;      <span class="nt">%th</span> Name&#x000A;      <span class="nt">%th</span> Location&#x000A;    <span class="p">-</span> <span class="k">for</span> <span class="o">((</span><span class="n">name</span><span class="o">,</span> <span class="n">location</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">people</span><span class="o">)</span> &#x000A;      <span class="nt">%tr</span>&#x000A;        <span class="nt">%td</span> = name&#x000A;        <span class="nt">%td</span> = location&#x000A;&#x000A;<span class="nc">.description</span>      &#x000A;  <span class="nt">%p</span>&#x000A;    This is lots and lots of text.&#x000A;    &lt;b&gt;Scalate&lt;/b&gt; really is rather awesome!&#x000A;</pre></div>&#x000A;</div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Jade">Jade</h1>
+
+      <ul>
+      <li>Jade came from JavaScript / Rails as a simpler more DRY
+          version of HAML / Scaml 
+      <ul>
+      <li>avoid the % to indicate element name
+      <ul>
+      <li>folks tend to use lots of elements; few are
+          multi-line text content</li>
+      </ul></li>
+      <li>use | to indicate text content inside an element when
+          multiple lines required</li>
+      <li>Implemented as just a slightly different surface parser
+          on Scaml</li>
+      </ul></li>
+      <li>Jade + markdown are the hotness!</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Jade_sample_page">Jade sample page</h1>
+
+      <h3 id = "Sample_page_using_Jade_markup">Sample page using Jade markup</h3>
+<div class="syntax"><div class="highlight"><pre><span class="p">-</span> <span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;James&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Mells&quot;</span><span class="o">,</span> <span class="s">&quot;Hiram&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;Tampa&quot;</span><span class="o">)</span>&#x000A;&#x000A;<span class="nt">h1</span> Table Example&#x000A;&#x000A;<span class="nc">.main</span>&#x000A;  <span class="nt">table</span>&#x000A;    <span class="nt">tr</span>&#x000A;      <span class="nt">th</span> Name&#x000A;      <span class="nt">th</span> Location&#x000A;    <span class="p">-</span> <span class="k">for</span> <span class="o">((</span><span class="n">name</span><span class="o">,</span> <span class="n">location</span><span class="o">)</span> <span class="k">&lt;-</span> <span class="n">people</span><span class="o">)</span> &#x000A;      <span class="nt">tr</span>&#x000A;        <span class="nt">td</span><span class="p">=</span> <span class="n">name</span>&#x000A;        <span class="nt">td</span><span class="p">=</span> <span class="n">location</span>&#x000A;      &#x000A;<span class="nc">.description</span>      &#x000A;  <span class="nd">:markdown</span>&#x000A;    <span class="nd">This is lots and lots of text.</span>&#x000A;    <span class="nd">**Scalate** really is rather awesome!</span>&#x000A;</pre></div>&#x000A;</div>
+
+      <div></div>
+    </div>
+    <div class="slide">
+      <h1 id = "Mustache">Mustache</h1>
+
+      <ul>
+      <li>no logic in the scripts</li>
+      <li>can be used from JavaScript on the client side or Scala /
+          Scalate on the server side</li>
+      <li>uses {{foo}} mustaches for values</li>
+      <li>use {{#foo}} and {{/foo}} for blocks/loops/conditionals</li>
+      <li>good if you want your designer to own the templates
+      <ul>
+      <li>though dynamically typed</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Mustache_sample_page">Mustache sample page</h1>
+
+      <h3 id = "Sample_page_using_Mustache_markup">Sample page using Mustache markup</h3>
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;table&gt;</span>&#x000A;  <span class="nt">&lt;tr&gt;</span>&#x000A;    <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>&#x000A;    <span class="nt">&lt;th&gt;</span>Location<span class="nt">&lt;/th&gt;</span>&#x000A;  <span class="nt">&lt;/tr&gt;</span>&#x000A;  {{#people}}&#x000A;  <span class="nt">&lt;tr&gt;</span>&#x000A;    <span class="nt">&lt;td&gt;</span>{{name}}<span class="nt">&lt;/td&gt;</span>&#x000A;    <span class="nt">&lt;td&gt;</span>{{location}}<span class="nt">&lt;/td&gt;</span>&#x000A;  <span class="nt">&lt;/tr&gt;</span>&#x000A;  {{/people}}&#x000A;<span class="nt">&lt;/table&gt;</span> &#x000A;&#x000A;<span class="nt">&lt;p&gt;</span>&#x000A;  This is lots and lots of text.&#x000A;  <span class="nt">&lt;b&gt;</span>Scalate<span class="nt">&lt;/b&gt;</span> really is rather awesome!&#x000A;<span class="nt">&lt;/p&gt;</span>      &#x000A;</pre></div>&#x000A;</div>
+
+      <div></div>
+    </div>
+    <div class="slide">
+      <h1 id = "Scuery">Scuery</h1>
+
+      <ul>
+      <li>more of a HTML/XHTML transformation engine really</li>
+      <li>uses CSS3 parser <span class="amp">&amp;</span> transformation engine</li>
+      <li>templates are regular HTML pages (possibly with mock data)
+          owned by your designer</li>
+      <li>use the transform API (jQuery-ish) to transform the HTML to
+          inject/replace with dynamic data</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Scuery_sample_HTML_page">Scuery sample HTML page</h1>
+
+      <h3 id = "Sample_page_using_plain_HTML_markup">Sample page using plain HTML markup</h3>
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;people&quot;</span><span class="nt">&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>&#x000A;    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>A person<span class="nt">&lt;/a&gt;</span>&#x000A;  <span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>&#x000A;    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>Another person<span class="nt">&lt;/a&gt;</span>&#x000A;  <span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Scuery_sample_Scala_transform">Scuery sample Scala transform</h1>
+
+      <h3 id = "Sample_HTML_page_transform_with_Scuery">Sample HTML page transform with Scuery</h3>
+<div class="syntax"><div class="highlight"><pre><span class="k">import</span> <span class="nn">org.fusesource.scalate.scuery._</span>&#x000A;&#x000A;<span class="k">case</span> <span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">location</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span>&#x000A;&#x000A;&#x000A;<span class="k">object</span> <span class="nc">MyTransform</span> <span class="k">extends</span> <span class="nc">Transformer</span> <span class="o">{</span>&#x000A;  <span class="k">val</span> <span class="n">people</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="nc">Person</span><span class="o">(</span><span class="s">&quot;James&quot;</span><span class="o">,</span> <span class="s">&quot;Beckington&quot;</span><span class="o">),</span> <span class="nc">Person</span><span class="o">(</span><span class="s">&quot;Hiram&quot;</span><span class="o">,</span> <span class="s">&quot;Tampa&quot;</span><span class="o">))</span>&#x000A;  &#x000A;  <span class="n">$</span><span class="o">(</span><span class="s">&quot;.people&quot;</span><span class="o">).</span><span class="n">contents</span> <span class="o">{</span>&#x000A;    <span class="n">node</span> <span class="k">=&gt;</span>&#x000A;      <span class="n">people</span><span class="o">.</span><span class="n">flatMap</span> <span class="o">{</span>&#x000A;        <span class="n">p</span> <span class="k">=&gt;</span>&#x000A;          <span class="n">transform</span><span class="o">(</span><span class="n">node</span><span class="o">.</span><span class="n">$</span><span class="o">(</span><span class="s">&quot;li:first-child&quot;</span><span class="o">))</span> <span class="o">{</span>&#x000A;            <span class="n">$</span> <span class="k">=&gt;</span>&#x000A;              <span class="n">$</span><span class="o">(</span><span class="s">&quot;a.person&quot;</span><span class="o">).</span><span class="n">contents</span> <span class="k">=</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>&#x000A;              <span class="n">$</span><span class="o">(</span><span class="s">&quot;a.person&quot;</span><span class="o">).</span><span class="n">attribute</span><span class="o">(</span><span class="s">&quot;href&quot;</span><span class="o">).</span><span class="n">value</span> <span class="k">=</span> <span class="s">&quot;http://acme.com/bookstore/&quot;</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>&#x000A;          <span class="o">}</span>&#x000A;      <span class="o">}</span>&#x000A;  <span class="o">}</span>&#x000A;<span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Tips_on_picking_a_template_language">Tips on picking a template language</h1>
+
+      <ul>
+      <li>If you want your designers to own your templates
+      <ul>
+      <li>consider <strong>mustache</strong> or <strong>scuery</strong></li>
+      </ul></li>
+      <li>if you want developers to hack your templates
+      <ul>
+      <li>want to generate HTML/XML really DRY? 
+      <ul>
+      <li>use <strong>jade</strong></li>
+      </ul></li>
+      <li>otherwise <strong>SSP</strong></li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Scalate_Layouts">Scalate Layouts</h1>
+
+      <ul>
+      <li>TemplateEngine.layoutStrategy defines the strategy</li>
+      <li>default implementation uses the &ldquo;layout&rdquo; attribute to define
+          the template used for laying out any template</li>
+      <li>to change the layout you want to use&hellip;
+      <ul>
+      <li>&#45; attributes("layout&rdquo;) = &ldquo;/my/layouts/foo.jade&rdquo;</li>
+      </ul></li>
+      <li>to disable layouts
+      <ul>
+      <li>&#45; attributes("layout&rdquo;) = &ldquo;"</li>
+      </ul></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Using_Scalate">Using Scalate</h1>
+
+      <ul>
+      <li>can use TemplateEngine directly if doing code generation</li>
+      <li>or if using servlets:</li>
+      </ul>
+      <div class="compare"><h3>add this to web.xml</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;filter&gt;</span>&#x000A;  <span class="nt">&lt;filter-name&gt;</span>TemplateEngineFilter<span class="nt">&lt;/filter-name&gt;</span>&#x000A;  <span class="nt">&lt;filter-class&gt;</span>org.fusesource.scalate.servlet.TemplateEngineFilter<span class="nt">&lt;/filter-class&gt;</span>&#x000A;<span class="nt">&lt;/filter&gt;</span>&#x000A;<span class="nt">&lt;filter-mapping&gt;</span>&#x000A;  <span class="nt">&lt;filter-name&gt;</span>TemplateEngineFilter<span class="nt">&lt;/filter-name&gt;</span>&#x000A;  <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>&#x000A;<span class="nt">&lt;/filter-mapping&gt;</span>&#x000A;</pre></div>&#x000A;</div></div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Framework_support">Framework support</h1>
+
+      <ul>
+      <li>bowler</li>
+      <li>jersey</li>
+      <li>lift</li>
+      <li>playframework</li>
+      <li>scalatra</li>
+      <li>servlets</li>
+      <li>sbt / lifty</li>
+      <li>spring mvc</li>
+      <li>unfiltered</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "mod_your_Template_Engine_">mod your Template Engine!</h1>
+      <div class="compare"><h3>add this class to pimp your TemplateEngine</h3><div class="syntax"><div class="highlight"><pre><span class="k">package</span> <span class="nn">scalate</span> &#x000A;&#x000A;<span class="k">import</span> <span class="nn">org.fusesource.scalate.TemplateEngine</span>&#x000A;<span class="k">import</span> <span class="nn">java.io.File</span>&#x000A;&#x000A;<span class="k">class</span> <span class="nc">Boot</span><span class="o">(</span><span class="n">engine</span><span class="k">:</span> <span class="kt">TemplateEngine</span><span class="o">)</span> <span class="o">{</span>&#x000A;&#x000A;  <span class="k">def</span> <span class="n">run</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>&#x000A;    <span class="c1">// lets change the workingDirectory</span>&#x000A;    <span class="n">engine</span><span class="o">.</span><span class="n">workingDirectory</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">&quot;myScalateWorkDir&quot;</span><span class="o">)</span>&#x000A;  <span class="o">}</span>&#x000A;<span class="o">}</span>&#x000A;        &#x000A;</pre></div>&#x000A;</div></div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Precompile_your_templates">Precompile your templates</h1>
+      <div class="compare"><h3>add to your pom.xml</h3><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;build&gt;</span>&#x000A;  <span class="nt">&lt;plugins&gt;</span>&#x000A;    <span class="nt">&lt;plugin&gt;</span>&#x000A;      <span class="nt">&lt;groupId&gt;</span>org.fusesource.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;      <span class="nt">&lt;artifactId&gt;</span>maven-scalate-plugin<span class="nt">&lt;/artifactId&gt;</span>&#x000A;      <span class="nt">&lt;version&gt;</span>1.5.0<span class="nt">&lt;/version&gt;</span>&#x000A;      <span class="nt">&lt;executions&gt;</span>&#x000A;        <span class="nt">&lt;execution&gt;</span>&#x000A;          <span class="nt">&lt;goals&gt;</span>&#x000A;            <span class="nt">&lt;goal&gt;</span>precompile<span class="nt">&lt;/goal&gt;</span>&#x000A;          <span class="nt">&lt;/goals&gt;</span>&#x000A;        <span class="nt">&lt;/execution&gt;</span>&#x000A;      <span class="nt">&lt;/executions&gt;</span>&#x000A;    <span class="nt">&lt;/plugin&gt;</span>&#x000A;  <span class="nt">&lt;/plugins&gt;</span>&#x000A;<span class="nt">&lt;/build&gt;</span>&#x000A;        &#x000A;</pre></div>&#x000A;</div></div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Getting_Started">Getting Started</h1>
+
+      <ul>
+      <li>install Scalate
+      <ul>
+      <li><a href="http://scalate.fusesource.org/download.html">http://scalate.fusesource.org/download.html</a></li>
+      <li>add <strong>SCALATE_HOME/bin</strong> to your <strong>PATH</strong></li>
+      </ul></li>
+      </ul>
+      <h3>Create a sample project</h3>
+      <div class="syntax"><div class="highlight"><pre>scalate create jersey mygroup myartifact&#x000A;cd myartifact&#x000A;mvn jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+      <h3>To try out the Scalate shell</h3>
+      <div class="syntax"><div class="highlight"><pre>scalate&#x000A;help&#x000A;</pre></div>&#x000A;</div>
+
+    </div>
+    <div class="slide">
+      <h1 id = "Static_site_generation">Static site generation</h1>
+
+      <ul>
+      <li>maven plugin to generate a complete static website for your
+          project using Scalate</li>
+      <li>deploy it to some web server using maven's wagon transports
+      <ul>
+      <li>scp / webdav etc</li>
+      </ul></li>
+      <li>allows real time updates of templates <span class="amp">&amp;</span> layouts while editing
+          docs</li>
+      <li>your own personal offline wiki using git for source control <span class="amp">&amp;</span>
+          versioning
+      <ul>
+      <li>use a text editor to edit, erm, text files! :)</li>
+      </ul></li>
+      </ul>
+      <h3>Create a website project</h3>
+      <div class="syntax"><div class="highlight"><pre>scalate create sitegen mygroup mysite&#x000A;cd mysite&#x000A;mvn jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+      <ul>
+      <li>now open <a href="http://localhost:8080/scalate">http://localhost:8080/scalate</a></li>
+      <li>click on the top right scalate icon for the <a href="http://scalate.fusesource.org/documentation/console.html">Scalate Console</a></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Presentation_generation">Presentation generation</h1>
+
+      <ul>
+      <li>this presentation is created by Scalate :)</li>
+      <li>deployed online <a href="http://scalate.fusesource.org/presentations/scalate">static HTML</a></li>
+      <li>implemented in a <a href="https://github.com/scalate/scalate/blob/master/samples/scalate-presentation/src/scalate.jade">single jade + markdown template</a></li>
+      <li>uses <a href="http://www.w3.org/Talks/Tools/Slidy2/">HTML Slidy</a> for JavaScript + CSS</li>
+      </ul>
+
+      <h3 id = "To_try_it_out_locally_from_a_scalate_checkout">To try it out locally from a scalate checkout</h3>
+      <div class="syntax"><div class="highlight"><pre>cd samples/scalate-presentation&#x000A;mvn jetty:run&#x000A;</pre></div>&#x000A;</div>
+
+      <ul>
+      <li>now open <a href="http://localhost:8080/scalate">http://localhost:8080/scalate</a></li>
+      </ul>
+    </div>
+    <div class="slide">
+      <h1 id = "Demo_time_">Demo time!</h1>
+
+      <ul>
+      <li>Demo templates <span class="amp">&amp;</span> web app here:</li>
+      <li><a href="https://github.com/scalate/scalate/tree/master/samples/scalate-example">https://github.com/scalate/scalate/tree/master/samples/scalate-example</a></li>
+      </ul>
+
+      <p><img src="images/cross-fingers.png" alt="Cross Fingers"/></p>
+    </div>
+    <div class="slide">
+      <h1 id = "Any_Questions_">Any Questions?</h1>
+
+      <p><img src="images/scalate/project-logo.png" alt="Scalate"/></p>
+
+      <ul>
+      <li><a href="http://scalate.fusesource.org/">http://scalate.fusesource.org/</a></li>
+      <li>twitter: @jstrachan</li>
+      <li><a href="http://fusesource.com">http://fusesource.com</a></li>
+      </ul>
+
+      <p><img src="images/questions.png" alt="Questions"/></p>
+    </div>
+  </body>
+</html>

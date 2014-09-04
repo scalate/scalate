@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Is putting code in the view bad?</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="index.html">Scalate</a></li><li class="webgen-menu-level1"><a href="download.html">Download</a></li><li class="webgen-menu-level1"><a href="source.html">Source</a></li><li class="webgen-menu-level1"><a href="community.html">Community</a></li><li class="webgen-menu-level1"><a href="support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='is_putting_code_in_the_view_bad'>Is putting code in the view bad?</h1>
+
+<p>Code in view bad? It all depends&#8230;</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <p>A common response we hear from folks; particularly folks using <a href='http://liftweb.net/'>Lift</a> is that putting code in views is bad. Blanket statements like that are often not that great themselves :), we really think it depends on your personal preferences, requirements and the makeup of your team.</p>
+
+<p>In this article we&#8217;ll compare and contrast Lift and Scalate views listing their strengths and weaknesses. We&#8217;ll try to be impartial; though do notice which website you&#8217;re reading this page on - it might be a little biased in Scalate&#8217;s direction :)</p>
+
+<h2 id='lift_views'>Lift views</h2>
+
+<p>Even with the Lift approach <em>there is code in the views</em>; its just the code is hidden behind an XML element which when the right snippet is invoked, gets replaced by some code to be the value of another Scala expression. So your view still has code inside it, but there&#8217;s a level of indirection between actual Scala code and the template which just refers to custom tags.</p>
+
+<p>This has pros and cons.</p>
+
+<h3 id='whats_good_about_lift_views'>Whats good about Lift views</h3>
+
+<p>You can give a lift template to someone incapable of writing scala code; they can edit it and provided they don&#8217;t edit any of the special tags and the template remains in an XML-like format you&#8217;re fine. They can even add in a whole bunch of new tags if they want; if the Scala hacker hasn&#8217;t implemented them yet, they&#8217;ll just be rendered in the HTML as markup.</p>
+
+<p>This lets you have different people editing the templates from the people writing the Scala code to render markup from your domain objects.</p>
+
+<h3 id='the_downsides_of_lift_views'>The downsides of Lift views</h3>
+
+<p>If the same people are editing the template and writing the scala code you&#8217;re adding lots of unnecessary work since you are adding a level of indirection between the template and the scala code which adds unnecessary work. For every expression, loop or conditional block you want to put into a view you need to introduce a new custom tag; then write a snippet method to transform the markup replacing the custom tag to the actual expression you want.</p>
+
+<p>There&#8217;s also the opposite issue if you are not careful; rather than too much code in the view; there&#8217;s <em>too much view in the code</em> (too much view being defined inside Scala code where your designer can&#8217;t see or edit it and not enough view in the template :-)</p>
+
+<p>As the number of templates grow the number of custom tags and markup transformation methods grow this can become hard to maintain. Maybe its just me being dumb but I often find on non-trivial pages with multiple levels of namespace prefixes, nesting and tag replacement method snippets I get a bit confused at times between what tag names and namespace prefixes I&#8217;m using. If nothing else its certainly much more mental gymnastics than just using the Scala expression or function call you need in your template when you need it - particularly when you revisit an old template/snippet method weeks after you wrote it.</p>
+
+<h2 id='scalate_views'>Scalate views</h2>
+
+<p>The Scalate approach is to use Scala expressions inside the template; so there&#8217;s no transformation step or a need to mentally map namespace prefixes and element names to blocks of Scala code.</p>
+
+<h3 id='whats_good_about_scalate_views'>Whats good about Scalate views</h3>
+
+<p>The templates are much simpler to understand and edit; you can look at a template and know exactly whats its doing. Since Scalate is just using Scala, ultimately your <a href='creating-ide.html'>IDE should be easily able to navigate</a> from any expression or function in your template to the corresponding Scala code.</p>
+
+<p>So if the same folks are maintaining the templates as writing the Scala code there&#8217;s much less work to do. It might be that tactically some templates end up with a bit too much Scala code in there; at which point just do a refactor - move the scala code to a separate template or Scala function.</p>
+
+<p>If you have separate designers who focus on the markup, you can let them create the mockups that your Scala coders then edit to add the Scala expressions.</p>
+
+<h3 id='the_downsides_of_scalate_views'>The downsides of Scalate views</h3>
+
+<p>The main downside is that if you give a Scalate view to a designer they can break the code since there are scala expressions inside the templates. Though since Scalate templates can be compiled at build time, your continuous integration build should catch that.</p>
+
+<p>Most web design tools can work with JSP syntax so hopefully they can handle <a href='documentation/ssp-reference.html'>Ssp templates</a> too without too much problem. Though they probably won&#8217;t handle the <a href='documentation/scaml-reference.html'>Scaml format</a>.</p>
+
+<h2 id='conclusion'>Conclusion</h2>
+
+<p>Template languages are quite personal things so the choice between Lift views and Scalate&#8217;s <a href='documentation/ssp-reference.html'>Ssp</a> or <a href='documentation/scaml-reference.html'>Scaml</a> may well just be a taste thing. One of the biggest reasons for choosing Lift or Scalate is likely to be the makeup of your team and their skills.</p>
+
+<p>If you have one or more designers who own the templates and who don&#8217;t code in Scala; then lift views are probably the best choice. If the same team maintain the templates and hack your Scala code (maybe using designers to create mock ups) then we think the Scalate templates are easier to create and maintain so a better choice.</p>
+
+<p>What do you think? <a href='community.html'>Let us know</a></p>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

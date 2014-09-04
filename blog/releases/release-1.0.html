@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/site.css"/>
+    <title>Scalate 1.0 Released</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../../index.html">Scalate 1.6.1</a></li>
+<li><a href="../../download.html">Download</a></li>
+<li><a href="../../source.html">Source</a></li>
+<li><a href="../../community.html">Community</a></li>
+<li><a href="../../support.html">Support</a></li>
+<li><a href="../../documentation/index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/blog/releases/release-1.0.page">blog/releases/release-1.0.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/blog-post.jade">WEB-INF/scalate/layouts/blog-post.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>The <a href="http://scalate.fusesource.org">Scalate team</a> is pleased to announce the availability of Scalate 1.0. </p>
+
+<p>Scalate is a <a href="http://www.scala-lang.org">Scala 2.8</a> based <a href="http://en.wikipedia.org/wiki/Template&#95;engine&#95;(web)">template engine</a> which can be used stand alone, with servlets, in JAXRS, with the <a href="http://github.com/pk11/play-scalate">Play Framework</a> or in <a href="http://camel.apache.org/scalate.html">Apache Camel</a>. (Work on lift integration is in progress).</p>
+
+<p>All expressions inside Scalate benefit from the full power of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.</p>
+
+<p>Two template languages are currently supported:</p>
+
+<ul>
+<li><a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a> which is like a Scala version of JSP or Erb from Rails</li>
+<li><a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a> which is a Scala dialect of <a href="http://haml-lang.com/">Haml</a> for very DRY markup</li>
+</ul>
+
+<p>Further information:</p>
+
+<ul>
+<li><a href="http://scalate.assembla.com/spaces/scalate/milestones/191839-1-0">Change Log</a></li>
+<li><a href="http://scalate.fusesource.org/community.html">Community</a></li>
+<li><a href="http://scalate.fusesource.org/documentation/">Documentation</a></li>
+<li><a href="http://scalate.fusesource.org/download.html">Download</a></li>
+</ul>
+
+<p><a href="http://scalate.fusesource.org/community.html">Feedback</a> is always welcome!</p>
+<br/>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'scalate';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

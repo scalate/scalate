@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Installing</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.4.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Installing">Installing</h1>
+
+<p>Lets set up scalate!</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Requirements">Requirements</h1>
+</div>
+<div class="right">
+  <p>To use Scalate you will need:</p>
+
+  <ul>
+  <li><a href="http://maven.apache.org">Maven 2</a></li>
+  <li>JDK 1.5 or greater</li>
+  </ul>
+
+  <p>To run the <code>sitegen</code> sample you will need to install:</p>
+
+  <ul>
+  <li>Python</li>
+  <li><a href="http://pygments.org/">Pygments</a></li>
+  </ul>
+</div>
+<div class="left">
+  <h1 id = "Scalate_Tool">Scalate Tool</h1>
+</div>
+<div class="right">
+  <h3 id = "Windows_2000_XP">Windows 2000/XP</h3>
+
+  <ol>
+  <li><a href="../download.html">Download a distribution</a> such as <a href="http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-windows-bin.zip">1.4.1 zip</a> or <a href="http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-unix-bin.tar.gz">tar.gz</a></li>
+  <li>Unzip the distribution archive, i.e. <code>scalate-1.4.1-windows-bin.zip</code> to the directory you wish to install Scalate 1.4.1. These instructions assume you chose <code>C:\Program Files\Scala</code>. The subdirectory <code>scalate-1.4.1</code> will be created from the archive.</li>
+  <li>Add the <code>C:\Program Files\Scala\scalate-1.4.1\bin</code> directory to the <code>PATH</code> environment variable:
+  <ol>
+  <li>Opening up the system properties using (<strong>WinKey + Pause</strong>).</li>
+  <li>Selecting the <strong>Advanced</strong> tab.</li>
+  <li>Click the <strong>Environment Variables</strong> button.</li>
+  <li>Update/create the <code>PATH</code> variable in the user variables prepending the value <code>C:\Program Files\Scala\scalate-1.4.1</code>.</li>
+  <li>Be sure to omit any quotation marks around the path even if it contains spaces.</li>
+  </ol></li>
+  <li>In the same dialog, make sure that <code>JAVA\_HOME</code> exists in your user variables or in the system variables and it is set to the location of your JDK (e.g. <code>C:\Program Files\Java\jdk1.5.0\_02</code>).</li>
+  <li>Make sure that <code>%JAVA\_HOME%\bin</code> is in your <code>PATH</code> environment variable.</li>
+  <li>Open a new command prompt:
+  <ol>
+  <li>Click <strong>Winkey + R</strong>.</li>
+  <li>Type <code>cmd</code>.</li>
+  </ol></li>
+  <li><p>Run the following to verify that it is correctly installed.</p>
+
+  <pre><code>scalate</code></pre></li>
+  </ol>
+
+  <h3 id = "Unix-based_Operating_Systems__Linux__Solaris_and_Mac_OS_X_">Unix-based Operating Systems (Linux, Solaris and Mac OS X)</h3>
+
+  <ol>
+  <li><a href="../download.html">Download a distribution</a> such as <a href="http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-windows-bin.zip">1.4.1 zip</a> or <a href="http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.4.1/scalate-distro-1.4.1-unix-bin.tar.gz">tar.gz</a></li>
+  <li>Extract the distribution archive, i.e. <code>scalate-1.4.1-unix-bin.tar.gz</code> to the directory you wish to install Scalate 1.4.1. These instructions assume you chose <code>/usr/local/scala</code>. The subdirectory <code>scalate-1.4.1</code> will be created from the archive.</li>
+  <li><p>In a command terminal, prepend the <code>PATH</code> variable with the <code>bin</code> directory in the scalate release.</p>
+
+  <pre><code>export PATH=/usr/local/scala/scalate-1.4.1/bin:$PATH</code></pre></li>
+  <li><p>Make sure that <code>JAVA\_HOME</code> is set to the location of your JDK.</p>
+
+  <pre><code>export JAVA_HOME=/usr/java/jdk1.5.0_02</code></pre></li>
+  <li><p>Make sure that <code>$JAVA\_HOME/bin</code> is in your <code>PATH</code> environment variable. </p>
+
+  <pre><code>export PATH=$JAVA_HOME/bin:$PATH</code></pre></li>
+  <li><p>Run the following to verify that it is installed correctly</p>
+
+  <pre><code>scalate</code></pre></li>
+  </ol>
+
+  <h3 id = "Mac_OS_X_and_Homebrew">Mac OS X and Homebrew</h3>
+
+  <p>If you use OS X then we highly recommend using <a href="http://mxcl.github.com/homebrew/">Homebrew</a> to manage installation of tools.</p>
+
+  <ol>
+  <li>If you have not done so already please <a href="http://wiki.github.com/mxcl/homebrew/installation">Install Homebrew</a>.</li>
+  <li><p>Once you have Homebrew installed you can install Scalate via this command</p>
+
+  <pre><code>brew install scalate</code></pre>
+
+  <p>The scalate executable should now be available from any terminal.</p></li>
+  <li><p>To verify this works try typing</p>
+
+  <pre><code>scalate</code></pre></li>
+  </ol>
+</div>
+<div class="left">
+  <h1 id = "Maven">Maven</h1>
+</div>
+<div class="right">
+  <p>Scalate can be used as part of a Maven build by adding the following dependencies into your POM:</p>
+
+  <pre><code>&lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.fusesource.scalate&lt;/groupId&gt;
+      &lt;artifactId&gt;scalate-wikitext&lt;/artifactId&gt;
+      &lt;version&gt;${project.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.fusesource.scalate&lt;/groupId&gt;
+      &lt;artifactId&gt;scalate-page&lt;/artifactId&gt;
+      &lt;version&gt;${project.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.fusesource.scalamd&lt;/groupId&gt;
+      &lt;artifactId&gt;scalamd&lt;/artifactId&gt;
+      &lt;version&gt;${scalamd-version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!-- testing --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.fusesource.scalate&lt;/groupId&gt;
+      &lt;artifactId&gt;scalate-test&lt;/artifactId&gt;
+      &lt;version&gt;${project.version}&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;</code></pre>
+
+  <p><strong>Note:</strong> The path to your local Maven repository <code>.m2</code> cannot have any spaces.</p>
+</div>
+<div class="left">
+  <h1 id = "Diving_deeper">Diving deeper</h1>
+</div>
+<div class="right">
+  <p>Once you have the application working and you've played with the <a href="console.html">Console</a> you 
+  might want to dive deeper into Scalate and understand how it works.</p>
+
+  <ul>
+  <li><a href="console.html">Scalate Console</a></li>
+  <li><a href="index.html">Documentation</a> for further information on user guides and template references</li>
+  <li><a href="../faq.html">FAQ</a> if you hit any issues along the way</li>
+  </ul>
+  <div></div>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

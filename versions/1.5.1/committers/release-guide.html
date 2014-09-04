@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>Release Guide</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.5.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="../documentation/index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "Release_Guide">Release Guide</h1>
+
+<p>How to create releases of Scalate</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<h1 id = "Release_Steps">Release Steps</h1>
+
+<p>Various documentation changes first (which should be done before the release is cut)</p>
+
+<ul>
+<li>update the <strong>scalate&#95;website/src/main/webapp/download.page</strong> page for this release</li>
+<li>edit the <strong>scalate&#95;website/src/main/scala/Website.scala</strong> file and change the <strong>project&#95;version</strong> values</li>
+<li>blog about the release by creating an entry in <strong>scalate&#95;website/src/blog/releases</strong></li>
+<li>update the changelog.md file, copying and pasting the section the release highlights from the above blog post</li>
+</ul>
+
+<p>If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion</p>
+
+<ul>
+<li>in the current last-release branch change the scalate-website/pom.xml and edit the &ldquo;maven-scalate-plugin&rdquo; section to list the correct remoteServerUrl to something like&hellip;</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;remoteServerUrl&gt;</span>dav:http://fusesource.com/forge/dav/${forge-project-id}/versions/snapshot&#x000A;<span class="nt">&lt;remoteServerUrl/&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>add a link to the versions.page to this old version.</li>
+</ul>
+
+<p>Cutting the release </p>
+
+<ul>
+<li>Until <a href="http://jira.codehaus.org/browse/MRELEASE-605">MRELEASE-605</a> is resolved you need to ensure that you have defined <strong>release-altGitURL</strong> in your <strong>~/.m2/settings.xml</strong> file like this (where /foo/scalate is where your checkout is)</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre><span class="nt">&lt;settings&gt;</span>&#x000A;  <span class="nt">&lt;profiles&gt;</span> &#x000A;    <span class="nt">&lt;profile&gt;</span>&#x000A;      <span class="nt">&lt;id&gt;</span>release<span class="nt">&lt;/id&gt;</span>&#x000A;      <span class="nt">&lt;properties&gt;</span>&#x000A;        <span class="nt">&lt;release-altGitURL&gt;</span>scm:git:file:///foo/scalate<span class="nt">&lt;/release-altGitURL&gt;</span>&#x000A;      <span class="nt">&lt;/properties&gt;</span>&#x000A;    <span class="nt">&lt;/profile&gt;</span>&#x000A;  <span class="nt">&lt;/profiles&gt;</span>    &#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>check your repo is clean and you are on master branch</li>
+<li>check that we are using the latest versions of dependencies</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>mvn versions:use-next-releases&#x000A;mvn versions:update-properties&#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>then review the changes to pom.xml to check they all seem fine. You probably want to rollback the jetty changes to version 8.x, other than that it should be fine. Do a test run to check!</li>
+<li>Verify that the <code>src/main/resources/license-header.txt</code> file is still current.</li>
+<li>Check that all the source file license headers are in place:</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>mvn -P license license:check&#x000A;mvn -P license license:format&#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>then review the changes and check they all seem fine. You may need to add exclusions to the <code>maven-license-plugin</code>'s
+configuration to ignore some files.</li>
+<li>prepare the release</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>mvn -P release release:prepare &#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>perform the release</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>mvn -P release release:perform &#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>open <a href="http://repo.fusesource.com/nexus/index.html#staging">Nexus Staging</a> and close the Staging release of scalate</li>
+<li>now Promote the closed release</li>
+<li>now you'll need to tidy up your local repo and push changes back to github</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>git rebase --hard&#x000A;git push --tags&#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>update the website (see below on making a branch)</li>
+<li>announce the release on the <a href="../community.html">mailing list</a></li>
+<li>drink beers!</li>
+</ul>
+
+<h2 id = "Creating_a_branch_for_this_release_and_website_changes">Creating a branch for this release and website changes</h2>
+
+<p>If this is a major release&hellip;</p>
+
+<ul>
+<li>create a branch for this new release. For example if you've just done 1.5.1 then do this&hellip;</li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>git co scalate-project-1.5.1 -b scalate-1.5.1.x&#x000A;git push origin scalate-1.5.1.x &#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li><p>check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to&hellip;</p>
+
+<p>  remote /forge/dav/#{project_id}</p></li>
+<li><p>check that index.page and metainfo have at the correct release number</p></li>
+<li><p>edit the <a href="http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&amp;action=editVcsRoot&amp;cameFromTitle=Edit+Build+Configuration&amp;vcsRootId=45&amp;editingScope=editBuildType%3Abt119">scalate last release VCS Root</a> so that it uses the new branch you have just created <strong>scalate-project-1.5.1</strong></p></li>
+<li><p>ensure that the master branch has its Rakefile to point to the snapshot area</p>
+
+<p>  remote /forge/dav/#{project_id}/versions/snapshot</p></li>
+<li><p>ensure also that index.page has the new snapshot version number in it</p></li>
+<li><p>kick off the TeamCity CI build for the <a href="http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&amp;tab=buildTypeStatusDiv">scalate last release</a> project</p></li>
+<li>check the new version appears on the <a href="http://scalate.fusesource.org/">home page</a></li>
+<li>you might also want to check that the <a href="http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/1.5.1/">central maven repo</a> has sync'd before announcing</li>
+</ul>
+
+<p>What all this means is now that you should be able to amend the <a href="http://scalate.fusesource.org/">website for the current release</a> using the <strong>scalate-project-1.5.1</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href="http://scalate.fusesource.org/versions/snapshot/index.html">snapshot website</a></p>
+
+<h2 id = "Update_the_Homebrew_formula">Update the Homebrew formula</h2>
+
+<ul>
+<li>clone the <a href="http://github.com/scalate/homebrew">scalate homebrew repo</a> if you've not done so yet</li>
+<li>hack the Library/Formula/scalate.rb file in the <a href="http://wiki.github.com/mxcl/homebrew/formula-cookbook">usual homebrew way</a>
+<ul>
+<li>zap the md5 from /usr/local/Library/Formula/scalate.rb</li>
+<li>edit the version number in the formula</li>
+<li>run the following command</li>
+</ul></li>
+</ul>
+
+<div class="syntax"><div class="highlight"><pre>brew install -i scalate         &#x000A;</pre></div>&#x000A;</div>
+
+<ul>
+<li>fill in the md5</li>
+<li>check the install worked</li>
+<li>copy the scalate.rb into your Library/Formula of your homebrew clone
+<ul>
+<li>push your changes to homebrew.git</li>
+<li>create an issue <a href="http://github.com/mxcl/homebrew/issues/issue/2023">like this one</a></li>
+</ul></li>
+</ul>
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

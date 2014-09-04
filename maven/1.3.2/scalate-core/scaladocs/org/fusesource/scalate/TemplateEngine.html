@@ -1,0 +1,1924 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.TemplateEngine</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+          
+      <link href="../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="type">
+
+      <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../lib/class_big.png" />
+        <h1>TemplateEngine</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">TemplateEngine</span><span class="result"> extends <span class="extype" name="org.fusesource.scalate.util.Logging">Logging</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"><div class="comment cmt"><p>A TemplateEngine is used to compile and load Scalate templates.
+The TemplateEngine takes care of setting up the Scala compiler
+and caching compiled templates for quicker subsequent loads
+of a requested template.</p><p>The TemplateEngine uses a <i>workingDirectory</i> to store the generated scala source code and the bytecode. By default
+this uses a dynamically generated directory. You can configure this yourself to use whatever directory you wish.
+Or you can use the <i>scalate.workdir</i> system property to specify the workingDirectory
+</p></div><div class="block">
+            go to: <a href="TemplateEngine$.html">companion</a>
+          </div><div class="block">
+            known subclasses: <a href="servlet/ServletTemplateEngine.html" class="extype" name="org.fusesource.scalate.servlet.ServletTemplateEngine">ServletTemplateEngine</a>
+          </div>
+            
+            
+            
+            <div class="block"><ol>authors:
+                  <li><p><a href="http://hiramchirino.com">Hiram Chirino</a></p></li>
+                </ol></div>
+          </div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="ancestors">
+                <span class="filtertype">Inherited</span>
+                <ol><li class="hideall">Hide All</li><li class="showall">Show all</li></ol>
+                <ol id="linearization"><li class="in" name="org.fusesource.scalate.util.Logging">Logging</li><li class="in" name="scala.AnyRef">AnyRef</li><li class="in" name="scala.Any">Any</li></ol>
+              </div>
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+        <div class="members" id="constructors">
+              <h3>Instance constructors</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#this">
+      <h4 class="signature">
+      <span class="kind">new</span>
+      <span class="symbol">
+        <span class="name">TemplateEngine</span><span class="params">(<span name="sourceDirectories">sourceDirectories: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="java.io.File">File</span>] = <span class="default">scala.this.Option.option2Iterable[Nothing](scala.None)</span></span>, <span name="mode">mode: <span class="extype" name="java.lang.String">String</span> = <span class="default">java.this.lang.System.getProperty(&quot;scalate.mode&quot;, &quot;production&quot;)</span></span>)</span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>        
+        
+        
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="scala.AnyRef#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.Any#!=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o != arg0</code> is the same as <code>!(o == (arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the receiver object is equivalent to the argument; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef###">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef → Any
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#$isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">$isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>if (o eq null) arg0 eq null else o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#==">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o == arg0</code> is the same as <code>o.equals(arg0)</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#allowCaching">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">allowCaching</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Set to false if you don't want the template engine to ever cache any of the compiled templates.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Set to false if you don't want the template engine to ever cache any of the compiled templates.</p><p>If not explicitly configured this property can be configured using the <i>scalate.allowCaching</i> system property
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#allowReload">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">allowReload</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">If true, then the template engine will check to see if the template has been updated since last compiled
+so that it can be reloaded.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>If true, then the template engine will check to see if the template has been updated since last compiled
+so that it can be reloaded.  Defaults to true.  YOu should set to false in production environments since
+the templates should not be changing.</p><p>If not explicitly configured this property can be configured using the <i>scalate.allowReload</i> system property
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#asInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to cast the receiver object to be of type <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to cast the receiver object to be of type <code>T0</code>.</p><p>Note that the success of a cast at runtime is modulo Scala's erasure semantics.  Therefore the expression<code>1.asInstanceOf[String]</code> will throw a <code>ClassCastException</code> at runtime, while the expression<code>List(1).asInstanceOf[List[String]]</code> will not.  In the latter example, because the type argument is erased as
+part of compilation it is not possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#bindings">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">bindings</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">By default lets bind the context so we get to reuse its methods in a template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>By default lets bind the context so we get to reuse its methods in a template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#buildSourceMap">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">buildSourceMap</span><span class="params">(<span name="stratumName">stratumName: <span class="extype" name="java.lang.String">String</span></span>, <span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="scalaFile">scalaFile: <span class="extype" name="java.io.File">File</span></span>, <span name="positions">positions: <span class="extype" name="scala.collection.immutable.TreeMap">TreeMap</span>[<span class="extype" name="scala.util.parsing.input.OffsetPosition">OffsetPosition</span>, <span class="extype" name="scala.util.parsing.input.OffsetPosition">OffsetPosition</span>]</span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#bytecodeDirectory">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">bytecodeDirectory</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#cacheHits">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">cacheHits</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">The number of times a template load request was serviced from the cache.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>The number of times a template load request was serviced from the cache.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#cacheMisses">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">cacheMisses</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">The number of times a template load request could not be serviced from the cache
+and was loaded from disk.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>The number of times a template load request could not be serviced from the cache
+and was loaded from disk.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#canLoad">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">canLoad</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns true if the URI can be loaded as a template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns true if the URI can be loaded as a template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#canLoad">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">canLoad</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns true if the URI can be loaded as a template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns true if the URI can be loaded as a template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#canLoad">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">canLoad</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns true if the URI can be loaded as a template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns true if the URI can be loaded as a template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#classFileName">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">classFileName</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#classLoader">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">classLoader</span><span class="result">: <span class="extype" name="java.lang.ClassLoader">ClassLoader</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#classpath">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">classpath</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="scala.AnyRef#clone">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: AnyRef</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method creates and returns a copy of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method creates and returns a copy of the receiver object.</p><p>The default implementation of the <code>clone</code> method is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the receiver object.</p></dd></dl><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#codeGenerators">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">codeGenerators</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <a href="support/CodeGenerator.html" class="extype" name="org.fusesource.scalate.support.CodeGenerator">CodeGenerator</a>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">The supported template engines and their default extensions
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>The supported template engines and their default extensions
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#combinedClassPath">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">combinedClassPath</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Whether a custom classpath should be combined with the deduced classpath
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Whether a custom classpath should be combined with the deduced classpath
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compile">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">compile</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles a template source without placing it in the template cache.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles a template source without placing it in the template cache. Useful for temporary
+templates or dynamically created template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compileMoustache">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">compileMoustache</span><span class="params">(<span name="text">text: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles the given Moustache template text and returns the template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles the given Moustache template text and returns the template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compileScaml">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">compileScaml</span><span class="params">(<span name="text">text: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles the given SSP template text and returns the template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles the given SSP template text and returns the template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compileSsp">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">compileSsp</span><span class="params">(<span name="text">text: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles the given SSP template text and returns the template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles the given SSP template text and returns the template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compileText">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">compileText</span><span class="params">(<span name="extension">extension: <span class="extype" name="java.lang.String">String</span></span>, <span name="text">text: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
+and return the template
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
+and return the template
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#compiler">
+      <h4 class="signature">
+      <span class="kind">lazy val</span>
+      <span class="symbol">
+        <span class="name">compiler</span><span class="result">: <a href="support/ScalaCompiler.html" class="extype" name="org.fusesource.scalate.support.ScalaCompiler">ScalaCompiler</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#createRenderContext">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">createRenderContext</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="out">out: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>)</span><span class="result">: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Factory method used by the layout helper methods that should be overloaded by template engine implementations
+if they wish to customize the render context implementation
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Factory method used by the layout helper methods that should be overloaded by template engine implementations
+if they wish to customize the render context implementation
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#debug">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">debug</span><span class="params">(<span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#debug">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">debug</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>, <span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#debug">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">debug</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#eq">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the argument (<code>arg0</code>) is a reference to the
+receiver object (<code>this</code>).</p><p>The <code>eq</code> method implements an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence relation] on
+non-null instances of <code>AnyRef</code>:
+ * It is reflexive: for any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(x)</code> returns <code>true</code>.
+ * It is symmetric: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, <code>x.eq(y)</code> returns <code>true</code> if and
+   only if <code>y.eq(x)</code> returns <code>true</code>.
+ * It is transitive: for any non-null instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.eq(y)</code> returns <code>true</code>   and <code>y.eq(z)</code> returns <code>true</code>, then <code>x.eq(z)</code> returns <code>true</code>.</p><p>Additionally, the <code>eq</code> method has three other properties.
+ * It is consistent: for any non-null instances <code>x</code> and <code>y</code> of type <code>AnyRef</code>, multiple invocations of
+   <code>x.eq(y)</code> consistently returns <code>true</code> or consistently returns <code>false</code>.
+ * For any non-null instance <code>x</code> of type <code>AnyRef</code>, <code>x.eq(null)</code> and <code>null.eq(x)</code> returns <code>false</code>.
+ * <code>null.eq(null)</code> returns <code>true</code>.</p><p>When overriding the <code>equals</code> or <code>hashCode</code> methods, it is important to ensure that their behavior is
+consistent with reference equality.  Therefore, if two objects are references to each other (<code>o1 eq o2</code>), they
+should be equal to each other (<code>o1 == o2</code>) and they should hash to the same value (<code>o1.hashCode == o2.hashCode</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the argument is a reference to the receiver object; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#equals">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to compare the receiver object (<code>this</code>) with the argument object (<code>arg0</code>) for equivalence.</p><p>The default implementations of this method is an [http://en.wikipedia.org/wiki/Equivalence_relation equivalence
+relation]:
+ * It is reflexive: for any instance <code>x</code> of type <code>Any</code>, <code>x.equals(x)</code> should return <code>true</code>.
+ * It is symmetric: for any instances <code>x</code> and <code>y</code> of type <code>Any</code>, <code>x.equals(y)</code> should return <code>true</code> if and
+   only if <code>y.equals(x)</code> returns <code>true</code>.
+ * It is transitive: for any instances <code>x</code>, <code>y</code>, and <code>z</code> of type <code>AnyRef</code> if <code>x.equals(y)</code> returns <code>true</code> and
+   <code>y.equals(z)</code> returns <code>true</code>, then <code>x.equals(z)</code> should return <code>true</code>.</p><p>If you override this method, you should verify that your implementation remains an equivalence relation.
+Additionally, when overriding this method it is often necessary to override <code>hashCode</code> to ensure that objects
+that are &quot;equal&quot; (<code>o1.equals(o2)</code> returns <code>true</code>) hash to the same 
+scala.Int
+(<code>o1.hashCode.equals(o2.hashCode)</code>).
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is equivalent to the argument; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#error">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">error</span><span class="params">(<span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#error">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">error</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>, <span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#error">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">error</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#escapeMarkup">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">escapeMarkup</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Whether or not markup sensitive characters for HTML/XML elements like &amp;amp; &amp;gt; &amp;lt; are escaped or not
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Whether or not markup sensitive characters for HTML/XML elements like &amp;amp; &amp;gt; &amp;lt; are escaped or not
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#extension">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">extension</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Extracts the extension from the source's uri though derived engines could override this behaviour to
+auto default missing extensions or performing custom mappings etc.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Extracts the extension from the source's uri though derived engines could override this behaviour to
+auto default missing extensions or performing custom mappings etc.
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#extensions">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">extensions</span><span class="result">: <span class="extype" name="scala.collection.immutable.Set">Set</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns the file extensions understood by Scalate; all the template engines and pipelines including
+the wiki markup languages.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns the file extensions understood by Scalate; all the template engines and pipelines including
+the wiki markup languages.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#filter">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">filter</span><span class="params">(<span name="name">name: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="filter/Filter.html" class="extype" name="org.fusesource.scalate.filter.Filter">Filter</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#filters">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">filters</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <a href="filter/Filter.html" class="extype" name="org.fusesource.scalate.filter.Filter">Filter</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="scala.AnyRef#finalize">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is called by the garbage collector on the receiver object when garbage collection determines that
+there are no more references to the object.</p><p>The details of when and if the <code>finalize</code> method are invoked, as well as the interaction between <code>finalize</code>and non-local returns and exceptions, are all platform dependent.</p></div><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#generateScala">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">generateScala</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="support/Code.html" class="extype" name="org.fusesource.scalate.support.Code">Code</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Generates the Scala code for a template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Generates the Scala code for a template.  Useful for generating scala code that
+will then be compiled into the application as part of a build process.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#generateScala">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">generateScala</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <a href="support/Code.html" class="extype" name="org.fusesource.scalate.support.Code">Code</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Generates the Scala code for a template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Generates the Scala code for a template.  Useful for generating scala code that
+will then be compiled into the application as part of a build process.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#generateScala">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">generateScala</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="support/Code.html" class="extype" name="org.fusesource.scalate.support.Code">Code</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Generates the Scala code for a template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Generates the Scala code for a template.  Useful for generating scala code that
+will then be compiled into the application as part of a build process.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#generator">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">generator</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>)</span><span class="result">: <a href="support/CodeGenerator.html" class="extype" name="org.fusesource.scalate.support.CodeGenerator">CodeGenerator</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Gets the code generator to use for the give uri string by looking up the uri's extension
+in the the codeGenerators map.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Gets the code generator to use for the give uri string by looking up the uri's extension
+in the the codeGenerators map.
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#generatorForExtension">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">generatorForExtension</span><span class="params">(<span name="extension">extension: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="support/CodeGenerator.html" class="extype" name="org.fusesource.scalate.support.CodeGenerator">CodeGenerator</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns the code generator for the given file extension
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns the code generator for the given file extension
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#getClass">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: java.lang.Class[_]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a representation that corresponds to the dynamic class of the receiver object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a representation that corresponds to the dynamic class of the receiver object.</p><p>The nature of the representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation that corresponds to the dynamic class of the receiver object.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#hashCode">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a hash code value for the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a hash code value for the object.</p><p>The default hashing algorithm is platform dependent.</p><p>Note that it is allowed for two objects to have identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>) yet
+not be equal (<code>o1.equals(o2)</code> returns <code>false</code>).  A degenerate implementation could always return <code>0</code>.
+However, it is required that if two objects are equal (<code>o1.equals(o2)</code> returns <code>true</code>) that they have
+identical hash codes (<code>o1.hashCode.equals(o2.hashCode)</code>).  Therefore, when overriding this method, be sure
+to verify that the behavior is consistent with the <code>equals</code> method.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the hash code value for the object.</p></dd></dl><div class="block">
+          definition classes: AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#importStatements">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">importStatements</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Sets the import statements used in each generated template class
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Sets the import statements used in each generated template class
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#info">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">info</span><span class="params">(<span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#info">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">info</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>, <span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#info">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">info</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#invalidateCachedTemplates">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">invalidateCachedTemplates</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Invalidates all cached Templates.</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Invalidates all cached Templates.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#isDevelopmentMode">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">isDevelopmentMode</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns true if this template engine is being used in development mode.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns true if this template engine is being used in development mode.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.Any#isInstanceOf">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>This method is used to test whether the dynamic type of the receiver object is <code>T0</code>.</p><p>Note that the test result of the test is modulo Scala's erasure semantics.  Therefore the expression<code>1.isInstanceOf[String]</code> will return <code>false</code>, while the expression <code>List(1).isInstanceOf[List[String]]</code> will
+return <code>true</code>.  In the latter example, because the type argument is erased as part of compilation it is not
+possible to check whether the contents of the list are of the requested typed.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p><code>true</code> if the receiver object is an instance of erasure of type <code>T0</code>; <code>false</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="context">context: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Renders the given template source using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Renders the given template source using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="context">context: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Renders the given template source using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Renders the given template source using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="attributes">attributes: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Renders the given template source using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Renders the given template source using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Renders the given template source using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Renders the given template source using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="template">template: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="context">context: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="template">template: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>, <span name="attributes">attributes: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Renders the given template returning the output
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Renders the given template returning the output
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="attributes">attributes: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="default">scala.this.Predef.Map.apply[String, Nothing]()</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Renders the given template URI returning the output
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Renders the given template URI returning the output
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="template">template: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>, <span name="context">context: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Renders the given template using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Renders the given template using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layout">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layout</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="context">context: <a href="RenderContext.html" class="extype" name="org.fusesource.scalate.RenderContext">RenderContext</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"> Renders the given template URI using the current layoutStrategy
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p> Renders the given template URI using the current layoutStrategy
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layoutAsNodes">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layoutAsNodes</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="template">template: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>)</span><span class="result">: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layoutAsNodes">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layoutAsNodes</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="template">template: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>, <span name="attributes">attributes: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Renders the given template returning the output
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Renders the given template returning the output
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layoutAsNodes">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">layoutAsNodes</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="attributes">attributes: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="default">scala.this.Predef.Map.apply[String, Nothing]()</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Renders the given template URI returning the output
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Renders the given template URI returning the output
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#layoutStrategy">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">layoutStrategy</span><span class="result">: <a href="layout/LayoutStrategy.html" class="extype" name="org.fusesource.scalate.layout.LayoutStrategy">LayoutStrategy</a></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#libraryDirectory">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">libraryDirectory</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#load">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles and then caches the specified template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles and then caches the specified template.  If the template
+was previously cached, the previously compiled template instance
+is returned.  The cache entry in invalidated and then template
+is re-compiled if the template file has been updated since
+it was last compiled.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#load">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles and then caches the specified template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles and then caches the specified template.  If the template
+was previously cached, the previously compiled template instance
+is returned.  The cache entry in invalidated and then template
+is re-compiled if the template file has been updated since
+it was last compiled.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#load">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="file">file: <span class="extype" name="java.io.File">File</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles and then caches the specified template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles and then caches the specified template.  If the template
+was previously cached, the previously compiled template instance
+is returned.  The cache entry in invalidated and then template
+is re-compiled if the template file has been updated since
+it was last compiled.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#load">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="file">file: <span class="extype" name="java.io.File">File</span></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>]</span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles and then caches the specified template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles and then caches the specified template.  If the template
+was previously cached, the previously compiled template instance
+is returned.  The cache entry in invalidated and then template
+is re-compiled if the template file has been updated since
+it was last compiled.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#load">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">load</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>, <span name="extraBindings">extraBindings: <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="Binding.html" class="extype" name="org.fusesource.scalate.Binding">Binding</a>] = <span class="default">immutable.this.Nil</span></span>)</span><span class="result">: <a href="Template.html" class="extype" name="org.fusesource.scalate.Template">Template</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Compiles and then caches the specified template.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Compiles and then caches the specified template.  If the template
+was previously cached, the previously compiled template instance
+is returned.  The cache entry in invalidated and then template
+is re-compiled if the template file has been updated since
+it was last compiled.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#log">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">log</span><span class="result">: <span class="extype" name="org.fusesource.scalate.util.Log">Log</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#mode">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">mode</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="scala.AnyRef#ne">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: AnyRef</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt"><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.</p>
+            <div class="fullcomment"><div class="comment cmt"><p><code>o.ne(arg0)</code> is the same as <code>!(o.eq(arg0))</code>.
+</p></div><dl class="paramcmts block"><dt class="param">arg0</dt><dd class="cmt"><p>the object to compare against this object for reference dis-equality.</p></dd><dt>returns</dt><dd class="cmt"><p><code>false</code> if the argument is not a reference to the receiver object; <code>true</code> otherwise.</p></dd></dl><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notify">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up a single thread that is waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up a single thread that is waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#notifyAll">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Wakes up all threads that are waiting on the receiver object's monitor.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Wakes up all threads that are waiting on the receiver object's monitor.</p></div><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#pipeline">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">pipeline</span><span class="params">(<span name="source">source: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.collection.immutable.List">List</span>[<a href="filter/Filter.html" class="extype" name="org.fusesource.scalate.filter.Filter">Filter</a>]]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Gets a pipeline to use for the give uri string by looking up the uri's extension
+in the the pipelines map.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Gets a pipeline to use for the give uri string by looking up the uri's extension
+in the the pipelines map.
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#pipelines">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">pipelines</span><span class="result">: <span class="extype" name="scala.collection.immutable.Map">Map</span>[<span class="extype" name="java.lang.String">String</span>, <span class="extype" name="scala.collection.immutable.List">List</span>[<a href="filter/Filter.html" class="extype" name="org.fusesource.scalate.filter.Filter">Filter</a>]]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#resourceLoader">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">resourceLoader</span><span class="result">: <span class="extype" name="org.fusesource.scalate.util.ResourceLoader">ResourceLoader</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Loads resources such as the templates based on URIs
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Loads resources such as the templates based on URIs
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#source">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">source</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>, <span name="templateType">templateType: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a template source of the given type of template for the given URI and current resourceLoader
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a template source of the given type of template for the given URI and current resourceLoader
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#source">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">source</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a template source for the given URI and current resourceLoader
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a template source for the given URI and current resourceLoader
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#sourceDirectories">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">sourceDirectories</span><span class="result">: <span class="extype" name="scala.collection.Traversable">Traversable</span>[<span class="extype" name="java.io.File">File</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#sourceDirectoriesForwarder">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">sourceDirectoriesForwarder</span><span class="result">: <span class="extype" name="scala.collection.generic.TraversableForwarder">TraversableForwarder</span>[<span class="extype" name="java.io.File">File</span>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
+is mutated after the TemplateEngine is constructed
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
+is mutated after the TemplateEngine is constructed
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#sourceDirectory">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">sourceDirectory</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#sourceFileName">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">sourceFileName</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns the source file of the template URI
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns the source file of the template URI
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#sourceMapLog">
+      <h4 class="signature">
+      <span class="kind">val</span>
+      <span class="symbol">
+        <span class="name">sourceMapLog</span><span class="result">: <span class="extype" name="org.fusesource.scalate.util.Log">Log</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#storeSourceMap">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">storeSourceMap</span><span class="params">(<span name="classFile">classFile: <span class="extype" name="java.io.File">File</span></span>, <span name="sourceMap">sourceMap: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#synchronized">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: T0</span>)</span><span class="result">: T0</span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#templateDirectories">
+      <h4 class="signature">
+      <span class="kind">var</span>
+      <span class="symbol">
+        <span class="name">templateDirectories</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="java.lang.String">String</span>]</span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">A list of directories which are searched to load requested templates.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>A list of directories which are searched to load requested templates.
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#toString">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Returns a string representation of the object.</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Returns a string representation of the object.</p><p>The default representation is platform dependent.
+</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a string representation of the object.</p></dd></dl><div class="block">
+          definition classes: <a href="" class="extype" name="org.fusesource.scalate.TemplateEngine">TemplateEngine</a> → AnyRef → Any
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#trace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">trace</span><span class="params">(<span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#trace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">trace</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>, <span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#trace">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">trace</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.TemplateEngine#uriToSource">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">uriToSource</span><span class="params">(<span name="uri">uri: <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <a href="support/UriTemplateSource.html" class="extype" name="org.fusesource.scalate.support.UriTemplateSource">UriTemplateSource</a></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">Creates a <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a> from a URI
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>Creates a <a href="TemplateSource.html" class="extype" name="org.fusesource.scalate.TemplateSource">TemplateSource</a> from a URI
+</p></div><div class="block">
+          attributes: protected 
+        </div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="pub" name="scala.AnyRef#wait">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: final 
+        </div><div class="block">
+          definition classes: AnyRef
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#warn">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">warn</span><span class="params">(<span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#warn">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">warn</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>, <span name="e">e: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="prt" name="org.fusesource.scalate.util.Logging#warn">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">warn</span><span class="params">(<span name="message">message: ⇒ <span class="extype" name="java.lang.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: protected 
+        </div><div class="block">
+          definition classes: Logging
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#workingDirectory">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">workingDirectory</span><span class="result">: <span class="extype" name="java.io.File">File</span></span>
+      </span>
+      </h4>
+      
+            <p class="shortcomment cmt">If not explicitly configured this will default to using the <i>scalate.workdir</i> system property to specify the
+directory used for generating the scala source code and compiled bytecode - otherwise a temporary directory is used
+</p>
+            <div class="fullcomment"><div class="comment cmt"><p>If not explicitly configured this will default to using the <i>scalate.workdir</i> system property to specify the
+directory used for generating the scala source code and compiled bytecode - otherwise a temporary directory is used
+</p></div>
+            
+            
+            
+            
+          </div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.TemplateEngine#workingDirectory_=">
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol">
+        <span class="name">workingDirectory_=</span><span class="params">(<span name="value">value: <span class="extype" name="java.io.File">File</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.support</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <h1>support</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">support</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"></div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+                
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.support.AbstractCodeGenerator">
+      <h4 class="signature"><a href="AbstractCodeGenerator.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">AbstractCodeGenerator</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends CodeGenerator with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Provides a common base class for CodeGenerator implementations.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.AttributesHashMap">
+      <h4 class="signature"><a href="AttributesHashMap.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">AttributesHashMap</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends AttributeMap[A, B]</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">The default implementation for <code>AttributeMap</code> backed
+by a map like collection.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Code">
+      <h4 class="signature"><a href="Code.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Code</span><span class="params">(<span name="className">className: String</span>, <span name="source">source: String</span>, <span name="dependencies">dependencies: Set[String]</span>, <span name="positions">positions: TreeMap[OffsetPosition, OffsetPosition]</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CodeGenerator">
+      <h4 class="signature"><a href="CodeGenerator.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">CodeGenerator</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CompilerError">
+      <h4 class="signature"><a href="CompilerError.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">CompilerError</span><span class="params">(<span name="file">file: String</span>, <span name="message">message: String</span>, <span name="pos">pos: Position = <span class="default">scala.util.parsing.input.NoPosition</span></span>, <span name="original">original: CompilerError = <span class="default">null</span></span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.CustomExtensionTemplateSource">
+      <h4 class="signature"><a href="CustomExtensionTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">CustomExtensionTemplateSource</span><span class="result"> extends DelegateResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.DefaultTemplatePackage">
+      <h4 class="signature"><a href="DefaultTemplatePackage.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">DefaultTemplatePackage</span><span class="result"> extends TemplatePackage with Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A TemplatePackage where we try and find an object/controller/resource type based on the name of the current template and if we can
+find it then we create a variable called **it** of the controller type and import its values into the template.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Elvis">
+      <h4 class="signature"><a href="Elvis.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Elvis</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Implements the Groovy style Elvis operator in Scala
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.FileTemplateSource">
+      <h4 class="signature"><a href="FileTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">FileTemplateSource</span><span class="result"> extends FileResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.MapEntry">
+      <h4 class="signature"><a href="MapEntry.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">MapEntry</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="key">key: A</span>, <span name="value">value: B</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A helper class useful for implicit conversions when legacy code iterates over a Map without explicitly
+decomposing the iterator value to a tuple
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.OsgiScalaCompiler">
+      <h4 class="signature"><a href="OsgiScalaCompiler.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">OsgiScalaCompiler</span><span class="result"> extends ScalaCompiler</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaCompiler">
+      <h4 class="signature"><a href="ScalaCompiler.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">ScalaCompiler</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaParseSupport">
+      <h4 class="signature"><a href="ScalaParseSupport.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">ScalaParseSupport</span><span class="result"> extends RegexParsers</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">no summary matey</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.SourceTemplateSource">
+      <h4 class="signature"><a href="SourceTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SourceTemplateSource</span><span class="result"> extends SourceResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.StringTemplateSource">
+      <h4 class="signature"><a href="StringTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">StringTemplateSource</span><span class="result"> extends StringResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplateFinder">
+      <h4 class="signature"><a href="TemplateFinder.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">TemplateFinder</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A helper object to find a template from a URI using a number of possible extensions and directories
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplatePackage">
+      <h4 class="signature"><a href="TemplatePackage.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">TemplatePackage</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">The base class for any **ScalatePackage** class added to the classpath to customize the templates
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.Text">
+      <h4 class="signature"><a href="Text.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Text</span><span class="params">(<span name="value">value: String</span>)</span><span class="result"> extends Positional with Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Is a String with positioning information
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.URLTemplateSource">
+      <h4 class="signature"><a href="URLTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">URLTemplateSource</span><span class="result"> extends URLResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.UriTemplateSource">
+      <h4 class="signature"><a href="UriTemplateSource.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">UriTemplateSource</span><span class="result"> extends UriResource with TemplateSource</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.support.CharData">
+      <h4 class="signature"><a href="CharData$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">CharData</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.RenderHelper">
+      <h4 class="signature"><a href="RenderHelper$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">RenderHelper</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.ScalaCompiler">
+      <h4 class="signature"><a href="ScalaCompiler$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">ScalaCompiler</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplateConversions">
+      <h4 class="signature"><a href="TemplateConversions$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">TemplateConversions</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A number of helper implicit conversions for use in templates
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.support.TemplatePackage">
+      <h4 class="signature"><a href="TemplatePackage$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">TemplatePackage</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>

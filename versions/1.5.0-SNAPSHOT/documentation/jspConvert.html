@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../styles/impact/css/site.css"/>
+    <title>JSP Converter</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="wrapper">
+<ul>
+<li><a href="../index.html">Scalate 1.4.1</a></li>
+<li><a href="../download.html">Download</a></li>
+<li><a href="../source.html">Source</a></li>
+<li><a href="../community.html">Community</a></li>
+<li><a href="../support.html">Support</a></li>
+<li><a href="index.html">Documentation</a></li>
+</ul>        <div></div>
+      </div>
+    </div>
+    <div id="overview">
+      <div class="wrapper">
+        <div class="logo">
+          <img src="../images/project-logo.png" alt="Scalate logo"/>
+        </div>
+        <div class="message">
+<h1 id = "JSP_Convert">JSP Convert</h1>
+
+<p>Ditch that crappy JSP pronto!</p>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<div class="left">
+  <h1 id = "Overview">Overview</h1>
+</div>
+<div class="right">
+  <p>JSP Converter is a little tool for converting your legacy JSP / JSTL / JSP EL stuff into Scalate.</p>
+
+  <p>To use jsp2ssp you need to install the <a href="tool.html">Scalate tool</a></p>
+</div>
+<div class="left">
+  <h1 id = "Using_jsp2ssp">Using jsp2ssp</h1>
+</div>
+<div class="right">
+  <p>To convert the JSP files in a directory foo just type</p>
+
+  <pre><code>scalate jsp2ssp foo</code></pre>
+
+  <p>You should see lots of ssp files generated.</p>
+</div>
+<div class="left">
+  <h1 id = "Known_issues">Known issues</h1>
+</div>
+<div class="right">
+  <p>Note that JSP Converter is not totally perfect; there are going to be JSP files that need a little bit of of manual tweaking. We've done our best to cover most of the common things to try reduce as much manual intervention as possible.</p>
+
+  <ul>
+  <li>Any unknown custom tag (xml prefixed element) is listed on the console as a warning. Its easy to hack the JspConvert class if you want to add support for more JSTL or common custom tags. Most of the common JSTL tags are covered but we love <a href="../contributing.html">contributions</a> if you want to add more. <br/></li>
+  <li>When converting expressions like <i>foo.bar</i> to the scala equivalent <i>foo.getBar</i> (since Scala is typesafe and doesn't use runtime reflection), we cannot detect boolean properties easily from JSP, so you might get some compile errors where <i>foo.getBar</i> needs to be changed to <i>foo.isBar</i></li>
+  </ul>
+</div>
+<div class="left">
+  <h1 id = "Notes">Notes</h1>
+</div>
+<div class="right">
+  <p>Iterating over maps tends to be different in scala. In JSTL / EL you tend to iterate over a map which returns a Map.Entry object. In Scala you get a tuple of key and value. So instead of this&hellip;    </p>
+
+  <div class="syntax"><div class="highlight"><pre>#for (entry <span class="nt">&lt;-</span> <span class="err">someMap)</span>&#x000A;  <span class="err">${entry.getKey}</span> <span class="err">=</span> <span class="err">${entry.getValue}</span>&#x000A;<span class="err">#end</span>&#x000A;</pre></div>&#x000A;</div>
+
+  <p>A more idiomatic scala way would be</p>
+
+  <div class="syntax"><div class="highlight"><pre>#for ((key, value) <span class="nt">&lt;-</span> <span class="err">someMap)</span>&#x000A;  <span class="err">${key}</span> <span class="err">=</span> <span class="err">${value}</span>&#x000A;<span class="err">#end</span>&#x000A;</pre></div>&#x000A;</div>
+
+  <p>Though we support the former JSTL/EL style by using an implicit conversion of a tuple to a MapEntry object which has a getKey and getValue method.The implicit conversion comes from the <b>org.fusesource.scalate.util.TemplateConversions</b> companion object.</p>
+</div>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

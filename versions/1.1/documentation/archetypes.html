@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Maven Archetypes</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.1</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><a href="index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='maven_archetypes'>Maven Archetypes</h1>
+
+<p>Scalate Maven Archetypes</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <div class='left'>
+<h1>Maven Archetypes</h1>
+</div><div class='right'>
+<p>Scalate provides a number of <a href='http://maven.apache.org/'>Maven</a> archetypes to kick start you creating new projects using Scalate.</p>
+
+<p>The easiest way to get started is to install the <a href='tool.html'>Scalate Tool</a> and use that as described in the <a href='getting-started.html'>Getting Started Guice</a></p>
+
+<p>However if you want to miss out the <a href='tool.html'>installation step for Scalate Tool</a> you can just use Maven directly - though be aware it is a little more brittle and verbose!. The rest of this page describes how to use maven directly to create projects using the archetypes.</p>
+
+<p>If you have Maven installed you should be able to create a new project by typing this</p>
+
+<pre><code>mvn org.apache.maven.plugins:maven-archetype-plugin:2.0-alpha-4:generate \
+  -DarchetypeGroupId=org.fusesource.scalate.tooling \
+  -DarchetypeArtifactId=scalate-archetype-guice \
+  -DarchetypeVersion=1.0 \
+  -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/public \
+  -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT</code></pre>
+
+<p>You might want to change the last line changing <strong>myGroup</strong> and <strong>myArtifact</strong> to whatever maven groupId and artifactId you want to use.</p>
+
+<p>The maven archetype plugin will ask you to hit enter to confirm those settings.</p>
+
+<p>For detail see the <a href='getting-started.html'>Getting Started Guide</a></p>
+
+<h2>Using the latest snapshot</h2>
+
+<p>If you want to take advantage of any improvements in the console and archetypes since the 1.1 release you can use this mechanism of creating the archetype</p>
+
+<pre><code>  mvn archetype:generate \
+    -DarchetypeGroupId=org.fusesource.scalate.tooling \
+    -DarchetypeArtifactId=scalate-archetype-guice \
+    -DarchetypeVersion=1.2-SNAPSHOT \
+    -DarchetypeRepository=http://repo.fusesource.com/nexus/content/repositories/snapshots \
+    -DgroupId=myGroup -DartifactId=myArtifact -Dversion=1.0-SNAPSHOT</code></pre>
+
+<p>This will use the latest snapshot of the archetype instead.</p>
+</div>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

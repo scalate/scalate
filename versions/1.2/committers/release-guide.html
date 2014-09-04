@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="scala template engine implementing HAML, JSP, Erb style templates">
+    <meta name="keywords" content="scalate,scala,template engine,haml,erb,jsp">
+    <meta name="author" content="Scalate">
+
+    <link href="../styles/impact/css/pygmentize.css" rel="stylesheet" type="text/css">
+    <link href="../styles/impact/css/site.css" rel="stylesheet" type="text/css">
+    
+    <title>Release Guide</title>
+
+
+
+</head>
+<body>
+  
+  <div id="navigation">
+  	<div class="wrapper">
+      <ul><li class="webgen-menu-level1"><a href="../index.html">Scalate 1.2-SNAPSHOT</a></li><li class="webgen-menu-level1"><a href="../download.html">Download</a></li><li class="webgen-menu-level1"><a href="../source.html">Source</a></li><li class="webgen-menu-level1"><a href="../community.html">Community</a></li><li class="webgen-menu-level1"><a href="../support.html">Support</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../documentation/index.html">Documentation</a></li></ul>
+  	</div>
+  </div>
+  
+
+  <div id="overview">
+    <div class="wrapper">
+      
+      <div class="logo">
+        <img alt="scalate logo" src="../images/project-logo.png">
+      </div>
+      
+      <div class="message">
+        <h1 id='release_guide'>Release Guide</h1>
+
+<p>How to create releases of Scalate</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div id='content'>
+  	<div class='wrapper'>
+      <h1 id='release_steps'>Release Steps</h1>
+
+<p>Various documentation changes first (which should be done before the release is cut)</p>
+
+<ul>
+<li>update the <strong>scalate_website/src/download.page</strong> and <strong>scalate_website/src/tool.page</strong> pages for this release</li>
+
+<li>edit the <strong>scalate_website/src/metainf</strong> file and change the <strong>project_version</strong> values</li>
+
+<li>blog about the release by creating an entry in <strong>scalate_website/src/blog/releases</strong></li>
+
+<li>update the changelog.md file, copying and pasting the section the release highlights from the above blog post</li>
+</ul>
+
+<p>If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion</p>
+
+<ul>
+<li>
+<p>in the current last-release branch change the Rakefile to generate the website to generate the the last version. For example if the last released version is 0.1 then change the line in the Rakefile to&#8230;</p>
+
+<pre><code>remote /forge/dav/#{project_id}/versions/0.1</code></pre>
+</li>
+
+<li>
+<p>make sure the CI build for <a href='http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&amp;tab=buildTypeStatusDiv'>webgen last release</a> runs so that the website for the previous release is archived into the versions directory.</p>
+</li>
+
+<li>
+<p>add a link to the versions.page to this old version.</p>
+</li>
+</ul>
+
+<p>Cutting the release</p>
+
+<ul>
+<li>
+<p><strong>NOTE</strong> make sure you are using a clone of your local git repository for doing the release! See below on the use of temporary local repo&#8230;</p>
+</li>
+
+<li>
+<p>check your repo is clean and you are on master branch</p>
+</li>
+
+<li>
+<p>until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to comment the snapshot version in the root pom.xml</p>
+</li>
+
+<li>
+<p>prepare the release</p>
+
+<pre><code>mvn release:prepare -P release</code></pre>
+</li>
+
+<li>
+<p>perform the release</p>
+
+<pre><code>mvn release:perform -P release</code></pre>
+</li>
+
+<li>
+<p>open <a href='http://repo.fusesource.com/nexus/index.html#staging'>Nexus Staging</a> and close the Staging release of scalate</p>
+</li>
+
+<li>
+<p>now Promote the closed release</p>
+</li>
+
+<li>
+<p>now you&#8217;ll need to tidy up your local repo (the real clone of github) and push changes back to github</p>
+
+<pre><code>git rebase --hard
+git push
+git push origin scalate-project-1.2</code></pre>
+</li>
+
+<li>
+<p>announce the release on the <a href='community.html'>mailing list</a></p>
+</li>
+</ul>
+
+<h2 id='creating_a_branch_for_this_release_and_website_changes'>Creating a branch for this release and website changes</h2>
+
+<p>If this is a major release&#8230;</p>
+
+<ul>
+<li>
+<p>create a branch for this new release. For example if you&#8217;ve just done 1.2 then do this&#8230;</p>
+
+<pre><code>git co scalate-project-1.2 -b scalate-1.2.x
+git push scalate-1.2.x origin</code></pre>
+</li>
+
+<li>
+<p>check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to&#8230;</p>
+
+<pre><code>remote /forge/dav/#{project_id}</code></pre>
+</li>
+
+<li>
+<p>edit the <a href='http://ci.fusesource.com/teamcity/admin/editVcsRoot.html?cameFromUrl=%2Fteamcity%2Fadmin%2FeditBuildTypeVcsRoots.html%3FbuildTypeId%3Dbt119%26init%3D1&amp;action=editVcsRoot&amp;cameFromTitle=Edit+Build+Configuration&amp;vcsRootId=45&amp;editingScope=editBuildType%3Abt119'>scalate last release VCS Root</a> so that it uses the new branch you have just created <strong>scalate-project-1.2</strong></p>
+</li>
+
+<li>
+<p>until ScalaTest releases a version which works with SBT and Scala 2.8.0 you might have to uncomment the snapshot version in the root pom.xml</p>
+</li>
+
+<li>
+<p>ensure that the master branch has its Rakefile to point to the snapshot area</p>
+
+<pre><code>remote /forge/dav/#{project_id}/versions/snapshot</code></pre>
+</li>
+</ul>
+
+<p>What all this means is now that you should be able to amend the <a href='http://scalate.fusesource.org/'>website for the current release</a> using the <strong>scalate-project-1.2</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href='http://scalate.fusesource.org/versions/snapshot/index.html'>snapshot website</a></p>
+
+<h2 id='using_a_temporary_local_repo'>Using a temporary local repo</h2>
+
+<p>To avoid pushing to the remote repo in experimental attempts at releasing, you can clone your local repo&#8230;</p>
+
+<pre><code>git clone file:///foo/scalate scalate-release</code></pre>
+
+<p>You probably want to set this property too if you&#8217;re using git 1.6 or later to avoid your release prepare barfing&#8230;</p>
+
+<pre><code>git config receive.denycurrentbranch warn</code></pre>
+
+<p>then edit your <strong>~/.m2/settings.xml</strong> file and add this&#8230;</p>
+
+<pre><code>&lt;settings&gt;
+  &lt;profiles&gt; 
+    &lt;profile&gt;
+      &lt;id&gt;release&lt;/id&gt;
+      &lt;properties&gt;
+        &lt;release-altGitURL&gt;scm:git:file:///foo/scalate&lt;/release-altGitURL&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;	</code></pre>
+
+<p>then perform a release in this new <strong>scala-release</strong> directory. This will then push to your local repo, not the remote one.</p>
+  	</div>
+  </div>
+
+
+
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1347593-12");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+</body>
+</html>

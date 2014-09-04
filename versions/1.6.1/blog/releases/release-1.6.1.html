@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="scala template engine implementing HAML, JSP, Erb style templates" name="description"/>
+    <meta content="scalate,scala,template engine,haml,erb,jsp" name="keywords"/>
+    <meta content="Scalate" name="author"/>
+    <script src="../../scripts/jquery.js"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(function() {
+          $("#navigation div.edit img").click(function() {
+            $("#files_popup").toggle("slow");
+            return false;
+          });
+        });    
+      //]]>
+    </script>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/pygmentize.css"/>
+    <link type="text/css" rel="stylesheet" href="../../styles/impact/css/site.css"/>
+    <title>Scalate 1.6.1 Released</title>
+  </head>
+  <body>
+    <div id="navigation">
+      <div class="edit">
+        <img src="../../images/edit.png"/>
+      </div>
+      <div class="wrapper">
+<ul>
+<li><a href="../../index.html">Scalate 1.6.1</a></li>
+<li><a href="../../download.html">Download</a></li>
+<li><a href="../../source.html">Source</a></li>
+<li><a href="../../community.html">Community</a></li>
+<li><a href="../../support.html">Support</a></li>
+<li><a href="../../documentation/index.html">Documentation</a></li>
+</ul>      </div>
+    </div>
+    <div id="files_popup" class="popover top">
+      <div class="inner">
+        <h3 class="title">Fork this page on GitHub</h3>
+        <div class="content">
+          <ul>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/blog/releases/release-1.6.1.page">blog/releases/release-1.6.1.page</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/default.jade">WEB-INF/scalate/layouts/default.jade</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/_navigation.ssp.md">_navigation.ssp.md</a>
+            </li>
+            <li>
+              <a href="https://github.com/scalate/scalate/edit/master/scalate-website/src/WEB-INF/scalate/layouts/blog-post.jade">WEB-INF/scalate/layouts/blog-post.jade</a>
+              <div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="content">
+      <div class="wrapper">
+<p>The <a href="http://scalate.fusesource.org">Scalate team</a> is pleased to announce the
+availability of Scalate 1.6.1</p>
+
+<p>Scalate is a <a href="http://scalate.fusesource.org/documentation/jog.html">Scala 2.9 and 2.10] (http://www.scala-lang.org) based <a
+href="http://en.wikipedia.org/wiki/Template&#95;engine&#95;(web)">template
+engine</a> which can be used stand alone, with servlets or web frameworks
+like [JAXRS</a>,
+<a href="http://scalate.fusesource.org/documentation/lift.html">Lift</a> or
+<a href="http://github.com/pk11/play-scalate">Play</a> or in integration frameworks
+like <a href="http://camel.apache.org/scalate.html">Apache Camel</a>.</p>
+
+<p>The following template languages are supported through the same common API:</p>
+
+<ul>
+<li><a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a>
+which is like a Scala version of <a href="http://velocity.apache.org/">Velocity</a>,
+JSP or Erb from Rails</li>
+<li><a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a>
+which is a Scala dialect of <a href="http://haml-lang.com/">Haml</a> for very DRY
+markup along with the
+<a href="http://scalate.fusesource.org/documentation/jade.html">Jade</a> syntax</li>
+<li><a href="http://scalate.fusesource.org/documentation/mustache.html">Mustache</a>
+which is a Scala dialect of <a href="http://mustache.github.com/">Mustache</a> for
+logic-less templates which also work inside the browser using
+<a href="http://github.com/janl/mustache.js">mustache.js</a></li>
+</ul>
+
+<p>All expressions inside
+<a href="http://scalate.fusesource.org/documentation/ssp-reference.html#syntax">Ssp</a>,
+<a href="http://scalate.fusesource.org/documentation/scaml-reference.html">Scaml</a>
+and <a href="http://scalate.fusesource.org/documentation/jade.html">Jade</a> benefit
+from the full power and expressiveness of Scala plus they are typesafe and
+checked at edit/compile time to ensure you don't leave any mistakes in your
+templates.</p>
+
+<p><strong>Scalate 1.6.1 Highlights</strong></p>
+
+<ul>
+<li>Cross built against Scala 2.9 and 2.10.</li>
+<li>Dropped support for Scala 2.8.</li>
+<li>Append _[scala-version] tag to all artifact IDs to denote Scala binary compatibility.</li>
+<li>support stripping newlines from output in SSP templates</li>
+<li>Upgraded versions of scalamd and wikitext</li>
+<li>Add pooling for pegdown</li>
+<li>Make Pegdown filter a class so extensions can be configured</li>
+<li>Changes to support OSGi with 2.10.0</li>
+<li>Do not create ServletTemplateEngine for every view, reuse once created one. Invoke boot class.</li>
+<li>Upgrade to latest jruby</li>
+<li>Add a shutdown method on Compiler</li>
+<li>Have ScalateView properly register its ServletRenderContext objects</li>
+<li>Now that TemplateEngine uses a ScalaCompiler, it needs a method for shutting it down.</li>
+<li>Reset scala Source before read to support multiple reads</li>
+<li>Do not retry template compilation twice</li>
+<li>Use buildhelper plugin to include src/main/scala as source dir</li>
+<li>Fixed {children} macro to work with static web sites.</li>
+<li>Made some classloader changes for running in an OSGi environment.</li>
+<li>Refactored ConfExport Mojo so that it re-uses code from scalate-tool.</li>
+<li>Add support for sass/scss @import</li>
+<li>Added Less Filter and attempted to modify the sbt and Maven builds to match this and the previous Pegdown filter.</li>
+<li>Added PegDown filter</li>
+<li>selective scuery attribute updates (update attribute if it exists)</li>
+<li>Upgraded axis-wsdl4j dependency from 1.2 to 1.5.1</li>
+<li>Added &mdash;target-db switch to generate DocBook link database.</li>
+<li>Refactored confexport command to use the libraries from the Confluence Command Line Interface (CLI).</li>
+</ul>
+
+<p>For more detail see the <a href="https://github.com/scalate/scalate/commits/scalate-project&#95;2.10-1.6.1">Full Commit History</a></p>
+
+<p><a href="http://scalate.fusesource.org/community.html">Feedback</a> is always welcome!</p>
+<br/>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'scalate';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+        <div></div>
+      </div>
+    </div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script> 
+        <script type="text/javascript"> 
+        try {
+        var pageTracker = _gat._getTracker("UA-1347593-12");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      //]]>
+    </script>
+  </body>
+</html>

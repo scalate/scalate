@@ -1,0 +1,232 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Scaladoc for org.fusesource.scalate.scuery</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		      <script type="text/javascript" src="../../../../lib/jquery.js"></script>
+          
+      <link href="../../../../lib/template.css" rel="stylesheet" type="text/css" media="screen" />
+      <script type="text/javascript" src="../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+
+      <p id="owner"><a href="../../../package.html" class="extype" name="org">org</a>.<a href="../../package.html" class="extype" name="org.fusesource">fusesource</a>.<a href="../package.html" class="extype" name="org.fusesource.scalate">scalate</a></p>
+
+      <div id="definition">
+        <img src="../../../../lib/package_big.png" />
+        <h1>scuery</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">scuery</span>
+      </span>
+      </h4>
+      <div class="fullcomment" id="comment"><div class="comment cmt"><p>All the various implicit conversions for the scuery package
+</p></div>
+            
+            
+            
+            
+          </div>
+      
+      <div id="template">
+
+        <div id="mbrsel">
+          
+          <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in">Public</li><li class="all out">All</li></ol>
+          </div>
+        </div>
+        
+                
+        
+        <div class="members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scuery.NestedTransformer">
+      <h4 class="signature"><a href="NestedTransformer.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">NestedTransformer</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A transformer which makes it easy to create nested transformations by switching the thread local
+transformer used for the '$' methods when inside of a transform method.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.NodeAndAncestors">
+      <h4 class="signature"><a href="NodeAndAncestors.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">NodeAndAncestors</span><span class="params">(<span name="node">node: Node</span>, <span name="ancestors">ancestors: Seq[Node]</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Makes it easy to pass around a node object along with its ancestor
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.SXml">
+      <h4 class="signature"><a href="SXml.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">SXml</span><span class="params">(<span name="nodes">nodes: NodeSeq</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A helper class to pimp Scala's XML support to add easy SQuery filtering
+so that you can perform a CSS3 selector on a 
+scala.xml.Node
+ or 
+scala.xml.NodeSeq
+via <code>xml.</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.ScueryConversions">
+      <h4 class="signature"><a href="ScueryConversions.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">ScueryConversions</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">All the various implicit conversions for the scuery package
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.Selector">
+      <h4 class="signature"><a href="Selector.html">
+      <span class="kind">trait</span>
+      <span class="symbol">
+        <span class="name">Selector</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.Transform">
+      <h4 class="signature"><a href="Transform.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Transform</span><span class="result"> extends Transformer</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">A helper class to make it easier to write new transformers within loops inside a ancestor transformer
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.Transformer">
+      <h4 class="signature"><a href="Transformer.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">Transformer</span><span class="result"> extends Logging</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Allows simple XML replacement rules to be registered
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.TransformerBuilder">
+      <h4 class="signature"><a href="TransformerBuilder.html">
+      <span class="kind">class</span>
+      <span class="symbol">
+        <span class="name">TransformerBuilder</span><span class="params">(<span name="transformer">transformer: Transformer</span>)</span><span class="result"> extends Product</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt"> A helper class so that a function object can be used as a transformer
+</p>
+    </li></ol>
+            </div>
+        
+        <div class="members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="org.fusesource.scalate.scuery.Selector">
+      <h4 class="signature"><a href="Selector$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Selector</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">Implements CSS style selectors
+</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.Transform">
+      <h4 class="signature"><a href="Transform$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">Transform</span><span class="result"> extends AnyRef</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.XmlHelper">
+      <h4 class="signature"><a href="XmlHelper$.html">
+      <span class="kind">object</span>
+      <span class="symbol">
+        <span class="name">XmlHelper</span><span class="result"> extends ScueryConversions</span>
+      </span>
+      </a></h4>
+      <p class="comment cmt">no summary matey</p>
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.support">
+      <h4 class="signature"><a href="support/package.html">
+      <span class="kind">package</span>
+      <span class="symbol">
+        <span class="name">support</span>
+      </span>
+      </a></h4>
+      
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.ScueryConversions#toNode">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">toNode</span><span class="params">(<span name="nodeAndAncestors">nodeAndAncestors: <a href="NodeAndAncestors.html" class="extype" name="org.fusesource.scalate.scuery.NodeAndAncestors">NodeAndAncestors</a></span>)</span><span class="result">: <span class="extype" name="scala.xml.Node">Node</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: <a href="ScueryConversions.html" class="extype" name="org.fusesource.scalate.scuery.ScueryConversions">ScueryConversions</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.ScueryConversions#toNodes">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">toNodes</span><span class="params">(<span name="transform">transform: <a href="Transform.html" class="extype" name="org.fusesource.scalate.scuery.Transform">Transform</a></span>)</span><span class="result">: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: <a href="ScueryConversions.html" class="extype" name="org.fusesource.scalate.scuery.ScueryConversions">ScueryConversions</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.ScueryConversions#toSXml">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">toSXml</span><span class="params">(<span name="nodes">nodes: <span class="extype" name="scala.xml.NodeSeq">NodeSeq</span></span>)</span><span class="result">: <a href="SXml.html" class="extype" name="org.fusesource.scalate.scuery.SXml">SXml</a></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: <a href="ScueryConversions.html" class="extype" name="org.fusesource.scalate.scuery.ScueryConversions">ScueryConversions</a>
+        </div></div>
+          
+    </li><li visbl="pub" name="org.fusesource.scalate.scuery.ScueryConversions#toSXml">
+      <h4 class="signature">
+      <span class="kind">implicit def</span>
+      <span class="symbol">
+        <span class="name">toSXml</span><span class="params">(<span name="node">node: <span class="extype" name="scala.xml.Node">Node</span></span>)</span><span class="result">: <a href="SXml.html" class="extype" name="org.fusesource.scalate.scuery.SXml">SXml</a></span>
+      </span>
+      </h4>
+      
+            
+            <div class="fullcomment"><div class="block">
+          attributes: implicit 
+        </div><div class="block">
+          definition classes: <a href="ScueryConversions.html" class="extype" name="org.fusesource.scalate.scuery.ScueryConversions">ScueryConversions</a>
+        </div></div>
+          
+    </li></ol>
+            </div>
+                
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>
