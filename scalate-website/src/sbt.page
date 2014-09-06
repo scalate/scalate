@@ -9,7 +9,9 @@ Using SBT (Simple Build Tool) to build fast
 
 ## Building with SBT
 
-You can use [sbt](http://code.google.com/p/simple-build-tool/) to build Scalate - its particularly well suited to rapid edit-compile-test cycles.
+You can use [SBT](https://github.com/sbt/sbt/) to build Scalate - it's particularly well suited to rapid edit-compile-test cycles.
+
+**Note:** An [SBT](https://github.com/sbt/sbt/) build begins with a [Maven](https://maven.apache.org/) install. You will need both tools; [SBT install instructions](http://www.scala-sbt.org/0.12.4/docs/Getting-Started/Setup.html), [Maven install instructions](http://maven.apache.org/download.cgi).
 
 ### Setting up SBT
 

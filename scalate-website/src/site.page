@@ -14,38 +14,60 @@ How the website works
   :&markdown
     The *#{project_name}* documentation and site is created using Scalate and is stored in git in the same [source control system as the code](source.html)
 
-    **Note:** For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](http://pygments.org).
+    **Note:** An [SBT build](sbt.html) is not necessary for contributions to documentation. The embedded webserver can display changes to page markup without re-compilation. An installation of [Maven](https://maven.apache.org/) is all that is required.
+
+    **Note:** For code highlighting you will need to [install](http://pygments.org/download/) [http://pygments.org/](http://pygments.org). If the website project has been built without Pygments, it will need to be rebuilt.
     
 .left
   :markdown
     # Editing the source code
 .right
   :markdown
-    If you [grab the source code](source.html) you can get the site source in the *scalate-website* directory.
-    If you [have Scalate installed](documentation/installing.html) then you can build the website from [the code](source.html) as follows
+    If you [grab the source code](source.html), the site source is in the *scalate-website* directory.
+
+    First the complete Scalate source must be (compiled and) installed. This pulls necessary code into Maven. In the Scalate [source code](source.html) directory
+
+    {pygmentize:: text}
+    mvn install
+    {pygmentize}
+
+    Then, using the .pom inside the folder, build the website as follows
 
     {pygmentize:: text}
     cd scalate-website
     mvn install
     {pygmentize}
 
-    If you want to edit the files in your text editor and be able to immediately see the site re-rendered in a browser then use
+    **Note:** Older versions of Scalate required Scalate to be [installed](documentation/installing.html). Current builds do not require this.
+
+    If you want to edit the files in your text editor, and see the site re-rendered in a browser immediately, then run the embedded Jetty webserver
 
     {pygmentize:: text}
     mvn jetty:run
     {pygmentize}
 
-    You can now surf the site and see changes immediately.
+    You can now surf the site on
 
-    If you are on OS X then we highly recommend [TextMate](http://macromates.com/) as a great editor which supports Textile and Markdown
+    [http://0.0.0.0:8080/](http://0.0.0.0:8080/)
+
+    Any changes to documentation will be seen on this server, immediately.
+
+    If you are on OS X then we highly recommend [TextMate](http://macromates.com/) as a great editor which supports Textile and Markdown. Text editors which support either markup format are helpful. For example, EMACS has modes for  Textile and Markdown in repository ("M-x package-list-packages" on EMACS versions > 24).
 
 .left
   :markdown
-    # Deploying the site
+    # Deploying the site (new patches)
 .right
   :markdown
-    The site is automatically deployed by the CI builds, so you can simply wait for the changes to be automatically pushed 
-    to the project site.
+    You have a GitHub account, and are following the [contribution](http://scalate.fusesource.org/contributing.html) information. When you are happy, you need, on the [Scalate Github page](https://github.com/scalate/scalate), to click on the pull request button.
+
+.left
+  :markdown
+    # Deploying the site (known committer)
+.right
+  :markdown
+
+    The site is automatically deployed by the CI builds, so you can simply wait for the changes to be automatically pushed to the project site.
     
     You can manually deploy the site using Maven:
     
