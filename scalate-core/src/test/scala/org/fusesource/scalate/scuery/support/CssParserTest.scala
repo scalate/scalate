@@ -22,7 +22,7 @@ package org.fusesource.scalate.scuery.support
 class CssParserTest extends CssParserTestSupport {
 
   val cheese = <c:tr xmlns:c="http://apache.org/cheese"><blah/></c:tr>
-  val a = <a href="http://scalate.fusesource.org/" title="Scalate" hreflang="en-US">Awesomeness</a>
+  val a = <a href="http://scalate.github.io/scalate/" title="Scalate" hreflang="en-US">Awesomeness</a>
 
   val xml = <table id="t1" class="people" summary="My Summary Notes">
     <tr id="tr1" class="personRow odd">

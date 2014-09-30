@@ -7,7 +7,7 @@ created_at: 2010-04-06 12:06:40 -0000
 layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.0. 
+The [Scalate team](http://scalate.github.io/scalate) is pleased to announce the availability of Scalate 1.0. 
 
 Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> which can be used stand alone, with servlets, in JAXRS, with the [Play Framework](http://github.com/pk11/play-scalate) or in [Apache Camel](http://camel.apache.org/scalate.html). (Work on lift integration is in progress).
 
@@ -15,14 +15,14 @@ All expressions inside Scalate benefit from the full power of Scala plus they ar
 
 Two template languages are currently supported:
 
-* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of JSP or Erb from Rails 
-* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
+* [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax) which is like a Scala version of JSP or Erb from Rails 
+* [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
 
 Further information:
 
 * [Change Log](http://scalate.assembla.com/spaces/scalate/milestones/191839-1-0)
-* [Community](http://scalate.fusesource.org/community.html)
-* [Documentation](http://scalate.fusesource.org/documentation/)
-* [Download](http://scalate.fusesource.org/download.html)
+* [Community](http://scalate.github.io/scalate/community.html)
+* [Documentation](http://scalate.github.io/scalate/documentation/)
+* [Download](http://scalate.github.io/scalate/download.html)
 
-[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+[Feedback](http://scalate.github.io/scalate/community.html) is always welcome! 

@@ -32,7 +32,7 @@ object Website {
   val project_id= "scalate"
   val project_jira_key= "SCALATE"
   val project_issue_url= "http://scalate.assembla.com/spaces/scalate/support/tickets"
-  val project_forums_url= "http://scalate.fusesource.org/community.html"
+  val project_forums_url= "http://scalate.github.io/scalate/community.html"
   val project_wiki_url= "http://wiki.github.com/scalate/scalate/"
   val project_logo= "/images/project-logo.png"
   val project_version= "1.6.0"

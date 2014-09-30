@@ -9,10 +9,10 @@ sort_info: 5
 
 h2. Scalate Camel Component
 
-The *scalate:* [camel|http://camel.apache.org/] component allows you to process a message using [Scalate|http://scalate.fusesource.org/] template, which supports various template languages such as
+The *scalate:* [camel|http://camel.apache.org/] component allows you to process a message using [Scalate|http://scalate.github.io/scalate/] template, which supports various template languages such as
 
-* [SSP|http://scalate.fusesource.org/documentation/ssp-reference.html] for text generation using a JSP / Velocity like syntax
-* [Jade|http://scalate.fusesource.org/documentation/jade.html] for generating HTML markup using a really DRY and concise template engine
+* [SSP|http://scalate.github.io/scalate/documentation/ssp-reference.html] for text generation using a JSP / Velocity like syntax
+* [Jade|http://scalate.github.io/scalate/documentation/jade.html] for generating HTML markup using a really DRY and concise template engine
 
 This can be ideal when using [Templating|http://camel.apache.org/templating.html] to generate responses for requests.
 

@@ -50,7 +50,7 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
           <description>{attr("description")}</description>
           <pubDate>{date}</pubDate>
           <lastBuildDate>{date}</lastBuildDate>
-          <generator>Scalate - http://scalate.fusesource.org/</generator>
+          <generator>Scalate - http://scalate.github.io/scalate/</generator>
           {posts.map{ post =>
             <item>
               <title>{post.title}</title>

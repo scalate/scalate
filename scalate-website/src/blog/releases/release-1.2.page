@@ -7,32 +7,32 @@ created_at: 2010-07-30 12:06:40 -0000
 layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce the availability of Scalate 1.2. 
+The [Scalate team](http://scalate.github.io/scalate) is pleased to announce the availability of Scalate 1.2. 
 
-Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> which can be used stand alone, with servlets or web frameworks like [JAXRS](http://scalate.fusesource.org/documentation/jog.html), [Lift](http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) or in integration frameworks like [Apache Camel](http://camel.apache.org/scalate.html).
+Scalate is a [Scala 2.8](http://www.scala-lang.org) based <a href="http://en.wikipedia.org/wiki/Template_engine_(web)">template engine</a> which can be used stand alone, with servlets or web frameworks like [JAXRS](http://scalate.github.io/scalate/documentation/jog.html), [Lift](http://scalate.github.io/scalate/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) or in integration frameworks like [Apache Camel](http://camel.apache.org/scalate.html).
 
 The following template languages are supported through the same common API:
 
-* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
-* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+* [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax) which is like a Scala version of [Velocity](http://velocity.apache.org/), JSP or Erb from Rails 
+* [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
+* [Mustache](http://scalate.github.io/scalate/documentation/mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
-All expressions inside [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)  and [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
+All expressions inside [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax)  and [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html) benefit from the full power and expressiveness of Scala plus they are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your templates.
 
 
 **Scalate 1.2 Highlights**
 
-* Scalate now supports the [Mustache](http://scalate.fusesource.org/documentation/mustache.html) template language which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, [JAXRS](http://scalate.fusesource.org/documentation/jog.html), [Lift](http://scalate.fusesource.org/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) and [Apache Camel](http://camel.apache.org/scalate.html)
+* Scalate now supports the [Mustache](http://scalate.github.io/scalate/documentation/mustache.html) template language which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js). Support for Mustache uses the same common Scalate API so it works with all the existing Scalate adapters such as servlets, [JAXRS](http://scalate.github.io/scalate/documentation/jog.html), [Lift](http://scalate.github.io/scalate/documentation/lift.html) or [Play](http://github.com/pk11/play-scalate) and [Apache Camel](http://camel.apache.org/scalate.html)
 * Scalate is [now built](http://scalate.assembla.com/spaces/scalate/tickets/70) on top of [Scala 2.8.0 final release](http://www.scala-lang.org/node/7009) 
-* [Scuery](http://scalate.fusesource.org/documentation/scuery.html) for jQuery style transformation of HTML or XHTML using CSS3 selectors
-* the [console](http://scalate.fusesource.org/documentation/console.html) can be more easily reused in your application [without using WAR overlays](http://scalate.assembla.com/spaces/scalate/tickets/105) and templates can be loaded via the classloader to help make more modular web applications without relying on WAR overlays
+* [Scuery](http://scalate.github.io/scalate/documentation/scuery.html) for jQuery style transformation of HTML or XHTML using CSS3 selectors
+* the [console](http://scalate.github.io/scalate/documentation/console.html) can be more easily reused in your application [without using WAR overlays](http://scalate.assembla.com/spaces/scalate/tickets/105) and templates can be loaded via the classloader to help make more modular web applications without relying on WAR overlays
 * [improvements](http://scalate.assembla.com/spaces/scalate/tickets/94) in associating different template languages to files/URIs/strings/streams in a more flexible API
-* [various](http://scalate.assembla.com/spaces/scalate/tickets/108) [improvements](http://scalate.assembla.com/spaces/scalate/tickets/109) in the accuracy of the mapping of scala compiler errors to positions in the template source file which are then shown and linked in the [console](http://scalate.fusesource.org/documentation/console.html)
-* improved [maven plugin](http://scalate.fusesource.org/documentation/user-guide.html#precompiling_templates) for precompiling templates
+* [various](http://scalate.assembla.com/spaces/scalate/tickets/108) [improvements](http://scalate.assembla.com/spaces/scalate/tickets/109) in the accuracy of the mapping of scala compiler errors to positions in the template source file which are then shown and linked in the [console](http://scalate.github.io/scalate/documentation/console.html)
+* improved [maven plugin](http://scalate.github.io/scalate/documentation/user-guide.html#precompiling_templates) for precompiling templates
 
 For more detail see the [Full Change Log](http://scalate.assembla.com/spaces/scalate/milestones/191841-1-2)
 
-[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+[Feedback](http://scalate.github.io/scalate/community.html) is always welcome! 
 
 
 

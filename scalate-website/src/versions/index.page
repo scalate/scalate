@@ -19,7 +19,7 @@ Documentation Versions
 
   - for( version <- project_versions )
     :&markdown
-      * [#{version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz) - [Release Notes](/blog/releases/release-#{version}.html) - [Documentation](http://scalate.fusesource.org/versions/#{version}/)
+      * [#{version} zip](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-windows-bin.zip) or [tar.gz](http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/#{version}/scalate-distro-#{version}-unix-bin.tar.gz) - [Release Notes](/blog/releases/release-#{version}.html) - [Documentation](http://scalate.github.io/scalate/versions/#{version}/)
 
 .left
   :markdown
@@ -27,5 +27,5 @@ Documentation Versions
 .right
   :markdown
   
-    * [Development Snapshot](http://scalate.fusesource.org/versions/${project_snapshot_version}/index.html) based on ${project_snapshot_version}
+    * [Development Snapshot](http://scalate.github.io/scalate/versions/${project_snapshot_version}/index.html) based on ${project_snapshot_version}
 

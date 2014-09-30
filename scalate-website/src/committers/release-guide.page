@@ -16,7 +16,7 @@ Various documentation changes first (which should be done before the release is 
 * blog about the release by creating an entry in **scalate\_website/src/blog/releases** 
 * update the changelog.md file, copying and pasting the section the release highlights from the above blog post
 
-If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion
+If the release is a major release then we need to freeze the current website at scalate.github.io/scalate/versions/lastVersion
 
 * in the current last-release branch change the scalate-website/pom.xml and edit the "maven-scalate-plugin" section to list the correct remoteServerUrl to something like...
 
@@ -83,7 +83,7 @@ git co scalate-project-${project_version} -b scalate-${project_version}.x
 git push origin scalate-${project_version}.x 
 {pygmentize}
 
-* check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to...
+* check that this branch generates its website to the main scalate.github.io/scalate location, not scalate.github.io/scalate/versions/snapshot by updating the relevant line in the Rakefile to...
 
       remote /forge/dav/#{project_id}
 
@@ -97,10 +97,10 @@ git push origin scalate-${project_version}.x
 * ensure also that index.page has the new snapshot version number in it
 
 * kick off the TeamCity CI build for the [scalate last release](http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&tab=buildTypeStatusDiv) project
-* check the new version appears on the [home page](http://scalate.fusesource.org/)
+* check the new version appears on the [home page](http://scalate.github.io/scalate/)
 * you might also want to check that the [central maven repo](http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/${project_version}/) has sync'd before announcing
 
-What all this means is now that you should be able to amend the [website for the current release](http://scalate.fusesource.org/) using the **scalate-project-${project_version}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.fusesource.org/versions/snapshot/index.html)
+What all this means is now that you should be able to amend the [website for the current release](http://scalate.github.io/scalate/) using the **scalate-project-${project_version}** branch. You can also document new upcoming features for the next release which go into the **master** branch which should be auto-deployed to the [snapshot website](http://scalate.github.io/scalate/versions/snapshot/index.html)
 
 
 ## Update the Homebrew formula

@@ -111,7 +111,7 @@
     <rhino-version>1.7R2</rhino-version>
   </properties>
 
-  <url>http://scalate.fusesource.org/</url>
+  <url>http://scalate.github.io/scalate/</url>
   <inceptionYear>2010</inceptionYear>
 
   <licenses>

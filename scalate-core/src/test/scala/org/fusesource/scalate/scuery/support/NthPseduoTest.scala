@@ -20,7 +20,7 @@ package org.fusesource.scalate.scuery.support
 class NthPseduoTest extends CssParserTestSupport {
 
   val cheese = <c:tr xmlns:c="http://apache.org/cheese"><blah/></c:tr>
-  val a = <a href="http://scalate.fusesource.org/" title="Scalate" hreflang="en-US">Awesomeness</a>
+  val a = <a href="http://scalate.github.io/scalate/" title="Scalate" hreflang="en-US">Awesomeness</a>
 
   val x1 = <li id="1" class="foo">one</li>
   val x2 = <li id="2" class="foo">two</li>
