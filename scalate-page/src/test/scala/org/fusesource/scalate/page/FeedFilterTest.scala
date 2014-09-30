@@ -35,7 +35,7 @@ class FeedFilterTest extends TemplateTestSupport {
     val channel = xml \\ "rss" \\ "channel"
     expect("The Scalate Blog") { trimText(channel \ "title") }
     //expect("Scalate Team") { trimText(channel \ "author") }
-    expect("http://scalate.fusesource.org/blog/") { trimText(channel \ "link") }
+    expect("http://scalate.github.io/scalate/blog/") { trimText(channel \ "link") }
     expect("Some text goes here") { trimText(channel \ "description") }
   }
 }

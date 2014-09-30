@@ -335,14 +335,14 @@ html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 """
 a(title=title href=href) Stuff
 ""","""
-<a title="MyPage" href="http://scalate.fusesource.org">Stuff</a>
+<a title="MyPage" href="http://scalate.github.io/scalate">Stuff</a>
 """)
 
   testRender("You can use both syntaxes together.",
 """
-a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
+a(title="Hello"){:href => "http://scalate.github.io/scalate"} Stuff
 ""","""
-<a title="Hello" href="http://scalate.fusesource.org">Stuff</a>
+<a title="Hello" href="http://scalate.github.io/scalate">Stuff</a>
 """)
 
   testRender("HTML-style attributes can be stretched across multiple lines just like hash-style attributes",

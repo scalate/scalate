@@ -7,35 +7,35 @@ created_at: 2011-09-09 12:06:40 -0000
 layout: /WEB-INF/scalate/layouts/blog-post.jade
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
+The [Scalate team](http://scalate.github.io/scalate) is pleased to announce the
 availability of Scalate 1.5.2
 
 Scalate is a [Scala 2.9.1](http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
 engine</a> which can be used stand alone, with servlets or web frameworks
-like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
-[Lift](http://scalate.fusesource.org/documentation/lift.html) or
+like [JAXRS](http://scalate.github.io/scalate/documentation/jog.html),
+[Lift](http://scalate.github.io/scalate/documentation/lift.html) or
 [Play](http://github.com/pk11/play-scalate) or in integration frameworks
 like [Apache Camel](http://camel.apache.org/scalate.html).
 
 The following template languages are supported through the same common API:
 
-* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)
+* [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax)
   which is like a Scala version of [Velocity](http://velocity.apache.org/),
   JSP or Erb from Rails
-* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+* [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html)
   which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY
   markup along with the
-  [Jade](http://scalate.fusesource.org/documentation/jade.html) syntax
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html)
+  [Jade](http://scalate.github.io/scalate/documentation/jade.html) syntax
+* [Mustache](http://scalate.github.io/scalate/documentation/mustache.html)
   which is a Scala dialect of [Mustache](http://mustache.github.com/) for
   logic-less templates which also work inside the browser using
   [mustache.js](http://github.com/janl/mustache.js)
 
 All expressions inside
-[Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax),
-[Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
-and [Jade](http://scalate.fusesource.org/documentation/jade.html) benefit
+[Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax),
+[Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html)
+and [Jade](http://scalate.github.io/scalate/documentation/jade.html) benefit
 from the full power and expressiveness of Scala plus they are typesafe and
 checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
@@ -43,14 +43,14 @@ templates.
 
 **Scalate 1.5.2 Highlights**
 
-* Server side compilation of CoffeeScript in the [:coffeescript filter](http://scalate.fusesource.org/documentation/jade-syntax.html#filters) - many thanks for the [patch](https://github.com/scalate/scalate/pull/6)
+* Server side compilation of CoffeeScript in the [:coffeescript filter](http://scalate.github.io/scalate/documentation/jade-syntax.html#filters) - many thanks for the [patch](https://github.com/scalate/scalate/pull/6)
 * Provide a Scala 2.8.1 distribution of Scalate (version **1.5.2-scala_2.8.1**) for easier [Play](http://www.playframework.org/) integration and working with other Scala 2.8.x projects.
 * Minor improvements in the use of the ScalaCompiler to make it easier to support [Lifty](http://lifty.github.com/) as a plugin inside [SBT](https://github.com/harrah/xsbt/wiki) - thanks for the help and welcome to the team [Mads](https://github.com/mads379)
 * Fixed [#260](http://scalate.assembla.com/spaces/scalate/tickets/260) : Scalate distro does not include all the jars required for textile support
 
 For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/529481-1-5-2)
 
-[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+[Feedback](http://scalate.github.io/scalate/community.html) is always welcome! 
 
 
 

@@ -106,7 +106,7 @@ class ScamlTestSupport extends TemplateTestSupport {
     val context = new DefaultRenderContext(uri, engine, out) {
       val name = "Hiram"
       val title = "MyPage"
-      val href = "http://scalate.fusesource.org"
+      val href = "http://scalate.github.io/scalate"
       val quality = "scrumptious"
     }
 

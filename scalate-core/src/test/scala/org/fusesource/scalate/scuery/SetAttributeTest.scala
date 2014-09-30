@@ -37,14 +37,14 @@ class SetAttributeTest extends FunSuiteSupport {
     object transformer extends Transformer {
 
       // 3 different approaches to changing attributes
-      $("a.foo").attribute("href", "http://scalate.fusesource.org/")
+      $("a.foo").attribute("href", "http://scalate.github.io/scalate/")
 
-      $("a.bar").attribute("href").value = "http://scalate.fusesource.org/documentation/"
+      $("a.bar").attribute("href").value = "http://scalate.github.io/scalate/documentation/"
 
 
       $("a.jog").attribute("href") {
         e =>
-          "http://scalate.fusesource.org/documentation/" + (e \ "@class") + ".html"
+          "http://scalate.github.io/scalate/documentation/" + (e \ "@class") + ".html"
       }
     }
 
@@ -52,9 +52,9 @@ class SetAttributeTest extends FunSuiteSupport {
 
     debug("got result: " + result)
 
-    assertLink((result \\ "a")(0), "http://scalate.fusesource.org/", "foo", "A foo link")
-    assertLink((result \\ "a")(1), "http://scalate.fusesource.org/documentation/", "bar", "A bar link")
-    assertLink((result \\ "a")(2), "http://scalate.fusesource.org/documentation/jog.html", "jog", "A jog link")
+    assertLink((result \\ "a")(0), "http://scalate.github.io/scalate/", "foo", "A foo link")
+    assertLink((result \\ "a")(1), "http://scalate.github.io/scalate/documentation/", "bar", "A bar link")
+    assertLink((result \\ "a")(2), "http://scalate.github.io/scalate/documentation/jog.html", "jog", "A jog link")
   }
 
   def assertLink(a: Node, href: String, className: String, title: String): Unit = {
