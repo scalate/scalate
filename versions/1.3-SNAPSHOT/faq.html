@@ -163,7 +163,7 @@ This page contains all the frequently asked questions about the Scalate project.
 
 <h3 id = "How_do_I_disable_layouts_">How do I disable layouts?</h3>
 
-<p>If you want to disable layouts, just set the <strong>layoutStrategy</strong> property on the <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> to be the <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/layout/NullLayoutStrategy$.html">NullLayoutStrategy</a></p>
+<p>If you want to disable layouts, just set the <strong>layoutStrategy</strong> property on the <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> to be the <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/layout/NullLayoutStrategy$.html">NullLayoutStrategy</a></p>
 
 <p>Or you can just create an empty layout. For example if you are using servlets or JAXRS, just create a template in <em>/WEB-INF/scalate/layouts/default.ssp</em> which just includes the body and does not perform any actual layout.</p>
 
@@ -176,7 +176,7 @@ This page contains all the frequently asked questions about the Scalate project.
 <h3 id = "How_can_I_access_the_Servlet_request__response_or_servletContext">How can I access the Servlet request, response or servletContext</h3>
 
 <p>When using Scalate with servlets or <a href="documentation/jog.html">Jog</a> you might wish to access the current request, response, servletContext or servletConfig objects used by the servlet engine. These variables are all available by default thanks to the
-<a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/servlet/ServletRenderContext.html">ServletRenderContext</a> API which is imported by default.</p>
+<a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/servlet/ServletRenderContext.html">ServletRenderContext</a> API which is imported by default.</p>
 
 <p>So your template can refer to these variables if they are required directly - rather like they can be in JSP.</p>
 
@@ -188,15 +188,15 @@ This page contains all the frequently asked questions about the Scalate project.
 
 <h3 id = "Can_I_use_Scalate_with_a_non_file_based_template_">Can I use Scalate with a non file based template?</h3>
 
-<p>You can configure the <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a>  to provide a <em>resourceLoader</em> to resolve URIs for templates. See the <a href="documentation/scalate-embedding-guide.html#custom&#95;template&#95;loading">Custom Template Loading in the Embedding Guide</a>.</p>
+<p>You can configure the <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a>  to provide a <em>resourceLoader</em> to resolve URIs for templates. See the <a href="documentation/scalate-embedding-guide.html#custom&#95;template&#95;loading">Custom Template Loading in the Embedding Guide</a>.</p>
 
-<p>Or if you are using the Scalate API directly there are methods on <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> API for loading a <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/Template.html">Template</a> by supplying the source of the template as a String. So you can create the template content however you wish, then compile and render the template.</p>
+<p>Or if you are using the Scalate API directly there are methods on <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> API for loading a <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/Template.html">Template</a> by supplying the source of the template as a String. So you can create the template content however you wish, then compile and render the template.</p>
 
 <p>For example</p>
 
 <div class="syntax"><div class="highlight"><pre><span class="c1">// a template with an attribute </span>&#x000A;<span class="k">val</span> <span class="n">source</span> <span class="k">=</span> <span class="s">&quot;&lt;%@ val name: String %&gt; hello ${name}&quot;</span> &#x000A;&#x000A;<span class="k">val</span> <span class="n">template</span> <span class="k">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">compileSsp</span><span class="o">(</span><span class="n">source</span><span class="o">)</span> &#x000A;<span class="k">val</span> <span class="n">output</span> <span class="k">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">layout</span><span class="o">(</span><span class="n">template</span><span class="o">,</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;name&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;James&quot;</span><span class="o">))</span> &#x000A;&#x000A;<span class="c1">// test it works... </span>&#x000A;<span class="n">expect</span><span class="o">(</span><span class="s">&quot;hello James&quot;</span><span class="o">)</span> <span class="o">{</span><span class="n">output</span><span class="o">}</span> &#x000A;</pre></div>&#x000A;</div>
 
-<p>Or you can use the <a href="http://scalate.fusesource.org/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html">TemplateSource companion object</a> helper methods&hellip;</p>
+<p>Or you can use the <a href="http://scalate.github.io/scalate/maven/1.3/scalate-core/scaladocs/org/fusesource/scalate/TemplateSource$.html">TemplateSource companion object</a> helper methods&hellip;</p>
 
 <div class="syntax"><div class="highlight"><pre><span class="c1">// can use fromString, fromUri etc</span>&#x000A;<span class="k">val</span> <span class="n">source</span> <span class="k">=</span> <span class="nc">TemplateSource</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(</span><span class="s">&quot;foo.ssp&quot;</span><span class="o">)</span>&#x000A;<span class="k">val</span> <span class="n">output</span> <span class="k">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">layout</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="nc">Map</span><span class="o">(</span><span class="s">&quot;name&quot;</span> <span class="o">-&gt;</span> <span class="s">&quot;James&quot;</span><span class="o">))</span> &#x000A;</pre></div>&#x000A;</div>
 

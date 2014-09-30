@@ -79,7 +79,7 @@
 <li>update the changelog.md file, copying and pasting the section the release highlights from the above blog post</li>
 </ul>
 
-<p>If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion</p>
+<p>If the release is a major release then we need to freeze the current website at scalate.github.io/scalate/versions/lastVersion</p>
 
 <ul>
 <li>in the current last-release branch change the scalate-website/pom.xml and edit the &ldquo;maven-scalate-plugin&rdquo; section to list the correct remoteServerUrl to something like&hellip;</li>
@@ -144,7 +144,7 @@ configuration to ignore some files.</li>
 <div class="syntax"><div class="highlight"><pre>git co scalate-project-1.5.3 -b scalate-1.5.3.x&#x000A;git push origin scalate-1.5.3.x &#x000A;</pre></div>&#x000A;</div>
 
 <ul>
-<li><p>check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to&hellip;</p>
+<li><p>check that this branch generates its website to the main scalate.github.io/scalate location, not scalate.github.io/scalate/versions/snapshot by updating the relevant line in the Rakefile to&hellip;</p>
 
 <p>  remote /forge/dav/#{project_id}</p></li>
 <li><p>check that index.page and metainfo have at the correct release number</p></li>
@@ -154,11 +154,11 @@ configuration to ignore some files.</li>
 <p>  remote /forge/dav/#{project_id}/versions/snapshot</p></li>
 <li><p>ensure also that index.page has the new snapshot version number in it</p></li>
 <li><p>kick off the TeamCity CI build for the <a href="http://ci.fusesource.com/teamcity/viewType.html?buildTypeId=bt119&amp;tab=buildTypeStatusDiv">scalate last release</a> project</p></li>
-<li>check the new version appears on the <a href="http://scalate.fusesource.org/">home page</a></li>
+<li>check the new version appears on the <a href="http://scalate.github.io/scalate/">home page</a></li>
 <li>you might also want to check that the <a href="http://repo1.maven.org/maven2/org/fusesource/scalate/scalate-core/1.5.3/">central maven repo</a> has sync'd before announcing</li>
 </ul>
 
-<p>What all this means is now that you should be able to amend the <a href="http://scalate.fusesource.org/">website for the current release</a> using the <strong>scalate-project-1.5.3</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href="http://scalate.fusesource.org/versions/snapshot/index.html">snapshot website</a></p>
+<p>What all this means is now that you should be able to amend the <a href="http://scalate.github.io/scalate/">website for the current release</a> using the <strong>scalate-project-1.5.3</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href="http://scalate.github.io/scalate/versions/snapshot/index.html">snapshot website</a></p>
 
 <h2 id = "Update_the_Homebrew_formula">Update the Homebrew formula</h2>
 

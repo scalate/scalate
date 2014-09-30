@@ -6,35 +6,35 @@ author_url: http://hiramchirino.com
 created_at: 2011-06-01 12:06:40 -0000
 --- 
 
-The [Scalate team](http://scalate.fusesource.org) is pleased to announce the
+The [Scalate team](http://scalate.github.io/scalate) is pleased to announce the
 availability of Scalate 1.6.0
 
 Scalate is a [Scala 2.9.0](http://www.scala-lang.org) based <a
 href="http://en.wikipedia.org/wiki/Template_engine_(web)">template
 engine</a> which can be used stand alone, with servlets or web frameworks
-like [JAXRS](http://scalate.fusesource.org/documentation/jog.html),
-[Lift](http://scalate.fusesource.org/documentation/lift.html) or
+like [JAXRS](http://scalate.github.io/scalate/documentation/jog.html),
+[Lift](http://scalate.github.io/scalate/documentation/lift.html) or
 [Play](http://github.com/pk11/play-scalate) or in integration frameworks
 like [Apache Camel](http://camel.apache.org/scalate.html).
 
 The following template languages are supported through the same common API:
 
-* [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax)
+* [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax)
   which is like a Scala version of [Velocity](http://velocity.apache.org/),
   JSP or Erb from Rails
-* [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
+* [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html)
   which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY
   markup along with the
-  [Jade](http://scalate.fusesource.org/documentation/jade.html) syntax
-* [Mustache](http://scalate.fusesource.org/documentation/mustache.html)
+  [Jade](http://scalate.github.io/scalate/documentation/jade.html) syntax
+* [Mustache](http://scalate.github.io/scalate/documentation/mustache.html)
   which is a Scala dialect of [Mustache](http://mustache.github.com/) for
   logic-less templates which also work inside the browser using
   [mustache.js](http://github.com/janl/mustache.js)
 
 All expressions inside
-[Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax),
-[Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html)
-and [Jade](http://scalate.fusesource.org/documentation/jade.html) benefit
+[Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax),
+[Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html)
+and [Jade](http://scalate.github.io/scalate/documentation/jade.html) benefit
 from the full power and expressiveness of Scala plus they are typesafe and
 checked at edit/compile time to ensure you don't leave any mistakes in your
 templates.
@@ -42,11 +42,11 @@ templates.
 
 **Scalate 1.6.0 Highlights**
 
-* Updated the archetypes to use [Jade](http://scalate.fusesource.org/documentation/jade.html) rather than Scaml (as its the hotness ;-) and included the markdown dependency so new projects can easily mix Jade and Markdown.
+* Updated the archetypes to use [Jade](http://scalate.github.io/scalate/documentation/jade.html) rather than Scaml (as its the hotness ;-) and included the markdown dependency so new projects can easily mix Jade and Markdown.
 
 For more detail see the [Full Change Log](http://www.assembla.com/spaces/scalate/milestones/289475-1-5)
 
-[Feedback](http://scalate.fusesource.org/community.html) is always welcome! 
+[Feedback](http://scalate.github.io/scalate/community.html) is always welcome! 
 
 
 

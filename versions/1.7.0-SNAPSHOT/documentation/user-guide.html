@@ -418,7 +418,7 @@ Scalate uses a convention over configuration mechanism so that you can render an
 
 <p>So Scalate supports a similar feature for templates which are code generated like <a href="ssp-reference.html">SSP</a>, <a href="scaml-reference.html">Scaml</a> and <a href="jade.html">Jade</a>.</p>
 
-<p>The basic idea is Scalate will look in the same package as the template for a Scala/Java class called <strong>ScalatePackage</strong> which must extend <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html">TemplatePackage</a>. If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). </p>
+<p>The basic idea is Scalate will look in the same package as the template for a Scala/Java class called <strong>ScalatePackage</strong> which must extend <a href="http://scalate.github.io/scalate/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/support/TemplatePackage.html">TemplatePackage</a>. If there is no ScalatePackage in the package, its parent package is searched all the way to the root package (i.e. no package name). </p>
 
 <p>If a ScalatePackage class is found then its <strong>header</strong> method is invoked to generate any shared imports, variables or methods across templates.</p>
 
@@ -537,7 +537,7 @@ rendering engine in your application.  For more information on how to embed in y
 
 <h3 id = "Working_Directory__Caching__Reloading">Working Directory, Caching, Reloading</h3>
 
-<p>Scalate uses a <em>working directory</em> to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> using the <strong>workingDirectory</strong> property. If no configuration is made Scalate will use the <em>scalate.workdir</em> system property by default.</p>
+<p>Scalate uses a <em>working directory</em> to store the generated scala source files and the compiled JVM bytecode for templates. This can be configured on a <a href="http://scalate.github.io/scalate/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> using the <strong>workingDirectory</strong> property. If no configuration is made Scalate will use the <em>scalate.workdir</em> system property by default.</p>
 
 <p>The <a href="archetypes.html">archetypes</a> or projects created by the <a href="tool.html">scalate tool</a> or the modules in the <a href="../source.html">scalate source</a> all set the <strong>scalate.workdir</strong> to be the maven property of the same name; which defaults to <em>target/&#95;scalate</em></p>
 
@@ -545,7 +545,7 @@ rendering engine in your application.  For more information on how to embed in y
 
 <div class="syntax"><div class="highlight"><pre>mvn -Dscalate.workdir=/tmp jetty:run&#x000A;</pre></div>&#x000A;</div>
 
-<p>In production settings you can disable the caching and reloading of templates if you wish using the <strong>allowCaching</strong> and <strong>allowReload</strong> properties on <a href="http://scalate.fusesource.org/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> which default to <strong>scalate.allowCaching</strong> and <strong>scalate.allowReload</strong> respectively.</p>
+<p>In production settings you can disable the caching and reloading of templates if you wish using the <strong>allowCaching</strong> and <strong>allowReload</strong> properties on <a href="http://scalate.github.io/scalate/maven/1.6.0/scalate-core/scaladocs/org/fusesource/scalate/TemplateEngine.html">TemplateEngine</a> which default to <strong>scalate.allowCaching</strong> and <strong>scalate.allowReload</strong> respectively.</p>
 
 <h3 id = "Configuring_the_TemplateEngine_in_your_web_app">Configuring the TemplateEngine in your web app</h3>
 

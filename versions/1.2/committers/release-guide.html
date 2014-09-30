@@ -58,7 +58,7 @@
 <li>update the changelog.md file, copying and pasting the section the release highlights from the above blog post</li>
 </ul>
 
-<p>If the release is a major release then we need to freeze the current website at scalate.fusesource.org/versions/lastVersion</p>
+<p>If the release is a major release then we need to freeze the current website at scalate.github.io/scalate/versions/lastVersion</p>
 
 <ul>
 <li>
@@ -137,7 +137,7 @@ git push scalate-1.2.x origin</code></pre>
 </li>
 
 <li>
-<p>check that this branch generates its website to the main scalate.fusesource.org location, not scalate.fusesource.org/versions/snapshot by updating the relevant line in the Rakefile to&#8230;</p>
+<p>check that this branch generates its website to the main scalate.github.io/scalate location, not scalate.github.io/scalate/versions/snapshot by updating the relevant line in the Rakefile to&#8230;</p>
 
 <pre><code>remote /forge/dav/#{project_id}</code></pre>
 </li>
@@ -157,7 +157,7 @@ git push scalate-1.2.x origin</code></pre>
 </li>
 </ul>
 
-<p>What all this means is now that you should be able to amend the <a href='http://scalate.fusesource.org/'>website for the current release</a> using the <strong>scalate-project-1.2</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href='http://scalate.fusesource.org/versions/snapshot/index.html'>snapshot website</a></p>
+<p>What all this means is now that you should be able to amend the <a href='http://scalate.github.io/scalate/'>website for the current release</a> using the <strong>scalate-project-1.2</strong> branch. You can also document new upcoming features for the next release which go into the <strong>master</strong> branch which should be auto-deployed to the <a href='http://scalate.github.io/scalate/versions/snapshot/index.html'>snapshot website</a></p>
 
 <h2 id='using_a_temporary_local_repo'>Using a temporary local repo</h2>
 

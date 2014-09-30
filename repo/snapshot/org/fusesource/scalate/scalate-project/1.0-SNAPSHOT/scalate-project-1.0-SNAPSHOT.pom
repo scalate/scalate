@@ -43,7 +43,7 @@
     <maven.scaladoc.vscaladocVersion>1.2-SNAPSHOT</maven.scaladoc.vscaladocVersion>
   </properties>
 
-  <url>http://scalate.fusesource.org/</url>
+  <url>http://scalate.github.io/scalate/</url>
 
   <organization>
     <name>FuseSource</name>

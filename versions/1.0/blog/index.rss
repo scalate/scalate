@@ -12,7 +12,7 @@
     <item>
       <title>Scalate 1.0 Released</title>
       <link>http://exmaple.org/blog/blog/releases/2010/04/release-1-0.html</link>
-      <description>&lt;p&gt;The &lt;a href='http://scalate.fusesource.org'&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.0.&lt;/p&gt;
+      <description>&lt;p&gt;The &lt;a href='http://scalate.github.io/scalate'&gt;Scalate team&lt;/a&gt; is pleased to announce the availability of Scalate 1.0.&lt;/p&gt;
 
 &lt;p&gt;Scalate is a &lt;a href='http://www.scala-lang.org'&gt;Scala 2.8&lt;/a&gt; based template engine which can be used stand alone, with servlets, in JAXRS, with the &lt;a href='http://github.com/pk11/play-scalate'&gt;Play Framework&lt;/a&gt; or in &lt;a href='http://camel.apache.org/scalate.html'&gt;Apache Camel&lt;/a&gt;. (Work on lift integration is in progress).&lt;/p&gt;
 
@@ -21,9 +21,9 @@
 &lt;p&gt;Two template languages are currently supported:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href='http://scalate.fusesource.org/documentation/ssp-reference.html#syntax'&gt;Ssp&lt;/a&gt; which is like a Scala version of JSP or Erb from Rails&lt;/li&gt;
+&lt;li&gt;&lt;a href='http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax'&gt;Ssp&lt;/a&gt; which is like a Scala version of JSP or Erb from Rails&lt;/li&gt;
 
-&lt;li&gt;&lt;a href='http://scalate.fusesource.org/documentation/scaml-reference.html'&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href='http://haml-lang.com/'&gt;Haml&lt;/a&gt; for very DRY markup&lt;/li&gt;
+&lt;li&gt;&lt;a href='http://scalate.github.io/scalate/documentation/scaml-reference.html'&gt;Scaml&lt;/a&gt; which is a Scala dialect of &lt;a href='http://haml-lang.com/'&gt;Haml&lt;/a&gt; for very DRY markup&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Further information:&lt;/p&gt;
@@ -31,14 +31,14 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href='http://scalate.assembla.com/spaces/scalate/milestones/191839-1-0'&gt;Change Log&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href='http://scalate.fusesource.org/community.html'&gt;Community&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href='http://scalate.github.io/scalate/community.html'&gt;Community&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href='http://scalate.fusesource.org/documentation/'&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href='http://scalate.github.io/scalate/documentation/'&gt;Documentation&lt;/a&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;a href='http://scalate.fusesource.org/download.html'&gt;Download&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href='http://scalate.github.io/scalate/download.html'&gt;Download&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href='http://scalate.fusesource.org/community.html'&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
+&lt;p&gt;&lt;a href='http://scalate.github.io/scalate/community.html'&gt;Feedback&lt;/a&gt; is always welcome!&lt;/p&gt;</description>
       <pubDate>Mon, 03 May 2010 10:48:52 -0400</pubDate>
       <guid isPermaLink="true">http://exmaple.org/blog/blog/releases/2010/04/release-1-0.html</guid>
     </item>

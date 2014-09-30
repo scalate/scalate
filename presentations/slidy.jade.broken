@@ -4,7 +4,7 @@
 - response.setContentType("text/html")
 html(lang="en-US" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml")
   head
-    meta(content="Scalate, see scalate.fusesource.org" name="generator")
+    meta(content="Scalate, see scalate.github.io/scalate" name="generator")
     title Scalate, the Scala Template Engine
     meta(content="text/html; charset=us-ascii" http-equiv="Content-Type")
     meta(content="Copyright © 2005-2010 W3C (MIT, ERCIM, Keio)" name="copyright")
