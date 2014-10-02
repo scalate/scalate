@@ -22,8 +22,8 @@ Links
 -----
 
 * [Home](http://scalate.github.io/scalate)
-* [Community](http://scalate.fusesource.org/scalate/community.html)
-* [Documentation](http://scalate.fusesource.org/scalate/documentation/)
+* [Community](http://scalate.github.io/scalate/community.html)
+* [Documentation](http://scalate.github.io/scalate/documentation/)
 * [Issue Tracker](http://scalate.assembla.com/spaces/scalate/tickets)
 
 [logo]: http://scalate.github.io/scalate/images/project-logo.png "Scalate"
