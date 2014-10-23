@@ -201,7 +201,7 @@ xml: renders to
 <script type="text/javascript" src="javascripts/script"/>
 {pygmentize_and_compare}
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expressions are supported if you wrap them between the `{` 
 and `}` characters.
 
 {pygmentize_and_compare::}
@@ -238,7 +238,7 @@ This is the same as:
 %a{:title =>title, :href => href} Stuff
 {pygmentize}
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expressions are supported if you wrap them between the `{` 
 and `}` characters.
 
 {pygmentize_and_compare::}
