@@ -33,36 +33,32 @@ object Introspector {
    * The global caching strategy for introspection which by default uses a weak hash map
    * to avoid keeping around cached data for classes which are garbage collected
    */
-  private val maybeCache: Option[Map[Class[_], Introspector[_]]] = Some(new WeakHashMap[Class[_], Introspector[_]])
+  private val cache = WeakHashMap.empty[Class[_], Introspector[_]]
 
   /**
    * Returns the Introspector for the given type using the current cache if it is defined
    */
   def apply[T](aType: Class[T]): Introspector[T] = {
-    val answer = maybeCache match {
-      case Some(cache) => safeGetOrElseUpdate(cache, aType)
-      case _ => createIntrospector(aType)
-    }
-    answer.asInstanceOf[Introspector[T]]
+    safeGetOrElseUpdate(aType).asInstanceOf[Introspector[T]]
   }
 
   /**
    * Does thread-safe access and modification of the cache map using read and write locks
    */
-  private def safeGetOrElseUpdate[T](map: Map[Class[_], Introspector[_]], key: Class[T]): Introspector[_] = {
+  private def safeGetOrElseUpdate[T](key: Class[T]): Introspector[_] = {
     def get(): Option[Introspector[_]] = {
       rlock.lock
       try {
-        map get key
+        cache.get(key).filterNot(_ == null)
       } finally rlock.unlock
     }
     def update(): Introspector[_] = {
       wlock.lock
       try {
         get() getOrElse {
-          map.remove(key)
+          cache.remove(key)
           val d = createIntrospector(key)
-          map.put(key, d)
+          cache.put(key, d)
           d
         }
       } finally wlock.unlock
