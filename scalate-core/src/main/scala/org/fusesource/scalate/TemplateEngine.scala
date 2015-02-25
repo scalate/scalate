@@ -64,7 +64,7 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production")) {
+class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production"), var templateCacheConcurrencyLevel: Int = 4) {
   import TemplateEngine.log._
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
@@ -117,7 +117,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * A list of directories which are searched to load requested templates.
    */
   var templateDirectories = List("")
-  var templateCacheConcurrencyLevel = 4
+  var firstLoad = true
 
   var packagePrefix = ""
 
@@ -257,7 +257,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   private val templateCache: com.google.common.cache.Cache[String, CacheEntry] =
     com.google.common.cache.CacheBuilder.newBuilder()
       .concurrencyLevel(templateCacheConcurrencyLevel)
-      .build()
+      .build();
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
   ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach{ addOn =>
@@ -398,9 +398,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def load(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Template = {
     source.engine = this
     // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-    if ( cacheHits==0 && cacheMisses==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
-      // this deletes generated scala and class files.
-      invalidateCachedTemplates
+    if ( firstLoad && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+      firstLoad = false
+      invalidateCachedTemplates // this deletes generated scala and class files.
     }
 
     def recompile: CacheEntry = compileAndLoadEntry(source, extraBindings)
