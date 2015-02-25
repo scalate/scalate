@@ -415,14 +415,14 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         ce
       }
 
-
+    var missed = false
     val entry =
       if (!allowCaching) get
       else
-        try templateCache.get(source.uri, new Callable[CacheEntry]() { def call(): CacheEntry = get } )
+        try templateCache.get(source.uri, new Callable[CacheEntry]() { def call(): CacheEntry = { missed = true; get } } )
         catch { case ex: java.util.concurrent.ExecutionException => throw ex.getCause }
 
-    if (!allowReload || !entry.isStale) entry.template
+    if (missed || !allowReload || !entry.isStale) entry.template
     else { // Cache entry is stale, re-compile it
       val e = recompile
       templateCache.put(source.uri, e)
