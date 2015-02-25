@@ -36,8 +36,8 @@ import java.net.URLClassLoader
 import java.io.{StringWriter, PrintWriter, FileWriter, File}
 import xml.NodeSeq
 import collection.generic.TraversableForwarder
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.{AtomicInteger, AtomicBoolean}
+import java.util.concurrent.{Callable, ConcurrentHashMap}
 
 object TemplateEngine {
   val log = Log(getClass); import log._
@@ -117,6 +117,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * A list of directories which are searched to load requested templates.
    */
   var templateDirectories = List("")
+  var templateCacheConcurrencyLevel = 4
 
   var packagePrefix = ""
 
@@ -253,9 +254,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var bindings = Binding("context", "_root_."+classOf[RenderContext].getName, true, None, "val", false) :: Nil
   
   val finderCache = new ConcurrentHashMap[String, String]
-  private val templateCache = new HashMap[String, CacheEntry]
-  private var _cacheHits = 0
-  private var _cacheMisses = 0
+  private val templateCache: com.google.common.cache.Cache[String, CacheEntry] =
+    com.google.common.cache.CacheBuilder.newBuilder()
+      .concurrencyLevel(templateCacheConcurrencyLevel)
+      .build()
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
   ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach{ addOn =>
@@ -377,14 +379,14 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * The number of times a template load request was serviced from the cache.
    */
-  def cacheHits = templateCache.synchronized { _cacheHits }
+  def cacheHits = templateCache.stats.hitCount()
 
 
   /**
    * The number of times a template load request could not be serviced from the cache
    * and was loaded from disk.
    */
-  def cacheMisses = templateCache.synchronized { _cacheMisses }
+  def cacheMisses = templateCache.stats.missCount()
 
   /**
    * Compiles and then caches the specified template.  If the template
@@ -395,43 +397,36 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   def load(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Template = {
     source.engine = this
-    templateCache.synchronized {
+    // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
+    if ( cacheHits==0 && cacheMisses==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+      // this deletes generated scala and class files.
+      invalidateCachedTemplates
+    }
 
-      // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-      if ( _cacheHits==0 && _cacheMisses==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
-        // this deletes generated scala and class files.
-        invalidateCachedTemplates
+    def recompile: CacheEntry = compileAndLoadEntry(source, extraBindings)
+    def get: CacheEntry =
+      try { // Try to load a pre-compiled template from the classpath
+        val ce = loadPrecompiledEntry(source, extraBindings)
+        debug("Loaded uri: " + source.uri + " template: " + ce.template)
+        ce
+      } catch { case _: Throwable =>
+        val ce = recompile // It was not pre-compiled... compile and load it.
+        debug("Loaded uri: " + source.uri + " template: " + ce.template)
+        ce
       }
 
-      // Determine whether to build/rebuild the template, load existing .class files from the file system,
-      // or reuse an existing template that we've already loaded
-      templateCache.get(source.uri) match {
 
-        // Not in the cache..
-        case None =>
-          _cacheMisses += 1
-          try {
-            // Try to load a pre-compiled template from the classpath
-              cache(source, loadPrecompiledEntry(source, extraBindings))
-          } catch {
-            case _: Throwable =>
-              // It was not pre-compiled... compile and load it.
-              cache(source, compileAndLoadEntry(source, extraBindings))
-          }
+    val entry =
+      if (!allowCaching) get
+      else
+        try templateCache.get(source.uri, new Callable[CacheEntry]() { def call(): CacheEntry = get } )
+        catch { case ex: java.util.concurrent.ExecutionException => throw ex.getCause }
 
-        // It was in the cache..
-        case Some(entry) =>
-          // check for staleness
-          if (allowReload && entry.isStale) {
-            // Cache entry is stale, re-compile it
-            _cacheMisses += 1
-            cache(source, compileAndLoadEntry(source, extraBindings))
-          } else {
-            // Cache entry is valid
-            _cacheHits += 1
-            entry.template
-          }
-      }
+    if (!allowReload || !entry.isStale) entry.template
+    else { // Cache entry is stale, re-compile it
+      val e = recompile
+      templateCache.put(source.uri, e)
+      e.template
     }
   }
 
@@ -525,7 +520,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
-      templateCache.clear
+      templateCache.invalidateAll()
       finderCache.clear
       IOUtil.recursiveDelete(sourceDirectory)
       IOUtil.recursiveDelete(bytecodeDirectory)
@@ -700,15 +695,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     CacheEntry(template, dependencies, Platform.currentTime)
   }
 
-  private def cache(source: TemplateSource, ce:CacheEntry) :Template = {
-    if( allowCaching ) {
-      templateCache += (source.uri -> ce)
-    }
-    val answer = ce.template
-    debug("Loaded uri: " + source.uri + " template: " + answer)
-    answer
-  }
-
   /**
    * Returns the source file of the template URI
    */
@@ -774,11 +760,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       // TODO: figure out why we sometimes get these InstantiationException errors that
       // go away if you redo
       case e: InstantiationException =>
-        if (attempt == 0) {
-          compileAndLoad(source, extraBindings, 1)
-        } else {
-          throw new TemplateException(e.getMessage, e)
-        }
+        if (attempt == 0) compileAndLoad(source, extraBindings, 1)
+        else throw new TemplateException(e.getMessage, e)
 
       case e: CompilerException =>
         // Translate the scala error location info
@@ -787,17 +770,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           pos match {
             case p:OffsetPosition => {
               val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
-              if( filtered.isEmpty ) {
-                null
-              } else {
+              if( filtered.isEmpty ) null
+              else {
                 val (key,value) = filtered.last
                 // TODO: handle the case where the line is different too.
                 val colChange = pos.column - key.column
-                if( colChange >=0 ) {
-                  OffsetPosition(value.source, value.offset+colChange)
-                } else {
-                  pos
-                }
+                if ( colChange >= 0 ) OffsetPosition(value.source, value.offset+colChange)
+                else pos
               }
             }
             case _=> null
@@ -808,8 +787,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         val errors = e.errors.map {
           (olderror) =>
             val uri = source.uri
-            val pos =  template_pos(olderror.pos)
-            if( pos==null ) {
+            val pos = template_pos(olderror.pos)
+            if ( pos==null ) {
               newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
               newmessage += olderror.pos.longString+"\n"
               olderror
@@ -821,12 +800,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
             }
         }
         error(e)
-        if (e.errors.isEmpty) {
-          throw e
-        }
-        else {
-          throw new CompilerException(newmessage, errors)
-        }
+        if (e.errors.isEmpty) throw e
+        else throw new CompilerException(newmessage, errors)
       case e: InvalidSyntaxException =>
         e.source = source
         throw e
