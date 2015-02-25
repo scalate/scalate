@@ -14,7 +14,9 @@ Various links for developers
 .right
   :&markdown
     * [Building](building.html)
+    * [Building with SBT](sbt.html)
     * [Contributing](contributing.html)
+    * [Contributing to documentation](site.html)
     * [Release Guide](committers/release-guide.html)
     * [Website for Older Versions](http://scalate.fusesource.org/versions/)
     * [Website for Latest Snapshot](http://scalate.fusesource.org/versions/#{project_snapshot_version}/) (based on #{project_snapshot_version})

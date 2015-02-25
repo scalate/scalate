@@ -18,27 +18,52 @@
 package org.fusesource.scalate.introspector
 
 import java.beans.{PropertyDescriptor, Introspector => BeanInt}
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import org.fusesource.scalate.util.ProductReflector
 import collection.mutable.{HashMap, Map, WeakHashMap}
 import java.lang.reflect.{Modifier, Method}
 
 object Introspector {
 
+  private val rwl = new ReentrantReadWriteLock()
+  private val rlock = rwl.readLock
+  private val wlock = rwl.writeLock
+
   /**
    * The global caching strategy for introspection which by default uses a weak hash map
    * to avoid keeping around cached data for classes which are garbage collected
    */
-  var cache: Option[Map[Class[_], Introspector[_]]] = Some(new WeakHashMap[Class[_], Introspector[_]])
+  private val cache = WeakHashMap.empty[Class[_], Introspector[_]]
 
   /**
    * Returns the Introspector for the given type using the current cache if it is defined
    */
   def apply[T](aType: Class[T]): Introspector[T] = {
-    val answer = cache match {
-      case Some(m) => m.getOrElseUpdate(aType, createIntrospector(aType))
-      case _ => createIntrospector(aType)
+    safeGetOrElseUpdate(aType).asInstanceOf[Introspector[T]]
+  }
+
+  /**
+   * Does thread-safe access and modification of the cache map using read and write locks
+   */
+  private def safeGetOrElseUpdate[T](key: Class[T]): Introspector[_] = {
+    def get(): Option[Introspector[_]] = {
+      rlock.lock
+      try {
+        cache.get(key).filterNot(_ == null)
+      } finally rlock.unlock
     }
-    answer.asInstanceOf[Introspector[T]]
+    def update(): Introspector[_] = {
+      wlock.lock
+      try {
+        get() getOrElse {
+          cache.remove(key)
+          val d = createIntrospector(key)
+          cache.put(key, d)
+          d
+        }
+      } finally wlock.unlock
+    }
+    get().getOrElse(update())
   }
 
   /**

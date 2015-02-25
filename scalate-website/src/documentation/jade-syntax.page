@@ -49,7 +49,7 @@ For example:
 a(title=title href=href) Stuff
 {pygmentize}
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expressions are supported if you wrap them between the `{` 
 and `}` characters.
 
 {pygmentize_and_compare::}
@@ -135,7 +135,7 @@ a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 
 
 
-Complex expression are supported if you wrap them between the `{` 
+Complex expressions are supported if you wrap them between the `{` 
 and `}` characters.
 
 {pygmentize_and_compare::}
