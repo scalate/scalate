@@ -28,22 +28,24 @@ import support._
 import util._
 
 import scala.util.parsing.input.{OffsetPosition, Position}
-import scala.collection.mutable.HashMap
 import scala.collection.immutable.TreeMap
 import scala.util.control.Exception
 import scala.compat.Platform
 import java.net.URLClassLoader
-import java.io.{StringWriter, PrintWriter, FileWriter, File}
+import java.io.{StringWriter, PrintWriter, File}
 import xml.NodeSeq
 import collection.generic.TraversableForwarder
-import java.util.concurrent.atomic.{AtomicInteger, AtomicBoolean}
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.{Callable, ConcurrentHashMap}
 
 object TemplateEngine {
-  val log = Log(getClass); import log._
+  val log = Log(getClass)
 
   def apply(sourceDirectories: Traversable[File],  mode: String): TemplateEngine = {
     new TemplateEngine(sourceDirectories, mode)
+  }
+  def apply(sourceDirectories: Traversable[File],  mode: String, templateCacheConcurrencyLevel: Int): TemplateEngine = {
+    new TemplateEngine(sourceDirectories, mode, templateCacheConcurrencyLevel)
   }
 
   /**
@@ -64,7 +66,7 @@ object TemplateEngine {
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production"), var templateCacheConcurrencyLevel: Int = 4) {
+class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: String = System.getProperty("scalate.mode", "production"), templateCacheConcurrencyLevel: Int = 4) {
   import TemplateEngine.log._
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
