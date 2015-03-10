@@ -25,14 +25,14 @@ class FileTest extends FunSuiteSupport {
   test("using rich file API to navigate") {
     val f: File = baseDir
 
-    val classes = f / "target" / "classes"
+    val sources = f / "src" / "main" / "scala"
 
-    expect(true) {classes.exists}
+    expect(true) {sources.exists}
 
-    val f2: File = classes
+    val f2: File = sources
     expect(true) {f2.exists}
 
-    info("created file: " + classes.file)
+    info("created file: " + sources.file)
   }
 
   test("getting text of a file") {
