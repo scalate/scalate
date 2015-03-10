@@ -6,7 +6,7 @@ version := "2.0-SNAPSHOT"
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.11.5", "2.10.4") //TODO scala 2.10 support
+crossScalaVersions := Seq("2.11.5", "2.10.4")
 
 startYear := Some(2010)
 
@@ -24,8 +24,8 @@ lazy val scalateUtil = scalateProject("util")
   .settings(
     description := "Scalate Utilities.",
     parallelExecution in Test := false,
-    addScalaModules(11, scalaXml, scalaParserCombinators)
-  )
+    addScalaModules(11, scalaXml, scalaParserCombinators),
+    unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
 
 lazy val scalateCore = scalateProject("core")
   .scalateSettings

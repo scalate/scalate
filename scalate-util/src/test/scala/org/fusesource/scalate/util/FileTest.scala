@@ -98,8 +98,8 @@ class FileTest extends FunSuiteSupport {
       baseDir.recursiveFind(_.name == "doesNotExist.xml")
     }
 
-    expect(Some(new File(baseDir, "pom.xml"))) {
-      baseDir.recursiveFind(_.name == "pom.xml")
+    expect(Some(new File(baseDir, "src"))) {
+      baseDir.recursiveFind(_.name == "src")
     }
 
     expect(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
@@ -108,8 +108,8 @@ class FileTest extends FunSuiteSupport {
   }
 
   test("relative URIs") {
-    expect("pom.xml") {
-      (baseDir / "pom.xml").relativeUri(baseDir)
+    expect("src") {
+      (baseDir / "src").relativeUri(baseDir)
     }
 
     expect("src/test/scala/org/fusesource/scalate/util/FileTest.scala") {
