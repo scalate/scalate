@@ -1,7 +1,0 @@
-
-config.exts << 'conf'
-config.exts << 'jade'
-config.exts << 'mustache'
-config.exts << 'page'
-config.exts << 'scaml'
-config.exts << 'ssp'
