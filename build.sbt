@@ -2,19 +2,26 @@ name := "Scalate"
 
 organization := "org.scalatra.scalate"
 
-version := "2.0-SNAPSHOT"
+version := "1.7.1-SNAPSHOT"
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.11.5", "2.10.4")
+crossScalaVersions := Seq("2.10.5", "2.11.6")
+
+javaVersionPrefix in javaVersionCheck := Some("1.7")
 
 startYear := Some(2010)
 
-licenses += ("The Apache Software License, Version 2.0", url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+licenses += "The Apache Software License, Version 2.0" → url("http://www.apache.org/licenses/LICENSE-2.0")
 
 scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
   "scm:git:git://github.com/scalate/scalate.git", Some("scm:git:ssh://git@github.com:scalate/scalate.git")))
 
+homepage := Some(url("http://scalate.github.io/scalate"))
+
+unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
+
+notPublished
 
 lazy val scalateUtil = scalateProject("util")
   .scalateSettings
@@ -46,7 +53,6 @@ lazy val scalateCore = scalateProject("core")
     description := "Scalate Core",
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate"),
-    OsgiKeys.bundleSymbolicName := "org.scalatra.scalate",
     unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
 
 lazy val scalateTest = scalateProject("test")
@@ -176,6 +182,7 @@ lazy val scalateWar = scalateProject("war")
   .settings(tomcat(port = 8087, args = Seq("scalate.mode=dev")): _*)
   .settings(
     description := "Scalate Base Web Application",
+    publishArtifact in (Compile, packageBin) := false,
     parallelExecution in Test := false,
     unmanagedResourceDirectories in Test += baseDirectory.value / "src/main/webapp")
 
