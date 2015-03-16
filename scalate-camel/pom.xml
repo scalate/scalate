@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.scalatra.scalate</groupId>
     <artifactId>scalate-project_2.10</artifactId>
-    <version>1.7.1</version>
+    <version>1.7.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>scalate-camel_2.10</artifactId>
