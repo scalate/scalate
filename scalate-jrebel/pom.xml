@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.scalatra.scalate</groupId>
     <artifactId>scalate-project_2.11</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.7.1</version>
   </parent>
 
   <artifactId>scalate-jrebel_2.11</artifactId>
