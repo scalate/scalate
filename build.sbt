@@ -110,7 +110,8 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
   .settings(
     description := "Converter for JSP to SSP",
     resolvers += fuseSourceMavenRepository,
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"))
+    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
+    buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 
 lazy val scalateLess = scalateProject("less")
   .scalateSettings
@@ -162,7 +163,8 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
   .dependsOn(javaxServlet % Provided, springMVC, scalaTest % Test, junit % Test)
   .settings(
     description := "Scalate Spring MVC integration.",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"))
+    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"),
+    buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
 
 lazy val scalateTool = scalateProject("tool")
   .scalateSettings

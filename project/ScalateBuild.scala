@@ -2,6 +2,8 @@ import com.typesafe.sbt.JavaVersionCheckPlugin.autoImport._
 import com.typesafe.sbt.SbtGit.GitKeys
 import com.typesafe.sbt.osgi.{OsgiKeys, SbtOsgi}
 import com.typesafe.sbt.pgp.PgpKeys
+import sbtbuildinfo.{BuildInfoPlugin, BuildInfoKeys}
+import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
 import sbtunidoc.Plugin.UnidocKeys
 import sbtunidoc.{Plugin ⇒ SbtUnidoc}
 import xerial.sbt.Sonatype
@@ -13,11 +15,19 @@ import Keys._
 object ScalateBuild extends Plugin {
 
   implicit final class ScalateProjectSyntax(val u: Project) extends AnyVal {
+
     def scalateBaseSettings = u.settings(projectOpts: _*)
-    def scalateSettings = scalateBaseSettings.settings(compileOpts ++ updateOpts ++ docOpts ++ testOpts: _*)
+
+    def scalateSettings = scalateBaseSettings
+      .enablePlugins(BuildInfoPlugin)
+      .settings(compileOpts ++ updateOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
+
     def osgiSettings = u.enablePlugins(SbtOsgi).settings(osgiOpts: _*)
+
     def dependsOn(deps: ModuleID*) = u.settings(libraryDependencies ++= deps)
+
     def published = u.settings(publishOpts: _*)
+
     def notPublished = u.settings(ScalateBuild.notPublished: _*)
   }
 
@@ -88,6 +98,12 @@ object ScalateBuild extends Plugin {
     pomIncludeRepository := (_ ⇒ false),
     publish <<= PgpKeys.publishSigned,
     publishLocal <<= PgpKeys.publishLocalSigned
+  )
+
+  private def buildInfoOpts = Seq(
+    BuildInfoKeys.buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+    BuildInfoKeys.buildInfoPackage := s"org.scalatra.scalate.${normalizedName.value.stripPrefix("scalate-")}.buildinfo",
+    BuildInfoKeys.buildInfoObject := "BuildInfo"
   )
 
   private def docOptsBase = Seq(
