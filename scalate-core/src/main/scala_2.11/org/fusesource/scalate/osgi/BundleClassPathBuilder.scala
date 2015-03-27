@@ -33,6 +33,33 @@ import org.fusesource.scalate.util.{Log, Strings}
 object BundleClassPathBuilder {
   val log = Log(getClass); import log._
 
+  // These were removed in Scala 2.11.  We still use them.
+  private trait AbstractFileCompatibility { this: AbstractFile =>
+    def lookupPath(path: String, directory: Boolean): AbstractFile = {
+      lookup((f, p, dir) => f.lookupName(p, dir), path, directory)
+    }
+
+    private def lookup(getFile: (AbstractFile, String, Boolean) => AbstractFile,
+                       path0: String,
+                       directory: Boolean): AbstractFile = {
+      val separator = java.io.File.separatorChar
+      // trim trailing '/'s
+      val path: String = if (path0.last == separator) path0 dropRight 1 else path0
+      val length = path.length()
+      assert(length > 0 && !(path.last == separator), path)
+      var file: AbstractFile = this
+      var start = 0
+      while (true) {
+        val index = path.indexOf(separator, start)
+        assert(index < 0 || start < index, ((path, directory, start, index)))
+        val name = path.substring(start, if (index < 0) length else index)
+        file = getFile(file, name, if (index < 0) directory else true)
+        if ((file eq null) || index < 0) return file
+        start = index + 1
+      }
+      file
+    }
+  }
 
   /**
    * Create a list of AbstractFile instances, representing the bundle and its wired depedencies
@@ -103,7 +130,7 @@ object BundleClassPathBuilder {
   def create(bundle: Bundle): AbstractFile = {
     require(bundle != null, "Bundle should not be null")
 
-    abstract class BundleEntry(url: URL, parent: DirEntry) extends AbstractFile {
+    abstract class BundleEntry(url: URL, parent: DirEntry) extends AbstractFile with AbstractFileCompatibility {
       require(url != null, "url must not be null")
       lazy val (path: String, name: String) = getPathAndName(url)
       lazy val fullName: String = (path::name::Nil).filter(n => !Strings.isEmpty(n)).mkString("/")

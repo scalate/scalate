@@ -2,7 +2,7 @@ name := "Scalate"
 
 organization := "org.scalatra.scalate"
 
-version := "1.7.1-SNAPSHOT"
+version := "1.7.2-SNAPSHOT"
 
 scalaVersion := crossScalaVersions.value.head
 
