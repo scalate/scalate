@@ -45,6 +45,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.scalatra.scalate</groupId>
+      <artifactId>scalate-jersey_${scala-version-suffix}</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-server</artifactId>
     </dependency>
@@ -132,18 +138,18 @@
 
     </plugins>
   </build>
-  
-  
+
+
   <profiles>
     <profile>
       <id>jdk5</id>
       <activation>
         <jdk>1.5</jdk>
       </activation>
-      
+
       <build>
         <plugins>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -153,7 +159,7 @@
                 <exclude>**/ConsoleTest.*</exclude>
               </excludes>
             </configuration>
-          </plugin>          
+          </plugin>
 
         </plugins>
       </build>
@@ -161,4 +167,3 @@
   </profiles>
 
 </project>
-
