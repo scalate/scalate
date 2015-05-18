@@ -67,12 +67,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-server</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
       <groupId>${scalamd.groupId}</groupId>
       <artifactId>scalamd_2.11</artifactId>
       <version>${scalamd-version}</version>

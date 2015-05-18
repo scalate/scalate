@@ -22,6 +22,7 @@ import collection.immutable.Map
 import java.io.File
 import support.DefaultTemplatePackage
 import org.scalatest.ConfigMap
+import org.fusesource.scalate.test.TemplateTestSupport
 
 class DefaultTemplatePackageTest extends TemplateTestSupport {
 

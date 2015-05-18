@@ -70,8 +70,8 @@
 
     <osgi-version>4.2.0</osgi-version>
 
-    <scala-version>2.11.0</scala-version>
     <scala-version-suffix>2.11</scala-version-suffix>
+    <scala-version>${scala-version-suffix}.0</scala-version>
 
     <scalatest-artifact>scalatest_${scala-version-suffix}</scalatest-artifact>
     <scalatest-version>2.1.3</scalatest-version>
@@ -207,6 +207,7 @@
     <module>scalate-test</module>
     <module>scalate-wikitext</module>
     <module>scalate-page</module>
+    <module>scalate-jersey</module>
     <module>scalate-web</module>
     <module>scalate-spring-mvc</module>
     <module>scalate-guice</module>
@@ -544,7 +545,7 @@
           </instructions>
         </configuration>
       </plugin>
-        
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
@@ -851,7 +852,7 @@
 
     </profile>
 
-    <!-- 
+    <!--
       Do a license check by running       : mvn -P license license:check
       Update the license check by running : mvn -P license license:format
     -->
@@ -887,7 +888,7 @@
                 <exclude>**/*.conf</exclude>
                 <exclude>**/*.page</exclude>
                 <exclude>**/banner.txt</exclude>
-                
+
 
                 <!-- ignore files produced during a build -->
                 <exclude>**/target/**</exclude>
