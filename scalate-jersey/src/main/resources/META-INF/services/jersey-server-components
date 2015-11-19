@@ -1,5 +1,5 @@
 org.fusesource.scalate.rest.NodeWriter
 org.fusesource.scalate.rest.TransformerWriter
 org.fusesource.scalate.rest.ViewWriter
+org.fusesource.scalate.rest.ScalateTemplateProvider
 org.fusesource.scalate.jersey.ScalateTemplateProcessor
-org.fusesource.scalate.jersey.ScalateTemplateProvider

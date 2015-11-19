@@ -207,6 +207,7 @@
     <module>scalate-test</module>
     <module>scalate-wikitext</module>
     <module>scalate-page</module>
+    <module>scalate-jaxrs</module>
     <module>scalate-jersey</module>
     <module>scalate-web</module>
     <module>scalate-spring-mvc</module>

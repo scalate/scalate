@@ -26,11 +26,11 @@
     <version>1.7.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>scalate-jersey_${scala-version-suffix}</artifactId>
+  <artifactId>scalate-jaxrs_${scala-version-suffix}</artifactId>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>
-  <description>Jersey integration for a Scalate web application</description>
+  <description>JAXRS integration for a Scalate web application</description>
 
   <dependencies>
 
@@ -42,13 +42,14 @@
 
     <dependency>
       <groupId>org.scalatra.scalate</groupId>
-      <artifactId>scalate-jaxrs_${scala-version-suffix}</artifactId>
+      <artifactId>scalate-core_${scala-version-suffix}</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-server</artifactId>
+      <groupId>org.jboss.spec.javax.ws.rs</groupId>
+      <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+      <version>1.0.1.Final</version>
       <scope>provided</scope>
     </dependency>
 
