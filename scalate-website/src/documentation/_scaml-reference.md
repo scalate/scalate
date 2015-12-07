@@ -1101,7 +1101,7 @@ scaml: example
 -----------------------------
 xml: is the same as
 -----------------------------
-%p= "This is the "+(quality)+" cake!"
+%p= "This is "+(quality)+" cake!"
 {pygmentize_and_compare}
 
 and renders to
