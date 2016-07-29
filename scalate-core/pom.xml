@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>scalate-core_2.9</artifactId>
-  <version>1.7.1</version>
+  <version>1.7.2</version>
   <packaging>bundle</packaging>
 
   <name>${project.artifactId}</name>

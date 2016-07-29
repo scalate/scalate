@@ -126,7 +126,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var bootClassName = "scalate.Boot"
   var bootInjections: List[AnyRef] = List(this)
 
-  private var booted = new AtomicBoolean()
+  private val booted = new AtomicBoolean()
 
 
   def boot: Unit = {
@@ -173,7 +173,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator,
     "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
   
-  var filters: Map[String, Filter] = Map()
+  var filters: Map[String, Filter] = Map.empty
 
   def filter(name:String) = codeGenerators.get(name).map( gen =>
         new Filter() {
@@ -183,7 +183,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         }
     ).orElse(filters.get(name))
 
-  var pipelines: Map[String, List[Filter]] = Map()
+  var pipelines: Map[String, List[Filter]] = Map.empty
 
   /**
    * Maps file extensions to possible template extensions for custom mappins such as for
@@ -259,7 +259,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   private val templateCache: com.google.common.cache.Cache[String, CacheEntry] =
     com.google.common.cache.CacheBuilder.newBuilder()
       .concurrencyLevel(templateCacheConcurrencyLevel)
-      .build();
+      .build()
+  private val sysInvalidateCache = java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE")
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
   ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach{ addOn =>
@@ -283,9 +284,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     // Use a temp working directory if none is configured.
     if( _workingDirectory == null ) {
       val value = System.getProperty("scalate.workdir", "")
-      if (value != null && value.length > 0) {
-        _workingDirectory = new File(value)
-      }
+      if (value != null && value.length > 0) _workingDirectory = new File(value)
       else {
         val f = File.createTempFile("scalate-", "-workdir")
         // now lets delete the file so we can make a new directory there instead
@@ -293,10 +292,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         if (f.mkdirs) {
           _workingDirectory = f
           f.deleteOnExit
-        }
-        else {
+        } else {
           warn("Could not delete file %s so we could create a temp directory", f)
-          _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+          _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate")
         }
       }
     }
@@ -400,7 +398,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def load(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Template = {
     source.engine = this
     // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-    if ( firstLoad && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+    if ( firstLoad && sysInvalidateCache ) {
       firstLoad = false
       invalidateCachedTemplates // this deletes generated scala and class files.
     }
@@ -672,12 +670,12 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     source.engine = this
     val uri = source.uri
     val className = source.className
-    val template = loadCompiledTemplate(className, allowCaching);
+    val template = loadCompiledTemplate(className, allowCaching)
     template.source = source
     if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
-      val code = generateScala(source, extraBindings);
+      val code = generateScala(source, extraBindings)
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
       if( entry.isStale ) {
         // Throw an exception since we should not load stale pre-compiled classes.
@@ -688,7 +686,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     } else {
       // If we are not going to be cache reloading.. then we
       // don't need to do the extra work.
-      CacheEntry(template, Set(), 0)
+      CacheEntry(template, Set.empty, 0)
     }
   }
 
@@ -726,14 +724,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           val template = new PipelineTemplate(p, source.text)
           template.source = source
           return (template, Set(uri))
-        case None=>
+        case _ =>
       }
 
-      if( !compilerInstalled ) {
+      if( !compilerInstalled )
         throw new ResourceNotFoundException("Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
-      }
 
-      val g = generator(source);
+      val g = generator(source)
       // Generate the scala source code from the template
       code = g.generate(this, source, bindings ++ extraBindings)
 
@@ -770,7 +767,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         // to the template locations..
         def template_pos(pos:Position) = {
           pos match {
-            case p:OffsetPosition => {
+            case p:OffsetPosition =>
               val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
               if( filtered.isEmpty ) null
               else {
@@ -780,7 +777,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
                 if ( colChange >= 0 ) OffsetPosition(value.source, value.offset+colChange)
                 else pos
               }
-            }
             case _=> null
           }
         }
@@ -858,44 +854,40 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   }
 
   private def loadCompiledTemplate(className:String, from_cache:Boolean=true):Template = {
-    val cl = if(from_cache) {
-      new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
-    } else {
-      classLoader
-    }
-    val clazz = try {
-      cl.loadClass(className)
-    } catch {
-      case e:ClassNotFoundException =>
-        if( packagePrefix=="" ){
-          throw e
-        } else {
+    val cl =
+      if (from_cache) new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
+      else classLoader
+
+    val clazz =
+      try cl.loadClass(className)
+      catch { case e:ClassNotFoundException =>
+        if ( packagePrefix=="" ) throw e
+        else {
           // Try without the package prefix.
           cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
         }
     }
-    return clazz.asInstanceOf[Class[Template]].newInstance
+
+    clazz.asInstanceOf[Class[Template]].newInstance
   }
 
   /**
    * Figures out the modification time of the class.
    */
   private def lastModified(clazz:Class[_]):Long = {
-    val codeSource = clazz.getProtectionDomain.getCodeSource;
-    if( codeSource !=null && codeSource.getLocation.getProtocol == "file") {
+    val codeSource = clazz.getProtectionDomain.getCodeSource
+    if ( codeSource !=null && codeSource.getLocation.getProtocol == "file") {
       val location = new File(codeSource.getLocation.getPath)
       if( location.isDirectory ) {
         val classFile = new File(location, clazz.getName.replace('.', '/')+".class")
-        if( classFile.exists ) {
-          return classFile.lastModified
-        }
+        if( classFile.exists ) return classFile.lastModified
       } else {
         // class is inside an archive.. just use the modification time of the jar
         return location.lastModified
       }
     }
     // Bail out
-    return 0
+    0
   }
 
 
@@ -910,7 +902,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     var smap = new TreeMap[Int,List[Int]]()
     positions.foreach {
       case (out,in)=>
-        var outs = out.line :: smap.getOrElse(in.line, Nil)
+        val outs = out.line :: smap.getOrElse(in.line, Nil)
         smap += in.line -> outs
     }
     // sort the output lines..
@@ -925,19 +917,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     }
     stratum.optimize
 
-    var sourceMap: SourceMap = new SourceMap
+    val sourceMap: SourceMap = new SourceMap
     sourceMap.setOutputFileName(scalaFile.getName)
     sourceMap.addStratum(stratum, true)
     sourceMap.toString
   }
 
-  protected def storeSourceMap(classFile:File, sourceMap:String) = {
-    SourceMapInstaller.store(classFile, sourceMap)
-  }
+  protected def storeSourceMap(classFile:File, sourceMap:String) = SourceMapInstaller.store(classFile, sourceMap)
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from a URI
    */
   protected def uriToSource(uri: String) = TemplateSource.fromUri(uri, resourceLoader)
-
 }
