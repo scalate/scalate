@@ -18,7 +18,9 @@
 package org.fusesource.scalate
 
 import java.io.File
+
 import Asserts._
+import org.fusesource.scalate.support.StringTemplateSource
 class TemplateEngineTest extends FunSuiteSupport {
 
   val engine = new TemplateEngine
@@ -83,5 +85,43 @@ Hello ${name}!
 
     expect("<%@ val it : java.lang.String %>") {lines(0)}
     expect("<p>hello ${it} how are you?</p>") {lines(1)}
+  }
+
+  test("cache invalidation test") {
+
+    val source = "<%@ val name: String %> hello ${name}"
+    val sourceUpdated = "<%@ val name: String %> hello world, it's ${name}"
+    val sourceUpdated2 = "<%@ val name: String %> hello world 2, it's ${name}"
+
+    val cachedEngine = new TemplateEngine
+    cachedEngine.workingDirectory = new File(baseDir, "target/test-data/TemplateEngineTestCache")
+
+    cachedEngine.allowCaching = true
+    cachedEngine.allowReload = false
+
+    val template = new StringTemplateSource(s"cached.ssp", source)
+    val templateUpdated = new StringTemplateSource(s"cached.ssp", sourceUpdated)
+    val templateUpdated2 = new StringTemplateSource(s"cached.ssp", sourceUpdated2)
+
+    cachedEngine.expireAndCompile(template)
+
+    val res = cachedEngine.layout(template, Map("name" -> "Fatih"))
+
+    assertResult(" hello Fatih")(res)
+
+    val res2 = cachedEngine.layout(templateUpdated, Map("name" -> "Fatih2"))
+
+    assertResult(" hello Fatih2")(res2)
+
+    cachedEngine.expireAndCompile(templateUpdated)
+
+    val res3 = cachedEngine.layout(templateUpdated, Map("name" -> "Fatih3"))
+
+    assertResult(" hello world, it's Fatih3")(res3)
+
+    val res4 = cachedEngine.layout(templateUpdated2, Map("name" -> "Fatih4"))
+
+    assertResult(" hello world, it's Fatih4")(res4)
+
   }
 }
