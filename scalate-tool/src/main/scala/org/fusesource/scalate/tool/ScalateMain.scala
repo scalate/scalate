@@ -27,6 +27,7 @@ import java.io.{PrintStream, InputStream}
 import org.fusesource.jansi.Ansi
 import org.apache.felix.service.command.CommandSession
 import org.apache.felix.gogo.runtime.CommandProcessorImpl
+import org.scalatra.scalate.tool.buildinfo.BuildInfo
 
 object ScalateMain {
   def main(args: Array[String]) = {
@@ -58,7 +59,7 @@ class ScalateMain extends Main with Action {
     new Console(commandProcessor, in, out, err, terminal, null) {
       protected override def getPrompt = BOLD+"scalate> "+RESET
       protected override def welcome = {
-         session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")))
+         session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")).replace("${project.version}", BuildInfo.version))
       }
       protected override def setSessionProperties = {}
     }

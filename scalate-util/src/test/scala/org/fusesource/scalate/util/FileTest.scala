@@ -25,14 +25,14 @@ class FileTest extends FunSuiteSupport {
   test("using rich file API to navigate") {
     val f: File = baseDir
 
-    val classes = f / "target" / "classes"
+    val sources = f / "src" / "main" / "scala"
 
-    expect(true) {classes.exists}
+    expect(true) {sources.exists}
 
-    val f2: File = classes
+    val f2: File = sources
     expect(true) {f2.exists}
 
-    info("created file: " + classes.file)
+    info("created file: " + sources.file)
   }
 
   test("getting text of a file") {
@@ -98,8 +98,8 @@ class FileTest extends FunSuiteSupport {
       baseDir.recursiveFind(_.name == "doesNotExist.xml")
     }
 
-    expect(Some(new File(baseDir, "pom.xml"))) {
-      baseDir.recursiveFind(_.name == "pom.xml")
+    expect(Some(new File(baseDir, "src"))) {
+      baseDir.recursiveFind(_.name == "src")
     }
 
     expect(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
@@ -108,8 +108,8 @@ class FileTest extends FunSuiteSupport {
   }
 
   test("relative URIs") {
-    expect("pom.xml") {
-      (baseDir / "pom.xml").relativeUri(baseDir)
+    expect("src") {
+      (baseDir / "src").relativeUri(baseDir)
     }
 
     expect("src/test/scala/org/fusesource/scalate/util/FileTest.scala") {
