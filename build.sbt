@@ -1,26 +1,15 @@
 name := "Scalate"
-
 organization := "org.scalatra.scalate"
-
 version := "1.7.2-SNAPSHOT"
-
 scalaVersion := crossScalaVersions.value.head
-
-crossScalaVersions := Seq("2.10.5", "2.11.6")
-
+crossScalaVersions := Seq("2.10.6", "2.11.8")
 javaVersionPrefix in javaVersionCheck := Some("1.7")
-
 startYear := Some(2010)
-
 licenses += "The Apache Software License, Version 2.0" → url("http://www.apache.org/licenses/LICENSE-2.0")
-
 scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
   "scm:git:git://github.com/scalate/scalate.git", Some("scm:git:ssh://git@github.com:scalate/scalate.git")))
-
 homepage := Some(url("http://scalate.github.io/scalate"))
-
 unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
-
 notPublished
 
 lazy val scalateUtil = scalateProject("util")
