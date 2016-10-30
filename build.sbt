@@ -2,8 +2,8 @@ name := "Scalate"
 organization := "org.scalatra.scalate"
 version := "1.7.2-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
-crossScalaVersions := Seq("2.10.6", "2.11.8")
-javaVersionPrefix in javaVersionCheck := Some("1.7")
+crossScalaVersions := Seq(/*"2.12.0-RC2",*/ "2.11.8", "2.10.6")
+javaVersionPrefix in javaVersionCheck := Some("1.8")
 startYear := Some(2010)
 licenses += "The Apache Software License, Version 2.0" → url("http://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
@@ -98,7 +98,7 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
   .dependsOn(karafShell, scalaTest % Test, junit % Test, logbackClassic % Test)
   .settings(
     description := "Converter for JSP to SSP",
-    resolvers += fuseSourceMavenRepository,
+    resolvers ++= commonRepositories,
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
     buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 
@@ -163,7 +163,7 @@ lazy val scalateTool = scalateProject("tool")
   .dependsOn(karafShell, confluenceSoap, axis, axisWsdl, jTidy)
   .settings(
     description := "Scalate Command Line Tool.",
-    resolvers += fuseSourceMavenRepository)
+    resolvers ++= commonRepositories)
 
 lazy val scalateWar = scalateProject("war")
   .scalateSettings
