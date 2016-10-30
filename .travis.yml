@@ -1,0 +1,12 @@
+language: scala
+sudo: false
+scala:
+  - 2.10.6
+  - 2.11.8
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
