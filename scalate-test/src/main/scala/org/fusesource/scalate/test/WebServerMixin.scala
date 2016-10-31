@@ -17,14 +17,14 @@
  */
 package org.fusesource.scalate.test
 
-import org.scalatest.{ ConfigMap, Suite, BeforeAndAfterAll }
+import org.scalatest.{ ConfigMap, Suite, BeforeAndAfterAllConfigMap }
 
 /**
  * A trait which boots up a JettyServer and uses it for all the test cases in this class
  *
  * @version $Revision: 1.1 $
  */
-trait WebServerMixin extends BeforeAndAfterAll {
+trait WebServerMixin extends BeforeAndAfterAllConfigMap {
   this: Suite =>
 
   val webServer = new JettyServer

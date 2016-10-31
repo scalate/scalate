@@ -19,7 +19,7 @@ package org.fusesource.scalate
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ ConfigMap, BeforeAndAfterAll, FunSuite }
+import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap, FunSuite }
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAllConfigMap {
 
   protected var _basedir = "."
 

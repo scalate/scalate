@@ -21,7 +21,7 @@ package scaml
 import java.util.concurrent.atomic.AtomicInteger
 import java.io.{ StringWriter, PrintWriter, File }
 
-import org.scalatest.TestFailedException
+import org.scalatest.exceptions.TestFailedException
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
