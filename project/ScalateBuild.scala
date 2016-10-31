@@ -64,28 +64,28 @@ object ScalateBuild extends Plugin {
       inAnyProject -- inProjects(filter: _*))
 
   private def projectOpts = Seq(
-    name <<= name(_.split("-|(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])").map(_.capitalize).mkString(" ")),
-    version <<= version in LocalRootProject,
-    organization <<= organization in LocalRootProject,
-    organizationName <<= organizationName in LocalRootProject,
-    organizationHomepage <<= organizationHomepage in LocalRootProject,
-    licenses <<= licenses in LocalRootProject,
-    scmInfo <<= scmInfo in LocalRootProject,
-    startYear <<= startYear in LocalRootProject,
-    homepage <<= homepage in LocalRootProject,
-    javaVersionPrefix in javaVersionCheck <<= (javaVersionPrefix in javaVersionCheck) in LocalRootProject
+    name := name(_.split("-|(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])").map(_.capitalize).mkString(" ")).value,
+    version := (version in LocalRootProject).value,
+    organization := (organization in LocalRootProject).value,
+    organizationName := (organizationName in LocalRootProject).value,
+    organizationHomepage := (organizationHomepage in LocalRootProject).value,
+    licenses := (licenses in LocalRootProject).value,
+    scmInfo := (scmInfo in LocalRootProject).value,
+    startYear := (startYear in LocalRootProject).value,
+    homepage := (homepage in LocalRootProject).value,
+    javaVersionPrefix in javaVersionCheck := ((javaVersionPrefix in javaVersionCheck) in LocalRootProject).value
   )
 
   private def compileOpts = Seq(
-    scalaVersion <<= scalaVersion in LocalRootProject,
-    crossScalaVersions <<= crossScalaVersions in LocalRootProject,
+    scalaVersion := (scalaVersion in LocalRootProject).value,
+    crossScalaVersions := (crossScalaVersions in LocalRootProject).value,
     scalacOptions in(Compile, compile) ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
     scalacOptions in(Test, compile) ++= Seq(Opts.compile.deprecation)
   )
 
   private def testOpts = Seq(
     fork in Test := true,
-    baseDirectory in Test <<= baseDirectory
+    baseDirectory in Test := baseDirectory.value
   )
 
   private def updateOpts = Seq(
@@ -96,8 +96,8 @@ object ScalateBuild extends Plugin {
     SonatypeKeys.profileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ ⇒ false),
-    publish <<= PgpKeys.publishSigned,
-    publishLocal <<= PgpKeys.publishLocalSigned
+    publish := PgpKeys.publishSigned.value,
+    publishLocal := PgpKeys.publishLocalSigned.value
   )
 
   private def buildInfoOpts = Seq(
@@ -126,14 +126,14 @@ object ScalateBuild extends Plugin {
   private def docOpts: Seq[Setting[_]] = inConfig(Compile)(inTask(doc)(docOptsBase))
 
   private def osgiOpts = Seq(
-    packagedArtifact in(Compile, packageBin) <<= (artifact in(Compile, packageBin), OsgiKeys.bundle).identityMap,
-    OsgiKeys.bundleSymbolicName <<= (organization, normalizedName) { (o, n) ⇒ s"$o.${n.stripPrefix("scalate-")}"},
+    packagedArtifact in(Compile, packageBin) := ((artifact in(Compile, packageBin)).value, OsgiKeys.bundle.value),
+    OsgiKeys.bundleSymbolicName := s"${organization.value}.${normalizedName.value.stripPrefix("scalate-")}",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate." + normalizedName.value.stripPrefix("scalate-")),
     OsgiKeys.importPackage := Seq("scala*;version=\"%s\"".format(osgiVersionRange(scalaVersion.value)), "*"),
-    OsgiKeys.exportPackage <<= OsgiKeys.privatePackage(pp ⇒ {
+    OsgiKeys.exportPackage := OsgiKeys.privatePackage(pp ⇒ {
       val p = if (!pp.head.endsWith("*")) pp.head else pp.head.substring(0, pp.head.size - 1)
       s"!$p*.impl*" +: s"$p*" +: Nil
-    }),
+    }).value,
     OsgiKeys.additionalHeaders := Map("-removeheaders" → "Include-Resource,Private-Package")
   )
 
