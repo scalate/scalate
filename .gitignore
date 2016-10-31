@@ -21,3 +21,4 @@ eclipse-classes
 overlays
 .history
 .cache
+.ensime*
