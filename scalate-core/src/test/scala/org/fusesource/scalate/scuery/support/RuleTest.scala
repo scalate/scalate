@@ -42,7 +42,7 @@ class RuleTest extends FunSuiteSupport {
     for ((t, i) <- types.zipWithIndex) {
       val v = list(i)
       debug("item at " + i + " = " + v + " should be " + t)
-      expect(t, "itemn at " + i) { v.getClass }
+      assertResult(t, "itemn at " + i) { v.getClass }
     }
   }
 

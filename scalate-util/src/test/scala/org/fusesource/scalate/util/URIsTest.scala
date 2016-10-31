@@ -26,23 +26,23 @@ import org.fusesource.scalate.util.URIs._
 class URIsTest extends FunSuiteSupport {
 
   test("adding query argument to no query string") {
-    expect("/foo?x=1") { uri("/foo", "x=1") }
+    assertResult("/foo?x=1") { uri("/foo", "x=1") }
   }
 
   test("adding query argument to query string") {
-    expect("/foo?x=1&y=2") { uri("/foo?x=1", "y=2") }
+    assertResult("/foo?x=1&y=2") { uri("/foo?x=1", "y=2") }
   }
 
   test("adding query argument to existing query") {
-    expect("/foo?x=1&y=2") { uriPlus("/foo", null, "x=1&y=2") }
-    expect("/foo?x=1&y=2") { uriPlus("/foo", "", "x=1&y=2") }
-    expect("/foo?x=1&y=2") { uriPlus("/foo", "x=1", "y=2") }
-    expect("/foo?x=1&y=2") { uriPlus("/foo", "x=1", "x=1&y=2") }
-    expect("/foo?x=1&y=2") { uriPlus("/foo", "x=1&y=2", "x=1&y=2") }
+    assertResult("/foo?x=1&y=2") { uriPlus("/foo", null, "x=1&y=2") }
+    assertResult("/foo?x=1&y=2") { uriPlus("/foo", "", "x=1&y=2") }
+    assertResult("/foo?x=1&y=2") { uriPlus("/foo", "x=1", "y=2") }
+    assertResult("/foo?x=1&y=2") { uriPlus("/foo", "x=1", "x=1&y=2") }
+    assertResult("/foo?x=1&y=2") { uriPlus("/foo", "x=1&y=2", "x=1&y=2") }
   }
 
   test("removing query argument to existing query") {
-    expect("/foo?x=1&y=2") { uriMinus("/foo", "x=1&y=2", "foo=bar") }
-    expect("/foo?x=1&y=2") { uriMinus("/foo", "x=1&y=2&z=3", "z=3") }
+    assertResult("/foo?x=1&y=2") { uriMinus("/foo", "x=1&y=2", "foo=bar") }
+    assertResult("/foo?x=1&y=2") { uriMinus("/foo", "x=1&y=2&z=3", "z=3") }
   }
 }

@@ -94,7 +94,7 @@ foo
 end
 """)
     val output = engine.layout("foo3.ssp", template).trim
-    expect(List("start", "foo", "end")) { output.split("\\s+").toList }
+    assertResult(List("start", "foo", "end")) { output.split("\\s+").toList }
   }
 
   // #match and #case issues

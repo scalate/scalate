@@ -186,14 +186,14 @@ whatnot"""
 
   def assertJustText(jsp: String): String = {
     val result = convert(jsp)
-    expect(jsp, "converting JSP: " + jsp) { result }
+    assertResult(jsp, "converting JSP: " + jsp) { result }
     result
 
   }
 
   def assertConvert(jsp: String, ssp: String): String = {
     val result = convert(jsp)
-    expect(ssp, "converting JSP: " + jsp) { result }
+    assertResult(ssp, "converting JSP: " + jsp) { result }
     result
   }
 

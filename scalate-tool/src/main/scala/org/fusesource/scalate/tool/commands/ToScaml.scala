@@ -134,7 +134,7 @@ class ToScaml extends Action {
 
   def execute(session: CommandSession): AnyRef = {
 
-    def doit: Unit = {
+    def doit(): Unit = {
 
       var in = if (from == null) {
         session.getKeyboard

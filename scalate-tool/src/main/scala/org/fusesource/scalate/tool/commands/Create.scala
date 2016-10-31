@@ -32,6 +32,14 @@ import org.fusesource.scalate.util.IOUtil._
 @command(scope = "scalate", name = "create", description = "Creates your Scalate project fast to get you scalate-ing!")
 class Create extends Action {
 
+  var archetypeGroupId = "org.fusesource.scalate.tooling"
+  val userDir = System.getProperty("user.dir", ".")
+  val zipEntryPrefix = "archetype-resources/"
+  var archetypeArtifactId = ""
+  var name = ""
+
+  val binarySuffixes = List(".png", ".ico", ".gif", ".jpg", ".jpeg", ".bmp")
+
   @argument(index = 0, required = true, name = "archetype", description = "Archetype to create") // TODO rename to archetype
   var archetype: String = _
   @argument(index = 1, required = true, name = "groupId", description = "Maven group Id of the new project")
@@ -55,14 +63,6 @@ class Create extends Action {
     "guice" -> "scalate-archetype-guice_2.10",
     "sitegen" -> "scalate-archetype-sitegen_2.10"
   )
-
-  var archetypeGroupId = "org.fusesource.scalate.tooling"
-  val userDir = System.getProperty("user.dir", ".")
-  val zipEntryPrefix = "archetype-resources/"
-  var archetypeArtifactId = ""
-  var name = ""
-
-  val binarySuffixes = List(".png", ".ico", ".gif", ".jpg", ".jpeg", ".bmp")
 
   /*
   TODO

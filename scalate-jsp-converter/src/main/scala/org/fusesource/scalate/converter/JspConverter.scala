@@ -72,7 +72,7 @@ trait IndentWriter {
   var indentLevel: Int = 0
   var indentText: String = "  "
 
-  def reset: Unit = {
+  def reset(): Unit = {
     out = new StringBuilder
   }
 
@@ -91,7 +91,7 @@ trait IndentWriter {
     out.append(value)
   }
 
-  def println = print("\n")
+  def println() = print("\n")
 
   def text = out.toString
 }

@@ -46,7 +46,7 @@ class ExpressionParseTest extends FunSuite {
 
   def assertConvert(el: String, ssp: String): String = {
     val result = convert(el)
-    expect(ssp, "converting EL: " + el) { result }
+    assertResult(ssp, "converting EL: " + el) { result }
     result
   }
 

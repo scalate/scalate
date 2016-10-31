@@ -57,7 +57,7 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
 
   protected def assertPersonLink(a: Node, name: String): Unit = {
     debug("Testing " + a + " for name: " + name)
-    expect(name) { a.text }
-    expect("http://acme.com/bookstore/" + name) { (a \ "@href").toString }
+    assertResult(name) { a.text }
+    assertResult("http://acme.com/bookstore/" + name) { (a \ "@href").toString }
   }
 }

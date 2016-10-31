@@ -42,7 +42,7 @@ abstract class ParserTestSupport extends FunSuiteSupport {
       case d: AttributeFragment => true
       case _ => false
     }
-    expect(Some(expectedParam)) { attribute }
+    assertResult(Some(expectedParam)) { attribute }
 
     lines
   }

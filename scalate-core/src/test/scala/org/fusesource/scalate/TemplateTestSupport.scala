@@ -80,7 +80,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     if (trim) {
       output = output.trim
     }
-    expect(expectedOutput) { output }
+    assertResult(expectedOutput) { output }
     output
   }
 

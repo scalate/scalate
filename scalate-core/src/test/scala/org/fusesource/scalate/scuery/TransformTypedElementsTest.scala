@@ -105,7 +105,7 @@ class TransformTypedElementsTest extends FunSuiteSupport {
 
   protected def assertCar(selector: String, result: NodeSeq, car: Car): Unit = {
     val a = result.$(selector)
-    expect(false, "nodes for " + selector + " should not be empty!") { a.isEmpty }
+    assertResult(false, "nodes for " + selector + " should not be empty!") { a.isEmpty }
 
     assertText(".make", a, car.make)
     assertText(".model", a, car.model)

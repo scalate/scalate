@@ -33,9 +33,9 @@ class FeedFilterTest extends TemplateTestSupport {
     def trimText(nodes: NodeSeq) = nodes.text.trim
 
     val channel = xml \\ "rss" \\ "channel"
-    expect("The Scalate Blog") { trimText(channel \ "title") }
-    //expect("Scalate Team") { trimText(channel \ "author") }
-    expect("http://scalate.fusesource.org/blog/") { trimText(channel \ "link") }
-    expect("Some text goes here") { trimText(channel \ "description") }
+    assertResult("The Scalate Blog") { trimText(channel \ "title") }
+    //assertResult("Scalate Team") { trimText(channel \ "author") }
+    assertResult("http://scalate.fusesource.org/blog/") { trimText(channel \ "link") }
+    assertResult("Some text goes here") { trimText(channel \ "description") }
   }
 }

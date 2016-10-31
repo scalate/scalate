@@ -51,7 +51,7 @@ class LayoutTest extends TemplateTestSupport {
       println(output)
     }
 
-    expect(expected) {
+    assertResult(expected) {
       output
     }
   }

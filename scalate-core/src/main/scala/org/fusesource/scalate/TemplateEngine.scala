@@ -39,6 +39,8 @@ import collection.generic.TraversableForwarder
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ConcurrentHashMap
 
+import scala.language.existentials
+
 object TemplateEngine {
   val log = Log(getClass); import log._
 
@@ -127,7 +129,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   private var booted = new AtomicBoolean()
 
-  def boot: Unit = {
+  def boot(): Unit = {
     if (booted.compareAndSet(false, true)) {
 
       if (allowReload) {

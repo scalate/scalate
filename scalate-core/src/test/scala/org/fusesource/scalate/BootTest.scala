@@ -33,6 +33,6 @@ class BootTest extends TemplateTestSupport {
 
     //assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
 
-    expect(true, "scalate.Boot not invoked!") { MockBootstrap.initialised }
+    assertResult(true, "scalate.Boot not invoked!") { MockBootstrap.initialised }
   }
 }

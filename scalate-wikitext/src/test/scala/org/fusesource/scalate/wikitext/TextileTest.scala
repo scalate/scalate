@@ -37,7 +37,7 @@ class TextileTest extends FunSuiteSupport {
 
   protected def assertFilter(source: String, expected: String): Unit = {
     val actual: String = renderTextile(source)
-    expect(expected) { actual }
+    assertResult(expected) { actual }
   }
 
   test("parse textile markup") {

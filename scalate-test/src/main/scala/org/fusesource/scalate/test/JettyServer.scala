@@ -51,7 +51,7 @@ class JettyServer {
   var webAppDir: String = _
   var webAppContext: String = "/myContext"
 
-  def start: Unit = {
+  def start(): Unit = {
     val basedir = addFileSeparator(Config.baseDir)
     var defaultWebAppDir: String = basedir + mavenWebAppSubDir
 
@@ -106,7 +106,7 @@ class JettyServer {
     LOG.info("==============================================================================")
   }
 
-  def stop: Unit = {
+  def stop(): Unit = {
     server.stop
   }
 

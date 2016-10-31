@@ -192,7 +192,7 @@ object BundleClassPathBuilder {
           val dirs = bundle.getEntryPaths(fullName)
           var nextEntry = prefetch()
 
-          def hasNext() = {
+          def hasNext = {
             if (nextEntry == null)
               nextEntry = prefetch()
 
@@ -200,7 +200,7 @@ object BundleClassPathBuilder {
           }
 
           def next() = {
-            if (hasNext()) {
+            if (hasNext) {
               val entry = nextEntry
               nextEntry = null
               entry
@@ -303,4 +303,3 @@ object BundleClassPathBuilder {
     if (t == null) default
     else t
 }
-

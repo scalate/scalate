@@ -22,6 +22,8 @@ import support.{ Code, AbstractCodeGenerator }
 import collection.mutable.Stack
 import util.Log
 
+import scala.language.implicitConversions
+
 object MustacheCodeGenerator extends Log
 
 /**
@@ -133,4 +135,3 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     Code(source.className, sb.code, Set(uri), sb.positions)
   }
 }
-

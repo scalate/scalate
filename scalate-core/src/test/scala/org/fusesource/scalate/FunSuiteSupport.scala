@@ -50,18 +50,18 @@ abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll 
   }
 
   def assertSize(selector: String, result: NodeSeq, expected: Int): Unit = {
-    expect(expected, "number of elements matching: " + selector) { result.$(selector).size }
+    assertResult(expected, "number of elements matching: " + selector) { result.$(selector).size }
   }
 
   /**
    * Asserts that the text value of the given selector matches the expected string
    */
   def assertText(selector: String, result: NodeSeq, expected: String): Unit = {
-    expect(expected, "text of elements matching: " + selector) { result.$(selector).text }
+    assertResult(expected, "text of elements matching: " + selector) { result.$(selector).text }
   }
 
   def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
-    expect(expectedClass) { anyRef.getClass }
+    assertResult(expectedClass) { anyRef.getClass }
   }
 }

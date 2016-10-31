@@ -49,6 +49,6 @@ abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll 
 
   def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
-    expect(expectedClass) { anyRef.getClass }
+    assertResult(expectedClass) { anyRef.getClass }
   }
 }

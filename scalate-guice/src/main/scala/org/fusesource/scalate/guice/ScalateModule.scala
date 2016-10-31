@@ -27,6 +27,8 @@ import _root_.java.{ util => ju }
 import _root_.scala.collection.JavaConversions._
 import org.fusesource.scalate.TemplateEngine
 
+import scala.language.implicitConversions
+
 /**
  * A default Guice [[com.google.inject.servlet.ServletModule]] which registers Jersey and the Scalate servlets
  *
@@ -54,7 +56,7 @@ class ScalateModule extends ServletModule {
   /**
    * Registers the Scalate servlets
    */
-  protected def applyScalateServlets = {
+  protected def applyScalateServlets() = {
     val servlet = classOf[TemplateEngineServlet]
     bind(servlet).in(classOf[Singleton])
 
@@ -66,7 +68,7 @@ class ScalateModule extends ServletModule {
   /**
    * Registers the Jersey filter
    */
-  protected def applyJerseyFilter = filter("/*").through(classOf[GuiceContainer])
+  protected def applyJerseyFilter() = filter("/*").through(classOf[GuiceContainer])
 
   /**
    * Creates the [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]] to configure Jersey

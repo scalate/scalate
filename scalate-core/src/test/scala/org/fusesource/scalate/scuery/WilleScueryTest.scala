@@ -26,10 +26,10 @@ class WilleScueryTest extends FunSuiteSupport {
     val names = result.$(".name")
     show("CSS filter got: " + names + " of size: " + names.size)
 
-    expect("James") {
+    assertResult("James") {
       names(0).text
     }
-    expect("Hiram") {
+    assertResult("Hiram") {
       names(1).text
     }
   }

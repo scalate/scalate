@@ -20,6 +20,8 @@ package org.fusesource.scalate.servlet
 import java.util.Enumeration
 import javax.servlet.{ FilterConfig, ServletContext, ServletConfig }
 
+import scala.language.implicitConversions
+
 object Config {
   implicit def servletConfig2Config(servletConfig: ServletConfig) = new Config {
     def getName = servletConfig.getServletName

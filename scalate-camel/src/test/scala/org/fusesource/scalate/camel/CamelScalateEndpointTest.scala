@@ -83,10 +83,10 @@ class CamelScalateEndpointTest extends FunSuite {
           val actualBody = out.getBody(classOf[String])
           assume(actualBody != null, "Null body should not be returned when sending to: " + uri + " with out message: " + out)
 
-          expect(expectedResult) {
+          assertResult(expectedResult) {
             actualBody.trim()
           }
-          expect(headerValue) {
+          assertResult(headerValue) {
             out.getHeader("cheese", classOf[String])
           }
       }

@@ -27,10 +27,10 @@ class FileTest extends FunSuiteSupport {
 
     val sources = f / "src" / "main" / "scala"
 
-    expect(true) { sources.exists }
+    assertResult(true) { sources.exists }
 
     val f2: File = sources
-    expect(true) { f2.exists }
+    assertResult(true) { f2.exists }
 
     info("created file: " + sources.file)
   }
@@ -39,7 +39,7 @@ class FileTest extends FunSuiteSupport {
     val file: File = baseDir / "src/test/resources/dummy.txt"
 
     val t = file.text.trim
-    expect("hello world!") { t }
+    assertResult("hello world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -49,7 +49,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nhello world!") { t }
+    assertResult("My header 1\nhello world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -59,7 +59,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nMy Second Header\ngood bye world!") { t }
+    assertResult("My header 1\nMy Second Header\ngood bye world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -69,7 +69,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("hello world!\nMy header 1\nAFTER WORLD!") { t }
+    assertResult("hello world!\nMy header 1\nAFTER WORLD!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -79,7 +79,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nhello world!\nEnd of 2012 is here") { t }
+    assertResult("My header 1\nhello world!\nEnd of 2012 is here") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -89,30 +89,30 @@ class FileTest extends FunSuiteSupport {
 
     info("name: " + file.name + " extension: " + file.extension)
 
-    expect("txt", "extension") { file.extension }
-    expect("foo", "nameDropExtension") { file.nameDropExtension }
+    assertResult("txt", "extension") { file.extension }
+    assertResult("foo", "nameDropExtension") { file.nameDropExtension }
   }
 
   test("Finding files") {
-    expect(None) {
+    assertResult(None) {
       baseDir.recursiveFind(_.name == "doesNotExist.xml")
     }
 
-    expect(Some(new File(baseDir, "src"))) {
+    assertResult(Some(new File(baseDir, "src"))) {
       baseDir.recursiveFind(_.name == "src")
     }
 
-    expect(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
+    assertResult(Some(new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala"))) {
       baseDir.recursiveFind(_.name == "FileTest.scala")
     }
   }
 
   test("relative URIs") {
-    expect("src") {
+    assertResult("src") {
       (baseDir / "src").relativeUri(baseDir)
     }
 
-    expect("src/test/scala/org/fusesource/scalate/util/FileTest.scala") {
+    assertResult("src/test/scala/org/fusesource/scalate/util/FileTest.scala") {
       new File(baseDir, "src/test/scala/org/fusesource/scalate/util/FileTest.scala").relativeUri(baseDir)
     }
   }
@@ -128,8 +128,8 @@ class FileTest extends FunSuiteSupport {
     test("splitName: " + name) {
       info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
 
-      expect(expectedExt, "extension") { Files.extension(name) }
-      expect(expectedName, "name without extension") { Files.dropExtension(name) }
+      assertResult(expectedExt, "extension") { Files.extension(name) }
+      assertResult(expectedName, "name without extension") { Files.dropExtension(name) }
     }
   }
 }

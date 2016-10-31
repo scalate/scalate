@@ -26,8 +26,8 @@ class AttributesTest extends AbstractConfluenceTest {
       val source = "{attributes:layout=foo.scaml}"
       val actual = filter.filter(context, source)
 
-      expect("") { actual }
-      expect("foo.scaml", "layout attribute") { context.attributeOrElse("layout", "failed!") }
+      assertResult("") { actual }
+      assertResult("foo.scaml", "layout attribute") { context.attributeOrElse("layout", "failed!") }
     }
 
   }

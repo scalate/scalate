@@ -19,6 +19,8 @@ package org.fusesource.scalate.scuery
 
 import xml.{ Node, NodeSeq }
 
+import scala.language.implicitConversions
+
 /**
  * All the various implicit conversions for the scuery package
  */

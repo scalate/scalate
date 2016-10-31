@@ -23,6 +23,8 @@ import java.util.zip.{ ZipEntry, ZipInputStream }
 import java.net.URL
 import scala.util.parsing.input.{ Position, OffsetPosition }
 
+import scala.language.implicitConversions
+
 object IOUtil {
 
   val log = Log(getClass); import log._

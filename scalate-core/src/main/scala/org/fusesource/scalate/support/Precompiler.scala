@@ -24,6 +24,8 @@ import scala.collection.mutable.ListBuffer
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 import org.fusesource.scalate.servlet.ServletRenderContext
 
+import scala.language.reflectiveCalls
+
 /**
  * This class can precompile Scalate templates into JVM
  * classes.

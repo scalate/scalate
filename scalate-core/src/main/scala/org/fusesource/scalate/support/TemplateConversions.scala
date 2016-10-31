@@ -19,6 +19,8 @@ package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Log
 
+import scala.language.implicitConversions
+
 /**
  * A number of helper implicit conversions for use in templates
  */
