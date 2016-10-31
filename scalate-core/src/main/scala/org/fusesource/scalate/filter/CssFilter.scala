@@ -40,7 +40,7 @@ import org.fusesource.scalate._
 
 /**
  * Surrounds the filtered text with &lt;style&gt; and CDATA tags.
- * 
+ *
  * <p>Useful for including inline CSS.</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

@@ -17,14 +17,14 @@
  */
 package org.fusesource.scalate.osgi
 
-import java.io.{InputStream, IOException, File}
+import java.io.{ InputStream, IOException, File }
 import scala.reflect.io.AbstractFile
 import java.net.URL
 import java.lang.String
-import org.osgi.framework.{ServiceReference, Bundle}
-import collection.mutable.{ListBuffer,LinkedHashSet}
+import org.osgi.framework.{ ServiceReference, Bundle }
+import collection.mutable.{ ListBuffer, LinkedHashSet }
 import org.osgi.service.packageadmin.PackageAdmin
-import org.fusesource.scalate.util.{Log, Strings}
+import org.fusesource.scalate.util.{ Log, Strings }
 
 /**
  * Helper methods to transform OSGi bundles into {@link AbstractFile} implementations
@@ -39,9 +39,11 @@ object BundleClassPathBuilder {
       lookup((f, p, dir) => f.lookupName(p, dir), path, directory)
     }
 
-    private def lookup(getFile: (AbstractFile, String, Boolean) => AbstractFile,
-                       path0: String,
-                       directory: Boolean): AbstractFile = {
+    private def lookup(
+      getFile: (AbstractFile, String, Boolean) => AbstractFile,
+      path0: String,
+      directory: Boolean
+    ): AbstractFile = {
       val separator = java.io.File.separatorChar
       // trim trailing '/'s
       val path: String = if (path0.last == separator) path0 dropRight 1 else path0
@@ -64,7 +66,7 @@ object BundleClassPathBuilder {
   /**
    * Create a list of AbstractFile instances, representing the bundle and its wired depedencies
    */
-  def fromBundle(bundle: Bundle) : List[AbstractFile] = {
+  def fromBundle(bundle: Bundle): List[AbstractFile] = {
     require(bundle != null, "Bundle should not be null")
 
     // add the bundle itself
@@ -79,7 +81,7 @@ object BundleClassPathBuilder {
   /**
    * Find bundles that have exports wired to the given and bundle
    */
-  def fromWires(bundle: Bundle) : List[AbstractFile] = {
+  def fromWires(bundle: Bundle): List[AbstractFile] = {
     debug("Checking OSGi bundle wiring for %s", bundle)
     val context = bundle.getBundleContext
     var ref: ServiceReference = context.getServiceReference(classOf[PackageAdmin].getName)
@@ -100,26 +102,25 @@ object BundleClassPathBuilder {
       context.ungetService(ref)
     }
   }
-                                                                                                                                                                
-  def fromWires(admin: PackageAdmin, bundle: Bundle) : List[AbstractFile] = {
-    val exported = admin.getExportedPackages(null : Bundle)
+
+  def fromWires(admin: PackageAdmin, bundle: Bundle): List[AbstractFile] = {
+    val exported = admin.getExportedPackages(null: Bundle)
     val set = new LinkedHashSet[Bundle]
     for (pkg <- exported; if pkg.getExportingBundle.getBundleId != 0) {
-        val bundles = pkg.getImportingBundles();
-        if (bundles != null) {
-            for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
-              debug("Bundle imports %s from %s",pkg,pkg.getExportingBundle)
-              if (b.getBundleId == 0) {
-                debug("Ignoring system bundle")
-              } else {
-                set += pkg.getExportingBundle
-              }
-            }
+      val bundles = pkg.getImportingBundles();
+      if (bundles != null) {
+        for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
+          debug("Bundle imports %s from %s", pkg, pkg.getExportingBundle)
+          if (b.getBundleId == 0) {
+            debug("Ignoring system bundle")
+          } else {
+            set += pkg.getExportingBundle
+          }
         }
+      }
     }
     set.map(create(_)).toList
   }
-
 
   /**
    *  Create a new  { @link AbstractFile } instance representing an
@@ -133,7 +134,7 @@ object BundleClassPathBuilder {
     abstract class BundleEntry(url: URL, parent: DirEntry) extends AbstractFile with AbstractFileCompatibility {
       require(url != null, "url must not be null")
       lazy val (path: String, name: String) = getPathAndName(url)
-      lazy val fullName: String = (path::name::Nil).filter(n => !Strings.isEmpty(n)).mkString("/")
+      lazy val fullName: String = (path :: name :: Nil).filter(n => !Strings.isEmpty(n)).mkString("/")
 
       /**
        * @return null
@@ -166,11 +167,11 @@ object BundleClassPathBuilder {
       private def getPathAndName(url: URL): (String, String) = {
         val u = url.getPath
         var k = u.length
-        while( (k > 0) && (u(k - 1) == '/') )
+        while ((k > 0) && (u(k - 1) == '/'))
           k = k - 1
 
         var j = k
-        while( (j > 0) && (u(j - 1) != '/') )
+        while ((j > 0) && (u(j - 1) != '/'))
           j = j - 1
 
         (u.substring(if (j > 0) 1 else 0, if (j > 1) j - 1 else j), u.substring(j, k))
@@ -200,11 +201,10 @@ object BundleClassPathBuilder {
 
           def next() = {
             if (hasNext()) {
-                val entry = nextEntry
-                nextEntry = null
-                entry
-            }
-            else {
+              val entry = nextEntry
+              nextEntry = null
+              entry
+            } else {
               throw new NoSuchElementException()
             }
           }
@@ -222,15 +222,13 @@ object BundleClassPathBuilder {
               // If still null OSGi wont let use load that resource for some reason
               if (entryUrl == null) {
                 null
-              }
-              else {
+              } else {
                 if (entry.endsWith(".class"))
                   new FileEntry(entryUrl, DirEntry.this)
                 else
                   new DirEntry(entryUrl, DirEntry.this)
               }
-            }
-            else
+            } else
               null
           }
 
@@ -278,7 +276,7 @@ object BundleClassPathBuilder {
 
       def absolute = unsupported("absolute() is unsupported")
       def create = unsupported("create() is unsupported")
-      def delete = unsupported("create() is unsupported")      
+      def delete = unsupported("create() is unsupported")
     }
 
     new DirEntry(bundle.getResource("/"), null) {
@@ -303,6 +301,6 @@ object BundleClassPathBuilder {
    */
   def valueOrElse[T](t: T)(default: => T) =
     if (t == null) default
-    else t  
+    else t
 }
 

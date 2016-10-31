@@ -17,12 +17,11 @@
  */
 package org.fusesource.scalate.test
 
-import org.scalatest.{ConfigMap, Suite, BeforeAndAfterAll}
-
+import org.scalatest.{ ConfigMap, Suite, BeforeAndAfterAll }
 
 /**
  * A trait which boots up a JettyServer and uses it for all the test cases in this class
- * 
+ *
  * @version $Revision: 1.1 $
  */
 trait WebServerMixin extends BeforeAndAfterAll {
@@ -32,10 +31,11 @@ trait WebServerMixin extends BeforeAndAfterAll {
 
   override protected def beforeAll(configMap: ConfigMap): Unit = {
     configMap.get("basedir") match {
-      case Some(basedir) => val text = basedir.toString
-      println("Setting basedir to: " + text)
-      Config.baseDir = text
-      println("Basedir is now: " + Config.baseDir)
+      case Some(basedir) =>
+        val text = basedir.toString
+        println("Setting basedir to: " + text)
+        Config.baseDir = text
+        println("Basedir is now: " + Config.baseDir)
 
       case _ =>
     }

@@ -22,7 +22,7 @@ import StringConverter._
 
 import java.io.File
 import xml.NodeSeq
-import util.{Log, Files}
+import util.{ Log, Files }
 
 object ChildrenTag extends Log
 /**
@@ -41,7 +41,6 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
     case _ => Blocks.unknownAttribute(key, value)
   }
 
-
   def doTag() = {
     val context = RenderContext()
 
@@ -51,27 +50,29 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
       lazy val files = dir.listFiles().sortBy(f => if (f.isDirectory) f.getName + "/" else f.getName)
       if (all || level <= depth && files.nonEmpty) {
         <ul>
-          {files.map {
-          f =>
-            debug("{children} processing file '%s'", f)
-            if (f.isFile) {
-              val title = Pages.title(f)
-              val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
-              val child = new File(f.getParentFile, Files.dropExtension(f))
-              debug("{children} checking child '%s'", child)
-              val dirXml = if (child.isDirectory) {
-                showChildren(rootDir, child, level + 1)
-              } else {
-                Nil
-              }
-              <li>
-                <a href={link}>
-                  {title}
-                </a>
-                {dirXml}
-              </li>
+          {
+            files.map {
+              f =>
+                debug("{children} processing file '%s'", f)
+                if (f.isFile) {
+                  val title = Pages.title(f)
+                  val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
+                  val child = new File(f.getParentFile, Files.dropExtension(f))
+                  debug("{children} checking child '%s'", child)
+                  val dirXml = if (child.isDirectory) {
+                    showChildren(rootDir, child, level + 1)
+                  } else {
+                    Nil
+                  }
+                  <li>
+                    <a href={ link }>
+                      { title }
+                    </a>
+                    { dirXml }
+                  </li>
+                }
             }
-        }}
+          }
         </ul>
       } else {
         Nil
@@ -80,17 +81,16 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
 
     val requestUri = if (context.currentTemplate != null) context.currentTemplate else context.requestUri
     val idx = requestUri.lastIndexOf('/')
-    val pageName = if (idx >= 0) requestUri.substring(idx+1) else requestUri
+    val pageName = if (idx >= 0) requestUri.substring(idx + 1) else requestUri
     val pageUri = page.getOrElse(Files.dropExtension(pageName))
     SwizzleLinkFilter.findWikiFile(pageUri) match {
       case Some(file) =>
-        info("{children} now going to iterate from file '%s'",file)
+        info("{children} now going to iterate from file '%s'", file)
         val rootDir = file.getParentFile
         val dir = new File(rootDir, Files.dropExtension(file))
         if (!dir.exists) {
           warn("{children} cannot find directory: %s", dir)
-        }
-        else {
+        } else {
           //context << showChildren(rootDir, dir, 1)
           builder.charactersUnescaped(showChildren(rootDir, dir, 1).toString)
         }

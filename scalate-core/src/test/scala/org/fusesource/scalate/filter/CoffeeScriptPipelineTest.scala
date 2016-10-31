@@ -9,9 +9,11 @@ class CoffeeScriptPipelineTest extends TemplateTestSupport {
   lazy val finder = new TemplateFinder(engine)
 
   test("coffeescript pipeline") {
-    assertUriOutputContains("/org/fusesource/scalate/filter/sample.js",
-"""alert("Hello, Coffee!");
-""")
+    assertUriOutputContains(
+      "/org/fusesource/scalate/filter/sample.js",
+      """alert("Hello, Coffee!");
+"""
+    )
   }
 
   override protected def fromUri(uri: String) = {

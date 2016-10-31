@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.converter
 
-
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
@@ -36,54 +35,63 @@ class ConvertJspTest extends FunSuite {
 
   assertConvert(
     """<c:url value='/foo'/>""",
-    """${uri("/foo")}""")
+    """${uri("/foo")}"""
+  )
 
   assertConvert(
     """blah <c:url value='/foo'/> blah""",
-    """blah ${uri("/foo")} blah""")
-
+    """blah ${uri("/foo")} blah"""
+  )
 
   assertConvert(
     """blah <c:url value='/foo/${x}/bar/${y}'/> blah""",
-    """blah ${uri("/foo/" + x + "/bar/" + y)} blah""")
-
+    """blah ${uri("/foo/" + x + "/bar/" + y)} blah"""
+  )
 
   assertConvert(
     """<a href="<c:url value='/foo'/>">body</a>""",
-    """<a href="${uri("/foo")}">body</a>""")
+    """<a href="${uri("/foo")}">body</a>"""
+  )
 
   assertConvert(
     """something <c:out value="${foo}"/> or other""",
-    """something ${foo} or other""")
+    """something ${foo} or other"""
+  )
 
   assertConvert(
     """something <c:out value="${foo}" escapeXml="true"/> or other""",
-    """something ${escape(foo)} or other""")
+    """something ${escape(foo)} or other"""
+  )
 
   assertConvert(
     """something <c:out value="${foo}" escapeXml="false"/> or other""",
-    """something ${unescape(foo)} or other""")
+    """something ${unescape(foo)} or other"""
+  )
 
   assertConvert(
     """something <c:out value="${foo}" escapeXml="x"/> or other""",
-    """something ${value(foo, x)} or other""")
+    """something ${value(foo, x)} or other"""
+  )
 
   assertConvert(
     """foo <c:if test='${foo}'> a <c:if test='${bar}'> b </c:if> c </c:if> whatnot""",
-    """foo #if(foo) a #if(bar) b #end c #end whatnot""")
-
+    """foo #if(foo) a #if(bar) b #end c #end whatnot"""
+  )
 
   assertConvert(
     """foo <c:set var="x" value='${foo}'/> whatnot""",
-    """foo #{ var x = foo }# whatnot""")
+    """foo #{ var x = foo }# whatnot"""
+  )
 
   assertConvert(
     """foo <c:if test="${it.language eq 'Cheese'}"> bar </c:if> whatnot""",
-    """foo #if(it.getLanguage == "Cheese") bar #end whatnot""")
+    """foo #if(it.getLanguage == "Cheese") bar #end whatnot"""
+  )
 
   assertConvert(
     """foo <c:if test='${foo}'> bar </c:if> whatnot""",
-    """foo #if(foo) bar #end whatnot""")
+    """foo #if(foo) bar #end whatnot"""
+  )
 
   assertConvert(
     """
@@ -97,7 +105,8 @@ foo
 #if(x.getY == 5)
   bar
 #end
-whatnot""")
+whatnot"""
+  )
 
   assertConvert(
     """
@@ -111,7 +120,8 @@ foo
 #for(foo <- something.getWhatnot)
  blah ${foo.getBar}
 #end
-whatnot""")
+whatnot"""
+  )
 
   assertConvert(
     """
@@ -125,7 +135,8 @@ foo
 #for(i <- 1.to(10))
  blah ${i}
 #end
-whatnot""")
+whatnot"""
+  )
 
   assertConvert(
     """
@@ -139,8 +150,8 @@ foo
 #for(i <- 1.to(10, 3))
  blah ${i}
 #end
-whatnot""")
-
+whatnot"""
+  )
 
   assertConvert(
     """
@@ -170,20 +181,19 @@ six
 default
 
 #end
-whatnot""")
-
-
+whatnot"""
+  )
 
   def assertJustText(jsp: String): String = {
     val result = convert(jsp)
-    expect(jsp, "converting JSP: " + jsp){result}
+    expect(jsp, "converting JSP: " + jsp) { result }
     result
 
   }
 
   def assertConvert(jsp: String, ssp: String): String = {
     val result = convert(jsp)
-    expect(ssp, "converting JSP: " + jsp){result}
+    expect(ssp, "converting JSP: " + jsp) { result }
     result
   }
 

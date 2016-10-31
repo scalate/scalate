@@ -20,13 +20,13 @@ package org.fusesource.scalate.servlet
 import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.http._
 import java.lang.String
-import java.util.{Locale}
+import java.util.{ Locale }
 import scala.collection.JavaConversions._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
-import org.fusesource.scalate.{RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine}
+import org.fusesource.scalate.{ RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine }
 import java.io._
-import javax.servlet.{ServletOutputStream, ServletConfig, ServletContext, ServletException}
+import javax.servlet.{ ServletOutputStream, ServletConfig, ServletContext, ServletException }
 
 /**
  * Easy access to servlet request state.
@@ -58,8 +58,8 @@ object ServletRenderContext {
  * @version $Revision : 1.1 $
  */
 class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext)
-        extends DefaultRenderContext(request.getRequestURI, engine, out) {
-  
+    extends DefaultRenderContext(request.getRequestURI, engine, out) {
+
   def this(engine: TemplateEngine, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) = this(engine, response.getWriter, request, response, servletContext)
 
   viewPrefixes = List("WEB-INF", "")
@@ -140,8 +140,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   override def uri(uri: String) = {
     if (uri.startsWith("/")) {
       request.getContextPath + uri
-    }
-    else {
+    } else {
       uri
     }
   }
@@ -152,7 +151,6 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   def currentUriPlus(newQueryArgs: String) = {
     uriPlus(requestUri, queryString, newQueryArgs)
   }
-
 
   /**
    * Returns the current URI with query arguments (separated with &) removed
@@ -168,8 +166,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
     val answer = request.getParameterValues(name)
     if (answer != null) {
       answer
-    }
-    else {
+    } else {
       Array[String]()
     }
   }
@@ -177,7 +174,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   /**
    * Returns the first parameter
    */
-  def parameter(name: String) = {request.getParameter(name)}
+  def parameter(name: String) = { request.getParameter(name) }
 
   /**
    * Returns the forwarded request uri or the current request URI if its not forwarded
@@ -203,7 +200,6 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
     case _ => request.getContextPath
   }
 
-
   protected def wrappedRequest = new WrappedRequest(request)
 
   protected def wrappedResponse = new WrappedResponse(response)
@@ -211,7 +207,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   protected def requestDispatcher(page: String) = {
     // lets flush first to avoid missing current output
     flush
-    
+
     val dispatcher = request.getRequestDispatcher(page)
     if (dispatcher == null) {
       throw new ServletException("No dispatcher available for path: " + page)
@@ -225,26 +221,26 @@ class WrappedRequest(request: HttpServletRequest) extends HttpServletRequestWrap
 }
 
 class WrappedResponse(response: HttpServletResponse) extends HttpServletResponseWrapper(response) {
-    private val bos = new ByteArrayOutputStream()
-    private val sos = new ServletOutputStream {
-      def write(b: Int) = bos.write(b)
-    }
-    private val writer = new PrintWriter(new OutputStreamWriter(bos))
-
-    override def getWriter = writer
-
-    override def getOutputStream = sos
-
-    def bytes = {
-      writer.flush
-      bos.toByteArray
-    }
-
-    def text = {
-      new String(bytes)
-    }
-
-    def output(context: RenderContext, escape: Boolean = false): Unit = {
-      context << context.value(text, escape)
-    }
+  private val bos = new ByteArrayOutputStream()
+  private val sos = new ServletOutputStream {
+    def write(b: Int) = bos.write(b)
   }
+  private val writer = new PrintWriter(new OutputStreamWriter(bos))
+
+  override def getWriter = writer
+
+  override def getOutputStream = sos
+
+  def bytes = {
+    writer.flush
+    bos.toByteArray
+  }
+
+  def text = {
+    new String(bytes)
+  }
+
+  def output(context: RenderContext, escape: Boolean = false): Unit = {
+    context << context.value(text, escape)
+  }
+}

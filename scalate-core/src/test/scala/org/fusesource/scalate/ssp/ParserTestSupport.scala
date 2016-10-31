@@ -37,13 +37,12 @@ abstract class ParserTestSupport extends FunSuiteSupport {
     map
   }
 
-
   def assertAttribute(lines: List[PageFragment], expectedParam: AttributeFragment) = {
     val attribute = lines.find {
       case d: AttributeFragment => true
       case _ => false
     }
-    expect(Some(expectedParam)) {attribute}
+    expect(Some(expectedParam)) { attribute }
 
     lines
   }

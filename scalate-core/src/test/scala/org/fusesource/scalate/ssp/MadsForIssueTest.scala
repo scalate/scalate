@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate.{TemplateTestSupport}
+import org.fusesource.scalate.{ TemplateTestSupport }
 
 /**
  * @version $Revision : 1.1 $
@@ -46,11 +46,12 @@ f2 b
 done""", template, Map("fields" -> List("a", "b")))
   }
 
-
   test("mads sample") {
-    val attributes = Map("name" -> "Cheese",
-        "thePackage" -> "org.acme.cheese",
-        "fields" -> List("foo", "bar"))
+    val attributes = Map(
+      "name" -> "Cheese",
+      "thePackage" -> "org.acme.cheese",
+      "fields" -> List("foo", "bar")
+    )
 
     val template = compileSsp("Mads sample", """
 <%@ var name:String %>

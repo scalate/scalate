@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{NodeSeq}
+import xml.{ NodeSeq }
 
 case class Car(make: String, model: String, color: String)
 case class Dog(name: String, breed: String, color: String, age: Int)
@@ -29,35 +29,34 @@ class TransformTypedElementsTest extends FunSuiteSupport {
   val things = List(car1, car2, Dog("Emma", "Labrador", "Golden", 9))
 
   val xml = <ul class="items">
-    <li class="car">
-        <img src="/images/car.jpg"/>
-      <div class="field">
-        <div class="label">Make</div> <div class="make">BMW</div>
-      </div>
-      <div class="field">
-        <div class="label">Model</div> <div class="model">525i</div>
-      </div>
-      <div class="field">
-        <div class="label">Color</div> <div class="color">Blue</div>
-      </div>
-    </li>
-    <li class="dog">
-        <img src="/images/dog.jpg"/>
-      <div class="field">
-        <div class="label">Name</div> <div class="name">Cameron</div>
-      </div>
-      <div class="field">
-        <div class="label">Breed</div> <div class="breed">Bishon Frieze</div>
-      </div>
-      <div class="field">
-        <div class="label">Color</div> <div class="color">White</div>
-      </div>
-      <div class="field">
-        <div class="label">Age</div> <div class="age">7</div>
-      </div>
-    </li>
-  </ul>
-
+              <li class="car">
+                <img src="/images/car.jpg"/>
+                <div class="field">
+                  <div class="label">Make</div><div class="make">BMW</div>
+                </div>
+                <div class="field">
+                  <div class="label">Model</div><div class="model">525i</div>
+                </div>
+                <div class="field">
+                  <div class="label">Color</div><div class="color">Blue</div>
+                </div>
+              </li>
+              <li class="dog">
+                <img src="/images/dog.jpg"/>
+                <div class="field">
+                  <div class="label">Name</div><div class="name">Cameron</div>
+                </div>
+                <div class="field">
+                  <div class="label">Breed</div><div class="breed">Bishon Frieze</div>
+                </div>
+                <div class="field">
+                  <div class="label">Color</div><div class="color">White</div>
+                </div>
+                <div class="field">
+                  <div class="label">Age</div><div class="age">7</div>
+                </div>
+              </li>
+            </ul>
 
   test("transform contents") {
     object transformer extends Transformer {

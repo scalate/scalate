@@ -19,8 +19,8 @@ package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.util.Logging
 import _root_.org.fusesource.scalate.scuery.support._
-import collection.mutable.{HashMap}
-import xml.{Attribute, Document, Elem, Node, NodeSeq, Null, Text}
+import collection.mutable.{ HashMap }
+import xml.{ Attribute, Document, Elem, Node, NodeSeq, Null, Text }
 import XmlHelper._
 
 /**
@@ -60,7 +60,6 @@ class Transformer {
 
   def transform(nodes: NodeSeq, childTransformer: Transformer): NodeSeq = childTransformer.apply(nodes, Nil)
 
-
   /**
    * Creates a child transformer
    */
@@ -80,8 +79,7 @@ class Transformer {
         case d: Document => apply(d.child)
         case n => n
       }
-    }
-    else {
+    } else {
       val rule = Rule(keys.valuesIterator)
       rule(node)
     }
@@ -124,7 +122,6 @@ class Transformer {
       contents = Text(text)
     }
 
-
     class ContentsRuleFactory {
 
       def apply(fn: Node => NodeSeq): Unit = {
@@ -158,7 +155,6 @@ class Transformer {
     // Attributes
     //-------------------------------------------------------------------------
 
-
     /**
      * Sets the given attribute on each matching node found by this selector
      */
@@ -176,7 +172,6 @@ class Transformer {
     def attribute(name: String): AttributeRuleFactory = new AttributeRuleFactory(name)
 
     def selectiveAttribute(name: String): SelectiveAttributeRuleFactory = new SelectiveAttributeRuleFactory(name)
-
 
     class AttributeRuleFactory(name: String) {
       def value = this

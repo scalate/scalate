@@ -42,7 +42,6 @@ class Lazy[T](thunk: => T) {
 
   def unapply(): Option[T] = Some(value)
 
-
   /**
    * Set the field to the value
    */

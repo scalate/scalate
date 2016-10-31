@@ -24,43 +24,40 @@ import org.fusesource.scalate.util.IOUtil
 
 /**
  * <p>
-  * Parser for a more concise version of haml/scaml inspired by jade:
-  * http://github.com/visionmedia/jade
-  * </p>
-  *
+ * Parser for a more concise version of haml/scaml inspired by jade:
+ * http://github.com/visionmedia/jade
+ * </p>
+ *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class JadeParser extends ScamlParser {
 
-  override def full_element_statement:Parser[Element] =
-    opt(tag_ident) ~ attributes ~ opt(trim)  <~ ( "/" ~! opt_space ~ nl ) ^^ {
-      case (tag~attributes~wsc) => Element(tag, attributes, None, List(), wsc, true)
+  override def full_element_statement: Parser[Element] =
+    opt(tag_ident) ~ attributes ~ opt(trim) <~ ("/" ~! opt_space ~ nl) ^^ {
+      case (tag ~ attributes ~ wsc) => Element(tag, attributes, None, List(), wsc, true)
     } |
-    opt(tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ statement_block ^^ {
-        case ((tag~attributes~wsc~text)~body) => Element(tag, attributes, text, body, wsc, false)
-    }
+      opt(tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ statement_block ^^ {
+        case ((tag ~ attributes ~ wsc ~ text) ~ body) => Element(tag, attributes, text, body, wsc, false)
+      }
 
-  override def element_statement:Parser[Element] = full_element_statement  
+  override def element_statement: Parser[Element] = full_element_statement
 
   override def text_statement = (
-          prefixed("""\""", literal_text(None))      |
-          prefixed("&=="~opt_space, literal_text(Some(true)) )  |
-          prefixed("!=="~opt_space, literal_text(Some(false)) ) |
-          prefixed("&"~space, literal_text(Some(true)) )  |
-          prefixed("!"~space, literal_text(Some(false)) ) |
-          prefixed("|"~opt_space, literal_text(None)) |
-          guarded("<", literal_text(None))
-        ) <~ any_space_then_nl
-
-
+    prefixed("""\""", literal_text(None)) |
+    prefixed("&==" ~ opt_space, literal_text(Some(true))) |
+    prefixed("!==" ~ opt_space, literal_text(Some(false))) |
+    prefixed("&" ~ space, literal_text(Some(true))) |
+    prefixed("!" ~ space, literal_text(Some(false))) |
+    prefixed("|" ~ opt_space, literal_text(None)) |
+    guarded("<", literal_text(None))
+  ) <~ any_space_then_nl
 
 }
-
 
 object JadeParser {
-def main(args: Array[String]) = {
-  val in = IOUtil.loadTextFile(new File(args(0)))
-  val p = new JadeParser
-  println(p.phrase(p.parser)(new CharSequenceReader(in)))
-}
+  def main(args: Array[String]) = {
+    val in = IOUtil.loadTextFile(new File(args(0)))
+    val p = new JadeParser
+    println(p.phrase(p.parser)(new CharSequenceReader(in)))
+  }
 }

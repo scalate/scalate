@@ -32,7 +32,7 @@ object ProductReflector {
     val values = casemethods.map(_.invoke(obj))
     casemethods.map(_.getName).zip(values).foldLeft(Map[String, Any]())(_ + _)
   }
-  
+
   def accessorMethods(c: Class[_]) = {
     val predefined = List("copy$default$1", "copy$default$2", "curry", "curried", "$tag", "productArity", "productElements", "productIterator", "productPrefix", "hashCode", "toString", "tuple", "tupled")
 
@@ -41,7 +41,7 @@ object ProductReflector {
         (n.getParameterTypes.size == 0) &&
           (n.getDeclaringClass != classOf[Object]) &&
           !predefined.exists(_ == n.getName) &&
-          !n.getName.matches("_\\d+") 
+          !n.getName.matches("_\\d+")
     }
   }
 }

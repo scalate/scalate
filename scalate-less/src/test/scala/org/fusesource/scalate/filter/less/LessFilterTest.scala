@@ -12,7 +12,7 @@ p {
 </style>
 """.trim)
   }
-  
+
   test("inline include") {
     assertUriOutputContains("/org/fusesource/scalate/filter/less/inline_include.scaml", """
 <style type="text/css">

@@ -21,7 +21,7 @@ package wikitext
 import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.support.Links
 import java.io.File
-import util.{Log, IOUtil, Files}
+import util.{ Log, IOUtil, Files }
 import IOUtil._
 
 /**
@@ -61,7 +61,6 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
     (rootDir, file) => "/" + Files.relativeUri(rootDir, file)
   }
 
-
   /**
    * Finds a wiki File from a link name by starting at the root directories and navigating through all files until
    * we find a file name that matches the given link (without an extension)
@@ -78,7 +77,6 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
 
     info("Looking for files matching %s from %s", name2, requestUri)
 
-
     def matchesName(f: File) = {
       val n = f.nameDropExtension.toLowerCase
       n == name1 || n == name2 && extensions.contains(f.extension.toLowerCase)
@@ -91,9 +89,8 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
         case _ => None
       }
 
-    sourceDirectories.view.map {findMatching(_)}.find(_.isDefined).getOrElse(None)
+    sourceDirectories.view.map { findMatching(_) }.find(_.isDefined).getOrElse(None)
   }
-
 
   /**
    * If a link is external or includes a dot then assume its OK, otherwise append html extension
@@ -101,15 +98,13 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
   def transformLink(link: String, requestUri: String) = {
     def relativeLink(link: String): String = Links.convertAbsoluteLinks(link, requestUri)
 
-
     if (link.contains(':')) {
       // external so leave as is
       link
     } else {
       if (link.contains('.')) {
         relativeLink(link)
-      }
-      else {
+      } else {
         val newLink = if (link.contains('/')) {
           link
         } else {
@@ -127,7 +122,6 @@ case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: S
   protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?(\\\".*?\\\"|'.*?')[^>]*?".r
 }
 
-
 object SwizzleLinkFilter extends Log {
   def apply(renderContext: RenderContext): SwizzleLinkFilter = apply(renderContext.engine)
 
@@ -143,7 +137,6 @@ object SwizzleLinkFilter extends Log {
     val context = RenderContext()
     apply(context).findWikiFileUri(uri, context.requestUri)
   }
-
 
   /**
    * Attempts to resolve the given link to a wiki URI

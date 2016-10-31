@@ -18,7 +18,7 @@
 package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.TemplateException
-import util.parsing.input.{Positional, CharSequenceReader, NoPosition, Position}
+import util.parsing.input.{ Positional, CharSequenceReader, NoPosition, Position }
 import org.fusesource.scalate.support.Text
 
 sealed abstract class PageFragment extends Positional {
@@ -58,7 +58,6 @@ case class Element(qname: QualifiedName, attributes: List[Attribute], body: List
   }
 }
 
-
 /**
  * Parser of JSP for the purposes of transformation to Scalate; so its not perfect but gives folks a head start
  *
@@ -79,14 +78,13 @@ class JspParser extends MarkupScanner {
     phraseOrFail(page, in)
   }
 
-
   def page = rep(pageFragment)
 
   val pageFragment: Parser[PageFragment] = positioned(markup | expression | textFragment)
 
-  val textFragment = upto(markup | expression) ^^ {TextFragment(_)}
+  val textFragment = upto(markup | expression) ^^ { TextFragment(_) }
 
-  def elementTextContent = someUpto(closeElement | markup | expression) ^^ {TextFragment(_)}
+  def elementTextContent = someUpto(closeElement | markup | expression) ^^ { TextFragment(_) }
 
   def markup: Parser[PageFragment] = element | emptyElement
 
@@ -100,7 +98,7 @@ class JspParser extends MarkupScanner {
       Element(q, al, b)
   }
 
-  def qualifiedName = positioned(((IDENT <~ ":") ~ IDENT) ^^ {case p ~ n => QualifiedName(p, n)})
+  def qualifiedName = positioned(((IDENT <~ ":") ~ IDENT) ^^ { case p ~ n => QualifiedName(p, n) })
 
   def openElement(end: String) = "<" ~> qualifiedName ~ attributeList <~ end
 
@@ -108,9 +106,9 @@ class JspParser extends MarkupScanner {
 
   def attributeList = rep(attribute)
 
-  def attribute = ((S ~> IDENT <~ repS <~ "=" <~ repS) ~ STRING) ^^ {case n ~ v => Attribute(n, toExpression(v))}
+  def attribute = ((S ~> IDENT <~ repS <~ "=" <~ repS) ~ STRING) ^^ { case n ~ v => Attribute(n, toExpression(v)) }
 
-  val expression = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
+  val expression = wrapped("${", "}") ^^ { DollarExpressionFragment(_) }
 
   def toExpression(text: String) = expressionParser.parseExpression(text)
 }

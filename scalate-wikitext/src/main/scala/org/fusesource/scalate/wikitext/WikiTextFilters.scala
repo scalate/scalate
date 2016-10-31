@@ -20,9 +20,9 @@ package wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.MarkupParser
 import org.eclipse.mylyn.wikitext.core.parser.markup.MarkupLanguage
-import java.{util => ju}
-import org.fusesource.scalate.{TemplateEngineAddOn, TemplateEngine}
-import org.fusesource.scalate.filter.{Pipeline, Filter}
+import java.{ util => ju }
+import org.fusesource.scalate.{ TemplateEngineAddOn, TemplateEngine }
+import org.fusesource.scalate.filter.{ Pipeline, Filter }
 
 object WikiTextFilter {
 

@@ -33,7 +33,7 @@ a = ${foo}""")
   }
 
   test("using unescape function") {
-    assertSspOutput( "b = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
+    assertSspOutput("b = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
 b = ${unescape(foo)}""")
   }
 

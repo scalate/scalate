@@ -32,9 +32,9 @@ object BlogHelper {
     val context = RenderContext()
 
     val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
-    val dir = context.engine.resourceLoader.resource(base+"/index.page").flatMap(_.toFile).getOrElse(throw new Exception("index page not found.")).getParentFile
+    val dir = context.engine.resourceLoader.resource(base + "/index.page").flatMap(_.toFile).getOrElse(throw new Exception("index page not found.")).getParentFile
 
-    println("Using dir: "+dir+" at request path: "+base)
+    println("Using dir: " + dir + " at request path: " + base)
 
     val index = new File(dir, "index.page")
     dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map { file =>

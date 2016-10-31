@@ -25,10 +25,10 @@ import util.Strings.isEmpty
 import util.IOUtil._
 
 import java.io.File
-import java.text.{DateFormat, NumberFormat}
-import java.util.{Locale, Date}
-import xml.{Node, PCData, NodeSeq, NodeBuffer}
-import collection.mutable.{ListMap, LinkedHashSet, ListBuffer, HashMap}
+import java.text.{ DateFormat, NumberFormat }
+import java.util.{ Locale, Date }
+import xml.{ Node, PCData, NodeSeq, NodeBuffer }
+import collection.mutable.{ ListMap, LinkedHashSet, ListBuffer, HashMap }
 import reflect.ClassTag
 
 object RenderContext {
@@ -40,13 +40,13 @@ object RenderContext {
 
   def apply(): RenderContext = threadLocal.get
 
-  def using[T](that: RenderContext)(func: =>T):T = {
+  def using[T](that: RenderContext)(func: => T): T = {
     val previous = threadLocal.get
     try {
       threadLocal.set(that)
       func
     } finally {
-      if( previous!=null ) {
+      if (previous != null) {
         threadLocal.set(previous)
       } else {
         threadLocal.remove
@@ -116,7 +116,6 @@ trait RenderContext {
    */
   def requestFile: Option[File]
 
-
   /**
    * Returns a local link to the given file which should be within the [sourceDirectories]
    */
@@ -128,7 +127,6 @@ trait RenderContext {
     }
     None
   }
-
 
   /**
    * Allows conversion of an absolute URL starting with "/" to be converted using the prefix of a web application
@@ -158,14 +156,13 @@ trait RenderContext {
   def attribute[T](name: String): T =
     attributeOrElse(name, throw new NoValueSetException(name))
 
-
   /**
    * Returns the attribute of the given name and type or the default value if it is not available
    */
   def attributeOrElse[T](name: String, defaultValue: => T): T = {
     attributes.get(name)
-            .getOrElse(defaultValue)
-            .asInstanceOf[T]
+      .getOrElse(defaultValue)
+      .asInstanceOf[T]
   }
 
   def setAttribute(name: String, value: Option[Any]) {
@@ -182,8 +179,6 @@ trait RenderContext {
     val v = capture(body)
     attributes(name) = v
   }
-
-
 
   /**
    * Captured the body of the function call then append it to the given attribute value
@@ -214,7 +209,7 @@ trait RenderContext {
   //
   //////////////////////////////////x///////////////////////////////////
   def value(any: Any, shouldSanitize: Boolean = escapeMarkup): Any = {
-    def sanitize(text: String): Any = if (shouldSanitize) {Unescaped(RenderHelper.sanitize(text))} else {text}
+    def sanitize(text: String): Any = if (shouldSanitize) { Unescaped(RenderHelper.sanitize(text)) } else { text }
 
     any match {
       case u: Unit => ""
@@ -239,10 +234,11 @@ trait RenderContext {
       case s: NodeBuffer =>
         // No need to sanitize nodes as they are already sanitized
         (s.foldLeft(new StringBuilder) {
-          (rc, x) => x match {
-            case cd: PCData => rc.append(cd.data)
-            case _ => rc.append(x)
-          }
+          (rc, x) =>
+            x match {
+              case cd: PCData => rc.append(cd.data)
+              case _ => rc.append(x)
+            }
         }).toString
 
       case n: Node => n.toString
@@ -292,8 +288,7 @@ trait RenderContext {
       val template = engine.load(uri, extraBindings)
       if (layout) {
         engine.layout(template, this);
-      }
-      else {
+      } else {
         template.render(this);
       }
     }
@@ -309,8 +304,7 @@ trait RenderContext {
     for (model <- objects) {
       if (first) {
         first = false
-      }
-      else {
+      } else {
         this << separator
       }
       view(model, viewName)
@@ -341,7 +335,7 @@ trait RenderContext {
     def viewForClass(clazz: Class[_]): String = {
       for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
         val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
-        val fullPath = if (isEmpty(prefix)) {"/" + path} else {"/" + prefix + "/" + path}
+        val fullPath = if (isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
         if (engine.resourceLoader.exists(fullPath)) {
           return fullPath
         }
@@ -450,13 +444,11 @@ trait RenderContext {
     }
   }
 
-
   protected def resolveUri(path: String) = if (currentTemplate != null) {
     engine.resourceLoader.resolve(currentTemplate, path);
   } else {
     path
   }
-
 
   protected def using[T](model: AnyRef)(op: => T): T = {
     val original = attributes.get("it");
@@ -467,7 +459,6 @@ trait RenderContext {
       setAttribute("it", original)
     }
   }
-
 
   /**
    * Evaluates the specified body capturing any output written to this context
@@ -512,15 +503,12 @@ trait RenderContext {
     implicit def toBody(body: => Unit): Body = new Body(this, body)
   */
 
-
   /////////////////////////////////////////////////////////////////////
   //
   // introspection for dynamic templates or for archetype templates
   //
   /////////////////////////////////////////////////////////////////////
   def introspect(aType: Class[_]) = Introspector(aType)
-
-
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -544,9 +532,6 @@ trait RenderContext {
   def resourceOrElse[T](defaultValue: T): T = {
     attributeOrElse(resourceBeanAttribute, defaultValue)
   }
-
-
-
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -581,9 +566,7 @@ trait RenderContext {
 
   def dateFormat_=(value: DateFormat): Unit = _dateFormat(value)
 
-
   def locale: Locale = Locale.getDefault
-
 
   /**
    * Used to represent some text which does not need escaping

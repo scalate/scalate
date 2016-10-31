@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{Node, NodeSeq}
+import xml.{ Node, NodeSeq }
 
 /**
  * All the various implicit conversions for the scuery package

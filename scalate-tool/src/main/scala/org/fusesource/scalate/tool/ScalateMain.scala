@@ -19,11 +19,11 @@ package org.fusesource.scalate.tool
 
 import org.fusesource.scalate.util.IOUtil
 
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import org.apache.karaf.shell.console.Main
 import org.apache.karaf.shell.console.jline.Console
 import jline.Terminal
-import java.io.{PrintStream, InputStream}
+import java.io.{ PrintStream, InputStream }
 import org.fusesource.jansi.Ansi
 import org.apache.felix.service.command.CommandSession
 import org.apache.felix.gogo.runtime.CommandProcessorImpl
@@ -36,8 +36,8 @@ object ScalateMain {
   }
 
   // Some ANSI helpers...
-  def ANSI(value:Any) =  "\u001B["+value+"m"
-  val BOLD =  ANSI(1)
+  def ANSI(value: Any) = "\u001B[" + value + "m"
+  val BOLD = ANSI(1)
   val RESET = ANSI(0)
 }
 
@@ -54,24 +54,22 @@ class ScalateMain extends Main with Action {
 
   override def isMultiScopeMode() = false
 
-
   override def createConsole(commandProcessor: CommandProcessorImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal) = {
     new Console(commandProcessor, in, out, err, terminal, null) {
-      protected override def getPrompt = BOLD+"scalate> "+RESET
+      protected override def getPrompt = BOLD + "scalate> " + RESET
       protected override def welcome = {
-         session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")).replace("${project.version}", BuildInfo.version))
+        session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")).replace("${project.version}", BuildInfo.version))
       }
       protected override def setSessionProperties = {}
     }
   }
 
-  @argument(name = "args", description = "scalate sub command arguments", multiValued=true)
+  @argument(name = "args", description = "scalate sub command arguments", multiValued = true)
   var args = Array[String]()
 
   def execute(session: CommandSession): AnyRef = {
     run(session, args)
     null
   }
-
 
 }

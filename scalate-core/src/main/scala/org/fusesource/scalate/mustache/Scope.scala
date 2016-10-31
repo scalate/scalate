@@ -22,8 +22,8 @@ import org.fusesource.scalate.introspector.Introspector
 
 import collection.JavaConverters._
 
-import java.{lang => jl, util => ju}
-import xml.{NodeSeq, XML}
+import java.{ lang => jl, util => ju }
+import xml.{ NodeSeq, XML }
 import org.fusesource.scalate.util.Log
 
 object Scope extends Log {
@@ -57,17 +57,15 @@ trait Scope {
           case _ => null
         }
     }
-    debug("renderVariable %s = %s on %s",name,v,this)
+    debug("renderVariable %s = %s on %s", name, v, this)
     renderValue(v, unescape)
   }
 
   def renderValue(v: Any, unescape: Boolean = false): Unit = if (unescape) {
     context.unescape(format(v))
-  }
-  else {
+  } else {
     context.escape(format(v))
   }
-
 
   /**
    * Returns the variable of the given name looking in this scope or parent scopes to resolve the variable
@@ -79,8 +77,7 @@ trait Scope {
       case _ =>
         if (implicitIterator.isDefined && implicitIterator.get == name) {
           iteratorObject
-        }
-        else {
+        } else {
           parent match {
             case Some(p) => p.apply(name)
             case _ => None
@@ -118,7 +115,7 @@ trait Scope {
 
           // lets treat empty maps as being empty collections
           // due to bug in JSON parser returning Map() for JSON expression []
-          case s: collection.Map[_,_] => if (!s.isEmpty) childScope(name, s)(block)
+          case s: collection.Map[_, _] => if (!s.isEmpty) childScope(name, s)(block)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
@@ -159,7 +156,7 @@ trait Scope {
           case Some(a) =>
           case None => block(this)
 
-          case s: collection.Map[_,_] => if (s.isEmpty) block(this)
+          case s: collection.Map[_, _] => if (s.isEmpty) block(this)
 
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] =>
@@ -215,16 +212,16 @@ trait Scope {
   def toTraversable(v: Any, block: Scope => Unit): Any = v match {
     case t: Seq[_] => t
     case t: Array[_] => t.toSeq
-    case t: ju.Map[_,_] => t.asScala
+    case t: ju.Map[_, _] => t.asScala
 
     case f: Function0[_] => toTraversable(f(), block)
     case f: Function1[_, _] =>
       if (isParam1(f, classOf[Scope])) {
-        val f2 = f.asInstanceOf[Function1[Scope,_]]
+        val f2 = f.asInstanceOf[Function1[Scope, _]]
         toTraversable(f2(this), block)
       } else if (isParam1(f, classOf[String])) {
         // lets call the function with the block as a text value
-        val f2 = f.asInstanceOf[Function1[String,_]]
+        val f2 = f.asInstanceOf[Function1[String, _]]
         FunctionResult(f2(capture(block)))
       } else {
         f
@@ -242,7 +239,6 @@ trait Scope {
     case _ => v
   }
 
-
   /**
    * Captures the output of the given block
    */
@@ -255,8 +251,7 @@ trait Scope {
     try {
       f.getClass.getMethod("apply", clazz)
       true
-    }
-    catch {
+    } catch {
       case e: NoSuchMethodException => false
     }
   }

@@ -22,7 +22,7 @@ import java.net.MalformedURLException
 import javax.servlet.ServletContext
 
 import org.fusesource.scalate.util.Resource._
-import org.fusesource.scalate.util.{Log, ResourceNotFoundException, ResourceLoader, FileResourceLoader}
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException, ResourceLoader, FileResourceLoader }
 
 object ServletResourceLoader extends Log {
   def apply(context: ServletContext) = new ServletResourceLoader(context)
@@ -39,27 +39,25 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
   override def resource(uri: String) = {
     val file = realFile(uri)
     if (file != null) {
-      if( file.isFile )
+      if (file.isFile)
         Some(fromFile(file))
       else
         None
-    }
-    else {
+    } else {
       try {
         val url = context.getResource(uri)
-        if (url!=null) {
+        if (url != null) {
           val resource = fromURL(url)
           Some(resource)
         } else {
           delegate.resource(uri)
         }
       } catch {
-        case x:MalformedURLException=>
+        case x: MalformedURLException =>
           delegate.resource(uri)
       }
     }
   }
-
 
   /**
    * Returns the real path for the given uri.
@@ -75,8 +73,7 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
     if (file != null) file.getPath else null
   }
 
-
-  override protected def createNotFoundException(uri: String) =  new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+  override protected def createNotFoundException(uri: String) = new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
 
   /**
    * Returns the File for the given uri
@@ -90,7 +87,7 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
       if (path != null) {
         val file = new File(path)
         debug("file from realPath for: " + uri + " is: " + file)
-        if (file.canRead) { answer = file}
+        if (file.canRead) { answer = file }
       }
       answer
     }
@@ -98,9 +95,8 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
     findFile(uri) match {
       case file: File => file
       case _ => if (uri.startsWith("/") && !uri.startsWith("/WEB-INF")) {
-        findFile("/WEB-INF" + uri)  
-      }
-      else {
+        findFile("/WEB-INF" + uri)
+      } else {
         null
       }
     }

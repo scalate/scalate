@@ -26,14 +26,12 @@ import org.fusesource.scalate.util.IOUtil
  */
 class MustacheJSONTest extends MustacheTestSupport {
 
-
   // Note that these JS files must be valid JSON so using " quoted names
 
   mustacheJsonTest("array_of_strings")
   mustacheJsonTest("array_of_strings_options")
   mustacheJsonTest("inverted_section")
   mustacheJsonTest("template_partial")
-
 
   // Implementation methods
   //-------------------------------------------------------------------------
@@ -47,9 +45,9 @@ class MustacheJSONTest extends MustacheTestSupport {
       JSON.parseFull(jsonText) match {
         case Some(json) =>
           debug("Parsed json: %s", json)
-          
+
           json match {
-            case attributes: Map[String,_] =>
+            case attributes: Map[String, _] =>
               assertMustacheTest(name, attributes)
             case v =>
               fail("Cannot process JSON type: " + v)

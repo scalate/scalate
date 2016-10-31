@@ -18,7 +18,7 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.FunSuiteSupport
-import java.{util => ju}
+import java.{ util => ju }
 
 // the following imports are included by default in TemplateEngine
 import scala.collection.JavaConversions._
@@ -30,7 +30,7 @@ case class Person(name: String, address: Address)
 class TemplateConversionsTest extends FunSuiteSupport {
 
   test("iterate over maps using Map.Entry like object") {
-    val map = new ju.HashMap[String,String]
+    val map = new ju.HashMap[String, String]
     map.put("a", "1")
     map.put("b", "2")
 
@@ -46,7 +46,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = a ?: "default"
     println("got answer: " + answer)
-    expect("default"){answer}
+    expect("default") { answer }
   }
 
   test("orElse method") {
@@ -54,7 +54,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = orElse(a, "default")
     println("got answer: " + answer)
-    expect("default"){answer}
+    expect("default") { answer }
   }
 
   test("orElse with null pointer exception") {
@@ -62,6 +62,6 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = orElse(person.address.city, "default")
     println("got answer: " + answer)
-    expect("default"){answer}
+    expect("default") { answer }
   }
 }

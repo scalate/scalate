@@ -21,7 +21,7 @@ import org.fusesource.scalate.AttributeMap
 
 import scala.collection.JavaConversions._
 
-import java.{util => ju}
+import java.{ util => ju }
 
 import scala.collection.Set
 //import scala.collection.mutable.HashMap
@@ -43,8 +43,7 @@ class AttributesHashMap extends AttributeMap {
     val answer = map.get(key)
     if (answer == null) {
       throw new NoSuchElementException("key " + key + " not available")
-    }
-    else {
+    } else {
       answer
     }
   }
@@ -55,7 +54,7 @@ class AttributesHashMap extends AttributeMap {
 
   def remove(key: String): Option[Any] = {
     val value = map.remove(key)
-   if (value == null) None else Some(value)
+    if (value == null) None else Some(value)
   }
 
   def keySet = asScalaSet(map.keySet)

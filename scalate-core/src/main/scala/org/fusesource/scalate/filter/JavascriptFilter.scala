@@ -22,7 +22,7 @@ import org.fusesource.scalate.support.RenderHelper
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.
- * 
+ *
  * <p>Useful for including inline Javascript.</p>
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -32,9 +32,9 @@ object JavascriptFilter extends Filter {
   def filter(context: RenderContext, content: String) = {
     """<script type='text/javascript'>
        |  //<![CDATA[
-       |    """.stripMargin+RenderHelper.indent("    ", content)+"""
+       |    """.stripMargin + RenderHelper.indent("    ", content) + """
        |  //]]>
        |</script>""".stripMargin
   }
-  
+
 }

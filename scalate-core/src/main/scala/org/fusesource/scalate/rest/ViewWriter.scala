@@ -37,24 +37,24 @@ package org.fusesource.scalate.rest
 
 import java.io.OutputStream
 import java.lang.reflect.Type
-import javax.ws.rs.ext.{MessageBodyWriter, Provider}
+import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
+import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
 
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import java.lang.{String, Class}
+import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import java.lang.{ String, Class }
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
-import org.fusesource.scalate.util.{Log, ResourceNotFoundException, Logging}
+import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException, Logging }
 
 object ViewWriter extends Log
 
 /**
- * Renders a [[org.fusesource.scalate.rest.View]] using the Scalate template engine 
+ * Renders a [[org.fusesource.scalate.rest.View]] using the Scalate template engine
  *
  * @version $Revision : 1.1 $
  */
@@ -78,7 +78,6 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
   }
 
   def getSize(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
-
 
   def writeTo(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
     def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
@@ -129,7 +128,6 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
   }
 
   protected lazy val finder = new TemplateFinder(engine)
-
 
   protected def engine = ServletTemplateEngine(servletContext)
 

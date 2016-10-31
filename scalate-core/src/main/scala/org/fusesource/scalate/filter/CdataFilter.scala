@@ -46,7 +46,7 @@ import org.fusesource.scalate._
 object CdataFilter extends Filter {
 
   def filter(context: RenderContext, content: String) = {
-    """<![CDATA["""+content+"""]]>"""
+    """<![CDATA[""" + content + """]]>"""
   }
-  
+
 }

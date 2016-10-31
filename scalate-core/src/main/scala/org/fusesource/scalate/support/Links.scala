@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.support
 
-import java.{util => ju}
+import java.{ util => ju }
 
 object Links {
 

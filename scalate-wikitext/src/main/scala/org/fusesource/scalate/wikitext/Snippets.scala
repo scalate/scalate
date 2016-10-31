@@ -23,9 +23,9 @@ import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBl
 import io.Source
 import scala.Option
 import java.io.File
-import java.util.regex.{Pattern, Matcher}
-import org.eclipse.mylyn.wikitext.core.parser.{DocumentBuilder, Attributes}
-import org.fusesource.scalate.util.{Log, Logging}
+import java.util.regex.{ Pattern, Matcher }
+import org.eclipse.mylyn.wikitext.core.parser.{ DocumentBuilder, Attributes }
+import org.fusesource.scalate.util.{ Log, Logging }
 
 /**
  * Helper class to access file containing snippets of code:
@@ -56,9 +56,9 @@ object Snippets {
    * @param prefix the prefix
    * @param location the full URL that should be used for the prefix
    */
-  def addPrefix(prefix: String, location: String) : Unit = prefixes.put(prefix, location)
+  def addPrefix(prefix: String, location: String): Unit = prefixes.put(prefix, location)
 
-  private[wikitext] def handlePrefix(location: String) : String = {
+  private[wikitext] def handlePrefix(location: String): String = {
     val prefix = location.substring(0, location.indexOf("/"))
     if (prefixes.contains(prefix)) {
       location.replaceFirst(prefix, prefixes(prefix))
@@ -70,7 +70,7 @@ object Snippets {
   /**
    * Get the snippet file contents
    */
-  def getSource(location: String) : Source = {
+  def getSource(location: String): Source = {
     val url = handlePrefix(location)
 
     def isUrl = url.indexOf(':') > 0
@@ -103,12 +103,12 @@ class SnippetBlock extends ParameterizedBlock {
 
   var pattern: Pattern = Pattern.compile("\\s*\\{snippet(?::([^\\}]*))?\\}(.*)")
   var matcher: Matcher = null
-  var lang:Option[String] = None
+  var lang: Option[String] = None
   var url: String = _
-  var id:Option[String] = None
-  var pygmentize : Boolean = Snippets.usePygmentize
+  var id: Option[String] = None
+  var pygmentize: Boolean = Snippets.usePygmentize
 
-  lazy val handler : SnippetHandler = {
+  lazy val handler: SnippetHandler = {
     if (pygmentize) {
       val block = new PygmentsBlock
       block.setState(state)
@@ -137,33 +137,32 @@ class SnippetBlock extends ParameterizedBlock {
       for (snippetLine <- getSnippet) {
         handler.addLine(snippetLine)
       }
-    }
-    catch {
+    } catch {
       case e: Exception => Snippets.errorHandler(this, e)
     }
     handler.done
-    
+
     if (end < line.length) {
-        state.setLineSegmentEndOffset(end)
+      state.setLineSegmentEndOffset(end)
     }
     setClosed(true)
     if (end == line.length) { -1 } else { end }
   }
-  
+
   /**
    * Extract the snippet from the Source file
    */
-  def getSnippet : Iterator[String] = {
+  def getSnippet: Iterator[String] = {
     val lines = Snippets.getSource(url).getLines
     id match {
       case None => lines
       case Some(snippet) => lines.dropWhile(!_.contains("START SNIPPET: " + snippet))
-                                 .takeWhile(!_.contains("END SNIPPET: " + snippet))
-                                 .drop(1)
+        .takeWhile(!_.contains("END SNIPPET: " + snippet))
+        .drop(1)
     }
   }
 
-  override def setOption(key: String, value:String) = {
+  override def setOption(key: String, value: String) = {
     key match {
       case "id" => id = Some(value)
       case "url" => url = value
@@ -224,8 +223,8 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
   }
 
   def done = {
-    builder.endBlock();  // </pre>
-    builder.endBlock();  // </div>          
+    builder.endBlock(); // </pre>
+    builder.endBlock(); // </div>          
   }
 
   /**
@@ -236,7 +235,7 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
     attributes.setCssClass(cssClass)
     attributes
   }
-  
+
 }
 
 /**

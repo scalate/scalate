@@ -17,15 +17,14 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import java.{util => ju, lang => jl}
+import java.{ util => ju, lang => jl }
 import java.util.zip.ZipInputStream
 import java.io._
 import java.lang.StringBuilder
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues}
+import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues }
 import org.apache.felix.service.command.CommandSession
 import java.util.regex.Pattern
 import org.fusesource.scalate.util.IOUtil._
-
 
 /**
  * The 'scalate create' sub command.
@@ -33,8 +32,7 @@ import org.fusesource.scalate.util.IOUtil._
 @command(scope = "scalate", name = "create", description = "Creates your Scalate project fast to get you scalate-ing!")
 class Create extends Action {
 
-  @argument(index = 0, required = true, name = "archetype", description = "Archetype to create")
-  // TODO rename to archetype
+  @argument(index = 0, required = true, name = "archetype", description = "Archetype to create") // TODO rename to archetype
   var archetype: String = _
   @argument(index = 1, required = true, name = "groupId", description = "Maven group Id of the new project")
   var groupId = ""
@@ -51,7 +49,7 @@ class Create extends Action {
   var verbose: Boolean = false
   @option(name = "--home", description = "Scalate install directory")
   var homeDir = System.getProperty("scalate.home", "")
-  
+
   val archetypes = Map(
     "jersey" -> "scalate-archetype-jersey_2.10",
     "guice" -> "scalate-archetype-guice_2.10",
@@ -66,7 +64,7 @@ class Create extends Action {
 
   val binarySuffixes = List(".png", ".ico", ".gif", ".jpg", ".jpeg", ".bmp")
 
-/*
+  /*
   TODO
 
   def usage(out: StringBuilder) = {
@@ -105,23 +103,22 @@ class Create extends Action {
     if (!file.exists) {
       info("No such archetype '" + archetypeArtifactId + "' in directory " + archetypesDir)
       return -2
-    }
-    else {
+    } else {
       outputDir = userDir + "/" + artifactId
       val outputFile = new File(outputDir)
       if (outputFile.exists) {
         info("Cannot create archetype as " + outputFile.getAbsolutePath + " already exists")
         return -2
       } else {
-        if (packageName==null || packageName.length == 0) {
+        if (packageName == null || packageName.length == 0) {
           packageName = groupId + "." + artifactId
         }
 
         info("Creating archetype " + archetypeArtifactId + " using maven groupId: " +
-                groupId + " artifactId: " + artifactId + " version: " + version
-                + " in directory: " + outputDir)
+          groupId + " artifactId: " + artifactId + " version: " + version
+          + " in directory: " + outputDir)
 
-        using(new ZipInputStream(new FileInputStream(file))) { zip=>
+        using(new ZipInputStream(new FileInputStream(file))) { zip =>
           var ok = true
           while (ok) {
             val entry = zip.getNextEntry
@@ -150,7 +147,7 @@ class Create extends Action {
                 val file = new File(dirName)
                 file.getParentFile.mkdirs
                 using(new FileOutputStream(file)) { out =>
-                  if( binarySuffixes.find( name.endsWith(_) ).isDefined ) {
+                  if (binarySuffixes.find(name.endsWith(_)).isDefined) {
                     // binary file?  don't transform.
                     copy(zip, out)
                   } else {
@@ -188,7 +185,7 @@ class Create extends Action {
   }
 
   protected def replaceVariable(text: String, name: String, value: String): String = {
-    text.replaceAll(Pattern.quote("${"+name+"}"), value)
+    text.replaceAll(Pattern.quote("${" + name + "}"), value)
   }
 
 }

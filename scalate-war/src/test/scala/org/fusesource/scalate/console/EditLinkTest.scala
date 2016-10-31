@@ -20,7 +20,7 @@ package org.fusesource.scalate.console
 /**
  * @version $Revision: 1.1 $
  */
-import _root_.java.io.{OutputStreamWriter, PrintWriter}
+import _root_.java.io.{ OutputStreamWriter, PrintWriter }
 import _root_.org.fusesource.scalate._
 import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
@@ -45,7 +45,7 @@ class EditLinkTest extends FunSuite {
   def editLink(name: String) = {
 
     // lets put a render context in scope
-    RenderContext.using( new DefaultRenderContext(file, new TemplateEngine()) ) {
+    RenderContext.using(new DefaultRenderContext(file, new TemplateEngine())) {
       val link = EditLink.editLink(file)("Edit file")
       println(name + " link = " + link)
     }

@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{Attribute, Document, Elem, Node, NodeSeq, Null, Text}
+import xml.{ Attribute, Document, Elem, Node, NodeSeq, Null, Text }
 
 object Transform {
   implicit def toNodes(transform: Transform): NodeSeq = transform()

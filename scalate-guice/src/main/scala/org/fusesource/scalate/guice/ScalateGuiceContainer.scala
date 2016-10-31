@@ -22,7 +22,7 @@ import _root_.com.sun.jersey.api.core.ResourceConfig
 import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.com.sun.jersey.spi.container.servlet.WebConfig
 import _root_.com.sun.jersey.spi.container.WebApplication
-import _root_.java.util.{Map => JMap}
+import _root_.java.util.{ Map => JMap }
 import org.fusesource.scalate.util.Log
 
 object ScalateGuiceContainer extends Log
@@ -34,8 +34,7 @@ class ScalateGuiceContainer(injector: Injector) extends GuiceContainer(injector)
   import ScalateGuiceContainer._
 
   // TODO should the GuiceContainer class do this too?
-  override def getDefaultResourceConfig(props: JMap[String,AnyRef], wc: WebConfig):ResourceConfig = injector.getInstance(classOf[ResourceConfig])
-
+  override def getDefaultResourceConfig(props: JMap[String, AnyRef], wc: WebConfig): ResourceConfig = injector.getInstance(classOf[ResourceConfig])
 
   override def initiate(rc: ResourceConfig, wa: WebApplication) = {
     debug("container created with " + rc + " properties: " + rc.getProperties)

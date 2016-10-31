@@ -21,9 +21,9 @@ import _root_.java.io.File
 import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
 import javax.ws.rs._
-import org.fusesource.scalate.{NoFormParameterException, RenderContext}
+import org.fusesource.scalate.{ NoFormParameterException, RenderContext }
 import org.fusesource.scalate.rest.View
-import org.fusesource.scalate.util.{Log, IOUtil}
+import org.fusesource.scalate.util.{ Log, IOUtil }
 
 object ArchetypeResource extends Log
 /**
@@ -55,7 +55,6 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
   @Path("{name}")
   def child(@PathParam("name") childName: String) = new ArchetypeResource(console, name + "/" + childName)
 
-
   @GET
   @Produces(Array("text/html;qs=5"))
   def get = render(templatePrefix + name + ".index")
@@ -74,15 +73,13 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
     render(view)
   }
 
-
   def form = _form
 
   def formParam(name: String): String = {
     val answer = _form.getFirst(name)
     if (answer == null) {
       throw new NoFormParameterException(name)
-    }
-    else {
+    } else {
       answer
     }
   }

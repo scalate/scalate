@@ -24,14 +24,13 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
   val xml = <ul class="people">
-    <li>
-      <a href="#" class="person">A person</a>
-    </li>
-    <li>
-      <a href="#" class="person">Another person</a>
-    </li>
-  </ul>
-
+              <li>
+                <a href="#" class="person">A person</a>
+              </li>
+              <li>
+                <a href="#" class="person">Another person</a>
+              </li>
+            </ul>
 
   test("transform contents") {
 
@@ -58,7 +57,7 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
 
   protected def assertPersonLink(a: Node, name: String): Unit = {
     debug("Testing " + a + " for name: " + name)
-    expect(name) {a.text}
-    expect("http://acme.com/bookstore/" + name) {(a \ "@href").toString}
+    expect(name) { a.text }
+    expect("http://acme.com/bookstore/" + name) { (a \ "@href").toString }
   }
 }

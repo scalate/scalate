@@ -32,17 +32,17 @@ class SourceMapStratum(val name: String) {
   var files = new ArrayList[(String, String)]()
   val lines = new ArrayList[LineInfo]()
 
-  def mapToStratum(line:Int):Option[(String, Int)] = {
-    
+  def mapToStratum(line: Int): Option[(String, Int)] = {
+
     val lines = this.lines.asScala
 
-    def file(id:Int) = {
+    def file(id: Int) = {
       val value = files.get(id)
-      if( value._2==null ) value._1 else value._2
+      if (value._2 == null) value._1 else value._2
     }
-    
-    val rc = lines.filter( _.containsOutputLine(line) ).map( x=>(file(x.file), x.mapOutputLine(line)) )
-    if( rc.isEmpty ) None else Some(rc.head)
+
+    val rc = lines.filter(_.containsOutputLine(line)).map(x => (file(x.file), x.mapOutputLine(line)))
+    if (rc.isEmpty) None else Some(rc.head)
   }
 
   /**
@@ -104,11 +104,11 @@ class SourceMapStratum(val name: String) {
     while (i < lines.size() - 1) {
       var li = lines.get(i);
       var liNext = lines.get(i + 1);
-      if (  li.file == liNext.file
-            && liNext.istart == li.istart
-            && liNext.icount == 1
-            && li.icount == 1
-            && liNext.ostart == li.ostart + li.icount * li.oincrement) {
+      if (li.file == liNext.file
+        && liNext.istart == li.istart
+        && liNext.icount == 1
+        && li.icount == 1
+        && liNext.ostart == li.ostart + li.icount * li.oincrement) {
 
         li.oincrement = liNext.ostart - li.ostart + liNext.oincrement
         lines.remove(i + 1);
@@ -123,12 +123,12 @@ class SourceMapStratum(val name: String) {
     while (i < lines.size() - 1) {
       var li = lines.get(i);
       var liNext = lines.get(i + 1);
-      if ( li.file == liNext.file
-              && liNext.istart == li.istart + li.icount
-              && liNext.oincrement == li.oincrement
-              && liNext.ostart
-              == li.ostart
-              + li.icount * li.oincrement) {
+      if (li.file == liNext.file
+        && liNext.istart == li.istart + li.icount
+        && liNext.oincrement == li.oincrement
+        && liNext.ostart
+        == li.ostart
+        + li.icount * li.oincrement) {
         li.icount += liNext.icount
         lines.remove(i + 1);
       } else {
@@ -167,7 +167,7 @@ class SourceMapStratum(val name: String) {
 
     // print LineSection
     out.append("*L\n");
-    var lastFile=0
+    var lastFile = 0
     for (i <- 0 until lines.size()) {
       var line = lines.get(i);
       out.append(line.toString(lastFile));
@@ -187,13 +187,13 @@ class SourceMapStratum(val name: String) {
     check(icount > 0);
     check(oincrement >= 0);
 
-    def containsOutputLine(line:Int) = {
+    def containsOutputLine(line: Int) = {
       var oend = ostart + (icount * oincrement)
-      ostart <= line && line < oend   
+      ostart <= line && line < oend
     }
 
-    def mapOutputLine(line:Int) = {
-      istart + ((line-ostart) / oincrement)
+    def mapOutputLine(line: Int) = {
+      istart + ((line - ostart) / oincrement)
     }
 
     private def check(proc: => Boolean) = {
@@ -202,15 +202,15 @@ class SourceMapStratum(val name: String) {
     }
 
     override def toString() = toString(-1)
-    
-    def toString(lastFile:Int) = {
+
+    def toString(lastFile: Int) = {
       if (istart == -1 || ostart == -1)
         throw new IllegalStateException()
 
       val out = new StringBuilder()
       out.append(istart)
 
-      if (file!=lastFile)
+      if (file != lastFile)
         out.append("#" + file)
 
       if (icount != 1)
@@ -220,7 +220,7 @@ class SourceMapStratum(val name: String) {
 
       if (oincrement != 1)
         out.append("," + oincrement)
-      
+
       out.append('\n');
       out.toString();
     }
@@ -290,10 +290,9 @@ class SourceMap {
     doEmbedded = status
   }
 
-
-  def mapToStratum(line:Int, name:String=defaultStratum) = {
-    val matches = strata.find(_.name==name);
-    if( matches.isDefined ) {
+  def mapToStratum(line: Int, name: String = defaultStratum) = {
+    val matches = strata.find(_.name == name);
+    if (matches.isDefined) {
       matches.get.mapToStratum(line)
     } else {
       None
@@ -307,9 +306,9 @@ class SourceMap {
     out.append(outputFileName + '\n')
     out.append(defaultStratum + '\n')
     if (doEmbedded) {
-      embedded.foreach{ out.append(_) }
+      embedded.foreach { out.append(_) }
     }
-    strata.foreach{ out.append(_) }
+    strata.foreach { out.append(_) }
     out.append("*E\n")
     return out.toString
   }
@@ -321,83 +320,80 @@ object SourceMap {
 
     override def skipWhitespace = false
 
-    val number = """[0-9]+""".r ^^ {Integer.parseInt(_)}
+    val number = """[0-9]+""".r ^^ { Integer.parseInt(_) }
     val nl = """\r?\n""".r
     val dot = """[^\r\n]+""".r
 
     val stratum: Parser[SourceMapStratum] =
-      ("*S "~>dot<~nl) ~
-      opt(
-        "*F"~nl ~>
-        rep1(
-          ("+ "~> number <~ " ") ~ (dot <~ nl) ~ (dot <~ nl) ^^ {
-            case n~name~path => (n, name, path)
-          } | (number <~ " ") ~ dot <~ nl ^^ {
-            case n~name => (n, name, null)
-          }
-        ) ^^ {
-          case list=>
-          var rc = Map[Int,(String, String)]()
-          list.foreach {
-            case (n, name, path) => {
-              rc += n->((name, path))
-            }
-          }
-          rc
-        }
-      ) ~
-      opt(
-        "*L"~nl ~>
-        rep1( number~opt("#"~>number)~opt(","~>number)~":"~number~opt(","~>number)<~nl ^^ {
-            case istart~file~icount~":"~ostart~oincrement=>
-              ( istart,file,icount.getOrElse(1),ostart,oincrement.getOrElse(1))
-          }
-        )
-      ) ^^ {
-        case (name)~ofiles~lines=>
-        val rc = new SourceMapStratum(name)
-        var files = Map(0->0)
-        if( ofiles.isDefined ) {
-          files = ofiles.get.transform {
-            case (index,value) =>
-              rc.addFile(value._1, value._2)
-          }
-        }
-        if ( lines.isDefined ) {
-          var lastFile=0
-          lines.get.foreach {
-            case ( istart,file,icount,ostart,oincrement ) =>
-              val f = if( file.isDefined ) {
-                lastFile = files.get(file.get).get
-                lastFile
-              } else {
-                lastFile
+      ("*S " ~> dot <~ nl) ~
+        opt(
+          "*F" ~ nl ~>
+            rep1(
+              ("+ " ~> number <~ " ") ~ (dot <~ nl) ~ (dot <~ nl) ^^ {
+                case n ~ name ~ path => (n, name, path)
+              } | (number <~ " ") ~ dot <~ nl ^^ {
+                case n ~ name => (n, name, null)
               }
-              rc.addLine(istart, f, icount, ostart, oincrement)
-          }
+            ) ^^ {
+                case list =>
+                  var rc = Map[Int, (String, String)]()
+                  list.foreach {
+                    case (n, name, path) => {
+                      rc += n -> ((name, path))
+                    }
+                  }
+                  rc
+              }
+        ) ~
+          opt(
+            "*L" ~ nl ~>
+              rep1(number ~ opt("#" ~> number) ~ opt("," ~> number) ~ ":" ~ number ~ opt("," ~> number) <~ nl ^^ {
+                case istart ~ file ~ icount ~ ":" ~ ostart ~ oincrement =>
+                  (istart, file, icount.getOrElse(1), ostart, oincrement.getOrElse(1))
+              })
+          ) ^^ {
+              case (name) ~ ofiles ~ lines =>
+                val rc = new SourceMapStratum(name)
+                var files = Map(0 -> 0)
+                if (ofiles.isDefined) {
+                  files = ofiles.get.transform {
+                    case (index, value) =>
+                      rc.addFile(value._1, value._2)
+                  }
+                }
+                if (lines.isDefined) {
+                  var lastFile = 0
+                  lines.get.foreach {
+                    case (istart, file, icount, ostart, oincrement) =>
+                      val f = if (file.isDefined) {
+                        lastFile = files.get(file.get).get
+                        lastFile
+                      } else {
+                        lastFile
+                      }
+                      rc.addLine(istart, f, icount, ostart, oincrement)
+                  }
+                }
+                rc
+            }
+
+    val smap_header: Parser[(String ~ Option[String])] = "SMAP" ~ nl ~> (dot <~ nl) ~ opt(dot <~ nl)
+
+    val smap = smap_header ~ rep(stratum) <~ "*E" ~ nl ^^ {
+      case (outputFileName ~ defaultStratum) ~ stratums =>
+        val rc = new SourceMap()
+        rc.setOutputFileName(outputFileName)
+        stratums.foreach {
+          case stratum: SourceMapStratum =>
+            val isDefault = stratum.name == defaultStratum.get
+            rc.addStratum(stratum, isDefault)
         }
         rc
-      }
-
-
-    val smap_header:Parser[(String~Option[String])] = "SMAP" ~ nl ~>( dot <~ nl) ~ opt(dot <~ nl)
-
-    val smap = smap_header ~ rep(stratum) <~ "*E"~nl ^^ {
-      case (outputFileName~defaultStratum)~stratums =>
-      val rc = new SourceMap()
-      rc.setOutputFileName(outputFileName)
-      stratums.foreach {
-        case stratum:SourceMapStratum =>
-        val isDefault = stratum.name == defaultStratum.get
-        rc.addStratum(stratum, isDefault)
-      }
-      rc
     }
 
-
-    def parse(in:String) = {
+    def parse(in: String) = {
       var content = in;
-      if( !in.endsWith("\n") ) {
+      if (!in.endsWith("\n")) {
         content = in + "\n"
       }
       val x = phrase(smap)(new CharSequenceReader(content))
@@ -409,10 +405,9 @@ object SourceMap {
 
   }
 
-  def parse(in:String) = SmapParser.parse(in)
+  def parse(in: String) = SmapParser.parse(in)
 
 }
-
 
 /**
  * Conversion from Java to Scala broke something.. need to dig into this guy
@@ -431,14 +426,14 @@ object SourceMapInstaller {
   val SOURCE_DEBUG_EXTENSION_MAX_SIZE = Integer.getInteger("SOURCE_DEBUG_EXTENSION_MAX_SIZE", 65535).intValue
 
   object Writer extends Log
-  class Writer(val orig: Array[Byte], val sourceDebug:String) {
+  class Writer(val orig: Array[Byte], val sourceDebug: String) {
     import Writer._
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)
-    val baos = new ByteArrayOutputStream(orig.length + (sourceDebug.length*2) + 100) {
-      def position:Int = count
-      def update(location: Int)(proc: =>Unit): Unit = {
+    val baos = new ByteArrayOutputStream(orig.length + (sourceDebug.length * 2) + 100) {
+      def position: Int = count
+      def update(location: Int)(proc: => Unit): Unit = {
         var original: Int = count
         count = location
         proc
@@ -451,17 +446,17 @@ object SourceMapInstaller {
     def copy(count: Int): Unit = {
       var i: Int = 0
       while (i < count) {
-        dos.writeByte( dis.readByte )
+        dos.writeByte(dis.readByte)
         i += 1
       }
     }
-    
+
     def copyShort() = {
       var rc = dis.readShort
       dos.writeShort(rc)
       rc
-    }    
-    
+    }
+
     def store: Array[Byte] = {
       copy(4 + 2 + 2)
       var constantPoolCountPos: Int = baos.position
@@ -492,7 +487,6 @@ object SourceMapInstaller {
       writeSourceDebugAttribute(sdeIndex)
       baos.toByteArray
     }
-
 
     def copyMembers: Unit = {
       var count: Int = dis.readShort
@@ -602,11 +596,11 @@ object SourceMapInstaller {
       new String(attrbute.get, "UTF-8")
     }
 
-    def readConstantPoolStrings(): Map[String,Short] = {
-      var rc = Map[String,Short]()
+    def readConstantPoolStrings(): Map[String, Short] = {
+      var rc = Map[String, Short]()
       var i = 1
       val count = dis.readShort & 0xFFFF
-      while (i < count ) {
+      while (i < count) {
         var tag = dis.readByte
         tag match {
           case 8 | 7 =>
@@ -640,8 +634,8 @@ object SourceMapInstaller {
       }
     }
 
-    def readAttributes(): Map[Short,Array[Byte]] = {
-      var rc = Map[Short,Array[Byte]]()
+    def readAttributes(): Map[Short, Array[Byte]] = {
+      var rc = Map[Short, Array[Byte]]()
       var count = dis.readShort
       var i: Int = 0
       while (i < count) {
@@ -649,7 +643,7 @@ object SourceMapInstaller {
         var len: Int = dis.readInt
         var data = new Array[Byte](len)
         dis.readFully(data)
-        rc += (index->data)
+        rc += (index -> data)
         i += 1;
       }
       return rc
@@ -666,12 +660,11 @@ object SourceMapInstaller {
     (new Reader(classFile)).load
   }
 
-
   def store(classFile: File, sourceDebug: File): Unit = {
     store(classFile, readText(sourceDebug))
   }
 
-  def store(classFile: File, sourceDebug:String): Unit = {
+  def store(classFile: File, sourceDebug: String): Unit = {
     var tmpFile = new File(classFile.getPath() + "tmp");
     store(classFile, sourceDebug, tmpFile);
     if (!classFile.delete()) {
@@ -697,7 +690,7 @@ object SourceMapInstaller {
   def store(input: Array[Byte], sourceDebug: String): Array[Byte] = {
 
     var bytes = sourceDebug.getBytes("UTF-8")
-    if( bytes.length <= SOURCE_DEBUG_EXTENSION_MAX_SIZE ) {
+    if (bytes.length <= SOURCE_DEBUG_EXTENSION_MAX_SIZE) {
       (new Writer(input, sourceDebug)).store
     } else {
       input
@@ -720,10 +713,10 @@ object SourceMapInstaller {
     smap1.setOutputFileName("foo.scala");
     val straturm = new SourceMapStratum("JSP")
     straturm.addFile("foo.scala", "path/to/foo.scala")
-    straturm.addLine(1,0,1,2,1);
-    straturm.addLine(2,0,1,3,1);
-    straturm.addLine(4,0,1,8,1);
-    straturm.addLine(5,0,1,9,1);
+    straturm.addLine(1, 0, 1, 2, 1);
+    straturm.addLine(2, 0, 1, 3, 1);
+    straturm.addLine(4, 0, 1, 8, 1);
+    straturm.addLine(5, 0, 1, 9, 1);
     smap1.addStratum(straturm, true)
     val text1 = smap1.toString
     println(text1)
@@ -732,7 +725,7 @@ object SourceMapInstaller {
     val text2 = smap2.toString
     println(text2)
 
-    println(text2==text1)
+    println(text2 == text1)
 
     println(smap2.mapToStratum(3));
 

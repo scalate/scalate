@@ -25,7 +25,7 @@ import collection.mutable.HashMap
  */
 class ParserTest extends ParserTestSupport {
 
- test("parse attribute declaration") {
+  test("parse attribute declaration") {
     val lines = assertValid("""<%@ val name: String %>
 <html>
   <%-- comment --%>
@@ -64,7 +64,6 @@ class ParserTest extends ParserTestSupport {
     assertAttribute(lines, AttributeFragment("val", "name", "String", Some("\"Hello\""), false))
   }
 
-
   test("parse valid SSP file with special symbols in code") {
     val lines = assertValid("""<%
     import scala.util.xml._ %>
@@ -78,10 +77,10 @@ class ParserTest extends ParserTestSupport {
 """)
 
     val count = countTypes(lines)
-    expect(1) {count(classOf[CommentFragment])}
-    expect(1) {count(classOf[ScriptletFragment])}
-    expect(1) {count(classOf[DollarExpressionFragment])}
-    expect(1) {count(classOf[ExpressionFragment])}
+    expect(1) { count(classOf[CommentFragment]) }
+    expect(1) { count(classOf[ScriptletFragment]) }
+    expect(1) { count(classOf[DollarExpressionFragment]) }
+    expect(1) { count(classOf[ExpressionFragment]) }
   }
 
   test("parse valid SSP files without newlines") {
@@ -95,8 +94,6 @@ class ParserTest extends ParserTestSupport {
 </html>
 """)
   }
-
-
 
   test("parse simple SSP without tags") {
     assertValid("""hey <% import scala.util.xml._ %> ${foo} <%-- comment --%> yo""")

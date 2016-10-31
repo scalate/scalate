@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery
 
 import support._
-import xml.{Elem, Node, NodeSeq}
+import xml.{ Elem, Node, NodeSeq }
 import org.w3c.dom.Attr
 
 /**
@@ -46,10 +46,10 @@ object Selector {
    * itself from right to left on the current node
    */
   def apply(selector: Selector, combinators: Seq[Combinator]): Selector = combinators match {
-  // if we had
-  // a, (c1, b), (c2, c)
-  // then we should create a selector
-  // of c which then uses c2.selector(b, c1.selector(a))
+    // if we had
+    // a, (c1, b), (c2, c)
+    // then we should create a selector
+    // of c which then uses c2.selector(b, c1.selector(a))
 
     case Nil => selector
     case h :: Nil => h.combinatorSelector(selector)
@@ -60,7 +60,6 @@ object Selector {
    * Returns a selector which returns the childen of the given selector
    */
   def children(selector: Selector) = ChildrenSelector(selector)
-
 
   def pseudoSelector(identifier: String): Selector = identifier match {
     case "root" => RootSelector
@@ -83,7 +82,7 @@ trait Selector {
 
   def filter(nodes: NodeSeq, ancestors: Seq[Node] = Nil): NodeSeq = {
     val rc = nodes.flatMap(filterNode(_, ancestors))
-    if( rc.size==1 && rc.head.isInstanceOf[Elem] ) {
+    if (rc.size == 1 && rc.head.isInstanceOf[Elem]) {
       rc.head.asInstanceOf[Elem]
     } else {
       rc
@@ -91,8 +90,7 @@ trait Selector {
   }
 
   protected def filterNode(n: Node, ancestors: Seq[Node]): NodeSeq = {
-    if (matches(n, ancestors))
-      {n}
+    if (matches(n, ancestors)) { n }
     else {
       n.child.flatMap {
         c => filterNode(c, n +: ancestors)

@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.{lang => jl}
+import java.{ lang => jl }
 
 object StringConverter {
 

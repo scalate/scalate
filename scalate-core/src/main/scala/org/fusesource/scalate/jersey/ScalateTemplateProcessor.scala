@@ -21,19 +21,18 @@ package jersey
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import javax.ws.rs.core.Context
 
-import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
+import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import com.sun.jersey.spi.template.ViewProcessor
 
-
-import org.fusesource.scalate.servlet.{ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
-import util.{Log, ResourceNotFoundException}
+import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
+import util.{ Log, ResourceNotFoundException }
 
 object ScalateTemplateProcessor extends Log
 
@@ -41,7 +40,7 @@ object ScalateTemplateProcessor extends Log
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
  * @version $Revision : 1.1 $
  */
-class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String]  {
+class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
   import ScalateTemplateProcessor._
 
   @Context
@@ -67,7 +66,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
       return null
     }
     val engine = ServletTemplateEngine(servletContext)
-    if( engine==null ) {
+    if (engine == null) {
       warn("No ServletTemplateEngine context")
       return null
     }
@@ -89,8 +88,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
             tryFindPath(engine, newPath).getOrElse(null)
-          }
-          else {
+          } else {
             null
           }
       }
@@ -101,8 +99,8 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     }
   }
 
-  def tryFindPath(engine:ServletTemplateEngine, path: String): Option[String] = {
-    for( ext <- engine.extensions ) {
+  def tryFindPath(engine: ServletTemplateEngine, path: String): Option[String] = {
+    for (ext <- engine.extensions) {
       val p = path + "." + ext
       try {
         engine.load(p)
@@ -116,12 +114,12 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     return None
   }
 
-
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     if (hc.isTracingEnabled()) {
-        hc.trace("forwarding view to Scalate template: \"%s\", it = %s".format(
-                resolvedPath,
-                ReflectionHelper.objectToString(viewable.getModel())));
+      hc.trace("forwarding view to Scalate template: \"%s\", it = %s".format(
+        resolvedPath,
+        ReflectionHelper.objectToString(viewable.getModel())
+      ));
     }
 
     // Ensure headers are committed
@@ -131,8 +129,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     if (engine == null) {
       // we have not been initialised yet so lets use the request dispatcher
       writeToUsingRequestDispatcher(resolvedPath, viewable, out)
-    }
-    else {
+    } else {
       writeToUsingServletTemplateEngine(engine, resolvedPath, viewable, out)
     }
   }

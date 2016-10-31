@@ -25,16 +25,16 @@ class CssParserTest extends CssParserTestSupport {
   val a = <a href="http://scalate.fusesource.org/" title="Scalate" hreflang="en-US">Awesomeness</a>
 
   val xml = <table id="t1" class="people" summary="My Summary Notes">
-    <tr id="tr1" class="personRow odd">
-      <td class="person">Hey</td>
-    </tr>
-    {cheese}
-    {a}
-  </table>
+              <tr id="tr1" class="personRow odd">
+                <td class="person">Hey</td>
+              </tr>
+              { cheese }
+              { a }
+            </table>
 
   val tr1 = (xml \\ "tr")(0)
   val td1 = (xml \\ "td")(0)
-  
+
   // simple stuff
   assertMatches("table", xml)
   assertMatches("table#t1", xml)
@@ -84,7 +84,6 @@ class CssParserTest extends CssParserTestSupport {
   assertMatches("c|tr", cheese)
   assertNotMatches("c|tr", tr1)
 
-
   // attributes
   assertMatches("table[summary]", xml)
   assertMatches("[summary]", xml)
@@ -94,7 +93,7 @@ class CssParserTest extends CssParserTestSupport {
   assertNotMatches("[summary = \"NotMatch\"]", xml)
 
   assertMatches("[summary=\"My Summary Notes\"]", xml)
-  
+
   // ~= matches whole words
   assertMatches("[summary ~= \"My\"]", xml)
   assertMatches("[summary ~= \"Summary\"]", xml)
@@ -137,11 +136,9 @@ class CssParserTest extends CssParserTestSupport {
 
   assertMatches("[summary*=\"Sum\"]", xml)
 
-
   // :not
   assertMatches("td:not(.food)", td1)
   assertNotMatches("td:not(.person)", td1)
-
 
   // filtering using the pimped API on scala Node*
   assertFilter(".person", td1)

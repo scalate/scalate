@@ -21,7 +21,7 @@ package wikitext
 import org.fusesource.scalate.test.FunSuiteSupport
 
 /**
- * Abstract base class to build Confluence wiki markup test classes 
+ * Abstract base class to build Confluence wiki markup test classes
  */
 abstract class AbstractConfluenceTest extends FunSuiteSupport {
 
@@ -39,6 +39,6 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
 
   protected def assertFilter(source: String, expected: String): Unit = {
     val actual: String = renderConfluence(source)
-    expect(expected) {actual}
-  }    
+    expect(expected) { actual }
+  }
 }

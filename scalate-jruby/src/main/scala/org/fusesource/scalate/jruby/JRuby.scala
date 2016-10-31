@@ -1,16 +1,16 @@
 package org.fusesource.scalate.jruby
 
 import org.fusesource.scalate.util.Log
-import java.io.{StringWriter, File}
+import java.io.{ StringWriter, File }
 import scala.collection
 import org.jruby.RubyInstanceConfig
-import org.jruby.embed.{LocalContextScope, ScriptingContainer}
+import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
 import collection.JavaConverters._
 
 /**
  * A simple interface to the jruby interpreter
  */
-class JRuby(loadPaths:List[File]) extends Log {
+class JRuby(loadPaths: List[File]) extends Log {
 
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
   container.getProvider.setLoadPaths(loadPaths.asJava)
@@ -20,7 +20,7 @@ class JRuby(loadPaths:List[File]) extends Log {
   RubyInstanceConfig.FASTSEND_COMPILE_ENABLED = true
   RubyInstanceConfig.INLINE_DYNCALL_ENABLED = true
 
-  def run(scriptlet:String*):Either[(Throwable, String), AnyRef] = this.synchronized {
+  def run(scriptlet: String*): Either[(Throwable, String), AnyRef] = this.synchronized {
     var errors: StringWriter = new StringWriter
     try {
       container.setErrorWriter(errors)
@@ -31,7 +31,6 @@ class JRuby(loadPaths:List[File]) extends Log {
     }
   }
 
-
-  def put(name:String, value:AnyRef) = container.put(name, value)
+  def put(name: String, value: AnyRef) = container.put(name, value)
 
 }

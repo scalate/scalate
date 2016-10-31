@@ -37,8 +37,7 @@ case class Archetype(file: File) {
     val i = uri.lastIndexOf('.')
     if (i > 0) {
       uri.substring(i + 1)
-    }
-    else {
+    } else {
       uri
     }
   }
@@ -49,6 +48,6 @@ case class Archetype(file: File) {
    * Returns the URI to post to that generates the new template for this archetype
    */
   def createUri(newTemplatePrefix: String) = {
-    "/scalate/createTemplate?name=" + newTemplatePrefix + "archetype=" + file.getPath 
+    "/scalate/createTemplate?name=" + newTemplatePrefix + "archetype=" + file.getPath
   }
 }

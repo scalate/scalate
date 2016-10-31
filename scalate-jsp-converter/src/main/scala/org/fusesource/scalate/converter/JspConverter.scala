@@ -21,7 +21,6 @@ import org.fusesource.scalate.support.Text
 import util.matching.Regex.Match
 import org.fusesource.scalate.util.Log
 
-
 object ExpressionLanguage {
   protected val operators = Map("eq" -> "==", "ne" -> "!=",
     "gt" -> ">", "ge" -> ">=",
@@ -35,17 +34,16 @@ object ExpressionLanguage {
   def asScala(el: String): String = {
     // lets switch the EL style indexing to Scala parens and switch single quotes to doubles
     var text = el.replace('[', '(').
-            replace(']', ')').
-            replace('\'', '\"')
-
+      replace(']', ')').
+      replace('\'', '\"')
 
     def space(m: Match): String = if (m.start == 0) "" else " "
 
     // "not empty xxx" => "!(xxx isEmpty)"
-    text = notEmptyRegex.replaceAllIn(text, {m => space(m) + "!(" + m.subgroups.last + " isEmpty)"})
+    text = notEmptyRegex.replaceAllIn(text, { m => space(m) + "!(" + m.subgroups.last + " isEmpty)" })
 
     // "empty whatever" => "whatever isEmpty"
-    text = emptyRegex.replaceAllIn(text, {m => space(m) + m.subgroups.last + " isEmpty"})
+    text = emptyRegex.replaceAllIn(text, { m => space(m) + m.subgroups.last + " isEmpty" })
 
     // replace EL operators
     for ((a, b) <- operators) {
@@ -63,7 +61,7 @@ object ExpressionLanguage {
       }).mkString(".")
 
     // fn:length(foo) => foo.size
-    text = lengthRegex.replaceAllIn(text, {m => m.subgroups.last + ".size"})
+    text = lengthRegex.replaceAllIn(text, { m => m.subgroups.last + ".size" })
 
     text
   }
@@ -78,7 +76,7 @@ trait IndentWriter {
     out = new StringBuilder
   }
 
-  def indent[T](op: => T): T = {indentLevel += 1; val rc = op; indentLevel -= 1; rc}
+  def indent[T](op: => T): T = { indentLevel += 1; val rc = op; indentLevel -= 1; rc }
 
   def println(line: String): this.type = {
     for (i <- 0 until indentLevel) {
@@ -95,16 +93,15 @@ trait IndentWriter {
 
   def println = print("\n")
 
-
   def text = out.toString
 }
 object JspConverter extends Log
-class JspConverter extends IndentWriter  {
+class JspConverter extends IndentWriter {
   import JspConverter._
 
   var coreLibraryPrefix: String = "c"
   var whenCount = 0
-      
+
   def convert(jsp: String): String = {
     reset
 
@@ -128,7 +125,7 @@ class JspConverter extends IndentWriter  {
   def transform(e: Element): Unit = {
     e match {
 
-    // core JSTL library
+      // core JSTL library
       case Element(QualifiedName(coreLibraryPrefix, name), attributes, body) =>
         name match {
           case "choose" =>
@@ -179,7 +176,6 @@ class JspConverter extends IndentWriter  {
             }
             print("}")
 
-
           case "set" =>
             val exp = e.attribute("value")
             val name = e.attribute("var")
@@ -188,7 +184,7 @@ class JspConverter extends IndentWriter  {
           case "when" =>
             val exp = e.attribute("test")
             print("#" + (if (whenCount == 0) "if" else "elseif") + "(" + asParam(exp) + ")")
-            whenCount +=1
+            whenCount += 1
             convert(body)
 
           case "url" =>

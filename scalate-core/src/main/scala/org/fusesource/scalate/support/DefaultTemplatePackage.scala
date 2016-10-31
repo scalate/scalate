@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package support
 
-import util.{Log, ClassLoaders, Files}
+import util.{ Log, ClassLoaders, Files }
 
 object DefaultTemplatePackage extends Log
 /**

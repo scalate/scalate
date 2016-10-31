@@ -29,7 +29,6 @@ object ScamlOptions {
     val xhtml, html4, html5 = Value
   }
 
-
   val DEFAULT_FORMAT = Format.xhtml
   val DEFAULT_AUTOCLOSE = List(
     "meta",
@@ -37,12 +36,12 @@ object ScamlOptions {
     "link",
     "br",
     "hr",
-    "input")
+    "input"
+  )
 
   val DEFAULT_INDENT = "  "
   val DEFAULT_NL = "\n"
   val DEFAULT_UGLY = false
-
 
   var format = DEFAULT_FORMAT
 
@@ -69,6 +68,5 @@ object ScamlOptions {
    * preservation is not applied either.
    */
   var ugly = DEFAULT_UGLY
-
 
 }

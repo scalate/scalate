@@ -27,7 +27,7 @@ object Files {
    */
   def recursiveFind(file: File)(filter: File => Boolean): Option[File] = {
     andDescendants(file).find(filter)
-/*
+    /*
     if (file.isDirectory) {
       file.listFiles.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
     } else {
@@ -45,12 +45,12 @@ object Files {
   }
 
   def descendants(file: File): Iterable[File] = (
-    children(file).view.flatMap(andDescendants(_)))
-
+    children(file).view.flatMap(andDescendants(_))
+  )
 
   def andDescendants(file: File): Iterable[File] = (
-    Seq(file) ++ descendants(file))
-
+    Seq(file) ++ descendants(file)
+  )
 
   /**
    * Returns true if
@@ -67,8 +67,7 @@ object Files {
     val parent = file.getParentFile
     if (parent == null || parent == rootDir) {
       file.getName
-    }
-    else {
+    } else {
       relativeUri(rootDir, parent) + "/" + file.getName
     }
   }

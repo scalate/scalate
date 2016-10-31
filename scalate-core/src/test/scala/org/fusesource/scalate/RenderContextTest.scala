@@ -30,6 +30,6 @@ class RenderContextTest extends FunSuiteSupport {
     context.numberFormat = df
     val value = context.value(1234, false).toString
 
-    expect("1234"){ context.value(1234, false).toString }
+    expect("1234") { context.value(1234, false).toString }
   }
 }

@@ -70,11 +70,13 @@ trait AbstractScalateView extends AbstractView {
 }
 
 class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
-  with LayoutScalateRenderStrategy {
+    with LayoutScalateRenderStrategy {
 
-  override def renderMergedTemplateModel(model: java.util.Map[String, Object],
+  override def renderMergedTemplateModel(
+    model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse): Unit = {
+    response: HttpServletResponse
+  ): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {
@@ -99,9 +101,11 @@ class ScalateView extends AbstractScalateView with ViewScalateRenderStrategy {
 
   override def checkResource(locale: Locale) = true;
 
-  override def renderMergedOutputModel(model: java.util.Map[String, Object],
+  override def renderMergedOutputModel(
+    model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse): Unit = {
+    response: HttpServletResponse
+  ): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {

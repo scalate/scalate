@@ -18,11 +18,11 @@
 package org.fusesource.scalate.jersey
 
 import org.fusesource.scalate.scuery.Transformer
-import xml.{XML, NodeSeq}
+import xml.{ XML, NodeSeq }
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
 import java.net.URL
-import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
 /**
  * @version $Revision : 1.1 $
@@ -37,7 +37,7 @@ trait ScueryView {
   protected var templateDirectories = List("/WEB-INF", "")
 
   /**
-   * Renders the given template URI using the given ScQuery transformer 
+   * Renders the given template URI using the given ScQuery transformer
    */
   protected def render(template: String, transformer: Transformer): NodeSeq = {
     // lets load the template as XML...
@@ -72,7 +72,6 @@ trait ScueryView {
     }
     answer
   }
-
 
   /**
    * Returns the servlet context injected by JAXRS

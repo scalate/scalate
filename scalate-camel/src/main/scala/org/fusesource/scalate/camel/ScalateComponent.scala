@@ -39,7 +39,7 @@ class ScalateComponent() extends DefaultComponent {
 
   templateEngine.resourceLoader = new FileResourceLoader() {
 
-    override protected def toFile(uri:String):File = {
+    override protected def toFile(uri: String): File = {
       return resourceLoader.getResource(uri).getFile
     }
   }

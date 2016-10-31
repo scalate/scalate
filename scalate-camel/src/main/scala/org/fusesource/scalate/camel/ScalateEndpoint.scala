@@ -19,9 +19,9 @@ package org.fusesource.scalate
 package camel
 
 import java.io._
-import java.{util => ju}
+import java.{ util => ju }
 import org.apache.camel._
-import org.apache.camel.util.{ExchangeHelper, ObjectHelper}
+import org.apache.camel.util.{ ExchangeHelper, ObjectHelper }
 
 import org.apache.commons.logging.LogFactory
 
@@ -32,10 +32,10 @@ import collection.JavaConversions._
  * @version $Revision : 1.1 $
  */
 
-class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: String, defaultTemplateExtension: String = "ssp")
-        extends ProcessorEndpoint(uri, component) {
+class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: String, defaultTemplateExtension: String = "ssp")
+    extends ProcessorEndpoint(uri, component) {
 
-  val log = LogFactory.getLog(getClass); 
+  val log = LogFactory.getLog(getClass);
 
   val RESOURCE_URI = "CamelScalateResourceUri"
   val TEMPLATE = "CamelScalateTemplate"
@@ -52,8 +52,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
     getCamelContext.getEndpoint(newUri, classOf[ScalateEndpoint])
   }
 
-
-  override def onExchange(exchange: Exchange):Unit = {
+  override def onExchange(exchange: Exchange): Unit = {
     ObjectHelper.notNull(templateUri, "resourceUri")
     val templateEngine = component.templateEngine;
     val newResourceUri = exchange.getIn().getHeader(RESOURCE_URI, classOf[String])
@@ -64,8 +63,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
 
       val newEndpoint = findOrCreateEndpoint(getEndpointUri(), newResourceUri)
       newEndpoint.onExchange(exchange)
-    }
-    else {
+    } else {
 
       val content = exchange.getIn().getHeader(TEMPLATE, classOf[String])
       val template = if (content != null) {
@@ -100,7 +98,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
 
       // now lets output the headers to the exchange
       variableMap.get("headers") match {
-        case map: ju.Map[String,AnyRef] =>
+        case map: ju.Map[String, AnyRef] =>
           for ((key, value) <- map) {
             out.setHeader(key, value)
           }
@@ -109,7 +107,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String,  templateUri: St
     }
   }
 
-  protected def debug(message: => String):Unit = if (log.isDebugEnabled) {
+  protected def debug(message: => String): Unit = if (log.isDebugEnabled) {
     val text: String = message
     log.debug(text)
   }

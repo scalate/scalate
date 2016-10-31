@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 
 import filter._
-import layout.{NullLayoutStrategy, LayoutStrategy}
+import layout.{ NullLayoutStrategy, LayoutStrategy }
 import mustache.MustacheCodeGenerator
 import osgi.BundleClassLoader
 import scaml.ScamlCodeGenerator
@@ -27,13 +27,13 @@ import jade.JadeCodeGenerator
 import support._
 import util._
 
-import scala.util.parsing.input.{OffsetPosition, Position}
+import scala.util.parsing.input.{ OffsetPosition, Position }
 import scala.collection.mutable.HashMap
 import scala.collection.immutable.TreeMap
 import scala.util.control.Exception
 import scala.compat.Platform
 import java.net.URLClassLoader
-import java.io.{StringWriter, PrintWriter, FileWriter, File}
+import java.io.{ StringWriter, PrintWriter, FileWriter, File }
 import xml.NodeSeq
 import collection.generic.TraversableForwarder
 import java.util.concurrent.atomic.AtomicBoolean
@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap
 object TemplateEngine {
   val log = Log(getClass); import log._
 
-  def apply(sourceDirectories: Traversable[File],  mode: String): TemplateEngine = {
+  def apply(sourceDirectories: Traversable[File], mode: String): TemplateEngine = {
     new TemplateEngine(sourceDirectories, mode)
   }
 
@@ -60,7 +60,7 @@ object TemplateEngine {
  *
  * The TemplateEngine uses a ''workingDirectory'' to store the generated scala source code and the bytecode. By default
  * this uses a dynamically generated directory. You can configure this yourself to use whatever directory you wish.
- * Or you can use the ''scalate.workdir'' system property to specify the workingDirectory 
+ * Or you can use the ''scalate.workdir'' system property to specify the workingDirectory
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
@@ -68,7 +68,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   import TemplateEngine.log._
 
   private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
-    def isStale() = timestamp!=0 && dependencies.exists {
+    def isStale() = timestamp != 0 && dependencies.exists {
       resourceLoader.lastModified(_) > timestamp
     }
   }
@@ -104,9 +104,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Sets the import statements used in each generated template class
    */
-  var importStatements: List[String] = List("import _root_.scala.collection.JavaConversions._",
+  var importStatements: List[String] = List(
+    "import _root_.scala.collection.JavaConversions._",
     "import _root_.org.fusesource.scalate.support.TemplateConversions._",
-    "import _root_.org.fusesource.scalate.util.Measurements._")
+    "import _root_.org.fusesource.scalate.util.Measurements._"
+  )
 
   /**
    * Loads resources such as the templates based on URIs
@@ -125,20 +127,19 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   private var booted = new AtomicBoolean()
 
-
   def boot: Unit = {
-    if(booted.compareAndSet(false, true)) {
+    if (booted.compareAndSet(false, true)) {
 
-      if( allowReload ) {
+      if (allowReload) {
         // Is the Scala compiler on the class path?
         try {
           getClass.getClassLoader.loadClass("scala.tools.nsc.settings.ScalaSettings")
         } catch {
-          case e:Throwable =>
-          // if it's not, then disable class reloading..
-          debug("Scala compiler not found on the class path. Template reloading disabled.")
-          allowReload = false
-          compilerInstalled = false
+          case e: Throwable =>
+            // if it's not, then disable class reloading..
+            debug("Scala compiler not found on the class path. Template reloading disabled.")
+            allowReload = false
+            compilerInstalled = false
         }
       }
 
@@ -151,7 +152,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       }
     }
   }
-
 
   /**
    * A forwarder so we can refer to whatever the current latest value of sourceDirectories is even if the value
@@ -169,16 +169,15 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator,
     "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
-  
+
   var filters: Map[String, Filter] = Map()
 
-  def filter(name:String) = codeGenerators.get(name).map( gen =>
-        new Filter() {
-          def filter(context: RenderContext, content: String) = {
-            context.capture(compileText(name, content))
-          }
-        }
-    ).orElse(filters.get(name))
+  def filter(name: String) = codeGenerators.get(name).map(gen =>
+    new Filter() {
+      def filter(context: RenderContext, content: String) = {
+        context.capture(compileText(name, content))
+      }
+    }).orElse(filters.get(name))
 
   var pipelines: Map[String, List[Filter]] = Map()
 
@@ -199,7 +198,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   /**
    * Returns the file extensions understood by Scalate; all the template engines and pipelines including
-   * the wiki markup languages. 
+   * the wiki markup languages.
    */
   def extensions: Set[String] = (codeGenerators.keySet ++ pipelines.keySet).toSet
 
@@ -212,7 +211,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   attempt(filters += "cdata" -> CdataFilter)
   attempt(filters += "escaped" -> EscapedFilter)
 
-  attempt{
+  attempt {
     CoffeeScriptPipeline(this)
   }
 
@@ -239,7 +238,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def tmpDirectory = new File(workingDirectory, "tmp")
 
   var classpath: String = null
-  
+
   private var _workingDirectory: File = null
 
   var classLoader = Thread.currentThread.getContextClassLoader match {
@@ -250,19 +249,18 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * By default lets bind the context so we get to reuse its methods in a template
    */
-  var bindings = Binding("context", "_root_."+classOf[RenderContext].getName, true, None, "val", false) :: Nil
-  
+  var bindings = Binding("context", "_root_." + classOf[RenderContext].getName, true, None, "val", false) :: Nil
+
   val finderCache = new ConcurrentHashMap[String, String]
   private val templateCache = new HashMap[String, CacheEntry]
   private var _cacheHits = 0
   private var _cacheMisses = 0
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
-  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach{ addOn =>
-      debug("Installing Scalate add on " + addOn.getClass)
-      addOn(this)
+  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn =>
+    debug("Installing Scalate add on " + addOn.getClass)
+    addOn(this)
   }
-
 
   override def toString = getClass.getSimpleName + "(sourceDirectories: " + sourceDirectories + ")"
 
@@ -277,20 +275,18 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   def workingDirectory: File = {
     // Use a temp working directory if none is configured.
-    if( _workingDirectory == null ) {
+    if (_workingDirectory == null) {
       val value = System.getProperty("scalate.workdir", "")
       if (value != null && value.length > 0) {
         _workingDirectory = new File(value)
-      }
-      else {
+      } else {
         val f = File.createTempFile("scalate-", "-workdir")
         // now lets delete the file so we can make a new directory there instead
         f.delete
         if (f.mkdirs) {
           _workingDirectory = f
           f.deleteOnExit
-        }
-        else {
+        } else {
           warn("Could not delete file %s so we could create a temp directory", f)
           _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
         }
@@ -299,29 +295,28 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     _workingDirectory
   }
 
-  def workingDirectory_=(value:File) = {
+  def workingDirectory_=(value: File) = {
     this._workingDirectory = value
   }
-
 
   /**
    * Compiles the given Moustache template text and returns the template
    */
-  def compileMoustache(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
+  def compileMoustache(text: String, extraBindings: Traversable[Binding] = Nil): Template = {
     compileText("mustache", text, extraBindings)
   }
 
   /**
    * Compiles the given SSP template text and returns the template
    */
-  def compileSsp(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
+  def compileSsp(text: String, extraBindings: Traversable[Binding] = Nil): Template = {
     compileText("ssp", text, extraBindings)
   }
 
   /**
    * Compiles the given SSP template text and returns the template
    */
-  def compileScaml(text: String, extraBindings:Traversable[Binding] = Nil):Template = {
+  def compileScaml(text: String, extraBindings: Traversable[Binding] = Nil): Template = {
     compileText("scaml", text, extraBindings)
   }
 
@@ -329,7 +324,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Compiles the given text using the given extension (such as ssp or scaml for example to denote what parser to use)
    * and return the template
    */
-  def compileText(extension: String, text: String, extraBindings:Traversable[Binding] = Nil):Template = {
+  def compileText(extension: String, text: String, extraBindings: Traversable[Binding] = Nil): Template = {
     tmpDirectory.mkdirs()
     val file = File.createTempFile("_scalate_tmp_", "." + extension, tmpDirectory)
     IOUtil.writeText(file, text)
@@ -337,12 +332,11 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     compile(TemplateSource.fromUri(file.getName, loader), extraBindings)
   }
 
-
   /**
    * Compiles a template source without placing it in the template cache. Useful for temporary
    * templates or dynamically created template
    */
-  def compile(source: TemplateSource, extraBindings:Traversable[Binding] = Nil):Template = {
+  def compile(source: TemplateSource, extraBindings: Traversable[Binding] = Nil): Template = {
     compileAndLoad(source, extraBindings, 0)._1
   }
 
@@ -350,17 +344,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(source: TemplateSource, extraBindings:Traversable[Binding] = Nil) = {
+  def generateScala(source: TemplateSource, extraBindings: Traversable[Binding] = Nil) = {
     source.engine = this
     generator(source).generate(this, source, bindings ++ extraBindings)
   }
-
 
   /**
    * Generates the Scala code for a template.  Useful for generating scala code that
    * will then be compiled into the application as part of a build process.
    */
-  def generateScala(uri: String, extraBindings:Traversable[Binding]): Code = {
+  def generateScala(uri: String, extraBindings: Traversable[Binding]): Code = {
     generateScala(uriToSource(uri), extraBindings)
   }
 
@@ -372,13 +365,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     generateScala(uriToSource(uri))
   }
 
-
-
   /**
    * The number of times a template load request was serviced from the cache.
    */
   def cacheHits = templateCache.synchronized { _cacheHits }
-
 
   /**
    * The number of times a template load request could not be serviced from the cache
@@ -386,11 +376,10 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   def cacheMisses = templateCache.synchronized { _cacheMisses }
 
-
   /**
-    * Expire specific template source and then compile and cache again
-    */
-  def expireAndCompile(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Unit = {
+   * Expire specific template source and then compile and cache again
+   */
+  def expireAndCompile(source: TemplateSource, extraBindings: Traversable[Binding] = Nil): Unit = {
 
     templateCache.synchronized {
 
@@ -419,12 +408,12 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Template = {
+  def load(source: TemplateSource, extraBindings: Traversable[Binding] = Nil): Template = {
     source.engine = this
     templateCache.synchronized {
 
       // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-      if ( _cacheHits==0 && _cacheMisses==0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE") ) {
+      if (_cacheHits == 0 && _cacheMisses == 0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE")) {
         // this deletes generated scala and class files.
         invalidateCachedTemplates
       }
@@ -438,7 +427,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
           _cacheMisses += 1
           try {
             // Try to load a pre-compiled template from the classpath
-              cache(source, loadPrecompiledEntry(source, extraBindings))
+            cache(source, loadPrecompiledEntry(source, extraBindings))
           } catch {
             case _: Throwable =>
               // It was not pre-compiled... compile and load it.
@@ -461,7 +450,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     }
   }
 
-
   /**
    * Compiles and then caches the specified template.  If the template
    * was previously cached, the previously compiled template instance
@@ -472,7 +460,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def load(file: File, extraBindings: Traversable[Binding]): Template = {
     load(TemplateSource.fromFile(file), extraBindings)
   }
-
 
   /**
    * Compiles and then caches the specified template.  If the template
@@ -485,7 +472,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     load(TemplateSource.fromFile(file))
   }
 
-
   /**
    * Compiles and then caches the specified template.  If the template
    * was previously cached, the previously compiled template instance
@@ -496,7 +482,6 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def load(uri: String, extraBindings: Traversable[Binding]): Template = {
     load(uriToSource(uri), extraBindings)
   }
-
 
   /**
    * Compiles and then caches the specified template.  If the template
@@ -515,21 +500,20 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   def source(uri: String): TemplateSource = TemplateSource.fromUri(uri, resourceLoader)
 
   /**
-   * Returns a template source of the given type of template for the given URI and current resourceLoader 
+   * Returns a template source of the given type of template for the given URI and current resourceLoader
    */
   def source(uri: String, templateType: String): TemplateSource = source(uri).templateType(templateType)
 
   /**
    * Returns true if the URI can be loaded as a template
    */
-  def canLoad(source: TemplateSource, extraBindings:Traversable[Binding]= Nil): Boolean = {
+  def canLoad(source: TemplateSource, extraBindings: Traversable[Binding] = Nil): Boolean = {
     try {
       load(source, extraBindings) != null
     } catch {
       case e: ResourceNotFoundException => false
     }
   }
-
 
   /**
    * Returns true if the URI can be loaded as a template
@@ -541,10 +525,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Returns true if the URI can be loaded as a template
    */
-  def canLoad(uri: String, extraBindings:Traversable[Binding]): Boolean = {
+  def canLoad(uri: String, extraBindings: Traversable[Binding]): Boolean = {
     canLoad(uriToSource(uri), extraBindings)
   }
-
 
   /**
    *  Invalidates all cached Templates.
@@ -560,19 +543,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     }
   }
 
-
   // Layout as text methods
   //-------------------------------------------------------------------------
-
 
   /**
    *  Renders the given template URI using the current layoutStrategy
    */
-  def layout(uri: String, context: RenderContext, extraBindings:Traversable[Binding]): Unit = {
+  def layout(uri: String, context: RenderContext, extraBindings: Traversable[Binding]): Unit = {
     val template = load(uri, extraBindings)
     layout(template, context)
   }
-
 
   /**
    * Renders the given template using the current layoutStrategy
@@ -584,18 +564,16 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         context.withUri(source.uri) {
           layoutStrategy.layout(template, context)
         }
-      }
-      else {
+      } else {
         layoutStrategy.layout(template, context)
       }
     }
   }
 
-
   /**
    * Renders the given template URI returning the output
    */
-  def layout(uri: String, attributes: Map[String,Any] = Map(), extraBindings: Traversable[Binding] = Nil): String = {
+  def layout(uri: String, attributes: Map[String, Any] = Map(), extraBindings: Traversable[Binding] = Nil): String = {
     val template = load(uri, extraBindings)
     layout(uri, template, attributes)
   }
@@ -616,7 +594,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Renders the given template returning the output
    */
-  def layout(uri: String, template: Template, attributes: Map[String,Any]): String = {
+  def layout(uri: String, template: Template, attributes: Map[String, Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     layout(uri, template, out, attributes)
@@ -625,23 +603,23 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
   // can't use multiple methods with default arguments so lets manually expand them here...
   def layout(uri: String, context: RenderContext): Unit = layout(uri, context, Nil)
-  def layout(uri: String, template: Template): String = layout(uri, template, Map[String,Any]())
+  def layout(uri: String, template: Template): String = layout(uri, template, Map[String, Any]())
 
   /**
    *  Renders the given template source using the current layoutStrategy
    */
-  def layout(source: TemplateSource): String = layout(source, Map[String,Any]())
+  def layout(source: TemplateSource): String = layout(source, Map[String, Any]())
   /**
    *  Renders the given template source using the current layoutStrategy
    */
-  def layout(source: TemplateSource, attributes: Map[String,Any]): String = {
+  def layout(source: TemplateSource, attributes: Map[String, Any]): String = {
     val template = load(source)
     layout(source.uri, template, attributes)
   }
   /**
    *  Renders the given template source using the current layoutStrategy
    */
-  def layout(source: TemplateSource, context: RenderContext, extraBindings:Traversable[Binding]): Unit = {
+  def layout(source: TemplateSource, context: RenderContext, extraBindings: Traversable[Binding]): Unit = {
     val template = load(source, extraBindings)
     layout(template, context)
   }
@@ -654,17 +632,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     layout(template, context)
   }
 
-
-
-
-
   // Layout as markup methods
   //-------------------------------------------------------------------------
 
   /**
    * Renders the given template URI returning the output
    */
-  def layoutAsNodes(uri: String, attributes: Map[String,Any] = Map(), extraBindings:Traversable[Binding] = Nil): NodeSeq = {
+  def layoutAsNodes(uri: String, attributes: Map[String, Any] = Map(), extraBindings: Traversable[Binding] = Nil): NodeSeq = {
     val template = load(uri, extraBindings)
     layoutAsNodes(uri, template, attributes)
   }
@@ -672,7 +646,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Renders the given template returning the output
    */
-  def layoutAsNodes(uri: String, template: Template, attributes: Map[String,Any]): NodeSeq = {
+  def layoutAsNodes(uri: String, template: Template, attributes: Map[String, Any]): NodeSeq = {
     // TODO there is a much better way of doing this by adding native NodeSeq
     // support into the generated templates - especially for Scaml!
     // for now lets do it a crappy way...
@@ -688,8 +662,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   }
 
   // can't use multiple methods with default arguments so lets manually expand them here...
-  def layoutAsNodes(uri: String, template: Template): NodeSeq = layoutAsNodes(uri, template, Map[String,Any]())
-
+  def layoutAsNodes(uri: String, template: Template): NodeSeq = layoutAsNodes(uri, template, Map[String, Any]())
 
   /**
    * Factory method used by the layout helper methods that should be overloaded by template engine implementations
@@ -697,18 +670,18 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(uri, this, out)
 
-  private def loadPrecompiledEntry(source: TemplateSource, extraBindings:Traversable[Binding]) = {
+  private def loadPrecompiledEntry(source: TemplateSource, extraBindings: Traversable[Binding]) = {
     source.engine = this
     val uri = source.uri
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
     template.source = source
-    if( allowCaching && allowReload && resourceLoader.exists(source.uri) ) {
+    if (allowCaching && allowReload && resourceLoader.exists(source.uri)) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
       val code = generateScala(source, extraBindings);
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
-      if( entry.isStale ) {
+      if (entry.isStale) {
         // Throw an exception since we should not load stale pre-compiled classes.
         throw new StaleCacheEntryException(source)
       }
@@ -721,13 +694,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     }
   }
 
-  private def compileAndLoadEntry(source:TemplateSource, extraBindings:Traversable[Binding]) = {
+  private def compileAndLoadEntry(source: TemplateSource, extraBindings: Traversable[Binding]) = {
     val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
 
-  private def cache(source: TemplateSource, ce:CacheEntry) :Template = {
-    if( allowCaching ) {
+  private def cache(source: TemplateSource, ce: CacheEntry): Template = {
+    if (allowCaching) {
       templateCache += (source.uri -> ce)
     }
     val answer = ce.template
@@ -760,14 +733,14 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
       // Can we use a pipeline to process the request?
       pipeline(source) match {
-        case Some(p)=>
+        case Some(p) =>
           val template = new PipelineTemplate(p, source.text)
           template.source = source
           return (template, Set(uri))
-        case None=>
+        case None =>
       }
 
-      if( !compilerInstalled ) {
+      if (!compilerInstalled) {
         throw new ResourceNotFoundException("Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
@@ -787,8 +760,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
 
       sourceMapLog.debug("installing:" + sourceMap)
 
-      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+".class"), sourceMap)
-      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/')+"$.class"), sourceMap)
+      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/') + ".class"), sourceMap)
+      storeSourceMap(new File(bytecodeDirectory, code.className.replace('.', '/') + "$.class"), sourceMap)
 
       // Load the compiled class and instantiate the template object
       val template = loadCompiledTemplate(code.className)
@@ -809,24 +782,24 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
       case e: CompilerException =>
         // Translate the scala error location info
         // to the template locations..
-        def template_pos(pos:Position) = {
+        def template_pos(pos: Position) = {
           pos match {
-            case p:OffsetPosition => {
-              val filtered = code.positions.filterKeys( code.positions.ordering.compare(_,p) <= 0 )
-              if( filtered.isEmpty ) {
+            case p: OffsetPosition => {
+              val filtered = code.positions.filterKeys(code.positions.ordering.compare(_, p) <= 0)
+              if (filtered.isEmpty) {
                 null
               } else {
-                val (key,value) = filtered.last
+                val (key, value) = filtered.last
                 // TODO: handle the case where the line is different too.
                 val colChange = pos.column - key.column
-                if( colChange >=0 ) {
-                  OffsetPosition(value.source, value.offset+colChange)
+                if (colChange >= 0) {
+                  OffsetPosition(value.source, value.offset + colChange)
                 } else {
                   pos
                 }
               }
             }
-            case _=> null
+            case _ => null
           }
         }
 
@@ -834,14 +807,14 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         val errors = e.errors.map {
           (olderror) =>
             val uri = source.uri
-            val pos =  template_pos(olderror.pos)
-            if( pos==null ) {
-              newmessage += ":"+olderror.pos+" "+olderror.message+"\n"
-              newmessage += olderror.pos.longString+"\n"
+            val pos = template_pos(olderror.pos)
+            if (pos == null) {
+              newmessage += ":" + olderror.pos + " " + olderror.message + "\n"
+              newmessage += olderror.pos.longString + "\n"
               olderror
             } else {
-              newmessage += uri+":"+pos+" "+olderror.message+"\n"
-              newmessage += pos.longString+"\n"
+              newmessage += uri + ":" + pos + " " + olderror.message + "\n"
+              newmessage += pos.longString + "\n"
               // TODO should we pass the source?
               CompilerError(uri, olderror.message, pos, olderror)
             }
@@ -849,8 +822,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
         error(e)
         if (e.errors.isEmpty) {
           throw e
-        }
-        else {
+        } else {
           throw new CompilerException(newmessage, errors)
         }
       case e: InvalidSyntaxException =>
@@ -866,16 +838,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    * Gets a pipeline to use for the give uri string by looking up the uri's extension
    * in the the pipelines map.
    */
-  protected def pipeline(source: TemplateSource):Option[List[Filter]] = {
+  protected def pipeline(source: TemplateSource): Option[List[Filter]] = {
     //sort the extensions so we match the longest first.
-    for( ext<- pipelines.keys.toList.sortWith{ case(x,y)=> if(x.length==y.length) x.compareTo(y)<0 else x.length > y.length } if source.uri.endsWith("."+ext) ) {
+    for (ext <- pipelines.keys.toList.sortWith { case (x, y) => if (x.length == y.length) x.compareTo(y) < 0 else x.length > y.length } if source.uri.endsWith("." + ext)) {
       return pipelines.get(ext)
     }
     None
   }
-
-
-
 
   /**
    * Gets the code generator to use for the give uri string by looking up the uri's extension
@@ -883,9 +852,9 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   protected def generator(source: TemplateSource): CodeGenerator = {
     extension(source) match {
-      case Some(ext)=>
+      case Some(ext) =>
         generatorForExtension(ext)
-      case None=>
+      case None =>
         throw new TemplateException("Template file extension missing. Cannot determine which template processor to use.")
     }
   }
@@ -901,13 +870,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
    */
   protected def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
     case None =>
-      val extensions = pipelines.keySet.toList :::  codeGenerators.keySet.toList
+      val extensions = pipelines.keySet.toList ::: codeGenerators.keySet.toList
       throw new TemplateException("Not a template file extension (" + extensions.mkString(" | ") + "), you requested: " + extension);
     case Some(generator) => generator
   }
 
-  private def loadCompiledTemplate(className:String, from_cache:Boolean=true):Template = {
-    val cl = if(from_cache) {
+  private def loadCompiledTemplate(className: String, from_cache: Boolean = true): Template = {
+    val cl = if (from_cache) {
       new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     } else {
       classLoader
@@ -915,8 +884,8 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     val clazz = try {
       cl.loadClass(className)
     } catch {
-      case e:ClassNotFoundException =>
-        if( packagePrefix=="" ){
+      case e: ClassNotFoundException =>
+        if (packagePrefix == "") {
           throw e
         } else {
           // Try without the package prefix.
@@ -929,13 +898,13 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
   /**
    * Figures out the modification time of the class.
    */
-  private def lastModified(clazz:Class[_]):Long = {
+  private def lastModified(clazz: Class[_]): Long = {
     val codeSource = clazz.getProtectionDomain.getCodeSource;
-    if( codeSource !=null && codeSource.getLocation.getProtocol == "file") {
+    if (codeSource != null && codeSource.getLocation.getProtocol == "file") {
       val location = new File(codeSource.getLocation.getPath)
-      if( location.isDirectory ) {
-        val classFile = new File(location, clazz.getName.replace('.', '/')+".class")
-        if( classFile.exists ) {
+      if (location.isDirectory) {
+        val classFile = new File(location, clazz.getName.replace('.', '/') + ".class")
+        if (classFile.exists) {
           return classFile.lastModified
         }
       } else {
@@ -947,8 +916,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     return 0
   }
 
-
-  protected def buildSourceMap(stratumName:String, uri:String, scalaFile:File, positions:TreeMap[OffsetPosition,OffsetPosition]) = {
+  protected def buildSourceMap(stratumName: String, uri: String, scalaFile: File, positions: TreeMap[OffsetPosition, OffsetPosition]) = {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
@@ -956,21 +924,21 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     val fileId = stratum.addFile(shortName, longName)
 
     // build a map of input-line -> List( output-line )
-    var smap = new TreeMap[Int,List[Int]]()
+    var smap = new TreeMap[Int, List[Int]]()
     positions.foreach {
-      case (out,in)=>
+      case (out, in) =>
         var outs = out.line :: smap.getOrElse(in.line, Nil)
         smap += in.line -> outs
     }
     // sort the output lines..
-    smap = smap.transform { (x,y)=> y.sortWith(_<_) }
+    smap = smap.transform { (x, y) => y.sortWith(_ < _) }
 
-    smap.foreach{
-      case (in, outs)=>
-      outs.foreach {
-        out=>
-        stratum.addLine(in, fileId, 1, out, 1)
-      }
+    smap.foreach {
+      case (in, outs) =>
+        outs.foreach {
+          out =>
+            stratum.addLine(in, fileId, 1, out, 1)
+        }
     }
     stratum.optimize
 
@@ -980,7 +948,7 @@ class TemplateEngine(var sourceDirectories: Traversable[File] = None, var mode: 
     sourceMap.toString
   }
 
-  protected def storeSourceMap(classFile:File, sourceMap:String) = {
+  protected def storeSourceMap(classFile: File, sourceMap: String) = {
     SourceMapInstaller.store(classFile, sourceMap)
   }
 

@@ -44,22 +44,24 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
       val link = attr("link")
 
       val xml = <rss version="2.0">
-        <channel>
-          <title>{attr("title")}</title>
-          <link>{link}</link>
-          <description>{attr("description")}</description>
-          <pubDate>{date}</pubDate>
-          <lastBuildDate>{date}</lastBuildDate>
-          <generator>Scalate - http://scalate.fusesource.org/</generator>
-          {posts.map{ post =>
-            <item>
-              <title>{post.title}</title>
-              <link>{link+post.link}</link>
-              <description>{post.render()}</description>
-            </item>
-          }}
-        </channel>
-      </rss>
+                  <channel>
+                    <title>{ attr("title") }</title>
+                    <link>{ link }</link>
+                    <description>{ attr("description") }</description>
+                    <pubDate>{ date }</pubDate>
+                    <lastBuildDate>{ date }</lastBuildDate>
+                    <generator>Scalate - http://scalate.fusesource.org/</generator>
+                    {
+                      posts.map { post =>
+                        <item>
+                          <title>{ post.title }</title>
+                          <link>{ link + post.link }</link>
+                          <description>{ post.render() }</description>
+                        </item>
+                      }
+                    }
+                  </channel>
+                </rss>
 
       "<?xml version='1.0' encoding='utf-8' ?>\n" + xml
     }
@@ -73,5 +75,4 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
   def format(date: Date) = dateFormat.format(date)
 
 }
-
 

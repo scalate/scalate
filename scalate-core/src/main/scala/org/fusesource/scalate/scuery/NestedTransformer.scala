@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{Attribute, Elem, Node, NodeSeq}
+import xml.{ Attribute, Elem, Node, NodeSeq }
 
 /**
  * A transformer which makes it easy to create nested transformations by switching the thread local
@@ -39,7 +39,6 @@ class NestedTransformer {
 
   def transformer: Transformer = threadLocal.get
 
-
   /**
    * Transforms the given nodes passing in a block which is used to configure a new transformer
    * to transform the nodes. This method is typically used when performing nested transformations such
@@ -52,10 +51,10 @@ class NestedTransformer {
       threadLocal.set(childTransform)
       rules(childTransform)
       childTransform(nodes, ancestors)
-    }
-    catch {
-      case e: Throwable => threadLocal.set(currentTransform)
-      throw e
+    } catch {
+      case e: Throwable =>
+        threadLocal.set(currentTransform)
+        throw e
 
     }
   }

@@ -20,7 +20,7 @@ package org.fusesource.scalate.scuery.support
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.scuery.Selector
 import org.fusesource.scalate.scuery.XmlHelper._
-import xml.{Elem, Node, NodeSeq}
+import xml.{ Elem, Node, NodeSeq }
 
 abstract class CssParserTestSupport extends FunSuiteSupport {
   var parser = new CssParser
@@ -32,7 +32,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
       val actual = xml.$(selector)
 
       debug("filtering selector: %s expected: %s actual: %s", selector, expected, actual)
-      expect(expected) {actual}
+      expect(expected) { actual }
     }
   }
 
@@ -45,7 +45,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
       val selector = Selector(css)
       val ancestors = ancestorsOf(node)
       debug("testing selector: " + selector + " on " + summary(node) + " with ancestors: " + summary(ancestors))
-      expect(expected) {selector.matches(node, ancestors)}
+      expect(expected) { selector.matches(node, ancestors) }
     }
   }
 
@@ -53,8 +53,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     def findChild(node: Node, ancestor: Node): Option[Seq[Node]] = {
       if (node == ancestor) {
         Some(Nil)
-      }
-      else if (ancestor.contains(node)) {
+      } else if (ancestor.contains(node)) {
         Some(ancestor :: Nil)
       } else {
         var a: Option[Seq[Node]] = None

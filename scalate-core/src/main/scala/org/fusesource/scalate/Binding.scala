@@ -27,15 +27,16 @@ import scala.reflect.ClassTag
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 case class Binding(
-        name: String,
-        className: String = "Any",
-        importMembers: Boolean = false,
-        defaultValue: Option[String] = None,
-        kind: String = "val",
-        isImplicit: Boolean = false,
-        classNamePositional: Option[Positional] = None,
-        defaultValuePositional: Option[Positional] = None) {
-  
+    name: String,
+    className: String = "Any",
+    importMembers: Boolean = false,
+    defaultValue: Option[String] = None,
+    kind: String = "val",
+    isImplicit: Boolean = false,
+    classNamePositional: Option[Positional] = None,
+    defaultValuePositional: Option[Positional] = None
+) {
+
   def classNamePositionalOrText: String = classNamePositional match {
     case Some(positional) => positional.toString
     case _ => className
@@ -49,16 +50,17 @@ case class Binding(
 
 object Binding {
 
-  def apply(expr:String):Binding = {
+  def apply(expr: String): Binding = {
     val a = (new SspParser).getAttribute(expr)
     Binding(a.name.value, a.className.value, a.autoImport, a.defaultValue.map(_.value), a.kind.value, false)
   }
 
   def of[T](
-          name: String,
-          importMembers: Boolean = false,
-          defaultValue: Option[String] = None,
-          kind: String = "val",
-          isImplicit: Boolean = false)(implicit m: ClassTag[T]) =
+    name: String,
+    importMembers: Boolean = false,
+    defaultValue: Option[String] = None,
+    kind: String = "val",
+    isImplicit: Boolean = false
+  )(implicit m: ClassTag[T]) =
     new Binding(name, m.runtimeClass.getName, importMembers, defaultValue, kind, isImplicit)
 }

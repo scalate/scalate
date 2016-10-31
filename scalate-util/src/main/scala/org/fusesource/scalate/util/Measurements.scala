@@ -9,7 +9,6 @@ object Measurements {
   val k = UnitOfMeasure("K", "K", mb, 1024)
   val byte = UnitOfMeasure("bytes", "byte", k, 1024)
 
-
   // times
   val millenium = UnitOfMeasure("milleniums", "millenium")
   val century = UnitOfMeasure("centuries", "century", millenium, 10)
@@ -31,7 +30,6 @@ object Measurements {
 
 import Measurements.log
 
-
 case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeasure = null, size: Double = 0) {
   // we are using null rather than None as it seems a bit easier on the DSL defining the data
   if (parent != null) {
@@ -46,8 +44,9 @@ case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeas
       try {
         apply(text.toDouble, defaultExpression)
       } catch {
-        case e: Exception => log.debug("Could not convert " + text + " to a number: " + e, e)
-        defaultExpression
+        case e: Exception =>
+          log.debug("Could not convert " + text + " to a number: " + e, e)
+          defaultExpression
       }
     case _ => defaultExpression
   }

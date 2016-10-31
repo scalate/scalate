@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 package org.fusesource.scalate.tool.commands
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 
 /**
  * <p>
@@ -27,7 +27,7 @@ import org.apache.felix.gogo.commands.{Action, Option => option, Argument => arg
 @command(scope = "scalate", name = "tojade", description = "Converts an XML or HTML file to Jade")
 class ToJade extends ToScaml {
 
-  override def to_text(line: String) = "| "+line
+  override def to_text(line: String) = "| " + line
 
   override def to_element(tag: String) = super.to_element(tag).stripPrefix("%")
 

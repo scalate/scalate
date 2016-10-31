@@ -24,7 +24,7 @@ import xml.Node
  *
  * @version $Revision: 1.1 $
  */
-trait Matcher{
+trait Matcher {
   def matches(nodes: Seq[Node]): Boolean
 }
 

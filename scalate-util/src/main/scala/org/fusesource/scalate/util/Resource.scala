@@ -19,8 +19,7 @@ package org.fusesource.scalate.util
 
 import io.Source
 import java.io._
-import java.net.{URISyntaxException, URL}
-
+import java.net.{ URISyntaxException, URL }
 
 /**
  * Represents a string, file or URI based resource
@@ -180,8 +179,8 @@ case class URLResource(url: URL) extends WriteableResource {
           case e: URISyntaxException => f = new File(url.getPath)
         }
       } catch {
-  	    case e: ThreadDeath => throw e
-  	    case e: VirtualMachineError => throw e
+        case e: ThreadDeath => throw e
+        case e: VirtualMachineError => throw e
         case e: Exception => debug(e, "While converting " + url + " to a File I caught: " + e)
       }
     }
@@ -248,7 +247,7 @@ object Resource {
    * Creates a [[org.fusesource.scalate.support.Resource]] from a file
    */
   def fromFile(file: File): FileResource = fromFile(file, file.getPath)
-  
+
   def fromFile(file: File, uri: String): FileResource = FileResource(file, uri)
 
   /**

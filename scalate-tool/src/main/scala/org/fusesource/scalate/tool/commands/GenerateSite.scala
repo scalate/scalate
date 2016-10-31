@@ -3,7 +3,7 @@ package org.fusesource.scalate.tool.commands
 import java.io.File
 
 import org.apache.felix.gogo.commands
-import commands.{Action, Argument, Command}
+import commands.{ Action, Argument, Command }
 import org.apache.felix.service.command.CommandSession
 import org.fusesource.scalate.support.SiteGenerator
 

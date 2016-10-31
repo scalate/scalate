@@ -35,7 +35,8 @@ class ObjectPool[T](number: Int, newInstance: () => T) {
 
   private def create: T = {
     size.incrementAndGet match {
-      case e: Int if e > number => size.decrementAndGet; fetch()
+      case e: Int if e > number =>
+        size.decrementAndGet; fetch()
       case e: Int => newInstance()
     }
   }

@@ -17,24 +17,24 @@
  */
 package org.fusesource.scalate.scaml
 
-
-import java.io.{StringWriter, PrintWriter, File}
+import java.io.{ StringWriter, PrintWriter, File }
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScamlTemplateErrorTest extends ScamlTestSupport {
 
-
-   testCompilerException("Compile Error",
-"""
+  testCompilerException(
+    "Compile Error",
+    """
 %html
   %body
     %ul
       - for (i <- unknown)
         %li= i
 """,
-"error: not found: value unknown")
+    "error: not found: value unknown"
+  )
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -42,66 +42,76 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   //
   /////////////////////////////////////////////////////////////////////
 
-  testRender("valid indenting",
-"""
+  testRender(
+    "valid indenting",
+    """
 %html
   %two
     %three
   %two
-""","""
+""", """
 <html>
   <two>
     <three></three>
   </two>
   <two></two>
 </html>
-""")
-
-  testInvalidSyntaxException("Inconsistent indent level detected: indented too shallow",
 """
+  )
+
+  testInvalidSyntaxException(
+    "Inconsistent indent level detected: indented too shallow",
+    """
 %html
   %two
    %tooshallow
   %two
 """,
-"Inconsistent indent level detected: indented too shallow at 3.4")
+    "Inconsistent indent level detected: indented too shallow at 3.4"
+  )
 
-  testInvalidSyntaxException("Inconsistent indent level detected: indented too shallow at root",
-"""
+  testInvalidSyntaxException(
+    "Inconsistent indent level detected: indented too shallow at root",
+    """
 %html
   %two
  %toodeep
   %two
 """,
-"Inconsistent indent level detected: indented too shallow at 3.2")
+    "Inconsistent indent level detected: indented too shallow at 3.2"
+  )
 
-  testInvalidSyntaxException("Inconsistent indent level detected: indented too deep",
-"""
+  testInvalidSyntaxException(
+    "Inconsistent indent level detected: indented too deep",
+    """
 %html
   %two
      %toodeep
   %two
 """,
-"Inconsistent indent level detected: indented too deep at 3.6")
+    "Inconsistent indent level detected: indented too deep at 3.6"
+  )
 
-  testInvalidSyntaxException("Inconsistent indent detected: indented with spaces but previous lines were indented with tabs",
-"""
+  testInvalidSyntaxException(
+    "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs",
+    """
 %html
 	%tab
   %spaces
 	%tab
 """,
-"Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3")
+    "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3"
+  )
 
-  testInvalidSyntaxException("Unexpected comma in html attribute list",
-"""
+  testInvalidSyntaxException(
+    "Unexpected comma in html attribute list",
+    """
 %html
   %tab(comma="common", error="true")
   %p commas in attribute lists is a common errro
 """,
-"`)' expected but `,' found at 2.22")
+    "`)' expected but `,' found at 2.22"
+  )
 
-  
 }
-
 

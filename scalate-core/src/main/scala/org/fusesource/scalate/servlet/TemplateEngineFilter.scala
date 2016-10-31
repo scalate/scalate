@@ -18,10 +18,10 @@
 package org.fusesource.scalate.servlet
 
 import javax.servlet._
-import http.{HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest}
+import http.{ HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest }
 import java.lang.String
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.util.{Log}
+import org.fusesource.scalate.util.{ Log }
 
 object TemplateEngineFilter extends Log
 
@@ -38,7 +38,7 @@ class TemplateEngineFilter extends Filter {
   var engine: ServletTemplateEngine = _
   var finder: TemplateFinder = _
   var errorUris: List[String] = ServletHelper.errorUris()
-  
+
   /**
    * Called by the servlet engine to create the template engine and configure this filter
    */
@@ -67,32 +67,32 @@ class TemplateEngineFilter extends Filter {
    * Performs the actual filter
    */
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
-    (request,response) match {
+    (request, response) match {
       case (request: HttpServletRequest, response: HttpServletResponse) =>
         val request_wrapper = wrap(request)
 
         debug("Checking '%s'", request.getRequestURI)
         findTemplate(request.getRequestURI.substring(request.getContextPath.length)) match {
-          case Some(template)=>
+          case Some(template) =>
             debug("Rendering '%s' using template '%s'", request.getRequestURI, template)
             val context = new ServletRenderContext(engine, request_wrapper, response, config.getServletContext)
 
             try {
               context.include(template, true)
             } catch {
-              case e:Throwable => showErrorPage(request_wrapper, response, e)
+              case e: Throwable => showErrorPage(request_wrapper, response, e)
             }
 
-          case None=>
+          case None =>
             chain.doFilter(request_wrapper, response)
         }
-      
+
       case _ =>
         chain.doFilter(request, response)
     }
   }
 
-  def showErrorPage(request: HttpServletRequest, response: HttpServletResponse, e:Throwable):Unit = {
+  def showErrorPage(request: HttpServletRequest, response: HttpServletResponse, e: Throwable): Unit = {
 
     info(e, "failure: %s", e)
 
@@ -105,18 +105,18 @@ class TemplateEngineFilter extends Filter {
     request.setAttribute("javax.servlet.error.status_code", 500)
     response.setStatus(500)
 
-    errorUris.find( x=>findTemplate(x).isDefined ) match {
-      case Some(template)=>
+    errorUris.find(x => findTemplate(x).isDefined) match {
+      case Some(template) =>
         val context = new ServletRenderContext(engine, request, response, config.getServletContext)
         context.include(template, true)
-	    // since we directly rendered the error page.. remove the attributes
-	    // since they screw /w tomcat.
-	    request.removeAttribute("javax.servlet.error.exception")
-	    request.removeAttribute("javax.servlet.error.exception_type")
-	    request.removeAttribute("javax.servlet.error.message")
-	    request.removeAttribute("javax.servlet.error.request_uri")
-	    request.removeAttribute("javax.servlet.error.servlet_name")
-	    request.removeAttribute("javax.servlet.error.status_code")
+        // since we directly rendered the error page.. remove the attributes
+        // since they screw /w tomcat.
+        request.removeAttribute("javax.servlet.error.exception")
+        request.removeAttribute("javax.servlet.error.exception_type")
+        request.removeAttribute("javax.servlet.error.message")
+        request.removeAttribute("javax.servlet.error.request_uri")
+        request.removeAttribute("javax.servlet.error.servlet_name")
+        request.removeAttribute("javax.servlet.error.status_code")
       case None =>
         throw e;
     }
@@ -131,19 +131,18 @@ class TemplateEngineFilter extends Filter {
 
   protected def findTemplate(name: String) = finder.findTemplate(name)
 
-
-  def wrap(request: HttpServletRequest) = new ScalateServletRequestWrapper(request) 
+  def wrap(request: HttpServletRequest) = new ScalateServletRequestWrapper(request)
 
   class ScalateServletRequestWrapper(request: HttpServletRequest) extends HttpServletRequestWrapper(request) {
     override def getRequestDispatcher(path: String) = {
-      findTemplate(path).map( new ScalateRequestDispatcher(_) ).getOrElse( request.getRequestDispatcher(path) )
+      findTemplate(path).map(new ScalateRequestDispatcher(_)).getOrElse(request.getRequestDispatcher(path))
     }
   }
 
-  class ScalateRequestDispatcher(template:String) extends RequestDispatcher {
-    def forward(request: ServletRequest, response: ServletResponse):Unit = include(request, response)
-    def include(request: ServletRequest, response: ServletResponse):Unit = {
-      (request,response) match {
+  class ScalateRequestDispatcher(template: String) extends RequestDispatcher {
+    def forward(request: ServletRequest, response: ServletResponse): Unit = include(request, response)
+    def include(request: ServletRequest, response: ServletResponse): Unit = {
+      (request, response) match {
         case (request: HttpServletRequest, response: HttpServletResponse) =>
           val context = new ServletRenderContext(engine, wrap(request), response, config.getServletContext)
           context.include(template, true)

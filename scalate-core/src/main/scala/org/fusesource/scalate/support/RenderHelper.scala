@@ -31,12 +31,11 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-
 package org.fusesource.scalate
 package support
 
 import collection.mutable.LinkedHashMap
-import xml.{Node, NodeBuffer, NodeSeq}
+import xml.{ Node, NodeBuffer, NodeSeq }
 
 object RenderHelper {
 
@@ -44,14 +43,14 @@ object RenderHelper {
    * Pads the text following newlines with the specified
    * indent amount so that the text is indented.
    */
-  def indent( amount:String, text: Any ): String = text.toString.replaceAll("\n(.)", "\n"+amount+"$1" )
+  def indent(amount: String, text: Any): String = text.toString.replaceAll("\n(.)", "\n" + amount + "$1")
 
-  def indentAmount( level:Int, kind:String ): String = {
+  def indentAmount(level: Int, kind: String): String = {
     val rc = new StringBuilder
-    var i=0;
-    while(i < level) {
+    var i = 0;
+    while (i < level) {
       rc.append(kind)
-      i+=1;
+      i += 1;
     }
     rc.toString
   }
@@ -61,39 +60,37 @@ object RenderHelper {
    * so that multiple lines encode to a sinle long HTML source line
    * but still render in browser as multiple lines.
    */
-  def preserve( text: Any ): String = text.toString.replaceAll("\n", "&#x000A;");
+  def preserve(text: Any): String = text.toString.replaceAll("\n", "&#x000A;");
 
   /**
    *  Escapes any XML special characters.
    */
-  def sanitize( text: String ): String =
-    text.foldLeft( new StringBuffer )( (acc, ch) => sanitize( ch, acc ) ).toString
+  def sanitize(text: String): String =
+    text.foldLeft(new StringBuffer)((acc, ch) => sanitize(ch, acc)).toString
 
-
-  private def sanitize( ch: Char, buffer: StringBuffer ): StringBuffer = {
-    buffer.append( ch match {
+  private def sanitize(ch: Char, buffer: StringBuffer): StringBuffer = {
+    buffer.append(ch match {
       case '"' => { "&quot;" }
       case '&' => { "&amp;" }
       case '<' => { "&lt;" }
       case '>' => { "&gt;" }
-// Not sure if there are other chars the need sanitization.. but if we do find
-// some, then the following might work:
-//    case xxx   => { "&#x" + ch.toInt.toHexString + ";" }
+      // Not sure if there are other chars the need sanitization.. but if we do find
+      // some, then the following might work:
+      //    case xxx   => { "&#x" + ch.toInt.toHexString + ";" }
       case _ => ch
     })
   }
 
+  def attributes(context: RenderContext, entries: List[(Any, Any)]) {
 
-  def attributes(context:RenderContext, entries: List[(Any,Any)]) {
+    val (entries_class, tmp) = entries.partition { x => { x._1 match { case "class" => true; case _ => false } } }
+    val (entries_id, entries_rest) = tmp.partition { x => { x._1 match { case "id" => true; case _ => false } } }
+    var map = LinkedHashMap[Any, Any]()
 
-    val (entries_class, tmp) = entries.partition{x=>{ x._1 match { case "class" => true; case _=> false} } }
-    val (entries_id, entries_rest) = tmp.partition{x=>{ x._1 match { case "id" => true; case _=> false} } }
-    var map = LinkedHashMap[Any,Any]( )
+    def isEnabled(value: Any) = value != null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])
 
-    def isEnabled(value:Any) = value!=null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])
-
-    val flattener = (x:(Any,Any))=>{
-      if( isEnabled(x._2) ) {
+    val flattener = (x: (Any, Any)) => {
+      if (isEnabled(x._2)) {
         List(x._2)
       } else {
         Nil
@@ -101,31 +98,31 @@ object RenderHelper {
     }
 
     val ids = entries_id.flatMap(flattener)
-    if( !ids.isEmpty ) {
+    if (!ids.isEmpty) {
       map += "id" -> ids.last
     }
 
     val classes = entries_class.flatMap(flattener)
-    if( !classes.isEmpty ) {
-      map += "class"->classes.mkString(" ")
+    if (!classes.isEmpty) {
+      map += "class" -> classes.mkString(" ")
     }
 
-    entries_rest.foreach{ me => map += me._1 -> me._2 }
+    entries_rest.foreach { me => map += me._1 -> me._2 }
 
-    if( !map.isEmpty ) {
+    if (!map.isEmpty) {
       map.foreach {
-        case (name,value) =>
-        if( isEnabled(value) ) {
-          context << " "
-          context << name
-          context << "=\""
-          if( value.isInstanceOf[Boolean] ) {
+        case (name, value) =>
+          if (isEnabled(value)) {
+            context << " "
             context << name
-          } else {
-            context.escape(value)
+            context << "=\""
+            if (value.isInstanceOf[Boolean]) {
+              context << name
+            } else {
+              context.escape(value)
+            }
+            context << "\""
           }
-          context << "\""
-        }
       }
     }
 
@@ -133,7 +130,7 @@ object RenderHelper {
 
   def smart_sanitize(context: RenderContext, value: Any): String = {
     context.value(value).toString
-/*
+    /*
     if (value == null) {
       return context.value(value);
     }

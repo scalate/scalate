@@ -21,13 +21,13 @@ import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.spi.template.ViewProcessor
-import com.sun.jersey.api.core.{HttpContext, ResourceConfig}
+import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.core.reflection.ReflectionHelper
-import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import org.fusesource.scalate.util.Log
 
 object ScueryTemplateProcessor extends Log
@@ -51,7 +51,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
   val basePath = resourceConfig.getProperties().get("org.fusesource.config.property.SSPTemplatesBasePath") match {
     case path: String => if (path(0) == '/') path else "/" + path
-    case _            => ""
+    case _ => ""
   }
 
   var errorUris: List[String] = ServletHelper.errorUris()
@@ -83,8 +83,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
             tryFindPath(newPath).getOrElse(null)
-          }
-          else {
+          } else {
             null
           }
       }
@@ -107,9 +106,10 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     if (hc.isTracingEnabled()) {
-        hc.trace("forwarding view to Scuery template: \"%s\", it = %s".format(
-                resolvedPath,
-                ReflectionHelper.objectToString(viewable.getModel())));
+      hc.trace("forwarding view to Scuery template: \"%s\", it = %s".format(
+        resolvedPath,
+        ReflectionHelper.objectToString(viewable.getModel())
+      ));
     }
 
     // Ensure headers are committed
@@ -151,7 +151,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
           throw new ContainerException(e)
         }
 
-        // throw new ContainerException(e)
+      // throw new ContainerException(e)
     }
   }
 

@@ -19,7 +19,6 @@ package org.fusesource.scalate.page
 
 import org.fusesource.scalate.test.TemplateTestSupport
 
-
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

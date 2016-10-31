@@ -18,25 +18,25 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate._
-import osgi.{BundleHeaders, BundleClassPathBuilder, BundleClassLoader}
+import osgi.{ BundleHeaders, BundleClassPathBuilder, BundleClassLoader }
 import scala.tools.nsc.Global
 import scala.tools.nsc.Settings
 import scala.tools.nsc.io.AbstractFile
 import scala.tools.nsc.backend.JavaPlatform
-import tools.nsc.reporters.{Reporter, ConsoleReporter}
-import scala.tools.nsc.util.{ClassPath, MergedClassPath}
-import scala.reflect.internal.util.{Position, NoPosition, FakePos}
+import tools.nsc.reporters.{ Reporter, ConsoleReporter }
+import scala.tools.nsc.util.{ ClassPath, MergedClassPath }
+import scala.reflect.internal.util.{ Position, NoPosition, FakePos }
 import scala.runtime.ByteRef
 import scala.util.parsing.input.OffsetPosition
 import collection.mutable.ListBuffer
 import org.osgi.framework.Bundle
-import java.io.{PrintWriter, StringWriter, File}
+import java.io.{ PrintWriter, StringWriter, File }
 
-import util.{Log, IOUtil, ClassPathBuilder}
+import util.{ Log, IOUtil, ClassPathBuilder }
 
 object ScalaCompiler extends Log {
 
-  def create(engine: TemplateEngine) : ScalaCompiler = {
+  def create(engine: TemplateEngine): ScalaCompiler = {
     Thread.currentThread.getContextClassLoader match {
       case BundleClassLoader(loader) => new OsgiScalaCompiler(engine, loader.getBundle)
       case _ => new ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath)
@@ -50,7 +50,7 @@ import ScalaCompiler._
 trait Compiler {
   def compile(file: File): Unit
   def shutdown() {
-  	// noop
+    // noop
   }
 }
 
@@ -59,7 +59,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
   class LoggingReporter(writer: StringWriter = new StringWriter)
-    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
+      extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
 
     var compilerErrors: List[CompilerError] = Nil
     def messages = writer.toString
@@ -102,7 +102,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       // Bail out if compilation failed
       if (reporter.hasErrors) {
         reporter.printSummary()
-        throw new CompilerException("Compilation failed:\n" +reporter.messages, reporter.compilerErrors)
+        throw new CompilerException("Compilation failed:\n" + reporter.messages, reporter.compilerErrors)
       }
     }
   }
@@ -117,15 +117,15 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
     val pathSeparator = File.pathSeparator
 
     val classPathFromClassLoader = (new ClassPathBuilder)
-            .addEntry(classpath)
-            .addPathFromContextClassLoader()
-            .addPathFrom(classOf[Product])
-            .addPathFrom(classOf[Global])
-            .addPathFrom(classOf[ByteRef])
-            .addPathFrom(getClass)
-            .addPathFromSystemClassLoader()
-            .addJavaPath()
-            .classPath
+      .addEntry(classpath)
+      .addPathFromContextClassLoader()
+      .addPathFrom(classOf[Product])
+      .addPathFrom(classOf[Global])
+      .addPathFrom(classOf[ByteRef])
+      .addPathFrom(getClass)
+      .addPathFromSystemClassLoader()
+      .addJavaPath()
+      .classPath
 
     var useCP = if (classpath != null && combineClasspath) {
       classpath + pathSeparator + classPathFromClassLoader
@@ -159,7 +159,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
 }
 
 class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
-        extends ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath) {
+    extends ScalaCompiler(engine.bytecodeDirectory, engine.classpath, engine.combinedClassPath) {
 
   debug("Using OSGi-enabled Scala compiler")
 
@@ -206,9 +206,11 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
     val builder = new ClassPathBuilder
     builder.addLibDir(engine.libraryDirectory.getAbsolutePath)
 
-    super.generateSettings(bytecodeDirectory,
-                           classpath + File.pathSeparator + builder.classPath,
-                           combineClasspath)
+    super.generateSettings(
+      bytecodeDirectory,
+      classpath + File.pathSeparator + builder.classPath,
+      combineClasspath
+    )
   }
 }
 

@@ -1,7 +1,7 @@
 package org.fusesource.scalate.guice
 
 import javax.servlet.ServletConfig
-import com.google.inject.{Inject, Injector, Singleton}
+import com.google.inject.{ Inject, Injector, Singleton }
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import org.atmosphere.cpr.AtmosphereServlet
 import org.atmosphere.handler.ReflectorServletProcessor
@@ -24,18 +24,18 @@ class ScalateAtmosphereServlet @Inject() (private val injector: Injector) extend
     setDefaultBroadcasterClassName(JERSEY_BROADCASTER)
 
     val guiceContainer = injector.getInstance(classOf[GuiceContainer])
-//    val resourceConfig = injector.getInstance(classOf[ResourceConfig])
+    //    val resourceConfig = injector.getInstance(classOf[ResourceConfig])
 
     val rsp = new ReflectorServletProcessor()
     rsp.setServlet(guiceContainer)
 
-//    val props = resourceConfig.getProperties.asScala
-//
-//    for ((name, value) <- props) {
-//      if (value.isInstanceOf[String]) {
-//        addInitParameter(name, value.asInstanceOf[String])
-//      }
-//    }
+    //    val props = resourceConfig.getProperties.asScala
+    //
+    //    for ((name, value) <- props) {
+    //      if (value.isInstanceOf[String]) {
+    //        addInitParameter(name, value.asInstanceOf[String])
+    //      }
+    //    }
 
     var mapping = sc.getInitParameter(PROPERTY_SERVLET_MAPPING)
     if (mapping == null) mapping = "/*"

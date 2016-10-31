@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 package ssp
 
-
 class WhitespaceTest extends TemplateTestSupport {
 
   showOutput = true

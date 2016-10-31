@@ -26,16 +26,15 @@ import java.io.File
 import scala.io.Source
 import collection.JavaConversions._
 import collection.immutable.SortedMap
-import collection.mutable.{ArrayBuffer, ListBuffer}
-import util.parsing.input.{Position, OffsetPosition}
+import collection.mutable.{ ArrayBuffer, ListBuffer }
+import util.parsing.input.{ Position, OffsetPosition }
 import xml.NodeSeq
-import org.fusesource.scalate.util.{Log, SourceMapInstaller, SourceMap}
+import org.fusesource.scalate.util.{ Log, SourceMapInstaller, SourceMap }
 
 case class SourceLine(line: Int, source: String) {
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
 
   def nonBlank = source != null && source.length > 0
-
 
   /**
    * Return a tuple of the prefix, the error character and the postfix of this source line
@@ -45,8 +44,7 @@ case class SourceLine(line: Int, source: String) {
     val length = source.length
     if (col >= length) {
       (source, "", "")
-    }
-    else {
+    } else {
       val next = col + 1
       val prefix = source.substring(0, col)
       val ch = if (col < length) source.substring(col, next) else ""
@@ -128,8 +126,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
 
       if (templates.exists(_.startsWith(prefix)) == false) {
         Some(prefix + viewName)
-      }
-      else {
+      } else {
         None
       }
     case _ => None
@@ -151,7 +148,6 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
     case _ => Nil
   }
 
-
   /**
    * Returns true if the option is enabled
    */
@@ -165,8 +161,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
   /**
    * Link to the current page with the option disabled
    */
-  def disableLink(name: String): String = context.asInstanceOf[ServletRenderContext]currentUriMinus(consoleParameter + "=" + name)
-
+  def disableLink(name: String): String = context.asInstanceOf[ServletRenderContext] currentUriMinus (consoleParameter + "=" + name)
 
   /**
    * Retrieves a chunk of lines either side of the given error line
@@ -187,8 +182,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
         }
       }
       list
-    }
-    else {
+    } else {
       Nil
     }
   }
@@ -214,7 +208,6 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
           rc.toArray
         }
 
-
         val start = (pos.line - chunk).max(1)
         val end = (pos.line + chunk).min(index.length)
 
@@ -224,7 +217,6 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
         }
         list
 
-
       case _ =>
 
         // We need to manually load the file..
@@ -233,10 +225,10 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
 
   }
 
-  def systemProperties: SortedMap[String,String] = {
+  def systemProperties: SortedMap[String, String] = {
     // TODO is there a better way?
-    val m: Map[String,String] = System.getProperties.toMap
-    SortedMap(m.iterator.toSeq :_*)
+    val m: Map[String, String] = System.getProperties.toMap
+    SortedMap(m.iterator.toSeq: _*)
   }
 
   // Error Handling helper methods
@@ -249,15 +241,15 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
 
   def errorCode = attributeOrElse("javax.servlet.error.status_code", 500)
 
-  def renderStackTraceElement(stack:StackTraceElement): NodeSeq = {
-    var rc:NodeSeq = null
+  def renderStackTraceElement(stack: StackTraceElement): NodeSeq = {
+    var rc: NodeSeq = null
 
     // Does it look like a scalate template class??
     var className = stack.getClassName.split(Pattern.quote(".")).last
-    if( className.startsWith("$_scalate_$") ) {
+    if (className.startsWith("$_scalate_$")) {
       // Then try to load it's smap info..
       var file = RenderContext().engine.bytecodeDirectory
-      file = new File(file, stack.getClassName.replace('.', '/')+".class")
+      file = new File(file, stack.getClassName.replace('.', '/') + ".class")
       try {
         val smap = SourceMap.parse(SourceMapInstaller.load(file))
         // And then render a link to the original template file.
@@ -265,20 +257,20 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
           case None =>
           case Some((file, line)) =>
             rc = editLink(file, Some(line), Some(1)) {
-              RenderContext() << <pre class="stacktrace">at ({file}:{line})</pre>
+              RenderContext() << <pre class="stacktrace">at ({ file }:{ line })</pre>
             }
         }
       } catch {
         // ignore errors trying to load the smap... we can fallback
         // to rendering a plain stack line.
-        case e:Throwable=>
+        case e: Throwable =>
       }
     }
 
-    if( rc==null )
-      <pre class="stacktrace">at {stack.getClassName}.{stack.getMethodName}({stack.getFileName}:{stack.getLineNumber})</pre>
+    if (rc == null)
+      <pre class="stacktrace">at { stack.getClassName }.{ stack.getMethodName }({ stack.getFileName }:{ stack.getLineNumber })</pre>
     else
       rc
-  }  
+  }
 
 }

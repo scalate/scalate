@@ -19,7 +19,7 @@ package org.fusesource.scalate.support
 
 import org.fusesource.scalate.TemplateSource
 import java.io.File
-import java.net.{URL}
+import java.net.{ URL }
 import io.Source
 import org.fusesource.scalate.util._
 

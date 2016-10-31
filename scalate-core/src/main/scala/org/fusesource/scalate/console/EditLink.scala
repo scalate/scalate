@@ -17,10 +17,10 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.org.fusesource.scalate.util.{SourceMap}
+import _root_.org.fusesource.scalate.util.{ SourceMap }
 import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
-import xml.{Text, Elem, NodeSeq}
+import xml.{ Text, Elem, NodeSeq }
 
 /**
  * @version $Revision : 1.1 $
@@ -34,8 +34,7 @@ object EditLink {
   def editLink(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     if (file == null) {
       Nil
-    }
-    else {
+    } else {
       System.getProperty("scalate.editor", "") match {
         case "textmate" => editLinkTextMate(file, line, col)(body)
         case "ide" => editLinkIdePlugin(file, line, col)(body)
@@ -52,19 +51,19 @@ object EditLink {
 
   def editLinkFileScheme(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = captureNodeSeq(body)
-    <a href={"file://" + file} title="Open File" target="_blank">
-      {bodyText}
+    <a href={ "file://" + file } title="Open File" target="_blank">
+      { bodyText }
     </a>
   }
 
   def editLinkTextMate(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = captureNodeSeq(body)
     val href = "txmt://open?url=file://" + file +
-            (if (line.isDefined) "&line=" + line.get else "") +
-            (if (col.isDefined) "&col=" + col.get else "")
+      (if (line.isDefined) "&line=" + line.get else "") +
+      (if (col.isDefined) "&col=" + col.get else "")
 
-    <a href={href} title="Open in TextMate">
-      {bodyText}
+    <a href={ href } title="Open in TextMate">
+      { bodyText }
     </a>
   }
 
@@ -75,25 +74,17 @@ object EditLink {
     val lineNumber = if (line.isDefined) {
       val n = line.get
       if (n > 1) n - 1 else 0
-    }
-    else 0
+    } else 0
 
     <span>
-      {bodyText}<img class="ide-icon tb_right_mid"
-                     id={"ide-" + file.hashCode}
-                     title={bodyText}
-                     onclick={"this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);"}
-                     alt="Open in IDE"
-                     src={"http://localhost:" + idePluginPort + "/icon"}/>
+      { bodyText }<img class="ide-icon tb_right_mid" id={ "ide-" + file.hashCode } title={ bodyText } onclick={ "this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);" } alt="Open in IDE" src={ "http://localhost:" + idePluginPort + "/icon" }/>
     </span>
   }
-
 
   def isMacOsx = System.getProperty("os.name", "").contains("Mac OS X")
 
   def hasTextMate = exists("/Applications/TextMate.app") || exists("~/Applications/TextMate.app")
 
   def exists(fileName: String) = new File(fileName).exists
-
 
 }

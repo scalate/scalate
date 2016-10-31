@@ -19,7 +19,7 @@ package org.fusesource.scalate.scaml
 
 import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
-import support.{Text, Code, AbstractCodeGenerator}
+import support.{ Text, Code, AbstractCodeGenerator }
 import support.RenderHelper
 import collection.immutable.List
 import scala.util.parsing.input.OffsetPosition
@@ -53,7 +53,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         super.current_position + ("$_scalate_$_context << ( " + asString(text_buffer.toString)).length
       }
     }
-
 
     def write_indent() = {
       if (pending_newline) {
@@ -115,7 +114,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate_no_flush(statements: List[Statement]): Unit = {
 
       var remaining = statements
-      while( remaining != Nil ) {
+      while (remaining != Nil) {
         val fragment = remaining.head
         remaining = remaining.drop(1)
 
@@ -168,7 +167,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement: Doctype): Unit = {
       this << statement.pos;
       write_indent
-      statement.line.map {_.value} match {
+      statement.line.map { _.value } match {
         case List("XML") =>
           write_text("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
         case List("XML", encoding) =>
@@ -176,7 +175,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         case _ =>
           ScamlOptions.format match {
             case ScamlOptions.Format.xhtml =>
-              statement.line.map {_.value} match {
+              statement.line.map { _.value } match {
                 case List("Strict") =>
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">""")
                 case List("Frameset") =>
@@ -193,7 +192,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">""")
               }
             case ScamlOptions.Format.html4 =>
-              statement.line.map {_.value} match {
+              statement.line.map { _.value } match {
                 case List("Strict") =>
                   write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">""")
                 case List("Frameset") =>
@@ -222,16 +221,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       val interpolate = isEnabled("&") || isEnabled("!")
       val sanitize = interpolate && isEnabled("&")
 
-      var content = statement.body.map {_.value}.mkString(ScamlOptions.nl)
+      var content = statement.body.map { _.value }.mkString(ScamlOptions.nl)
 
       var text: TextExpression = if (interpolate) {
         val p = new ScamlParser(ScamlParser.UPTO_TYPE_MULTI_LINE)
         try {
           p.parse(p.literal_text(Some(sanitize)), content)
         } catch {
-          case e:InvalidSyntaxException =>
+          case e: InvalidSyntaxException =>
             val pos = statement.body.head.pos.asInstanceOf[OffsetPosition]
-            throw new InvalidSyntaxException(e.brief, OffsetPosition(pos.source, pos.offset+e.pos.column))
+            throw new InvalidSyntaxException(e.brief, OffsetPosition(pos.source, pos.offset + e.pos.column))
         }
       } else {
         LiteralText(List(Text(content)), Some(sanitize))
@@ -240,7 +239,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       var prefix = "$_scalate_$_context << ( "
       var suffix = ");"
 
-      if (ScamlOptions.ugly ) {
+      if (ScamlOptions.ugly) {
         suppress_indent = true
       } else if (preserve) {
         prefix += " $_scalate_$_preserve ("
@@ -266,7 +265,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       this << "} " + suffix
       write_nl
     }
-
 
     def generateTextExpression(statement: TextExpression, is_line: Boolean): Unit = {
       statement match {
@@ -302,7 +300,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           var prefix = "$_scalate_$_context << ("
           var suffix = ");"
 
-          if (s.preserve || ScamlOptions.ugly ) {
+          if (s.preserve || ScamlOptions.ugly) {
             if (s.ugly || ScamlOptions.ugly) {
               suppress_indent = true
             } else {
@@ -324,7 +322,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           }
           prefix += " $_scalate_$_context." + method + "("
           suffix = ") " + suffix;
-
 
           if (is_line) {
             write_indent
@@ -395,7 +392,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         in_html_comment = true
       }
 
-
       statement match {
         case HtmlComment(_, text, List()) => {
           write_indent
@@ -430,7 +426,6 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
-
     def generate(statement: ScamlComment): Unit = {
       this << statement.pos;
       statement match {
@@ -449,7 +444,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def isAutoClosed(statement: Element) = {
       statement.text == None && statement.body.isEmpty &&
-              statement.tag.isDefined && ( ScamlOptions.autoclose==null || ScamlOptions.autoclose.contains(statement.tag.get.value) )
+        statement.tag.isDefined && (ScamlOptions.autoclose == null || ScamlOptions.autoclose.contains(statement.tag.get.value))
     }
 
     def generate(statement: Element): Unit = {
@@ -486,15 +481,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       def outer_trim = statement.trim match {
-        case Some(Trim.Outer) => {trim_whitespace; true}
-        case Some(Trim.Both) => {trim_whitespace; true}
-        case _ => {false}
+        case Some(Trim.Outer) => { trim_whitespace; true }
+        case Some(Trim.Both) => { trim_whitespace; true }
+        case _ => { false }
       }
 
       def inner_trim = statement.trim match {
-        case Some(Trim.Inner) => {trim_whitespace; true}
-        case Some(Trim.Both) => {trim_whitespace; true}
-        case _ => {false}
+        case Some(Trim.Inner) => { trim_whitespace; true }
+        case Some(Trim.Both) => { trim_whitespace; true }
+        case _ => { false }
       }
 
       outer_trim
@@ -570,11 +565,12 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                   List[AnyRef]("$_scalate_$_context.value(", part, ", false)")
                 }
               }
-              this << parts.foldRight(List[AnyRef]()) { case (prev, sum)=>
-                sum match {
-                  case List() => prev
-                  case _ => prev ::: " + " :: sum
-                }
+              this << parts.foldRight(List[AnyRef]()) {
+                case (prev, sum) =>
+                  sum match {
+                    case List() => prev
+                    case _ => prev ::: " + " :: sum
+                  }
               }
               flush_text
             case s: EvaluatedText =>
@@ -622,8 +618,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           }
         }
 
-        val (entries_class, tmp) = entries.partition {x => {x._1 match {case "class" => true; case _ => false}}}
-        val (entries_id, entries_rest) = tmp.partition {x => {x._1 match {case "id" => true; case _ => false}}}
+        val (entries_class, tmp) = entries.partition { x => { x._1 match { case "class" => true; case _ => false } } }
+        val (entries_id, entries_rest) = tmp.partition { x => { x._1 match { case "id" => true; case _ => false } } }
         var map = LinkedHashMap[Text, Text]()
 
         if (!entries_id.isEmpty) {
@@ -633,16 +629,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         if (!entries_class.isEmpty) {
           var value: Option[Text] = None
           value = entries_class.foldLeft(value) {
-            (rc, x) => rc match {
-              case None => Some(value_of(x._2))
-              case Some(y) => Some(y + " " + value_of(x._2))
-            }
+            (rc, x) =>
+              rc match {
+                case None => Some(value_of(x._2))
+                case Some(y) => Some(y + " " + value_of(x._2))
+              }
           }
           map += Text("class") -> value.get
         }
 
-        entries_rest.foreach {me => map += value_of(me._1) -> value_of(me._2)}
-
+        entries_rest.foreach { me => map += value_of(me._1) -> value_of(me._2) }
 
         if (!map.isEmpty) {
           map.foreach {
@@ -660,9 +656,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
-
   }
-
 
   override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding]): Code = {
 
@@ -674,6 +668,5 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     builder.generate(engine, source, bindings, statements)
     Code(source.className, builder.code, Set(uri), builder.positions)
   }
-
 
 }

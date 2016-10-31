@@ -4,8 +4,9 @@ class CaptureAppendAttributeTest extends JadeTestSupport {
 
   showOutput = true
 
-    testRender("capture append attributes",
-"""
+  testRender(
+    "capture append attributes",
+    """
 - captureAttributeAppend("foo")
   |hello
 - captureAttributeAppend("foo")
@@ -13,7 +14,7 @@ class CaptureAppendAttributeTest extends JadeTestSupport {
 html
   head
     = attribute("foo")
-""","""
+""", """
 <html>
   <head>
     hello
@@ -21,5 +22,6 @@ html
 
   </head>
 </html>
-""")
+"""
+  )
 }

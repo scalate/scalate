@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.camel
 
-
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
@@ -51,12 +50,10 @@ class CamelScalateEndpointTest extends FunSuite {
       val template = context.createProducerTemplate()
       Thread.sleep(2000)
       useTemplate(template)
-    }
-    finally {
+    } finally {
       context.stop()
     }
   }
-
 
   def scenario(uri: String, body: Any, expectedResult: String): Unit = {
     test("routing to endpoint " + uri) {
@@ -95,6 +92,5 @@ class CamelScalateEndpointTest extends FunSuite {
       }
     }
   }
-
 
 }
