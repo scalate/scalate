@@ -54,7 +54,7 @@ class TemplateTestSupport extends FunSuiteSupport {
     if (trim) {
       output = output.trim
     }
-    expect(expectedOutput) {output}
+    expect(expectedOutput) { output }
     output
   }
 
@@ -88,8 +88,7 @@ class TemplateTestSupport extends FunSuiteSupport {
       index = source.indexOf(text, index)
       if (index >= 0) {
         index += text.length
-      }
-      else {
+      } else {
         assume(false, "Text does not contain '" + text + "' for " + description + " when text was:\n" + source)
       }
     }

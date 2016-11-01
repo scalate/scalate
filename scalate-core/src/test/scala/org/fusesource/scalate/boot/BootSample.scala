@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.boot
 
-import org.fusesource.scalate.util.{Log, Logging}
+import org.fusesource.scalate.util.{ Log, Logging }
 
 /**
  * Helper class to help test that we can write custom bootstrap code

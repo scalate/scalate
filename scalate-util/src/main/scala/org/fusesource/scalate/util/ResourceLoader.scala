@@ -96,5 +96,6 @@ case class FileResourceLoader(sourceDirectories: Traversable[File] = None) exten
 class ResourceNotFoundException(resource: String, root: String = "", description: String = "")
   extends Exception(
     "Could not load resource: [" + resource +
-    (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
-    (if (description == "") "" else ". " + description))
+      (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
+      (if (description == "") "" else ". " + description)
+  )

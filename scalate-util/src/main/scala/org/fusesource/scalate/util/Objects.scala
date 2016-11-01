@@ -26,12 +26,10 @@ import scala.reflect.ClassTag
 object Objects {
   val log = Log(getClass); import log._
 
-
   /**
    * A helper method to return a non null value or the default value if it is null
    */
   def getOrElse[T](value: T, defaultValue: => T) = if (value != null) value else defaultValue
-
 
   /**
    * Asserts that the given value is not null with a descriptive message
@@ -55,7 +53,7 @@ object Objects {
     tryInstantiate[T](clazz, injectionValues) match {
       case Some(v) => v
       case _ => throw new IllegalArgumentException("No valid constructor could be found for " + clazz.getName +
-              " and values: " + injectionValues)
+        " and values: " + injectionValues)
     }
 
   /**

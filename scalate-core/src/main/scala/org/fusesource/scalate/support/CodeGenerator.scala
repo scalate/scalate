@@ -17,9 +17,9 @@
  */
 package org.fusesource.scalate.support
 
-import _root_.scala.util.parsing.input.{OffsetPosition}
+import _root_.scala.util.parsing.input.{ OffsetPosition }
 import collection.immutable.TreeMap
-import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
+import org.fusesource.scalate.{ TemplateSource, Binding, TemplateEngine }
 
 case class Code(className: String, source: String, dependencies: Set[String], positions: TreeMap[OffsetPosition, OffsetPosition])
 

@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate.{TemplateSource, TemplateTestSupport}
+import org.fusesource.scalate.{ TemplateSource, TemplateTestSupport }
 
 /**
  * @version $Revision : 1.1 $

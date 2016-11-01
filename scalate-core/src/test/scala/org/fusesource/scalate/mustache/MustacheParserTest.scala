@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.mustache
 
-import org.fusesource.scalate.{InvalidSyntaxException, FunSuiteSupport}
+import org.fusesource.scalate.{ InvalidSyntaxException, FunSuiteSupport }
 import org.fusesource.scalate.util.IOUtil
 import java.io.File
 
@@ -30,12 +30,14 @@ class MustacheParserTest extends FunSuiteSupport {
   implicit def stringToText(x: String) = Text(x)
 
   test("set directive") {
-    assertParses(List(Text("* "), Variable("default_tags"), Text(" * "),
-      SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
-      SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
-      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
+    assertParses(
+      List(Text("* "), Variable("default_tags"), Text(" * "),
+        SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
+        SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
+      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}"
+    )
   }
-  
+
   test("plain text") {
     assertValid("some text more text")
 
@@ -43,59 +45,79 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   test("variable") {
-    assertParses(List(Text("some text "), Variable("foo"), Text(" "), Variable("bar"), Text(" more text")),
-      "some text {{foo}} {{bar}} more text")
+    assertParses(
+      List(Text("some text "), Variable("foo"), Text(" "), Variable("bar"), Text(" more text")),
+      "some text {{foo}} {{bar}} more text"
+    )
   }
 
   test("unescape variable") {
-    assertParses(List(Text("some text "), Variable("foo", true), Text(" "), Variable("bar", true), Text(" more text")),
-      "some text {{&foo}} {{& bar}} more text")
+    assertParses(
+      List(Text("some text "), Variable("foo", true), Text(" "), Variable("bar", true), Text(" more text")),
+      "some text {{&foo}} {{& bar}} more text"
+    )
   }
 
   test("unescape with treble moustache") {
-    assertParses(List(Text("some text "), Variable("foo", true), Text(" more text")),
-      "some text {{{foo}}} more text")
+    assertParses(
+      List(Text("some text "), Variable("foo", true), Text(" more text")),
+      "some text {{{foo}}} more text"
+    )
   }
 
   test("open close section") {
-    assertParses(List(Text("* "), Section("foo", List(Text("bar "))), Text("*")),
-      "* {{#foo}} bar {{/foo}} *")
+    assertParses(
+      List(Text("* "), Section("foo", List(Text("bar "))), Text("*")),
+      "* {{#foo}} bar {{/foo}} *"
+    )
   }
 
   test("invert variable and partial") {
-    assertParses(List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text("*")),
-      "* {{^foo}} {{>bar}}{{/foo}} *")
+    assertParses(
+      List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text("*")),
+      "* {{^foo}} {{>bar}}{{/foo}} *"
+    )
   }
 
   // set delimiter
   test("just set directive") {
-    assertParses(List(SetDelimiter("<%", "%>")),
-      "{{=<% %>=}}")
+    assertParses(
+      List(SetDelimiter("<%", "%>")),
+      "{{=<% %>=}}"
+    )
   }
 
   test("text and set directive") {
-    assertParses(List(Text("* "), SetDelimiter("<%", "%>"), Text("*")),
-      "* {{=<% %>=}} *")
+    assertParses(
+      List(Text("* "), SetDelimiter("<%", "%>"), Text("*")),
+      "* {{=<% %>=}} *"
+    )
   }
 
   test("whitespace with sections") {
-    assertParses(List(Section("terms", List(Variable("name"), Text("\n  "),
-      Variable("index"), Text("\n"))),
-      Section("terms", List(Variable("name"), Text("\n  "), Variable("index"), Text("\n")))),
-      loadTestFile("reuse_of_enumerables.html"))
+    assertParses(
+      List(
+        Section("terms", List(Variable("name"), Text("\n  "),
+          Variable("index"), Text("\n"))),
+        Section("terms", List(Variable("name"), Text("\n  "), Variable("index"), Text("\n")))
+      ),
+      loadTestFile("reuse_of_enumerables.html")
+    )
   }
 
   test("newline after expression") {
-    assertParses(List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
-      loadTestFile("two_in_a_row.html"))
+    assertParses(
+      List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
+      loadTestFile("two_in_a_row.html")
+    )
   }
 
   ignore("complex whitespace") {
-    assertParses(List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
-      loadTestFile("complex.html"))
+    assertParses(
+      List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
+      loadTestFile("complex.html")
+    )
   }
-
-
 
   // test bad syntax
   assertFail("text {{-}}")
@@ -124,7 +146,7 @@ class MustacheParserTest extends FunSuiteSupport {
 
   def assertParses(expected: List[Statement], text: String): List[Statement] = {
     val lines = assertValid(text)
-    expect(expected) {lines}
+    expect(expected) { lines }
     lines
   }
 
@@ -151,5 +173,5 @@ class MustacheParserTest extends FunSuiteSupport {
     assert(e.getMessage.contains(message), "InvalidSyntaxException message did not contain the text: \n  " + message + "\nInstead got: \n  " + e.getMessage)
   }
 
-  protected def loadTestFile(name: String) =       IOUtil.loadTextFile(new File(baseDir, "src/test/resources/moustache/js/" + name))
+  protected def loadTestFile(name: String) = IOUtil.loadTextFile(new File(baseDir, "src/test/resources/moustache/js/" + name))
 }

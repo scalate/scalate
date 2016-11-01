@@ -19,7 +19,7 @@ package org.fusesource.scalate.console
 
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
-import org.scalatest.{ConfigMap, FunSuite}
+import org.scalatest.{ ConfigMap, FunSuite }
 
 import _root_.org.fusesource.scalate.test._
 import java.lang.String
@@ -54,7 +54,6 @@ class ConsoleTest extends FunSuite with WebServerMixin with WebDriverMixin {
     // so see the TestGeneratedConsoleFiles.scala for the rest of this test 
     // which we run on the generated archetypes
   }
-
 
   override protected def beforeAll(configMap: ConfigMap) = {
     System.setProperty("scalate.mode", "development")

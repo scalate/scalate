@@ -17,13 +17,13 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.{util => ju}
+import java.{ util => ju }
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import collection.mutable.ListBuffer
-import java.util.regex.{Pattern, Matcher}
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ParameterizedBlock, TextBoxBlock, AbstractConfluenceDelimitedBlock}
-import org.eclipse.mylyn.wikitext.core.parser.{TableRowAttributes, TableAttributes, TableCellAttributes, Attributes}
-import org.fusesource.scalate.util.{Log, Logging}
+import java.util.regex.{ Pattern, Matcher }
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ ParameterizedBlock, TextBoxBlock, AbstractConfluenceDelimitedBlock }
+import org.eclipse.mylyn.wikitext.core.parser.{ TableRowAttributes, TableAttributes, TableCellAttributes, Attributes }
+import org.fusesource.scalate.util.{ Log, Logging }
 
 class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
 
@@ -36,7 +36,6 @@ class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
       builder.beginBlock(BlockType.DIV, attributes)
     }
   }
-
 
   override def handleBlockContent(value: String) = {
     builder.charactersUnescaped(value)
@@ -108,7 +107,6 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
     return -1;
   }
 
-
   override def canStart(line: String, lineOffset: Int): Boolean = {
     blockLineCount = 0;
     nesting = false;
@@ -163,7 +161,7 @@ class DivBlock extends AbstractNestedBlock("div") {
 
 class SectionBlock extends AbstractNestedBlock("section") {
   var tableAttributes: TableAttributes = null
-  var rowAttributes : TableRowAttributes = null
+  var rowAttributes: TableRowAttributes = null
   var content = ListBuffer[String]()
 
   override def beginBlock() = {
@@ -286,6 +284,5 @@ object Blocks {
       case _ => unknownAttribute(key, value)
     }
   }
-
 
 }

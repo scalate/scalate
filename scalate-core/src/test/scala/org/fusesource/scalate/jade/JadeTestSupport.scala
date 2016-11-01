@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package jade
 
-import java.io.{StringWriter, PrintWriter, File}
+import java.io.{ StringWriter, PrintWriter, File }
 
 import org.fusesource.scalate.scaml.ScamlTestSupport
 
@@ -56,5 +56,5 @@ class JadeTestSupport extends ScamlTestSupport {
     out.close
     buffer.toString
   }
-  
+
 }

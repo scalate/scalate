@@ -22,16 +22,14 @@ import xml.Node
 
 class SetAttributeTest extends FunSuiteSupport {
   val xml = <html>
-    <body>
-      <div id="content">
-        <a href="#" class="foo" title="A foo link">foo link</a>
-        <a href="#" class="bar" title="A bar link">bar link</a>
-        <a href="#" class="jog" title="A jog link">jog link</a>
-      </div>
-    </body>
-  </html>
-
-
+              <body>
+                <div id="content">
+                  <a href="#" class="foo" title="A foo link">foo link</a>
+                  <a href="#" class="bar" title="A bar link">bar link</a>
+                  <a href="#" class="jog" title="A jog link">jog link</a>
+                </div>
+              </body>
+            </html>
 
   test(" transform") {
     object transformer extends Transformer {
@@ -40,7 +38,6 @@ class SetAttributeTest extends FunSuiteSupport {
       $("a.foo").attribute("href", "http://scalate.fusesource.org/")
 
       $("a.bar").attribute("href").value = "http://scalate.fusesource.org/documentation/"
-
 
       $("a.jog").attribute("href") {
         e =>
@@ -59,8 +56,8 @@ class SetAttributeTest extends FunSuiteSupport {
 
   def assertLink(a: Node, href: String, className: String, title: String): Unit = {
     debug("testing link node: " + a)
-    expect(href) {(a \ "@href").toString}
-    expect(className) {(a \ "@class").toString}
-    expect(title) {(a \ "@title").toString}
+    expect(href) { (a \ "@href").toString }
+    expect(className) { (a \ "@class").toString }
+    expect(title) { (a \ "@title").toString }
   }
 }

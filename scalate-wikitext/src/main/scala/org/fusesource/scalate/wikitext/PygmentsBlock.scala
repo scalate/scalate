@@ -27,10 +27,9 @@ import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate._
-import org.fusesource.scalate.filter.{Pipeline, Filter}
-import java.io.{File, ByteArrayInputStream, ByteArrayOutputStream}
-import util.{Files, Log, IOUtil}
-
+import org.fusesource.scalate.filter.{ Pipeline, Filter }
+import java.io.{ File, ByteArrayInputStream, ByteArrayOutputStream }
+import util.{ Files, Log, IOUtil }
 
 object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
@@ -43,11 +42,11 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     // add the imports
     te.importStatements :+= "import org.fusesource.scalate.wikitext.PygmentizeHelpers._"
   }
-  
+
   def filter(context: RenderContext, content: String): String = {
     pygmentize(content)
   }
-  
+
   // lets calculate once on startup
   private lazy val _installed: Boolean = {
     try {
@@ -69,18 +68,18 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
         debug("Pygmentize installed: " + output)
         true
       }
-    }
-    catch {
-      case e: Exception => debug(e, "Failed to start pygmetize: " + e)
-      false
+    } catch {
+      case e: Exception =>
+        debug(e, "Failed to start pygmetize: " + e)
+        false
     }
   }
 
   def isInstalled: Boolean = _installed
 
-  def unindent(data:String):String = unindent( data.split("""\r?\n""").toList )
+  def unindent(data: String): String = unindent(data.split("""\r?\n""").toList)
 
-  def unindent(data:Seq[String]):String = {
+  def unindent(data: Seq[String]): String = {
     var content = data
     // To support indenting the macro.. we figure out the indent level of the
     // code block by looking at the indent of the last line
@@ -88,7 +87,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     content.lastOption match {
       case Some(indent_re(indent)) =>
         // strip off those indents.
-        content = content.map( _.replaceFirst("""^[ \t]{"""+indent.size+"""}""", "") )
+        content = content.map(_.replaceFirst("""^[ \t]{""" + indent.size + """}""", ""))
       case _ =>
     }
     content.mkString("\n")
@@ -101,31 +100,31 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     val key = """[\w0-9_-]+""".r
     val value = """[\w0-9_-]+""".r
 
-    val attributes = repsep( key ~ ("="~>value), whiteSpace )^^ { list =>
+    val attributes = repsep(key ~ ("=" ~> value), whiteSpace) ^^ { list =>
       var rc = Map[String, String]()
-      for( (x~y) <-list ) {
-        rc += x->y
+      for ((x ~ y) <- list) {
+        rc += x -> y
       }
       rc
     }
 
-    val option_line: Parser[(Option[String], Map[String,String])] =
-      guard(key~"=") ~> attributes <~ opt(whiteSpace) ^^ { case y => (None,y) } |
-      lang ~ opt(whiteSpace ~> attributes <~ opt(whiteSpace)) ^^ {
-        case x~Some(y) => (Some(x),y)
-        case x~None => (Some(x), Map())
-      }
+    val option_line: Parser[(Option[String], Map[String, String])] =
+      guard(key ~ "=") ~> attributes <~ opt(whiteSpace) ^^ { case y => (None, y) } |
+        lang ~ opt(whiteSpace ~> attributes <~ opt(whiteSpace)) ^^ {
+          case x ~ Some(y) => (Some(x), y)
+          case x ~ None => (Some(x), Map())
+        }
 
     def apply(in: String) = {
-      (phrase(opt(whiteSpace)~>option_line)(new CharSequenceReader(in))) match {
+      (phrase(opt(whiteSpace) ~> option_line)(new CharSequenceReader(in))) match {
         case Success(result, _) => Some(result)
-//        case NoSuccess(message, next) => throw new Exception(message+" at "+next.pos)
+        //        case NoSuccess(message, next) => throw new Exception(message+" at "+next.pos)
         case NoSuccess(message, next) => None
       }
     }
   }
 
-  def pygmentize(data:String, options:String=""):String = {
+  def pygmentize(data: String, options: String = ""): String = {
 
     var lang1 = "text"
     var lines = false
@@ -136,7 +135,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     opts match {
       case Some((lang, atts)) =>
         lang1 = lang.getOrElse(lang1)
-        for( (key,value) <- atts) {
+        for ((key, value) <- atts) {
           key match {
             case "lines" => lines = java.lang.Boolean.parseBoolean(value)
             case "wide" => wide = java.lang.Boolean.parseBoolean(value)
@@ -145,13 +144,12 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       case _ =>
     }
 
-
     val content = unindent(data)
 
     // Now look for header sections...
     val header_re = """(?s)\n------+\s*\n\s*([^:\s]+)\s*:\s*([^\n]+)\n------+\s*\n(.*)""".r
 
-    header_re.findFirstMatchIn("\n"+data) match {
+    header_re.findFirstMatchIn("\n" + data) match {
       case Some(m1) =>
 
         lang1 = m1.group(1)
@@ -161,7 +159,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
         header_re.findFirstMatchIn(data1) match {
           case Some(m2) =>
 
-            data1 = data1.substring(0, m2.start )
+            data1 = data1.substring(0, m2.start)
 
             var lang2 = m2.group(1)
             var title2 = m2.group(2)
@@ -173,7 +171,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
             var rc = """<div class="compare"><div class="compare-left"><h3>%s</h3><div class="syntax">%s</div></div><div class="compare-right"><h3>%s</h3><div class="syntax">%s</div></div><br class="clear"/></div>
               |""".stripMargin.format(title1, colored1, title2, colored2)
 
-            if( wide ) {
+            if (wide) {
               rc = """<div class="wide">%s</div>""".format(rc)
             }
             rc
@@ -189,13 +187,12 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
     }
   }
 
-
-  def pygmentize(body:String, lang:String, lines:Boolean):String = {
+  def pygmentize(body: String, lang: String, lines: Boolean): String = {
     if (!isInstalled) {
-      "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" +RenderHelper.sanitize(body) + "</code></pre>"
+      "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" + RenderHelper.sanitize(body) + "</code></pre>"
     } else {
       var options = "style=colorful"
-      if( lines ) {
+      if (lines) {
         options += ",linenos=1"
       }
 
@@ -255,8 +252,8 @@ object PygmentizeHelpers {
 
 class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
 
-  var language:String = _
-  var lines:Boolean = false
+  var language: String = _
+  var lines: Boolean = false
 
   var content = ListBuffer[String]()
 
@@ -266,8 +263,7 @@ class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
     builder.beginBlock(BlockType.DIV, attributes);
   }
 
-
-  override def handleBlockContent(value:String) = {
+  override def handleBlockContent(value: String) = {
     // collect all the content lines..
     content += value
   }
@@ -283,12 +279,11 @@ class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
     language = option.toLowerCase();
   }
 
-  override def setOption(key: String, value:String) = {
+  override def setOption(key: String, value: String) = {
     key match {
-      case "lines" => lines = value=="true"
+      case "lines" => lines = value == "true"
       case "lang" => language = value
     }
   }
-
 
 }

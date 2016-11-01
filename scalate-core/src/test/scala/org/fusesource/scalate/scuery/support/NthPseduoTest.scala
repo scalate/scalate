@@ -27,10 +27,10 @@ class NthPseduoTest extends CssParserTestSupport {
   val x3 = <li id="3" class="foo">three</li>
 
   val xml = <ul>
-    {x1}
-    {x2}
-    {x3}
-    </ul>
+              { x1 }
+              { x2 }
+              { x3 }
+            </ul>
 
   assertMatches("li:nth-child(2n+1)", x1)
   assertNotMatches("li:nth-child(2n+1)", x2)

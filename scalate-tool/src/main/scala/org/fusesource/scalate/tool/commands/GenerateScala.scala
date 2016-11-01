@@ -1,11 +1,11 @@
 package org.fusesource.scalate.tool.commands
 
-import java.io.{File, PrintStream}
+import java.io.{ File, PrintStream }
 
 import org.apache.felix.gogo.commands
-import commands.{Action, Argument, Command}
+import commands.{ Action, Argument, Command }
 import org.apache.felix.service.command.CommandSession
-import org.fusesource.scalate.{TemplateEngine, TemplateSource}
+import org.fusesource.scalate.{ TemplateEngine, TemplateSource }
 
 import collection.JavaConverters._
 import io.Codec
@@ -59,7 +59,8 @@ class GenerateScala extends Action {
     val code = engine.generateScala(templateSource)
 
     target match {
-      case Some(t) ⇒ t.write(code.source.getBytes(Codec.UTF8.charSet)); t.close()
+      case Some(t) ⇒
+        t.write(code.source.getBytes(Codec.UTF8.charSet)); t.close()
       case _ ⇒ val o = commandSession.getConsole; o.write(code.source.getBytes(Codec.UTF8.charSet)); o.flush()
     }
 

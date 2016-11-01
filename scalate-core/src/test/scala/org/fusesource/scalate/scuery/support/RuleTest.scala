@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{Text, Node, NodeSeq}
+import xml.{ Text, Node, NodeSeq }
 class RuleTest extends FunSuiteSupport {
 
   def fn1(node: Node): NodeSeq = Text("f1")
@@ -42,7 +42,7 @@ class RuleTest extends FunSuiteSupport {
     for ((t, i) <- types.zipWithIndex) {
       val v = list(i)
       debug("item at " + i + " = " + v + " should be " + t)
-      expect(t, "itemn at " + i) {v.getClass}
+      expect(t, "itemn at " + i) { v.getClass }
     }
   }
 

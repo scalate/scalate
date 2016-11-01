@@ -44,7 +44,6 @@ abstract class AbstractConfluenceTagSupport(tag: String) extends ParameterizedBl
     }
   }
 
-
   def canStart(line: String, lineOffset: Int) = {
     blockLineNumber = 0
     matcher = startPattern.matcher(line)
@@ -58,7 +57,6 @@ abstract class AbstractConfluenceTagSupport(tag: String) extends ParameterizedBl
       false
     }
   }
-
 
   def doTag(): Unit
 }

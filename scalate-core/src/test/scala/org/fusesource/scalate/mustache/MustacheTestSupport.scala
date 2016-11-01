@@ -18,7 +18,7 @@
 package org.fusesource.scalate.mustache
 
 import java.io.File
-import org.fusesource.scalate.{TemplateEngine, TemplateSource, TemplateTestSupport}
+import org.fusesource.scalate.{ TemplateEngine, TemplateSource, TemplateTestSupport }
 import org.fusesource.scalate.util.IOUtil
 import collection.immutable.Map
 
@@ -43,8 +43,7 @@ abstract class MustacheTestSupport extends TemplateTestSupport {
     val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt"))
     if (trimOutputAndTemplate) {
       assertTrimOutput(expectedOutput.trim, template, attributes)
-    }
-    else {
+    } else {
       assertOutput(expectedOutput, template, attributes)
     }
   }

@@ -19,7 +19,7 @@ package org.fusesource.scalate
 package scaml
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.io.{StringWriter, PrintWriter, File}
+import java.io.{ StringWriter, PrintWriter, File }
 
 import org.scalatest.TestFailedException
 
@@ -29,9 +29,9 @@ import org.scalatest.TestFailedException
 class ScamlTestSupport extends TemplateTestSupport {
   val testCounter = new AtomicInteger(1)
 
-  val NOOP = ()=>{}
+  val NOOP = () => {}
 
-  def testRender(description: String, template: String, result: String, before:()=>Unit = NOOP, after:()=>Unit = NOOP ) = {
+  def testRender(description: String, template: String, result: String, before: () => Unit = NOOP, after: () => Unit = NOOP) = {
     test(description) {
       expect(result.trim) {
         before()
@@ -48,7 +48,7 @@ class ScamlTestSupport extends TemplateTestSupport {
     }
   }
 
-  def ignoreRender(description: String, template: String, result: String, before:()=>Unit = NOOP, after:()=>Unit = NOOP) = {
+  def ignoreRender(description: String, template: String, result: String, before: () => Unit = NOOP, after: () => Unit = NOOP) = {
     ignore(description) {
     }
   }
@@ -97,7 +97,6 @@ class ScamlTestSupport extends TemplateTestSupport {
       }
     }
   }
-
 
   def render(name: String, content: String): String = {
     val buffer = new StringWriter()

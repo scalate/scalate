@@ -17,10 +17,10 @@
  */
 package org.fusesource.scalate.servlet
 
-import org.fusesource.scalate.{Binding, TemplateEngine}
-import org.fusesource.scalate.layout.{LayoutStrategy, DefaultLayoutStrategy}
+import org.fusesource.scalate.{ Binding, TemplateEngine }
+import org.fusesource.scalate.layout.{ LayoutStrategy, DefaultLayoutStrategy }
 import scala.tools.nsc.Global
-import javax.servlet.{ServletException, ServletContext, ServletConfig}
+import javax.servlet.{ ServletException, ServletContext, ServletConfig }
 import java.io.File
 import org.fusesource.scalate.util._
 
@@ -38,9 +38,8 @@ object ServletTemplateEngine {
     val answer = servletContext.getAttribute(templateEngineKey)
     if (answer == null) {
       throw new IllegalArgumentException("No ServletTemplateEngine instance registered on ServletContext for key " +
-              templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?")
-    }
-    else {
+        templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?")
+    } else {
       answer.asInstanceOf[ServletTemplateEngine]
     }
   }
@@ -64,7 +63,7 @@ object ServletTemplateEngine {
    *   * "WEB-INF/scalate/layouts/default.ssp"
    */
   def setLayoutStrategy(engine: TemplateEngine): LayoutStrategy = {
-    engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _):_*)
+    engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _): _*)
     engine.layoutStrategy
   }
 
@@ -77,9 +76,8 @@ object ServletTemplateEngine {
       case null => List()
     }
   }
-    
-}
 
+}
 
 /**
  * A Servlet based TemplateEngine which initializes itself using a ServletConfig or a FilterConfig.
@@ -96,14 +94,14 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
   import ServletTemplateEngine.log._
 
   templateDirectories ::= "/WEB-INF"
-  bindings = List(Binding("context", "_root_."+classOf[ServletRenderContext].getName, true, isImplicit = true))
+  bindings = List(Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   classLoader = Thread.currentThread.getContextClassLoader
   resourceLoader = new ServletResourceLoader(config.getServletContext)
   ServletTemplateEngine.setLayoutStrategy(this)
   bootInjections = List(this, config.getServletContext)
 
-  Option(config.getInitParameter("boot.class")).foreach(clazz=> bootClassName=clazz)
+  Option(config.getInitParameter("boot.class")).foreach(clazz => bootClassName = clazz)
 
   info("Scalate template engine using working directory: %s", workingDirectory)
   private def buildClassPath(): String = {
@@ -115,8 +113,8 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
 
     // Add containers class path
     builder.addPathFrom(getClass)
-            .addPathFrom(classOf[ServletConfig])
-            .addPathFrom(classOf[Product])
+      .addPathFrom(classOf[ServletConfig])
+      .addPathFrom(classOf[Product])
 
     try {
       builder.addPathFrom(classOf[Global])
@@ -126,7 +124,7 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
 
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
     builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
-            .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
+      .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
 
     // Add optional classpath suffix via web.xml parameter
     builder.addEntry(config.getInitParameter("compiler.classpath.suffix"))

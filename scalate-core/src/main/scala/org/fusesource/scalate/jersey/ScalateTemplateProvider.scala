@@ -21,15 +21,15 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.io.OutputStream
 import javax.servlet.ServletContext
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import javax.ws.rs.ext.{Provider, MessageBodyWriter}
-import javax.ws.rs.core.{UriInfo, MultivaluedMap, MediaType, Context}
+import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import javax.ws.rs.ext.{ Provider, MessageBodyWriter }
+import javax.ws.rs.core.{ UriInfo, MultivaluedMap, MediaType, Context }
 
 import com.sun.jersey.api.container.ContainerException
 
-import org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
 import org.fusesource.scalate.TemplateException
-import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
 object ScalateTemplateProvider extends Log; import ScalateTemplateProvider._
 
@@ -50,12 +50,12 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
   @Context
   var response: HttpServletResponse = _
   @Context
-  var uriInfo:UriInfo = _
+  var uriInfo: UriInfo = _
 
-  def resolve(engine:ServletTemplateEngine, argType:Class[_]):String = {
-    val argBase = argType.getName.replace('.','/')
+  def resolve(engine: ServletTemplateEngine, argType: Class[_]): String = {
+    val argBase = argType.getName.replace('.', '/')
     engine.extensions.foreach { ext =>
-      val path = "/"+argBase + "." + ext
+      val path = "/" + argBase + "." + ext
       try {
         engine.load(path)
         return path
@@ -68,11 +68,11 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     null
   }
 
-  def getSize(arg: AnyRef, argType : Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
+  def getSize(arg: AnyRef, argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
 
   def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     var answer = false
-    if(mediaType.getType == "text" && mediaType.getSubtype == "html") {
+    if (mediaType.getType == "text" && mediaType.getSubtype == "html") {
       val engine = ServletTemplateEngine(servletContext)
       if (engine != null && engine.resourceLoader != null) {
         val path = resolve(engine, argType)
@@ -82,7 +82,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     answer
   }
 
-  def writeTo(arg:AnyRef, argType:Class[_], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
+  def writeTo(arg: AnyRef, argType: Class[_], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
     // Ensure headers are committed
     out.flush()
 
@@ -119,7 +119,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
 
             request.setAttribute("it", e)
             TemplateEngineServlet.render(uri, engine, servletContext, request, response)
-            notFound = false            
+            notFound = false
           } catch {
             case _: Exception =>
           }
@@ -129,8 +129,5 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
         }
     }
   }
-
-
-
 
 }

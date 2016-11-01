@@ -17,9 +17,9 @@
  */
 package org.fusesource.scalate.scuery.support
 
-import xml.{Elem, Node, NodeSeq}
+import xml.{ Elem, Node, NodeSeq }
 import org.fusesource.scalate.scuery.XmlHelper._
-import org.fusesource.scalate.util.{Log, Logging}
+import org.fusesource.scalate.util.{ Log, Logging }
 
 object Rule extends Log {
   /**
@@ -28,19 +28,17 @@ object Rule extends Log {
   def apply(a: Rule, b: Rule): Rule = {
     if (a.order <= b.order) {
       CompositeRule(a, b)
-    }
-    else {
+    } else {
       CompositeRule(b, a)
     }
   }
 
   def apply(rules: Iterator[Rule]): Rule = apply(rules.toSeq)
-  
+
   def apply(rules: Seq[Rule]): Rule = {
     if (rules.size < 2) {
       rules(0)
-    }
-    else {
+    } else {
       val list = rules.sortWith(_.order < _.order)
       list.tail.foldLeft(list.head)(Rule(_, _))
     }
@@ -65,7 +63,7 @@ trait Rule {
 
 case class CompositeRule(first: Rule, second: Rule) extends Rule {
   def apply(node: Node) = {
-    first(node).flatMap {second(_)}
+    first(node).flatMap { second(_) }
   }
 
   def toList: List[Rule] = toList(first) ::: toList(second)
@@ -96,7 +94,7 @@ case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
-      debug("Setting attribute %s to %s",name,value)
+      debug("Setting attribute %s to %s", name, value)
       setAttribute(e, name, value)
 
     case n => n
@@ -109,7 +107,7 @@ case class SetSelectiveAttributeRule(name: String, fn: (Node) => String) extends
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
-      debug("Selectively setting attribute %s to %s",name,value)
+      debug("Selectively setting attribute %s to %s", name, value)
       if (e.attribute(name).isDefined) setAttribute(e, name, value) else e
 
     case n => n

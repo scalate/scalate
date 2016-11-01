@@ -20,7 +20,7 @@ package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.TemplateTestSupport
 import collection.immutable.TreeMap
-import java.{util => ju}
+import java.{ util => ju }
 import java.util.Arrays
 
 /**
@@ -35,17 +35,21 @@ class MustacheJavaCollectionTest extends TemplateTestSupport {
     names.add("Hiram")
     names.add("James")
 
-    assertMoustacheOutput("start <Hiram> <James> end",
+    assertMoustacheOutput(
+      "start <Hiram> <James> end",
       "start {{#names}}<{{.}}> {{/names}}end",
-      Map("names" -> names))
+      Map("names" -> names)
+    )
   }
 
   test("iterate Array test") {
     val names = Array[String]("Mells", "Tampa")
 
-    assertMoustacheOutput("start <Mells> <Tampa> end",
+    assertMoustacheOutput(
+      "start <Mells> <Tampa> end",
       "start {{#names}}<{{.}}> {{/names}}end",
-      Map("names" -> names))
+      Map("names" -> names)
+    )
   }
 
   test("java.util.Map test") {
@@ -53,9 +57,11 @@ class MustacheJavaCollectionTest extends TemplateTestSupport {
     names.put("name", "James")
     names.put("location", "Mells")
 
-    assertMoustacheOutput("start name: James location: Mells end",
+    assertMoustacheOutput(
+      "start name: James location: Mells end",
       "start {{#names}}name: {{name}} location: {{location}} {{/names}}end",
-      Map("names" -> names))
+      Map("names" -> names)
+    )
   }
 
 }

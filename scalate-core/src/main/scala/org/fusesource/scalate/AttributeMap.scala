@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 
 import scala.collection.Set
-import collection.mutable.{ListMap, ListBuffer, LinkedHashSet}
+import collection.mutable.{ ListMap, ListBuffer, LinkedHashSet }
 
 /**
  * Represents a small map like thing which is easy to implement on top of any attribute storage mechanism without
@@ -29,7 +29,7 @@ import collection.mutable.{ListMap, ListBuffer, LinkedHashSet}
  */
 
 trait AttributeMap {
-  
+
   /**
    * Retries an optional entry for the given attribute
    */
@@ -37,9 +37,9 @@ trait AttributeMap {
 
   /**
    * Retrieves the value of the given attribute.
-   * 
+   *
    * @return the attribute or <code>null</code> in the case where there
-   *          is no attribute set using the specified key. 
+   *          is no attribute set using the specified key.
    */
   def apply(key: String): Any
 
@@ -75,18 +75,18 @@ trait AttributeMap {
   /**
    * Gets or creates the named map
    */
-  def map[K,V](name: String): ListMap[K, V] = {
+  def map[K, V](name: String): ListMap[K, V] = {
     getOrUpdate(name, ListMap[K, V]())
   }
 
   /**
    * Gets or creates the named attribute
    */
-  def getOrUpdate[T](name: String, value: =>T):T = {
+  def getOrUpdate[T](name: String, value: => T): T = {
     (get(name) match {
-      case Some(rc)=>
+      case Some(rc) =>
         rc
-      case None=>
+      case None =>
         val rc = value
         update(name, rc)
         rc

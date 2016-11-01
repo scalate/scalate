@@ -25,8 +25,8 @@ import org.osgi.framework.Bundle
 case class BundleHeaders(val bundle: Bundle) {
 
   lazy val classPath = bundle.getHeaders.get("Bundle-ClassPath") match {
-      case value: String => value.split(",")
-      case _ => Array[String]()
-    }
+    case value: String => value.split(",")
+    case _ => Array[String]()
+  }
 
 }

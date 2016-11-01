@@ -17,9 +17,9 @@
  */
 package org.fusesource.scalate.util
 
-import java.net.{URLClassLoader, URL}
+import java.net.{ URLClassLoader, URL }
 import java.util.Properties
-import java.io.{InputStream, File}
+import java.io.{ InputStream, File }
 
 /**
  * <p>
@@ -30,8 +30,8 @@ import java.io.{InputStream, File}
 object ClassFinder {
   val log = Log(getClass); import log._
 
-  def discoverCommands[T](indexPath:String, classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
-    classLoaders.flatMap{ cl=>
+  def discoverCommands[T](indexPath: String, classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
+    classLoaders.flatMap { cl =>
       ClassLoaders.withContextClassLoader(cl) {
         discoverCommandClasses(indexPath, cl).flatMap {
           name =>
@@ -61,7 +61,7 @@ object ClassFinder {
     }.distinct
   }
 
-  def discoverCommandClasses(indexPath:String, cl:ClassLoader=getClass.getClassLoader): List[String] = {
+  def discoverCommandClasses(indexPath: String, cl: ClassLoader = getClass.getClassLoader): List[String] = {
     var rc: List[String] = Nil
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {
@@ -100,5 +100,5 @@ object ClassFinder {
       }
     }
   }
-  
+
 }

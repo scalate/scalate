@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType
  * @version $Revision: 1.1 $
  */
 @ImplicitProduces(Array("text/html;qs=5"))
-@Produces(Array("application/xml","text/xml", "application/json"))
+@Produces(Array("application/xml", "text/xml", "application/json"))
 trait DefaultRepresentations {
 
 }

@@ -25,9 +25,9 @@ class CamelSiteConfluenceTest extends AbstractConfluenceTest {
   val includeSimpleTests = false
 
   if (includeSimpleTests) {
-  test("parse table without div") {
-    val output = renderConfluence(
-"""
+    test("parse table without div") {
+      val output = renderConfluence(
+        """
 h2. Bean Component
 
 The *bean:* component binds beans to Camel message exchanges.
@@ -42,15 +42,15 @@ h3. Options
 
 You can append query options to the URI in the following format, {{?option=value&option=value&...}}
 
-""")
-    assertOccurrences(output, "<table>", 1)
+"""
+      )
+      assertOccurrences(output, "<table>", 1)
+    }
   }
-  }
-
 
   test("parse table with div") {
     val output = renderConfluence(
-"""
+      """
 h2. Bean Component
 
 The *bean:* component binds beans to Camel message exchanges.
@@ -65,7 +65,8 @@ h3. Options
 
 You can append query options to the URI in the following format, {{?option=value&option=value&...}}
 
-""")
+"""
+    )
     assertOccurrences(output, "<table", 1)
     assertOccurrences(output, "<tr>", 4)
   }

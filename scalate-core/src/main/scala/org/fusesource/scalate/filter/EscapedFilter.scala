@@ -20,7 +20,6 @@ package filter
 
 import support.RenderHelper
 
-
 /**
  * Escapes any XML/XHTML special characters in the content.
  *

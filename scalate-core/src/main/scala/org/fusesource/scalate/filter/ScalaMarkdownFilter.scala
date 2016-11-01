@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package filter
 
-import org.fusesource.scalate.{TemplateEngine, TemplateEngineAddOn}
+import org.fusesource.scalate.{ TemplateEngine, TemplateEngineAddOn }
 import org.fusesource.scalamd.Markdown
 
 /**
@@ -36,8 +36,8 @@ object ScalaMarkdownFilter extends Filter with TemplateEngineAddOn {
    * Add the markdown filter to the template engine.
    */
   def apply(te: TemplateEngine) = {
-    te.filters += "markdown"->ScalaMarkdownFilter
-    te.pipelines += "md"->List(ScalaMarkdownFilter)
-    te.pipelines += "markdown"->List(ScalaMarkdownFilter)
+    te.filters += "markdown" -> ScalaMarkdownFilter
+    te.pipelines += "md" -> List(ScalaMarkdownFilter)
+    te.pipelines += "markdown" -> List(ScalaMarkdownFilter)
   }
 }

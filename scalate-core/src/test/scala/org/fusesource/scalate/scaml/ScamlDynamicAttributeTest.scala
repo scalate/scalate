@@ -43,51 +43,57 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
   val supportDoubleQuotedExpressionsContainingStringLiterals = false
 
   if (supportDoubleQuotedExpressionsContainingStringLiterals) {
-    testRender("#186: dynamic expressions with strings cause issues",
-"""%html
+    testRender(
+      "#186: dynamic expressions with strings cause issues",
+      """%html
   %body
     %a(href="foo.html" title="#{sayHello("Ben")}")
       Hey
 
-""","""<html>
+""", """<html>
   <body>
     <a href="foo.html" title="Hello Ben">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+    )
   }
 
-  testRender("dynamic attribute expressions with string argument and single quote",
-"""%html
+  testRender(
+    "dynamic attribute expressions with string argument and single quote",
+    """%html
   %body
     %a(href="foo.html" title='#{sayHello("James")}')
       Hey
 
-""","""<html>
+""", """<html>
   <body>
     <a href="foo.html" title="Hello James">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+  )
 
-  testRender("dynamic attribute expressions with string argument and no quotes",
-"""%html
+  testRender(
+    "dynamic attribute expressions with string argument and no quotes",
+    """%html
   %body
     %a(href="foo.html" title={sayHello("Hiram")})
       Hey
 
-""","""<html>
+""", """<html>
   <body>
     <a href="foo.html" title="Hello Hiram">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+  )
 
   override protected def configureTemplateEngine() = {
     engine.importStatements ::= "import org.fusesource.scalate.scaml.SampleSnippets._"

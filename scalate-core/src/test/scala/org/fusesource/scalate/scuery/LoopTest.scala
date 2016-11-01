@@ -23,29 +23,27 @@ class LoopTest extends FunSuiteSupport {
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
   val xml = <html>
-    <head>
-      <title>My Title</title>
-    </head>
-    <body>
-      <div id="header">Header</div>
-
-      <div id="content">
-        <table class="people">
-          <tr>
-            <th>Name</th>
-            <th>Location</th>
-          </tr>
-          <tr class="person">
-            <td class="name"></td>
-            <td class="location"></td>
-          </tr>
-        </table>
-      </div>
-      <div id="messages"></div>
-      <div id="footer">Footer</div>
-    </body>
-  </html>
-
+              <head>
+                <title>My Title</title>
+              </head>
+              <body>
+                <div id="header">Header</div>
+                <div id="content">
+                  <table class="people">
+                    <tr>
+                      <th>Name</th>
+                      <th>Location</th>
+                    </tr>
+                    <tr class="person">
+                      <td class="name"></td>
+                      <td class="location"></td>
+                    </tr>
+                  </table>
+                </div>
+                <div id="messages"></div>
+                <div id="footer">Footer</div>
+              </body>
+            </html>
 
   /*
   test("loop using new transformer on each person") {
@@ -111,7 +109,7 @@ class LoopTest extends FunSuiteSupport {
     object transformer5 extends NestedTransformer {
       $(".person") { node =>
         people.flatMap { p =>
-          transform(node) { t => 
+          transform(node) { t =>
             $(".name").contents = p.name
             $(".location").contents = p.location
           }
@@ -124,10 +122,10 @@ class LoopTest extends FunSuiteSupport {
   def assertTransformed(result: NodeSeq): Unit = {
     debug("got result: %s", result)
 
-    expect("James") {(result \\ "td")(0).text}
-    expect("Beckington") {(result \\ "td")(1).text}
+    expect("James") { (result \\ "td")(0).text }
+    expect("Beckington") { (result \\ "td")(1).text }
 
-    expect("Hiram") {(result \\ "td")(2).text}
-    expect("Tampa") {(result \\ "td")(3).text}
+    expect("Hiram") { (result \\ "td")(2).text }
+    expect("Tampa") { (result \\ "td")(3).text }
   }
 }

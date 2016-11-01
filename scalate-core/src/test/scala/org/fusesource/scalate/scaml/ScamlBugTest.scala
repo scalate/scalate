@@ -22,60 +22,73 @@ package org.fusesource.scalate.scaml
  */
 class ScamlBugTest extends ScamlTestSupport {
 
-  testRender("#155: Scaml :!plain filter breaks when used with multiple content lines",
-"""
+  testRender(
+    "#155: Scaml :!plain filter breaks when used with multiple content lines",
+    """
 - val msg = "hello"
 :!plain
   #{msg}, user
   The greeting is #{msg}.
-""","""
+""", """
 hello, user
 The greeting is hello.
-""")
-
-  testRender("#99: error if a comment containing just one space is used",
-"-#\n-# \ntest\n/\n/ \ntest\n","""
-test
-<!--  -->
-<!--  -->
-test
-""")
-
-  testRender("#98: Error with a statement followed by an attribute declaration",
 """
+  )
+
+  testRender(
+    "#99: error if a comment containing just one space is used",
+    "-#\n-# \ntest\n/\n/ \ntest\n", """
+test
+<!--  -->
+<!--  -->
+test
+"""
+  )
+
+  testRender(
+    "#98: Error with a statement followed by an attribute declaration",
+    """
 - attributes("title") = "foo"
 -@ import val title: String
 = length
-""","""
+""", """
 3
-""")
-
-  testRender("#77: attribute sanitized twice",
 """
+  )
+
+  testRender(
+    "#77: attribute sanitized twice",
+    """
 - val amp = "&"
 %div(attr1="#{amp}")
-""","""
+""", """
 <div attr1="&amp;"></div>
-""")
-
-  testRender("#78: null class attribute not removed",
 """
+  )
+
+  testRender(
+    "#78: null class attribute not removed",
+    """
 %div(id={null} attr1={null} class={null})
-""","""
+""", """
 <div></div>
-""")
-
-  testRender("#74: scaml id or class + dynamic attribute produces an error",
 """
+  )
+
+  testRender(
+    "#74: scaml id or class + dynamic attribute produces an error",
+    """
 %div.some(attr1={"value"})
 %div#some(attr1={"value"})
-""","""
+""", """
 <div class="some" attr1="value"></div>
 <div id="some" attr1="value"></div>
-""")
-
-    testRender("SCALATE-44 test1",
 """
+  )
+
+  testRender(
+    "SCALATE-44 test1",
+    """
 - if (name == "Hiram")
   - if (title == "MyPage")
     Worked!
@@ -85,44 +98,53 @@ test
 
 - else
   Failed
-""","""
+""", """
 Worked!
-""")
-
-
-  testRender("SCALATE-45: creating a link with a title seems to remove whitespace from inside the title attribute",
 """
+  )
+
+  testRender(
+    "SCALATE-45: creating a link with a title seems to remove whitespace from inside the title attribute",
+    """
 %a(href={1+2} title="foo bar")
-""","""
+""", """
 <a href="3" title="foo bar"></a>
-""")
-
-  testRender("SCALATE-48: odd compile error when whitespace added to end of '-@ val: x: String '",
 """
+  )
+
+  testRender(
+    "SCALATE-48: odd compile error when whitespace added to end of '-@ val: x: String '",
+    """
 -@ val label: String
 %p #{label}
-""","""
+""", """
 <p>Scalate</p>
-""")
-
-  testRender("SCALATE-49: using a #{foo} expression inside a HTML attribute causes strangeness",
 """
+  )
+
+  testRender(
+    "SCALATE-49: using a #{foo} expression inside a HTML attribute causes strangeness",
+    """
 - var x="blue"
 %div(class="line #{x}")
-""","""
+""", """
 <div class="line blue"></div>
-""")
-
-  testRender("SCALATE-49: simple case",
 """
+  )
+
+  testRender(
+    "SCALATE-49: simple case",
+    """
 %pre(class="brush: html")<
   test
-""","""
+""", """
 <pre class="brush: html">test</pre>
-""")
-
-  testRender("SCALATE-71: Internation characters",
 """
+  )
+
+  testRender(
+    "SCALATE-71: Internation characters",
+    """
 %div<
   1 한글 Hello &
 %div<
@@ -137,7 +159,7 @@ Worked!
   !~~ "6 한글 Hello &"
 %div<
   &~~ "7 한글 Hello &"
-""","""
+""", """
 <div>1 한글 Hello &</div>
 <div>2 한글 Hello &amp;</div>
 <div>3 한글 Hello &</div>
@@ -145,10 +167,12 @@ Worked!
 <div>5 한글 Hello &amp;</div>
 <div>6 한글 Hello &</div>
 <div>7 한글 Hello &amp;</div>
-""")
-
-  testRender("SCALATE-71: Internation characters with escapeMarkup=false ",
 """
+  )
+
+  testRender(
+    "SCALATE-71: Internation characters with escapeMarkup=false ",
+    """
 %div<
   1 한글 Hello &
 %div<
@@ -163,7 +187,7 @@ Worked!
   !~~ "6 한글 Hello &"
 %div<
   &~~ "7 한글 Hello &"
-""","""
+""", """
 <div>1 한글 Hello &</div>
 <div>2 한글 Hello &</div>
 <div>3 한글 Hello &</div>
@@ -172,18 +196,20 @@ Worked!
 <div>6 한글 Hello &</div>
 <div>7 한글 Hello &amp;</div>
 """,
-()=>{
-  engine.escapeMarkup = false;
-}, ()=>{
-  engine.escapeMarkup = true;
-})
+    () => {
+      engine.escapeMarkup = false;
+    }, () => {
+      engine.escapeMarkup = true;
+    }
+  )
 
-
-  testRender("SCALATE-72: Spaces stripped in an attribute expression",
-"""
+  testRender(
+    "SCALATE-72: Spaces stripped in an attribute expression",
+    """
 %p(class={"a b"}) a b
-""","""
+""", """
 <p class="a b">a b</p>
-""")
+"""
+  )
 
 }

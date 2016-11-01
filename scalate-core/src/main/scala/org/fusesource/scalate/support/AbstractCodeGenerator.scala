@@ -17,10 +17,9 @@
  */
 package org.fusesource.scalate.support
 
-
 import scala.collection.immutable.TreeMap
-import util.parsing.input.{Positional, OffsetPosition, Position}
-import org.fusesource.scalate.{TemplateSource, Binding, TemplateEngine}
+import util.parsing.input.{ Positional, OffsetPosition, Position }
+import org.fusesource.scalate.{ TemplateSource, Binding, TemplateEngine }
 import org.fusesource.scalate.util.Log
 
 object AbstractCodeGenerator extends Log
@@ -30,8 +29,7 @@ object AbstractCodeGenerator extends Log
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-abstract class AbstractCodeGenerator[T] extends CodeGenerator
-{
+abstract class AbstractCodeGenerator[T] extends CodeGenerator {
   import AbstractCodeGenerator._
 
   abstract class AbstractSourceBuilder[T] {
@@ -62,26 +60,26 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       this
     }
 
-    def << (pos:Position): this.type = {
-      if( pos!=null ) {
+    def <<(pos: Position): this.type = {
+      if (pos != null) {
         pos match {
-          case p:OffsetPosition =>
-            generatedPositions = generatedPositions + ( p -> current_position )
-          case _=>
+          case p: OffsetPosition =>
+            generatedPositions = generatedPositions + (p -> current_position)
+          case _ =>
         }
       }
       this
     }
 
     def current_position = {
-      code.length + (indentLevel*2)
+      code.length + (indentLevel * 2)
     }
 
     def positions() = {
-      var rc = new TreeMap[OffsetPosition,OffsetPosition]()( new Ordering[OffsetPosition] {
-        def compare(p1:OffsetPosition, p2:OffsetPosition):Int = {
+      var rc = new TreeMap[OffsetPosition, OffsetPosition]()(new Ordering[OffsetPosition] {
+        def compare(p1: OffsetPosition, p2: OffsetPosition): Int = {
           val rc = p1.line - p2.line
-          if( rc==0 ) {
+          if (rc == 0) {
             p1.column - p2.column
           } else {
             rc
@@ -89,13 +87,13 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
         }
       })
       generatedPositions.foreach {
-        entry=>
-          rc = rc + (OffsetPosition(code, entry._2)->entry._1)
+        entry =>
+          rc = rc + (OffsetPosition(code, entry._2) -> entry._1)
       }
       rc
     }
 
-    def indent[T](op: => T): T = {indentLevel += 1; val rc = op; indentLevel -= 1; rc}
+    def indent[T](op: => T): T = { indentLevel += 1; val rc = op; indentLevel -= 1; rc }
 
     def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding], statements: List[T]): Unit = {
 
@@ -138,7 +136,6 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       }
       this << "}"
       this <<;
-
 
       this <<;
       this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
@@ -231,6 +228,5 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator
       buffer.toString
     }
   }
-
 
 }

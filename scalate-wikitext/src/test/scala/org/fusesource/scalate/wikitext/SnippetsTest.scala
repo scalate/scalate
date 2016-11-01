@@ -21,7 +21,7 @@ import java.io.File
 import org.junit.Assert.assertTrue
 
 /**
- * Test cases for {snippet} macro support 
+ * Test cases for {snippet} macro support
  */
 class SnippetsTest extends AbstractConfluenceTest {
 
@@ -32,11 +32,11 @@ class SnippetsTest extends AbstractConfluenceTest {
   test("snippets macro without snippet id") {
 
     assertFilter(
-"""
+      """
 h1. Full snippet here
 {snippet:url=test/Test.java}
 """,
-"""<h1 id="Fullsnippethere">Full snippet here</h1><div class="snippet"><pre class="java">
+      """<h1 id="Fullsnippethere">Full snippet here</h1><div class="snippet"><pre class="java">
 /**
  * Copyright (C) 2009-2011 the original author or authors.
  * See the notice.md file distributed with this work for additional
@@ -70,67 +70,74 @@ public class Test {
     }
 
 }
-</pre></div>""")
+</pre></div>"""
+    )
   }
 
   test("snippets macro with snippet id") {
 
     assertFilter(
-"""
+      """
 h1. Snippet with id
 {snippet:url=test/Test.java|id=doSomething}
 """,
-"""<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="java">
+      """<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="java">
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>""")
+</pre></div>"""
+    )
   }
 
   test("snippets macro with snippet id and explicit language") {
 
     assertFilter(
-"""
+      """
 h1. Snippet with id
 {snippet:url=test/Test.java|id=doSomething|lang=erlang}
 """,
-"""<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="erlang">
+      """<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="erlang">
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>""")
+</pre></div>"""
+    )
   }
 
   test("snippets macro with relative url and snippet id") {
 
     assertFilter(
-"""
+      """
 h1. Snippet with id
 {snippet:url=src/test/resources/Test.java|id=doSomething}
 """,
-"""<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="java">
+      """<h1 id="Snippetwithid">Snippet with id</h1><div class="snippet"><pre class="java">
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>""")
+</pre></div>"""
+    )
   }
 
   if (Pygmentize.isInstalled) {
     test("snippets macro with pygmetize enabled") {
 
       assertFilter(
-"""
+        """
 h1. Snippet with id
 {snippet:url=test/Test.java|id=doSomething|pygmentize=true}
 """,
-"""<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>""")
+        """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>"""
+      )
     }
   } else {
     warn("Pygmentize not installed so ignoring the tests")
   }
 
   test("URL prefix handling") {
-    assertTrue("Only leading occurence of prefix should only have been replaced", 
-               Snippets.handlePrefix("test/with/a/subfolder/named/test").endsWith("with/a/subfolder/named/test"))
+    assertTrue(
+      "Only leading occurence of prefix should only have been replaced",
+      Snippets.handlePrefix("test/with/a/subfolder/named/test").endsWith("with/a/subfolder/named/test")
+    )
   }
 }

@@ -19,7 +19,7 @@ package org.fusesource.scalate.support
 
 /**
  * Implements the Groovy style Elvis operator in Scala
- * 
+ *
  * @version $Revision: 1.1 $
  */
 class Elvis(val defaultValue: Any) {
@@ -30,7 +30,7 @@ class Elvis(val defaultValue: Any) {
  * A helper class useful for implicit conversions when legacy code iterates over a Map without explicitly
  * decomposing the iterator value to a tuple
  */
-case class MapEntry[A,B](key: A, value: B) {
+case class MapEntry[A, B](key: A, value: B) {
   def getKey = key
   def getValue = value
 }

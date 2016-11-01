@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.sample
 
-
 import _root_.org.fusesource.scalate._
 import _root_.org.fusesource.scalate.test.FunSuiteSupport
 import _root_.org.junit.runner.RunWith

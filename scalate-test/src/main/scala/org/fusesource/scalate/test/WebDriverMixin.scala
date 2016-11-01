@@ -20,8 +20,8 @@ package org.fusesource.scalate.test
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import java.lang.String
 import collection.immutable.Map
-import org.scalatest.{ConfigMap, FunSuite, BeforeAndAfterAll}
-import org.openqa.selenium.{WebDriver, WebElement}
+import org.scalatest.{ ConfigMap, FunSuite, BeforeAndAfterAll }
+import org.openqa.selenium.{ WebDriver, WebElement }
 import org.openqa.selenium.internal.FindsByXPath
 
 /**
@@ -56,8 +56,7 @@ trait WebDriverMixin extends BeforeAndAfterAll {
       index = source.indexOf(text, index)
       if (index >= 0) {
         index += text.length
-      }
-      else {
+      } else {
         assume(false, "Page does not contain '" + text + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
       }
     }
@@ -79,7 +78,6 @@ trait WebDriverMixin extends BeforeAndAfterAll {
     assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
     assume(source.matches(regex), "Page does not match '" + regex + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
   }
-
 
   def pageSource = webDriver.getPageSource
 
@@ -103,7 +101,7 @@ trait WebDriverMixin extends BeforeAndAfterAll {
 
   def testPage(uri: String)(func: => Unit) {
     test("page: " + uri) {
-      val fullUri = if (uri.startsWith("http")) {uri} else {rootUrl + uri}
+      val fullUri = if (uri.startsWith("http")) { uri } else { rootUrl + uri }
 
       println("Loading page: " + fullUri)
       webDriver.get(fullUri)
@@ -122,11 +120,11 @@ trait WebDriverMixin extends BeforeAndAfterAll {
       val answer = xpathDriver.findElementByXPath(selector)
       assume(answer != null, "xpath " + selector + " returned null!")
       answer
-    }
-    catch {
-      case e: Exception => println("Failed to find xpath: " + selector + " on page due to: " + e)
-      println(pageSource)
-      throw e
+    } catch {
+      case e: Exception =>
+        println("Failed to find xpath: " + selector + " on page due to: " + e)
+        println(pageSource)
+        throw e
     }
   }
 

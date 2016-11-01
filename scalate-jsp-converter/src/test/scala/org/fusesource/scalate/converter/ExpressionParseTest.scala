@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.converter
 
-
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
@@ -30,14 +29,13 @@ import _root_.org.fusesource.scalate._
 @RunWith(classOf[JUnitRunner])
 class ExpressionParseTest extends FunSuite {
 
-  
   assertConvert("${foo.bar}", "foo.getBar")
   assertConvert("${foo[123]}", "foo(123)")
   assertConvert("${foo.bar[123]}", "foo.getBar(123)")
   assertConvert("${foo.bar lt 5}", "foo.getBar < 5")
   assertConvert("${foo.bar eq 5}", "foo.getBar == 5")
   assertConvert("${it.language eq 'foo'}", "it.getLanguage == \"foo\"")
-  
+
   assertConvert("${empty foo.bar}", "foo.getBar isEmpty")
   assertConvert("${x && empty foo.bar}", "x && foo.getBar isEmpty")
 
@@ -46,10 +44,9 @@ class ExpressionParseTest extends FunSuite {
 
   assertConvert("${fn:length(foo.bar)}", "foo.getBar.size")
 
-
   def assertConvert(el: String, ssp: String): String = {
     val result = convert(el)
-    expect(ssp, "converting EL: " + el){result}
+    expect(ssp, "converting EL: " + el) { result }
     result
   }
 
@@ -59,7 +56,7 @@ class ExpressionParseTest extends FunSuite {
     val parser = new ExpressionParser
     val exp = parser.parseExpression(el)
     println("Expression: " + exp)
-    
+
     val result = exp.asParam
 
     println(" => " + result)

@@ -33,6 +33,6 @@ object Asserts {
     val start = System.currentTimeMillis
     block
     val end = System.currentTimeMillis - start
-    println(name + " " + end  + " milli(s)")
+    println(name + " " + end + " milli(s)")
   }
 }

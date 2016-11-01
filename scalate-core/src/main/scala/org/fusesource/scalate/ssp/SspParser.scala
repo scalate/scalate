@@ -18,8 +18,8 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate.InvalidSyntaxException
-import util.parsing.input.{Positional, CharSequenceReader}
-import org.fusesource.scalate.support.{Text, ScalaParseSupport}
+import util.parsing.input.{ Positional, CharSequenceReader }
+import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
 
 sealed abstract class PageFragment extends Positional {
   def tokenName = toString
@@ -49,7 +49,7 @@ case class ImportFragment(code: Text) extends Directive("#import")
 case class EndFragment() extends Directive("#end")
 
 /**
- * Parser for the SSP template language 
+ * Parser for the SSP template language
  */
 class SspParser extends ScalaParseSupport {
   var skipWhitespaceOn = false
@@ -74,64 +74,62 @@ class SspParser extends ScalaParseSupport {
   }
 
   val literalPart: Parser[Text] =
-  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
-          opt(
-            """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
-                    """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
-                    """\#""" ~ opt(literalPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
-                    """\\""" ^^ {s => """\"""}
-            ) ^^ {
-    case x ~ Some(y) => x + y
-    case x ~ None => x
-  }
+    upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
+      opt(
+        """\<%""" ~ opt(literalPart) ^^ { case x ~ y => "<%" + y.getOrElse("") } |
+          """\${""" ~ opt(literalPart) ^^ { case x ~ y => "${" + y.getOrElse("") } |
+          """\#""" ~ opt(literalPart) ^^ { case x ~ y => "#" + y.getOrElse("") } |
+          """\\""" ^^ { s => """\""" }
+      ) ^^ {
+          case x ~ Some(y) => x + y
+          case x ~ None => x
+        }
 
   val tagEnding = "+%>" | """%>[ \t]*\r?\n""".r | "%>"
-  val commentFragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
-  val altCommentFragment = wrapped("<%#", "%>") ^^ {CommentFragment(_)}
-  val dollarExpressionFragment = wrapped("${", "}") ^^ {DollarExpressionFragment(_)}
-  val expressionFragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+  val commentFragment = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
+  val altCommentFragment = wrapped("<%#", "%>") ^^ { CommentFragment(_) }
+  val dollarExpressionFragment = wrapped("${", "}") ^^ { DollarExpressionFragment(_) }
+  val expressionFragment = wrapped("<%=", "%>") ^^ { ExpressionFragment(_) }
   val attributeFragement = prefixed("<%@", attribute <~ anySpace ~ tagEnding)
-  val scriptletFragment = wrapped("<%", tagEnding) ^^ {ScriptletFragment(_)}
-  val textFragment = literalPart ^^ {TextFragment(_)}
+  val scriptletFragment = wrapped("<%", tagEnding) ^^ { ScriptletFragment(_) }
+  val textFragment = literalPart ^^ { TextFragment(_) }
 
   val pageFragment: Parser[PageFragment] = positioned(directives | commentFragment | altCommentFragment | dollarExpressionFragment |
-          attributeFragement | expressionFragment | scriptletFragment |
-          textFragment)
+    attributeFragement | expressionFragment | scriptletFragment |
+    textFragment)
 
   val pageFragments = rep(pageFragment)
 
-
   def directives: Parser[PageFragment] = ifExpression | elseIfExpression | elseExpression |
-          matchExpression | caseExpression | otherwiseExpression |
-          forExpression | doExpression | setExpression | velocityScriplet | importExpression | endExpression
+    matchExpression | caseExpression | otherwiseExpression |
+    forExpression | doExpression | setExpression | velocityScriplet | importExpression | endExpression
 
   // if / elseif / else
-  def ifExpression = expressionDirective("if") ^^ {IfFragment(_)}
+  def ifExpression = expressionDirective("if") ^^ { IfFragment(_) }
 
-  def elseIfExpression = expressionDirective("elseif" | "elif") ^^ {ElseIfFragment(_)}
+  def elseIfExpression = expressionDirective("elseif" | "elif") ^^ { ElseIfFragment(_) }
 
-  def elseExpression = emptyDirective("else") ^^ {case a => ElseFragment()}
+  def elseExpression = emptyDirective("else") ^^ { case a => ElseFragment() }
 
   // match / case / otherwise
-  def matchExpression = expressionDirective("match") ^^ {MatchFragment(_)}
+  def matchExpression = expressionDirective("match") ^^ { MatchFragment(_) }
 
-  def caseExpression = expressionDirective("case") ^^ {CaseFragment(_)}
+  def caseExpression = expressionDirective("case") ^^ { CaseFragment(_) }
 
-  def otherwiseExpression = emptyDirective("otherwise") ^^ {case a => OtherwiseFragment()}
-
+  def otherwiseExpression = emptyDirective("otherwise") ^^ { case a => OtherwiseFragment() }
 
   // other directives
-  def velocityScriplet = wrapped("#{", "}#") ^^ {ScriptletFragment(_)}
+  def velocityScriplet = wrapped("#{", "}#") ^^ { ScriptletFragment(_) }
 
-  def forExpression = expressionDirective("for" ~ opt("each")) ^^ {ForFragment(_)}
+  def forExpression = expressionDirective("for" ~ opt("each")) ^^ { ForFragment(_) }
 
-  def setExpression = expressionDirective("set") ^^ {SetFragment(_)}
+  def setExpression = expressionDirective("set") ^^ { SetFragment(_) }
 
-  def doExpression = expressionDirective("do") ^^ {DoFragment(_)}
+  def doExpression = expressionDirective("do") ^^ { DoFragment(_) }
 
-  def importExpression = expressionDirective("import") ^^ {ImportFragment(_)}
+  def importExpression = expressionDirective("import") ^^ { ImportFragment(_) }
 
-  def endExpression = emptyDirective("end") <~ """[ \t]*\r?\n?""".r ^^ {case a => EndFragment()}
+  def endExpression = emptyDirective("end") <~ """[ \t]*\r?\n?""".r ^^ { case a => EndFragment() }
 
   // useful for implementing directives
   def emptyDirective(name: String) = text(("#" + name) | ("#(" + name + ")"))
@@ -149,7 +147,8 @@ class SspParser extends ScalaParseSupport {
             case tb => ""
           }
           a.mkString("") + mid + c.mkString("")
-      })
+      }
+    )
   }
 
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r

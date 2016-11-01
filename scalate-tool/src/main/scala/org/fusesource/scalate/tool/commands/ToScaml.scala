@@ -17,16 +17,16 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import scala.xml._
 import java.io._
 import java.net.URL
 import org.fusesource.scalate.util.IOUtil
 import org.fusesource.scalate.InvalidSyntaxException
 import util.parsing.input.CharSequenceReader
-import org.fusesource.scalate.support.{Text=>SSPText, ScalaParseSupport}
+import org.fusesource.scalate.support.{ Text => SSPText, ScalaParseSupport }
 import org.fusesource.scalate.ssp._
-import org.w3c.tidy.{TidyMessage, TidyMessageListener, Tidy}
+import org.w3c.tidy.{ TidyMessage, TidyMessageListener, Tidy }
 import org.apache.felix.service.command.CommandSession
 
 /* an even simpler ssp parser */
@@ -49,34 +49,33 @@ class SspParser extends ScalaParseSupport {
   val someText = text(""".+""".r)
 
   val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
-    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => ScriptletFragment(p_kind+" "+p_name+":"+p_type+" //attribute")
+    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => ScriptletFragment(p_kind + " " + p_name + ":" + p_type + " //attribute")
   }
 
   val literalPart: Parser[SSPText] =
-  upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
-          opt(
-            """\<%""" ~ opt(literalPart) ^^ {case x ~ y => "<%" + y.getOrElse("")} |
-                    """\${""" ~ opt(literalPart) ^^ {case x ~ y => "${" + y.getOrElse("")} |
-                    """\#""" ~ opt(literalPart) ^^ {case x ~ y => "#" + y.getOrElse("")} |
-                    """\\""" ^^ {s => """\"""}
-            ) ^^ {
-    case x ~ Some(y) => x + y
-    case x ~ None => x
-  }
+    upto("<%" | """\<%""" | """\\<%""" | "${" | """\${""" | """\\${""" | """\#""" | """\\#""" | directives) ~
+      opt(
+        """\<%""" ~ opt(literalPart) ^^ { case x ~ y => "<%" + y.getOrElse("") } |
+          """\${""" ~ opt(literalPart) ^^ { case x ~ y => "${" + y.getOrElse("") } |
+          """\#""" ~ opt(literalPart) ^^ { case x ~ y => "#" + y.getOrElse("") } |
+          """\\""" ^^ { s => """\""" }
+      ) ^^ {
+          case x ~ Some(y) => x + y
+          case x ~ None => x
+        }
 
   val tagEnding = "+%>" | """%>[ \t]*\r?\n""".r | "%>"
-  val commentFragment = wrapped("<%--", "--%>") ^^ {CommentFragment(_)}
-  val altCommentFragment = wrapped("<%#", "%>") ^^ {CommentFragment(_)}
-  val dollarExpressionFragment = wrapped("${", "}") ^^ {ExpressionFragment(_)}
-  val expressionFragment = wrapped("<%=", "%>") ^^ {ExpressionFragment(_)}
+  val commentFragment = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
+  val altCommentFragment = wrapped("<%#", "%>") ^^ { CommentFragment(_) }
+  val dollarExpressionFragment = wrapped("${", "}") ^^ { ExpressionFragment(_) }
+  val expressionFragment = wrapped("<%=", "%>") ^^ { ExpressionFragment(_) }
   val attributeFragement = prefixed("<%@", attribute <~ anySpace ~ tagEnding)
-  val scriptletFragment = wrapped("<%", tagEnding) ^^ {ScriptletFragment(_)}
-  val textFragment = literalPart ^^ {TextFragment(_)}
-
+  val scriptletFragment = wrapped("<%", tagEnding) ^^ { ScriptletFragment(_) }
+  val textFragment = literalPart ^^ { TextFragment(_) }
 
   def directives = ("#" ~> identifier ~ anySpace ~ opt("(" ~> scalaExpression <~ ")")) ^^ {
-    case a ~ b ~ c => ScriptletFragment(a+c.map("("+_+")").getOrElse(""))
-  } | "#(" ~> identifier <~ ")" ^^ {ScriptletFragment(_)}
+    case a ~ b ~ c => ScriptletFragment(a + c.map("(" + _ + ")").getOrElse(""))
+  } | "#(" ~> identifier <~ ")" ^^ { ScriptletFragment(_) }
 
   def scalaExpression: Parser[SSPText] = {
     text(
@@ -87,14 +86,15 @@ class SspParser extends ScalaParseSupport {
             case tb => ""
           }
           a.mkString("") + mid + c.mkString("")
-      })
+      }
+    )
   }
 
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
 
   val pageFragment: Parser[PageFragment] = directives | commentFragment | altCommentFragment | dollarExpressionFragment |
-          attributeFragement | expressionFragment | scriptletFragment |
-          textFragment
+    attributeFragement | expressionFragment | scriptletFragment |
+    textFragment
 
   val pageFragments = rep(pageFragment)
 
@@ -130,16 +130,16 @@ class ToScaml extends Action {
   @argument(index = 1, name = "to", description = "The output file. If ommited, output is written to the console")
   var to: File = _
 
-  var out:IndentPrintStream = _
+  var out: IndentPrintStream = _
 
   def execute(session: CommandSession): AnyRef = {
 
-    def doit:Unit = {
+    def doit: Unit = {
 
-      var in = if( from==null ) {
+      var in = if (from == null) {
         session.getKeyboard
       } else {
-        if( from.startsWith("http://") || from.startsWith("https://") ) {
+        if (from.startsWith("http://") || from.startsWith("https://")) {
           new URL(from).openStream
         } else {
           new FileInputStream(from)
@@ -157,7 +157,7 @@ class ToScaml extends Action {
         case ScriptletFragment(code) => """<scriptlet><![CDATA[""" + code.value + """]]></scriptlet>"""
         case CommentFragment(comment) => """<!--""" + comment.value + """-->"""
         case TextFragment(text) => text.value
-        case unexpected: PageFragment => 
+        case unexpected: PageFragment =>
           System.err.println("Unexpected page fragment " + unexpected)
           "" // skip it
       }).mkString("")) + "</div>").getBytes("UTF-8")
@@ -182,8 +182,8 @@ class ToScaml extends Action {
       // Try to strip out the doc type... stuff..
       {
         val text = new String(data, "UTF-8").trim
-        if( text.startsWith("<!DOCTYPE") ) {
-          data = text.substring(text.indexOf('>')+1).getBytes("UTF-8")
+        if (text.startsWith("<!DOCTYPE")) {
+          data = text.substring(text.indexOf('>') + 1).getBytes("UTF-8")
           // println("doctype: "+new String(data, "UTF-8"))
         }
       }
@@ -191,21 +191,21 @@ class ToScaml extends Action {
       val doc = try {
         XML.load(new ByteArrayInputStream(data))
       } catch {
-        case e:SAXParseException =>
+        case e: SAXParseException =>
           // save the tidy version...
-          System.err.println("Could not parse the html markup: "+e.getMessage+" at "+e.getLineNumber+":"+e.getColumnNumber)
+          System.err.println("Could not parse the html markup: " + e.getMessage + " at " + e.getLineNumber + ":" + e.getColumnNumber)
           out.write(data)
           return
-        case e:Throwable =>
+        case e: Throwable =>
           // save the tidy version...
-          System.err.println("Could not parse the html markup: "+e.getMessage)
+          System.err.println("Could not parse the html markup: " + e.getMessage)
           out.write(data)
           return
       }
       doc.child.foreach(process(_))
     }
 
-    if( to!=null ) {
+    if (to != null) {
       out = new IndentPrintStream(new FileOutputStream(to));
       doit
       out.close()
@@ -217,81 +217,80 @@ class ToScaml extends Action {
     null
   }
 
-
   def to_text(line: String): String = {
     line
   }
 
   def to_element(tag: String): String = {
     var rc = tag
-    if( rc.startsWith("div.") ||  tag.startsWith("div#") ) {
+    if (rc.startsWith("div.") || tag.startsWith("div#")) {
       rc = rc.stripPrefix("div")
     }
-    "%"+rc
+    "%" + rc
   }
 
-  def process(value:AnyRef):Unit = {
+  def process(value: AnyRef): Unit = {
 
     val t = out
     import t._
 
-    def tag(name:String) = {
-      if( name.matches("""^[\w:_\-]+$""") ) {
+    def tag(name: String) = {
+      if (name.matches("""^[\w:_\-]+$""")) {
         name
       } else {
-        "'"+name+"'"
+        "'" + name + "'"
       }
     }
 
     value match {
 
-      case x:Elem =>
+      case x: Elem =>
 
-        var id=""
-        var clazz=""
-        var atts=""
+        var id = ""
+        var clazz = ""
+        var atts = ""
 
-        def add(key:String, value:String) = {
-          if( atts!="" ) {
+        def add(key: String, value: String) = {
+          if (atts != "") {
             atts += " "
           }
-          atts += key+"=\""+value+"\""
+          atts += key + "=\"" + value + "\""
         }
 
-        x.attributes.foreach{ a=>
+        x.attributes.foreach { a =>
           val key = a.key
           val value = a.value.toString
-          if( key=="id" ) {
-            if( value.matches("""^[\w_\-]+$""") )
-              id = "#"+value
+          if (key == "id") {
+            if (value.matches("""^[\w_\-]+$"""))
+              id = "#" + value
             else
-              add(key,value)
-          } else if( key=="class" ) {
-            if( value.matches("""^[\w\s_\-]+$""") ) {
-              value.split("""\s""").foreach{ c=>
-                clazz += "."+c
+              add(key, value)
+          } else if (key == "class") {
+            if (value.matches("""^[\w\s_\-]+$""")) {
+              value.split("""\s""").foreach { c =>
+                clazz += "." + c
               }
             } else {
-              add(key,value)
+              add(key, value)
             }
           } else {
-            add(key,value)
+            add(key, value)
           }
         }
 
-        if(x.label=="scriptlet") {
-          for( line <- x.child.text.trim().split("""\r?\n""").filter( _.length()!=0) ) {
-            pi.pl("- "+line)
+        if (x.label == "scriptlet") {
+          for (line <- x.child.text.trim().split("""\r?\n""").filter(_.length() != 0)) {
+            pi.pl("- " + line)
           }
         } else {
 
-          pi.p(to_element(tag(x.label)+id+clazz))
-          if( atts!="" ) {
-            p("("+atts+")")
+          pi.p(to_element(tag(x.label) + id + clazz))
+          if (atts != "") {
+            p("(" + atts + ")")
           }
 
           x.child match {
-            case Seq(x:Text) =>
+            case Seq(x: Text) =>
               val value = x.text.trim
               if (value.contains("\n")) {
                 pl()
@@ -299,37 +298,36 @@ class ToScaml extends Action {
                   process(x)
                 }
               } else {
-                pl(" "+value)
+                pl(" " + value)
               }
             case x =>
               pl()
               indent {
-                x.foreach{ process _ }
+                x.foreach { process _ }
               }
           }
         }
 
-
-      case x:Text =>
+      case x: Text =>
         val value = x.text.trim
-        value.split("\r?\n").map(_.trim).foreach{ line =>
-          if(line != "" ) {
+        value.split("\r?\n").map(_.trim).foreach { line =>
+          if (line != "") {
             pi.pl(to_text(line))
           }
         }
 
-      case x:AnyRef =>
-        throw new Exception("Unhandled type: "+x.getClass);
+      case x: AnyRef =>
+        throw new Exception("Unhandled type: " + x.getClass);
     }
   }
 
-  class IndentPrintStream(out:OutputStream) extends PrintStream(out) {
-    var level=0
-    def indent[T](op: => T): T = {level += 1; val rc = op; level -= 1; rc}
+  class IndentPrintStream(out: OutputStream) extends PrintStream(out) {
+    var level = 0
+    def indent[T](op: => T): T = { level += 1; val rc = op; level -= 1; rc }
 
     def pi = { for (i <- 0 until level) { print("  ") }; this }
     def p(line: String) = { print(line); this }
-    def pl(line: String="") = { println(line); this }
+    def pl(line: String = "") = { println(line); this }
   }
 
 }

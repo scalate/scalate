@@ -18,22 +18,22 @@
 package org.fusesource.scalate.rest
 
 import com.sun.jersey.api.NotFoundException
-import javax.ws.rs.{POST, Path, PathParam}
-import org.fusesource.scalate.util.{Log}
+import javax.ws.rs.{ POST, Path, PathParam }
+import org.fusesource.scalate.util.{ Log }
 
 object ContainerResource extends Log
 
 /**
  * @version $Revision: 1.1 $
  */
-abstract class ContainerResource[K,E,R] {
+abstract class ContainerResource[K, E, R] {
   import ContainerResource._
 
-  def container: Container[K,E]
+  def container: Container[K, E]
 
   @Path("id/{id}")
-  def get(@PathParam("id") key : K) : R = {
-    debug("Loading id '%s'",key)
+  def get(@PathParam("id") key: K): R = {
+    debug("Loading id '%s'", key)
 
     container.get(key) match {
       case Some(e) => createChild(e)
@@ -42,10 +42,10 @@ abstract class ContainerResource[K,E,R] {
   }
 
   @POST
-  def post(element : E) = {
+  def post(element: E) = {
     // TODO validate the new element
     container.put(element)
   }
 
-  def createChild(e: E) : R
+  def createChild(e: E): R
 }

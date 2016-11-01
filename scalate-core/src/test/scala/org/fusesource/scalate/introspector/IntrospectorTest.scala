@@ -50,7 +50,7 @@ class IntrospectorTest extends FunSuiteSupport {
 
   test("product introspector") {
     val introspector = Introspector(classOf[MyProduct])
-    expect("myProduct") {introspector.typeStyleName}
+    expect("myProduct") { introspector.typeStyleName }
 
     val properties = introspector.properties.sortBy(_.name)
     assertProperties(properties, 2)
@@ -59,10 +59,9 @@ class IntrospectorTest extends FunSuiteSupport {
     assertProperty(properties(1), "name", "name", classOf[String])
   }
 
-
   test("bean introspector") {
     val introspector = Introspector(classOf[MyBean])
-    expect("myBean") {introspector.typeStyleName}
+    expect("myBean") { introspector.typeStyleName }
 
     val properties = introspector.properties.sortBy(_.name)
     assertProperties(properties, 2)
@@ -76,12 +75,11 @@ class IntrospectorTest extends FunSuiteSupport {
     val introspector = Introspector(classOf[MyProduct])
     dump(introspector)
 
-    expect(Some("James")) {introspector.get("name", v)}
-    expect(Some(40)) {introspector.get("age", v)}
+    expect(Some("James")) { introspector.get("name", v) }
+    expect(Some(40)) { introspector.get("age", v) }
 
     assertStringFunctor(introspector, v, "bold", "product", "<b>product</b>")
   }
-
 
   test("bean get") {
     val v = new MyBean
@@ -91,11 +89,11 @@ class IntrospectorTest extends FunSuiteSupport {
     val introspector = Introspector(classOf[MyBean])
     dump(introspector)
 
-    expect(Some("Hiram")) {introspector.get("name", v)}
-    expect(Some(30)) {introspector.get("age", v)}
+    expect(Some("Hiram")) { introspector.get("name", v) }
+    expect(Some(30)) { introspector.get("age", v) }
 
     // autodiscover methods too
-    expect(Some("bar")) {introspector.get("foo", v)}
+    expect(Some("bar")) { introspector.get("foo", v) }
 
     assertStringFunctor(introspector, v, "bold", "bean", "<b>bean</b>")
   }
@@ -108,10 +106,10 @@ class IntrospectorTest extends FunSuiteSupport {
     val age = introspector.property("age").get
 
     name.set(v, "James")
-    expect("James"){ name(v) }
+    expect("James") { name(v) }
 
     age.set(v, 30)
-    expect(30){ age(v) }
+    expect(30) { age(v) }
 
     debug("created bean: %s", v)
     // TODO....
@@ -129,7 +127,7 @@ class IntrospectorTest extends FunSuiteSupport {
     introspector.get(name, instance) match {
       case Some(f: Function1[String, _]) =>
         debug("calling function %s named %s on %s = %s", f, name, instance, f(arg))
-        expect(expected) {f(arg)}
+        expect(expected) { f(arg) }
       case Some(v) =>
         fail("Expected function for expression " + name + " but got " + v)
       case _ =>
@@ -137,17 +135,16 @@ class IntrospectorTest extends FunSuiteSupport {
     }
   }
 
-
   def assertProperty(property: Property[_], name: String, label: String, propertyType: Class[_]) = {
-    expect(name) {property.name}
-    expect(label) {property.label}
-    expect(propertyType) {property.propertyType}
+    expect(name) { property.name }
+    expect(label) { property.label }
+    expect(propertyType) { property.propertyType }
   }
 
   def assertProperties(properties: Seq[Property[_]], expectedSize: Int) = {
     for (property <- properties) {
       debug("Property: %s", property)
     }
-    expect(expectedSize) {properties.size}
+    expect(expectedSize) { properties.size }
   }
 }

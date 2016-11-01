@@ -17,10 +17,10 @@
  */
 package org.fusesource.scalate.filter.pegdown
 
-import org.fusesource.scalate.{TemplateEngineAddOn, RenderContext, TemplateEngine}
+import org.fusesource.scalate.{ TemplateEngineAddOn, RenderContext, TemplateEngine }
 import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.util.ObjectPool
-import org.pegdown.{Extensions, PegDownProcessor}
+import org.pegdown.{ Extensions, PegDownProcessor }
 
 object PegDownFilter extends TemplateEngineAddOn {
 

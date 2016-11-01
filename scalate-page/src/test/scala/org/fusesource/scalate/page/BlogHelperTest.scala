@@ -24,6 +24,6 @@ class BlogHelperTest extends TemplateTestSupport {
   test("page helper iterates through blog posts in date order") {
     showOutput = true
 
-    assertUriOutputContains("blog/index.ssp", "Scalate 1.1 Released",  "Scalate 1.0 Released")
+    assertUriOutputContains("blog/index.ssp", "Scalate 1.1 Released", "Scalate 1.0 Released")
   }
 }

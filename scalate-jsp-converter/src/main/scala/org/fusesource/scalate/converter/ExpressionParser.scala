@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 package org.fusesource.scalate.converter
-import util.parsing.input.{Positional, CharSequenceReader}
+import util.parsing.input.{ Positional, CharSequenceReader }
 import org.fusesource.scalate.support.Text
 import org.fusesource.scalate.InvalidSyntaxException
 
@@ -95,13 +95,11 @@ case class PathNode(variable: String, name: String) extends ExpressionNode {
 }
 */
 
-
 /**
  * Parser for the JSTL EL expressions
  */
 class ExpressionParser extends MarkupScanner {
   override def skipWhitespace = false
-
 
   def parseExpression(in: String): Expression = toExpression(phraseOrFail(expressionList, in))
 
@@ -116,8 +114,7 @@ class ExpressionParser extends MarkupScanner {
   def toExpression(list: List[Expression]): Expression = {
     if (list.size == 1) {
       list(0)
-    }
-    else {CompositeExpression(list)}
+    } else { CompositeExpression(list) }
   }
 
   // grammar
@@ -125,9 +122,9 @@ class ExpressionParser extends MarkupScanner {
 
   def expressionList = rep(dollarExpression | staticText)
 
-  def staticText = someUpto("${") ^^ {TextExpression(_)}
+  def staticText = someUpto("${") ^^ { TextExpression(_) }
 
-  val dollarExpression = wrapped("${", "}") ^^ {DollarExpression(_)}
+  val dollarExpression = wrapped("${", "}") ^^ { DollarExpression(_) }
 
   /*
     val dollarExpression = ("${" ~> expression("}") <~ "}") ^^ {DollarExpression(_)}

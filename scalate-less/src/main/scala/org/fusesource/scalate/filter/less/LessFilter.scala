@@ -47,7 +47,7 @@ class LessFilter(lessEngine: LessEngine) extends Filter {
 class LessPipeline(private val lessEngine: LessEngine) extends Filter {
   def filter(context: RenderContext, content: String) = synchronized {
     synchronized {
-    	lessEngine.compile(content, context.currentTemplate)
+      lessEngine.compile(content, context.currentTemplate)
     }
   }
 }
@@ -62,7 +62,7 @@ object LessAddOn extends TemplateEngineAddOn {
     val lessEngine = new LessEngine(new LessOptions, new ScalateResourceLoader(te))
     te.filters += "less" -> new LessFilter(lessEngine)
     te.pipelines += "less" -> List(NoLayoutFilter(new LessPipeline(lessEngine), "text/css"))
-    te.templateExtensionsFor("css") += "less"    
+    te.templateExtensionsFor("css") += "less"
   }
 
   /**

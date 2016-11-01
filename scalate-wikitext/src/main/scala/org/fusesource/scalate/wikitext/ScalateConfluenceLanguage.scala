@@ -19,7 +19,7 @@ package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
-import java.{util => ju}
+import java.{ util => ju }
 import collection.JavaConversions._
 
 /**
@@ -49,10 +49,9 @@ class ScalateConfluenceLanguage extends ConfluenceLanguage {
       new CenterBlock,
 
       // tags
-      new AttributesTag, new IncludeTag, new ChildrenTag
-    ).foreach{b =>
-      blocks.add(b)
-      paragraphBreakingBlocks.add(b)
-    }
+      new AttributesTag, new IncludeTag, new ChildrenTag).foreach { b =>
+        blocks.add(b)
+        paragraphBreakingBlocks.add(b)
+      }
   }
 }

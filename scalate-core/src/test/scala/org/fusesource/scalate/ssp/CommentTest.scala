@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 package ssp
 
-
 class CommentTest extends TemplateTestSupport {
 
   showOutput = true

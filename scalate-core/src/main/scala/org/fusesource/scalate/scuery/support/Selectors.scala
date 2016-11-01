@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery.support
 
 import org.fusesource.scalate.scuery.Selector
-import xml.{Attribute, Elem, Node, NodeSeq}
+import xml.{ Attribute, Elem, Node, NodeSeq }
 
 /**
  * Matches if the CSS class attribute contains the given class name word
@@ -78,8 +78,7 @@ case class NamespacedAttributeNameSelector(name: String, prefix: String, matcher
           case Some(ns) => matcher.matches(ns)
           case _ => false
         }
-      }
-    else {
+      } else {
         false
       }
 
@@ -137,7 +136,6 @@ object AnyElementSelector extends Selector {
 // Combinators
 //-------------------------------------------------------------------------
 
-
 /**
  * Represents selector: E &gt; F
  *
@@ -184,8 +182,7 @@ case class AdjacentSiblingSelector(childSelector: Selector, ancestorSelector: Se
       val children = h.child
       val idx = children.indexOf(node)
       idx > 0 && ancestorSelector.matches(children(idx - 1), xs)
-    }
-    else {
+    } else {
       false
     }
   }
@@ -209,17 +206,14 @@ case class GeneralSiblingSelector(childSelector: Selector, ancestorSelector: Sel
       val children = h.child
       val idx = children.indexOf(node)
       idx > 0 && children.slice(0, idx).reverse.find(ancestorSelector.matches(_, xs)).isDefined
-    }
-    else {
+    } else {
       false
     }
   }
 }
 
-
 // Pseudo selectors
 //-------------------------------------------------------------------------
-
 
 object RootSelector extends Selector {
   def matches(node: Node, ancestors: Seq[Node]) = node match {

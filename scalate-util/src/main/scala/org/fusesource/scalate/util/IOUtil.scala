@@ -19,9 +19,9 @@
 package org.fusesource.scalate.util
 
 import java.io._
-import java.util.zip.{ZipEntry, ZipInputStream}
+import java.util.zip.{ ZipEntry, ZipInputStream }
 import java.net.URL
-import scala.util.parsing.input.{Position, OffsetPosition}
+import scala.util.parsing.input.{ Position, OffsetPosition }
 
 object IOUtil {
 
@@ -77,13 +77,13 @@ object IOUtil {
     else {
       matches.foldLeft(sourceCode) { (result, include) =>
         val includeSource: String = try {
-            val includeRegEx(fileName) = include
-            loadTextFile(new java.io.File(fileName), encoding)
-          } catch {
-            case m: MatchError =>
-              throw new InvalidDirectiveException("include", OffsetPosition(include, 0))
-            case n: FileNotFoundException => throw n
-          }
+          val includeRegEx(fileName) = include
+          loadTextFile(new java.io.File(fileName), encoding)
+        } catch {
+          case m: MatchError =>
+            throw new InvalidDirectiveException("include", OffsetPosition(include, 0))
+          case n: FileNotFoundException => throw n
+        }
         result.replace(include, includeSource)
       }
     }
@@ -120,7 +120,6 @@ object IOUtil {
     }
     baos.toByteArray
   }
-
 
   def writeText(path: String, text: String): Unit = writeText(new File(path), text)
 
@@ -173,7 +172,7 @@ object IOUtil {
   }
 
   // For ARM
-  def using[R,C <:Closeable](c: C)(func: (C)=>R):R = {
+  def using[R, C <: Closeable](c: C)(func: (C) => R): R = {
     try {
       func(c)
     } finally {
@@ -197,7 +196,6 @@ object IOUtil {
 
     bytesCopied
   }
-
 
   def copy(in: Reader, out: Writer): Long = {
     var charsCopied: Long = 0
@@ -225,8 +223,7 @@ object IOUtil {
         val entry = zip.getNextEntry
         if (entry == null) {
           ok = false
-        }
-        else {
+        } else {
           val name = entry.getName
           if (!entry.isDirectory && filter(entry)) {
             debug("processing resource: %s", name)
@@ -248,8 +245,7 @@ object IOUtil {
           zip.closeEntry
         }
       }
-    }
-    finally {
+    } finally {
       zip.close
     }
   }

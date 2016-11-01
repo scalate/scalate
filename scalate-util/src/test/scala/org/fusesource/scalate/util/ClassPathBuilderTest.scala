@@ -19,24 +19,24 @@ package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import java.io.File
-import java.net.{URL, URLClassLoader}
+import java.net.{ URL, URLClassLoader }
 
 class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
-  
+
   test("Construct an empty class path") {
     val builder = new ClassPathBuilder
     assert(builder.classPath === "")
   }
-  
+
   test("All methods accept null") {
     val builder = new ClassPathBuilder
     builder.addClassesDir(null)
-           .addLibDir(null)
-           .addJar(null)
-           .addPathFrom(null: Class[_])
-           .addPathFrom(null: ClassLoader)
-    
+      .addLibDir(null)
+      .addJar(null)
+      .addPathFrom(null: Class[_])
+      .addPathFrom(null: ClassLoader)
+
     assert(builder.classPath === "")
   }
 
@@ -46,7 +46,6 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 
     assertFiles(builder.classPath, "/path/to/file.jar")
   }
-
 
   test("Add an entry for a classes directory") {
     val builder = new ClassPathBuilder
@@ -69,47 +68,47 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     assert(builder.classPath === "/WEB-INF/classes")
   }
 
-//  Fails from Maven :-( commented out as unstable
-//  test("Add the entries form java.class.path system property") {
-//    val builder = new ClassPathBuilder
-//    builder.addJavaPath
-//    assert(builder.classPath.contains("scala"))
-//    // We assume that the Scala jar is in the class path
-//  }
-  
+  //  Fails from Maven :-( commented out as unstable
+  //  test("Add the entries form java.class.path system property") {
+  //    val builder = new ClassPathBuilder
+  //    builder.addJavaPath
+  //    assert(builder.classPath.contains("scala"))
+  //    // We assume that the Scala jar is in the class path
+  //  }
+
   test("Add enty from a URLClassLoader") {
     val loader = new URLClassLoader(Array(new URL("file:///path/to/file.jar")))
     val builder = new ClassPathBuilder
     builder.addPathFrom(loader)
     assertFiles(builder.classPath, "/path/to/file.jar")
   }
-  
+
   test("Add path from AntLikeClassLoader") {
     val builder = new ClassPathBuilder
-    
+
     builder.addPathFrom(InvalidAntLikeClassLoader)
     assert(builder.classPath === "")
-    
+
     builder.addPathFrom(ValidAntLikeClassLoader)
     assertFiles(builder.classPath, "/path/to/file.jar")
   }
-  
+
   test("Add path from context class loader") {
 
     val contextClassLoader = Thread.currentThread.getContextClassLoader
     val builder = new ClassPathBuilder
-    
+
     Thread.currentThread.setContextClassLoader(null)
     builder.addPathFromContextClassLoader()
     assert(builder.classPath === "")
-    
+
     Thread.currentThread.setContextClassLoader(ValidAntLikeClassLoader)
     builder.addPathFromContextClassLoader()
     assertFiles(builder.classPath, "/path/to/file.jar")
-    
+
     Thread.currentThread.setContextClassLoader(contextClassLoader)
   }
-  
+
   test("Add jars for a lib directory") {
     val builder = new ClassPathBuilder
     builder.addLibDir(testLibDir)
@@ -127,13 +126,13 @@ class ClassPathBuilderTest extends FunSuiteSupport {
  * Test data
  */
 object ClassPathBuilderTest {
-  
+
   def testLibDir = new java.io.File(getClass.getClassLoader.getResource("test-lib").toURI).getParent
-  
+
   object ValidAntLikeClassLoader extends ClassLoader(null) {
     def getClasspath: String = "/path/to/file.jar"
   }
-  
+
   object InvalidAntLikeClassLoader extends ClassLoader(null) {
     def getClasspath: Int = 42
   }

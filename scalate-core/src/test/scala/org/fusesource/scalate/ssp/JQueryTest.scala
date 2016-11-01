@@ -18,13 +18,13 @@
 package org.fusesource.scalate
 package ssp
 
-
 class JQueryTest extends TemplateTestSupport {
 
   showOutput = true
 
   test("jQuery generated code") {
-    assertOutputContains(TemplateSource.fromText("foo.ssp", """
+    assertOutputContains(
+      TemplateSource.fromText("foo.ssp", """
 <p>start of html</p>
 
 <script>
@@ -42,7 +42,8 @@ $("a").click(function() {
       "start of html",
       "$(document).ready",
       """$("a").click""",
-      "end of html")
+      "end of html"
+    )
   }
 
 }

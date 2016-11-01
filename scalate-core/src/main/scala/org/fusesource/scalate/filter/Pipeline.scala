@@ -23,7 +23,7 @@ package filter
  */
 case class Pipeline(filters: List[Filter]) extends Filter {
   def filter(context: RenderContext, content: String) =
-    filters.foldLeft(content){
+    filters.foldLeft(content) {
       (c, f) => f.filter(context, c)
     }
 }

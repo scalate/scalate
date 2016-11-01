@@ -18,10 +18,10 @@
 package org.fusesource.scalate.converter
 
 import java.io.File
-import java.{util => ju, lang => jl}
+import java.{ util => ju, lang => jl }
 import org.fusesource.scalate.util.IOUtil._
 
-import org.apache.felix.gogo.commands.{Action, Option => option, Argument => argument, Command => command}
+import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import org.apache.felix.service.command.CommandSession
 
 /**
@@ -44,7 +44,6 @@ class JspConvert extends Runnable with Action {
   var converter = new JspConverter
   var matchesFile: File => Boolean = isJsp
   var outputFile: File => File = toSsp
-
 
   /**
    * Runs the command given the command line arguments
@@ -69,8 +68,7 @@ class JspConvert extends Runnable with Action {
             count += run(f, nextLevel)
           }
         }
-      }
-      else {
+      } else {
         if (matchesFile(file)) {
           convert(file)
           count += 1
@@ -100,8 +98,7 @@ class JspConvert extends Runnable with Action {
 
       if (parentName(0).isUpper) {
         className = Some(parentName)
-      }
-      else if (name(0).isUpper) {
+      } else if (name(0).isUpper) {
         // lets assume the first name before dot is the name
         className = Some(name.split('.').head)
       }

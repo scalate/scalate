@@ -10,13 +10,13 @@ class WilleScueryTest extends FunSuiteSupport {
 
     object transformer extends Transformer {
       $(".person") { node =>
-          people.flatMap{
-              p =>
-              new Transform(node) {
-                $(".name").contents = p.name
-                $(".location").contents = p.location
-              }
-          }
+        people.flatMap {
+          p =>
+            new Transform(node) {
+              $(".name").contents = p.name
+              $(".location").contents = p.location
+            }
+        }
       }
     }
 
@@ -43,16 +43,16 @@ class WilleScueryTest extends FunSuiteSupport {
   }
 
   def xml = <div id="content">
-    <table class="people">
-      <tr>
-        <th>Name</th>
-        <th>Location</th>
-      </tr>
-      <tr class="person">
-        <td class="name">DummyName</td>
-        <td class="location">DummyLocation</td>
-      </tr>
-    </table>
-  </div>
+              <table class="people">
+                <tr>
+                  <th>Name</th>
+                  <th>Location</th>
+                </tr>
+                <tr class="person">
+                  <td class="name">DummyName</td>
+                  <td class="location">DummyLocation</td>
+                </tr>
+              </table>
+            </div>
 }
 

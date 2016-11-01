@@ -19,7 +19,7 @@ package org.fusesource.scalate
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ConfigMap, BeforeAndAfterAll, FunSuite}
+import org.scalatest.{ ConfigMap, BeforeAndAfterAll, FunSuite }
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Log with  BeforeAndAfterAll {
+abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll {
 
   protected var _basedir = "."
 
@@ -40,7 +40,6 @@ abstract class FunSuiteSupport extends FunSuite with Log with  BeforeAndAfterAll
    * Returns the base directory of the current project
    */
   def baseDir = new File(_basedir)
-
 
   override protected def beforeAll(map: ConfigMap): Unit = {
     _basedir = map.get("basedir") match {
@@ -50,20 +49,19 @@ abstract class FunSuiteSupport extends FunSuite with Log with  BeforeAndAfterAll
     debug("using basedir: %s", _basedir)
   }
 
-
   def assertSize(selector: String, result: NodeSeq, expected: Int): Unit = {
-    expect(expected, "number of elements matching: " + selector) {result.$(selector).size}
+    expect(expected, "number of elements matching: " + selector) { result.$(selector).size }
   }
 
   /**
    * Asserts that the text value of the given selector matches the expected string
    */
   def assertText(selector: String, result: NodeSeq, expected: String): Unit = {
-    expect(expected, "text of elements matching: " + selector) {result.$(selector).text}
+    expect(expected, "text of elements matching: " + selector) { result.$(selector).text }
   }
 
   def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
-    expect(expectedClass) {anyRef.getClass}
+    expect(expectedClass) { anyRef.getClass }
   }
 }

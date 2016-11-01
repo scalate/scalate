@@ -17,10 +17,10 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.javax.servlet.http.{HttpServletResponse, HttpServletRequest}
+import _root_.javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import _root_.javax.servlet.ServletContext
 import _root_.javax.ws.rs._
-import _root_.org.fusesource.scalate.servlet.{ServletRenderContext, ServletTemplateEngine}
+import _root_.org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine }
 import _root_.org.fusesource.scalate.util.Constraints._
 import javax.ws.rs.core.Context
 import org.fusesource.scalate.util.Log
@@ -51,10 +51,8 @@ class Console extends DefaultRepresentations {
   def templateEngine = ServletTemplateEngine(servletContext)
   def renderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
 
-
   @Path("archetypes/{name}")
   def archetype(@PathParam("name") name: String) = new ArchetypeResource(this, name)
-
 
   @POST
   @Path("invalidateCachedTemplates")

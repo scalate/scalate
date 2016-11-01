@@ -17,11 +17,11 @@
  */
 package org.fusesource.scalate.introspector
 
-import java.beans.{PropertyDescriptor, Introspector => BeanInt}
+import java.beans.{ PropertyDescriptor, Introspector => BeanInt }
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import org.fusesource.scalate.util.ProductReflector
-import collection.mutable.{HashMap, Map, WeakHashMap}
-import java.lang.reflect.{Modifier, Method}
+import collection.mutable.{ HashMap, Map, WeakHashMap }
+import java.lang.reflect.{ Modifier, Method }
 
 object Introspector {
 
@@ -72,8 +72,7 @@ object Introspector {
   def createIntrospector(aType: Class[_]): Introspector[_] = {
     if (classOf[Product].isAssignableFrom(aType)) {
       new ProductIntrospector(aType)
-    }
-    else {
+    } else {
       new BeanIntrospector(aType)
     }
   }
@@ -147,7 +146,6 @@ trait Introspector[T] {
         answer.getOrElseUpdate(propertyName, property)
       }
     }
-
 
     val nonVoidPublicMethods = elementType.getMethods.filter(m => Modifier.isPublic(m.getModifiers) && isValidReturnType(m.getReturnType))
 
@@ -238,7 +236,6 @@ class ProductIntrospector[T](val elementType: Class[T]) extends Introspector[T] 
   protected def createProperty(method: Method) = new MethodProperty[T](method)
 }
 
-
 /**
  * A property which just maps to a method with no arguments
  */
@@ -261,7 +258,6 @@ class MethodProperty[T](method: Method) extends Property[T] {
 
   override def toString = "MethodProperty(" + name + ": " + propertyType.getName + ")"
 }
-
 
 /**
  * A property which returns a Function which when invoked it invokes the underlying

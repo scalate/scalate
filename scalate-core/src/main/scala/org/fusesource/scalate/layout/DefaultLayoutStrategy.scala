@@ -19,7 +19,7 @@ package org.fusesource.scalate
 package layout
 
 import util.Strings.isEmpty
-import util.{Log, ResourceNotFoundException}
+import util.{ Log, ResourceNotFoundException }
 
 object DefaultLayoutStrategy extends Log
 
@@ -49,8 +49,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
       case Some(layout: String) =>
         if (isLayoutDisabled(layout))
           noLayout(body, context)
-        else
-        if (!tryLayout(layout, body, context)) {
+        else if (!tryLayout(layout, body, context)) {
           debug("Could not load layout resource: %s", layout)
           noLayout(body, context)
         }

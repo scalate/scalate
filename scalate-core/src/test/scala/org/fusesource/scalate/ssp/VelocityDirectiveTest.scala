@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate.{CompilerException, TemplateTestSupport}
+import org.fusesource.scalate.{ CompilerException, TemplateTestSupport }
 
 /**
  * @version $Revision : 1.1 $
@@ -48,7 +48,6 @@ Dunno
     assertTrimOutput("Dunno", template, Map("n" -> "Foo"))
   }
 
-  
   test("match case otherwise") {
     val template = compileSsp("match case otherwise", """<%@ val n: String %>
 #match(n)
@@ -97,7 +96,6 @@ end
     val output = engine.layout("foo3.ssp", template).trim
     expect(List("start", "foo", "end")) { output.split("\\s+").toList }
   }
-
 
   // #match and #case issues
   testSspSyntaxEception("non whitespace between #match #case", "#match(n) bad #case(5) a #otherwise b #end")

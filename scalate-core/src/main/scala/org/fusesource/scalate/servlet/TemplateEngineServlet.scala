@@ -21,18 +21,16 @@ import org.fusesource.scalate.TemplateEngine
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import javax.servlet.{ServletContext, ServletConfig}
-import org.fusesource.scalate.util.{Log}
+import javax.servlet.{ ServletContext, ServletConfig }
+import org.fusesource.scalate.util.{ Log }
 
 object TemplateEngineServlet extends Log {
-
 
   protected var singleton: TemplateEngineServlet = _
 
   def apply(): TemplateEngineServlet = singleton
 
   def update(servlet: TemplateEngineServlet): Unit = singleton = servlet
-
 
   def render(template: String, templateEngine: TemplateEngine, servletContext: ServletContext, request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val context = new ServletRenderContext(templateEngine, request, response, servletContext)
@@ -50,8 +48,7 @@ object TemplateEngineServlet extends Log {
           servletContext.log("No template available for: " + template)
           response.setStatus(HttpServletResponse.SC_NOT_FOUND)
       }
-    }
-    else {
+    } else {
       context.include(template, true)
       // we should set the OK here as we might be forwarded from the Jersey
       // filter after it detected a 404 and found that there's no JAXRS resource at / or foo.ssp or something
@@ -69,7 +66,6 @@ class TemplateEngineServlet extends HttpServlet {
   import TemplateEngineServlet._
   var templateEngine: ServletTemplateEngine = _
 
-
   override def init(config: ServletConfig) {
     super.init(config)
 
@@ -79,7 +75,6 @@ class TemplateEngineServlet extends HttpServlet {
     TemplateEngineServlet() = this
     ServletTemplateEngine(getServletContext) = templateEngine
   }
-
 
   /**
    * Allow derived servlets to override and customize the template engine from the configuration

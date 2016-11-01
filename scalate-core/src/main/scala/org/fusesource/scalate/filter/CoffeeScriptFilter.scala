@@ -77,8 +77,7 @@ object CoffeeScriptFilter extends Filter with Log {
             |  //]]>
             |</script>""".stripMargin
         })
-      }
-      catch {
+      } catch {
         case e: NoClassDefFoundError => missingRhino(e)
         case e: ClassNotFoundException => missingRhino(e)
       }
@@ -125,19 +124,18 @@ object CoffeeScriptCompiler {
    * @param bare if true, no function wrapper will be generated
    * @return the compiled Javascript code
    */
-  def compile(code: String, sourceName: Option[String] = None)
-  : Either[CompilationError, String] =
-  {
-    try {
-      Right(Compiler.compile(code))
-    } catch {
-      case e: ScriptException =>
-        val line    = e.getLineNumber
-        val column  = e.getColumnNumber
-        val message = "CoffeeScript syntax error at %d:%d".format(line, column)
-        Left(CompilationError(sourceName, message))
+  def compile(code: String, sourceName: Option[String] = None): Either[CompilationError, String] =
+    {
+      try {
+        Right(Compiler.compile(code))
+      } catch {
+        case e: ScriptException =>
+          val line = e.getLineNumber
+          val column = e.getColumnNumber
+          val message = "CoffeeScript syntax error at %d:%d".format(line, column)
+          Left(CompilationError(sourceName, message))
+      }
     }
-  }
 }
 
 case class CompilationError(sourceName: Option[String], message: String)

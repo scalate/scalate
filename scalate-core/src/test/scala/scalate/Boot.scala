@@ -17,7 +17,7 @@
  */
 package scalate
 
-import org.fusesource.scalate.{TemplateEngine, MockBootstrap}
+import org.fusesource.scalate.{ TemplateEngine, MockBootstrap }
 import org.fusesource.scalate.util.Log
 
 /**
@@ -32,7 +32,6 @@ class Boot(engine: TemplateEngine) {
     info("scalate bootstrap starting with template engine: %s", engine)
     MockBootstrap.initialised = true
   }
-
 
   override def toString = "Boot(" + engine + ")"
 }

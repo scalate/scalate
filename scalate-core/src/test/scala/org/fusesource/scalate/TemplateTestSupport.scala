@@ -17,11 +17,10 @@
  */
 package org.fusesource.scalate
 
-
 import java.io.File
 import java.lang.String
 import collection.immutable.Map
-import util.{Log, IOUtil}
+import util.{ Log, IOUtil }
 import org.slf4j.LoggerFactory
 import org.scalatest.ConfigMap
 
@@ -60,7 +59,6 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     assertOutput(expectedOutput, template, attributes, trim)
   }
 
-
   def assertMoustacheOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
     val template = engine.compileMoustache(templateText)
 
@@ -82,7 +80,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     if (trim) {
       output = output.trim
     }
-    expect(expectedOutput) {output}
+    expect(expectedOutput) { output }
     output
   }
 
@@ -120,8 +118,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
       index = source.indexOf(text, index)
       if (index >= 0) {
         index += text.length
-      }
-      else {
+      } else {
         assume(false, "Text does not contain '" + text + "' for " + description + " when text was:\n" + source)
       }
     }
@@ -143,38 +140,29 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     }
   }
 
-
   protected def safeName(text: String): String =
     text.foldLeft(new StringBuffer)((acc, ch) => safeName(ch, acc)).toString
 
   private def safeName(ch: Char, buffer: StringBuffer): StringBuffer = {
     if (ch == '&') {
       buffer.append("amp_")
-    }
-    else if (ch == '>') {
+    } else if (ch == '>') {
       buffer.append("gt_")
-    }
-    else if (ch == '<') {
+    } else if (ch == '<') {
       buffer.append("lt_")
-    }
-    else if (ch == '=') {
+    } else if (ch == '=') {
       buffer.append("eq_")
-    }
-    else if (ch == '!') {
+    } else if (ch == '!') {
       buffer.append("pling_")
-    }
-    else if (ch == '/') {
+    } else if (ch == '/') {
       buffer.append("/")
-    }
-    else if (Character.isDigit(ch) || Character.isJavaIdentifierPart(ch) || ch == '_' || ch == '.') {
+    } else if (Character.isDigit(ch) || Character.isJavaIdentifierPart(ch) || ch == '_' || ch == '.') {
       buffer.append(ch)
-    }
-    else {
+    } else {
       buffer.append('_')
     }
     buffer
   }
-
 
   def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
 

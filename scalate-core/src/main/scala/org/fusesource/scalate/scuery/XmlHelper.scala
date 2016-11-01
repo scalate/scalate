@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{Attribute, Elem, NodeSeq, Null, Text}
+import xml.{ Attribute, Elem, NodeSeq, Null, Text }
 
 /**
  * @version $Revision: 1.1 $

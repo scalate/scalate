@@ -19,7 +19,7 @@ package org.fusesource.scalate.test
 
 /**
  * General test configuration helpers
- * 
+ *
  * @version $Revision: 1.1 $
  */
 object Config {

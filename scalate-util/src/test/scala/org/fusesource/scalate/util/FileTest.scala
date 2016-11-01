@@ -27,10 +27,10 @@ class FileTest extends FunSuiteSupport {
 
     val sources = f / "src" / "main" / "scala"
 
-    expect(true) {sources.exists}
+    expect(true) { sources.exists }
 
     val f2: File = sources
-    expect(true) {f2.exists}
+    expect(true) { f2.exists }
 
     info("created file: " + sources.file)
   }
@@ -39,7 +39,7 @@ class FileTest extends FunSuiteSupport {
     val file: File = baseDir / "src/test/resources/dummy.txt"
 
     val t = file.text.trim
-    expect("hello world!") {t}
+    expect("hello world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -49,7 +49,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nhello world!") {t}
+    expect("My header 1\nhello world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -59,7 +59,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nMy Second Header\ngood bye world!") {t}
+    expect("My header 1\nMy Second Header\ngood bye world!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -69,7 +69,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("hello world!\nMy header 1\nAFTER WORLD!") {t}
+    expect("hello world!\nMy header 1\nAFTER WORLD!") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -79,7 +79,7 @@ class FileTest extends FunSuiteSupport {
 
     val t = IOUtil.loadTextFile(file).trim.replace("\r", "")
 
-    expect("My header 1\nhello world!\nEnd of 2012 is here") {t}
+    expect("My header 1\nhello world!\nEnd of 2012 is here") { t }
 
     info("Loaded file: " + file + " as text: " + t)
   }
@@ -89,8 +89,8 @@ class FileTest extends FunSuiteSupport {
 
     info("name: " + file.name + " extension: " + file.extension)
 
-    expect("txt", "extension") {file.extension}
-    expect("foo", "nameDropExtension") {file.nameDropExtension}
+    expect("txt", "extension") { file.extension }
+    expect("foo", "nameDropExtension") { file.nameDropExtension }
   }
 
   test("Finding files") {
@@ -128,8 +128,8 @@ class FileTest extends FunSuiteSupport {
     test("splitName: " + name) {
       info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
 
-      expect(expectedExt, "extension") {Files.extension(name)}
-      expect(expectedName, "name without extension") {Files.dropExtension(name)}
+      expect(expectedExt, "extension") { Files.extension(name) }
+      expect(expectedName, "name without extension") { Files.dropExtension(name) }
     }
   }
 }

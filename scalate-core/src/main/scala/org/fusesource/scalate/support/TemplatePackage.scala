@@ -18,8 +18,8 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.{Binding, TemplateSource}
-import org.fusesource.scalate.util.{Log, ClassLoaders}
+import org.fusesource.scalate.{ Binding, TemplateSource }
+import org.fusesource.scalate.util.{ Log, ClassLoaders }
 
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates
@@ -58,7 +58,7 @@ object TemplatePackage {
         case _ =>
           if (isEmpty(packageName)) {
             debug("No ScalatePackage class found from templates package: " + source.packageName +
-                    " on the class loaders: " + ClassLoaders.defaultClassLoaders)
+              " on the class loaders: " + ClassLoaders.defaultClassLoaders)
             None
           } else {
             // lets iterate up the package tree looking for a class

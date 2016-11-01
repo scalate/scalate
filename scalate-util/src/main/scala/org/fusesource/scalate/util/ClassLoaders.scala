@@ -22,7 +22,6 @@ import java.net.URL
 object ClassLoaders {
   val log = Log(getClass); import log._
 
-
   /**
    * Returns the default class loaders to use for loading which is the current threads context class loader
    * and the class loader which loaded scalate-core by default
@@ -38,8 +37,7 @@ object ClassLoaders {
     def tryLoadClass(classLoader: ClassLoader) = {
       try {
         Some(classLoader.loadClass(className))
-      }
-      catch {
+      } catch {
         case e: Exception => None
       }
     }
@@ -53,17 +51,15 @@ object ClassLoaders {
    * Tries to find the named resource on the given class loaders
    */
   def findResource(name: String, classLoaders: Traversable[ClassLoader] = defaultClassLoaders): Option[URL] = {
-      def tryLoadClass(classLoader: ClassLoader) = {
-        try {
-          classLoader.getResource(name)
-        }
-        catch {
-          case e: Exception => null
-        }
+    def tryLoadClass(classLoader: ClassLoader) = {
+      try {
+        classLoader.getResource(name)
+      } catch {
+        case e: Exception => null
       }
-      classLoaders.map(tryLoadClass).find(_ != null)
     }
-
+    classLoaders.map(tryLoadClass).find(_ != null)
+  }
 
   /**
    * Loads the given named class on the given class loaders or fails with a ClassNotFoundException

@@ -32,7 +32,6 @@ Hello ${if (bean != null) bean else "no bean"}
     debug("template generated: %s", output)
   }
 
-
   override protected def createTemplateEngine = {
     val engine = super.createTemplateEngine
     engine.importStatements ++= List("import org.fusesource.scalate.introspector.MyBean")

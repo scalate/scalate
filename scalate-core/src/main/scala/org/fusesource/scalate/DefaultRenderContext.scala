@@ -21,14 +21,14 @@ import support.AttributesHashMap
 
 import java.io._
 import collection.mutable.Stack
-import util.{Log, Resource}
+import util.{ Log, Resource }
 
 object DefaultRenderContext extends Log
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(private val _requestUri: String, val engine: TemplateEngine,
-                           var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
+    var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
 
   import DefaultRenderContext._
 
@@ -36,7 +36,6 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
     update("context", DefaultRenderContext.this)
   }
   escapeMarkup = engine.escapeMarkup
-
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -60,7 +59,6 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
   def <<<(v: Any): Unit = {
     out.print(value(v).toString)
   }
-
 
   private val outStack = new Stack[PrintWriter]
 

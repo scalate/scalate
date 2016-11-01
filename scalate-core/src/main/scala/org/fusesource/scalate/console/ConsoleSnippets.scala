@@ -18,7 +18,7 @@
 package org.fusesource.scalate.console
 
 import _root_.javax.servlet.ServletContext
-import _root_.org.fusesource.scalate.servlet.{ServletResourceLoader, ServletRenderContext}
+import _root_.org.fusesource.scalate.servlet.{ ServletResourceLoader, ServletRenderContext }
 import _root_.org.fusesource.scalate.RenderContext
 import java.io.File
 import scala.xml.NodeSeq
@@ -30,7 +30,6 @@ trait ConsoleSnippets {
   def servletContext: ServletContext
 
   def renderContext: RenderContext
-
 
   def realPath(uri: String) = ServletResourceLoader(servletContext).realPath(uri)
 
@@ -50,7 +49,7 @@ trait ConsoleSnippets {
    */
   def editLink(filePath: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     // It might be a real file path
-    if( filePath!=null ) {
+    if (filePath != null) {
       val file = new File(filePath);
       val actualPath = if (file.exists) {
         file.getCanonicalPath
@@ -59,7 +58,7 @@ trait ConsoleSnippets {
       }
       EditLink.editLink(actualPath, line, col)(body)
     } else {
-      <span>{body}</span>
+      <span>{ body }</span>
     }
   }
 
@@ -79,11 +78,10 @@ trait ConsoleSnippets {
     EditLink.editLink(file, line, col)(body)
   }
 
-
   def shorten(file: File): String = shorten(file.getPath)
 
   def shorten(file: String): String = {
-    if( file==null ) {
+    if (file == null) {
       "<unknown>"
     } else {
       var root = renderContext.engine.workingDirectory.getPath;
@@ -97,7 +95,6 @@ trait ConsoleSnippets {
       }
     }
   }
-
 
   def exists(fileName: String) = new File(fileName).exists
 

@@ -17,9 +17,8 @@
  */
 package org.fusesource.scalate.mustache
 
-
 import org.fusesource.scalate._
-import support.{Code, AbstractCodeGenerator}
+import support.{ Code, AbstractCodeGenerator }
 import collection.mutable.Stack
 import util.Log
 
@@ -53,7 +52,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(fragments: List[Statement]): Unit = {
       this << "import _root_.org.fusesource.scalate.mustache._"
       this << ""
-      
+
       this << "val " + pushScope + " = " + "Scope($_scalate_$_context)"
 
       fragments.foreach(generate)
@@ -100,13 +99,12 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
         case Pragma(name, options) =>
           this << fragment.pos;
           this << "$_scalate_$_context << \"ERROR: This implementation of mustache doesn't understand the '" + name + "' pragma\""
-        case SetDelimiter(open,close) =>
+        case SetDelimiter(open, close) =>
         case s => {
           warn("Unsupported statement: %s", s)
         }
       }
     }
-
 
     def scope = scopes.head
 

@@ -19,8 +19,8 @@ package org.fusesource.scalate.support
 
 import collection.JavaConversions._
 
-import java.{util => ju}
-import java.io.{PrintWriter, File}
+import java.{ util => ju }
+import java.io.{ PrintWriter, File }
 
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate._
@@ -39,10 +39,9 @@ class SiteGenerator {
   var workingDirectory: File = _
   var webappDirectory: File = _
   var targetDirectory: File = _
-  var templateProperties: ju.Map[String,String] = _
-  var bootClassName:String = _
-  var info:{def apply(v1:String):Unit} = (value:String)=>println(value)
-
+  var templateProperties: ju.Map[String, String] = _
+  var bootClassName: String = _
+  var info: { def apply(v1: String): Unit } = (value: String) => println(value)
 
   def execute() = {
     targetDirectory.mkdirs();
@@ -56,35 +55,33 @@ class SiteGenerator {
 
     var engine = new DummyTemplateEngine(webappDirectory)
     engine.classLoader = Thread.currentThread.getContextClassLoader
-        
-    if( bootClassName!=null ) {
+
+    if (bootClassName != null) {
       engine.bootClassName = bootClassName
     }
-    
-    if( workingDirectory!=null ) {
+
+    if (workingDirectory != null) {
       engine.workingDirectory = workingDirectory
       workingDirectory.mkdirs();
     }
-    
+
     engine.boot
 
-    val attributes: Map[String,Any] = if (templateProperties != null) {
+    val attributes: Map[String, Any] = if (templateProperties != null) {
       templateProperties.toMap
     } else {
       Map()
     }
 
-
     def processFile(file: File, baseuri: String): Unit = {
       if (file.isDirectory()) {
-        if (file.getName != "WEB-INF" && !file.getName.startsWith("_") ) {
+        if (file.getName != "WEB-INF" && !file.getName.startsWith("_")) {
           var children = file.listFiles();
           if (children != null) {
             for (child <- children) {
               if (child.isDirectory) {
                 processFile(child, baseuri + "/" + child.getName)
-              }
-              else {
+              } else {
                 processFile(child, baseuri)
               }
             }
@@ -107,8 +104,7 @@ class SiteGenerator {
               sourceFile.getParentFile.mkdirs
               //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
               IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
-            }
-            catch {
+            } catch {
               case e: NoValueSetException => info(e.getMessage + ". Ignored template file due to missing attributes: " + file.getCanonicalPath)
               case e: VirtualMachineError => throw e
               case e: ThreadDeath => throw e
@@ -144,11 +140,12 @@ class SiteGenerator {
 class DummyTemplateEngine(rootDirectory: File) extends TemplateEngine(Some(rootDirectory)) {
   override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
-  private val responseClassName = "_root_."+classOf[DummyResponse].getName
+  private val responseClassName = "_root_." + classOf[DummyResponse].getName
 
   bindings = List(
-    Binding("context", "_root_."+classOf[DummyRenderContext].getName, true, isImplicit = true),
-    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()")))
+    Binding("context", "_root_." + classOf[DummyRenderContext].getName, true, isImplicit = true),
+    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()"))
+  )
 
   ServletTemplateEngine.setLayoutStrategy(this)
 }

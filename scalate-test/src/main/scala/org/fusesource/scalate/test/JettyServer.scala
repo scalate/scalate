@@ -25,7 +25,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector
 import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
-import java.io.{FileInputStream, File}
+import java.io.{ FileInputStream, File }
 import java.lang.String
 
 /**
@@ -51,7 +51,6 @@ class JettyServer {
   var webAppDir: String = _
   var webAppContext: String = "/myContext"
 
-
   def start: Unit = {
     val basedir = addFileSeparator(Config.baseDir)
     var defaultWebAppDir: String = basedir + mavenWebAppSubDir
@@ -74,8 +73,7 @@ class JettyServer {
       var file: File = new File(defaultWebAppDir)
       if (file.exists) {
         webAppDir = defaultWebAppDir
-      }
-      else {
+      } else {
         LOG.info("defaultWebAppDir does not exist! " + file + " so using defaultDirectory: " + defaultDirectory + " with " + defaultWebAppDir)
         webAppDir = defaultDirectory + "/" + defaultWebAppDir
       }
@@ -93,8 +91,7 @@ class JettyServer {
       println("Using base resource URIs: " + array.mkString(" | "))
       context.setBaseResource(new ResourceCollection(array))
       context.setExtractWAR(true)
-    }
-    else {
+    } else {
       context.setResourceBase(webAppDir)
     }
     context.setServer(server)
@@ -109,7 +106,6 @@ class JettyServer {
     LOG.info("==============================================================================")
   }
 
-
   def stop: Unit = {
     server.stop
   }
@@ -118,32 +114,30 @@ class JettyServer {
     /**Lets walk up the directory tree looking for the overlayProject */
     def findOverlayModuleInParent(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
       case Some(file) => file.getAbsolutePath
-      case _ => val parent = new File(dir).getParent
-      if (parent == null || parent == dir) {
-        null
-      }
-      else {
-        findOverlayModuleInParent(parent)
-      }
+      case _ =>
+        val parent = new File(dir).getParent
+        if (parent == null || parent == dir) {
+          null
+        } else {
+          findOverlayModuleInParent(parent)
+        }
     }
 
-    if (basedir.contains(overlayProject)) {null} else {
+    if (basedir.contains(overlayProject)) { null } else {
       var answer = findOverlayModuleInParent(basedir)
       if (answer == null) {
         // lets try find the WAR in the local repo
         val p = getClass.getPackage
         if (p == null) {
           LOG.warn("No package found for class: " + getClass.getName)
-        }
-        else {
+        } else {
           var version = p.getSpecificationVersion
           if (version == null) {
             version = p.getImplementationVersion
           }
           if (version == null) {
             LOG.warn("No version available for " + p)
-          }
-          else {
+          } else {
             val war = new File(System.getProperty("user.home", "~") + "/.m2/repository/org/fusesource/scalate/scalate-war/" + version + "/scalate-war-" + version + ".war")
             println("Looking for war at " + war.getAbsolutePath + " exists: " + war.exists)
             if (war.exists) {
@@ -159,8 +153,7 @@ class JettyServer {
                 println("Unpacking " + war + " to " + warDir)
                 IOUtil.unjar(warDir, new FileInputStream(war), (!_.getName.matches("WEB-INF/(lib|_scalate).*")))
               }
-            }
-            else {
+            } else {
               LOG.warn("No scalate war found in local repo at " + war.getAbsolutePath)
             }
           }
@@ -170,10 +163,9 @@ class JettyServer {
     }
   }
 
-
   def rootUrl = "http://localhost:" + localPort + webAppContext + (if (webAppContext == "/") "" else "/")
 
   def addFileSeparator(path: String) = if (path == null || path.length == 0) "" else path + "/"
 
-  def exists(names: String*): Option[File] = names.map(new File(_)).find {f => f.exists}
+  def exists(names: String*): Option[File] = names.map(new File(_)).find { f => f.exists }
 }

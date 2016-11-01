@@ -19,11 +19,11 @@ package org.fusesource.scalate.guice
 
 import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import _root_.com.google.inject.servlet.ServletModule
-import _root_.com.google.inject.{Injector, Provides, Singleton}
-import _root_.com.sun.jersey.api.core.{PackagesResourceConfig, DefaultResourceConfig, ResourceConfig}
+import _root_.com.google.inject.{ Injector, Provides, Singleton }
+import _root_.com.sun.jersey.api.core.{ PackagesResourceConfig, DefaultResourceConfig, ResourceConfig }
 import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.javax.servlet.http.HttpServlet
-import _root_.java.{ util => ju}
+import _root_.java.{ util => ju }
 import _root_.scala.collection.JavaConversions._
 import org.fusesource.scalate.TemplateEngine
 
@@ -94,18 +94,17 @@ class ScalateModule extends ServletModule {
    * Creates the properties used to configure the [[com.sun.jersey.guice.spi.container.servlet.GuiceContainer]]'s resource config in
    * {@link #createResourceConfig} for Jersey
    */
-  @Provides@Singleton
+  @Provides @Singleton
   def createResourceConfigProperties: Map[String, AnyRef] = {
     val answer = Map(
       "com.sun.jersey.config.property.packages" -> resourcePackageNames.mkString(";"),
-
 
       "com.sun.jersey.config.feature.FilterForwardOn404" -> "true",
 
       "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
       "com.sun.jersey.config.feature.Redirect" -> "true",
       "com.sun.jersey.config.feature.Trace" -> "true"
-      )
+    )
 
     // as of Jersey 1.1.4-ea05 we don't need to mess with a regex
     // see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
@@ -116,10 +115,7 @@ class ScalateModule extends ServletModule {
     }
   }
 
-
-
   // TODO demonstrate injection of the TemplateEngine??
-
 
   /**
    * The regular expression to find web content which should not be processed by the Jersey filter.

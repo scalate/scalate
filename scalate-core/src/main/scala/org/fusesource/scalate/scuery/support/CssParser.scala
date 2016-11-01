@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery.support
 
 import util.parsing.combinator.RegexParsers
-import util.parsing.input.{CharSequenceReader, NoPosition, Position}
+import util.parsing.input.{ CharSequenceReader, NoPosition, Position }
 import org.fusesource.scalate.TemplateException
 import org.fusesource.scalate.scuery._
 
@@ -26,7 +26,7 @@ class CssScanner extends RegexParsers {
   override def skipWhitespace = false
 
   //   ident     [-]?{nmstart}{nmchar}*
-  def IDENT = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("")}
+  def IDENT = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("") }
 
   // name      {nmchar}+
   private def name = rep1(nmchar)
@@ -123,7 +123,6 @@ class CssParser extends CssScanner {
     phraseOrFail(selector, in)
   }
 
-
   //  selectors_group
   //    : selector [ COMMA S* selector ]*
 
@@ -136,8 +135,7 @@ class CssParser extends CssScanner {
     case s ~ cs =>
       if (cs.isEmpty) {
         s
-      }
-      else {
+      } else {
         Selector(s, cs)
       }
   }
@@ -167,7 +165,7 @@ class CssParser extends CssScanner {
     case t ~ l => Selector(t :: l)
   }
 
-  def simple_selector_sequence_2 = rep1(hash | className | attrib | negation | pseudo) ^^ {case l => Selector(l)}
+  def simple_selector_sequence_2 = rep1(hash | className | attrib | negation | pseudo) ^^ { case l => Selector(l) }
 
   //  type_selector
   //    : [ namespace_prefix ]? element_name
@@ -182,7 +180,7 @@ class CssParser extends CssScanner {
   //  namespace_prefix
   //    : [ IDENT | '*' ]? '|'
 
-  def namespace_prefix = ((opt(IDENT | "*"))  <~ "|") ^^ {
+  def namespace_prefix = ((opt(IDENT | "*")) <~ "|") ^^ {
     case o => o match {
       case Some("*") => AnySelector
       case Some(prefix) => NamespacePrefixSelector(prefix)
@@ -193,8 +191,7 @@ class CssParser extends CssScanner {
   //  element_name
   //    : IDENT
 
-  def element_name = (IDENT ^^ {ElementNameSelector(_)})
-
+  def element_name = (IDENT ^^ { ElementNameSelector(_) })
 
   //  universal
   //    : [ namespace_prefix ]? '*'
@@ -209,9 +206,9 @@ class CssParser extends CssScanner {
   //  class
   //    : "." IDENT
 
-  def className = ("." ~> IDENT) ^^ {ClassSelector(_)}
+  def className = ("." ~> IDENT) ^^ { ClassSelector(_) }
 
-  def hash = ("#" ~> IDENT) ^^ {IdSelector(_)}
+  def hash = ("#" ~> IDENT) ^^ { IdSelector(_) }
 
   //  attrib
   //    : '[' S* [ namespace_prefix ]? IDENT S*
@@ -241,17 +238,17 @@ class CssParser extends CssScanner {
   def attribute_name = opt(namespace_prefix) ~ IDENT <~ repS
 
   def attribute_value = ((PREFIXMATCH | SUFFIXMATCH | SUBSTRINGMATCH | "=" | INCLUDES | DASHMATCH) <~ repS) ~
-          ((IDENT | STRING) <~ repS) ^^ {
-    case p ~ i =>
-      p match {
-        case PREFIXMATCH => PrefixMatch(i)
-        case SUFFIXMATCH => SuffixMatch(i)
-        case SUBSTRINGMATCH => SubstringMatch(i)
-        case "=" => EqualsMatch(i)
-        case INCLUDES => IncludesMatch(i)
-        case DASHMATCH => DashMatch(i)
-      }
-  }
+    ((IDENT | STRING) <~ repS) ^^ {
+      case p ~ i =>
+        p match {
+          case PREFIXMATCH => PrefixMatch(i)
+          case SUFFIXMATCH => SuffixMatch(i)
+          case SUBSTRINGMATCH => SubstringMatch(i)
+          case "=" => EqualsMatch(i)
+          case INCLUDES => IncludesMatch(i)
+          case DASHMATCH => DashMatch(i)
+        }
+    }
 
   //  pseudo
   //    /* '::' starts a pseudo-element, ':' a pseudo-class */
@@ -262,15 +259,13 @@ class CssParser extends CssScanner {
 
   def pseudo = (":" ~ opt(":")) ~> (functional_nth_pseudo | functional_pseudo | pseudo_ident)
 
-  def pseudo_ident = IDENT ^^ {Selector.pseudoSelector(_)}
+  def pseudo_ident = IDENT ^^ { Selector.pseudoSelector(_) }
 
   //  functional_pseudo
   //    : FUNCTION S* expression ')'
 
-
-  def functional_pseudo = (IDENT <~ ("(" ~ repS)) ~ (expression <~ ")") ^^ {case f ~ e => Selector.pseudoFunction(f)}
-  def functional_nth_pseudo = ("nth-" ~> IDENT <~ ("(" ~ repS)) ~ (repS ~> nth <~ ")") ^^ {case f ~ e => Selector.pseudoFunction("nth-" + f, e)}
-
+  def functional_pseudo = (IDENT <~ ("(" ~ repS)) ~ (expression <~ ")") ^^ { case f ~ e => Selector.pseudoFunction(f) }
+  def functional_nth_pseudo = ("nth-" ~> IDENT <~ ("(" ~ repS)) ~ (repS ~> nth <~ ")") ^^ { case f ~ e => Selector.pseudoFunction("nth-" + f, e) }
 
   //  expression
   //    /* In CSS3, the expressions are identifiers, strings, */
@@ -285,18 +280,18 @@ class CssParser extends CssScanner {
   def nth = (opt("-" | "+") ~ (opt(integer) <~ N) ~ opt((repS ~> ("-" | "+") <~ repS) ~ integer)) ^^ {
     case os ~ on ~ on2 =>
       val a = on match {
-        case Some(n) => if (os == Some("-")) {n * -1} else {n}
+        case Some(n) => if (os == Some("-")) { n * -1 } else { n }
         case _ => 0
       }
       val b = on2 match {
         case Some(s ~ i) =>
-          if (s == "-") {i * -1} else {i}
+          if (s == "-") { i * -1 } else { i }
         case _ => 0
       }
       NthCounter(a, b)
   } | (opt("-" | "+") ~ integer) ^^ {
     case os ~ i =>
-      val b = if (os == Some("-")) {i * -1} else {i}
+      val b = if (os == Some("-")) { i * -1 } else { i }
       NthCounter(0, b)
   } | (O ~ D ~ D) ^^ {
     case _ => OddCounter
@@ -304,11 +299,11 @@ class CssParser extends CssScanner {
     case _ => EvenCounter
   }
 
-  def integer = INTEGER ^^ {Integer.parseInt(_)}
+  def integer = INTEGER ^^ { Integer.parseInt(_) }
 
   //  negation
   //    : NOT S* negation_arg S* ')'
-  def negation = (":" ~ N ~ O ~ T ~ "(" ~ repS) ~> negation_arg <~ (repS ~ ")") ^^ {case a => NotSelector(a)}
+  def negation = (":" ~ N ~ O ~ T ~ "(" ~ repS) ~> negation_arg <~ (repS ~ ")") ^^ { case a => NotSelector(a) }
 
   //  negation_arg
   //    : type_selector | universal | HASH | class | attrib | pseudo

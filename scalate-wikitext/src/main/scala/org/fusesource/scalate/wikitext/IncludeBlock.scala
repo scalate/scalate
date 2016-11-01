@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package wikitext
 
-import util.{Log, Files}
+import util.{ Log, Files }
 
 object IncludeTag extends Log
 
@@ -36,7 +36,6 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") {
   def setOption(key: String, value: String) =
     Blocks.unknownAttribute(key, value)
 
-
   def doTag() = {
     val realUri = SwizzleLinkFilter.findWikiFileUri(uri).getOrElse(uri)
 
@@ -52,14 +51,14 @@ class IncludeTag extends AbstractConfluenceTagSupport("include") {
         context.capture(template)
       } else {
         context.
-        engine.resourceLoader.resource(realUri) match {
-          case Some(r) =>
-            warn("Using non-template or wiki markup  '%s' from {include:%s}", realUri, uri)
-            r.text
-          case _ =>
-            warn("Could not find include '%s' from {include:%s}", realUri, uri)
-            ""
-        }
+          engine.resourceLoader.resource(realUri) match {
+            case Some(r) =>
+              warn("Using non-template or wiki markup  '%s' from {include:%s}", realUri, uri)
+              r.text
+            case _ =>
+              warn("Could not find include '%s' from {include:%s}", realUri, uri)
+              ""
+          }
 
       }
       builder.charactersUnescaped(output)

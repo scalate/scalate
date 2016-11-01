@@ -19,27 +19,36 @@ package org.fusesource.scalate.wikitext
 
 class HtmlMacroTest extends AbstractConfluenceTest {
   test("html macro test") {
-    assertFilter("""{html}<p>hello <b>world!</b></p>{html}""",
-      """<p>hello <b>world!</b></p>""")
+    assertFilter(
+      """{html}<p>hello <b>world!</b></p>{html}""",
+      """<p>hello <b>world!</b></p>"""
+    )
   }
 
   test("div macro test") {
-    assertFilter("""{div}hello world{div}""",
-      """<div><p>hello world</p></div>""")
+    assertFilter(
+      """{div}hello world{div}""",
+      """<div><p>hello world</p></div>"""
+    )
   }
 
   test("div with attributes macro test") {
-    assertFilter("""{div:style=margin-left:-20px; text-align:center; padding-right:20px;}hello world{div}""",
-      """<div style="margin-left:-20px; text-align:center; padding-right:20px;"><p>hello world</p></div>""")
+    assertFilter(
+      """{div:style=margin-left:-20px; text-align:center; padding-right:20px;}hello world{div}""",
+      """<div style="margin-left:-20px; text-align:center; padding-right:20px;"><p>hello world</p></div>"""
+    )
   }
 
   test("section and column") {
-    assertFilter("""{section}{column}foo{column}{column}bar{column}{section}""",
-      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>""")
+    assertFilter(
+      """{section}{column}foo{column}{column}bar{column}{section}""",
+      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>"""
+    )
   }
 
   test("section and column with line breaks") {
-    assertFilter("""
+    assertFilter(
+      """
 {section}
 {column}
 foo{column}
@@ -48,19 +57,22 @@ bar
 {column}
 {section}
 """,
-      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>""")
+      """<table class="sectionMacro" border="0" cellpadding="5px" cellspacing="0" width="100%"><tr><td class="confluenceTd" valign="top"><p>foo</p></td><td class="confluenceTd" valign="top"><p>bar</p></td></tr></table>"""
+    )
   }
 
   test("link with image and width") {
-    assertFilter("""[!karaf-box.png|width=256!|Download]""",
-      """<p><a href="Download"><img width="256" border="0" src="karaf-box.png"/></a></p>""")
+    assertFilter(
+      """[!karaf-box.png|width=256!|Download]""",
+      """<p><a href="Download"><img width="256" border="0" src="karaf-box.png"/></a></p>"""
+    )
   }
-
 
   test("multiple links") {
-    assertFilter("""[Foo|foo]/[Bar|bar]""",
-      """<p><a href="foo">Foo</a>/<a href="bar">Bar</a></p>""")
+    assertFilter(
+      """[Foo|foo]/[Bar|bar]""",
+      """<p><a href="foo">Foo</a>/<a href="bar">Bar</a></p>"""
+    )
   }
-
 
 }

@@ -19,17 +19,20 @@ package org.fusesource.scalate.mustache
  */
 
 import org.fusesource.scalate.TemplateTestSupport
-import java.{util => ju}
+import java.{ util => ju }
 
 class MustacheFunctionTest extends TemplateTestSupport {
 
   showOutput = true
 
   test("function test") {
-    assertMoustacheOutput("start <b>Willy</b>end",
+    assertMoustacheOutput(
+      "start <b>Willy</b>end",
       "start {{#wrapped}}{{name}}{{/wrapped}} end",
       Map(
         "name" -> "Willy",
-        "wrapped" -> {(text: String) => if (showOutput) println("Called function with: " + text); <b>{text}</b>}))
+        "wrapped" -> { (text: String) => if (showOutput) println("Called function with: " + text); <b>{ text }</b> }
+      )
+    )
   }
 }

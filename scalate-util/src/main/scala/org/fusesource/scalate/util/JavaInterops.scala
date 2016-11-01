@@ -5,11 +5,11 @@ package org.fusesource.scalate.util
  */
 object JavaInterops {
 
-  def toImmutableMap[K,V](map: collection.mutable.Map[K,V]): collection.immutable.Map[K,V] = {
+  def toImmutableMap[K, V](map: collection.mutable.Map[K, V]): collection.immutable.Map[K, V] = {
     collection.immutable.Map(map.toList: _*)
   }
 
-  def toMutableMap[K,V](map: collection.immutable.Map[K,V]): collection.mutable.Map[K,V] = {
+  def toMutableMap[K, V](map: collection.immutable.Map[K, V]): collection.mutable.Map[K, V] = {
     collection.mutable.HashMap(map.toList: _*)
   }
 }

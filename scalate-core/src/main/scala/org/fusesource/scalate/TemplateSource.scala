@@ -22,7 +22,7 @@ import support._
 import util._
 import util.Strings.isEmpty
 import io.Source
-import java.net.{URI, URL}
+import java.net.{ URI, URL }
 import java.util.regex.Pattern
 
 /**
@@ -36,7 +36,6 @@ trait TemplateSource extends Resource {
   var engine: TemplateEngine = _
   private var _packageName: String = ""
   private var _simpleClassName: String = _
-
 
   /**
    * Returns the type of the template (ssp, scaml, mustache etc).
@@ -69,7 +68,7 @@ trait TemplateSource extends Resource {
    */
   def packageName: String = {
     checkInitialised()
-    if( engine.packagePrefix.length==0 || _packageName.length==0 ) {
+    if (engine.packagePrefix.length == 0 || _packageName.length == 0) {
       engine.packagePrefix + _packageName
     } else {
       engine.packagePrefix + "." + _packageName
@@ -81,7 +80,7 @@ trait TemplateSource extends Resource {
    */
   def className: String = {
     val pn = packageName
-    if (pn.length==0) {
+    if (pn.length == 0) {
       _simpleClassName
     } else {
       pn + "." + _simpleClassName
@@ -118,17 +117,17 @@ trait TemplateSource extends Resource {
       new URI(uri).normalize.toString
     } catch {
       // on windows we can't create a URI from files named things like C:/Foo/bar.ssp
-      case e: Exception => val name = new File(uri).getCanonicalPath
-      val sep = File.pathSeparator
-      if (sep != "/") {
-        // on windows lets replace the \ in a directory name with /
-        val newName = name.replace('\\', '/')
-        debug("convertedd windows path into: " + newName)
-        newName
-      }
-      else {
-        name
-      }
+      case e: Exception =>
+        val name = new File(uri).getCanonicalPath
+        val sep = File.pathSeparator
+        if (sep != "/") {
+          // on windows lets replace the \ in a directory name with /
+          val newName = name.replace('\\', '/')
+          debug("convertedd windows path into: " + newName)
+          newName
+        } else {
+          name
+        }
     }
     val SPLIT_ON_LAST_SLASH_REGEX = Pattern.compile("^(.*)/([^/]*)$")
     val matcher = SPLIT_ON_LAST_SLASH_REGEX.matcher(normalizedURI.toString)
@@ -136,8 +135,7 @@ trait TemplateSource extends Resource {
       // lets assume we have no package then
       val cn = "$_scalate_$" + processClassName(normalizedURI)
       ("", cn)
-    }
-    else {
+    } else {
       val unsafePackageNameWithWebInf = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
 
       // lets remove WEB-INF from the first name, since we should consider stuff in WEB-INF/org/foo as being in package org.foo

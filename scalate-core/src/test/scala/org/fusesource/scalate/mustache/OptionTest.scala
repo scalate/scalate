@@ -57,5 +57,4 @@ class OptionTest extends TemplateTestSupport {
     assertMoustacheOutput("", "{{#person}}Hey {{name}}!{{/person}}", Map("person" -> None))
   }
 
-
 }

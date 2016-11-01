@@ -32,8 +32,7 @@ object DisplaySourceDebugInfo {
     val file = new File(fileName)
     if (file.exists) {
       println(SourceMapInstaller.load(file))
-    }
-    else {
+    } else {
       println("ERROR: " + file + " does not exist!")
     }
   }

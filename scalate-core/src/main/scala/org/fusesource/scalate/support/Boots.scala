@@ -21,7 +21,7 @@ object Boots {
       Objects.instantiate(clazz, injectionParameters).asInstanceOf[Boot]
     } catch {
       case e: VirtualMachineError => throw e
-      case e: ThreadDeath => throw e      
+      case e: ThreadDeath => throw e
       case e: Throwable => throw new TemplateException("Failed to create the instance of class " + bootClassName, e)
     }
 
@@ -29,7 +29,7 @@ object Boots {
       o.run
     } catch {
       case e: VirtualMachineError => throw e
-      case e: ThreadDeath => throw e   
+      case e: ThreadDeath => throw e
       case e: Throwable => throw new TemplateException("Failed to invoke " + bootClassName + ".run() : " + e, e)
     }
   }

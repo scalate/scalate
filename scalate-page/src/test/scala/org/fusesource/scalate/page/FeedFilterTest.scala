@@ -18,7 +18,7 @@
 package org.fusesource.scalate.page
 
 import org.fusesource.scalate.test.TemplateTestSupport
-import xml.{NodeSeq, XML}
+import xml.{ NodeSeq, XML }
 
 class FeedFilterTest extends TemplateTestSupport {
 

@@ -22,27 +22,27 @@ class TransformTest extends FunSuiteSupport {
 
   var printOutput = false
   val xml = <html>
-    <head>
-      <title>My Title</title>
-    </head>
-    <body>
-      <div id="header">Header</div>
-      <div id="content">
-        <table class="people">
-          <tr>
-            <th>Name</th>
-            <th>Location</th>
-          </tr>
-          <tr>
-            <td class="name">James</td>
-            <td class="location">Beckington</td>
-          </tr>
-        </table>
-      </div>
-      <div id="messages"></div>
-      <div id="footer">Footer</div>
-    </body>
-  </html>
+              <head>
+                <title>My Title</title>
+              </head>
+              <body>
+                <div id="header">Header</div>
+                <div id="content">
+                  <table class="people">
+                    <tr>
+                      <th>Name</th>
+                      <th>Location</th>
+                    </tr>
+                    <tr>
+                      <td class="name">James</td>
+                      <td class="location">Beckington</td>
+                    </tr>
+                  </table>
+                </div>
+                <div id="messages"></div>
+                <div id="footer">Footer</div>
+              </body>
+            </html>
 
   test("try simple transform") {
 

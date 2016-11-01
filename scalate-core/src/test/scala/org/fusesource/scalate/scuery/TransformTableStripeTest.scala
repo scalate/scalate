@@ -22,34 +22,33 @@ import xml.NodeSeq
 
 class TransformTableStripeTest extends FunSuiteSupport {
   val xml = <table class="people">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Location</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="person odd">
-        <td class="name">Odd name</td>
-        <td class="location">Odd location</td>
-      </tr>
-      <tr class="person even">
-        <td class="name">Odd name</td>
-        <td class="location">Odd location</td>
-      </tr>
-      <tr class="person empty">
-        <td colspan="2">There are no people yet!</td>
-      </tr>
-    </tbody>
-  </table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="person odd">
+                  <td class="name">Odd name</td>
+                  <td class="location">Odd location</td>
+                </tr>
+                <tr class="person even">
+                  <td class="name">Odd name</td>
+                  <td class="location">Odd location</td>
+                </tr>
+                <tr class="person empty">
+                  <td colspan="2">There are no people yet!</td>
+                </tr>
+              </tbody>
+            </table>
 
   class PersonTransformer(people: List[Person]) extends Transformer {
     $("tbody").contents {
       node =>
         if (people.isEmpty) {
           node.$("tr.empty")
-        }
-        else {
+        } else {
           people.zipWithIndex.flatMap {
             case (p, i) =>
               val row = if (i % 2 == 0) node.$("tr.odd") else node.$("tr.even")
@@ -77,7 +76,6 @@ class TransformTableStripeTest extends FunSuiteSupport {
     assertText("tbody tr.odd .location", result, "Beckington")
     assertText("tbody tr.even .location", result, "Tampa")
   }
-
 
   test("stripe empty table") {
     val striper = new PersonTransformer(List())

@@ -19,7 +19,7 @@ package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
 import collection.mutable.Stack
-import support.{Text, Code, AbstractCodeGenerator}
+import support.{ Text, Code, AbstractCodeGenerator }
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
   override val stratumName = "SSP"
@@ -35,7 +35,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     def generate(fragments: List[PageFragment]): Unit = {
       var remaining = fragments
-      while( remaining != Nil ) {
+      while (remaining != Nil) {
         val fragment = remaining.head
         remaining = remaining.drop(1)
 
@@ -83,8 +83,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         case DoFragment(code) => {
           if (code.length > 0) {
             this << "$_scalate_$_context << " :: code :: " {" :: Nil
-          }
-          else {
+          } else {
             this << code.pos;
             this << "{"
           }
@@ -135,7 +134,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       }
     }
 
-    protected def wrapInParens(code: Text): List[_] = if (canWrapInParens(code)) {List("( ", code, " );")} else {List(code)}
+    protected def wrapInParens(code: Text): List[_] = if (canWrapInParens(code)) { List("( ", code, " );") } else { List(code) }
 
     /**
      * Returns true if the code expression can be safely wrapped in parens
@@ -185,8 +184,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           throw new InvalidSyntaxException("Cannot have more than one " + f.tokenName + " within a single #" + name, f.pos)
         }
         clauseOpen = false
-      }
-      else {
+      } else {
         // non close like #eliseif
         if (!clauseOpen) {
           throw new InvalidSyntaxException("The " + f.tokenName + " cannot come after the #" + closeName + " inside the #" + name, f.pos)
@@ -255,7 +253,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
                 pos + 1
 
               case '\r' =>
-               if ((pos + 1) < str.length && str.charAt(pos + 1) == '\n') {
+                if ((pos + 1) < str.length && str.charAt(pos + 1) == '\n') {
                   transformed.append("\r\n")
                   pos + 2
                 } else {
@@ -263,8 +261,8 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
                   pos + 1
                 }
 
-            case ch =>
-              throw new IllegalStateException("unexpected character '%c'" format ch)
+              case ch =>
+                throw new IllegalStateException("unexpected character '%c'" format ch)
             }
           } else {
             // Unescaped escape. Copy prior data and skip the newline.
@@ -322,8 +320,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           val trim = t.text.trim
           if (trim.length == 0) {
             false
-          }
-          else {
+          } else {
             throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found '" + trim + "'", t.pos)
           }
 
@@ -338,22 +335,24 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       }
     }
 
-    val pass2 = pass1.flatMap { _ match {
-      case t: TextFragment =>
-        val str = t.text.value
-        val transformed = stripEscapedNewlines(t.text.value)
-        if (str != transformed) {
-          if (transformed.isEmpty) {
-            None
+    val pass2 = pass1.flatMap {
+      _ match {
+        case t: TextFragment =>
+          val str = t.text.value
+          val transformed = stripEscapedNewlines(t.text.value)
+          if (str != transformed) {
+            if (transformed.isEmpty) {
+              None
+            } else {
+              Some(TextFragment(Text(transformed).setPos(t.pos)))
+            }
           } else {
-            Some(TextFragment(Text(transformed).setPos(t.pos)))
+            Some(t)
           }
-        } else {
-          Some(t)
-        }
 
-      case p => Some(p)
-    } }
+        case p => Some(p)
+      }
+    }
 
     pass2
   }

@@ -35,7 +35,7 @@ package org.fusesource.scalate.filter.markdownj
  * limitations under the License.
  */
 import com.petebevin.markdown.MarkdownProcessor
-import org.fusesource.scalate.{RenderContext, TemplateEngine, TemplateEngineAddOn}
+import org.fusesource.scalate.{ RenderContext, TemplateEngine, TemplateEngineAddOn }
 import org.fusesource.scalate.filter.Filter
 
 /**
@@ -55,10 +55,10 @@ object MarkdownJFilter extends Filter with TemplateEngineAddOn {
    * Add the markdown filter tot he template engine.
    */
   def apply(te: TemplateEngine) = {
-    if( !te.filters.contains("markdown") ) {
-      te.filters += "markdown"->MarkdownJFilter
-      te.pipelines += "md"->List(MarkdownJFilter)
-      te.pipelines += "markdown"->List(MarkdownJFilter)
+    if (!te.filters.contains("markdown")) {
+      te.filters += "markdown" -> MarkdownJFilter
+      te.pipelines += "md" -> List(MarkdownJFilter)
+      te.pipelines += "markdown" -> List(MarkdownJFilter)
     }
   }
 

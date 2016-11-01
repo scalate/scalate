@@ -21,19 +21,19 @@ import java.io.OutputStream
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.net.URL
-import javax.ws.rs.ext.{MessageBodyWriter, Provider}
+import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{Context, MultivaluedMap, MediaType}
+import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
 
 import org.fusesource.scalate.scuery.Transformer
-import org.fusesource.scalate.servlet.{ServletHelper, TemplateEngineServlet}
+import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
 import scala.collection.JavaConversions._
-import xml.{XML, NodeSeq}
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import org.fusesource.scalate.util.{Log, ResourceNotFoundException}
+import xml.{ XML, NodeSeq }
+import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
 object TransformerWriter extends Log
 
@@ -59,13 +59,11 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
   protected def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
-
   def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     classOf[Transformer].isAssignableFrom(aClass)
   }
 
   def getSize(transformer: Transformer, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
-
 
   def writeTo(transformer: Transformer, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
     /*
@@ -94,7 +92,6 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
         val className = resource.getClass.getName
         debug("resource class: " + className)
         debug("viewName: " + viewName)
-
 
         try {
           val templateName = "/" + className.replace('.', '/') + "." + viewName + ".html"
@@ -172,7 +169,6 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     }
     answer
   }
-
 
   /**
    * Returns the servlet context injected by JAXRS
