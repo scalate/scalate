@@ -24,9 +24,9 @@ package org.fusesource.scalate.test
 object Main {
 
   def main(args: Array[String]): Unit = {
-    var server = new JettyServer
+    val server = new JettyServer
     if (args.length > 0) {
-      var text = args(0)
+      val text = args(0)
       server.port = Integer.parseInt(text)
     }
     server.start

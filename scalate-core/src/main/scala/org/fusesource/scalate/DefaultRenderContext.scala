@@ -27,8 +27,11 @@ object DefaultRenderContext extends Log
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
-class DefaultRenderContext(private val _requestUri: String, val engine: TemplateEngine,
-    var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
+class DefaultRenderContext(
+    private val _requestUri: String,
+    val engine: TemplateEngine,
+    var out: PrintWriter = new PrintWriter(new StringWriter())
+) extends RenderContext {
 
   import DefaultRenderContext._
 
@@ -66,11 +69,11 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
    * Evaluates the body capturing any output written to this page context during the body evaluation
    */
   def capture(body: => Unit): String = {
-    val buffer = new StringWriter();
+    val buffer = new StringWriter()
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
-      val u: Unit = body
+      body
       out.close()
       buffer.toString
     } finally {
@@ -82,7 +85,7 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
    * Evaluates the template capturing any output written to this page context during the body evaluation
    */
   def capture(template: Template): String = {
-    val buffer = new StringWriter();
+    val buffer = new StringWriter()
     outStack.push(out)
     out = new PrintWriter(buffer)
     try {
@@ -96,4 +99,5 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
   }
 
   def flush() = out.flush
+
 }

@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import java.{ util => ju, lang => jl }
 import org.apache.felix.gogo.commands.{ Action, Command => command }
 import org.apache.felix.service.command.CommandSession
 import org.apache.karaf.shell.console.CloseShellException

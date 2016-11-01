@@ -17,16 +17,13 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import collection.JavaConversions
+import scala.collection.JavaConverters._
 
-import java.{ util => ju, lang => jl }
-import java.util.zip.ZipInputStream
-import java.io.{ FileInputStream, FileWriter, File, ByteArrayOutputStream }
-import java.lang.StringBuilder
+import java.io.File
 import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import org.apache.felix.service.command.CommandSession
-import org.swift.common.soap.confluence.{ RemotePage, RemotePageSummary, ConfluenceSoapService, ConfluenceSoapServiceServiceLocator }
-import collection.mutable.{ HashMap, ListBuffer }
+import org.swift.common.soap.confluence.{ RemotePageSummary, ConfluenceSoapService, ConfluenceSoapServiceServiceLocator }
+import collection.mutable.ListBuffer
 import org.fusesource.scalate.util.IOUtil
 
 /**
@@ -72,17 +69,14 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
   }
 
   def execute(println: String => Unit): AnyRef = {
-
-    import JavaConversions._
-
     println("downloading space index...")
-    var confluence = serviceSetup(url + defaultConfluenceServiceExtension)
+    val confluence = serviceSetup(url + defaultConfluenceServiceExtension)
     if (user != null && password != null) {
       loginToken = confluence.login(user, password);
     }
-    val pageList: java.util.List[RemotePageSummary] = confluence.getPages(loginToken, space).toList
+    val pageList: java.util.List[RemotePageSummary] = confluence.getPages(loginToken, space).toList.asJava
 
-    var pageMap = Map(pageList.map(x => (x.getId, Node(x))): _*)
+    val pageMap = Map(pageList.asScala.map(x => (x.getId, Node(x))): _*)
     val rootNodes = ListBuffer[Node]()
 
     // add each node to the appropriate child collection.
@@ -97,10 +91,10 @@ conf - for a plain confluence text file without metadata. Suffix is .conf""")
       var rc = 0
       dir.mkdirs
       nodes.foreach { node =>
-        val sanitized_title = sanitize(node.summary.getTitle);
-        val page = confluence.getPage(loginToken, node.summary.getId);
-        var content: String = "";
-        var file_suffix = ".page";
+        val sanitized_title = sanitize(node.summary.getTitle)
+        val page = confluence.getPage(loginToken, node.summary.getId)
+        var content: String = ""
+        var file_suffix = ".page"
         if (format.equalsIgnoreCase("page")) {
           file_suffix = ".page"
           content = """---
@@ -147,11 +141,11 @@ page_modifier: """ + page.getModifier + """
       TargetDB.rootDir = target
       TargetDB.init(space, space)
     }
-    val total = export(target, rootNodes);
+    val total = export(target, rootNodes)
     if (target_db) {
       TargetDB.close()
     }
-    println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total));
+    println("Exported \u001B[1;32m%d\u001B[0m page(s)".format(total))
     confluence.logout(loginToken)
     null
   }
@@ -165,9 +159,9 @@ page_modifier: """ + page.getModifier + """
   val defaultConfluenceServiceExtension = "/rpc/soap-axis/confluenceservice-v1" // Confluence soap service
 
   def serviceSetup(address: String): ConfluenceSoapService = {
-    var serviceLocator = new ConfluenceSoapServiceServiceLocator
-    serviceLocator.setConfluenceserviceV2EndpointAddress(address);
-    serviceLocator.getConfluenceserviceV2();
+    val serviceLocator = new ConfluenceSoapServiceServiceLocator
+    serviceLocator.setConfluenceserviceV2EndpointAddress(address)
+    serviceLocator.getConfluenceserviceV2()
   }
 
   //-----
@@ -202,9 +196,9 @@ page_modifier: """ + page.getModifier + """
 
     def startDiv(targetptr: String, title: String) {
       val indent = "    " * level
-      var escTitle = escapeXml(title)
+      val escTitle = escapeXml(title)
       appendAndPush(hrefStack, targetptr)
-      var href = hrefStack.peek + ".html"
+      val href = hrefStack.peek + ".html"
       targetContent.append(
         indent + "<div element=\"" + getDivElementName() + "\" href=\""
           + href + "\" number=\"\" targetptr=\""

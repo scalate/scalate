@@ -20,7 +20,7 @@ package org.fusesource.scalate.mustache
 import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.introspector.Introspector
 
-import collection.JavaConverters._
+import scala.collection.JavaConverters._
 
 import java.{ lang => jl, util => ju }
 import xml.{ NodeSeq, XML }
@@ -120,7 +120,7 @@ trait Scope {
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
 
-          // any other traversible treat as a collection
+          // any other traversable treat as a collection
           case s: Traversable[Any] => foreachScope(name, s)(block)
 
           case true => block(this)
@@ -190,7 +190,7 @@ trait Scope {
 
   def foreachScope[T](name: String, s: Traversable[T])(block: Scope => Unit): Unit = {
     for (i <- s) {
-      debug("Creating traversiable scope for: " + i)
+      debug("Creating traversable scope for: " + i)
       val scope = createScope(name, i)
       block(scope)
     }
@@ -199,7 +199,18 @@ trait Scope {
   def createScope(name: String, value: Any): Scope = {
     value match {
       case n: NodeSeq => new NodeScope(this, name, n)
-      case v: collection.Map[String, _] => new MapScope(this, name, v)
+      case v: scala.collection.convert.Wrappers.JMapWrapper[_, _] =>
+        new MapScope(
+          this,
+          name,
+          v.asInstanceOf[scala.collection.convert.Wrappers.JMapWrapper[String, _]]
+        )
+      case v: scala.collection.Map[_, _] =>
+        new MapScope(
+          this,
+          name,
+          v.asInstanceOf[Map[String, _]]
+        )
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
@@ -216,13 +227,21 @@ trait Scope {
 
     case f: Function0[_] => toTraversable(f(), block)
     case f: Function1[_, _] =>
-      if (isParam1(f, classOf[Scope])) {
-        val f2 = f.asInstanceOf[Function1[Scope, _]]
-        toTraversable(f2(this), block)
-      } else if (isParam1(f, classOf[String])) {
-        // lets call the function with the block as a text value
-        val f2 = f.asInstanceOf[Function1[String, _]]
-        FunctionResult(f2(capture(block)))
+      if (isParam1(f, classOf[Object])) {
+        // Java lambda support since 1.8
+        try {
+          val f2 = f.asInstanceOf[Function1[Scope, _]]
+          toTraversable(f2(this), block)
+        } catch {
+          case e: Exception =>
+            try {
+              val f2 = f.asInstanceOf[Function1[String, _]]
+              FunctionResult(f2(capture(block)))
+            } catch {
+              case e: Exception =>
+                f
+            }
+        }
       } else {
         f
       }
@@ -235,7 +254,15 @@ trait Scope {
   }
 
   def format(v: Any): Any = v match {
-    case f: Function1[Scope, _] if isParam1(f, classOf[Scope]) => format(f(this))
+    case f: Function0[_] => format(f())
+    case f: Function1[_, _] if isParam1(f, classOf[Scope]) => format(f.asInstanceOf[Function1[Scope, _]](this))
+    case f: Function1[_, _] =>
+      try {
+        format(f.asInstanceOf[Function1[Object, _]](this))
+      } catch {
+        case e: ClassCastException =>
+          v
+      }
     case _ => v
   }
 
@@ -243,7 +270,7 @@ trait Scope {
    * Captures the output of the given block
    */
   def capture(block: Scope => Unit): String = {
-    def body: Unit = block(this)
+    def body(): Unit = block(this)
     context.capture(body)
   }
 
@@ -251,9 +278,7 @@ trait Scope {
     try {
       f.getClass.getMethod("apply", clazz)
       true
-    } catch {
-      case e: NoSuchMethodException => false
-    }
+    } catch { case e: NoSuchMethodException => false }
   }
 
 }
@@ -261,7 +286,11 @@ trait Scope {
 /**
  * Scope for the render context
  */
-case class RenderContextScope(context: RenderContext, defaultObjectName: Option[String] = Some("it")) extends Scope {
+case class RenderContextScope(
+    context: RenderContext,
+    defaultObjectName: Option[String] = Some("it")
+) extends Scope {
+
   // lets create a parent scope which is the defaultObject scope so we look there last
   val rootScope = MarkupAttributeContextScope(context, "html")
 
@@ -282,7 +311,11 @@ case class RenderContextScope(context: RenderContext, defaultObjectName: Option[
  * A context intended for use in layouts which looks up an attribute in the render context and if it exists
  * returns a new child scope for walking the templates markup
  */
-case class MarkupAttributeContextScope(context: RenderContext, attributeName: String) extends Scope {
+case class MarkupAttributeContextScope(
+    context: RenderContext,
+    attributeName: String
+) extends Scope {
+
   def parent = None
 
   def localVariable(name: String) = if (name == attributeName) {
@@ -302,6 +335,7 @@ case class MarkupAttributeContextScope(context: RenderContext, attributeName: St
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
+
   implicitIterator = parentScope.implicitIterator
 
   def parent = Some(parentScope)
@@ -309,22 +343,39 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
   def context = parentScope.context
 }
 
-class MapScope(parent: Scope, name: String, map: collection.Map[String, _]) extends ChildScope(parent) {
+class MapScope(
+    parent: Scope,
+    name: String,
+    map: collection.Map[String, _]
+) extends ChildScope(parent) {
+
   def localVariable(name: String): Option[Any] = map.get(name)
 }
 
-class NodeScope(parent: Scope, name: String, node: NodeSeq) extends ChildScope(parent) {
+class NodeScope(
+    parent: Scope,
+    name: String,
+    node: NodeSeq
+) extends ChildScope(parent) {
+
   def localVariable(name: String): Option[Any] = Some(node \ name)
 }
 
-class EmptyScope(parent: Scope) extends ChildScope(parent) {
+class EmptyScope(
+    parent: Scope
+) extends ChildScope(parent) {
+
   def localVariable(name: String) = None
 }
 
 /**
  * Constructs a scope for a non-null and not None value
  */
-class ObjectScope[T <: AnyRef](parent: Scope, value: T) extends ChildScope(parent) {
+class ObjectScope[T <: AnyRef](
+    parent: Scope,
+    value: T
+) extends ChildScope(parent) {
+
   val introspector = Introspector[T](value.getClass.asInstanceOf[Class[T]])
 
   def localVariable(name: String) = introspector.get(name, value)
@@ -332,4 +383,6 @@ class ObjectScope[T <: AnyRef](parent: Scope, value: T) extends ChildScope(paren
   override def iteratorObject = Some(value)
 }
 
-case class FunctionResult(value: Any)
+case class FunctionResult(
+  value: Any
+)

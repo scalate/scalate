@@ -16,7 +16,8 @@
  * limitations under the License.
  */
 package org.fusesource.scalate.tool.commands
-import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
+
+import org.apache.felix.gogo.commands.{ Command => command }
 
 /**
  * <p>

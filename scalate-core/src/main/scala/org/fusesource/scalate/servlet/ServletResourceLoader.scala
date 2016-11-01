@@ -34,7 +34,10 @@ import ServletResourceLoader._
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = new FileResourceLoader()) extends ResourceLoader {
+class ServletResourceLoader(
+    context: ServletContext,
+    delegate: ResourceLoader = new FileResourceLoader()
+) extends ResourceLoader {
 
   override def resource(uri: String) = {
     val file = realFile(uri)
@@ -73,7 +76,9 @@ class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader = 
     if (file != null) file.getPath else null
   }
 
-  override protected def createNotFoundException(uri: String) = new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+  override protected def createNotFoundException(uri: String) = {
+    new ResourceNotFoundException(resource = uri, root = context.getRealPath("/"))
+  }
 
   /**
    * Returns the File for the given uri

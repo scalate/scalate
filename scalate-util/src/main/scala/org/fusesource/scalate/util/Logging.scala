@@ -202,4 +202,3 @@ trait Logging {
   protected def trace(message: => String, e: Throwable): Unit = log.trace(e, message)
   protected def trace(e: Throwable): Unit = log.trace(e)
 }
-

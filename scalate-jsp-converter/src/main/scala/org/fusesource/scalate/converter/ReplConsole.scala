@@ -18,15 +18,15 @@
 package org.fusesource.scalate.converter
 
 import scala.tools.nsc.MainGenericRunner
-import org.fusesource.scalate.converter._
 
 /**
  * A console which comes with a sample convert tool created
  */
 object ReplConsole {
-  def main(args: Array[String]) {
 
+  def main(args: Array[String]) {
     MainGenericRunner.main(args ++ Array("-i", "src/test/repl/ConsoleImports.scala"))
     System.exit(0)
   }
+
 }

@@ -21,7 +21,7 @@ import org.fusesource.scalate.FunSuiteSupport
 import java.{ util => ju }
 
 // the following imports are included by default in TemplateEngine
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import TemplateConversions._
 
 case class Address(city: String, country: String)
@@ -34,7 +34,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
     map.put("a", "1")
     map.put("b", "2")
 
-    for (e <- map) {
+    for (e <- map.asScala) {
       val key = e.getKey
       val value = e.getValue
       println(" " + key + " = " + value)

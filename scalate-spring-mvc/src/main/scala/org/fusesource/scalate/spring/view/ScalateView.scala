@@ -18,26 +18,31 @@
 package org.fusesource.scalate.spring.view
 
 import _root_.java.util.Locale
-import _root_.javax.servlet.ServletConfig
 import _root_.javax.servlet.http.HttpServletRequest
 import _root_.javax.servlet.http.HttpServletResponse
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
-import _root_.org.springframework.web.context.ServletConfigAware
-import _root_.scala.collection.JavaConversions._
+import _root_.scala.collection.JavaConverters._
 import _root_.org.fusesource.scalate.TemplateException
 import _root_.org.springframework.web.servlet.view.{ AbstractView, AbstractTemplateView }
 import _root_.org.slf4j.LoggerFactory
 import org.fusesource.scalate.util.ResourceNotFoundException
 
 trait ScalateRenderStrategy {
+
   protected val log = LoggerFactory.getLogger(getClass)
-  def render(context: ServletRenderContext, model: Map[String, Any]);
+
+  def render(context: ServletRenderContext, model: Map[String, Any])
+
 }
 
-trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
+trait LayoutScalateRenderStrategy
+    extends AbstractTemplateView
+    with ScalateRenderStrategy {
+
   def templateEngine: ServletTemplateEngine
+
   def render(context: ServletRenderContext, model: Map[String, Any]) {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
     for ((key, value) <- model) {
@@ -47,14 +52,19 @@ trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRende
   }
 }
 
-trait DefaultScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
+trait DefaultScalateRenderStrategy
+    extends AbstractTemplateView
+    with ScalateRenderStrategy {
+
   override def render(context: ServletRenderContext, model: Map[String, Any]) {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
     context.render(getUrl, model)
   }
 }
 
-trait ViewScalateRenderStrategy extends ScalateRenderStrategy {
+trait ViewScalateRenderStrategy
+    extends ScalateRenderStrategy {
+
   override def render(context: ServletRenderContext, model: Map[String, Any]) {
     log.debug("Rendering with model " + model)
     val it = model.get("it")
@@ -65,11 +75,16 @@ trait ViewScalateRenderStrategy extends ScalateRenderStrategy {
 }
 
 trait AbstractScalateView extends AbstractView {
-  var templateEngine: ServletTemplateEngine = _;
-  def checkResource(locale: Locale): Boolean;
+
+  var templateEngine: ServletTemplateEngine = _
+
+  def checkResource(locale: Locale): Boolean
+
 }
 
-class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
+class ScalateUrlView
+    extends AbstractTemplateView
+    with AbstractScalateView
     with LayoutScalateRenderStrategy {
 
   override def renderMergedTemplateModel(
@@ -80,7 +95,7 @@ class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {
-      render(context, model.asInstanceOf[java.util.Map[String, Any]].toMap)
+      render(context, model.asInstanceOf[java.util.Map[String, Any]].asScala.toMap)
     }
   }
 
@@ -90,16 +105,18 @@ class ScalateUrlView extends AbstractTemplateView with AbstractScalateView
     true
   } catch {
     case e: ResourceNotFoundException => {
-      log.info("Could not find resource " + getUrl);
+      log.info("Could not find resource " + getUrl)
       false
     }
   }
 
 }
 
-class ScalateView extends AbstractScalateView with ViewScalateRenderStrategy {
+class ScalateView
+    extends AbstractScalateView
+    with ViewScalateRenderStrategy {
 
-  override def checkResource(locale: Locale) = true;
+  override def checkResource(locale: Locale) = true
 
   override def renderMergedOutputModel(
     model: java.util.Map[String, Object],
@@ -109,7 +126,7 @@ class ScalateView extends AbstractScalateView with ViewScalateRenderStrategy {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {
-      render(context, model.asInstanceOf[java.util.Map[String, Any]].toMap)
+      render(context, model.asInstanceOf[java.util.Map[String, Any]].asScala.toMap)
     }
   }
 

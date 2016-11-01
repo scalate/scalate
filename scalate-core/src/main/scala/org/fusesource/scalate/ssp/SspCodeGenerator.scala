@@ -44,7 +44,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         fragment match {
 
           case p: AttributeFragment =>
-            this << p.pos;
+            this << p.pos
             generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue,
               classNamePositional = Some(p.className), defaultValuePositional = p.defaultValue))) {
               generate(remaining)
@@ -62,11 +62,10 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         case CommentFragment(code) => {
         }
         case ScriptletFragment(code) => {
-          //this << code.pos;
           this << code :: Nil
         }
         case TextFragment(text) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
         case af: AttributeFragment => {
@@ -78,7 +77,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << "$_scalate_$_context <<< " :: wrapInParens(code)
         }
         case IfFragment(code) => {
-          this << code.pos;
+          this << code.pos
           this << "if (" + code + ") {"
           indentLevel += 1
         }
@@ -86,7 +85,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           if (code.length > 0) {
             this << "$_scalate_$_context << " :: code :: " {" :: Nil
           } else {
-            this << code.pos;
+            this << code.pos
             this << "{"
           }
           indentLevel += 1
@@ -97,7 +96,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           indentLevel += 1
         }
         case code: ElseFragment => {
-          this << code.pos;
+          this << code.pos
           indentLevel -= 1
           this << "} else {"
           indentLevel += 1
@@ -112,7 +111,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           indentLevel += 1
         }
         case code: OtherwiseFragment => {
-          this << code.pos;
+          this << code.pos
           indentLevel -= 1
           this << "case _ =>"
           indentLevel += 1
@@ -129,7 +128,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << "import " :: code :: Nil
         }
         case code: EndFragment => {
-          this << code.pos;
+          this << code.pos
           indentLevel -= 1
           this << "}"
         }

@@ -18,9 +18,9 @@
 package org.fusesource.scalate
 package tool.commands
 
-import java.{ util => ju, lang => jl }
+import java.{ util => ju }
 import java.io.File
-import collection.JavaConversions._
+import collection.JavaConverters._
 import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import org.apache.felix.service.command.CommandSession
 
@@ -48,7 +48,7 @@ class Run extends Action {
         engine.workingDirectory = workdir
       }
 
-      val attributes = Map("args" -> args.toList)
+      val attributes = Map("args" -> args.asScala.toList)
       engine.layout(TemplateSource.fromFile(template), attributes)
     } catch {
       case e: Exception =>

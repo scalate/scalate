@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 package org.fusesource.scalate.converter
+
 import util.parsing.input.{ Positional, CharSequenceReader }
 import org.fusesource.scalate.support.Text
 import org.fusesource.scalate.InvalidSyntaxException
@@ -40,6 +41,7 @@ sealed abstract class Expression extends Positional {
 }
 
 case class TextExpression(text: Text) extends Expression {
+
   def asUnquotedParam = text.toString
 
   def asParam = "\"" + text + "\""
@@ -49,6 +51,7 @@ case class TextExpression(text: Text) extends Expression {
 }
 
 case class CompositeExpression(list: List[Expression]) extends Expression {
+
   def asUnquotedParam = list.map(_.asUnquotedParam).mkString(" + ")
 
   def asParam = list.map(_.asParam).mkString(" + ")
@@ -57,6 +60,7 @@ case class CompositeExpression(list: List[Expression]) extends Expression {
 }
 
 case class DollarExpression(code: Text) extends Expression {
+
   val toScala = ExpressionLanguage.asScala(code.toString)
 
   def asUnquotedParam = toScala
@@ -66,45 +70,17 @@ case class DollarExpression(code: Text) extends Expression {
   def asJsp = "${" + toScala + "}"
 }
 
-/*
-case class DollarExpression(list: List[ExpressionNode]) extends Expression {
-  def code = list.map(_.toScala).mkString(" ")
-
-  def asUnquotedParam = code
-
-  def asParam = code
-
-  def asJsp = "${" + code + "}"
-
-}
-
-sealed abstract class ExpressionNode {
-  def toScala: String
-}
-
-case class TextNode(text: Text) extends ExpressionNode {
-  def toScala = text.toString
-}
-
-case class ArrayNode(list: List[ExpressionNode]) extends ExpressionNode {
-  def toScala = list.mkString("(", " ", ")")
-}
-
-case class PathNode(variable: String, name: String) extends ExpressionNode {
-  def toScala = variable + "." + name
-}
-*/
-
 /**
  * Parser for the JSTL EL expressions
  */
 class ExpressionParser extends MarkupScanner {
+
   override def skipWhitespace = false
 
   def parseExpression(in: String): Expression = toExpression(phraseOrFail(expressionList, in))
 
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
-    var x = phrase(p)(new CharSequenceReader(in))
+    val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
       case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
@@ -126,17 +102,4 @@ class ExpressionParser extends MarkupScanner {
 
   val dollarExpression = wrapped("${", "}") ^^ { DollarExpression(_) }
 
-  /*
-    val dollarExpression = ("${" ~> expression("}") <~ "}") ^^ {DollarExpression(_)}
-
-    def expression(term: String): Parser[List[ExpressionNode]] = rep(log(path | arrayAccess | word(term))("expression"))
-
-    def word(term: String) = someUpto(term) ^^ {TextNode(_)}
-
-    def path = (IDENT ~ ("." ~> IDENT)) ^^ {case a ~ b => PathNode(a, b)}
-
-    def arrayAccess = "[" ~> expression("]") <~ "]" ^^ {ArrayNode(_)}
-
-  */
 }
-

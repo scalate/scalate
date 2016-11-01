@@ -29,7 +29,7 @@ import _root_.org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class EditLinkTest extends FunSuite {
-  val log = Log(getClass); import log._
+  val log = Log(getClass)
 
   val file = "src/test/scala/org/fusesource/scalate/console/EditLinkTest.scala"
 
@@ -46,7 +46,7 @@ class EditLinkTest extends FunSuite {
 
     // lets put a render context in scope
     RenderContext.using(new DefaultRenderContext(file, new TemplateEngine())) {
-      val link = EditLink.editLink(file)("Edit file")
+      val link = EditLink.editLink(file)( /*"Edit file"*/ ())
       println(name + " link = " + link)
     }
   }

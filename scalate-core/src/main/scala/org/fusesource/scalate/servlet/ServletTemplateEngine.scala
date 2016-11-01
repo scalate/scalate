@@ -20,12 +20,12 @@ package org.fusesource.scalate.servlet
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 import org.fusesource.scalate.layout.{ LayoutStrategy, DefaultLayoutStrategy }
 import scala.tools.nsc.Global
-import javax.servlet.{ ServletException, ServletContext, ServletConfig }
+import javax.servlet.{ ServletContext, ServletConfig }
 import java.io.File
 import org.fusesource.scalate.util._
 
 object ServletTemplateEngine {
-  val log = Log(getClass); import log._
+  val log = Log(getClass)
 
   val templateEngineKey = classOf[ServletTemplateEngine].getName
 
@@ -45,7 +45,7 @@ object ServletTemplateEngine {
   }
 
   /**
-   * Updates the current template engine - called on initialisation of the [[org.fusesource.scalate.TemplateEngineServlet]]
+   * Updates the current template engine - called on initialisation of the [[org.fusesource.scalate.servlet.TemplateEngineServlet]]
    */
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
     servletContext.setAttribute(templateEngineKey, templateEngine)
@@ -90,7 +90,9 @@ object ServletTemplateEngine {
  *  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
+class ServletTemplateEngine(
+    val config: Config
+) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
   import ServletTemplateEngine.log._
 
   templateDirectories ::= "/WEB-INF"
@@ -123,7 +125,8 @@ class ServletTemplateEngine(val config: Config) extends TemplateEngine(ServletTe
     }
 
     // Always include WEB-INF/classes and all the JARs in WEB-INF/lib just in case
-    builder.addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
+    builder
+      .addClassesDir(config.getServletContext.getRealPath("/WEB-INF/classes"))
       .addLibDir(config.getServletContext.getRealPath("/WEB-INF/lib"))
 
     // Add optional classpath suffix via web.xml parameter

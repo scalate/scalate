@@ -2,7 +2,6 @@ package org.fusesource.scalate.jruby
 
 import org.fusesource.scalate.util.Log
 import java.io.{ StringWriter, File }
-import scala.collection
 import org.jruby.RubyInstanceConfig
 import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
 import collection.JavaConverters._

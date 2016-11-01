@@ -18,13 +18,8 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.AttributeMap
-
-import scala.collection.JavaConversions._
-
+import scala.collection.JavaConverters._
 import java.{ util => ju }
-
-import scala.collection.Set
-//import scala.collection.mutable.HashMap
 
 /**
  * The default implementation for <code>AttributeMap</code> backed
@@ -57,7 +52,8 @@ class AttributesHashMap extends AttributeMap {
     if (value == null) None else Some(value)
   }
 
-  def keySet = asScalaSet(map.keySet)
+  def keySet = map.keySet.asScala
 
   override def toString = map.toString
+
 }

@@ -436,14 +436,14 @@ object SourceMapInstaller {
     val baos = new ByteArrayOutputStream(orig.length + (sourceDebug.length * 2) + 100) {
       def position: Int = count
       def update(location: Int)(proc: => Unit): Unit = {
-        var original: Int = count
+        val original: Int = count
         count = location
         proc
         count = original
       }
     }
     val dos = new DataOutputStream(baos)
-    var sdeIndex = -1;
+    var sdeIndex = -1
 
     def copy(count: Int): Unit = {
       var i: Int = 0
@@ -454,30 +454,30 @@ object SourceMapInstaller {
     }
 
     def copyShort() = {
-      var rc = dis.readShort
+      val rc = dis.readShort
       dos.writeShort(rc)
       rc
     }
 
     def store: Array[Byte] = {
       copy(4 + 2 + 2)
-      var constantPoolCountPos: Int = baos.position
+      val constantPoolCountPos: Int = baos.position
       var constantPoolCount: Int = copyShort & 0xFFFF
       sdeIndex = copyConstantPool(constantPoolCount)
       if (sdeIndex < 0) {
         writeSourceDebugConstant
         sdeIndex = constantPoolCount
-        constantPoolCount += 1;
+        constantPoolCount += 1
         baos.update(constantPoolCountPos) {
           dos.writeShort(constantPoolCount)
         }
       }
       copy(2 + 2 + 2)
-      var interfaceCount = copyShort()
+      val interfaceCount = copyShort()
       copy(interfaceCount * 2)
       copyMembers
       copyMembers
-      var attrCountPos: Int = baos.position
+      val attrCountPos: Int = baos.position
       var attrCount: Int = dis.readShort
       dos.writeShort(attrCount)
       if (!copyAttrs(attrCount)) {
@@ -491,7 +491,7 @@ object SourceMapInstaller {
     }
 
     def copyMembers(): Unit = {
-      var count: Int = dis.readShort
+      val count: Int = dis.readShort
       dos.writeShort(count)
       var i: Int = 0
       while (i < count) {
@@ -508,9 +508,11 @@ object SourceMapInstaller {
         var tag: Int = dis.readByte
         dos.writeByte(tag)
         tag match {
-          case 8 | 7 =>
+          case 16 | 8 | 7 =>
             copy(2)
-          case 9 | 10 | 11 | 3 | 4 | 12 =>
+          case 15 =>
+            copy(3)
+          case 9 | 10 | 11 | 3 | 4 | 12 | 18 =>
             copy(4)
           case 5 | 6 =>
             copy(8)
@@ -521,9 +523,9 @@ object SourceMapInstaller {
               warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
               len = 0
             }
-            var data = new Array[Byte](len)
+            val data = new Array[Byte](len)
             dis.readFully(data)
-            var str: String = new String(data, "UTF-8")
+            val str: String = new String(data, "UTF-8")
             if (str.equals(nameSDE)) {
               sdeIndex = i
             }
@@ -540,16 +542,16 @@ object SourceMapInstaller {
       var sdeFound: Boolean = false
       var i: Int = 0
       while (i < attrCount) {
-        var nameIndex: Int = dis.readShort
+        val nameIndex: Int = dis.readShort
         if (nameIndex == sdeIndex) {
           sdeFound = true
         } else {
           dos.writeShort(nameIndex)
-          var len = dis.readInt
+          val len = dis.readInt
           dos.writeInt(len)
           copy(len)
         }
-        i += 1;
+        i += 1
       }
       return sdeFound
     }
@@ -562,7 +564,7 @@ object SourceMapInstaller {
     }
 
     def writeSourceDebugConstant(): Unit = {
-      var len: Int = nameSDE.length
+      val len: Int = nameSDE.length
       dos.writeByte(1)
       dos.writeShort(len)
       var i: Int = 0
@@ -589,7 +591,7 @@ object SourceMapInstaller {
       }
 
       dis.skip(2 + 2 + 2)
-      var interfaceCount = dis.readShort
+      val interfaceCount = dis.readShort
       dis.skip(interfaceCount * 2)
       skipMembers
       skipMembers
@@ -603,7 +605,7 @@ object SourceMapInstaller {
       var i = 1
       val count = dis.readShort & 0xFFFF
       while (i < count) {
-        var tag = dis.readByte
+        val tag = dis.readByte
         tag match {
           case 8 | 7 =>
             dis.skip(2)
@@ -613,10 +615,10 @@ object SourceMapInstaller {
             dis.skip(8)
             i += 1;
           case 1 =>
-            var len: Int = dis.readShort & 0xFFFF
-            var data = new Array[Byte](len)
+            val len: Int = dis.readShort & 0xFFFF
+            val data = new Array[Byte](len)
             dis.readFully(data)
-            var str: String = new String(data, "UTF-8")
+            val str: String = new String(data, "UTF-8")
             rc += (str -> i.toShort)
           case _ =>
             throw new IOException("unexpected tag: " + tag)
@@ -627,7 +629,7 @@ object SourceMapInstaller {
     }
 
     def skipMembers(): Unit = {
-      var count = dis.readShort
+      val count = dis.readShort
       var i: Int = 0
       while (i < count) {
         dis.skip(6)
@@ -638,12 +640,12 @@ object SourceMapInstaller {
 
     def readAttributes(): Map[Short, Array[Byte]] = {
       var rc = Map[Short, Array[Byte]]()
-      var count = dis.readShort
+      val count = dis.readShort
       var i: Int = 0
       while (i < count) {
-        var index = dis.readShort
-        var len: Int = dis.readInt
-        var data = new Array[Byte](len)
+        val index = dis.readShort
+        val len: Int = dis.readInt
+        val data = new Array[Byte](len)
         dis.readFully(data)
         rc += (index -> data)
         i += 1;
@@ -691,7 +693,7 @@ object SourceMapInstaller {
 
   def store(input: Array[Byte], sourceDebug: String): Array[Byte] = {
 
-    var bytes = sourceDebug.getBytes("UTF-8")
+    val bytes = sourceDebug.getBytes("UTF-8")
     if (bytes.length <= SOURCE_DEBUG_EXTENSION_MAX_SIZE) {
       (new Writer(input, sourceDebug)).store
     } else {

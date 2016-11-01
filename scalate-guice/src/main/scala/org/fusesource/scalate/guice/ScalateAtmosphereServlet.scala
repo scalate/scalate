@@ -12,7 +12,9 @@ import org.atmosphere.handler.ReflectorServletProcessor
  * @author Sven Jacobs <mail@svenjacobs.com>
  */
 @Singleton
-class ScalateAtmosphereServlet @Inject() (private val injector: Injector) extends AtmosphereServlet {
+class ScalateAtmosphereServlet @Inject() (
+    private val injector: Injector
+) extends AtmosphereServlet {
 
   /**
    * Most of the code to set up AtmosphereServlet has been borrowed from
@@ -24,18 +26,9 @@ class ScalateAtmosphereServlet @Inject() (private val injector: Injector) extend
     setDefaultBroadcasterClassName(JERSEY_BROADCASTER)
 
     val guiceContainer = injector.getInstance(classOf[GuiceContainer])
-    //    val resourceConfig = injector.getInstance(classOf[ResourceConfig])
 
     val rsp = new ReflectorServletProcessor()
     rsp.setServlet(guiceContainer)
-
-    //    val props = resourceConfig.getProperties.asScala
-    //
-    //    for ((name, value) <- props) {
-    //      if (value.isInstanceOf[String]) {
-    //        addInitParameter(name, value.asInstanceOf[String])
-    //      }
-    //    }
 
     var mapping = sc.getInitParameter(PROPERTY_SERVLET_MAPPING)
     if (mapping == null) mapping = "/*"

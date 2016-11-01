@@ -22,18 +22,18 @@ import introspector.Introspector
 import support.RenderHelper
 import util._
 import util.Strings.isEmpty
-import util.IOUtil._
 
 import java.io.File
 import java.text.{ DateFormat, NumberFormat }
 import java.util.{ Locale, Date }
 import xml.{ Node, PCData, NodeSeq, NodeBuffer }
-import collection.mutable.{ ListMap, LinkedHashSet, ListBuffer, HashMap }
+import collection.mutable.{ ListBuffer, HashMap }
 import reflect.ClassTag
 
 import scala.language.implicitConversions
 
 object RenderContext {
+
   val threadLocal = new ThreadLocal[RenderContext]
 
   def capture(body: => Unit) = apply().capture(body)
@@ -65,6 +65,7 @@ object RenderContext {
  * @see org.fusesource.scalate.servlet.ServletRenderContext
  */
 trait RenderContext {
+
   /**
    * Default string used to output null values
    */
@@ -153,7 +154,7 @@ trait RenderContext {
   def attributeKeys = attributes.keySet.toList.sortWith(_ < _)
 
   /**
-   * Returns the attribute of the given type or a [[org.fussesource.scalate.NoValueSetException]] exception is thrown
+   * Returns the attribute of the given type or a [[org.fusesource.scalate.NoValueSetException]] exception is thrown
    */
   def attribute[T](name: String): T =
     attributeOrElse(name, throw new NoValueSetException(name))
@@ -289,9 +290,9 @@ trait RenderContext {
     withUri(uri) {
       val template = engine.load(uri, extraBindings)
       if (layout) {
-        engine.layout(template, this);
+        engine.layout(template, this)
       } else {
-        template.render(this);
+        template.render(this)
       }
     }
   }
@@ -326,7 +327,7 @@ trait RenderContext {
 
     def buildClassList(clazz: Class[_]): Unit = {
       if (clazz != null && clazz != classOf[Object] && !classSearchList.contains(clazz)) {
-        classSearchList.append(clazz);
+        classSearchList.append(clazz)
         buildClassList(clazz.getSuperclass)
         for (i <- clazz.getInterfaces) {
           buildClassList(i)
@@ -349,7 +350,7 @@ trait RenderContext {
       for (i <- classSearchList) {
         val rc = viewForClass(i)
         if (rc != null) {
-          return rc;
+          return rc
         }
       }
       null
@@ -384,7 +385,7 @@ trait RenderContext {
 
     withAttributes(attributeMap) {
       withUri(uri) {
-        engine.load(uri).render(context);
+        engine.load(uri).render(context)
       }
     }
   }
@@ -447,13 +448,13 @@ trait RenderContext {
   }
 
   protected def resolveUri(path: String) = if (currentTemplate != null) {
-    engine.resourceLoader.resolve(currentTemplate, path);
+    engine.resourceLoader.resolve(currentTemplate, path)
   } else {
     path
   }
 
   protected def using[T](model: AnyRef)(op: => T): T = {
-    val original = attributes.get("it");
+    val original = attributes.get("it")
     try {
       attributes("it") = model
       op
@@ -518,7 +519,7 @@ trait RenderContext {
   //
   /////////////////////////////////////////////////////////////////////
 
-  private var resourceBeanAttribute = "it"
+  private val resourceBeanAttribute = "it"
 
   /**
    * Returns the JAXRS resource bean of the given type or a  [[org.fusesource.scalate.NoValueSetException]]
@@ -541,9 +542,9 @@ trait RenderContext {
   //
   /////////////////////////////////////////////////////////////////////
 
-  private var _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
-  private var _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
-  private var _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
+  private val _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
+  private val _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
+  private val _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
 
   /**
    * Returns the formatted string using the locale of the users request or the default locale if not available

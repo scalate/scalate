@@ -32,7 +32,13 @@ object TemplateEngineServlet extends Log {
 
   def update(servlet: TemplateEngineServlet): Unit = singleton = servlet
 
-  def render(template: String, templateEngine: TemplateEngine, servletContext: ServletContext, request: HttpServletRequest, response: HttpServletResponse): Unit = {
+  def render(
+    template: String,
+    templateEngine: TemplateEngine,
+    servletContext: ServletContext,
+    request: HttpServletRequest,
+    response: HttpServletResponse
+  ): Unit = {
     val context = new ServletRenderContext(templateEngine, request, response, servletContext)
 
     if (template == null || template.length == 0 || template == "/") {
@@ -63,7 +69,6 @@ object TemplateEngineServlet extends Log {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class TemplateEngineServlet extends HttpServlet {
-  import TemplateEngineServlet._
   var templateEngine: ServletTemplateEngine = _
 
   override def init(config: ServletConfig) {

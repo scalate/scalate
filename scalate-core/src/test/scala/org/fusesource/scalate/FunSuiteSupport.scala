@@ -21,12 +21,9 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap, FunSuite }
 import java.io.File
-import java.lang.String
-import collection.immutable.Map
-import util.Log
 import scuery.XmlHelper._
+import org.fusesource.scalate.util.Log
 import xml.NodeSeq
-import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $

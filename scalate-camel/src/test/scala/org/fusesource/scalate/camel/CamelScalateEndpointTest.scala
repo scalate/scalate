@@ -20,8 +20,6 @@ package org.fusesource.scalate.camel
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
-import _root_.java.io.File
-import _root_.org.fusesource.scalate._
 import _root_.org.apache.camel.builder.RouteBuilder
 import _root_.org.apache.camel._
 import _root_.org.apache.camel.impl.DefaultCamelContext

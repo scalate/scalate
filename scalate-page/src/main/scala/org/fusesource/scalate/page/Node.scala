@@ -32,13 +32,18 @@ trait Node {
 /**
  * Represents a regular file which has no metadata other than of the file itself
  */
-class FileNode(file: File) extends Node {
+class FileNode(
+    file: File
+) extends Node {
+
   def title = Files.dropExtension(file).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
 
   def createdAt = new Date(file.lastModified)
+
 }
 
 object Node {
+
   implicit def toNode(context: RenderContext, file: File): Node = {
     if (file.extension == "page") {
       PageFilter.parse(context, file)

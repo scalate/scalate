@@ -73,13 +73,33 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
 
   protected var errorUris: List[String] = ServletHelper.errorUris()
 
-  def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
+  def isWriteable(
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType
+  ) = {
     classOf[View[T]].isAssignableFrom(aClass)
   }
 
-  def getSize(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
+  def getSize(
+    view: View[T],
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType
+  ) = -1L
 
-  def writeTo(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
+  def writeTo(
+    view: View[T],
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType,
+    httpHeaders: MultivaluedMap[String, Object],
+    out: OutputStream
+  ): Unit = {
+
     def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
 
     try {

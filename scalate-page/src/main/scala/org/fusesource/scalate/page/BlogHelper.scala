@@ -23,7 +23,7 @@ import java.io.File
 import util.Log
 
 object BlogHelper {
-  val log = Log(getClass); import log._
+  val log = Log(getClass)
 
   /**
    * Returns the blog posts from the current request's directory by default sorted in date order
@@ -32,16 +32,22 @@ object BlogHelper {
     val context = RenderContext()
 
     val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
-    val dir = context.engine.resourceLoader.resource(base + "/index.page").flatMap(_.toFile).getOrElse(throw new Exception("index page not found.")).getParentFile
+    val dir = context.engine.resourceLoader.resource(base + "/index.page")
+      .flatMap(_.toFile)
+      .getOrElse(throw new Exception("index page not found."))
+      .getParentFile
 
     println("Using dir: " + dir + " at request path: " + base)
 
     val index = new File(dir, "index.page")
-    dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page")).map { file =>
-      val page = PageFilter.parse(context, file)
-      page.link = file.relativeUri(dir).stripSuffix(".page") + ".html"
-      page
-    }.toList.sortBy(_.createdAt.getTime * -1)
+    dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page"))
+      .map { file =>
+        val page = PageFilter.parse(context, file)
+        page.link = file.relativeUri(dir).stripSuffix(".page") + ".html"
+        page
+      }
+      .toList
+      .sortBy(_.createdAt.getTime * -1)
   }
 
 }

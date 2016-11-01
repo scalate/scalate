@@ -30,7 +30,13 @@ case class DollarExpressionFragment(code: Text) extends PageFragment
 case class ExpressionFragment(code: Text) extends PageFragment
 case class ScriptletFragment(code: Text) extends PageFragment
 case class TextFragment(text: Text) extends PageFragment
-case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends PageFragment
+case class AttributeFragment(
+  kind: Text,
+  name: Text,
+  className: Text,
+  defaultValue: Option[Text],
+  autoImport: Boolean
+) extends PageFragment
 
 abstract class Directive(override val tokenName: String) extends PageFragment
 
@@ -154,7 +160,7 @@ class SspParser extends ScalaParseSupport {
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
 
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
-    var x = phrase(p)(new CharSequenceReader(in))
+    val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
       case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);

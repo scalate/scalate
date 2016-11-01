@@ -20,7 +20,7 @@ package org.fusesource.scalate.page
 import org.fusesource.scalate._
 import org.fusesource.scalate.filter.{ Pipeline, Filter }
 import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
-import util.{ IOUtil, Files }
+import util.IOUtil
 import IOUtil._
 
 import java.io.File
@@ -30,9 +30,15 @@ import org.yaml.snakeyaml.Yaml
 import scala.util.parsing.input.{ NoPosition, CharSequenceReader }
 import collection.JavaConverters._
 
-case class Attribute(key: Text, value: Text)
+case class Attribute(
+  key: Text,
+  value: Text
+)
 
-case class PagePart(attributes: List[Attribute], content: Text) {
+case class PagePart(
+    attributes: List[Attribute],
+    content: Text
+) {
 
   def attribute(name: String) = attributes.find(_.key.value == name).map(_.value)
   def name = attribute("name")
@@ -50,7 +56,13 @@ case class PagePart(attributes: List[Attribute], content: Text) {
   def render(context: RenderContext) = filter(context.engine).filter(context, content.value)
 }
 
-case class Page(context: RenderContext, file: Option[File], headers: Map[String, AnyRef], parts: Map[String, PagePart]) extends Node {
+case class Page(
+    context: RenderContext,
+    file: Option[File],
+    headers: Map[String, AnyRef],
+    parts: Map[String, PagePart]
+) extends Node {
+
   protected lazy val fileNode = file.map(new FileNode(_))
 
   override def toString = "Page(" + file + ")"

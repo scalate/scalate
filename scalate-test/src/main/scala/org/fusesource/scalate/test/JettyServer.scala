@@ -19,19 +19,18 @@ package org.fusesource.scalate.test
 
 import org.apache.commons.logging.LogFactory
 import org.eclipse.jetty.server.Connector
-import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.nio.SelectChannelConnector
 import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
 import java.io.{ FileInputStream, File }
-import java.lang.String
 
 /**
  * @version $Revision : 1.1 $
  */
 class JettyServer {
+
   @transient
   private final val LOG = LogFactory.getLog(classOf[JettyServer])
 
@@ -53,7 +52,7 @@ class JettyServer {
 
   def start(): Unit = {
     val basedir = addFileSeparator(Config.baseDir)
-    var defaultWebAppDir: String = basedir + mavenWebAppSubDir
+    val defaultWebAppDir: String = basedir + mavenWebAppSubDir
 
     LOG.info("Using basedir: " + basedir)
     LOG.info("Using defaultWebAppDir: " + defaultWebAppDir)
@@ -64,13 +63,13 @@ class JettyServer {
     }
 
     LOG.info("Starting Web Server on port: " + port)
-    var connector = new SelectChannelConnector
+    val connector = new SelectChannelConnector
     connector.setPort(port)
     connector.setServer(server)
 
-    var context = new WebAppContext
+    val context = new WebAppContext
     if (webAppDir == null) {
-      var file: File = new File(defaultWebAppDir)
+      val file: File = new File(defaultWebAppDir)
       if (file.exists) {
         webAppDir = defaultWebAppDir
       } else {

@@ -17,12 +17,10 @@
  */
 package org.fusesource.scalate.converter
 
-import util.parsing.combinator.RegexParsers
-import util.parsing.input.{ CharSequenceReader, NoPosition, Position }
-import org.fusesource.scalate.TemplateException
 import org.fusesource.scalate.support.ScalaParseSupport
 
 class MarkupScanner extends ScalaParseSupport {
+
   override def skipWhitespace = false
 
   //   ident     {nmstart}{nmchar}*
