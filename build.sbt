@@ -1,6 +1,6 @@
 name := "Scalate"
 organization := "org.scalatra.scalate"
-version := "1.8.0-M1"
+version := "1.8.0-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.0-RC2", "2.11.8", "2.10.6")
 javaVersionPrefix in javaVersionCheck := Some("1.8")
@@ -177,7 +177,7 @@ lazy val scalateTool = scalateProject("tool")
 
 lazy val scalateWar = scalateProject("war")
   .scalateSettings
-  .published
+  .notPublished
   .dependsOn(scalateWeb, scalateTest % Test)
   .dependsOn(logbackClassic, jerseyServer, jerseyCore)
   .settings(tomcat(port = 8087, args = Seq("scalate.mode=dev")): _*)
