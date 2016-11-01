@@ -21,6 +21,8 @@ import org.fusesource.scalate._
 import collection.mutable.Stack
 import support.{ Text, Code, AbstractCodeGenerator }
 
+import scala.language.implicitConversions
+
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
   override val stratumName = "SSP"
 
@@ -357,4 +359,3 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     pass2
   }
 }
-

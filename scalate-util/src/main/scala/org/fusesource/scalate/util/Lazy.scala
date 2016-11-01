@@ -80,5 +80,5 @@ class Lazy[T](thunk: => T) {
     fieldOwner
   }
 
-  def fieldOwner: OwnerType = {}
+  def fieldOwner(): OwnerType = {}
 }

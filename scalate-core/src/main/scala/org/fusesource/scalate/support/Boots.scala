@@ -3,6 +3,8 @@ package support
 
 import util.Objects
 
+import scala.language.reflectiveCalls
+
 /**
  * A helper class for working with Boot style classes which
  * take a TemplateEngine as a constructor argument and have a zero argument

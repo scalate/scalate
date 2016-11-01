@@ -146,7 +146,7 @@ class MustacheParserTest extends FunSuiteSupport {
 
   def assertParses(expected: List[Statement], text: String): List[Statement] = {
     val lines = assertValid(text)
-    expect(expected) { lines }
+    assertResult(expected) { lines }
     lines
   }
 

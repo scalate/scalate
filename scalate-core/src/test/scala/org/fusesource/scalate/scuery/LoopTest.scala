@@ -122,10 +122,10 @@ class LoopTest extends FunSuiteSupport {
   def assertTransformed(result: NodeSeq): Unit = {
     debug("got result: %s", result)
 
-    expect("James") { (result \\ "td")(0).text }
-    expect("Beckington") { (result \\ "td")(1).text }
+    assertResult("James") { (result \\ "td")(0).text }
+    assertResult("Beckington") { (result \\ "td")(1).text }
 
-    expect("Hiram") { (result \\ "td")(2).text }
-    expect("Tampa") { (result \\ "td")(3).text }
+    assertResult("Hiram") { (result \\ "td")(2).text }
+    assertResult("Tampa") { (result \\ "td")(3).text }
   }
 }

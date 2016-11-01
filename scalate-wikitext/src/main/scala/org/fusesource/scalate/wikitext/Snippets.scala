@@ -201,9 +201,9 @@ class SnippetBlock extends ParameterizedBlock {
  */
 trait SnippetHandler {
 
-  def begin
+  def begin()
   def addLine(line: String)
-  def done
+  def done()
 
 }
 
@@ -212,7 +212,7 @@ trait SnippetHandler {
  */
 case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: String) extends SnippetHandler {
 
-  def begin = {
+  def begin() = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))
     builder.beginBlock(BlockType.PREFORMATTED, cssClass(language));
     builder.characters("\n")
@@ -222,9 +222,9 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
     builder.characters(line + "\n")
   }
 
-  def done = {
+  def done() = {
     builder.endBlock(); // </pre>
-    builder.endBlock(); // </div>          
+    builder.endBlock(); // </div>
   }
 
   /**
@@ -243,8 +243,8 @@ case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: Str
  */
 case class PygmentizeSnippetHandler(val block: PygmentsBlock) extends SnippetHandler {
 
-  def begin = block.beginBlock
+  def begin() = block.beginBlock
   def addLine(line: String) = block.handleBlockContent(line)
-  def done = block.endBlock
+  def done() = block.endBlock
 
 }

@@ -21,7 +21,7 @@ package scaml
 import java.util.concurrent.atomic.AtomicInteger
 import java.io.{ StringWriter, PrintWriter, File }
 
-import org.scalatest.TestFailedException
+import org.scalatest.exceptions.TestFailedException
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -33,7 +33,7 @@ class ScamlTestSupport extends TemplateTestSupport {
 
   def testRender(description: String, template: String, result: String, before: () => Unit = NOOP, after: () => Unit = NOOP) = {
     test(description) {
-      expect(result.trim) {
+      assertResult(result.trim) {
         before()
         try {
           val output = render(description, template.trim)
@@ -62,7 +62,7 @@ class ScamlTestSupport extends TemplateTestSupport {
       } catch {
         case e: TestFailedException => throw e
         case e: InvalidSyntaxException => {
-          expect(error) {
+          assertResult(error) {
             e.getMessage
           }
         }
@@ -87,7 +87,7 @@ class ScamlTestSupport extends TemplateTestSupport {
       } catch {
         case e: TestFailedException => throw e
         case e: CompilerException => {
-          expect(error) {
+          assertResult(error) {
             e.errors.head.message
           }
         }

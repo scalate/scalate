@@ -31,7 +31,11 @@ import util.parsing.input.{ Position, OffsetPosition }
 import xml.NodeSeq
 import org.fusesource.scalate.util.{ Log, SourceMapInstaller, SourceMap }
 
-case class SourceLine(line: Int, source: String) {
+case class SourceLine(
+    line: Int,
+    source: String
+) {
+
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
 
   def nonBlank = source != null && source.length > 0
@@ -136,7 +140,8 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
    * Returns the current template names used in the current context
    */
   def templates: List[String] = attributes.get("scalateTemplates") match {
-    case Some(list: List[String]) => list.distinct.sortWith(_ < _)
+    case Some(list: List[_]) =>
+      list.map(_.asInstanceOf[String]).distinct.sortWith(_ < _)
     case _ => Nil
   }
 
@@ -144,7 +149,8 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
    * Returns the current layouts used in the current context
    */
   def layouts: List[String] = attributes.get("scalateLayouts") match {
-    case Some(list: List[String]) => list.distinct.sortWith(_ < _)
+    case Some(list: List[_]) =>
+      list.map(_.asInstanceOf[String]).distinct.sortWith(_ < _)
     case _ => Nil
   }
 

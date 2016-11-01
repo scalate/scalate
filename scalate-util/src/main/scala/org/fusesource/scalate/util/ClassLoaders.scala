@@ -18,9 +18,11 @@
 package org.fusesource.scalate.util
 
 import java.net.URL
+import scala.language.existentials
 
 object ClassLoaders {
-  val log = Log(getClass); import log._
+
+  val log = Log(getClass)
 
   /**
    * Returns the default class loaders to use for loading which is the current threads context class loader

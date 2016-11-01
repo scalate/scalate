@@ -46,7 +46,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = a ?: "default"
     println("got answer: " + answer)
-    expect("default") { answer }
+    assertResult("default") { answer }
   }
 
   test("orElse method") {
@@ -54,7 +54,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = orElse(a, "default")
     println("got answer: " + answer)
-    expect("default") { answer }
+    assertResult("default") { answer }
   }
 
   test("orElse with null pointer exception") {
@@ -62,6 +62,6 @@ class TemplateConversionsTest extends FunSuiteSupport {
 
     val answer = orElse(person.address.city, "default")
     println("got answer: " + answer)
-    expect("default") { answer }
+    assertResult("default") { answer }
   }
 }

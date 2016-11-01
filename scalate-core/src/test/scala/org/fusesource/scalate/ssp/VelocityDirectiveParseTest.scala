@@ -53,7 +53,7 @@ class VelocityDirectiveParseTest extends ParserTestSupport {
  Hey James
 #end
 """)
-    expect(IfFragment("foo.bar(123) == \"James\"")) { lines(1) }
+    assertResult(IfFragment("foo.bar(123) == \"James\"")) { lines(1) }
   }
 
   test("if with parens in string or char expression") {
@@ -64,6 +64,6 @@ class VelocityDirectiveParseTest extends ParserTestSupport {
  Hey James
 #end
 """)
-    expect(IfFragment("foo.bar(\")\") == ')'")) { lines(1) }
+    assertResult(IfFragment("foo.bar(\")\") == ')'")) { lines(1) }
   }
 }

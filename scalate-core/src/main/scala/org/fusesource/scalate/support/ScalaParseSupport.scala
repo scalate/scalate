@@ -22,6 +22,8 @@ import CharData._
 import Integer._
 import util.parsing.input.{ Positional, CharArrayReader }
 
+import scala.language.postfixOps
+
 /**
  * Is a String with positioning information
  */

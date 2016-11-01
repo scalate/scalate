@@ -23,6 +23,8 @@ import scala.collection.mutable.ArrayBuffer
 import java.util.{ jar => juj }
 import java.util.jar.{ Attributes, JarFile }
 
+import scala.language.reflectiveCalls
+
 class ClassPathBuilder {
   import ClassPathBuilder._
 

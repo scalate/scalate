@@ -31,6 +31,8 @@ import xml.{ Node, PCData, NodeSeq, NodeBuffer }
 import collection.mutable.{ ListMap, LinkedHashSet, ListBuffer, HashMap }
 import reflect.ClassTag
 
+import scala.language.implicitConversions
+
 object RenderContext {
   val threadLocal = new ThreadLocal[RenderContext]
 

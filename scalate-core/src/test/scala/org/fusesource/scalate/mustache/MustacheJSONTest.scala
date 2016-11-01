@@ -47,8 +47,8 @@ class MustacheJSONTest extends MustacheTestSupport {
           debug("Parsed json: %s", json)
 
           json match {
-            case attributes: Map[String, _] =>
-              assertMustacheTest(name, attributes)
+            case attributes: Map[_, _] =>
+              assertMustacheTest(name, attributes.asInstanceOf[Map[String, Any]])
             case v =>
               fail("Cannot process JSON type: " + v)
           }

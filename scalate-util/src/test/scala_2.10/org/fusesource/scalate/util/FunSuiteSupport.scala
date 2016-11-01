@@ -24,21 +24,20 @@ import xml.NodeSeq
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ConfigMap, BeforeAndAfterAll, FunSuite}
+import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap, FunSuite }
 import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll {
+abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAllConfigMap {
   protected var _basedir = "."
 
   /**
    * Returns the base directory of the current project
    */
   def baseDir = new File(_basedir)
-
 
   override protected def beforeAll(map: ConfigMap): Unit = {
     _basedir = map.get("basedir") match {
@@ -50,6 +49,6 @@ abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAll 
 
   def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
-    expect(expectedClass) {anyRef.getClass}
+    assertResult(expectedClass) { anyRef.getClass }
   }
 }

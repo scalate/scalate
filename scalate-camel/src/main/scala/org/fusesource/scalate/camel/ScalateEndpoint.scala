@@ -98,8 +98,8 @@ class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: Str
 
       // now lets output the headers to the exchange
       variableMap.get("headers") match {
-        case map: ju.Map[String, AnyRef] =>
-          for ((key, value) <- map) {
+        case map: ju.Map[_, _] =>
+          for ((key, value) <- map.asInstanceOf[ju.Map[String, AnyRef]]) {
             out.setHeader(key, value)
           }
         case _ =>

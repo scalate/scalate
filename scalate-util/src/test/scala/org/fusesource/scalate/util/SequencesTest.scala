@@ -30,7 +30,7 @@ class SequencesTest extends FunSuiteSupport {
 
     val unique = removeDuplicates(list)
 
-    expect(List("a", "b", "c")) { unique }
+    assertResult(List("a", "b", "c")) { unique }
 
     debug("removing duplicates from " + list + " created " + unique)
   }

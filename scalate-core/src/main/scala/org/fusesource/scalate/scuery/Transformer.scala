@@ -23,6 +23,8 @@ import collection.mutable.{ HashMap }
 import xml.{ Attribute, Document, Elem, Node, NodeSeq, Null, Text }
 import XmlHelper._
 
+import scala.language.implicitConversions
+
 /**
  * Allows simple XML replacement rules to be registered
  *
@@ -76,7 +78,7 @@ class Transformer {
     if (size == 0) {
       node match {
         case e: Elem => replaceContent(e, apply(e.child, e +: ancestors))
-        case d: Document => apply(d.child)
+        case d: Node => apply(d.child)
         case n => n
       }
     } else {

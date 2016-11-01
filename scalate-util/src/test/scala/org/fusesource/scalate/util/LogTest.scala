@@ -18,11 +18,11 @@
 package org.fusesource.scalate
 package util
 
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 
 object LogTest
 
-class LogTest extends FunSuiteSupport with ShouldMatchers {
+class LogTest extends FunSuiteSupport with Matchers {
   case class InnerTrait()
 
   case object InnerObject

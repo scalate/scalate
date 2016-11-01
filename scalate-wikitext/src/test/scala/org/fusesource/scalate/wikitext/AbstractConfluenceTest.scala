@@ -39,6 +39,6 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
 
   protected def assertFilter(source: String, expected: String): Unit = {
     val actual: String = renderConfluence(source)
-    expect(expected) { actual }
+    assertResult(expected) { actual }
   }
 }

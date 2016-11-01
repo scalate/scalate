@@ -22,6 +22,8 @@ import util.parsing.input.{ Positional, OffsetPosition, Position }
 import org.fusesource.scalate.{ TemplateSource, Binding, TemplateEngine }
 import org.fusesource.scalate.util.Log
 
+import scala.language.postfixOps
+
 object AbstractCodeGenerator extends Log
 
 /**
@@ -93,9 +95,19 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
       rc
     }
 
-    def indent[T](op: => T): T = { indentLevel += 1; val rc = op; indentLevel -= 1; rc }
+    def indent[T](op: => T): T = {
+      indentLevel += 1
+      val rc = op
+      indentLevel -= 1
+      rc
+    }
 
-    def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding], statements: List[T]): Unit = {
+    def generate(
+      engine: TemplateEngine,
+      source: TemplateSource,
+      bindings: Traversable[Binding],
+      statements: List[T]
+    ): Unit = {
 
       val packageName = source.packageName
       val className = source.simpleClassName
@@ -146,7 +158,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
 
     }
 
-    def generateInitialImports: Unit = {}
+    def generateInitialImports(): Unit = {}
 
     def generate(statements: List[T]): Unit
 

@@ -54,7 +54,7 @@ class TemplateTestSupport extends FunSuiteSupport {
     if (trim) {
       output = output.trim
     }
-    expect(expectedOutput) { output }
+    assertResult(expectedOutput) { output }
     output
   }
 

@@ -77,10 +77,10 @@ class ParserTest extends ParserTestSupport {
 """)
 
     val count = countTypes(lines)
-    expect(1) { count(classOf[CommentFragment]) }
-    expect(1) { count(classOf[ScriptletFragment]) }
-    expect(1) { count(classOf[DollarExpressionFragment]) }
-    expect(1) { count(classOf[ExpressionFragment]) }
+    assertResult(1) { count(classOf[CommentFragment]) }
+    assertResult(1) { count(classOf[ScriptletFragment]) }
+    assertResult(1) { count(classOf[DollarExpressionFragment]) }
+    assertResult(1) { count(classOf[ExpressionFragment]) }
   }
 
   test("parse valid SSP files without newlines") {

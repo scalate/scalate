@@ -24,11 +24,11 @@ import org.scalatest.ConfigMap
 class TemplateEngineHelpersTest extends TemplateTestSupport {
 
   test("generate URI link for existing file") {
-    expect(Some("/moustache.js/array_of_strings.js")) { context.uri(new File(baseDir, "src/test/resources/moustache.js/array_of_strings.js")) }
+    assertResult(Some("/moustache.js/array_of_strings.js")) { context.uri(new File(baseDir, "src/test/resources/moustache.js/array_of_strings.js")) }
   }
 
   test("no link for file outside of source dir") {
-    expect(None) { context.uri(new File("/does/not/exist/12345.xml")) }
+    assertResult(None) { context.uri(new File("/does/not/exist/12345.xml")) }
   }
 
   def context = new DefaultRenderContext("/foo", engine)

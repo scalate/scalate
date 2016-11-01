@@ -21,8 +21,9 @@ import org.fusesource.scalate._
 import collection.mutable.LinkedHashMap
 import support.{ Text, Code, AbstractCodeGenerator }
 import support.RenderHelper
-import collection.immutable.List
 import scala.util.parsing.input.OffsetPosition
+
+import scala.language.implicitConversions
 
 /**
  * Generates a scala class given a HAML document

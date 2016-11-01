@@ -95,5 +95,5 @@ class DefaultRenderContext(private val _requestUri: String, val engine: Template
     }
   }
 
-  def flush = out.flush
+  def flush() = out.flush
 }

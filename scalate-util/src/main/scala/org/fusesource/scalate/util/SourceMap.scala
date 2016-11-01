@@ -23,6 +23,8 @@ import scala.util.parsing.combinator._
 import scala.util.parsing.input._
 import collection.JavaConverters._
 
+import scala.language.reflectiveCalls
+
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  * @author Jayson Falkner
@@ -488,7 +490,7 @@ object SourceMapInstaller {
       baos.toByteArray
     }
 
-    def copyMembers: Unit = {
+    def copyMembers(): Unit = {
       var count: Int = dis.readShort
       dos.writeShort(count)
       var i: Int = 0
@@ -559,7 +561,7 @@ object SourceMapInstaller {
       dos.write(data)
     }
 
-    def writeSourceDebugConstant: Unit = {
+    def writeSourceDebugConstant(): Unit = {
       var len: Int = nameSDE.length
       dos.writeByte(1)
       dos.writeShort(len)
@@ -624,7 +626,7 @@ object SourceMapInstaller {
       return rc
     }
 
-    def skipMembers: Unit = {
+    def skipMembers(): Unit = {
       var count = dis.readShort
       var i: Int = 0
       while (i < count) {
@@ -731,4 +733,3 @@ object SourceMapInstaller {
 
   }
 }
-

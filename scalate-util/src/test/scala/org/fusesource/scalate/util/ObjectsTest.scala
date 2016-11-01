@@ -24,7 +24,7 @@ class ObjectsTest extends FunSuiteSupport {
 
   test("inject no params") {
     val a = assertInstantiate(classOf[NoParams])
-    expect("Hello") { a.value }
+    assertResult("Hello") { a.value }
   }
 
   // single values
@@ -40,7 +40,7 @@ class ObjectsTest extends FunSuiteSupport {
 
   protected def testInject(expected: AnyRef, clazz: Class[_], injectValues: List[AnyRef] = List()): Unit = {
     test("inject " + clazz.getName + " with " + injectValues) {
-      expect(expected) { assertInstantiate(clazz, injectValues) }
+      assertResult(expected) { assertInstantiate(clazz, injectValues) }
     }
   }
 }

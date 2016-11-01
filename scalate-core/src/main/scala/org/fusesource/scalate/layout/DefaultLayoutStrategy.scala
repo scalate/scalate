@@ -64,7 +64,7 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
   }
 
   private def tryLayout(layoutTemplate: String, body: String, context: RenderContext): Boolean = {
-    def removeLayout = {
+    def removeLayout() = {
       context.attributes("scalateLayouts") = context.attributeOrElse[List[String]]("scalateLayouts", List()).filterNot(_ == layoutTemplate)
     }
 

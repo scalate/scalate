@@ -27,7 +27,7 @@ class TemplatePackageTest extends TemplateTestSupport {
     assertOutputContains(templateSource, "hello bar!")
 
     // lets check that we have invoked the bootstrap code now
-    expect(true, "Should have invoked our custom bootstrap code as part of the ScalatePackage!") { BootSample.initialised }
+    assertResult(true, "Should have invoked our custom bootstrap code as part of the ScalatePackage!") { BootSample.initialised }
   }
 
   test("parent scalate template packages get applied") {

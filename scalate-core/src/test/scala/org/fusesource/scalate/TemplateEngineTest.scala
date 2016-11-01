@@ -38,7 +38,7 @@ class TemplateEngineTest extends FunSuiteSupport {
     val template = engine.compileSsp(source, List(Binding("name", "String")))
     val output = engine.layout("foo1.ssp", template, Map("name" -> "James"))
 
-    expect("hello James") { output }
+    assertResult("hello James") { output }
   }
 
   test("string template with attributes") {
@@ -47,7 +47,7 @@ class TemplateEngineTest extends FunSuiteSupport {
     val template = engine.compileSsp(source)
     val output = engine.layout("foo2.ssp", template, Map("name" -> "Hiram"))
 
-    expect("hello Hiram") { output.trim }
+    assertResult("hello Hiram") { output.trim }
   }
 
   test("load template") {
@@ -81,8 +81,8 @@ Hello ${name}!
       debug("line: " + line)
     }
 
-    expect("<%@ val it : java.lang.String %>") { lines(0) }
-    expect("<p>hello ${it} how are you?</p>") { lines(1) }
+    assertResult("<%@ val it : java.lang.String %>") { lines(0) }
+    assertResult("<p>hello ${it} how are you?</p>") { lines(1) }
   }
 
   test("cache invalidation test") {

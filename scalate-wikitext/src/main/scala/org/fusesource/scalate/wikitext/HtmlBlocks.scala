@@ -191,7 +191,7 @@ class SectionBlock extends AbstractNestedBlock("section") {
   override def setOption(key: String, value: String) =
     Blocks.setOption(tableAttributes, key, value)
 
-  def defaultAttr = {
+  def defaultAttr() = {
     tableAttributes = new TableAttributes()
     tableAttributes.setCssClass("sectionMacro")
     tableAttributes.setBorder("0");
@@ -223,7 +223,7 @@ class ColumnBlock extends AbstractNestedBlock("column") {
     return ret;
   }
 
-  def defaultAttr = {
+  def defaultAttr() = {
     attributes = new TableCellAttributes()
     attributes.setCssClass("confluenceTd")
     attributes.setValign("top")

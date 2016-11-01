@@ -34,6 +34,8 @@ import java.io.{ PrintWriter, StringWriter, File }
 
 import util.{ Log, IOUtil, ClassPathBuilder }
 
+import scala.language.reflectiveCalls
+
 object ScalaCompiler extends Log {
 
   def create(engine: TemplateEngine): ScalaCompiler = {
@@ -213,4 +215,3 @@ class OsgiScalaCompiler(val engine: TemplateEngine, val bundle: Bundle)
     )
   }
 }
-

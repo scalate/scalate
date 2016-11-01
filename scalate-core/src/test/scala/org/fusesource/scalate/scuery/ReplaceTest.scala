@@ -43,8 +43,8 @@ class ReplaceTest extends FunSuiteSupport {
     debug("got result: " + result)
 
     val a = (result \\ "a")(0)
-    expect("http://scalate.fusesource.org/") { (a \ "@href").toString }
-    expect("foo") { (a \ "@class").toString }
-    expect("A link") { (a \ "@title").toString }
+    assertResult("http://scalate.fusesource.org/") { (a \ "@href").toString }
+    assertResult("foo") { (a \ "@class").toString }
+    assertResult("A link") { (a \ "@title").toString }
   }
 }

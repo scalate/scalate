@@ -39,7 +39,7 @@ object Dependencies extends Plugin {
   val pegdown = "org.pegdown" % "pegdown" % "1.1.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.6.2"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.0-RC1"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6"
+  val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.0a5"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.6.6"
   val springMVC = "org.springframework" % "spring-webmvc" % "3.0.6.RELEASE"

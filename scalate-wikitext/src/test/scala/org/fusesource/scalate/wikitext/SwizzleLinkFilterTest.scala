@@ -85,7 +85,7 @@ class SwizzleLinkFilterTest extends FunSuiteSupport {
       info("converted " + html)
       info("into: " + answer)
 
-      expect(expected) { answer }
+      assertResult(expected) { answer }
     }
   }
 }
