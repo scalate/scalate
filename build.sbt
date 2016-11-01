@@ -1,8 +1,8 @@
 name := "Scalate"
 organization := "org.scalatra.scalate"
-version := "1.7.2-SNAPSHOT"
+version := "1.8.0-M1"
 scalaVersion := crossScalaVersions.value.head
-crossScalaVersions := Seq(/*"2.12.0-RC2",*/ "2.11.8", "2.10.6")
+crossScalaVersions := Seq("2.12.0-RC2", "2.11.8", "2.10.6")
 javaVersionPrefix in javaVersionCheck := Some("1.8")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
