@@ -4,6 +4,8 @@ version := "1.7.2-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq(/*"2.12.0-RC2",*/ "2.11.8", "2.10.6")
 javaVersionPrefix in javaVersionCheck := Some("1.8")
+javacOptions ++= Seq("-source", "1.8")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
 licenses += "The Apache Software License, Version 2.0" → url("http://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
@@ -58,7 +60,15 @@ lazy val scalateCamel = scalateProject("camel")
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
     description := "Camel component for Scalate.",
-    addScalaDependentDeps(10 → camelScala213, 10 → camelSpring213, 11 → camelScala214, 11 → camelSpring214))
+    addScalaDependentDeps(
+      10 → camelScala213,
+      10 → camelSpring213,
+      11 → camelScala214,
+      11 → camelSpring214,
+      12 → camelScala214,
+      12 → camelSpring214
+    )
+  )
 
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings

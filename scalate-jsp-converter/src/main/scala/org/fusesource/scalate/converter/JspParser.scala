@@ -24,27 +24,48 @@ import org.fusesource.scalate.support.Text
 sealed abstract class PageFragment extends Positional {
 }
 
-case class QualifiedName(prefix: String, name: String) extends Positional {
+case class QualifiedName(
+    prefix: String,
+    name: String
+) extends Positional {
+
   val qualifiedName = prefix + ":" + name
 
   override def toString = qualifiedName
 }
 
-case class Attribute(name: String, value: Expression) extends Positional
+case class Attribute(
+  name: String,
+  value: Expression
+) extends Positional
 
-case class CommentFragment(comment: Text) extends PageFragment
+case class CommentFragment(
+  comment: Text
+) extends PageFragment
 
-case class DollarExpressionFragment(code: Text) extends PageFragment {
+case class DollarExpressionFragment(
+    code: Text
+) extends PageFragment {
+
   val toScala = ExpressionLanguage.asScala(code.toString)
 
   override def toString = "${" + toScala + "}"
 }
 
-case class TextFragment(text: Text) extends PageFragment {
+case class TextFragment(
+    text: Text
+) extends PageFragment {
+
   override def toString = text.toString
+
 }
 
-case class Element(qname: QualifiedName, attributes: List[Attribute], body: List[PageFragment]) extends PageFragment {
+case class Element(
+    qname: QualifiedName,
+    attributes: List[Attribute],
+    body: List[PageFragment]
+) extends PageFragment {
+
   val qualifiedName = qname.qualifiedName
 
   lazy val attributeMap: Map[String, Expression] = Map(attributes.map(a => a.name -> a.value): _*)
@@ -64,10 +85,11 @@ case class Element(qname: QualifiedName, attributes: List[Attribute], body: List
  * @version $Revision : 1.1 $
  */
 class JspParser extends MarkupScanner {
+
   protected val expressionParser = new ExpressionParser
 
   private def phraseOrFail[T](p: Parser[T], in: String): T = {
-    var x = phrase(p)(new CharSequenceReader(in))
+    val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
       case NoSuccess(message, next) => throw new InvalidJspException(message, next.pos);
@@ -113,4 +135,7 @@ class JspParser extends MarkupScanner {
   def toExpression(text: String) = expressionParser.parseExpression(text)
 }
 
-class InvalidJspException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)
+class InvalidJspException(
+  val brief: String,
+  val pos: Position = NoPosition
+) extends TemplateException(brief + " at " + pos)

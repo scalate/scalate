@@ -19,14 +19,13 @@ package org.fusesource.scalate.servlet
 
 import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.http._
-import java.lang.String
 import java.util.{ Locale }
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 import org.fusesource.scalate.{ RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine }
 import java.io._
-import javax.servlet.{ ServletOutputStream, ServletConfig, ServletContext, ServletException }
+import javax.servlet.{ ServletOutputStream, ServletContext, ServletException }
 
 /**
  * Easy access to servlet request state.
@@ -36,6 +35,7 @@ import javax.servlet.{ ServletOutputStream, ServletConfig, ServletContext, Servl
  * then you can access the current renderContext, request, response, servletContext
  */
 object ServletRenderContext {
+
   /**
    * Returns the currently active render context in this thread
    * @throws IllegalArgumentException if there is no suitable render context available in this thread
@@ -57,10 +57,22 @@ object ServletRenderContext {
  *
  * @version $Revision : 1.1 $
  */
-class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request: HttpServletRequest, val response: HttpServletResponse, val servletContext: ServletContext)
-    extends DefaultRenderContext(request.getRequestURI, engine, out) {
+class ServletRenderContext(
+    engine: TemplateEngine,
+    out: PrintWriter,
+    val request: HttpServletRequest,
+    val response: HttpServletResponse,
+    val servletContext: ServletContext
+) extends DefaultRenderContext(request.getRequestURI, engine, out) {
 
-  def this(engine: TemplateEngine, request: HttpServletRequest, response: HttpServletResponse, servletContext: ServletContext) = this(engine, response.getWriter, request, response, servletContext)
+  def this(
+    engine: TemplateEngine,
+    request: HttpServletRequest,
+    response: HttpServletResponse,
+    servletContext: ServletContext
+  ) = {
+    this(engine, response.getWriter, request, response, servletContext)
+  }
 
   viewPrefixes = List("WEB-INF", "")
 
@@ -90,7 +102,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
 
     def keySet: Set[String] = {
       val answer = new HashSet[String]()
-      for (a <- enumerationAsScalaIterator(request.getAttributeNames)) {
+      for (a <- request.getAttributeNames.asScala) {
         answer.add(a.toString)
       }
       answer
@@ -112,7 +124,7 @@ class ServletRenderContext(engine: TemplateEngine, out: PrintWriter, val request
   }
 
   override def locale: Locale = {
-    var locale = request.getLocale
+    val locale = request.getLocale
     if (locale == null) Locale.getDefault else locale
   }
 

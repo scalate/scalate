@@ -31,7 +31,11 @@ import IOUtil._
  * and directories you often want to move the wiki files into directory trees. This filter will fix up these
  * bad links, searching for wiki files in your source tree and swizzling the generated links to use those.
  */
-case class SwizzleLinkFilter(sourceDirectories: Traversable[File], extensions: Set[String]) extends Filter {
+case class SwizzleLinkFilter(
+    sourceDirectories: Traversable[File],
+    extensions: Set[String]
+) extends Filter {
+
   import SwizzleLinkFilter._
 
   /**

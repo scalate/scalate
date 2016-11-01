@@ -17,9 +17,8 @@
  */
 package org.fusesource.scalate.util
 
-import java.net.{ URLClassLoader, URL }
+import java.io.InputStream
 import java.util.Properties
-import java.io.{ InputStream, File }
 
 /**
  * <p>
@@ -28,9 +27,13 @@ import java.io.{ InputStream, File }
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 object ClassFinder {
+
   val log = Log(getClass); import log._
 
-  def discoverCommands[T](indexPath: String, classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
+  def discoverCommands[T](
+    indexPath: String,
+    classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders
+  ): List[T] = {
     classLoaders.flatMap { cl =>
       ClassLoaders.withContextClassLoader(cl) {
         discoverCommandClasses(indexPath, cl).flatMap {
@@ -61,11 +64,14 @@ object ClassFinder {
     }.distinct
   }
 
-  def discoverCommandClasses(indexPath: String, cl: ClassLoader = getClass.getClassLoader): List[String] = {
+  def discoverCommandClasses(
+    indexPath: String,
+    cl: ClassLoader = getClass.getClassLoader
+  ): List[String] = {
     var rc: List[String] = Nil
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {
-      val url = resources.nextElement;
+      val url = resources.nextElement
       debug("loaded commands from %s", url)
       val p = loadProperties(url.openStream)
       if (p == null) {
@@ -78,25 +84,25 @@ object ClassFinder {
     }
     rc = rc.distinct
     debug("loaded classes: %s", rc)
-    return rc
+    rc
   }
 
   def loadProperties(is: InputStream): Properties = {
     if (is == null) {
-      return null;
-    }
-    try {
-      val p = new Properties()
-      p.load(is);
-      return p
-    } catch {
-      case e: Exception =>
-        return null
-    } finally {
+      null
+    } else {
       try {
-        is.close()
+        val p = new Properties()
+        p.load(is)
+        p
       } catch {
-        case _: Exception =>
+        case e: Exception => null
+      } finally {
+        try {
+          is.close()
+        } catch {
+          case _: Exception =>
+        }
       }
     }
   }

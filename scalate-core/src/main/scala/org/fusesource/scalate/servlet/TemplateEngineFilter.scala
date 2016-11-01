@@ -19,7 +19,6 @@ package org.fusesource.scalate.servlet
 
 import javax.servlet._
 import http.{ HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest }
-import java.lang.String
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.util.{ Log }
 

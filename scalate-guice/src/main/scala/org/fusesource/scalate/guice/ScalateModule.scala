@@ -20,11 +20,10 @@ package org.fusesource.scalate.guice
 import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import _root_.com.google.inject.servlet.ServletModule
 import _root_.com.google.inject.{ Injector, Provides, Singleton }
-import _root_.com.sun.jersey.api.core.{ PackagesResourceConfig, DefaultResourceConfig, ResourceConfig }
+import _root_.com.sun.jersey.api.core.{ PackagesResourceConfig, ResourceConfig }
 import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.javax.servlet.http.HttpServlet
 import _root_.java.{ util => ju }
-import _root_.scala.collection.JavaConversions._
 import org.fusesource.scalate.TemplateEngine
 
 import scala.language.implicitConversions
@@ -39,7 +38,7 @@ class ScalateModule extends ServletModule {
   /**
    * The implicit type conversion to avoid the 'with' method in the DSL
    */
-  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder) = new RichBuilder(builder);
+  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder) = new RichBuilder(builder)
 
   /**
    * Configure any servlets or filters for the application

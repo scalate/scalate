@@ -30,7 +30,7 @@ import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import xml.{ XML, NodeSeq }
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
@@ -59,13 +59,33 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
   protected def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
-  def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
+  def isWriteable(
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType
+  ) = {
     classOf[Transformer].isAssignableFrom(aClass)
   }
 
-  def getSize(transformer: Transformer, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
+  def getSize(
+    transformer: Transformer,
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType
+  ) = -1L
 
-  def writeTo(transformer: Transformer, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
+  def writeTo(
+    transformer: Transformer,
+    aClass: Class[_],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType,
+    httpHeaders: MultivaluedMap[String, Object],
+    out: OutputStream
+  ): Unit = {
+
     /*
         println("aClass: " + aClass.getName)
         println("transformer: " + transformer)
@@ -74,7 +94,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
     if (uriInfo != null) {
       var viewName = "index"
-      val matchedTemplates = uriInfo.getMatchedTemplates()
+      val matchedTemplates = uriInfo.getMatchedTemplates().asScala
       if (!matchedTemplates.isEmpty) {
         val lastTemplate = matchedTemplates.head
         val pathVariables = lastTemplate.getTemplateVariables()
@@ -86,7 +106,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
         }
       }
 
-      val resources = uriInfo.getMatchedResources
+      val resources = uriInfo.getMatchedResources.asScala
       if (!resources.isEmpty) {
         val resource = resources.head
         val className = resource.getClass.getName
@@ -95,7 +115,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
         try {
           val templateName = "/" + className.replace('.', '/') + "." + viewName + ".html"
-          var answer = render(templateName, transformer).toString
+          val answer = render(templateName, transformer).toString
           // Ensure headers are committed
           out.flush()
           out.write(answer.getBytes)

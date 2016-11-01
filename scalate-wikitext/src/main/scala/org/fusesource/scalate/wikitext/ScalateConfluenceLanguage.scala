@@ -20,7 +20,7 @@ package org.fusesource.scalate.wikitext
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import java.{ util => ju }
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 /**
  * Registry of language extensions
@@ -41,7 +41,7 @@ class ScalateConfluenceLanguage extends ConfluenceLanguage {
   override def addStandardBlocks(blocks: ju.List[Block], paragraphBreakingBlocks: ju.List[Block]) = {
     super.addStandardBlocks(blocks, paragraphBreakingBlocks)
 
-    blocks.addAll(ConfluenceLanguageExtensions.extensions)
+    blocks.addAll(ConfluenceLanguageExtensions.extensions.asJava)
 
     List(new PygmentsBlock, new SnippetBlock,
       new HtmlBlock, new DivBlock,

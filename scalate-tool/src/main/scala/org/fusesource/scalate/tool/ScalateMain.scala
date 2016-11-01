@@ -19,7 +19,7 @@ package org.fusesource.scalate.tool
 
 import org.fusesource.scalate.util.IOUtil
 
-import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
+import org.apache.felix.gogo.commands.{ Action, Argument => argument, Command => command }
 import org.apache.karaf.shell.console.Main
 import org.apache.karaf.shell.console.jline.Console
 import jline.Terminal

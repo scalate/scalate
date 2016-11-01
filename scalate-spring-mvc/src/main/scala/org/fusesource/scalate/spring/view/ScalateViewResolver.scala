@@ -17,9 +17,6 @@
  */
 package org.fusesource.scalate.spring.view
 
-import java.util.Locale
-
-import org.springframework.web.servlet.View
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver
 import org.springframework.web.servlet.view.AbstractUrlBasedView
 import org.springframework.web.context.ServletConfigAware
@@ -29,24 +26,26 @@ import javax.servlet.ServletContext
 import java.util.Enumeration
 import scala.collection.JavaConverters.asJavaEnumerationConverter
 
-class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletConfigAware {
+class ScalateViewResolver()
+    extends AbstractTemplateViewResolver
+    with ServletConfigAware {
 
   var templateEngine: ServletTemplateEngine = _
 
   override def setServletConfig(config: ServletConfig) {
     val ste = new ServletTemplateEngine(config)
     ServletTemplateEngine(config.getServletContext()) = ste
-    templateEngine = ste;
+    templateEngine = ste
   }
 
   override def initServletContext(servletContext: ServletContext) {
-    super.initServletContext(servletContext);
+    super.initServletContext(servletContext)
 
     setServletConfig(new ServletConfig() {
       def getServletName(): String = "unknown"
       def getServletContext(): ServletContext = servletContext
       def getInitParameterNames(): Enumeration[String] = List[String]().iterator.asJavaEnumeration
-      def getInitParameter(s: String) = null;
+      def getInitParameter(s: String) = null
     });
   }
 

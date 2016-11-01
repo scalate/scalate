@@ -28,5 +28,7 @@ import _root_.com.google.inject.servlet.GuiceServletContextListener
  * @version $Revision: 1.1 $
  */
 class ScalateGuiceContextListener extends GuiceServletContextListener {
+
   def getInjector = Guice.createInjector(new ScalateModule())
+
 }

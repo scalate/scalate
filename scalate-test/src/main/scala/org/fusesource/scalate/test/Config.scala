@@ -23,6 +23,7 @@ package org.fusesource.scalate.test
  * @version $Revision: 1.1 $
  */
 object Config {
+
   private var _baseDir: String = _
 
   def baseDir: String = {
@@ -33,4 +34,5 @@ object Config {
   }
 
   def baseDir_=(value: String): Unit = _baseDir = value
+
 }

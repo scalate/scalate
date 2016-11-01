@@ -20,35 +20,9 @@ package org.fusesource.scalate.support
 import util.parsing.combinator.RegexParsers
 import CharData._
 import Integer._
-import util.parsing.input.{ Positional, CharArrayReader }
+import util.parsing.input.CharArrayReader
 
 import scala.language.postfixOps
-
-/**
- * Is a String with positioning information
- */
-case class Text(value: String) extends Positional {
-  def +(other: String) = Text(value + other).setPos(pos)
-
-  def +(other: Text) = Text(value + other.value).setPos(pos)
-
-  def trim = Text(value.trim).setPos(pos)
-
-  def replaceAll(x: String, y: String) = Text(value.replaceAll(x, y)).setPos(pos)
-
-  def isEmpty = value.length == 0
-
-  def isWhitespace: Boolean = value.trim.length == 0
-
-  override def equals(obj: Any) = obj match {
-    case t: Text => t.value == value
-    case _ => false
-  }
-
-  override def hashCode = value.hashCode
-
-  override def toString = value
-}
 
 /**
  * @version $Revision : 1.1 $
@@ -122,13 +96,7 @@ trait ScalaParseSupport extends RegexParsers {
     ('\\' ~> 'u' ~> uniEscapeSeq ^? f) | super.accept(expected, f)
 
   private lazy val printableChar: Parser[Char] = elem("printable", !isControl(_))
-  private lazy val printableChars: Parser[String] = takeWhile(printableChar)
   private lazy val printableCharNoDoubleQuote: Parser[Char] = elem("nodq", ch => !isControl(ch) && ch != '"')
-
-  private lazy val multiLineCharGroup: Parser[String] =
-    opt(elem('"')) ~ opt(elem('"')) ~ chrExcept('"') ^^ {
-      case a ~ b ~ c => List(a, b, Some(c)).flatMap(x => x).mkString
-    }
 
   lazy val charEscapeSeq: Parser[Char] = '\\' ~> (
     (accept("escape", simpleEscape))
@@ -148,63 +116,5 @@ trait ScalaParseSupport extends RegexParsers {
 
   lazy val doubleQuotedChars: Parser[String] = takeWhile(charEscapeSeq | printableCharNoDoubleQuote)
   lazy val multiLineChars: Parser[String] = takeUntil(tripleQuote)
-}
 
-object CharData {
-  import Character._
-
-  val simpleEscape: PartialFunction[Char, Char] = {
-    case 'b' => '\b'
-    case 't' => '\t'
-    case 'n' => '\n'
-    case 'f' => '\f'
-    case 'r' => '\r'
-    case '\"' => '\"'
-    case '\'' => '\''
-    case '\\' => '\\'
-  }
-
-  val zeroDigit: PartialFunction[Char, Char] = {
-    case '0' => '0'
-  }
-  val isNonZeroDigit: PartialFunction[Char, Char] = {
-    case '1' => '1'
-    case '2' => '2'
-    case '3' => '3'
-    case '4' => '4'
-    case '5' => '5'
-    case '6' => '6'
-    case '7' => '7'
-    case '8' => '8'
-    case '9' => '9'
-  }
-  val isDigit: PartialFunction[Char, Char] = zeroDigit orElse isNonZeroDigit
-  val isOctalDigit: PartialFunction[Char, Char] = {
-    case '0' => '0'
-    case '1' => '1'
-    case '2' => '2'
-    case '3' => '3'
-    case '4' => '4'
-    case '5' => '5'
-    case '6' => '6'
-    case '7' => '7'
-  }
-  val isHexDigit: PartialFunction[Char, Char] = isDigit orElse {
-    case 'a' => 'a'
-    case 'b' => 'b'
-    case 'c' => 'c'
-    case 'd' => 'd'
-    case 'e' => 'e'
-    case 'f' => 'f'
-    case 'A' => 'A'
-    case 'B' => 'B'
-    case 'C' => 'C'
-    case 'D' => 'D'
-    case 'E' => 'E'
-    case 'F' => 'F'
-  }
-
-  def isControl(c: Char) = Character.isISOControl(c)
-
-  def isControl(codepoint: Int) = Character.isISOControl(codepoint)
 }

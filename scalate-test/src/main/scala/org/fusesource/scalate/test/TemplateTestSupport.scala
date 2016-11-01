@@ -26,6 +26,7 @@ import org.scalatest.ConfigMap
  * A useful base class for testing templates
  */
 class TemplateTestSupport extends FunSuiteSupport {
+
   var engine: TemplateEngine = _
   var showOutput = false
 
@@ -62,7 +63,7 @@ class TemplateTestSupport extends FunSuiteSupport {
     assertOutputContains(source, Map[String, Any](), expected: _*)
 
   def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): String = {
-    var output = engine.layout(source, attributes)
+    val output = engine.layout(source, attributes)
     if (showOutput) {
       println("output: '" + output + "'")
     } else {

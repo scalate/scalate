@@ -65,15 +65,15 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
         case Comment(code) => {
         }
         case Text(text) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "$_scalate_$_context << ( " + asString(text) + " )"
         }
         case Variable(name, unescape) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "" + scope + ".renderVariable(\"" + name + "\", " + unescape + ")"
         }
         case Section(name, body) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "" + scope + ".section(\"" + name + "\") { " + pushScope + " =>"
           indent {
             body.foreach(generate)
@@ -82,7 +82,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << "}"
         }
         case InvertSection(name, body) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "" + scope + ".invertedSection(\"" + name + "\") { " + pushScope + " =>"
           indent {
             body.foreach(generate)
@@ -91,15 +91,15 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << "}"
         }
         case Partial(name) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "" + scope + ".partial(\"" + name + "\")"
         }
         case ImplicitIterator(name) => {
-          this << fragment.pos;
+          this << fragment.pos
           this << "" + scope + ".implicitIterator = Some(\"" + name + "\")"
         }
         case Pragma(name, options) =>
-          this << fragment.pos;
+          this << fragment.pos
           this << "$_scalate_$_context << \"ERROR: This implementation of mustache doesn't understand the '" + name + "' pragma\""
         case SetDelimiter(open, close) =>
         case s => {

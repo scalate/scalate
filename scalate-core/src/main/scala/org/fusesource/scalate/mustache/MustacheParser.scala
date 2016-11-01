@@ -19,16 +19,16 @@ package org.fusesource.scalate.mustache
 
 import util.parsing.combinator.RegexParsers
 import util.parsing.input.{ Positional, CharSequenceReader, Position }
-import org.fusesource.scalate.{ InvalidSyntaxException }
+import org.fusesource.scalate.InvalidSyntaxException
 import org.fusesource.scalate.util.Log
 
-sealed abstract class Statement extends Positional {
-}
+sealed abstract class Statement extends Positional
 
 /**
  * Is a String with positioning information
  */
 case class Text(value: String) extends Statement {
+
   def +(other: String) = Text(value + other).setPos(pos)
 
   def +(other: Text) = Text(value + other.value).setPos(pos)
@@ -50,13 +50,16 @@ case class ImplicitIterator(name: String) extends Statement
 case class Pragma(name: Text, options: Map[String, String]) extends Statement
 
 object MustacheParser extends Log
+
 /**
  * Parser for the Mustache template language
  *
  * @version $Revision : 1.1 $
  */
 class MustacheParser extends RegexParsers {
+
   import MustacheParser._
+
   private var _open: String = "{{"
   private var _close: String = "}}"
 
@@ -163,4 +166,5 @@ class MustacheParser extends RegexParsers {
     case t: Text => t.isWhitespace
     case _ => false
   }
+
 }

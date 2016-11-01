@@ -21,11 +21,10 @@ import collection.mutable.HashMap
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
 import io.Source
-import scala.Option
 import java.io.File
 import java.util.regex.{ Pattern, Matcher }
 import org.eclipse.mylyn.wikitext.core.parser.{ DocumentBuilder, Attributes }
-import org.fusesource.scalate.util.{ Log, Logging }
+import org.fusesource.scalate.util.Log
 
 /**
  * Helper class to access file containing snippets of code:
@@ -34,6 +33,7 @@ import org.fusesource.scalate.util.{ Log, Logging }
  * - using a URL that starts with a predefined prefix
  */
 object Snippets {
+
   val log = Log(getClass); import log._
   var errorHandler: (SnippetBlock, Throwable) => Unit = logError
 
@@ -210,11 +210,14 @@ trait SnippetHandler {
 /**
  * Default handler for the {snippet} code (renders a <div class="snippet"><pre class="<language>">
  */
-case class DefaultSnippetHandler(val builder: DocumentBuilder, val language: String) extends SnippetHandler {
+case class DefaultSnippetHandler(
+    val builder: DocumentBuilder,
+    val language: String
+) extends SnippetHandler {
 
   def begin() = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))
-    builder.beginBlock(BlockType.PREFORMATTED, cssClass(language));
+    builder.beginBlock(BlockType.PREFORMATTED, cssClass(language))
     builder.characters("\n")
   }
 

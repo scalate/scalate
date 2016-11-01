@@ -3,7 +3,6 @@ package jrebel
 
 import org.zeroturnaround.javarebel.ClassEventListener
 import org.zeroturnaround.javarebel.ReloaderFactory
-import java.lang.Class
 import util.Logging
 
 /**

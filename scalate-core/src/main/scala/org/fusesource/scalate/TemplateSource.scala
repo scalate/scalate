@@ -123,7 +123,7 @@ trait TemplateSource extends Resource {
         if (sep != "/") {
           // on windows lets replace the \ in a directory name with /
           val newName = name.replace('\\', '/')
-          debug("convertedd windows path into: " + newName)
+          debug("converted windows path into: " + newName)
           newName
         } else {
           name
@@ -148,8 +148,6 @@ trait TemplateSource extends Resource {
       if (lastIndex > 0) {
         packages = packages.drop(lastIndex + 1)
       }
-
-      //val packageName = packages.map(safePackageName(_)).mkString(".")
       val packageName = packages.mkString(".")
 
       val cn = "$_scalate_$" + processClassName(matcher.group(2))
@@ -157,14 +155,16 @@ trait TemplateSource extends Resource {
     }
   }
 
-  protected val reservedWords = Set[String]("package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var")
+  protected val reservedWords = Set[String](
+    "package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var"
+  )
 }
 
 /**
  * Helper methods to create a [[org.fusesource.scalate.TemplateSource]] from various sources
  */
 object TemplateSource {
-  val log = Log(getClass); import log._
+  val log = Log(getClass)
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from the actual String contents using the given
@@ -210,4 +210,5 @@ object TemplateSource {
    * the template kind (using the extension of the URI)
    */
   def fromSource(uri: String, source: Source) = new SourceTemplateSource(uri, source)
+
 }

@@ -17,13 +17,12 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.{ util => ju }
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import collection.mutable.ListBuffer
 import java.util.regex.{ Pattern, Matcher }
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ ParameterizedBlock, TextBoxBlock, AbstractConfluenceDelimitedBlock }
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ ParameterizedBlock, AbstractConfluenceDelimitedBlock }
 import org.eclipse.mylyn.wikitext.core.parser.{ TableRowAttributes, TableAttributes, TableCellAttributes, Attributes }
-import org.fusesource.scalate.util.{ Log, Logging }
+import org.fusesource.scalate.util.Log
 
 class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
 
@@ -57,65 +56,64 @@ class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
 abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock {
   var startPattern = Pattern.compile("\\s*\\{" + name + "(?::([^\\}]*))?\\}(.*)")
   var endPattern = Pattern.compile("(\\{" + name + "\\})(.*)")
-  var blockLineCount: Int = 0;
-  var matcher: Matcher = null;
+  var blockLineCount: Int = 0
+  var matcher: Matcher = null
   var nesting = false;
 
   override def processLineContent(line: String, ofs: Int): Int = {
     var end = line.length();
     var offset = ofs
     if (blockLineCount == 0) {
-      setOptions(matcher.group(1));
-      offset = matcher.start(2);
+      setOptions(matcher.group(1))
+      offset = matcher.start(2)
       beginBlock
-      nesting = true;
-      end = offset;
+      nesting = true
+      end = offset
     } else {
-      var terminating = false;
-      val endMatcher = endPattern.matcher(line);
+      var terminating = false
+      val endMatcher = endPattern.matcher(line)
       if (offset < end) {
         if (offset > 0) {
-          endMatcher.region(offset, end);
+          endMatcher.region(offset, end)
         }
         if (endMatcher.find()) {
-          terminating = true;
-          end = endMatcher.start(2);
+          terminating = true
+          end = endMatcher.start(2)
         } else {
-          end = offset;
+          end = offset
         }
       }
       if (terminating) {
-        setClosed(true);
+        setClosed(true)
       }
     }
-    blockLineCount = blockLineCount + 1;
-    var ret = -1;
+    blockLineCount = blockLineCount + 1
+    var ret = -1
     if (end != line.length()) {
-      ret = end;
+      ret = end
     }
     return ret
   }
 
   override def findCloseOffset(line: String, lineOffset: Int): Int = {
-    var endMatcher = endPattern.matcher(line);
+    val endMatcher = endPattern.matcher(line)
     if (lineOffset != 0) {
-      endMatcher.region(lineOffset, line.length());
+      endMatcher.region(lineOffset, line.length())
     }
     if (endMatcher.find()) {
-      return endMatcher.start();
+      return endMatcher.start()
     }
-    return -1;
+    return -1
   }
 
   override def canStart(line: String, lineOffset: Int): Boolean = {
-    blockLineCount = 0;
-    nesting = false;
-    matcher = startPattern.matcher(line);
+    blockLineCount = 0
+    nesting = false
+    matcher = startPattern.matcher(line)
     if (lineOffset > 0) {
-      matcher.region(lineOffset, line.length());
+      matcher.region(lineOffset, line.length())
     }
-    val ret = matcher.matches();
-    return ret;
+    matcher.matches()
   }
 
   override def setClosed(closed: Boolean) = {
@@ -131,9 +129,7 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
   def endBlock() = {
   }
 
-  override def beginNesting(): Boolean = {
-    return nesting;
-  }
+  override def beginNesting(): Boolean = nesting
 }
 
 class DivBlock extends AbstractNestedBlock("div") {
@@ -182,7 +178,7 @@ class SectionBlock extends AbstractNestedBlock("section") {
     if (ret) {
       defaultAttr
     }
-    return ret;
+    ret
   }
 
   override def setOption(option: String) =
@@ -194,9 +190,9 @@ class SectionBlock extends AbstractNestedBlock("section") {
   def defaultAttr() = {
     tableAttributes = new TableAttributes()
     tableAttributes.setCssClass("sectionMacro")
-    tableAttributes.setBorder("0");
+    tableAttributes.setBorder("0")
     tableAttributes.setCellpadding("5px")
-    tableAttributes.setCellspacing("0");
+    tableAttributes.setCellspacing("0")
     tableAttributes.setWidth("100%")
     rowAttributes = new TableRowAttributes()
   }

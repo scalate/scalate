@@ -26,16 +26,19 @@ import org.apache.camel.util.{ ExchangeHelper, ObjectHelper }
 import org.apache.commons.logging.LogFactory
 
 import impl.ProcessorEndpoint
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 /**
  * @version $Revision : 1.1 $
  */
+class ScalateEndpoint(
+    component: ScalateComponent,
+    uri: String,
+    templateUri: String,
+    defaultTemplateExtension: String = "ssp"
+) extends ProcessorEndpoint(uri, component) {
 
-class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: String, defaultTemplateExtension: String = "ssp")
-    extends ProcessorEndpoint(uri, component) {
-
-  val log = LogFactory.getLog(getClass);
+  val log = LogFactory.getLog(getClass)
 
   val RESOURCE_URI = "CamelScalateResourceUri"
   val TEMPLATE = "CamelScalateTemplate"
@@ -54,7 +57,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: Str
 
   override def onExchange(exchange: Exchange): Unit = {
     ObjectHelper.notNull(templateUri, "resourceUri")
-    val templateEngine = component.templateEngine;
+    val templateEngine = component.templateEngine
     val newResourceUri = exchange.getIn().getHeader(RESOURCE_URI, classOf[String])
     if (newResourceUri != null) {
       exchange.getIn().removeHeader(RESOURCE_URI)
@@ -83,7 +86,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: Str
       val context = new DefaultRenderContext(uri, templateEngine, new PrintWriter(buffer))
 
       val variableMap = ExchangeHelper.createVariableMap(exchange)
-      for ((key, value) <- variableMap) {
+      for ((key, value) <- variableMap.asScala) {
         debug("setting " + key + " = " + value)
         context.attributes(key) = value
       }
@@ -99,7 +102,7 @@ class ScalateEndpoint(component: ScalateComponent, uri: String, templateUri: Str
       // now lets output the headers to the exchange
       variableMap.get("headers") match {
         case map: ju.Map[_, _] =>
-          for ((key, value) <- map.asInstanceOf[ju.Map[String, AnyRef]]) {
+          for ((key, value) <- map.asInstanceOf[ju.Map[String, AnyRef]].asScala) {
             out.setHeader(key, value)
           }
         case _ =>

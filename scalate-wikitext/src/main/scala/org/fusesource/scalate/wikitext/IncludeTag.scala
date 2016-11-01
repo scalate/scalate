@@ -26,6 +26,7 @@ object IncludeTag extends Log
  * Implements the "include" macro
  */
 class IncludeTag extends AbstractConfluenceTagSupport("include") {
+
   import IncludeTag._
   var uri: String = _
 

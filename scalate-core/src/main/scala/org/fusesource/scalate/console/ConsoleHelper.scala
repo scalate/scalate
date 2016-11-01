@@ -21,10 +21,9 @@ import _root_.java.util.regex.Pattern
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
-import _root_.scala.Option
 import java.io.File
 import scala.io.Source
-import collection.JavaConversions._
+import collection.JavaConverters._
 import collection.immutable.SortedMap
 import collection.mutable.{ ArrayBuffer, ListBuffer }
 import util.parsing.input.{ Position, OffsetPosition }
@@ -44,7 +43,7 @@ case class SourceLine(
    * Return a tuple of the prefix, the error character and the postfix of this source line
    * to highlight the error at the given column
    */
-  def splitOnCharacter(col: Int): Tuple3[String, String, String] = {
+  def splitOnCharacter(col: Int): (String, String, String) = {
     val length = source.length
     if (col >= length) {
       (source, "", "")
@@ -65,8 +64,9 @@ object ConsoleHelper extends Log
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
-  import ConsoleHelper._
+class ConsoleHelper(
+    context: RenderContext
+) extends ConsoleSnippets {
   import context._
 
   val consoleParameter = "_scalate"
@@ -204,7 +204,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
         val index: Array[String] = {
           val source = op.source
           var rc = new ArrayBuffer[String]
-          var start = 0;
+          var start = 0
           for (i <- 0 until source.length) {
             if (source.charAt(i) == '\n') {
               rc += source.subSequence(start, i).toString.stripLineEnd
@@ -233,7 +233,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
 
   def systemProperties: SortedMap[String, String] = {
     // TODO is there a better way?
-    val m: Map[String, String] = System.getProperties.toMap
+    val m: Map[String, String] = System.getProperties.asScala.toMap
     SortedMap(m.iterator.toSeq: _*)
   }
 
@@ -251,7 +251,7 @@ class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
     var rc: NodeSeq = null
 
     // Does it look like a scalate template class??
-    var className = stack.getClassName.split(Pattern.quote(".")).last
+    val className = stack.getClassName.split(Pattern.quote(".")).last
     if (className.startsWith("$_scalate_$")) {
       // Then try to load it's smap info..
       var file = RenderContext().engine.bytecodeDirectory

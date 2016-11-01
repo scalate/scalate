@@ -47,10 +47,10 @@ object RenderHelper {
 
   def indentAmount(level: Int, kind: String): String = {
     val rc = new StringBuilder
-    var i = 0;
+    var i = 0
     while (i < level) {
       rc.append(kind)
-      i += 1;
+      i += 1
     }
     rc.toString
   }
@@ -60,7 +60,7 @@ object RenderHelper {
    * so that multiple lines encode to a sinle long HTML source line
    * but still render in browser as multiple lines.
    */
-  def preserve(text: Any): String = text.toString.replaceAll("\n", "&#x000A;");
+  def preserve(text: Any): String = text.toString.replaceAll("\n", "&#x000A;")
 
   /**
    *  Escapes any XML special characters.

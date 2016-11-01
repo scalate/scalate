@@ -19,7 +19,6 @@ package org.fusesource.scalate
 package wikitext
 
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
-import java.lang.String
 import java.util.regex.Matcher
 
 /**

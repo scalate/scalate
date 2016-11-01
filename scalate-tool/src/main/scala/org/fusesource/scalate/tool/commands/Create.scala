@@ -17,10 +17,9 @@
  */
 package org.fusesource.scalate.tool.commands
 
-import java.{ util => ju, lang => jl }
+import java.{ lang => jl }
 import java.util.zip.ZipInputStream
 import java.io._
-import java.lang.StringBuilder
 import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command, CompleterValues => completerValues }
 import org.apache.felix.service.command.CommandSession
 import java.util.regex.Pattern
