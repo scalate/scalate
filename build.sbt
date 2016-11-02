@@ -2,14 +2,17 @@ name := "Scalate"
 organization := "org.scalatra.scalate"
 version := "1.8.0-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
-crossScalaVersions := Seq("2.12.0-RC2", "2.11.8", "2.10.6")
+crossScalaVersions := Seq("2.12.0", "2.11.8", "2.10.6")
 javaVersionPrefix in javaVersionCheck := Some("1.8")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
-licenses += "The Apache Software License, Version 2.0" → url("http://www.apache.org/licenses/LICENSE-2.0")
-scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
-  "scm:git:git://github.com/scalate/scalate.git", Some("scm:git:ssh://git@github.com:scalate/scalate.git")))
+licenses += "The Apache Software License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
+scmInfo := Some(
+  ScmInfo(url("http://github.com/scalate/scalate"),
+  "scm:git:git://github.com/scalate/scalate.git",
+  Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
+)
 homepage := Some(url("http://scalate.github.io/scalate"))
 unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
 notPublished
@@ -23,6 +26,7 @@ lazy val scalateUtil = scalateProject("util")
     description := "Scalate Utilities.",
     parallelExecution in Test := false,
     addScalaModules(11, scalaXml, scalaParserCombinators),
+    addScalaModules(12, scalaXml, scalaParserCombinators),
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
 
 lazy val scalateCore = scalateProject("core")
@@ -61,12 +65,12 @@ lazy val scalateCamel = scalateProject("camel")
   .settings(
     description := "Camel component for Scalate.",
     addScalaDependentDeps(
-      10 → camelScala213,
-      10 → camelSpring213,
-      11 → camelScala214,
-      11 → camelSpring214,
-      12 → camelScala214,
-      12 → camelSpring214
+      10 -> camelScala213,
+      10 -> camelSpring213,
+      11 -> camelScala214,
+      11 -> camelSpring214,
+      12 -> camelScala214,
+      12 -> camelSpring214
     )
   )
 
@@ -201,3 +205,4 @@ lazy val scalateWikitext = scalateProject("wikitext")
   .dependsOn(scalateCore, scalateTest % Test)
   .dependsOn(wikitextConfluence, wikitextTextile, logbackClassic % Test)
   .settings(description := "Scalate WikiText integration for Markdown and Confluence notations.")
+
