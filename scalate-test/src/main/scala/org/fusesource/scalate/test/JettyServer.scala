@@ -18,13 +18,11 @@
 package org.fusesource.scalate.test
 
 import org.apache.commons.logging.LogFactory
-import org.eclipse.jetty.server.Connector
-import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.nio.SelectChannelConnector
+import org.eclipse.jetty.server.{ Connector, Server, ServerConnector }
 import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
-import java.io.{ FileInputStream, File }
+import java.io.{ File, FileInputStream }
 
 /**
  * @version $Revision : 1.1 $
@@ -63,9 +61,8 @@ class JettyServer {
     }
 
     LOG.info("Starting Web Server on port: " + port)
-    val connector = new SelectChannelConnector
+    val connector = new ServerConnector(server)
     connector.setPort(port)
-    connector.setServer(server)
 
     val context = new WebAppContext
     if (webAppDir == null) {
