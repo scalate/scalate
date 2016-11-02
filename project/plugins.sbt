@@ -8,6 +8,7 @@ addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.3.2")
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.4.0")
 addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.10")
 
 lazy val sbtOsgi = uri("git://github.com/arashi01/sbt-osgi.git#bd07211")
 

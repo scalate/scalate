@@ -54,7 +54,7 @@ object BundleClassPathBuilder {
   def fromWires(bundle: Bundle): List[AbstractFile] = {
     debug("Checking OSGi bundle wiring for %s", bundle)
     val context = bundle.getBundleContext
-    var ref: ServiceReference = context.getServiceReference(classOf[PackageAdmin].getName)
+    val ref: ServiceReference[_] = context.getServiceReference(classOf[PackageAdmin].getName)
 
     if (ref == null) {
       warn("PackageAdmin service is unavailable - unable to check bundle wiring information")

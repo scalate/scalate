@@ -55,7 +55,7 @@ class ScalateMain extends Main with Action {
   override def isMultiScopeMode() = false
 
   override def createConsole(commandProcessor: CommandProcessorImpl, in: InputStream, out: PrintStream, err: PrintStream, terminal: Terminal) = {
-    new Console(commandProcessor, in, out, err, terminal, null) {
+    new Console(commandProcessor, in, out, err, terminal, null, null) {
       protected override def getPrompt = BOLD + "scalate> " + RESET
       protected override def welcome = {
         session.getConsole().println(IOUtil.loadText(getClass().getResourceAsStream("banner.txt")).replace("${project.version}", BuildInfo.version))

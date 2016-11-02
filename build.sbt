@@ -38,6 +38,7 @@ lazy val scalateCore = scalateProject("core")
     javaxServlet % Optional,
     logbackClassic % "runtime,optional",
     jerseyCore % Optional,
+    jerseyServlet % Optional,
     jerseyServer % Optional,
     osgiCore % "provided,optional",
     rhinoCoffeeScript % Optional,
@@ -64,14 +65,7 @@ lazy val scalateCamel = scalateProject("camel")
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
     description := "Camel component for Scalate.",
-    addScalaDependentDeps(
-      10 -> camelScala213,
-      10 -> camelSpring213,
-      11 -> camelScala214,
-      11 -> camelSpring214,
-      12 -> camelScala214,
-      12 -> camelSpring214
-    )
+    libraryDependencies ++= Seq(camelScala, camelSpring)
   )
 
 lazy val scalateGuice = scalateProject("guice")
