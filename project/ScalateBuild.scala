@@ -5,7 +5,7 @@ import com.typesafe.sbt.pgp.PgpKeys
 import sbtbuildinfo.{BuildInfoPlugin, BuildInfoKeys}
 import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
 import sbtunidoc.Plugin.UnidocKeys
-import sbtunidoc.{Plugin ⇒ SbtUnidoc}
+import sbtunidoc.{Plugin => SbtUnidoc}
 import xerial.sbt.Sonatype
 import Sonatype.SonatypeKeys
 import sbt._
@@ -34,16 +34,16 @@ object ScalateBuild extends Plugin {
   def scalateProject(id: String, base: Option[File] = None): Project =
     Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
 
-  def addScalaModules(scalaMajor: Int, modules: (String ⇒ ModuleID)*) = libraryDependencies := {
+  def addScalaModules(scalaMajor: Int, modules: (String => ModuleID)*) = libraryDependencies := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= scalaMajor ⇒ libraryDependencies.value ++ modules.map(_(scalaOrganization.value))
-      case _ ⇒ libraryDependencies.value
+      case Some((2, v)) if v >= scalaMajor => libraryDependencies.value ++ modules.map(_(scalaOrganization.value))
+      case _ => libraryDependencies.value
     }
   }
 
   def addScalaDependentDeps(modules: (Int, ModuleID)*) = libraryDependencies := {
     val sv = CrossVersion.partialVersion(scalaVersion.value).map(_._2).get
-    libraryDependencies.value ++ modules.collect { case m if m._1 == sv ⇒ m._2 }
+    libraryDependencies.value ++ modules.collect { case m if m._1 == sv => m._2 }
   }
 
   def notPublished = Seq(
@@ -95,7 +95,7 @@ object ScalateBuild extends Plugin {
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
     SonatypeKeys.profileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
-    pomIncludeRepository := (_ ⇒ false),
+    pomIncludeRepository := (_ => false),
     publish := PgpKeys.publishSigned.value,
     publishLocal := PgpKeys.publishLocalSigned.value
   )
@@ -130,7 +130,7 @@ object ScalateBuild extends Plugin {
     OsgiKeys.bundleSymbolicName := s"${organization.value}.${normalizedName.value.stripPrefix("scalate-")}",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate." + normalizedName.value.stripPrefix("scalate-")),
     OsgiKeys.importPackage := Seq("scala*;version=\"%s\"".format(osgiVersionRange(scalaVersion.value)), "*"),
-    OsgiKeys.exportPackage := OsgiKeys.privatePackage(pp ⇒ {
+    OsgiKeys.exportPackage := OsgiKeys.privatePackage(pp => {
       val p = if (!pp.head.endsWith("*")) pp.head else pp.head.substring(0, pp.head.size - 1)
       s"!$p*.impl*" +: s"$p*" +: Nil
     }).value,
