@@ -1,6 +1,8 @@
 ![Scalate][logo]
 ===============================
 
+[![Build Status](https://travis-ci.org/scalate/scalate.svg?branch=master)](https://travis-ci.org/scalate/scalate)
+
 Scalate is a [Scala](http://www.scala-lang.org) based template engine which supports HAML, Mustache and JSP, Erb and Velocity style syntaxes.
 
 The following template languages are supported:
