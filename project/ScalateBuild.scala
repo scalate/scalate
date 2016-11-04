@@ -93,7 +93,7 @@ object ScalateBuild extends Plugin {
   )
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
-    SonatypeKeys.profileName := "org.scalatra.scalate",
+    SonatypeKeys.sonatypeProfileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
     publish := PgpKeys.publishSigned.value,
