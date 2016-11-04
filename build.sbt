@@ -1,6 +1,6 @@
 name := "Scalate"
 organization := "org.scalatra.scalate"
-version := "1.8.0"
+version := "1.8.1-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.0", "2.11.8", "2.10.6")
 javaVersionPrefix in javaVersionCheck := Some("1.8")
