@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
 <html lang="en">
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -13,7 +13,7 @@
             $("#files_popup").toggle("slow");
             return false;
           });
-        });    
+        });
       //]]>
     </script>
     <link type="text/css" rel="stylesheet" href="styles/impact/css/pygmentize.css"/>
@@ -41,7 +41,7 @@
       </div>
       <div class="wrapper">
 <ul>
-<li><a href="index.html">Scalate 1.7.0</a></li>
+<li><a href="index.html">Scalate</a></li>
 <li><a href="download.html">Download</a></li>
 <li><a href="source.html">Source</a></li>
 <li><a href="community.html">Community</a></li>
@@ -94,8 +94,8 @@
   <p>If you build your project using <a href="http://www.scala-sbt.org/">sbt</a> then just add the following to your <em>build.sbt</em> or <em>project/Build.scala</em></p>
 
   <div class="syntax"><div class="highlight">
-  <pre><span class="nt">libraryDependencies += 
-  "org.scalatra.scalate" %% "scalate-core" % "1.7.0"</pre></div>&#x000A;</div>
+  <pre><span class="nt">libraryDependencies +=
+  "org.scalatra.scalate" %% "scalate-core" % "<a href="https://github.com/scalate/scalate/releases">{latest version}</a>"</pre></div>&#x000A;</div>
 
 </div>
 <div class="right">
@@ -104,7 +104,7 @@
 <div class="right">
   <p>If you build your project using <a href="http://maven.apache.org/">Maven</a> then just add the following to your <em>pom.xml</em></p>
 
-  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>&#x000A;  <span class="nt">&lt;groupId&gt;</span>org.scalatra.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;  <span class="nt">&lt;artifactId&gt;</span>scalate-core_2.11<span class="nt">&lt;/artifactId&gt;</span>&#x000A;  <span class="nt">&lt;version&gt;</span>1.7.0<span class="nt">&lt;/version&gt;</span>  &#x000A;<span class="nt">&lt;/dependency&gt;</span>&#x000A;</pre></div>&#x000A;</div>
+  <div class="syntax"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>&#x000A;  <span class="nt">&lt;groupId&gt;</span>org.scalatra.scalate<span class="nt">&lt;/groupId&gt;</span>&#x000A;  <span class="nt">&lt;artifactId&gt;</span>scalate-core_2.12<span class="nt">&lt;/artifactId&gt;</span>&#x000A;  <span class="nt">&lt;version&gt;</span><a href="https://github.com/scalate/scalate/releases">{latest version}</a><span class="nt">&lt;/version&gt;</span>  &#x000A;<span class="nt">&lt;/dependency&gt;</span>&#x000A;</pre></div>&#x000A;</div>
 
   <p>The releases should be synchronized to the <a href="http://repo1.maven.org/maven2/org/scalatra/scalate/">central maven repository</a> so you should not need to add a maven repository to your pom.xml. </p>
 
@@ -130,8 +130,8 @@
       //<![CDATA[
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script> 
-        <script type="text/javascript"> 
+        </script>
+        <script type="text/javascript">
         try {
         var pageTracker = _gat._getTracker("UA-1347593-12");
         pageTracker._trackPageview();
