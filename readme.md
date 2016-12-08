@@ -1,6 +1,8 @@
 ![Scalate][logo]
 ===============================
 
+[![Join the chat at https://gitter.im/scalate/scalate](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/scalate/scalate?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Scalate is a [Scala](http://www.scala-lang.org) based template engine which supports HAML, Mustache and JSP, Erb and Velocity style syntaxes.
 
 The following template languages are supported:
