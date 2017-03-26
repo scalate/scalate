@@ -9,7 +9,7 @@ The following template languages are supported:
 
   * [Mustache](http://scalate.github.io/scalate/documentation/mustache.html#features): is a Mustache template language for Java/Scala
   * [Jade](http://scalate.github.io/scalate/documentation/scaml-reference.html#jade): The Jade style of Haml/Scaml template language
-  * [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html#features): Provides Haml style template lanaguage
+  * [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html#features): Provides Haml style template language
   * [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax): Provides a JSP, Erb and Velocity style template language
 
 In Scaml and SSP all expressions are typesafe and checked at edit/compile time to ensure you don't leave any mistakes in your pages.
