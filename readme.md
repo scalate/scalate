@@ -8,7 +8,7 @@ Scalate is a [Scala](http://www.scala-lang.org) based template engine which supp
 The following template languages are supported:
 
   * [Mustache](http://scalate.github.io/scalate/documentation/mustache.html#features): is a Mustache template language for Java/Scala
-  * [Jade](http://scalate.github.io/scalate/documentation/scaml-reference.html#jade): The Jade style of Haml/Scaml template lanaguage
+  * [Jade](http://scalate.github.io/scalate/documentation/scaml-reference.html#jade): The Jade style of Haml/Scaml template language
   * [Scaml](http://scalate.github.io/scalate/documentation/scaml-reference.html#features): Provides Haml style template lanaguage
   * [Ssp](http://scalate.github.io/scalate/documentation/ssp-reference.html#syntax): Provides a JSP, Erb and Velocity style template language
 
