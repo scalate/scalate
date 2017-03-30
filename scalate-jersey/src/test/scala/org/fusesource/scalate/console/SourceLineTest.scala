@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.org.fusesource.scalate.FunSuiteSupport
+import _root_.org.fusesource.scalate.test.FunSuiteSupport
 
 class SourceLineTest extends FunSuiteSupport {
   val line = SourceLine(1, "abcd")

@@ -40,16 +40,14 @@ import java.lang.reflect.Type
 import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
 import javax.servlet.ServletContext
 import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
-
-import com.sun.jersey.api.core.ExtendedUriInfo
-import com.sun.jersey.api.container.ContainerException
-
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import java.lang.{ String, Class }
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
 import org.fusesource.scalate.util.{ Log, ResourceNotFoundException, Logging }
+import javax.ws.rs.core.UriInfo
+import javax.ws.rs.WebApplicationException
 
 object ViewWriter extends Log
 
@@ -63,7 +61,7 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
   import ViewWriter._
 
   @Context
-  protected var uriInfo: ExtendedUriInfo = _
+  protected var uriInfo: UriInfo = _
   @Context
   protected var _servletContext: ServletContext = _
   @Context
@@ -73,33 +71,13 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
 
   protected var errorUris: List[String] = ServletHelper.errorUris()
 
-  def isWriteable(
-    aClass: Class[_],
-    aType: Type,
-    annotations: Array[Annotation],
-    mediaType: MediaType
-  ) = {
+  def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     classOf[View[T]].isAssignableFrom(aClass)
   }
 
-  def getSize(
-    view: View[T],
-    aClass: Class[_],
-    aType: Type,
-    annotations: Array[Annotation],
-    mediaType: MediaType
-  ) = -1L
+  def getSize(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
 
-  def writeTo(
-    view: View[T],
-    aClass: Class[_],
-    aType: Type,
-    annotations: Array[Annotation],
-    mediaType: MediaType,
-    httpHeaders: MultivaluedMap[String, Object],
-    out: OutputStream
-  ): Unit = {
-
+  def writeTo(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
     def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
 
     try {
@@ -142,7 +120,7 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
           }
         }
         if (notFound) {
-          throw new ContainerException(e)
+          throw createContainerException(e)
         }
     }
   }
@@ -159,6 +137,10 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
       throw new IllegalArgumentException("servletContext not injected")
     }
     _servletContext
+  }
+
+  protected def createContainerException(e: Exception) = {
+    new WebApplicationException(e)
   }
 
 }
