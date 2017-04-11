@@ -37,9 +37,6 @@ lazy val scalateCore = scalateProject("core")
   .dependsOn(
     javaxServlet % Optional,
     logbackClassic % "runtime,optional",
-    jerseyCore % Optional,
-    jerseyServlet % Optional,
-    jerseyServer % Optional,
     osgiCore % "provided,optional",
     rhinoCoffeeScript % Optional,
     scalamd % Optional,
@@ -176,7 +173,7 @@ lazy val scalateTool = scalateProject("tool")
 lazy val scalateWar = scalateProject("war")
   .scalateSettings
   .notPublished
-  .dependsOn(scalateWeb, scalateTest % Test)
+  .dependsOn(scalateWeb, scalateJersey, scalateTest % Test)
   .dependsOn(logbackClassic, jerseyServer, jerseyCore)
   .settings(tomcat(port = 8087, args = Seq("scalate.mode=dev")): _*)
   .settings(
@@ -184,6 +181,27 @@ lazy val scalateWar = scalateProject("war")
     publishArtifact in (Compile, packageBin) := false,
     parallelExecution in Test := false,
     unmanagedResourceDirectories in Test += baseDirectory.value / "src/main/webapp")
+
+lazy val scalateJAXRS = scalateProject("jaxrs")
+  .scalateSettings
+  .published
+  .dependsOn(scalateCore)
+  .dependsOn(
+    javaxServlet % Provided,
+    jaxrsApi % Provided)
+  .settings(description := "JAXRS integration for a Scalate web application</description>")
+
+lazy val scalateJersey = scalateProject("jersey")
+  .scalateSettings
+  .published
+  .dependsOn(scalateJAXRS, scalateTest % Test)
+  .dependsOn(
+    jaxrsApi % Provided,
+    javaxServlet % Provided,
+    jerseyCore % Provided,
+    jerseyServlet % Provided,
+    jerseyServer % Provided)
+  .settings(description := "Jersey integration for a Scalate web application")
 
 lazy val scalateWeb = scalateProject("web")
   .scalateSettings
@@ -199,4 +217,3 @@ lazy val scalateWikitext = scalateProject("wikitext")
   .dependsOn(scalateCore, scalateTest % Test)
   .dependsOn(wikitextConfluence, wikitextTextile, logbackClassic % Test)
   .settings(description := "Scalate WikiText integration for Markdown and Confluence notations.")
-

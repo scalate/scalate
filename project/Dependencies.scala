@@ -17,6 +17,7 @@ object Dependencies extends Plugin {
   val confluenceSoap = "org.swift.common" % "confluence-soap" % "4.0.0" from
     "https://bitbucket.org/bob_swift/confluence-soap/downloads/confluence-soap-4.0.0.jar"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
+  val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.3"
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision

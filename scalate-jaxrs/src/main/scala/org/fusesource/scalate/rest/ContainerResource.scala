@@ -17,9 +17,11 @@
  */
 package org.fusesource.scalate.rest
 
-import com.sun.jersey.api.NotFoundException
 import javax.ws.rs.{ POST, Path, PathParam }
 import org.fusesource.scalate.util.{ Log }
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.Response.Status
 
 object ContainerResource extends Log
 
@@ -37,7 +39,7 @@ abstract class ContainerResource[K, E, R] {
 
     container.get(key) match {
       case Some(e) => createChild(e)
-      case _ => throw new NotFoundException("Element " + key + " not found")
+      case _ => throw createNotFoundException("Element " + key + " not found")
     }
   }
 
@@ -48,4 +50,8 @@ abstract class ContainerResource[K, E, R] {
   }
 
   def createChild(e: E): R
+
+  def createNotFoundException(message: String) = {
+    new WebApplicationException(Response.status(Status.NOT_FOUND).entity(message).`type`("text/plain").build())
+  }
 }

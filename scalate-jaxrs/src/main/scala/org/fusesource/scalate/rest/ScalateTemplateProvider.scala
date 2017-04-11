@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate.jersey
+package org.fusesource.scalate.rest
 
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
@@ -24,14 +24,13 @@ import javax.servlet.ServletContext
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import javax.ws.rs.ext.{ Provider, MessageBodyWriter }
 import javax.ws.rs.core.{ UriInfo, MultivaluedMap, MediaType, Context }
-
-import com.sun.jersey.api.container.ContainerException
-
 import org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
 import org.fusesource.scalate.TemplateException
 import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
-object ScalateTemplateProvider extends Log; import ScalateTemplateProvider._
+import javax.ws.rs.WebApplicationException
+
+object ScalateTemplateProvider extends Log;
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
@@ -125,9 +124,13 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
           }
         }
         if (notFound) {
-          throw new ContainerException(e)
+          throw createContainerException(e)
         }
     }
+  }
+
+  protected def createContainerException(e: Exception) = {
+    new WebApplicationException(e)
   }
 
 }
