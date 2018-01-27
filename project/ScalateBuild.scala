@@ -4,8 +4,8 @@ import com.typesafe.sbt.osgi.{OsgiKeys, SbtOsgi}
 import com.typesafe.sbt.pgp.PgpKeys
 import sbtbuildinfo.{BuildInfoPlugin, BuildInfoKeys}
 import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
-import sbtunidoc.Plugin.UnidocKeys
-import sbtunidoc.{Plugin => SbtUnidoc}
+import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
+import sbtunidoc.BaseUnidocPlugin.autoImport._
 import xerial.sbt.Sonatype
 import Sonatype.SonatypeKeys
 import sbt._
@@ -55,12 +55,12 @@ object ScalateBuild extends Plugin {
     publishTo := Some(Resolver.file("file",  target.value / "m2-cache/"))
   )
 
-  def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] = SbtUnidoc.unidocSettings ++
-    inConfig(SbtUnidoc.ScalaUnidoc)(inTask(UnidocKeys.unidoc)(docOptsBase)) ++ Seq(
+  def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] =
+    inConfig(ScalaUnidoc)(inTask(unidoc)(docOptsBase)) ++ Seq(
     scalacOptions in ThisBuild ++= Seq("-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath),
     apiMappings in ThisBuild += (scalaInstance.value.libraryJar →
       url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")),
-    SbtUnidoc.UnidocKeys.unidocProjectFilter in(SbtUnidoc.ScalaUnidoc, UnidocKeys.unidoc) :=
+    unidocProjectFilter in(ScalaUnidoc, unidoc) :=
       inAnyProject -- inProjects(filter: _*))
 
   private def projectOpts = Seq(
@@ -93,6 +93,12 @@ object ScalateBuild extends Plugin {
   )
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
+    publishTo := Some(
+      if (isSnapshot.value)
+        Opts.resolver.sonatypeSnapshots
+      else
+        Opts.resolver.sonatypeStaging
+    ),
     SonatypeKeys.sonatypeProfileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),

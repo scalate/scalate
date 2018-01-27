@@ -1,15 +1,13 @@
-lazy val plugins = (project in file(".")).dependsOn(sbtOsgi)
 addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "1.0.0")
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.0")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.1")
 addSbtPlugin("com.typesafe.sbt" % "sbt-javaversioncheck" % "0.1.0")
-addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.3.2")
+addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.1")
 //addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.1.6") TODO: What is our Binary compatibility policy?
-addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.6.4")
-addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.4.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.9.3")
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.7.0")
 addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
-addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.10")
-
-lazy val sbtOsgi = uri("git://github.com/arashi01/sbt-osgi.git#bd07211")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.3.4")
+addSbtPlugin("com.typesafe.sbt" % "sbt-osgi" % "0.9.2")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")

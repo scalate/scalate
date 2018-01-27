@@ -14,6 +14,7 @@ scmInfo := Some(
   Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
 )
 homepage := Some(url("http://scalate.github.io/scalate"))
+enablePlugins(ScalaUnidocPlugin)
 unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
 notPublished
 
