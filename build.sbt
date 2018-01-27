@@ -1,3 +1,6 @@
+import ScalateBuild._
+import Dependencies._
+
 name := "Scalate"
 organization := "org.scalatra.scalate"
 version := "1.8.1-SNAPSHOT"

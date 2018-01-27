@@ -12,7 +12,7 @@ import sbt._
 import Keys._
 
 /** Build support settings and functions. */
-object ScalateBuild extends Plugin {
+object ScalateBuild {
 
   implicit final class ScalateProjectSyntax(val u: Project) extends AnyVal {
 
