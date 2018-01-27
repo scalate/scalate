@@ -160,16 +160,6 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"),
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
 
-lazy val scalateTool = scalateProject("tool")
-  .scalateSettings
-  .osgiSettings
-  .published
-  .dependsOn(scalateCore)
-  .dependsOn(karafShell, confluenceSoap, axis, axisWsdl, jTidy)
-  .settings(
-    description := "Scalate Command Line Tool.",
-    resolvers ++= commonRepositories)
-
 lazy val scalateWar = scalateProject("war")
   .scalateSettings
   .notPublished

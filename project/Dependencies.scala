@@ -10,12 +10,8 @@ object Dependencies extends Plugin {
   )
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.0-RC1"
-  val axis = "axis" % "axis" % "1.4"
-  val axisWsdl = "axis" % "axis-wsdl4j" % "1.5.1"
   val camelScala = "org.apache.camel" % "camel-scala" % "2.18.0"
   val camelSpring = camelScala.copy(name = "camel-spring")
-  val confluenceSoap = "org.swift.common" % "confluence-soap" % "4.0.0" from
-    "https://bitbucket.org/bob_swift/confluence-soap/downloads/confluence-soap-4.0.0.jar"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.3"
@@ -29,7 +25,6 @@ object Dependencies extends Plugin {
     "https://repos.zeroturnaround.com/nexus/content/groups/zt-public/org/zeroturnaround/jr-sdk/4.6.2/jr-sdk-4.6.2.jar"
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "1.6.8"
-  val jTidy = "net.sf.jtidy" % "jtidy" % "r938"
   val junit = "junit" % "junit" % "4.12"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "2.2.11"
   val lessCssEngine = "com.asual.lesscss" % "lesscss-engine" % "1.4.2"
