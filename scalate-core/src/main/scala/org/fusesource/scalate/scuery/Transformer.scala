@@ -17,10 +17,9 @@
  */
 package org.fusesource.scalate.scuery
 
-import _root_.org.fusesource.scalate.util.Logging
 import _root_.org.fusesource.scalate.scuery.support._
 import collection.mutable.{ HashMap }
-import xml.{ Attribute, Document, Elem, Node, NodeSeq, Null, Text }
+import xml.{ Elem, Node, NodeSeq, Text }
 import XmlHelper._
 
 import scala.language.implicitConversions

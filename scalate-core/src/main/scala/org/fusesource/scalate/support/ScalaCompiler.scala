@@ -28,8 +28,6 @@ import java.io.{ PrintWriter, StringWriter, File }
 
 import util.{ Log, ClassPathBuilder }
 
-import scala.language.reflectiveCalls
-
 object ScalaCompiler extends Log {
 
   def create(engine: TemplateEngine): ScalaCompiler = {

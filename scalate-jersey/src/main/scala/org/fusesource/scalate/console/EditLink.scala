@@ -17,10 +17,9 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.org.fusesource.scalate.util.{ SourceMap }
 import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
-import xml.{ Text, Elem, NodeSeq }
+import xml.NodeSeq
 
 /**
  * @version $Revision : 1.1 $

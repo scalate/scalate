@@ -37,7 +37,6 @@ import xml.NodeSeq
 import collection.generic.TraversableForwarder
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ConcurrentHashMap
-import java.util.function._
 
 import scala.language.existentials
 

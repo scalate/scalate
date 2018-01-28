@@ -17,8 +17,6 @@
  */
 package org.fusesource.scalate.scaml
 
-import org.fusesource.scalate.RenderContext
-
 /**
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

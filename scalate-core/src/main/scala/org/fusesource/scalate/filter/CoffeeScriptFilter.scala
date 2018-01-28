@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 package filter
 
-import java.io.InputStreamReader
 import java.util.concurrent.atomic.AtomicBoolean
 
 import javax.script.ScriptException

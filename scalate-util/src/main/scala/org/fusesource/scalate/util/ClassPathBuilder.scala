@@ -20,7 +20,6 @@ package org.fusesource.scalate.util
 import java.io.File
 import java.net.{ URI, URLClassLoader }
 import scala.collection.mutable.ArrayBuffer
-import java.util.{ jar => juj }
 import java.util.jar.{ Attributes, JarFile }
 
 import scala.language.reflectiveCalls

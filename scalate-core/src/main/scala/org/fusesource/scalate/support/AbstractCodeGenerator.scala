@@ -32,7 +32,6 @@ object AbstractCodeGenerator extends Log
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 abstract class AbstractCodeGenerator[T] extends CodeGenerator {
-  import AbstractCodeGenerator._
 
   abstract class AbstractSourceBuilder[T] {
     var indentLevel = 0

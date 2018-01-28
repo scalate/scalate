@@ -577,7 +577,6 @@ object SourceMapInstaller {
 
   object Reader extends Log
   class Reader(val orig: Array[Byte]) {
-    import Reader._
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)

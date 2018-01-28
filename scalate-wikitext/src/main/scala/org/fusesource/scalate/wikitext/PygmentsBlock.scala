@@ -27,7 +27,7 @@ import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate._
-import org.fusesource.scalate.filter.{ Pipeline, Filter }
+import org.fusesource.scalate.filter.Filter
 import java.io.{ File, ByteArrayInputStream, ByteArrayOutputStream }
 import util.{ Files, Log, IOUtil }
 

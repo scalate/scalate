@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery.support
 
 import org.fusesource.scalate.scuery.Selector
-import xml.{ Attribute, Elem, Node, NodeSeq }
+import xml.{ Elem, Node }
 
 /**
  * Matches if the CSS class attribute contains the given class name word

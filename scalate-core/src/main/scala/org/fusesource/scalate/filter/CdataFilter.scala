@@ -35,7 +35,6 @@ package org.fusesource.scalate.filter
  * limitations under the License.
  */
 
-import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate._
 
 /**

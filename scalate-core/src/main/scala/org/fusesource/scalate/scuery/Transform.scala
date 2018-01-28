@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{ Attribute, Document, Elem, Node, NodeSeq, Null, Text }
+import xml.{ Node, NodeSeq }
 
 import scala.language.implicitConversions
 

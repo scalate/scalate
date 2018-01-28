@@ -35,7 +35,6 @@ package org.fusesource.scalate
 package support
 
 import collection.mutable.LinkedHashMap
-import xml.{ Node, NodeBuffer, NodeSeq }
 
 object RenderHelper {
 

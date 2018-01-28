@@ -40,7 +40,6 @@ object ScalateTemplateProvider extends Log;
  */
 @Provider
 class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
-  import ScalateTemplateProvider._
 
   @Context
   var servletContext: ServletContext = _

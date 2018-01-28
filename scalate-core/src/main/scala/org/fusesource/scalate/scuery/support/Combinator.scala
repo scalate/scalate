@@ -17,8 +17,6 @@
  */
 package org.fusesource.scalate.scuery.support
 
-import collection.Seq
-import xml.Node
 import org.fusesource.scalate.scuery._
 
 /**
