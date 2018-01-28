@@ -1,7 +1,7 @@
 import sbt._
 
 /** Build dependency and repository definitions. */
-object Dependencies extends Plugin {
+object Dependencies {
 
   val commonRepositories = Seq(
     "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases",
