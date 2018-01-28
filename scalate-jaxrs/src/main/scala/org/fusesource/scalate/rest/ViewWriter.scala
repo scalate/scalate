@@ -45,7 +45,7 @@ import java.lang.{ String, Class }
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException, Logging }
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 import javax.ws.rs.core.UriInfo
 import javax.ws.rs.WebApplicationException
 

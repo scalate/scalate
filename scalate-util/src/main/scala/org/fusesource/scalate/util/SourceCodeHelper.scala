@@ -17,8 +17,6 @@
  */
 package org.fusesource.scalate.util
 
-import collection.mutable.LinkedList
-
 /**
  * Helpers that aid with Scala soruce code generation.
  *

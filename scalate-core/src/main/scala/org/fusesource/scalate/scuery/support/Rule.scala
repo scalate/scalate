@@ -19,7 +19,7 @@ package org.fusesource.scalate.scuery.support
 
 import xml.{ Elem, Node, NodeSeq }
 import org.fusesource.scalate.scuery.XmlHelper._
-import org.fusesource.scalate.util.{ Log, Logging }
+import org.fusesource.scalate.util.Log
 
 object Rule extends Log {
   /**

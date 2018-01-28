@@ -3,7 +3,6 @@ package org.fusesource.scalate.jruby
 import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{ TemplateException, RenderContext, TemplateEngine, TemplateEngineAddOn }
 import java.io.File
-import org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.filter.{ NoLayoutFilter, CssFilter, Pipeline, Filter }
 
 /**
