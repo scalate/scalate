@@ -211,9 +211,8 @@ trait SnippetHandler {
  * Default handler for the {snippet} code (renders a <div class="snippet"><pre class="<language>">
  */
 case class DefaultSnippetHandler(
-    val builder: DocumentBuilder,
-    val language: String
-) extends SnippetHandler {
+  val builder: DocumentBuilder,
+  val language: String) extends SnippetHandler {
 
   def begin() = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))

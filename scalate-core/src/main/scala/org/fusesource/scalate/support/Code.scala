@@ -7,5 +7,4 @@ case class Code(
   className: String,
   source: String,
   dependencies: Set[String],
-  positions: TreeMap[OffsetPosition, OffsetPosition]
-)
+  positions: TreeMap[OffsetPosition, OffsetPosition])

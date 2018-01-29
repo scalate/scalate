@@ -105,8 +105,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
       engine: TemplateEngine,
       source: TemplateSource,
       bindings: Traversable[Binding],
-      statements: List[T]
-    ): Unit = {
+      statements: List[T]): Unit = {
 
       val packageName = source.packageName
       val className = source.simpleClassName

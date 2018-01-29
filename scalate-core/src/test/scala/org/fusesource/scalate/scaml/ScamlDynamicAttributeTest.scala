@@ -57,8 +57,7 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     </a>
   </body>
 </html>
-"""
-    )
+""")
   }
 
   testRender(
@@ -75,8 +74,7 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     </a>
   </body>
 </html>
-"""
-  )
+""")
 
   testRender(
     "dynamic attribute expressions with string argument and no quotes",
@@ -92,8 +90,7 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     </a>
   </body>
 </html>
-"""
-  )
+""")
 
   override protected def configureTemplateEngine() = {
     engine.importStatements ::= "import org.fusesource.scalate.scaml.SampleSnippets._"

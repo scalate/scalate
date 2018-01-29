@@ -45,8 +45,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     Last line
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "Use the `~` filter flag to preserve white space",
@@ -61,8 +60,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <html>
   <p>    Indentation levels are not enforced in filters.&#x000A;  #{Interpolation} is disabled by default&#x000A;Last line</p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "Use the `&` filter flag to enable sanitizing interpolation",
@@ -77,8 +75,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     I like &lt;strong&gt; cheese
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "Use the `!` filter flag to enable non-sanitizing interpolation",
@@ -93,8 +90,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     I like <strong> cheese </strong>
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     ":javascript filter can be used to safely insert javascript",
@@ -113,8 +109,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     </script>
   </head>
 </html>
-"""
-  )
+""")
 
   testRender(
     "filters can be chained",
@@ -130,8 +125,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     //]]&gt;
   &lt;/script&gt;
 </pre>
-"""
-  )
+""")
 
   testRender(
     "The markdown filter",
@@ -148,8 +142,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 
   <p>Hello, <em>World</em></p>
 </p>
-"""
-  )
+""")
 
   testRender(
     "The `&` flag enables sanitized interpolations.",
@@ -162,8 +155,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <div id="content">
   <p>I <em>really</em> prefer &lt;raspberry/&gt; jam.</p>
 </div>
-"""
-  )
+""")
 
   testRender(
     "The `!` flag enables non-sanitized interpolations.",
@@ -176,8 +168,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <div id="content">
   <p>I <em>really</em> prefer <raspberry/> jam.</p>
 </div>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -197,8 +188,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
     Wow this is cool!
   </whiz>
 </gee>
-"""
-  )
+""")
 
   testRender(
     "HTML tags are passed through unmodified as well.",
@@ -209,8 +199,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
 <p>
   <div id="blah">Blah!</div>
 </p>
-"""
-  )
+""")
 
   testRender(
     "backslash character escapes the first character of a line, allowing use of otherwise interpreted characters as plain text.",
@@ -223,8 +212,7 @@ class ScamlTemplateTest extends ScamlTestSupport {
   MyPage
   = title
 </title>
-"""
-  )
+""")
 
   testRender(
     "Indenting can be disabled with the ScamlOptions.indent option",
@@ -242,8 +230,7 @@ Wow this is cool!
       ScamlOptions.indent = ""
     }, { () =>
       ScamlOptions.indent = ScamlOptions.DEFAULT_INDENT
-    }
-  )
+    })
 
   testRender(
     "Newlines can also be disabled with the ScamlOptions.nl option",
@@ -259,8 +246,7 @@ Wow this is cool!
     }, { () =>
       ScamlOptions.indent = ScamlOptions.DEFAULT_INDENT
       ScamlOptions.nl = ScamlOptions.DEFAULT_NL
-    }
-  )
+    })
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -277,8 +263,7 @@ Wow this is cool!
 <html>
   <body></body>
 </html>
-"""
-  )
+""")
 
   testRender(
     "'%tag' renders a start and end tag",
@@ -286,8 +271,7 @@ Wow this is cool!
 %html
 """, """
 <html></html>
-"""
-  )
+""")
 
   testRender(
     "'%tag text' render start tag, text, and end tag on same line",
@@ -295,8 +279,7 @@ Wow this is cool!
 %html test
 """, """
 <html>test</html>
-"""
-  )
+""")
 
   testRender(
     "nested tags are rendered indented",
@@ -310,8 +293,7 @@ Wow this is cool!
     test
   </body>
 </html>
-"""
-  )
+""")
 
   testRender(
     "single quoted tags can contain special characters",
@@ -322,8 +304,7 @@ Wow this is cool!
 <funny.element class="test">
   hi
 </funny.element>
-"""
-  )
+""")
 
   testRender(
     "'%tag = quality' renders a tag with nested content",
@@ -333,8 +314,7 @@ Wow this is cool!
 """, """
 <p>scrumptious</p>
 <p>scrumptious</p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -348,8 +328,7 @@ Wow this is cool!
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
 """, """
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
-"""
-  )
+""")
 
   testRender(
     "Attribute hashes can also be stretched out over multiple lines to accommodate many attributes.",
@@ -358,8 +337,7 @@ Wow this is cool!
             :src  => "javascripts/script"}
 """, """
 <script type="text/javascript" src="javascripts/script"></script>
-"""
-  )
+""")
 
   testRender(
     "Scaml also supports a terser, less Scala-specific attribute syntax based on HTML's attributes.",
@@ -367,8 +345,7 @@ Wow this is cool!
 %html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
 """, """
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"></html>
-"""
-  )
+""")
 
   testRender(
     "Scala variables can be used by omitting the quotes.",
@@ -376,8 +353,7 @@ Wow this is cool!
 %a(title=title href=href) Stuff
 """, """
 <a title="MyPage" href="http://scalate.fusesource.org">Stuff</a>
-"""
-  )
+""")
 
   testRender(
     "You can use both syntaxes together.",
@@ -385,8 +361,7 @@ Wow this is cool!
 %a(title="Hello"){:href => "http://scalate.fusesource.org"} Stuff
 """, """
 <a title="Hello" href="http://scalate.fusesource.org">Stuff</a>
-"""
-  )
+""")
 
   testRender(
     "HTML-style attributes can be stretched across multiple lines just like hash-style attributes",
@@ -395,8 +370,7 @@ Wow this is cool!
      src="javascripts/script")
 """, """
 <script type="text/javascript" src="javascripts/script"></script>
-"""
-  )
+""")
 
   testRender(
     "Html Attributes can use complex scala expressions",
@@ -404,8 +378,7 @@ Wow this is cool!
 %div(count={3+4})
 """, """
 <div count="7"></div>
-"""
-  )
+""")
 
   testRender(
     "Html Attributes can use simple scala expressions",
@@ -413,8 +386,7 @@ Wow this is cool!
 %div(count="#{3+4}")
 """, """
 <div count="7"></div>
-"""
-  )
+""")
 
   testRender(
     "Html Attributes can use scala variables",
@@ -423,8 +395,7 @@ Wow this is cool!
 %div(count=count)
 """, """
 <div count="5"></div>
-"""
-  )
+""")
 
   testRender(
     "Hash Attributes can use simple scala expressions",
@@ -433,8 +404,7 @@ Wow this is cool!
 %div{:count=>count}
 """, """
 <div count="5"></div>
-"""
-  )
+""")
 
   testRender(
     "Hash Attributes can use complex scala expressions",
@@ -442,8 +412,7 @@ Wow this is cool!
 %div{:count=>{3+4}}
 """, """
 <div count="7"></div>
-"""
-  )
+""")
 
   testRender(
     "Enabled boolean attribute in hash style",
@@ -451,8 +420,7 @@ Wow this is cool!
 %input{:selected => true}
 """, """
 <input selected="selected"/>
-"""
-  )
+""")
 
   testRender(
     "Disabled boolean attribute in hash style",
@@ -460,8 +428,7 @@ Wow this is cool!
 %input{:selected => false}
 """, """
 <input/>
-"""
-  )
+""")
 
   testRender(
     "Enabled boolean attribute in html style",
@@ -469,8 +436,7 @@ Wow this is cool!
 %input(selected=true)
 """, """
 <input selected="selected"/>
-"""
-  )
+""")
 
   testRender(
     "Disabled boolean attribute in html style",
@@ -478,8 +444,7 @@ Wow this is cool!
 %input(selected=false)
 """, """
 <input/>
-"""
-  )
+""")
 
   testRender(
     "Enabled boolean attribute in html style using shorthand",
@@ -487,8 +452,7 @@ Wow this is cool!
 %input(selected)
 """, """
 <input selected="selected"/>
-"""
-  )
+""")
 
   testRender(
     "Mixing attributes with complex expressions",
@@ -496,8 +460,7 @@ Wow this is cool!
 %p{ :counter1=>{1 + 2}, :counter2=>10 }
 """, """
 <p counter1="3" counter2="10"></p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -518,8 +481,7 @@ Wow this is cool!
   <p class="beans" food="true">The magical fruit</p>
   <h1 id="id" class="class otherclass">La La La</h1>
 </div>
-"""
-  )
+""")
 
   testRender(
     "Another `.` and `#` example",
@@ -540,8 +502,7 @@ Wow this is cool!
     </div>
   </div>
 </div>
-"""
-  )
+""")
 
   // Edge cases
 
@@ -551,8 +512,7 @@ Wow this is cool!
 %html#i1#i2
 """, """
 <html id="i2"></html>
-"""
-  )
+""")
 
   testRender(
     "'%tag.c1' renders a tag with a class",
@@ -560,8 +520,7 @@ Wow this is cool!
 %html.c1
 """, """
 <html class="c1"></html>
-"""
-  )
+""")
 
   testRender(
     "'%tag.c1.c2' renders a tag with multiple classes",
@@ -569,8 +528,7 @@ Wow this is cool!
 %html.c1.c2
 """, """
 <html class="c1 c2"></html>
-"""
-  )
+""")
 
   testRender(
     "Any css class/name can be used.",
@@ -580,8 +538,7 @@ Wow this is cool!
 """, """
 <div class="my-class"></div>
 <div class="_whacky_1"></div>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -601,8 +558,7 @@ Wow this is cool!
     <div class="description">What a cool item!</div>
   </div>
 </div>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -618,8 +574,7 @@ Wow this is cool!
 """, """
 <br/>
 <meta http-equiv="Content-Type" content="text/html"/>
-"""
-  )
+""")
 
   testRender(
     "`meta`, `img`, `link`, `script`, `br`, and `hr` tags are closed by default.",
@@ -629,8 +584,7 @@ Wow this is cool!
 """, """
 <br/>
 <meta http-equiv="Content-Type" content="text/html"/>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -648,8 +602,7 @@ Wow this is cool!
 <blockquote><div>
   Foo!
 </div></blockquote>
-"""
-  )
+""")
 
   testRender(
     "`>` will remove all whitespace surrounding a tag",
@@ -659,8 +612,7 @@ Wow this is cool!
 %img/
 """, """
 <img/><img/><img/>
-"""
-  )
+""")
 
   testRender(
     "`<` will remove all whitespace surrounding a rendered expression",
@@ -669,8 +621,7 @@ Wow this is cool!
 """, """
 <p>Foo
 Bar</p>
-"""
-  )
+""")
 
   testRender(
     "'%tag><' trims the whitespace surrounding the tag and wrapping nested content'",
@@ -683,8 +634,7 @@ Bar</p>
 """, """
 <img/><pre>foo
 bar</pre><img/>
-"""
-  )
+""")
 
   testRender(
     "'%tag<>' trims the whitespace surrounding the tag and wrapping nested content'",
@@ -697,8 +647,7 @@ bar</pre><img/>
 """, """
 <img/><pre>foo
 bar</pre><img/>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -728,8 +677,7 @@ bar</pre><img/>
     <p>Sign my guestbook</p>
   </body>
 </html>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -748,8 +696,7 @@ bar</pre><img/>
   <!-- This is the peanutbutterjelly element -->
   I like sandwiches!
 </peanutbutterjelly>
-"""
-  )
+""")
 
   testRender(
     "The `/` can also wrap indented sections of code.",
@@ -765,8 +712,7 @@ bar</pre><img/>
     <h1>Because it's commented out!</h1>
   </div>
 -->
-"""
-  )
+""")
 
   testRender(
     "You can also use Internet Explorer conditional comments by enclosing the condition in square brackets",
@@ -780,8 +726,7 @@ bar</pre><img/>
     <h1>Get Firefox</h1>
   </a>
 <![endif]-->
-"""
-  )
+""")
 
   testRender(
     "`-#` signifies a silent comment.",
@@ -792,8 +737,7 @@ bar</pre><img/>
 """, """
 <p>foo</p>
 <p>bar</p>
-"""
-  )
+""")
 
   testRender(
     "You can also nest text beneath a `-#`",
@@ -806,8 +750,7 @@ bar</pre><img/>
 """, """
 <p>foo</p>
 <p>bar</p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -826,8 +769,7 @@ bar</pre><img/>
   hi there reader!
   yo
 </p>
-"""
-  )
+""")
 
   testRender(
     "`=` can also be used at the end of a tag to insert Scala code within that tag.",
@@ -835,8 +777,7 @@ bar</pre><img/>
 %p= "hello"
 """, """
 <p>hello</p>
-"""
-  )
+""")
 
   testRender(
     "'= var' expressions can acess implicitly bound variables",
@@ -850,8 +791,7 @@ bar</pre><img/>
     Hiram
   </body>
 </html>
-"""
-  )
+""")
 
   testRender(
     "'= var' expressions can access imported variables",
@@ -865,8 +805,7 @@ bar</pre><img/>
     Hiram
   </body>
 </html>
-"""
-  )
+""")
 
   testRender(
     "= on a NodeSeq is rendered unsanitized",
@@ -875,8 +814,7 @@ bar</pre><img/>
 = bean.link
 """, """
 <a href="#size-10">red</a>
-"""
-  )
+""")
 
   testRender(
     "!= a NodeSeq is rendered unsanitized",
@@ -885,8 +823,7 @@ bar</pre><img/>
 != bean.link
 """, """
 <a href="#size-10">red</a>
-"""
-  )
+""")
 
   // TODO should we do this???
   /*
@@ -906,8 +843,7 @@ bar</pre><img/>
 &= bean.link.toString
 """, """
 &lt;a href=&quot;#size-10&quot;&gt;red&lt;/a&gt;
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -924,8 +860,7 @@ bar</pre><img/>
 %p= foo
 """, """
 <p>hello there you!</p>
-"""
-  )
+""")
 
   testRender(
     "`-` is followed by an indented Scala code block.  The code is evaluated but *not* inserted into the document.",
@@ -938,8 +873,7 @@ bar</pre><img/>
 %p= foo
 """, """
 <p>hello there you!</p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -962,8 +896,7 @@ bar</pre><img/>
 <p>
   two
 </p>
-"""
-  )
+""")
 
   testRender(
     "Nest block for a `for` loop",
@@ -978,8 +911,7 @@ bar</pre><img/>
 <p>45</p>
 <p>46</p>
 <p>See, I can count!</p>
-"""
-  )
+""")
 
   testRender(
     "Passing partial funtions.",
@@ -992,8 +924,7 @@ bar</pre><img/>
 <p>
   result: 123
 </p>
-"""
-  )
+""")
 
   testRender(
     "loop constructs don't need {} ",
@@ -1012,8 +943,7 @@ bar</pre><img/>
   <li>Hi 3</li>
   <li>end</li>
 </ol>
-"""
-  )
+""")
 
   testRender(
     "if / else constructs",
@@ -1024,8 +954,7 @@ bar</pre><img/>
   %p still on earth
 """, """
 <p>still on earth</p>
-"""
-  )
+""")
 
   testRender(
     "try / catch constructs",
@@ -1041,8 +970,7 @@ bar</pre><img/>
 """, """
 <p>in try</p>
 <p>got the expected error</p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1056,8 +984,7 @@ bar</pre><img/>
 %p This is #{quality} cake!
 """, """
 <p>This is scrumptious cake!</p>
-"""
-  )
+""")
 
   testRender(
     "Backslashes can be used to escape `#{` strings, but they don't act as escapes anywhere else in the string.",
@@ -1070,8 +997,7 @@ bar</pre><img/>
   A slash make a difference here: #{name} is set to: \Hiram
   But is ignored for: \# or \\
 </p>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1085,8 +1011,7 @@ bar</pre><img/>
 &= "I like cheese & crackers"
 """, """
 I like cheese &amp; crackers
-"""
-  )
+""")
 
   testRender(
     "'& text' santizes interpolated expressions",
@@ -1094,8 +1019,7 @@ I like cheese &amp; crackers
 & I like #{"cheese & crackers"}
 """, """
 I like cheese &amp; crackers
-"""
-  )
+""")
 
   testRender(
     "'= expression' is sanitized by default",
@@ -1103,8 +1027,7 @@ I like cheese &amp; crackers
 = "I feel <strong>!"
 """, """
 I feel &lt;strong&gt;!
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1118,8 +1041,7 @@ I feel &lt;strong&gt;!
 != "I feel <strong>!"
 """, """
 I feel <strong>!
-"""
-  )
+""")
 
   testRender(
     "'! text' does not santize interpolated expressions",
@@ -1127,8 +1049,7 @@ I feel <strong>!
 ! I feel #{"<strong>"}!
 """, """
 I feel <strong>!
-"""
-  )
+""")
 
   testRender(
     "'-@ val' makes an attribute accessibe as variable",
@@ -1137,8 +1058,7 @@ I feel <strong>!
 The bean is #{bean.color}
 """, """
 The bean is red
-"""
-  )
+""")
 
   testRender(
     "'-@ import val' makes an attribute's members accessibe as variables",
@@ -1147,8 +1067,7 @@ The bean is red
 The bean is #{color}
 """, """
 The bean is red
-"""
-  )
+""")
 
   testRender(
     "'-@ val name:type = expression' can specify a default value if the named attribute is not set",
@@ -1157,8 +1076,7 @@ The bean is red
 The bean is #{doesnotexist.color}
 """, """
 The bean is blue
-"""
-  )
+""")
 
   testRender(
     "'-@ val' can be used in nested tags",
@@ -1172,8 +1090,7 @@ The bean is blue
   test
   The bean is red
 </html>
-"""
-  )
+""")
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1194,8 +1111,7 @@ The bean is blue
     line3
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "`~` preserves white space",
@@ -1209,8 +1125,7 @@ The bean is blue
     line1&#x000A;line2&#x000A;line3
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "`&~` preserves and sanitizes",
@@ -1218,8 +1133,7 @@ The bean is blue
 &~ "<tag>\n</tag>"
 """, """
 &lt;tag&gt;&#x000A;&lt;/tag&gt;
-"""
-  )
+""")
 
   testRender(
     "`!~` preserves and does not sanitize",
@@ -1227,8 +1141,7 @@ The bean is blue
 !~ "<tag>\n</tag>"
 """, """
 <tag>&#x000A;</tag>
-"""
-  )
+""")
 
   testRender(
     "`~~` ugly preserves white space. values are not indented at all.",
@@ -1244,8 +1157,7 @@ line2
 line3
   </p>
 </html>
-"""
-  )
+""")
 
   testRender(
     "If the ScamlOptions.ugly option is enabled, then `=` behaves like `~~`",
@@ -1265,8 +1177,7 @@ line3
       ScamlOptions.ugly = true
     }, { () =>
       ScamlOptions.ugly = ScamlOptions.DEFAULT_UGLY
-    }
-  )
+    })
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -1299,8 +1210,7 @@ line3
   <li>item 2</li>
 </ul>
 <p>test</p>
-"""
-  )
+""")
 
   testRender(
     "Scaml does not eat empty lines in a filter",
@@ -1315,8 +1225,7 @@ item 1
 
 item 2
 <p>test</p>
-"""
-  )
+""")
 }
 
 case class Bean(color: String, size: Int) {

@@ -43,15 +43,14 @@ object ScalaCompiler extends Log {
 import ScalaCompiler._
 
 class ScalaCompiler(
-    bytecodeDirectory: File,
-    classpath: String,
-    combineClasspath: Boolean = false
-) extends Compiler {
+  bytecodeDirectory: File,
+  classpath: String,
+  combineClasspath: Boolean = false) extends Compiler {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
   class LoggingReporter(writer: StringWriter = new StringWriter)
-      extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
+    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
 
     var compilerErrors: List[CompilerError] = Nil
     def messages = writer.toString

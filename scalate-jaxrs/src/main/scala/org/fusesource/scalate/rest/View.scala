@@ -22,5 +22,4 @@ package org.fusesource.scalate.rest
  */
 case class View[T](
   uri: String,
-  model: Option[T] = None
-)
+  model: Option[T] = None)

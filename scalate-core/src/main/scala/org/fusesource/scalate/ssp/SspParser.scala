@@ -35,8 +35,7 @@ case class AttributeFragment(
   name: Text,
   className: Text,
   defaultValue: Option[Text],
-  autoImport: Boolean
-) extends PageFragment
+  autoImport: Boolean) extends PageFragment
 
 abstract class Directive(override val tokenName: String) extends PageFragment
 
@@ -85,8 +84,7 @@ class SspParser extends ScalaParseSupport {
         """\<%""" ~ opt(literalPart) ^^ { case x ~ y => "<%" + y.getOrElse("") } |
           """\${""" ~ opt(literalPart) ^^ { case x ~ y => "${" + y.getOrElse("") } |
           """\#""" ~ opt(literalPart) ^^ { case x ~ y => "#" + y.getOrElse("") } |
-          """\\""" ^^ { s => """\""" }
-      ) ^^ {
+          """\\""" ^^ { s => """\""" }) ^^ {
           case x ~ Some(y) => x + y
           case x ~ None => x
         }
@@ -153,8 +151,7 @@ class SspParser extends ScalaParseSupport {
             case tb => ""
           }
           a.mkString("") + mid + c.mkString("")
-      }
-    )
+      })
   }
 
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r

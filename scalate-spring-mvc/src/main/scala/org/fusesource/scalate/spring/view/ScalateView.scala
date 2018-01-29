@@ -38,8 +38,8 @@ trait ScalateRenderStrategy {
 }
 
 trait LayoutScalateRenderStrategy
-    extends AbstractTemplateView
-    with ScalateRenderStrategy {
+  extends AbstractTemplateView
+  with ScalateRenderStrategy {
 
   def templateEngine: ServletTemplateEngine
 
@@ -53,8 +53,8 @@ trait LayoutScalateRenderStrategy
 }
 
 trait DefaultScalateRenderStrategy
-    extends AbstractTemplateView
-    with ScalateRenderStrategy {
+  extends AbstractTemplateView
+  with ScalateRenderStrategy {
 
   override def render(context: ServletRenderContext, model: Map[String, Any]) {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
@@ -63,7 +63,7 @@ trait DefaultScalateRenderStrategy
 }
 
 trait ViewScalateRenderStrategy
-    extends ScalateRenderStrategy {
+  extends ScalateRenderStrategy {
 
   override def render(context: ServletRenderContext, model: Map[String, Any]) {
     log.debug("Rendering with model " + model)
@@ -83,15 +83,14 @@ trait AbstractScalateView extends AbstractView {
 }
 
 class ScalateUrlView
-    extends AbstractTemplateView
-    with AbstractScalateView
-    with LayoutScalateRenderStrategy {
+  extends AbstractTemplateView
+  with AbstractScalateView
+  with LayoutScalateRenderStrategy {
 
   override def renderMergedTemplateModel(
     model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse
-  ): Unit = {
+    response: HttpServletResponse): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {
@@ -113,16 +112,15 @@ class ScalateUrlView
 }
 
 class ScalateView
-    extends AbstractScalateView
-    with ViewScalateRenderStrategy {
+  extends AbstractScalateView
+  with ViewScalateRenderStrategy {
 
   override def checkResource(locale: Locale) = true
 
   override def renderMergedOutputModel(
     model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse
-  ): Unit = {
+    response: HttpServletResponse): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {

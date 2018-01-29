@@ -42,8 +42,7 @@ $("a").click(function() {
       "start of html",
       "$(document).ready",
       """$("a").click""",
-      "end of html"
-    )
+      "end of html")
   }
 
 }

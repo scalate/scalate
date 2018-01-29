@@ -21,8 +21,7 @@ class ScalateAtmosphereModule extends ScalateModule {
   protected def applyAtmosphereServlets() {
     val props: Map[String, String] = (for ((name, value) <- createResourceConfigProperties) yield (name, value.toString)) ++ Map(
       "org.atmosphere.useWebSocket" -> "true",
-      "org.atmosphere.useNative" -> "true"
-    )
+      "org.atmosphere.useNative" -> "true")
 
     // This regex matches everything except when the URI ends with common file extensions (.js, .css, etc).
     // The outer group is required by Guice's servlet configuration and matches the whole URI

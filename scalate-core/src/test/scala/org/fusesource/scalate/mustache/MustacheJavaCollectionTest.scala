@@ -38,8 +38,7 @@ class MustacheJavaCollectionTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "start <Hiram> <James> end",
       "start {{#names}}<{{.}}> {{/names}}end",
-      Map("names" -> names)
-    )
+      Map("names" -> names))
   }
 
   test("iterate Array test") {
@@ -48,8 +47,7 @@ class MustacheJavaCollectionTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "start <Mells> <Tampa> end",
       "start {{#names}}<{{.}}> {{/names}}end",
-      Map("names" -> names)
-    )
+      Map("names" -> names))
   }
 
   test("java.util.Map test") {
@@ -60,8 +58,7 @@ class MustacheJavaCollectionTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "start name: James location: Mells end",
       "start {{#names}}name: {{name}} location: {{location}} {{/names}}end",
-      Map("names" -> names)
-    )
+      Map("names" -> names))
   }
 
 }

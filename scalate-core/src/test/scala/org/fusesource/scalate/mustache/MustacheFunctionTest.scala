@@ -31,8 +31,6 @@ class MustacheFunctionTest extends TemplateTestSupport {
         "name" -> "Willy",
         "wrapped" -> { (text: String) =>
           <b>{ text }</b>
-        }
-      )
-    )
+        }))
   }
 }

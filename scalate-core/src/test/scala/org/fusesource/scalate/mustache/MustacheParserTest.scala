@@ -34,8 +34,7 @@ class MustacheParserTest extends FunSuiteSupport {
       List(Text("* "), Variable("default_tags"), Text(" * "),
         SetDelimiter("<%", "%>"), Text("* "), Variable("erb_style_tags"), Text(" * "),
         SetDelimiter("{{", "}}"), Text("* "), Variable("default_tags_again")),
-      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}"
-    )
+      "* {{default_tags}} * {{=<% %>=}} * <% erb_style_tags %> * <%={{ }}=%> * {{ default_tags_again }}")
   }
 
   test("plain text") {
@@ -47,51 +46,44 @@ class MustacheParserTest extends FunSuiteSupport {
   test("variable") {
     assertParses(
       List(Text("some text "), Variable("foo"), Text(" "), Variable("bar"), Text(" more text")),
-      "some text {{foo}} {{bar}} more text"
-    )
+      "some text {{foo}} {{bar}} more text")
   }
 
   test("unescape variable") {
     assertParses(
       List(Text("some text "), Variable("foo", true), Text(" "), Variable("bar", true), Text(" more text")),
-      "some text {{&foo}} {{& bar}} more text"
-    )
+      "some text {{&foo}} {{& bar}} more text")
   }
 
   test("unescape with treble moustache") {
     assertParses(
       List(Text("some text "), Variable("foo", true), Text(" more text")),
-      "some text {{{foo}}} more text"
-    )
+      "some text {{{foo}}} more text")
   }
 
   test("open close section") {
     assertParses(
       List(Text("* "), Section("foo", List(Text("bar "))), Text("*")),
-      "* {{#foo}} bar {{/foo}} *"
-    )
+      "* {{#foo}} bar {{/foo}} *")
   }
 
   test("invert variable and partial") {
     assertParses(
       List(Text("* "), InvertSection("foo", List(Partial("bar"))), Text("*")),
-      "* {{^foo}} {{>bar}}{{/foo}} *"
-    )
+      "* {{^foo}} {{>bar}}{{/foo}} *")
   }
 
   // set delimiter
   test("just set directive") {
     assertParses(
       List(SetDelimiter("<%", "%>")),
-      "{{=<% %>=}}"
-    )
+      "{{=<% %>=}}")
   }
 
   test("text and set directive") {
     assertParses(
       List(Text("* "), SetDelimiter("<%", "%>"), Text("*")),
-      "* {{=<% %>=}} *"
-    )
+      "* {{=<% %>=}} *")
   }
 
   test("whitespace with sections") {
@@ -99,24 +91,20 @@ class MustacheParserTest extends FunSuiteSupport {
       List(
         Section("terms", List(Variable("name"), Text("\n  "),
           Variable("index"), Text("\n"))),
-        Section("terms", List(Variable("name"), Text("\n  "), Variable("index"), Text("\n")))
-      ),
-      loadTestFile("reuse_of_enumerables.html")
-    )
+        Section("terms", List(Variable("name"), Text("\n  "), Variable("index"), Text("\n")))),
+      loadTestFile("reuse_of_enumerables.html"))
   }
 
   test("newline after expression") {
     assertParses(
       List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
-      loadTestFile("two_in_a_row.html")
-    )
+      loadTestFile("two_in_a_row.html"))
   }
 
   ignore("complex whitespace") {
     assertParses(
       List(Variable("greeting"), Text(", "), Variable("name"), Text("!")),
-      loadTestFile("complex.html")
-    )
+      loadTestFile("complex.html"))
   }
 
   // test bad syntax

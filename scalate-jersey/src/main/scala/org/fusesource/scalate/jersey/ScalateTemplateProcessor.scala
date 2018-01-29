@@ -77,7 +77,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
       tryFindPath(engine, path) match {
         case Some(answer) => answer
         case None =>
-          /* 
+          /*
            before Jersey 1.2 paths were often searched as
              com/acme/foo/SomeClass/index.ssp
            however we prefer to use this naming convention
@@ -118,8 +118,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     if (hc.isTracingEnabled()) {
       hc.trace("forwarding view to Scalate template: \"%s\", it = %s".format(
         resolvedPath,
-        ReflectionHelper.objectToString(viewable.getModel())
-      ));
+        ReflectionHelper.objectToString(viewable.getModel())));
     }
 
     // Ensure headers are committed

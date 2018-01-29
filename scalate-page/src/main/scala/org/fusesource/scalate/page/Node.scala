@@ -33,8 +33,7 @@ trait Node {
  * Represents a regular file which has no metadata other than of the file itself
  */
 class FileNode(
-    file: File
-) extends Node {
+  file: File) extends Node {
 
   def title = Files.dropExtension(file).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
 

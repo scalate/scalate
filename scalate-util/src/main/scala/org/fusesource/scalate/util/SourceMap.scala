@@ -335,8 +335,7 @@ object SourceMap {
                 case n ~ name ~ path => (n, name, path)
               } | (number <~ " ") ~ dot <~ nl ^^ {
                 case n ~ name => (n, name, null)
-              }
-            ) ^^ {
+              }) ^^ {
                 case list =>
                   var rc = Map[Int, (String, String)]()
                   list.foreach {
@@ -345,15 +344,13 @@ object SourceMap {
                     }
                   }
                   rc
-              }
-        ) ~
+              }) ~
           opt(
             "*L" ~ nl ~>
               rep1(number ~ opt("#" ~> number) ~ opt("," ~> number) ~ ":" ~ number ~ opt("," ~> number) <~ nl ^^ {
                 case istart ~ file ~ icount ~ ":" ~ ostart ~ oincrement =>
                   (istart, file, icount.getOrElse(1), ostart, oincrement.getOrElse(1))
-              })
-          ) ^^ {
+              })) ^^ {
               case (name) ~ ofiles ~ lines =>
                 val rc = new SourceMapStratum(name)
                 var files = Map(0 -> 0)

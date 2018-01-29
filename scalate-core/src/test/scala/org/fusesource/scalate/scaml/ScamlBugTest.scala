@@ -32,8 +32,7 @@ class ScamlBugTest extends ScamlTestSupport {
 """, """
 hello, user
 The greeting is hello.
-"""
-  )
+""")
 
   testRender(
     "#99: error if a comment containing just one space is used",
@@ -42,8 +41,7 @@ test
 <!--  -->
 <!--  -->
 test
-"""
-  )
+""")
 
   testRender(
     "#98: Error with a statement followed by an attribute declaration",
@@ -53,8 +51,7 @@ test
 = length
 """, """
 3
-"""
-  )
+""")
 
   testRender(
     "#77: attribute sanitized twice",
@@ -63,8 +60,7 @@ test
 %div(attr1="#{amp}")
 """, """
 <div attr1="&amp;"></div>
-"""
-  )
+""")
 
   testRender(
     "#78: null class attribute not removed",
@@ -72,8 +68,7 @@ test
 %div(id={null} attr1={null} class={null})
 """, """
 <div></div>
-"""
-  )
+""")
 
   testRender(
     "#74: scaml id or class + dynamic attribute produces an error",
@@ -83,8 +78,7 @@ test
 """, """
 <div class="some" attr1="value"></div>
 <div id="some" attr1="value"></div>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-44 test1",
@@ -100,8 +94,7 @@ test
   Failed
 """, """
 Worked!
-"""
-  )
+""")
 
   testRender(
     "SCALATE-45: creating a link with a title seems to remove whitespace from inside the title attribute",
@@ -109,8 +102,7 @@ Worked!
 %a(href={1+2} title="foo bar")
 """, """
 <a href="3" title="foo bar"></a>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-48: odd compile error when whitespace added to end of '-@ val: x: String '",
@@ -119,8 +111,7 @@ Worked!
 %p #{label}
 """, """
 <p>Scalate</p>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-49: using a #{foo} expression inside a HTML attribute causes strangeness",
@@ -129,8 +120,7 @@ Worked!
 %div(class="line #{x}")
 """, """
 <div class="line blue"></div>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-49: simple case",
@@ -139,8 +129,7 @@ Worked!
   test
 """, """
 <pre class="brush: html">test</pre>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-71: Internation characters",
@@ -167,8 +156,7 @@ Worked!
 <div>5 한글 Hello &amp;</div>
 <div>6 한글 Hello &</div>
 <div>7 한글 Hello &amp;</div>
-"""
-  )
+""")
 
   testRender(
     "SCALATE-71: Internation characters with escapeMarkup=false ",
@@ -200,8 +188,7 @@ Worked!
       engine.escapeMarkup = false;
     }, () => {
       engine.escapeMarkup = true;
-    }
-  )
+    })
 
   testRender(
     "SCALATE-72: Spaces stripped in an attribute expression",
@@ -209,7 +196,6 @@ Worked!
 %p(class={"a b"}) a b
 """, """
 <p class="a b">a b</p>
-"""
-  )
+""")
 
 }

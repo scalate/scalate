@@ -50,8 +50,7 @@ done""", template, Map("fields" -> List("a", "b")))
     val attributes = Map(
       "name" -> "Cheese",
       "thePackage" -> "org.acme.cheese",
-      "fields" -> List("foo", "bar")
-    )
+      "fields" -> List("foo", "bar"))
 
     val template = compileSsp("Mads sample", """
 <%@ var name:String %>

@@ -25,9 +25,8 @@ sealed abstract class PageFragment extends Positional {
 }
 
 case class QualifiedName(
-    prefix: String,
-    name: String
-) extends Positional {
+  prefix: String,
+  name: String) extends Positional {
 
   val qualifiedName = prefix + ":" + name
 
@@ -36,16 +35,13 @@ case class QualifiedName(
 
 case class Attribute(
   name: String,
-  value: Expression
-) extends Positional
+  value: Expression) extends Positional
 
 case class CommentFragment(
-  comment: Text
-) extends PageFragment
+  comment: Text) extends PageFragment
 
 case class DollarExpressionFragment(
-    code: Text
-) extends PageFragment {
+  code: Text) extends PageFragment {
 
   val toScala = ExpressionLanguage.asScala(code.toString)
 
@@ -53,18 +49,16 @@ case class DollarExpressionFragment(
 }
 
 case class TextFragment(
-    text: Text
-) extends PageFragment {
+  text: Text) extends PageFragment {
 
   override def toString = text.toString
 
 }
 
 case class Element(
-    qname: QualifiedName,
-    attributes: List[Attribute],
-    body: List[PageFragment]
-) extends PageFragment {
+  qname: QualifiedName,
+  attributes: List[Attribute],
+  body: List[PageFragment]) extends PageFragment {
 
   val qualifiedName = qname.qualifiedName
 
@@ -137,5 +131,4 @@ class JspParser extends MarkupScanner {
 
 class InvalidJspException(
   val brief: String,
-  val pos: Position = NoPosition
-) extends TemplateException(brief + " at " + pos)
+  val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)

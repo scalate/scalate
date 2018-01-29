@@ -27,8 +27,8 @@ import java.util.Enumeration
 import scala.collection.JavaConverters.asJavaEnumerationConverter
 
 class ScalateViewResolver()
-    extends AbstractTemplateViewResolver
-    with ServletConfigAware {
+  extends AbstractTemplateViewResolver
+  with ServletConfigAware {
 
   var templateEngine: ServletTemplateEngine = _
 

@@ -13,8 +13,7 @@ import org.atmosphere.handler.ReflectorServletProcessor
  */
 @Singleton
 class ScalateAtmosphereServlet @Inject() (
-    private val injector: Injector
-) extends AtmosphereServlet {
+  private val injector: Injector) extends AtmosphereServlet {
 
   /**
    * Most of the code to set up AtmosphereServlet has been borrowed from

@@ -141,29 +141,25 @@ class SiteGenerator {
 }
 
 class DummyTemplateEngine(
-    rootDirectory: File
-) extends TemplateEngine(Some(rootDirectory)) {
+  rootDirectory: File) extends TemplateEngine(Some(rootDirectory)) {
 
   override protected def createRenderContext(
     uri: String,
-    out: PrintWriter
-  ) = new DummyRenderContext(uri, this, out)
+    out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
   private val responseClassName = "_root_." + classOf[DummyResponse].getName
 
   bindings = List(
     Binding("context", "_root_." + classOf[DummyRenderContext].getName, true, isImplicit = true),
-    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()"))
-  )
+    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()")))
 
   ServletTemplateEngine.setLayoutStrategy(this)
 }
 
 class DummyRenderContext(
-    val _requestUri: String,
-    _engine: TemplateEngine,
-    _out: PrintWriter
-) extends DefaultRenderContext(_requestUri, _engine, _out) {
+  val _requestUri: String,
+  _engine: TemplateEngine,
+  _out: PrintWriter) extends DefaultRenderContext(_requestUri, _engine, _out) {
 
   // for static website stuff we must zap the root dir typically
   override def uri(name: String) = {

@@ -32,13 +32,11 @@ import collection.JavaConverters._
 
 case class Attribute(
   key: Text,
-  value: Text
-)
+  value: Text)
 
 case class PagePart(
-    attributes: List[Attribute],
-    content: Text
-) {
+  attributes: List[Attribute],
+  content: Text) {
 
   def attribute(name: String) = attributes.find(_.key.value == name).map(_.value)
   def name = attribute("name")
@@ -57,11 +55,10 @@ case class PagePart(
 }
 
 case class Page(
-    context: RenderContext,
-    file: Option[File],
-    headers: Map[String, AnyRef],
-    parts: Map[String, PagePart]
-) extends Node {
+  context: RenderContext,
+  file: Option[File],
+  headers: Map[String, AnyRef],
+  parts: Map[String, PagePart]) extends Node {
 
   protected lazy val fileNode = file.map(new FileNode(_))
 

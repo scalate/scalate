@@ -49,8 +49,7 @@ class Sass(val jruby: JRuby, val engine: TemplateEngine) extends Filter {
       "options[:syntax] = :" + syntax,
       "content = <<SCALATE_SASS_EOF\n" + content + "\nSCALATE_SASS_EOF",
       "tree = ::Sass::Engine.new(content, options).to_tree",
-      "@result.append(tree.render)"
-    ) match {
+      "@result.append(tree.render)") match {
         case Right(result) => result.toString
         case Left((exception, errors)) =>
           val err1 = """(?m)([a-zA-Z_0-9-]+[.]s[ca]ss:\d+:.+)$""".r

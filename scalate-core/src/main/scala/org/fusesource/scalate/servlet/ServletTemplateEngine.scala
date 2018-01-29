@@ -91,8 +91,7 @@ object ServletTemplateEngine {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ServletTemplateEngine(
-    val config: Config
-) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
+  val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
   import ServletTemplateEngine.log._
 
   templateDirectories ::= "/WEB-INF"

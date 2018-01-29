@@ -58,19 +58,17 @@ object ServletRenderContext {
  * @version $Revision : 1.1 $
  */
 class ServletRenderContext(
-    engine: TemplateEngine,
-    out: PrintWriter,
-    val request: HttpServletRequest,
-    val response: HttpServletResponse,
-    val servletContext: ServletContext
-) extends DefaultRenderContext(request.getRequestURI, engine, out) {
+  engine: TemplateEngine,
+  out: PrintWriter,
+  val request: HttpServletRequest,
+  val response: HttpServletResponse,
+  val servletContext: ServletContext) extends DefaultRenderContext(request.getRequestURI, engine, out) {
 
   def this(
     engine: TemplateEngine,
     request: HttpServletRequest,
     response: HttpServletResponse,
-    servletContext: ServletContext
-  ) = {
+    servletContext: ServletContext) = {
     this(engine, response.getWriter, request, response, servletContext)
   }
 

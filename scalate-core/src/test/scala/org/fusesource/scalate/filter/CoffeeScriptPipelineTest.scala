@@ -12,8 +12,7 @@ class CoffeeScriptPipelineTest extends TemplateTestSupport {
     assertUriOutputContains(
       "/org/fusesource/scalate/filter/sample.js",
       """alert("Hello, Coffee!");
-"""
-    )
+""")
   }
 
   override protected def fromUri(uri: String) = {

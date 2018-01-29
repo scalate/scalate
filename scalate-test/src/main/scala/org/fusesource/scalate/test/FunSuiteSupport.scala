@@ -28,9 +28,9 @@ import org.fusesource.scalate.util.Log
  */
 @RunWith(classOf[JUnitRunner])
 abstract class FunSuiteSupport
-    extends FunSuite
-    with BeforeAndAfterAllConfigMap
-    with Log {
+  extends FunSuite
+  with BeforeAndAfterAllConfigMap
+  with Log {
 
   /**
    * Returns the base directory of the current project

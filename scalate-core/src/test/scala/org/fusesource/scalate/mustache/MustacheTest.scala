@@ -36,15 +36,13 @@ class MustacheTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "Hi James! ",
       "{{#person?}} Hi {{name}}! {{/person?}}",
-      Map("person?" -> Map("name" -> "James"))
-    )
+      Map("person?" -> Map("name" -> "James")))
   }
 
   test("non false not a list with simple name") {
     assertMoustacheOutput(
       "Hi James ",
       "{{#person}} Hi {{name}} {{/person}}",
-      Map("person" -> Map("name" -> "James"))
-    )
+      Map("person" -> Map("name" -> "James")))
   }
 }

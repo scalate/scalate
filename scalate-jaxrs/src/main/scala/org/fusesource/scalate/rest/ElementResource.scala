@@ -23,9 +23,8 @@ import javax.ws.rs.{ PUT, DELETE }
  * @version $Revision: 1.1 $
  */
 class ElementResource[K, E](
-    element: E,
-    container: Container[K, E]
-) {
+  element: E,
+  container: Container[K, E]) {
 
   @PUT
   def put(updatedElement: E): Unit = {
