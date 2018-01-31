@@ -154,6 +154,8 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
         var notFound = true
         for (uri <- errorUris if notFound) {
           try {
+            engine.load(uri)
+
             // we need to expose all the errors property here...
             request.setAttribute("javax.servlet.error.exception", e)
             request.setAttribute("javax.servlet.error.exception_type", e.getClass)
