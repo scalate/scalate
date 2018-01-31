@@ -84,7 +84,7 @@ trait ConsoleSnippets {
     if (file == null) {
       "<unknown>"
     } else {
-      var root = renderContext.engine.workingDirectory.getPath;
+      val root = renderContext.engine.workingDirectory.getPath;
       if (file.startsWith(root)) {
         file.substring(root.length + 1)
       } else {

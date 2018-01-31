@@ -92,7 +92,7 @@ object BundleClassPathBuilder {
     }
 
     try {
-      var admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
+      val admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
       if (admin == null) {
         warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
         return List()

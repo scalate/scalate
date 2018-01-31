@@ -135,7 +135,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     }
 
     private def phraseOrFail[T](p: Parser[T], in: String): T = {
-      var x = phrase(p)(new CharSequenceReader(in))
+      val x = phrase(p)(new CharSequenceReader(in))
       x match {
         case Success(result, _) => result
         case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);

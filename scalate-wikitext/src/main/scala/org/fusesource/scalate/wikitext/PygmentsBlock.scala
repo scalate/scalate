@@ -50,7 +50,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
   // lets calculate once on startup
   private lazy val _installed: Boolean = {
     try {
-      var process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
+      val process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
       thread("pygmetize err handler") {
         IOUtil.copy(process.getErrorStream, System.err)
       }
@@ -153,7 +153,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       case Some(m1) =>
 
         lang1 = m1.group(1)
-        var title1 = m1.group(2)
+        val title1 = m1.group(2)
         var data1 = m1.group(3)
 
         header_re.findFirstMatchIn(data1) match {
@@ -161,9 +161,9 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
             data1 = data1.substring(0, m2.start)
 
-            var lang2 = m2.group(1)
-            var title2 = m2.group(2)
-            var data2 = m2.group(3)
+            val lang2 = m2.group(1)
+            val title2 = m2.group(2)
+            val data2 = m2.group(3)
 
             val colored1 = pygmentize(data1, lang1, lines)
             val colored2 = pygmentize(data2, lang2, lines)
@@ -196,7 +196,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
         options += ",linenos=1"
       }
 
-      var process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", lang))
+      val process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", lang))
 
       thread("pygmetize err handler") {
         IOUtil.copy(process.getErrorStream, System.err)

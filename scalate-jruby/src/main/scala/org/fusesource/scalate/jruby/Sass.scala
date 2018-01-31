@@ -37,7 +37,7 @@ class Sass(val jruby: JRuby, val engine: TemplateEngine) extends Filter {
 
   def filter(context: RenderContext, content: String) = {
 
-    var result: StringBuffer = new StringBuffer
+    val result: StringBuffer = new StringBuffer
     jruby.put("@result", result)
     jruby.run(
       "require 'haml-3.0.25/lib/sass'",

@@ -203,7 +203,7 @@ class ConsoleHelper(
         // OffsetPosition's already are holding onto the file contents
         val index: Array[String] = {
           val source = op.source
-          var rc = new ArrayBuffer[String]
+          val rc = new ArrayBuffer[String]
           var start = 0
           for (i <- 0 until source.length) {
             if (source.charAt(i) == '\n') {

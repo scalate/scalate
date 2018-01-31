@@ -20,7 +20,7 @@ class JRuby(loadPaths: List[File]) extends Log {
   RubyInstanceConfig.INLINE_DYNCALL_ENABLED = true
 
   def run(scriptlet: String*): Either[(Throwable, String), AnyRef] = this.synchronized {
-    var errors: StringWriter = new StringWriter
+    val errors: StringWriter = new StringWriter
     try {
       container.setErrorWriter(errors)
       Right(container.runScriptlet(scriptlet.mkString("\n")))
