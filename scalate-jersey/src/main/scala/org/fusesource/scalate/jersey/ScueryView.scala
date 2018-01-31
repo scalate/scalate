@@ -61,7 +61,7 @@ trait ScueryView {
     val classDirectory = "/" + cname.replace('.', '/') + "."
 
     var answer: Option[URL] = None
-    val paths = for (subDir <- List(classDirectory, ""); dir <- templateDirectories if answer.isEmpty) {
+    for (subDir <- List(classDirectory, ""); dir <- templateDirectories if answer.isEmpty) {
       val t = dir + subDir + path
       debug("Trying to find template: " + t)
       val u = servletContext.getResource(t)

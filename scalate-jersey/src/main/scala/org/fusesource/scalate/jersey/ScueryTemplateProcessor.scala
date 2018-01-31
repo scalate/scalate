@@ -115,8 +115,6 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
     // Ensure headers are committed
     out.flush()
 
-    val model = viewable.getModel
-
     try {
 
       debug("Attempt to find '" + resolvedPath + "'")

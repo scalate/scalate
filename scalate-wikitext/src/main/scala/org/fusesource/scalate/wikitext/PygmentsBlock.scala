@@ -144,8 +144,6 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       case _ =>
     }
 
-    val content = unindent(data)
-
     // Now look for header sections...
     val header_re = """(?s)\n------+\s*\n\s*([^:\s]+)\s*:\s*([^\n]+)\n------+\s*\n(.*)""".r
 

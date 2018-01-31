@@ -178,7 +178,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
   protected def findResource(path: String): Option[URL] = {
     var answer: Option[URL] = None
-    val paths = for (dir <- templateDirectories if answer.isEmpty) {
+    for (dir <- templateDirectories if answer.isEmpty) {
       val t = dir + path
       debug("Trying to find template: " + t)
       val u = servletContext.getResource(t)

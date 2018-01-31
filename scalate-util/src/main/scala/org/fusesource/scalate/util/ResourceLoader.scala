@@ -62,7 +62,6 @@ case class FileResourceLoader(sourceDirectories: Traversable[File] = None) exten
   def resource(uri: String): Option[Resource] = {
     debug("Trying to load uri: " + uri)
 
-    var answer = false
     if (uri != null) {
       val file = toFile(uri)
       if (file != null && file.exists && file.isFile) {
