@@ -103,8 +103,6 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
         var notFound = true
         for (uri <- ServletHelper.errorUris() if notFound) {
           try {
-            val template = engine.load(uri)
-
             request.setAttribute("javax.servlet.error.exception", e)
             request.setAttribute("javax.servlet.error.exception_type", e.getClass)
             request.setAttribute("javax.servlet.error.message", e.getMessage)

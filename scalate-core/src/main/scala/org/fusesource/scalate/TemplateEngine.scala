@@ -715,7 +715,6 @@ class TemplateEngine(
     extraBindings: Traversable[Binding]
   ) = {
     source.engine = this
-    val uri = source.uri
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
     template.source = source
