@@ -230,7 +230,7 @@ trait RenderContext {
       case v: Number => sanitize(numberFormat.format(v))
       case f: FilterRequest => {
         // NOTE assume a filter does the correct sanitizing
-        var rc = filter(f.filter, f.content.toString)
+        val rc = filter(f.filter, f.content.toString)
         rc
       }
       // No need to sanitize nodes as they are already sanitized

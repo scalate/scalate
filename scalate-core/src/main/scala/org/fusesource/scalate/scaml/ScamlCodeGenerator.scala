@@ -222,9 +222,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       val interpolate = isEnabled("&") || isEnabled("!")
       val sanitize = interpolate && isEnabled("&")
 
-      var content = statement.body.map { _.value }.mkString(ScamlOptions.nl)
+      val content = statement.body.map { _.value }.mkString(ScamlOptions.nl)
 
-      var text: TextExpression = if (interpolate) {
+      val text: TextExpression = if (interpolate) {
         val p = new ScamlParser(ScamlParser.UPTO_TYPE_MULTI_LINE)
         try {
           p.parse(p.literal_text(Some(sanitize)), content)
@@ -450,7 +450,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement: Element): Unit = {
 
-      var tag = statement.tag.getOrElse("div");
+      val tag = statement.tag.getOrElse("div");
       if (statement.text.isDefined && !statement.body.isEmpty) {
         throw new InvalidSyntaxException("Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed", statement.pos)
       }
@@ -621,7 +621,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
         val (entries_class, tmp) = entries.partition { x => { x._1 match { case "class" => true; case _ => false } } }
         val (entries_id, entries_rest) = tmp.partition { x => { x._1 match { case "id" => true; case _ => false } } }
-        var map = LinkedHashMap[Text, Text]()
+        val map = LinkedHashMap[Text, Text]()
 
         if (!entries_id.isEmpty) {
           map += Text("id") -> value_of(entries_id.last._2)

@@ -84,7 +84,7 @@ object RenderHelper {
 
     val (entries_class, tmp) = entries.partition { x => { x._1 match { case "class" => true; case _ => false } } }
     val (entries_id, entries_rest) = tmp.partition { x => { x._1 match { case "id" => true; case _ => false } } }
-    var map = LinkedHashMap[Any, Any]()
+    val map = LinkedHashMap[Any, Any]()
 
     def isEnabled(value: Any) = value != null && (!value.isInstanceOf[Boolean] || value.asInstanceOf[Boolean])
 

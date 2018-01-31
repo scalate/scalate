@@ -104,8 +104,8 @@ class SourceMapStratum(val name: String) {
     //outputLineIncrement, if possible
     var i = 0;
     while (i < lines.size() - 1) {
-      var li = lines.get(i);
-      var liNext = lines.get(i + 1);
+      val li = lines.get(i);
+      val liNext = lines.get(i + 1);
       if (li.file == liNext.file
         && liNext.istart == li.istart
         && liNext.icount == 1
@@ -123,8 +123,8 @@ class SourceMapStratum(val name: String) {
     //inputLineCount, if possible
     i = 0;
     while (i < lines.size() - 1) {
-      var li = lines.get(i);
-      var liNext = lines.get(i + 1);
+      val li = lines.get(i);
+      val liNext = lines.get(i + 1);
       if (li.file == liNext.file
         && liNext.istart == li.istart + li.icount
         && liNext.oincrement == li.oincrement
@@ -149,7 +149,7 @@ class SourceMapStratum(val name: String) {
     if (files.size == 0 || lines.size == 0)
       return null;
 
-    var out = new StringBuilder();
+    val out = new StringBuilder();
 
     // print StratumSection
     out.append("*S " + name + "\n");
@@ -171,7 +171,7 @@ class SourceMapStratum(val name: String) {
     out.append("*L\n");
     var lastFile = 0
     for (i <- 0 until lines.size()) {
-      var line = lines.get(i);
+      val line = lines.get(i);
       out.append(line.toString(lastFile));
       lastFile = line.file
     }
@@ -190,7 +190,7 @@ class SourceMapStratum(val name: String) {
     check(oincrement >= 0);
 
     def containsOutputLine(line: Int) = {
-      var oend = ostart + (icount * oincrement)
+      val oend = ostart + (icount * oincrement)
       ostart <= line && line < oend
     }
 
@@ -303,7 +303,7 @@ class SourceMap {
 
   override def toString(): String = {
     if (outputFileName == null) throw new IllegalStateException
-    var out: StringBuilder = new StringBuilder
+    val out: StringBuilder = new StringBuilder
     out.append("SMAP\n")
     out.append(outputFileName + '\n')
     out.append(defaultStratum + '\n')
@@ -505,7 +505,7 @@ object SourceMapInstaller {
       var sdeIndex: Int = -1
       var i: Int = 1
       while (i < constantPoolCount) {
-        var tag: Int = dis.readByte
+        val tag: Int = dis.readByte
         dos.writeByte(tag)
         tag match {
           case 16 | 8 | 7 =>
@@ -668,7 +668,7 @@ object SourceMapInstaller {
   }
 
   def store(classFile: File, sourceDebug: String): Unit = {
-    var tmpFile = new File(classFile.getPath() + "tmp");
+    val tmpFile = new File(classFile.getPath() + "tmp");
     store(classFile, sourceDebug, tmpFile);
     if (!classFile.delete()) {
       throw new IOException("temp file delete failed");

@@ -987,7 +987,7 @@ class TemplateEngine(
     var smap = new TreeMap[Int, List[Int]]()
     positions.foreach {
       case (out, in) =>
-        var outs = out.line :: smap.getOrElse(in.line, Nil)
+        val outs = out.line :: smap.getOrElse(in.line, Nil)
         smap += in.line -> outs
     }
     // sort the output lines..
@@ -1002,7 +1002,7 @@ class TemplateEngine(
     }
     stratum.optimize
 
-    var sourceMap: SourceMap = new SourceMap
+    val sourceMap: SourceMap = new SourceMap
     sourceMap.setOutputFileName(scalaFile.getName)
     sourceMap.addStratum(stratum, true)
     sourceMap.toString
