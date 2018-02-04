@@ -26,6 +26,6 @@ Links
 * [Home](http://scalate.github.io/scalate)
 * [Community](http://scalate.github.io/scalate/community.html)
 * [Documentation](http://scalate.github.io/scalate/documentation/)
-* [Issue Tracker](http://scalate.assembla.com/spaces/scalate/tickets)
+* [Issue Tracker](https://github.com/scalate/scalate/issues)
 
 [logo]: http://scalate.github.io/scalate/images/project-logo.png "Scalate"
