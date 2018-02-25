@@ -49,8 +49,7 @@ class JadeParser extends ScamlParser {
     prefixed("&" ~ space, literal_text(Some(true))) |
     prefixed("!" ~ space, literal_text(Some(false))) |
     prefixed("|" ~ opt_space, literal_text(None)) |
-    guarded("<", literal_text(None))
-  ) <~ any_space_then_nl
+    guarded("<", literal_text(None))) <~ any_space_then_nl
 
 }
 

@@ -37,8 +37,7 @@ object TemplateEngineServlet extends Log {
     templateEngine: TemplateEngine,
     servletContext: ServletContext,
     request: HttpServletRequest,
-    response: HttpServletResponse
-  ): Unit = {
+    response: HttpServletResponse): Unit = {
     val context = new ServletRenderContext(templateEngine, request, response, servletContext)
 
     if (template == null || template.length == 0 || template == "/") {

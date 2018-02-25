@@ -55,7 +55,7 @@ class LoopTest extends FunSuiteSupport {
             $(".name").contents = p.name
             $(".location").contents = p.location
           }.apply(node)
-        }                                   
+        }
       }
     }
     assertTransformed(transformer1(xml))

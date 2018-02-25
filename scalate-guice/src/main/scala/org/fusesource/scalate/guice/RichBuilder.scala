@@ -32,15 +32,13 @@ class RichBuilder(builder: ServletModule.ServletKeyBindingBuilder) {
   def by[T <: HttpServlet](servletKey: Class[T]) { builder.`with`(servletKey) }
 
   def by[T <: HttpServlet](
-    servletKey: Class[T], params: java.util.Map[String, String]
-  ) { builder.`with`(servletKey, params) }
+    servletKey: Class[T], params: java.util.Map[String, String]) { builder.`with`(servletKey, params) }
 
   def by[T <: HttpServlet](servletKey: Key[T]) { builder.`with`(servletKey) }
 
   def by[T <: HttpServlet, S](
     servletKey: Key[T],
-    params: java.util.Map[String, String]
-  ) { builder.`with`(servletKey, params) }
+    params: java.util.Map[String, String]) { builder.`with`(servletKey, params) }
 
   def withClass[T <: HttpServlet](servletKey: Class[T]) {
     builder.`with`(servletKey)
@@ -48,8 +46,7 @@ class RichBuilder(builder: ServletModule.ServletKeyBindingBuilder) {
 
   def withClass[T <: HttpServlet](
     servletKey: Class[T],
-    params: java.util.Map[String, String]
-  ) { builder.`with`(servletKey, params) }
+    params: java.util.Map[String, String]) { builder.`with`(servletKey, params) }
 
   def withClass[T <: HttpServlet](servletKey: Key[T]) {
     builder.`with`(servletKey)
@@ -57,8 +54,7 @@ class RichBuilder(builder: ServletModule.ServletKeyBindingBuilder) {
 
   def withClass[T <: HttpServlet](
     servletKey: Key[T],
-    params: java.util.Map[String, String]
-  ) { builder.`with`(servletKey, params) }
+    params: java.util.Map[String, String]) { builder.`with`(servletKey, params) }
 
 }
 

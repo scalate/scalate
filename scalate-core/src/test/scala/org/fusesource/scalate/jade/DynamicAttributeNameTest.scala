@@ -14,6 +14,5 @@ html
 <html>
   <a foo="bar">Hey</a>
 </html>
-"""
-  )
+""")
 }

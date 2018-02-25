@@ -108,8 +108,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
     if (hc.isTracingEnabled()) {
       hc.trace("forwarding view to Scuery template: \"%s\", it = %s".format(
         resolvedPath,
-        ReflectionHelper.objectToString(viewable.getModel())
-      ));
+        ReflectionHelper.objectToString(viewable.getModel())));
     }
 
     // Ensure headers are committed

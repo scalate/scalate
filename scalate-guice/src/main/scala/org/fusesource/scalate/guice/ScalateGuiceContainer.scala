@@ -31,15 +31,13 @@ object ScalateGuiceContainer extends Log
  * @version $Revision: 1.1 $
  */
 class ScalateGuiceContainer(
-    injector: Injector
-) extends GuiceContainer(injector) {
+  injector: Injector) extends GuiceContainer(injector) {
   import ScalateGuiceContainer._
 
   // TODO should the GuiceContainer class do this too?
   override def getDefaultResourceConfig(
     props: JMap[String, AnyRef],
-    wc: WebConfig
-  ): ResourceConfig = injector.getInstance(classOf[ResourceConfig])
+    wc: WebConfig): ResourceConfig = injector.getInstance(classOf[ResourceConfig])
 
   override def initiate(rc: ResourceConfig, wa: WebApplication) = {
     debug("container created with " + rc + " properties: " + rc.getProperties)

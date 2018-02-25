@@ -32,11 +32,10 @@ import collection.JavaConverters._
  * @version $Revision : 1.1 $
  */
 class ScalateEndpoint(
-    component: ScalateComponent,
-    uri: String,
-    templateUri: String,
-    defaultTemplateExtension: String = "ssp"
-) extends ProcessorEndpoint(uri, component) {
+  component: ScalateComponent,
+  uri: String,
+  templateUri: String,
+  defaultTemplateExtension: String = "ssp") extends ProcessorEndpoint(uri, component) {
 
   val log = LogFactory.getLog(getClass)
 

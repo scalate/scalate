@@ -23,8 +23,7 @@ class ConvertAbsoluteLinkTest extends FunSuiteSupport {
   List(
     "http://fusesource.com",
     "foo.html",
-    "bar/whatnot/foo.html"
-  ) foreach assertUnchanged
+    "bar/whatnot/foo.html") foreach assertUnchanged
 
   assertChanged("/foo.html", "/bar.html", "foo.html")
   assertChanged("/foo.html", "/a/bar.html", "../foo.html")

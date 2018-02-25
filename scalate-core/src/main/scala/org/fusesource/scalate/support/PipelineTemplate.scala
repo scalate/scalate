@@ -24,9 +24,8 @@ import filter.Filter
  * Implements a Template using a list of filters
  */
 class PipelineTemplate(
-    pipeline: List[Filter],
-    text: String
-) extends Template {
+  pipeline: List[Filter],
+  text: String) extends Template {
 
   def render(context: RenderContext) = {
     var rc = text

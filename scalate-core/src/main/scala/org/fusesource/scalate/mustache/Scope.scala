@@ -203,14 +203,12 @@ trait Scope {
         new MapScope(
           this,
           name,
-          v.asInstanceOf[scala.collection.convert.Wrappers.JMapWrapper[String, _]]
-        )
+          v.asInstanceOf[scala.collection.convert.Wrappers.JMapWrapper[String, _]])
       case v: scala.collection.Map[_, _] =>
         new MapScope(
           this,
           name,
-          v.asInstanceOf[Map[String, _]]
-        )
+          v.asInstanceOf[Map[String, _]])
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
@@ -287,9 +285,8 @@ trait Scope {
  * Scope for the render context
  */
 case class RenderContextScope(
-    context: RenderContext,
-    defaultObjectName: Option[String] = Some("it")
-) extends Scope {
+  context: RenderContext,
+  defaultObjectName: Option[String] = Some("it")) extends Scope {
 
   // lets create a parent scope which is the defaultObject scope so we look there last
   val rootScope = MarkupAttributeContextScope(context, "html")
@@ -312,9 +309,8 @@ case class RenderContextScope(
  * returns a new child scope for walking the templates markup
  */
 case class MarkupAttributeContextScope(
-    context: RenderContext,
-    attributeName: String
-) extends Scope {
+  context: RenderContext,
+  attributeName: String) extends Scope {
 
   def parent = None
 
@@ -344,26 +340,23 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 }
 
 class MapScope(
-    parent: Scope,
-    name: String,
-    map: collection.Map[String, _]
-) extends ChildScope(parent) {
+  parent: Scope,
+  name: String,
+  map: collection.Map[String, _]) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = map.get(name)
 }
 
 class NodeScope(
-    parent: Scope,
-    name: String,
-    node: NodeSeq
-) extends ChildScope(parent) {
+  parent: Scope,
+  name: String,
+  node: NodeSeq) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = Some(node \ name)
 }
 
 class EmptyScope(
-    parent: Scope
-) extends ChildScope(parent) {
+  parent: Scope) extends ChildScope(parent) {
 
   def localVariable(name: String) = None
 }
@@ -372,9 +365,8 @@ class EmptyScope(
  * Constructs a scope for a non-null and not None value
  */
 class ObjectScope[T <: AnyRef](
-    parent: Scope,
-    value: T
-) extends ChildScope(parent) {
+  parent: Scope,
+  value: T) extends ChildScope(parent) {
 
   val introspector = Introspector[T](value.getClass.asInstanceOf[Class[T]])
 
@@ -384,5 +376,4 @@ class ObjectScope[T <: AnyRef](
 }
 
 case class FunctionResult(
-  value: Any
-)
+  value: Any)

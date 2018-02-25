@@ -104,8 +104,7 @@ class ScalateModule extends ServletModule {
 
       "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
       "com.sun.jersey.config.feature.Redirect" -> "true",
-      "com.sun.jersey.config.feature.Trace" -> "true"
-    )
+      "com.sun.jersey.config.feature.Trace" -> "true")
 
     // as of Jersey 1.1.4-ea05 we don't need to mess with a regex
     // see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485

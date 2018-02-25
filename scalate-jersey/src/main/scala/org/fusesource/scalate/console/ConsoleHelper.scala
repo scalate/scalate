@@ -31,9 +31,8 @@ import xml.NodeSeq
 import org.fusesource.scalate.util.{ Log, SourceMapInstaller, SourceMap }
 
 case class SourceLine(
-    line: Int,
-    source: String
-) {
+  line: Int,
+  source: String) {
 
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
 
@@ -65,8 +64,7 @@ object ConsoleHelper extends Log
  * @version $Revision : 1.1 $
  */
 class ConsoleHelper(
-    context: RenderContext
-) extends ConsoleSnippets {
+  context: RenderContext) extends ConsoleSnippets {
   import context._
 
   val consoleParameter = "_scalate"

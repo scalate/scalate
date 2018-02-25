@@ -70,8 +70,7 @@ public class Test {
     }
 
 }
-</pre></div>"""
-    )
+</pre></div>""")
   }
 
   test("snippets macro with snippet id") {
@@ -85,8 +84,7 @@ h1. Snippet with id
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>"""
-    )
+</pre></div>""")
   }
 
   test("snippets macro with snippet id and explicit language") {
@@ -100,8 +98,7 @@ h1. Snippet with id
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>"""
-    )
+</pre></div>""")
   }
 
   test("snippets macro with relative url and snippet id") {
@@ -115,8 +112,7 @@ h1. Snippet with id
     public void doSomething() {
         // does something very interesting
     }
-</pre></div>"""
-    )
+</pre></div>""")
   }
 
   if (Pygmentize.isInstalled) {
@@ -127,8 +123,7 @@ h1. Snippet with id
 h1. Snippet with id
 {snippet:url=test/Test.java|id=doSomething|pygmentize=true}
 """,
-        """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>"""
-      )
+        """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>""")
     }
   } else {
     warn("Pygmentize not installed so ignoring the tests")
@@ -137,7 +132,6 @@ h1. Snippet with id
   test("URL prefix handling") {
     assertTrue(
       "Only leading occurence of prefix should only have been replaced",
-      Snippets.handlePrefix("test/with/a/subfolder/named/test").endsWith("with/a/subfolder/named/test")
-    )
+      Snippets.handlePrefix("test/with/a/subfolder/named/test").endsWith("with/a/subfolder/named/test"))
   }
 }

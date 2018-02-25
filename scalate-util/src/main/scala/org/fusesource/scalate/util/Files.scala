@@ -45,12 +45,10 @@ object Files {
   }
 
   def descendants(file: File): Iterable[File] = (
-    children(file).view.flatMap(andDescendants(_))
-  )
+    children(file).view.flatMap(andDescendants(_)))
 
   def andDescendants(file: File): Iterable[File] = (
-    Seq(file) ++ descendants(file)
-  )
+    Seq(file) ++ descendants(file))
 
   /**
    * Returns true if

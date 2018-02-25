@@ -141,7 +141,7 @@ sealed trait TextExpression extends Statement
 case class Newline(skip: Boolean = true) extends Statement
 case class EvaluatedText(code: Text, body: List[Statement], preserve: Boolean, sanitize: Option[Boolean], ugly: Boolean) extends TextExpression
 case class LiteralText(text: List[Text], sanitize: Option[Boolean]) extends TextExpression {
-  // every odd item starting at 1 is an interpolated expression like #{foo} 
+  // every odd item starting at 1 is an interpolated expression like #{foo}
   def isStatic = text.size < 2
 }
 case class Element(tag: Option[Text], attributes: List[(Any, Any)], text: Option[TextExpression], body: List[Statement], trim: Option[Trim.Value], close: Boolean) extends Statement
@@ -165,8 +165,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     text(
       text("""\z""".r) ~ failure("end of file") ^^ { null } |
         guard(p1) ^^ { _ => "" } |
-        rep1(not(p1) ~> upto_type.r) ^^ { _.mkString("") }
-    )
+        rep1(not(p1) ~> upto_type.r) ^^ { _.mkString("") })
   }
 
   val dot = text(""".+""".r)
@@ -214,8 +213,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
       whole_number |
       decimal_number |
       floating_point_number |
-      symbol
-    ) ^^ { s => eval_string_escapes(s) } |
+      symbol) ^^ { s => eval_string_escapes(s) } |
       (xml_ident | "{" ~> skip_whitespace(upto("}"), false) <~ "}") ^^ {
         x => EvaluatedText(x, List(), true, Some(true), false)
       }
@@ -228,8 +226,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     } |
       (
         xml_ident ~ ("=" ~> xml_ident) |
-        xml_ident ~ ("=" ~ "{" ~> skip_whitespace(upto("}"), false) <~ "}")
-      ) ^^ {
+        xml_ident ~ ("=" ~ "{" ~> skip_whitespace(upto("}"), false) <~ "}")) ^^ {
           case key ~ value =>
             (key, EvaluatedText(value, List(), true, Some(true), false))
         } |
@@ -285,8 +282,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     upto(litteral_part_delimiter) ~
       opt(
         """\#{""" ~ opt(litteral_part) ^^ { case x ~ y => "#{" + y.getOrElse(Text("")) } |
-          """\\""" ^^ { s => """\""" }
-      ) ^^ {
+          """\\""" ^^ { s => """\""" }) ^^ {
           case x ~ Some(y) => x + y
           case x ~ None => x
         }
@@ -306,8 +302,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     prefixed("!==" ~ opt_space, literal_text(Some(false))) |
     prefixed("&" ~ space, literal_text(Some(true))) |
     prefixed("!" ~ space, literal_text(Some(false))) |
-    literal_text(None)
-  ) <~ any_space_then_nl
+    literal_text(None)) <~ any_space_then_nl
 
   def evaluated_statement = (opt("&" | "!") ~ ("=" | "~~" | "~")) ~! ((upto(nl) <~ nl) ~ statement_block) ^^ {
     case (sanitize ~ preserve) ~ (code ~ body) => EvaluatedText(code, body, "=" != preserve, sanitize match {
@@ -333,8 +328,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
 
   def filter_statement = prefixed(
     ":",
-    (rep(text("~" | "!" | "&")) ~ rep1sep(text("""[^: \t\r\n]+""".r), """[ \t]*:[ \t]*""".r)) <~ nl
-  ) ~ rep(indent(opt_dot <~ nl)) ^^ {
+    (rep(text("~" | "!" | "&")) ~ rep1sep(text("""[^: \t\r\n]+""".r), """[ \t]*:[ \t]*""".r)) <~ nl) ~ rep(indent(opt_dot <~ nl)) ^^ {
       case (flags ~ code) ~ body =>
         FilterStatement(flags, code, body)
     }
@@ -350,16 +344,14 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
       executed_statement |
       doctype_statement |
       filter_statement |
-      text_statement
-  )
+      text_statement)
 
   def statement_block = rep(indent(statement, true))
 
   def parser = rep(
     space ~ err("Inconsistent indent level detected: indented too shallow") ^^ { null } |
       nl ^^ { x => Newline() } |
-      statement
-  ) ^^ { case x => x.filter(_ != Newline()) }
+      statement) ^^ { case x => x.filter(_ != Newline()) }
 
   def parse(in: String) = {
     var content = in;

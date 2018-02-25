@@ -24,8 +24,7 @@ trait CodeGenerator {
   def generate(
     engine: TemplateEngine,
     source: TemplateSource,
-    bindings: Traversable[Binding]
-  ): Code
+    bindings: Traversable[Binding]): Code
 
   val stratumName: String
 

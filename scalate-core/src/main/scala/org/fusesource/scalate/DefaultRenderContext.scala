@@ -28,10 +28,9 @@ object DefaultRenderContext extends Log
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(
-    private val _requestUri: String,
-    val engine: TemplateEngine,
-    var out: PrintWriter = new PrintWriter(new StringWriter())
-) extends RenderContext {
+  private val _requestUri: String,
+  val engine: TemplateEngine,
+  var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
 
   import DefaultRenderContext._
 

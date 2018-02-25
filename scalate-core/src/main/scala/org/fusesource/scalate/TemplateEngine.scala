@@ -67,16 +67,14 @@ object TemplateEngine {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class TemplateEngine(
-    var sourceDirectories: Traversable[File] = None,
-    var mode: String = System.getProperty("scalate.mode", "production")
-) {
+  var sourceDirectories: Traversable[File] = None,
+  var mode: String = System.getProperty("scalate.mode", "production")) {
   import TemplateEngine.log._
 
   private case class CacheEntry(
-      template: Template,
-      dependencies: Set[String],
-      timestamp: Long
-  ) {
+    template: Template,
+    dependencies: Set[String],
+    timestamp: Long) {
 
     def isStale() = timestamp != 0 && dependencies.exists {
       resourceLoader.lastModified(_) > timestamp
@@ -117,8 +115,7 @@ class TemplateEngine(
   var importStatements: List[String] = List(
     "import _root_.scala.collection.JavaConversions._",
     "import _root_.org.fusesource.scalate.support.TemplateConversions._",
-    "import _root_.org.fusesource.scalate.util.Measurements._"
-  )
+    "import _root_.org.fusesource.scalate.util.Measurements._")
 
   /**
    * Loads resources such as the templates based on URIs
@@ -417,8 +414,7 @@ class TemplateEngine(
    */
   def load(
     source: TemplateSource,
-    extraBindings: Traversable[Binding] = Nil
-  ): Template = {
+    extraBindings: Traversable[Binding] = Nil): Template = {
 
     source.engine = this
     templateCache.synchronized {
@@ -587,8 +583,7 @@ class TemplateEngine(
   def layout(
     uri: String,
     attributes: Map[String, Any] = Map(),
-    extraBindings: Traversable[Binding] = Nil
-  ): String = {
+    extraBindings: Traversable[Binding] = Nil): String = {
     val template = load(uri, extraBindings)
     layout(uri, template, attributes)
   }
@@ -596,8 +591,7 @@ class TemplateEngine(
   def layout(
     uri: String,
     out: PrintWriter,
-    attributes: Map[String, Any]
-  ): Unit = {
+    attributes: Map[String, Any]): Unit = {
     val template = load(uri)
     layout(uri, template, out, attributes)
   }
@@ -606,8 +600,7 @@ class TemplateEngine(
     uri: String,
     template: Template,
     out: PrintWriter,
-    attributes: Map[String, Any]
-  ): Unit = {
+    attributes: Map[String, Any]): Unit = {
     val context = createRenderContext(uri, out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
@@ -621,8 +614,7 @@ class TemplateEngine(
   def layout(
     uri: String,
     template: Template,
-    attributes: Map[String, Any]
-  ): String = {
+    attributes: Map[String, Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     layout(uri, template, out, attributes)
@@ -650,8 +642,7 @@ class TemplateEngine(
   def layout(
     source: TemplateSource,
     context: RenderContext,
-    extraBindings: Traversable[Binding]
-  ): Unit = {
+    extraBindings: Traversable[Binding]): Unit = {
     val template = load(source, extraBindings)
     layout(template, context)
   }
@@ -673,8 +664,7 @@ class TemplateEngine(
   def layoutAsNodes(
     uri: String,
     attributes: Map[String, Any] = Map(),
-    extraBindings: Traversable[Binding] = Nil
-  ): NodeSeq = {
+    extraBindings: Traversable[Binding] = Nil): NodeSeq = {
     val template = load(uri, extraBindings)
     layoutAsNodes(uri, template, attributes)
   }
@@ -685,8 +675,7 @@ class TemplateEngine(
   def layoutAsNodes(
     uri: String,
     template: Template,
-    attributes: Map[String, Any]
-  ): NodeSeq = {
+    attributes: Map[String, Any]): NodeSeq = {
     // TODO there is a much better way of doing this by adding native NodeSeq
     // support into the generated templates - especially for Scaml!
     // for now lets do it a crappy way...
@@ -712,8 +701,7 @@ class TemplateEngine(
 
   private def loadPrecompiledEntry(
     source: TemplateSource,
-    extraBindings: Traversable[Binding]
-  ) = {
+    extraBindings: Traversable[Binding]) = {
     source.engine = this
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching);
@@ -738,8 +726,7 @@ class TemplateEngine(
 
   private def compileAndLoadEntry(
     source: TemplateSource,
-    extraBindings: Traversable[Binding]
-  ) = {
+    extraBindings: Traversable[Binding]) = {
     val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
     CacheEntry(template, dependencies, Platform.currentTime)
   }
@@ -773,8 +760,7 @@ class TemplateEngine(
   private def compileAndLoad(
     source: TemplateSource,
     extraBindings: Traversable[Binding],
-    attempt: Int
-  ): (Template, Set[String]) = {
+    attempt: Int): (Template, Set[String]) = {
     source.engine = this
     var code: Code = null
     try {
@@ -791,8 +777,7 @@ class TemplateEngine(
 
       if (!compilerInstalled) {
         throw new ResourceNotFoundException(
-          "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates"
-        )
+          "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
       val g = generator(source);
@@ -928,8 +913,7 @@ class TemplateEngine(
 
   private def loadCompiledTemplate(
     className: String,
-    from_cache: Boolean = true
-  ): Template = {
+    from_cache: Boolean = true): Template = {
     val cl = if (from_cache) {
       new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     } else {
@@ -974,8 +958,7 @@ class TemplateEngine(
     stratumName: String,
     uri: String,
     scalaFile: File,
-    positions: TreeMap[OffsetPosition, OffsetPosition]
-  ) = {
+    positions: TreeMap[OffsetPosition, OffsetPosition]) = {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 

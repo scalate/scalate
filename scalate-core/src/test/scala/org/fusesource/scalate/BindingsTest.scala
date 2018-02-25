@@ -22,8 +22,7 @@ class BindingsTest extends TemplateTestSupport {
     val responseClassName = classOf[DummyResponse].getName
     engine.bindings = List(
       Binding("context", classOf[DefaultRenderContext].getName, true, isImplicit = true),
-      Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()"))
-    )
+      Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()")))
 
     val text = engine.layout(TemplateSource.fromText("foo.ssp", "hello ${response}"))
 

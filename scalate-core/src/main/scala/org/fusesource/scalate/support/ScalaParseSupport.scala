@@ -77,16 +77,14 @@ trait ScalaParseSupport extends RegexParsers {
     text(
       text("""\z""".r) ~ failure("end of file") ^^ { null } |
         guard(p) ^^ { _ => "" } |
-        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") }
-    )
+        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") })
   }
 
   def someUpto[T](p: Parser[T]): Parser[Text] = {
     text(
       text("""\z""".r) ~ failure("end of file") ^^ { null } |
         guard(p) ~ failure("expected any text before " + p) ^^ { null } |
-        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") }
-    )
+        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") })
   }
 
   lazy val octalDigit: Parser[Char] = accept("octalDigit", isOctalDigit)
@@ -101,8 +99,7 @@ trait ScalaParseSupport extends RegexParsers {
   lazy val charEscapeSeq: Parser[Char] = '\\' ~> (
     (accept("escape", simpleEscape))
     | (octalEscapeSeq)
-    | ('u' ~> uniEscapeSeq)
-  )
+    | ('u' ~> uniEscapeSeq))
   lazy val uniEscapeSeq: Parser[Char] = (repN(4, hexDigit)) ^^ (x => parseInt(x.mkString, 16).toChar)
 
   lazy val octalEscapeSeq: Parser[Char] = octalDigit ~ opt(octalDigit) ~ opt(octalDigit) ^^ {

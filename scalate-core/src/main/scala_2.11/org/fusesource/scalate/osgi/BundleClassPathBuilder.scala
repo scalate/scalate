@@ -42,8 +42,7 @@ object BundleClassPathBuilder {
     private def lookup(
       getFile: (AbstractFile, String, Boolean) => AbstractFile,
       path0: String,
-      directory: Boolean
-    ): AbstractFile = {
+      directory: Boolean): AbstractFile = {
       val separator = java.io.File.separatorChar
       // trim trailing '/'s
       val path: String = if (path0.last == separator) path0 dropRight 1 else path0

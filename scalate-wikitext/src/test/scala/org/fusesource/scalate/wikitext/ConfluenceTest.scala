@@ -29,8 +29,7 @@ Hello
 * two
 """,
 
-      """<h1 id="Title">Title</h1><p>Hello</p><ul><li><p>one</p></li><li><p>two</p></li></ul>"""
-    )
+      """<h1 id="Title">Title</h1><p>Hello</p><ul><li><p>one</p></li><li><p>two</p></li></ul>""")
   }
 
   if (Pygmentize.isInstalled) {
@@ -49,8 +48,7 @@ START
 END
 """,
 
-        """<p>START</p><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>"""
-      )
+        """<p>START</p><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
 
     }
   } else {

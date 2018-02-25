@@ -63,8 +63,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     aClass: Class[_],
     aType: Type,
     annotations: Array[Annotation],
-    mediaType: MediaType
-  ) = {
+    mediaType: MediaType) = {
     classOf[Transformer].isAssignableFrom(aClass)
   }
 
@@ -73,8 +72,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     aClass: Class[_],
     aType: Type,
     annotations: Array[Annotation],
-    mediaType: MediaType
-  ) = -1L
+    mediaType: MediaType) = -1L
 
   def writeTo(
     transformer: Transformer,
@@ -83,8 +81,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     annotations: Array[Annotation],
     mediaType: MediaType,
     httpHeaders: MultivaluedMap[String, Object],
-    out: OutputStream
-  ): Unit = {
+    out: OutputStream): Unit = {
 
     /*
         println("aClass: " + aClass.getName)

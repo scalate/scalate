@@ -23,5 +23,4 @@ case class CompilerError(
   file: String,
   message: String,
   pos: Position = NoPosition,
-  original: CompilerError = null
-)
+  original: CompilerError = null)

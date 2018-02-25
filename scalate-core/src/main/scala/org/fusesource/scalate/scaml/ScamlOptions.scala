@@ -34,8 +34,7 @@ object ScamlOptions {
     "link",
     "br",
     "hr",
-    "input"
-  )
+    "input")
 
   val DEFAULT_INDENT = "  "
   val DEFAULT_NL = "\n"

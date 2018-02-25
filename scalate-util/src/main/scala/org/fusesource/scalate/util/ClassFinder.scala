@@ -32,8 +32,7 @@ object ClassFinder {
 
   def discoverCommands[T](
     indexPath: String,
-    classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders
-  ): List[T] = {
+    classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
     classLoaders.flatMap { cl =>
       ClassLoaders.withContextClassLoader(cl) {
         discoverCommandClasses(indexPath, cl).flatMap {
@@ -66,8 +65,7 @@ object ClassFinder {
 
   def discoverCommandClasses(
     indexPath: String,
-    cl: ClassLoader = getClass.getClassLoader
-  ): List[String] = {
+    cl: ClassLoader = getClass.getClassLoader): List[String] = {
     var rc: List[String] = Nil
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {

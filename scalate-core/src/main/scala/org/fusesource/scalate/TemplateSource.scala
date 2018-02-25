@@ -156,8 +156,7 @@ trait TemplateSource extends Resource {
   }
 
   protected val reservedWords = Set[String](
-    "package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var"
-  )
+    "package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var")
 }
 
 /**

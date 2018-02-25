@@ -96,5 +96,4 @@ class ResourceNotFoundException(resource: String, root: String = "", description
   extends Exception(
     "Could not load resource: [" + resource +
       (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
-      (if (description == "") "" else ". " + description)
-  )
+      (if (description == "") "" else ". " + description))

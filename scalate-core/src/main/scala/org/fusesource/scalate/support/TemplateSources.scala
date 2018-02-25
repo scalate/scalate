@@ -25,32 +25,26 @@ import org.fusesource.scalate.util._
 
 class StringTemplateSource(
   uri: String,
-  text: String
-) extends StringResource(uri, text) with TemplateSource
+  text: String) extends StringResource(uri, text) with TemplateSource
 
 class UriTemplateSource(
   uri: String,
-  resourceLoader: ResourceLoader
-) extends UriResource(uri, resourceLoader) with TemplateSource
+  resourceLoader: ResourceLoader) extends UriResource(uri, resourceLoader) with TemplateSource
 
 class FileTemplateSource(
   file: File,
-  uri: String
-) extends FileResource(file, uri) with TemplateSource
+  uri: String) extends FileResource(file, uri) with TemplateSource
 
 class URLTemplateSource(
-  url: URL
-) extends URLResource(url) with TemplateSource
+  url: URL) extends URLResource(url) with TemplateSource
 
 class SourceTemplateSource(
   uri: String,
-  source: Source
-) extends SourceResource(uri, source) with TemplateSource
+  source: Source) extends SourceResource(uri, source) with TemplateSource
 
 class CustomExtensionTemplateSource(
-    source: TemplateSource,
-    extensionName: String
-) extends DelegateResource with TemplateSource {
+  source: TemplateSource,
+  extensionName: String) extends DelegateResource with TemplateSource {
 
   override def templateType = Some(extensionName)
 

@@ -32,9 +32,8 @@ import IOUtil._
  * bad links, searching for wiki files in your source tree and swizzling the generated links to use those.
  */
 case class SwizzleLinkFilter(
-    sourceDirectories: Traversable[File],
-    extensions: Set[String]
-) extends Filter {
+  sourceDirectories: Traversable[File],
+  extensions: Set[String]) extends Filter {
 
   import SwizzleLinkFilter._
 
