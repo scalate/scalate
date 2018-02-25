@@ -1,7 +1,6 @@
-addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "1.0.0")
+addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "4.0.2")
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.0")
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.1")
-addSbtPlugin("com.typesafe.sbt" % "sbt-javaversioncheck" % "0.1.0")
 addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.1")
 //addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.1.6") TODO: What is our Binary compatibility policy?
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.9.3")
