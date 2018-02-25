@@ -48,10 +48,10 @@ object ScalateBuild {
 
   def notPublished = Seq(
     publishArtifact := false,
-    publish := (),
-    publishLocal := (),
-    PgpKeys.publishLocalSigned := (),
-    PgpKeys.publishSigned := (),
+    publish := {},
+    publishLocal := {},
+    PgpKeys.publishLocalSigned := {},
+    PgpKeys.publishSigned := {},
     publishTo := Some(Resolver.file("file",  target.value / "m2-cache/"))
   )
 
