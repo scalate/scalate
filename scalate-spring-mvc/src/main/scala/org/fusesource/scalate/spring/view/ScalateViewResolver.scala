@@ -32,13 +32,13 @@ class ScalateViewResolver()
 
   var templateEngine: ServletTemplateEngine = _
 
-  override def setServletConfig(config: ServletConfig) {
+  override def setServletConfig(config: ServletConfig): Unit = {
     val ste = new ServletTemplateEngine(config)
     ServletTemplateEngine(config.getServletContext()) = ste
     templateEngine = ste
   }
 
-  override def initServletContext(servletContext: ServletContext) {
+  override def initServletContext(servletContext: ServletContext): Unit = {
     super.initServletContext(servletContext)
 
     setServletConfig(new ServletConfig() {

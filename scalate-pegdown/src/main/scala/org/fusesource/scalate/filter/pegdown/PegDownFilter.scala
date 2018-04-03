@@ -60,7 +60,7 @@ class PegDownFilter(val extensions: Int = Extensions.ABBREVIATIONS |
     }
   }
 
-  def registerWith(te: TemplateEngine) {
+  def registerWith(te: TemplateEngine): Unit = {
     te.filters += "multimarkdown" -> this
     te.pipelines += "mmd" -> List(this)
     te.pipelines += "multimarkdown" -> List(this)

@@ -124,7 +124,7 @@ class FileTest extends FunSuiteSupport {
   assertNameSplit(".txt", "", "txt")
   assertNameSplit(".", "", "")
 
-  def assertNameSplit(name: String, expectedName: String, expectedExt: String) {
+  def assertNameSplit(name: String, expectedName: String, expectedExt: String): Unit = {
     test("splitName: " + name) {
       info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
 

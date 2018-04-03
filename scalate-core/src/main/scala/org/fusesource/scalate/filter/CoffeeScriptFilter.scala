@@ -94,7 +94,7 @@ object CoffeeScriptPipeline extends Filter with Log {
   /**
    * Installs the coffeescript pipeline
    */
-  def apply(engine: TemplateEngine) {
+  def apply(engine: TemplateEngine): Unit = {
     engine.pipelines += "coffee" -> List(NoLayoutFilter(this, "text/javascript"))
     engine.templateExtensionsFor("js") += "coffee"
   }

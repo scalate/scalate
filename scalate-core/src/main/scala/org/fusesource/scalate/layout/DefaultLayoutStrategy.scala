@@ -37,7 +37,7 @@ object DefaultLayoutStrategy extends Log
 class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy {
   import DefaultLayoutStrategy._
 
-  def layout(template: Template, context: RenderContext) {
+  def layout(template: Template, context: RenderContext): Unit = {
 
     def isLayoutDisabled(layout: String) = isEmpty(layout.trim)
 

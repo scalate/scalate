@@ -24,7 +24,7 @@ import scala.tools.nsc.MainGenericRunner
  */
 object ReplConsole {
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     MainGenericRunner.main(args ++ Array("-i", "src/test/repl/ConsoleImports.scala"))
     System.exit(0)
   }
