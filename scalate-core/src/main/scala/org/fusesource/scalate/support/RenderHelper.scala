@@ -80,7 +80,7 @@ object RenderHelper {
     })
   }
 
-  def attributes(context: RenderContext, entries: List[(Any, Any)]) {
+  def attributes(context: RenderContext, entries: List[(Any, Any)]): Unit = {
 
     val (entries_class, tmp) = entries.partition { x => { x._1 match { case "class" => true; case _ => false } } }
     val (entries_id, entries_rest) = tmp.partition { x => { x._1 match { case "id" => true; case _ => false } } }

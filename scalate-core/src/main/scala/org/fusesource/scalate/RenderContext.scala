@@ -168,7 +168,7 @@ trait RenderContext {
       .asInstanceOf[T]
   }
 
-  def setAttribute(name: String, value: Option[Any]) {
+  def setAttribute(name: String, value: Option[Any]): Unit = {
     value match {
       case Some(v) => attributes(name) = v
       case None => attributes.remove(name)

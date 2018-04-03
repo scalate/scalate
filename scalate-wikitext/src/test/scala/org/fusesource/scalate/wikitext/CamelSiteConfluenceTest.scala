@@ -69,7 +69,7 @@ You can append query options to the URI in the following format, {{?option=value
     assertOccurrences(output, "<tr>", 4)
   }
 
-  protected def assertOccurrences(text: String, m: String, expected: Int) {
+  protected def assertOccurrences(text: String, m: String, expected: Int): Unit = {
     val actual = occurences(text, m)
     assertEquals("Occurences of '" + m, expected, actual)
   }

@@ -11,14 +11,14 @@ import collection.JavaConverters._
  */
 class ScalateAtmosphereModule extends ScalateModule {
 
-  override def configureServlets() {
+  override def configureServlets(): Unit = {
     // We don't need to call super.applyJerseyFilter here because Atmosphere
     // will configure / is using Jersey
     applyScalateServlets
     applyAtmosphereServlets()
   }
 
-  protected def applyAtmosphereServlets() {
+  protected def applyAtmosphereServlets(): Unit = {
     val props: Map[String, String] = (for ((name, value) <- createResourceConfigProperties) yield (name, value.toString)) ++ Map(
       "org.atmosphere.useWebSocket" -> "true",
       "org.atmosphere.useNative" -> "true")

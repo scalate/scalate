@@ -43,7 +43,7 @@ class AttributesHashMap extends AttributeMap {
     }
   }
 
-  def update(key: String, value: Any) {
+  def update(key: String, value: Any): Unit = {
     map.put(key, value)
   }
 

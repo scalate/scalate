@@ -47,7 +47,7 @@ object ServletTemplateEngine {
   /**
    * Updates the current template engine - called on initialisation of the [[org.fusesource.scalate.servlet.TemplateEngineServlet]]
    */
-  def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine) {
+  def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine): Unit = {
     servletContext.setAttribute(templateEngineKey, templateEngine)
     // now lets fire the bootstrap code
     templateEngine.boot

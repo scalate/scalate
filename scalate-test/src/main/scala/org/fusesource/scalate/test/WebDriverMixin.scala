@@ -70,25 +70,25 @@ trait WebDriverMixin extends BeforeAndAfterAllConfigMap { this: FunSuite =>
 
   def pageSource = webDriver.getPageSource
 
-  def testPageContains(uri: String, textLines: String*) {
+  def testPageContains(uri: String, textLines: String*): Unit = {
     testPage(uri) {
       pageContains(textLines: _*)
     }
   }
 
-  def testPageNotContains(uri: String, textLines: String*) {
+  def testPageNotContains(uri: String, textLines: String*): Unit = {
     testPage(uri) {
       pageNotContains(textLines: _*)
     }
   }
 
-  def testPageMatches(uri: String, matches: String) {
+  def testPageMatches(uri: String, matches: String): Unit = {
     testPage(uri) {
       pageMatches(matches)
     }
   }
 
-  def testPage(uri: String)(func: => Unit) {
+  def testPage(uri: String)(func: => Unit): Unit = {
     test("page: " + uri) {
       val fullUri = if (uri.startsWith("http")) { uri } else { rootUrl + uri }
 

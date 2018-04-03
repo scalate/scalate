@@ -70,7 +70,7 @@ object TemplateEngineServlet extends Log {
 class TemplateEngineServlet extends HttpServlet {
   var templateEngine: ServletTemplateEngine = _
 
-  override def init(config: ServletConfig) {
+  override def init(config: ServletConfig): Unit = {
     super.init(config)
 
     templateEngine = createTemplateEngine(config)
@@ -87,7 +87,7 @@ class TemplateEngineServlet extends HttpServlet {
     new ServletTemplateEngine(config)
   }
 
-  override def service(request: HttpServletRequest, response: HttpServletResponse) {
+  override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     render(request.getServletPath, request, response)
   }
 

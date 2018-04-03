@@ -66,7 +66,7 @@ class Lazy[T](thunk: => T) {
    * field.set(new_value) <br />
    * are all the same
    */
-  def update[Q <% T](v: Q) {
+  def update[Q <% T](v: Q): Unit = {
     this.set(v)
   }
 

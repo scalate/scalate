@@ -43,7 +43,7 @@ trait LayoutScalateRenderStrategy
 
   def templateEngine: ServletTemplateEngine
 
-  def render(context: ServletRenderContext, model: Map[String, Any]) {
+  def render(context: ServletRenderContext, model: Map[String, Any]): Unit = {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
     for ((key, value) <- model) {
       context.attributes(key) = value
@@ -56,7 +56,7 @@ trait DefaultScalateRenderStrategy
   extends AbstractTemplateView
   with ScalateRenderStrategy {
 
-  override def render(context: ServletRenderContext, model: Map[String, Any]) {
+  override def render(context: ServletRenderContext, model: Map[String, Any]): Unit = {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
     context.render(getUrl, model)
   }
@@ -65,7 +65,7 @@ trait DefaultScalateRenderStrategy
 trait ViewScalateRenderStrategy
   extends ScalateRenderStrategy {
 
-  override def render(context: ServletRenderContext, model: Map[String, Any]) {
+  override def render(context: ServletRenderContext, model: Map[String, Any]): Unit = {
     log.debug("Rendering with model " + model)
     val it = model.get("it")
     if (it.isEmpty)
