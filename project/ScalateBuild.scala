@@ -1,4 +1,3 @@
-import com.typesafe.sbt.JavaVersionCheckPlugin.autoImport._
 import com.typesafe.sbt.SbtGit.GitKeys
 import com.typesafe.sbt.osgi.{OsgiKeys, SbtOsgi}
 import com.typesafe.sbt.pgp.PgpKeys
@@ -73,7 +72,6 @@ object ScalateBuild {
     scmInfo := (scmInfo in LocalRootProject).value,
     startYear := (startYear in LocalRootProject).value,
     homepage := (homepage in LocalRootProject).value,
-    javaVersionPrefix in javaVersionCheck := ((javaVersionPrefix in javaVersionCheck) in LocalRootProject).value
   )
 
   private def compileOpts = Seq(

@@ -6,7 +6,6 @@ organization := "org.scalatra.scalate"
 version := "1.8.1-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.4", "2.11.12", "2.10.7")
-javaVersionPrefix in javaVersionCheck := Some("1.8")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
@@ -169,7 +168,7 @@ lazy val scalateWar = scalateProject("war")
   .notPublished
   .dependsOn(scalateWeb, scalateJersey, scalateTest % Test)
   .dependsOn(logbackClassic, jerseyServer, jerseyCore)
-  .settings(tomcat(port = 8087, args = Seq("scalate.mode=dev")): _*)
+  .enablePlugins(TomcatPlugin)
   .settings(
     description := "Scalate Base Web Application",
     publishArtifact in (Compile, packageBin) := false,

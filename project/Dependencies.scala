@@ -11,7 +11,7 @@ object Dependencies {
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.0-RC1"
   val camelScala = "org.apache.camel" % "camel-scala" % "2.21.0"
-  val camelSpring = camelScala.copy(name = "camel-spring")
+  val camelSpring = camelScala.withName("camel-spring")
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
@@ -19,8 +19,8 @@ object Dependencies {
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
   val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.9.v20180320"
-  val jettyWebapp = jettyServer.copy(name = "jetty-webapp")
-  val jettyUtil = jettyServer.copy(name = "jetty-util")
+  val jettyWebapp = jettyServer.withName("jetty-webapp")
+  val jettyUtil = jettyServer.withName("jetty-util")
   val jRebelSDK = "org.zeroturnaround" % "jr-sdk" % "4.6.2" from
     "https://repos.zeroturnaround.com/nexus/content/groups/zt-public/org/zeroturnaround/jr-sdk/4.6.2/jr-sdk-4.6.2.jar"
 
@@ -44,6 +44,6 @@ object Dependencies {
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "1.20"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
-  val wikitextTextile = wikitextConfluence.copy(name = "textile-core")
+  val wikitextTextile = wikitextConfluence.withName("textile-core")
 
 }

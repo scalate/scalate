@@ -7,7 +7,7 @@ scala:
 jdk:
   - oraclejdk8
 script:
-- sbt "++ ${TRAVIS_SCALA_VERSION}" test
+- sbt "++ ${TRAVIS_SCALA_VERSION}!" test
 - git diff --exit-code # check scalariform
 cache:
   directories:
