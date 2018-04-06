@@ -81,7 +81,7 @@ class IndentedParser extends RegexParsers() {
 
   def current_indent(strict: Boolean = false): Parser[Any] = {
     if (indent_level == 0) {
-      success()
+      success(())
     } else if (indent_unit != null) {
 
       // Look for mismatch indent types..
