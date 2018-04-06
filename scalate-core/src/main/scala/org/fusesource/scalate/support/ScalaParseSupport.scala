@@ -34,7 +34,7 @@ trait ScalaParseSupport extends RegexParsers {
 
   val EofCh = CharArrayReader.EofCh
 
-  lazy val tripleQuote: Parser[Unit] = "\"" + "\"" + "\"" ^^^ ()
+  lazy val tripleQuote: Parser[Unit] = "\"" + "\"" + "\"" ^^^ (())
   lazy val anyChar: Parser[Char] = chrExcept(EofCh)
 
   def chrExcept(cs: Char*): Parser[Char] = elem("chrExcept", ch => (ch != EofCh) && (cs forall (ch !=)))
