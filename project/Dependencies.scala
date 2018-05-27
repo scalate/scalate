@@ -33,7 +33,7 @@ object Dependencies {
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
-  val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.0"
+  val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.1"
   val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5"
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.25"
