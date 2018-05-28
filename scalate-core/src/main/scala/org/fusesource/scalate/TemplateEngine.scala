@@ -34,7 +34,6 @@ import scala.compat.Platform
 import java.net.URLClassLoader
 import java.io.{ StringWriter, PrintWriter, File }
 import xml.NodeSeq
-import collection.generic.TraversableForwarder
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ConcurrentHashMap
 
@@ -165,10 +164,7 @@ class TemplateEngine(
    * is mutated after the TemplateEngine is constructed
    */
   protected def sourceDirectoriesForwarder = {
-    val engine = this
-    new TraversableForwarder[File] {
-      protected def underlying = engine.sourceDirectories
-    }
+    this.sourceDirectories
   }
 
   /**
