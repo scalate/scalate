@@ -85,7 +85,7 @@ class ClassPathBuilder {
     this
   }
 
-  protected def findManifestEntries(cp: Seq[String]): Seq[String] = cp.flatMap { p =>
+  protected def findManifestEntries(cp: collection.Seq[String]): collection.Seq[String] = cp.flatMap { p =>
     var answer: Seq[String] = Nil
     val f = new File(p)
     if (f.exists && f.isFile) {
