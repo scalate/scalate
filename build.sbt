@@ -182,7 +182,7 @@ lazy val scalateJAXRS = scalateProject("jaxrs")
   .dependsOn(
     javaxServlet % Provided,
     jaxrsApi % Provided)
-  .settings(description := "JAXRS integration for a Scalate web application</description>")
+  .settings(description := "JAXRS integration for a Scalate web application")
 
 lazy val scalateJersey = scalateProject("jersey")
   .scalateSettings
