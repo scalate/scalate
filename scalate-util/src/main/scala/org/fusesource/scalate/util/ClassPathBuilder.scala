@@ -30,10 +30,10 @@ class ClassPathBuilder {
   private val classpath = new ArrayBuffer[String]
 
   def classPath = {
-    val cp = Sequences.removeDuplicates(classpath)
+    val cp = classpath.distinct
     // lets transform to the canonical path to remove duplicates
     val all = (cp ++ findManifestEntries(cp)).map { s => val f = new File(s); if (f.exists) f.getCanonicalPath else s }
-    Sequences.removeDuplicates(all).mkString(File.pathSeparator)
+    all.distinct.mkString(File.pathSeparator)
   }
 
   def addClassesDir(dir: String): ClassPathBuilder = addEntry(dir)
