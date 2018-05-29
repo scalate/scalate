@@ -24,8 +24,13 @@ lazy val scalateUtil = scalateProject("util")
   .scalateSettings
   .osgiSettings
   .published
-  .dependsOn(junit % Test, logbackClassic % Test, scalaTest % Test, slf4jApi)
   .settings(
+    libraryDependencies ++= Seq(
+      junit % Test,
+      logbackClassic % Test,
+      scalaTest % Test,
+      slf4jApi
+    ),
     description := "Scalate Utilities.",
     parallelExecution in Test := false,
     addScalaModules(11, scalaXml, scalaParserCombinators),
@@ -37,15 +42,16 @@ lazy val scalateCore = scalateProject("core")
   .osgiSettings
   .published
   .dependsOn(scalateUtil)
-  .dependsOn(
-    javaxServlet % Optional,
-    logbackClassic % "runtime,optional",
-    osgiCore % "provided,optional",
-    rhinoCoffeeScript % Optional,
-    scalamd % Optional,
-    scalaTest % Test,
-    junit % Test)
   .settings(
+    libraryDependencies ++= Seq(
+      javaxServlet % Optional,
+      logbackClassic % "runtime,optional",
+      osgiCore % "provided,optional",
+      rhinoCoffeeScript % Optional,
+      scalamd % Optional,
+      scalaTest % Test,
+      junit % Test
+    ),
     description := "Scalate Core",
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate"),
@@ -55,8 +61,16 @@ lazy val scalateTest = scalateProject("test")
   .scalateSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(jettyServer, jettyWebapp, jettyUtil, scalaTest, junit, seleniumDriver)
-  .settings(description := "Scalate Test Support Classes.")
+  .settings(
+    libraryDependencies ++= Seq(
+      jettyServer,
+      jettyWebapp,
+      jettyUtil,
+      scalaTest,
+      junit,
+      seleniumDriver
+    ), 
+    description := "Scalate Test Support Classes.")
 
 lazy val scalateCamel = scalateProject("camel")
   .scalateSettings
@@ -73,38 +87,52 @@ lazy val scalateGuice = scalateProject("guice")
   .osgiSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(
-    atmosphereJersey % Provided,
-    javaxServlet,
-    jerseyCore,
-    jerseyGuice,
-    scalaTest % Test,
-    junit % Test,
-    logbackClassic % Test)
-  .settings(description := "Guice integration for a Jersey based Scalate web application.")
+  .settings(
+    libraryDependencies ++= Seq(
+      atmosphereJersey % Provided,
+      javaxServlet,
+      jerseyCore,
+      jerseyGuice,
+      scalaTest % Test,
+      junit % Test,
+      logbackClassic % Test
+    ),
+    description := "Guice integration for a Jersey based Scalate web application.")
 
 lazy val scalateJrebel = scalateProject("jrebel")
   .scalateSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(jRebelSDK % Provided)
-  .settings(description := "JRebel plugin for reloading Scalate templates on class reload.")
+  .settings(
+    libraryDependencies ++= Seq(
+      jRebelSDK % Provided
+    ),
+    description := "JRebel plugin for reloading Scalate templates on class reload.")
 
 lazy val scalateJruby = scalateProject("jruby")
   .scalateSettings
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
-  .dependsOn(jRubyComplete, logbackClassic % Test)
-  .settings(description := "Scalate integration with JRuby including Ruby based filters such as sass.")
+  .settings(
+    libraryDependencies ++= Seq(
+      jRubyComplete,
+      logbackClassic % Test
+    ),
+    description := "Scalate integration with JRuby including Ruby based filters such as sass.")
 
 lazy val scalateJspConverter = scalateProject("jsp-converter")
   .scalateSettings
   .osgiSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(karafShell, scalaTest % Test, junit % Test, logbackClassic % Test)
   .settings(
+    libraryDependencies ++= Seq(
+      karafShell,
+      scalaTest % Test,
+      junit % Test,
+      logbackClassic % Test
+    ),
     description := "Converter for JSP to SSP",
     resolvers ++= commonRepositories,
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
@@ -115,8 +143,11 @@ lazy val scalateLess = scalateProject("less")
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
-  .dependsOn(lessCssEngine, logbackClassic % Test)
   .settings(
+    libraryDependencies ++= Seq(
+      lessCssEngine,
+      logbackClassic % Test
+    ),
     description := "Scalate LESS filter.",
     OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.less",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.less"))
@@ -126,8 +157,13 @@ lazy val scalateMarkdownJ = scalateProject("markdownj")
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
-  .dependsOn(markdownJ, scalaTest % Test, junit % Test, logbackClassic % Test)
   .settings(
+    libraryDependencies ++= Seq(
+      markdownJ,
+      scalaTest % Test,
+      junit % Test,
+      logbackClassic % Test
+    ),
     description := "Scalate MarkdownJ filter.",
     OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.markdownj",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.markdownj"))
@@ -137,16 +173,23 @@ lazy val scalatePage = scalateProject("page")
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateWikitext, scalateTest % Test)
-  .dependsOn(rhinoCoffeeScript, scalamd, snakeYaml)
-  .settings(description := "Scalate multipart page filter (similar to Webgen page format).")
+  .settings(
+    libraryDependencies ++= Seq(
+      rhinoCoffeeScript,
+      scalamd,
+      snakeYaml
+    ),
+    description := "Scalate multipart page filter (similar to Webgen page format).")
 
 lazy val scalatePegdown = scalateProject("pegdown")
   .scalateSettings
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
-  .dependsOn(pegdown)
   .settings(
+    libraryDependencies ++= Seq(
+      pegdown
+    ),
     description := "Scalate Pegdown filter.",
     OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.pegdown",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.pegdown"))
@@ -157,8 +200,13 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
   .osgiSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(javaxServlet % Provided, springMVC, scalaTest % Test, junit % Test)
   .settings(
+    libraryDependencies ++= Seq(
+      javaxServlet % Provided,
+      springMVC,
+      scalaTest % Test,
+      junit % Test
+    ),
     description := "Scalate Spring MVC integration.",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"),
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
@@ -167,9 +215,13 @@ lazy val scalateWar = scalateProject("war")
   .scalateSettings
   .notPublished
   .dependsOn(scalateWeb, scalateJersey, scalateTest % Test)
-  .dependsOn(logbackClassic, jerseyServer, jerseyCore)
   .enablePlugins(TomcatPlugin)
   .settings(
+    libraryDependencies ++= Seq(
+      logbackClassic,
+      jerseyServer,
+      jerseyCore
+    ),
     description := "Scalate Base Web Application",
     publishArtifact in (Compile, packageBin) := false,
     parallelExecution in Test := false,
@@ -179,34 +231,46 @@ lazy val scalateJAXRS = scalateProject("jaxrs")
   .scalateSettings
   .published
   .dependsOn(scalateCore)
-  .dependsOn(
-    javaxServlet % Provided,
-    jaxrsApi % Provided)
-  .settings(description := "JAXRS integration for a Scalate web application")
+  .settings(
+    libraryDependencies ++= Seq(
+      javaxServlet % Provided,
+      jaxrsApi % Provided
+    ),
+    description := "JAXRS integration for a Scalate web application")
 
 lazy val scalateJersey = scalateProject("jersey")
   .scalateSettings
   .published
   .dependsOn(scalateJAXRS, scalateTest % Test)
-  .dependsOn(
-    jaxrsApi % Provided,
-    javaxServlet % Provided,
-    jerseyCore % Provided,
-    jerseyServlet % Provided,
-    jerseyServer % Provided)
-  .settings(description := "Jersey integration for a Scalate web application")
+  .settings(
+    libraryDependencies ++= Seq(
+      jaxrsApi % Provided,
+      javaxServlet % Provided,
+      jerseyCore % Provided,
+      jerseyServlet % Provided,
+      jerseyServer % Provided
+    ),
+    description := "Jersey integration for a Scalate web application")
 
 lazy val scalateWeb = scalateProject("web")
   .scalateSettings
   .published
   .dependsOn(scalatePage, scalateTest % Test)
-  .dependsOn(javaxServlet % Provided)
-  .settings(description := "Single dependency for all modules required to use Scalate and common wiki formats.")
+  .settings(
+    libraryDependencies ++= Seq(
+      javaxServlet % Provided
+    ),
+    description := "Single dependency for all modules required to use Scalate and common wiki formats.")
 
 lazy val scalateWikitext = scalateProject("wikitext")
   .scalateSettings
   .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
-  .dependsOn(wikitextConfluence, wikitextTextile, logbackClassic % Test)
-  .settings(description := "Scalate WikiText integration for Markdown and Confluence notations.")
+  .settings(
+    libraryDependencies ++= Seq(
+      wikitextConfluence,
+      wikitextTextile,
+      logbackClassic % Test
+    ),
+    description := "Scalate WikiText integration for Markdown and Confluence notations.")
