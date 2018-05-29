@@ -44,7 +44,7 @@ class SourceMapStratum(val name: String) {
     }
 
     val rc = lines.filter(_.containsOutputLine(line)).map(x => (file(x.file), x.mapOutputLine(line)))
-    if (rc.isEmpty) None else Some(rc.head)
+    rc.headOption
   }
 
   /**
