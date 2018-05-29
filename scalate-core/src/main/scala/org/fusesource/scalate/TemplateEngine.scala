@@ -131,7 +131,7 @@ class TemplateEngine(
   var bootClassName = "scalate.Boot"
   var bootInjections: List[AnyRef] = List(this)
 
-  private var booted = new AtomicBoolean()
+  private[this] val booted = new AtomicBoolean()
 
   def boot(): Unit = {
     if (booted.compareAndSet(false, true)) {
