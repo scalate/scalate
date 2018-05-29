@@ -22,7 +22,6 @@ import org.fusesource.scalate.RenderContext;
 import org.fusesource.scalate.TemplateEngine;
 import org.fusesource.scalate.TemplateSource;
 import org.fusesource.scalate.util.JavaInterops;
-import scala.collection.JavaConversions;
 import scala.collection.mutable.Buffer;
 
 import java.io.File;
@@ -106,16 +105,16 @@ public class TemplateEngineFacade {
     // Implementation methods
     //-------------------------------------------------------------------------
     protected Buffer<Binding> asScalaExtraBindings() {
-        return JavaConversions.asScalaBuffer(getExtraBindings());
+        return Converter.asScalaBuffer(getExtraBindings());
     }
 
     protected scala.collection.immutable.Map<String, Object> asScalaImmutableMap(Map<String, Object> attributes) {
-        scala.collection.mutable.Map<String, Object> mutableAttributes = JavaConversions.mapAsScalaMap(attributes);
+        scala.collection.mutable.Map<String, Object> mutableAttributes = Converter.mapAsScalaMap(attributes);
         return JavaInterops.toImmutableMap(mutableAttributes);
     }
 
     protected TemplateEngine createTemplateEngine() {
-        Buffer<File> scalaSourceDirectories = JavaConversions.asScalaBuffer(sourceDirectories);
+        Buffer<File> scalaSourceDirectories = Converter.asScalaBuffer(sourceDirectories);
         return TemplateEngine.apply(scalaSourceDirectories, mode);
     }
 }
