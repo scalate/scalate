@@ -181,7 +181,7 @@ object BundleClassPathBuilder {
 
           private def prefetch() = {
             if (dirs.hasMoreElements) {
-              val entry = dirs.nextElement.asInstanceOf[String]
+              val entry = dirs.nextElement
               var entryUrl = bundle.getResource("/" + entry)
 
               // Bundle.getResource seems to be inconsistent with respect to requiring
