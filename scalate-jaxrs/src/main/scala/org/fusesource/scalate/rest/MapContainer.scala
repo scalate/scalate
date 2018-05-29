@@ -24,7 +24,7 @@ import collection.immutable.HashMap
  */
 
 trait MapContainer[K, E] extends Container[K, E] {
-  var map: Map[K, E] = new HashMap[K, E]()
+  var map: Map[K, E] = HashMap.empty[K, E]
 
   def put(element: E) = map = map + (key(element) -> element)
 
