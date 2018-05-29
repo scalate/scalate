@@ -170,7 +170,7 @@ class ConsoleHelper(
   /**
    * Retrieves a chunk of lines either side of the given error line
    */
-  def lines(template: String, errorLine: Int, chunk: Int): Seq[SourceLine] = {
+  def lines(template: String, errorLine: Int, chunk: Int): scala.collection.Seq[SourceLine] = {
     val file = realPath(template)
     if (file != null) {
       val source = Source.fromFile(file)
@@ -194,7 +194,7 @@ class ConsoleHelper(
   /**
    * Retrieves a chunk of lines either side of the given error line
    */
-  def lines(template: String, pos: Position, chunk: Int = 5): Seq[SourceLine] = {
+  def lines(template: String, pos: Position, chunk: Int = 5): scala.collection.Seq[SourceLine] = {
     pos match {
       case op: OffsetPosition =>
 
