@@ -56,7 +56,7 @@ class TemplateFinder(engine: TemplateEngine) {
           return Some(path)
         }
       }
-      return None
+      None
     }
 
     // Lets try to find the template by appending a template extension to the path
@@ -68,7 +68,7 @@ class TemplateFinder(engine: TemplateEngine) {
           return Some(path)
         }
       }
-      return None
+      None
     }
 
     // Lets try to find the template by replacing the extension

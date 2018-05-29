@@ -64,7 +64,7 @@ object IOUtil {
         }
       }
     }
-    return file.delete
+    file.delete
   }
 
   val includeRegEx = """@@include\(\"(.+)\"\)""".r

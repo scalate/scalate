@@ -312,7 +312,7 @@ class SourceMap {
     }
     strata.foreach { out.append(_) }
     out.append("*E\n")
-    return out.toString
+    out.toString
   }
 
 }
@@ -532,7 +532,7 @@ object SourceMapInstaller {
         }
         i += 1
       }
-      return sdeIndex
+      sdeIndex
     }
 
     def copyAttrs(attrCount: Int): Boolean = {
@@ -550,7 +550,7 @@ object SourceMapInstaller {
         }
         i += 1
       }
-      return sdeFound
+      sdeFound
     }
 
     def writeSourceDebugAttribute(index: Int): Unit = {
@@ -621,7 +621,7 @@ object SourceMapInstaller {
         }
         i += 1
       }
-      return rc
+      rc
     }
 
     def skipMembers(): Unit = {
@@ -646,7 +646,7 @@ object SourceMapInstaller {
         rc += (index -> data)
         i += 1;
       }
-      return rc
+      rc
     }
   }
 

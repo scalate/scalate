@@ -92,7 +92,7 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
     if (end != line.length()) {
       ret = end
     }
-    return ret
+    ret
   }
 
   override def findCloseOffset(line: String, lineOffset: Int): Int = {
@@ -101,9 +101,10 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
       endMatcher.region(lineOffset, line.length())
     }
     if (endMatcher.find()) {
-      return endMatcher.start()
+      endMatcher.start()
+    } else {
+      -1
     }
-    return -1
   }
 
   override def canStart(line: String, lineOffset: Int): Boolean = {
@@ -216,7 +217,7 @@ class ColumnBlock extends AbstractNestedBlock("column") {
     if (ret) {
       defaultAttr
     }
-    return ret;
+    ret;
   }
 
   def defaultAttr() = {
