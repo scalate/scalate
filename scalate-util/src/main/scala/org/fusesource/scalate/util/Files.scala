@@ -37,7 +37,7 @@ object Files {
   }
 
   def recursiveFind(directories: Traversable[File])(filter: File => Boolean): Option[File] = {
-    directories.view.map(recursiveFind(_)(filter)).find(_.isDefined).getOrElse(None)
+    directories.view.map(recursiveFind(_)(filter)).find(_.isDefined).flatten
   }
 
   def children(file: File): Iterable[File] = new Iterable[File] {
