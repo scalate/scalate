@@ -39,7 +39,7 @@ import java.util.Map;
 public class TemplateEngineFacade {
     private TemplateEngine engine;
     private String mode = "production";
-    private List<File> sourceDirectories = new ArrayList<File>();
+    private List<File> sourceDirectories = new ArrayList<>();
     private List<Binding> extraBindings = new ArrayList<Binding>();
 
     public String layout(String uri, Map<String, Object> attributes) {

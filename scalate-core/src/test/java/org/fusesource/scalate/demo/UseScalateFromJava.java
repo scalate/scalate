@@ -34,7 +34,7 @@ public class UseScalateFromJava extends TemplateEngineFacade {
         }
         TemplateEngineFacade engine = new TemplateEngineFacade();
 
-        Map<String,Object> attributes = new HashMap<String, Object>();
+        Map<String,Object> attributes = new HashMap<>();
         attributes.put("name", "James Strachan");
 
         engine.layout(args[0], System.out, attributes);
