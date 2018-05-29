@@ -31,7 +31,7 @@ class AttributesHashMap extends AttributeMap {
 
   def get(key: String): Option[Any] = {
     val value = map.get(key)
-    if (value == null) None else Some(value)
+    Option(value)
   }
 
   def apply(key: String): Any = {
@@ -49,7 +49,7 @@ class AttributesHashMap extends AttributeMap {
 
   def remove(key: String): Option[Any] = {
     val value = map.remove(key)
-    if (value == null) None else Some(value)
+    Option(value)
   }
 
   def keySet = map.keySet.asScala
