@@ -33,7 +33,7 @@ trait ScalateRenderStrategy {
 
   protected val log = LoggerFactory.getLogger(getClass)
 
-  def render(context: ServletRenderContext, model: Map[String, Any])
+  def render(context: ServletRenderContext, model: Map[String, Any]): Unit
 
 }
 
