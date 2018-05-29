@@ -26,9 +26,6 @@ class MarkupScanner extends ScalaParseSupport {
   //   ident     {nmstart}{nmchar}*
   def IDENT = (nmstart ~ rep(nmchar)) ^^ { case n ~ l => n + l.mkString("") }
 
-  // name      {nmchar}+
-  private def name = rep1(nmchar)
-
   // nmstart   [_a-z]|{nonascii}|{escape}
   private def nmstart = """[_a-zA-Z]""".r | nonascii | escape
 
@@ -43,9 +40,6 @@ class MarkupScanner extends ScalaParseSupport {
 
   // nmchar    [_a-z0-9-]|{nonascii}|{escape}
   private def nmchar = """[_a-zA-Z0-9-]""".r | nonascii | escape
-
-  // num       [0-9]+|[0-9]*\.[0-9]+
-  private val num = """[0-9]+|[0-9]*"."[0-9]+"""
 
   // string    {string1}|{string2}
   def STRING = string1 | string2
