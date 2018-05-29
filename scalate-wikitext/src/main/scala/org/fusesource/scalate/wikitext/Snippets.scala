@@ -201,9 +201,9 @@ class SnippetBlock extends ParameterizedBlock {
  */
 trait SnippetHandler {
 
-  def begin()
-  def addLine(line: String)
-  def done()
+  def begin(): Unit
+  def addLine(line: String): Unit
+  def done(): Unit
 
 }
 
