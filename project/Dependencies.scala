@@ -1,4 +1,4 @@
-import sbt._
+import sbt._, Keys._
 
 /** Build dependency and repository definitions. */
 object Dependencies {
@@ -34,7 +34,13 @@ object Dependencies {
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.1"
-  val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5"
+  val scalaTest = Def.setting {
+    // TODO https://github.com/scalatest/scalatest/issues/1367
+    if (scalaVersion.value == "2.13.0-M4")
+      Nil
+    else
+      Seq("org.scalatest" %% "scalatest" % "3.0.5")
+  }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.25"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.0.4.RELEASE"

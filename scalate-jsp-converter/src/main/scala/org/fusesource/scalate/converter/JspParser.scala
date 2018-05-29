@@ -114,7 +114,7 @@ class JspParser extends MarkupScanner {
       Element(q, al, b)
   }
 
-  def qualifiedName = positioned(((IDENT <~ ":") ~ IDENT) ^^ { case p ~ n => QualifiedName(p, n) })
+  def qualifiedName: Parser[QualifiedName] = positioned(((IDENT <~ ":") ~ IDENT) ^^ { case p ~ n => QualifiedName(p, n) })
 
   def openElement(end: String) = "<" ~> qualifiedName ~ attributeList <~ end
 

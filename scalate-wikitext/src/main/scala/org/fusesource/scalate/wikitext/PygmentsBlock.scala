@@ -79,7 +79,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
   def unindent(data: String): String = unindent(data.split("""\r?\n""").toList)
 
-  def unindent(data: Seq[String]): String = {
+  def unindent(data: collection.Seq[String]): String = {
     var content = data
     // To support indenting the macro.. we figure out the indent level of the
     // code block by looking at the indent of the last line

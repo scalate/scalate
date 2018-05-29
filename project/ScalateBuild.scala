@@ -77,6 +77,15 @@ object ScalateBuild {
   private def compileOpts = Seq(
     scalaVersion := (scalaVersion in LocalRootProject).value,
     crossScalaVersions := (crossScalaVersions in LocalRootProject).value,
+    unmanagedSourceDirectories in Compile += {
+      val base = baseDirectory.value / "src" / "main"
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, v)) if v >= 12 =>
+          base / s"scala-2.12+"
+        case _ =>
+          base / s"scala-2.12-"
+      }
+    },
     scalacOptions in(Compile, compile) ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
     scalacOptions in(Test, compile) ++= Seq(Opts.compile.deprecation)
   )

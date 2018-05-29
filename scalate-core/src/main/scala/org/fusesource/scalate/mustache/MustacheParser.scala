@@ -74,22 +74,22 @@ class MustacheParser extends RegexParsers {
   //-------------------------------------------------------------------------
   def mustache: Parser[List[Statement]] = rep(statement | someText)
 
-  def someText = upto(open)
+  def someText: Parser[Statement] = upto(open)
 
-  def statement = unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
+  def statement: Parser[Statement] = unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
     failure("invalid statement")
 
-  def unescapeVariable = unescapeVariableAmp | unescapeVariableMustash
+  def unescapeVariable: Parser[Statement] = unescapeVariableAmp | unescapeVariableMustash
 
-  def unescapeVariableAmp = expression(operation("&") ^^ { Variable(_, true) })
+  def unescapeVariableAmp: Parser[Statement] = expression(operation("&") ^^ { Variable(_, true) })
 
-  def unescapeVariableMustash = expression("{" ~> trimmed <~ "}" ^^ { Variable(_, true) })
+  def unescapeVariableMustash: Parser[Statement] = expression("{" ~> trimmed <~ "}" ^^ { Variable(_, true) })
 
-  def section = positioned(nested("#") ^^ {
+  def section: Parser[Statement] = positioned(nested("#") ^^ {
     case (name, body) => Section(name, body)
   })
 
-  def invert = positioned(nested("^") ^^ {
+  def invert: Parser[Statement] = positioned(nested("^") ^^ {
     case (name, body) => InvertSection(name, body)
   })
 
@@ -116,7 +116,7 @@ class MustacheParser extends RegexParsers {
   def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
     case a ~ b => SetDelimiter(a, b)
   }) <~ opt(whiteSpace) ^^ {
-    case a =>
+    case a: SetDelimiter =>
       _open = a.open.value
       _close = a.close.value
       debug("applying new delim '" + a)
@@ -133,7 +133,7 @@ class MustacheParser extends RegexParsers {
   def operation(prefix: String): Parser[Text] = trim(prefix) ~> trimmed
 
   def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ { case x => Text(x.value) }) >> {
-    case name =>
+    case name: Text =>
       opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ {
         case body => (name, body)
       } | error("Missing section end '" + _open + "/" + name + _close + "' for section beginning", name.pos)
