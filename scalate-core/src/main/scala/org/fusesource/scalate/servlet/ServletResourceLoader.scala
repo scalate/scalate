@@ -36,7 +36,7 @@ import ServletResourceLoader._
  */
 class ServletResourceLoader(
   context: ServletContext,
-  delegate: ResourceLoader = new FileResourceLoader()) extends ResourceLoader {
+  delegate: ResourceLoader = FileResourceLoader()) extends ResourceLoader {
 
   override def resource(uri: String) = {
     val file = realFile(uri)

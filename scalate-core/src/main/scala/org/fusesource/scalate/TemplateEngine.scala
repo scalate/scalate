@@ -119,7 +119,7 @@ class TemplateEngine(
   /**
    * Loads resources such as the templates based on URIs
    */
-  var resourceLoader: ResourceLoader = new FileResourceLoader(sourceDirectoriesForwarder)
+  var resourceLoader: ResourceLoader = FileResourceLoader(sourceDirectoriesForwarder)
 
   /**
    * A list of directories which are searched to load requested templates.
@@ -328,7 +328,7 @@ class TemplateEngine(
     tmpDirectory.mkdirs()
     val file = File.createTempFile("_scalate_tmp_", "." + extension, tmpDirectory)
     IOUtil.writeText(file, text)
-    val loader = new FileResourceLoader(List(tmpDirectory))
+    val loader = FileResourceLoader(List(tmpDirectory))
     compile(TemplateSource.fromUri(file.getName, loader), extraBindings)
   }
 

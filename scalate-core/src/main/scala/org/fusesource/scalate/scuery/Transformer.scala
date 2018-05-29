@@ -92,7 +92,7 @@ class Transformer {
      * Transforms each node found by this selector using the given function
      */
     def apply(fn: Node => NodeSeq): Unit = {
-      addRule(selector, new ReplaceRule(fn))
+      addRule(selector, ReplaceRule(fn))
     }
 
     // Contents

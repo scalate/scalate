@@ -34,7 +34,7 @@ object IOUtil {
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files
    */
-  implicit def toResource(file: File) = new FileResource(file, file.getPath)
+  implicit def toResource(file: File) = FileResource(file, file.getPath)
   implicit def toFile(resource: FileResource): File = resource.asFile
 
   /**
