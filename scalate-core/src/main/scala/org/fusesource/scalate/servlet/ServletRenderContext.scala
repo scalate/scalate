@@ -79,7 +79,7 @@ class ServletRenderContext(
 
     def get(key: String): Option[Any] = {
       val value = apply(key)
-      if (value == null) None else Some(value)
+      Option(value)
     }
 
     def apply(key: String): Any = key match {
