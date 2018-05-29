@@ -107,7 +107,7 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   /**
    * Create a child file
    */
-  def /(name: String) = new FileResource(new File(file, name), uri + "/" + name)
+  def /(name: String) = FileResource(new File(file, name), uri + "/" + name)
 
   implicit def asFile: File = file
 

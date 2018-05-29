@@ -43,7 +43,7 @@ case class PagePart(
 
   def pipeline = attribute("pipeline")
 
-  def filter(engine: TemplateEngine) = new Pipeline(pipeline.map(_.value).getOrElse("ssp,markdown").split(",").map { fn =>
+  def filter(engine: TemplateEngine) = Pipeline(pipeline.map(_.value).getOrElse("ssp,markdown").split(",").map { fn =>
     engine.filter(fn) match {
       case Some(filter) => filter
       case _ =>
