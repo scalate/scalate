@@ -84,6 +84,6 @@ object Objects {
     }
 
     val constructors = clazz.getConstructors.sortBy(_.getParameterTypes.size * -1)
-    constructors.view.map(c => tryCreate(c)).find(_.isDefined).getOrElse(None)
+    constructors.view.map(c => tryCreate(c)).find(_.isDefined).flatten
   }
 }

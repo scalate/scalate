@@ -44,7 +44,7 @@ class DefaultTemplatePackage extends TemplatePackage {
           e =>
             className = Files.dropExtension(className)
             ClassLoaders.findClass(className)
-        }.find(_.isDefined).getOrElse(None) match {
+        }.find(_.isDefined).flatten match {
           case Some(clazz) =>
             val it = "val " + variableName + " = attribute[_root_." + clazz.getName + "](\"" + variableName + "\")\n"
             if (importMethod) {

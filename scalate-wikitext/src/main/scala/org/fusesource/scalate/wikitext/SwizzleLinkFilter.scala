@@ -92,7 +92,7 @@ case class SwizzleLinkFilter(
         case _ => None
       }
 
-    sourceDirectories.view.map { findMatching(_) }.find(_.isDefined).getOrElse(None)
+    sourceDirectories.view.map { findMatching(_) }.find(_.isDefined).flatten
   }
 
   /**
