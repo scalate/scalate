@@ -926,7 +926,7 @@ class TemplateEngine(
           cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
         }
     }
-    return clazz.asInstanceOf[Class[Template]].newInstance
+    clazz.asInstanceOf[Class[Template]].newInstance
   }
 
   /**
@@ -947,7 +947,7 @@ class TemplateEngine(
       }
     }
     // Bail out
-    return 0
+    0
   }
 
   protected def buildSourceMap(

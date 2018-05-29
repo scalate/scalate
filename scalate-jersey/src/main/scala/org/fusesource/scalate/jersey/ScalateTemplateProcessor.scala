@@ -111,7 +111,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
           return Some(p)
       }
     }
-    return None
+    None
   }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
