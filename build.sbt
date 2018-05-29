@@ -28,9 +28,9 @@ lazy val scalateUtil = scalateProject("util")
     libraryDependencies ++= Seq(
       junit % Test,
       logbackClassic % Test,
-      scalaTest % Test,
       slf4jApi
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Utilities.",
     parallelExecution in Test := false,
     addScalaModules(11, scalaXml, scalaParserCombinators),
@@ -49,9 +49,9 @@ lazy val scalateCore = scalateProject("core")
       osgiCore % "provided,optional",
       rhinoCoffeeScript % Optional,
       scalamd % Optional,
-      scalaTest % Test,
       junit % Test
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Core",
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate"),
@@ -66,10 +66,10 @@ lazy val scalateTest = scalateProject("test")
       jettyServer,
       jettyWebapp,
       jettyUtil,
-      scalaTest,
       junit,
       seleniumDriver
     ), 
+    libraryDependencies ++= scalaTest.value,
     description := "Scalate Test Support Classes.")
 
 lazy val scalateCamel = scalateProject("camel")
@@ -93,10 +93,10 @@ lazy val scalateGuice = scalateProject("guice")
       javaxServlet,
       jerseyCore,
       jerseyGuice,
-      scalaTest % Test,
       junit % Test,
       logbackClassic % Test
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Guice integration for a Jersey based Scalate web application.")
 
 lazy val scalateJrebel = scalateProject("jrebel")
@@ -129,10 +129,10 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
   .settings(
     libraryDependencies ++= Seq(
       karafShell,
-      scalaTest % Test,
       junit % Test,
       logbackClassic % Test
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Converter for JSP to SSP",
     resolvers ++= commonRepositories,
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
@@ -160,10 +160,10 @@ lazy val scalateMarkdownJ = scalateProject("markdownj")
   .settings(
     libraryDependencies ++= Seq(
       markdownJ,
-      scalaTest % Test,
       junit % Test,
       logbackClassic % Test
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate MarkdownJ filter.",
     OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.markdownj",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.markdownj"))
@@ -204,9 +204,9 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     libraryDependencies ++= Seq(
       javaxServlet % Provided,
       springMVC,
-      scalaTest % Test,
       junit % Test
     ),
+    libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Spring MVC integration.",
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"),
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
