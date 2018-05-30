@@ -48,7 +48,7 @@ trait Log {
     if (e != null) {
       val stack_ref = if (log.isDebugEnabled) {
         val id = next_exception_id
-        MDC.put("stackref", id.toString);
+        MDC.put("stackref", id.toString)
         Some(id)
       } else {
         None

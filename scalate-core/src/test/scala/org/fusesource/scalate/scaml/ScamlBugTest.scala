@@ -185,9 +185,9 @@ Worked!
 <div>7 한글 Hello &amp;</div>
 """,
     () => {
-      engine.escapeMarkup = false;
+      engine.escapeMarkup = false
     }, () => {
-      engine.escapeMarkup = true;
+      engine.escapeMarkup = true
     })
 
   testRender(

@@ -35,7 +35,7 @@ class ScalateComponent() extends DefaultComponent {
   var defaultTemplateExtension: String = "ssp"
   var templateEngine: TemplateEngine = new TemplateEngine()
 
-  var resourceLoader = new DefaultResourceLoader();
+  var resourceLoader = new DefaultResourceLoader()
 
   templateEngine.resourceLoader = new FileResourceLoader() {
 

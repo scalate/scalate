@@ -35,7 +35,7 @@ object XmlHelper {
   def textToNodeSeq(text: String): NodeSeq = {
     debug("parsing markup: " + text)
 
-    val src = Source.fromString("<p>" + text + "</p>");
+    val src = Source.fromString("<p>" + text + "</p>")
 
     // lets deal with HTML entities
     // lets preserve whitespace for <pre> stuff to avoid trimming indentation with code

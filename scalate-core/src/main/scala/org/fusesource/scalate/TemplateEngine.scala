@@ -288,7 +288,7 @@ class TemplateEngine(
           f.deleteOnExit
         } else {
           warn("Could not delete file %s so we could create a temp directory", f)
-          _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate");
+          _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate")
         }
       }
     }
@@ -700,12 +700,12 @@ class TemplateEngine(
     extraBindings: Traversable[Binding]) = {
     source.engine = this
     val className = source.className
-    val template = loadCompiledTemplate(className, allowCaching);
+    val template = loadCompiledTemplate(className, allowCaching)
     template.source = source
     if (allowCaching && allowReload && resourceLoader.exists(source.uri)) {
       // Even though the template was pre-compiled, it may go or is stale
       // We still need to parse the template to figure out it's dependencies..
-      val code = generateScala(source, extraBindings);
+      val code = generateScala(source, extraBindings)
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
       if (entry.isStale) {
         // Throw an exception since we should not load stale pre-compiled classes.
@@ -776,7 +776,7 @@ class TemplateEngine(
           "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
-      val g = generator(source);
+      val g = generator(source)
       // Generate the scala source code from the template
       code = g.generate(this, source, bindings ++ extraBindings)
 
@@ -933,7 +933,7 @@ class TemplateEngine(
    * Figures out the modification time of the class.
    */
   private def lastModified(clazz: Class[_]): Long = {
-    val codeSource = clazz.getProtectionDomain.getCodeSource;
+    val codeSource = clazz.getProtectionDomain.getCodeSource
     if (codeSource != null && codeSource.getLocation.getProtocol == "file") {
       val location = new File(codeSource.getLocation.getPath)
       if (location.isDirectory) {

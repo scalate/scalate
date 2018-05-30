@@ -106,7 +106,7 @@ class IndentedParser extends RegexParsers() {
         rc |= repN(indent_level - 1, indent_unit) ~ """[ \t]+""".r ~ err("Inconsistent indent level detected: indented too shallow")
       }
 
-      rc | failure("Inconsistent indent detected: " + indent_level + " indent level(s) were expected");
+      rc | failure("Inconsistent indent detected: " + indent_level + " indent level(s) were expected")
 
     } else {
       """ +""".r ^^ {
@@ -354,7 +354,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
       statement) ^^ { case x => x.filter(_ != Newline()) }
 
   def parse(in: String) = {
-    var content = in;
+    var content = in
     if (!in.endsWith("\n")) {
       content = in + "\n"
     }
