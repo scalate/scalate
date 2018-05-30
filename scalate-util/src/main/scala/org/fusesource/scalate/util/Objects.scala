@@ -76,7 +76,7 @@ object Objects {
     def tryCreate(c: Constructor[_]): Option[T] = {
       val options = c.getParameterTypes.map(argumentValue(_))
       if (options.forall(_.isDefined)) {
-        val args = options.map(_.get).toArray
+        val args = options.map(_.get)
         Some(create(c, args))
       } else {
         None
