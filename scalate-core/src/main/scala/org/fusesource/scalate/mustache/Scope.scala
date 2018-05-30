@@ -99,7 +99,7 @@ trait Scope {
   def section(name: String)(block: Scope => Unit): Unit = {
     apply(name) match {
       case Some(t) =>
-        val v = toTraversable(t, block)
+        val v = toIterable(t, block)
         debug("section value " + name + " = " + v + " in " + this)
         v match {
 
@@ -121,7 +121,7 @@ trait Scope {
           case a: PartialFunction[_, _] => childScope(name, a)(block)
 
           // any other traversable treat as a collection
-          case s: Traversable[Any] => foreachScope(name, s)(block)
+          case s: Traversable[Any] => foreachScope(name, s.toIterable)(block)
 
           case true => block(this)
           case false =>
@@ -142,7 +142,7 @@ trait Scope {
   def invertedSection(name: String)(block: Scope => Unit): Unit = {
     apply(name) match {
       case Some(t) =>
-        val v = toTraversable(t, block)
+        val v = toIterable(t, block)
         debug("invertedSection value " + name + " = " + v + " in " + this)
         v match {
 
@@ -188,7 +188,7 @@ trait Scope {
     block(scope)
   }
 
-  def foreachScope[T](name: String, s: Traversable[T])(block: Scope => Unit): Unit = {
+  def foreachScope[T](name: String, s: Iterable[T])(block: Scope => Unit): Unit = {
     for (i <- s) {
       debug("Creating traversable scope for: " + i)
       val scope = createScope(name, i)
@@ -218,18 +218,21 @@ trait Scope {
     }
   }
 
-  def toTraversable(v: Any, block: Scope => Unit): Any = v match {
+  @deprecated(message = "use toIterable instead", since = "")
+  def toTraversable(v: Any, block: Scope => Unit): Any = toIterable(v, block)
+
+  def toIterable(v: Any, block: Scope => Unit): Any = v match {
     case t: Seq[_] => t
     case t: Array[_] => t.toSeq
     case t: ju.Map[_, _] => t.asScala
 
-    case f: Function0[_] => toTraversable(f(), block)
+    case f: Function0[_] => toIterable(f(), block)
     case f: Function1[_, _] =>
       if (isParam1(f, classOf[Object])) {
         // Java lambda support since 1.8
         try {
           val f2 = f.asInstanceOf[Function1[Scope, _]]
-          toTraversable(f2(this), block)
+          toIterable(f2(this), block)
         } catch {
           case e: Exception =>
             try {

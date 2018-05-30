@@ -23,7 +23,7 @@ import scala.language.implicitConversions
 
 object Transform {
   implicit def toNodes(transform: Transform): NodeSeq = transform()
-  implicit def toTraversable(transform: Transform): Traversable[Node] = transform()
+  implicit def toIterable(transform: Transform): Iterable[Node] = transform()
 }
 
 /**
@@ -34,5 +34,5 @@ class Transform(val nodes: NodeSeq, ancestors: Seq[Node] = Nil) extends Transfor
 
   implicit def toNodes(): NodeSeq = apply()
 
-  implicit def toTraversable(): Traversable[Node] = apply()
+  implicit def toIterable(): Iterable[Node] = apply()
 }

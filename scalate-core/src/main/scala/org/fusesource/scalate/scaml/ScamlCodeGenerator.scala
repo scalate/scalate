@@ -659,7 +659,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
   }
 
-  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding]): Code = {
+  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Iterable[Binding]): Code = {
 
     val uri = source.uri
     val hamlSource = source.text

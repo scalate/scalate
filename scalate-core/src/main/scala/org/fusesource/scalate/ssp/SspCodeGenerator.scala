@@ -146,7 +146,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     }
   }
 
-  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding]): Code = {
+  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Iterable[Binding]): Code = {
 
     // Load the translation unit
     val content = source.text
