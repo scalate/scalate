@@ -30,7 +30,7 @@ import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
 import javax.ws.rs.WebApplicationException
 
-object ScalateTemplateProvider extends Log;
+object ScalateTemplateProvider extends Log
 
 /**
  * A template provider for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates

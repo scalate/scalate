@@ -107,7 +107,7 @@ object BundleClassPathBuilder {
     val exported = admin.getExportedPackages(null: Bundle)
     val set = new LinkedHashSet[Bundle]
     for (pkg <- exported; if pkg.getExportingBundle.getBundleId != 0) {
-      val bundles = pkg.getImportingBundles();
+      val bundles = pkg.getImportingBundles()
       if (bundles != null) {
         for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
           debug("Bundle imports %s from %s", pkg, pkg.getExportingBundle)

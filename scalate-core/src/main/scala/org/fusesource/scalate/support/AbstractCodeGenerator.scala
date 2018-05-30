@@ -42,22 +42,22 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
 
     def <<(line: String): this.type = {
       for (i <- 0 until indentLevel) {
-        code += "  ";
+        code += "  "
       }
-      code += line + "\n";
+      code += line + "\n"
       this
     }
 
     def <<[T](list: List[T]): this.type = {
       for (i <- 0 until indentLevel) {
-        code += "  ";
+        code += "  "
       }
       for (value <- list) value match {
         case text: Positional => this << text.pos << text.toString
         case pos: Position => this << pos
         case _ => code += value.toString
       }
-      code += "\n";
+      code += "\n"
       this
     }
 
@@ -145,7 +145,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
         this << "}"
       }
       this << "}"
-      this <<;
+      this <<
 
       this <<;
       this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
@@ -201,14 +201,14 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
       */
 
       if (binding.importMembers) {
-        this << "import " + binding.name + "._";
+        this << "import " + binding.name + "._"
       }
     }
 
     protected def generateTemplatePackage(source: TemplateSource, bindings: Traversable[Binding]): Unit = {
       val templatePackage = TemplatePackage.findTemplatePackage(source).getOrElse(new DefaultTemplatePackage())
       this << templatePackage.header(source, bindings.toList)
-      this <<;
+      this <<
     }
 
     def asString(text: String): String = {

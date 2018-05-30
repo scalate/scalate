@@ -58,7 +58,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def write_indent() = {
       if (pending_newline) {
         text_buffer.append(ScamlOptions.nl)
-        pending_newline = false;
+        pending_newline = false
       }
       if (suppress_indent) {
         suppress_indent = false
@@ -91,7 +91,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def flush_text() = {
       if (pending_newline) {
         text_buffer.append(ScamlOptions.nl)
-        pending_newline = false;
+        pending_newline = false
       }
       if (text_buffer.length > 0) {
         this << "$_scalate_$_context << ( " + asString(text_buffer.toString) + " );"
@@ -121,7 +121,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
         fragment match {
           case attribute: Attribute =>
-            this << attribute.pos;
+            this << attribute.pos
             generateBindings(List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue,
               classNamePositional = Some(attribute.className), defaultValuePositional = attribute.defaultValue))) {
               generate(remaining)
@@ -166,7 +166,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement: Doctype): Unit = {
-      this << statement.pos;
+      this << statement.pos
       write_indent
       statement.line.map { _.value } match {
         case List("XML") =>
@@ -215,7 +215,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         statement.flags.contains(Text(flag))
       }
       if (isEnabled("&") && isEnabled("!")) {
-        throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos);
+        throw new InvalidSyntaxException("Cannot use both the '&' and '!' filter flags together.", statement.pos)
       }
 
       val preserve = isEnabled("~")
@@ -244,15 +244,15 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         suppress_indent = true
       } else if (preserve) {
         prefix += " $_scalate_$_preserve ("
-        suffix = ") " + suffix;
+        suffix = ") " + suffix
       } else {
         prefix += "$_scalate_$_indent ( " + asString(indent_string()) + ", "
-        suffix = ") " + suffix;
+        suffix = ") " + suffix
       }
 
       for (f <- statement.filters) {
         prefix += "$_scalate_$_context.value ( _root_.org.fusesource.scalate.filter.FilterRequest(" + asString(f) + ", "
-        suffix = ") ) " + suffix;
+        suffix = ") ) " + suffix
       }
 
       write_indent
@@ -273,7 +273,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           if (is_line) {
             write_indent
           }
-          var literal = true;
+          var literal = true
           for (part <- s.text) {
             // alternate between rendering literal and interpolated text
             if (literal) {
@@ -306,11 +306,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               suppress_indent = true
             } else {
               prefix += " $_scalate_$_preserve ("
-              suffix = ") " + suffix;
+              suffix = ") " + suffix
             }
           } else {
             prefix += " $_scalate_$_indent ( " + asString(indent_string()) + ","
-            suffix = ") " + suffix;
+            suffix = ") " + suffix
           }
 
           val method = s.sanitize match {
@@ -322,7 +322,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               "value"
           }
           prefix += " $_scalate_$_context." + method + "("
-          suffix = ") " + suffix;
+          suffix = ") " + suffix
 
           if (is_line) {
             write_indent
@@ -407,7 +407,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         case HtmlComment(_, None, list) => {
           write_indent
-          this << statement.pos;
+          this << statement.pos
           write_text(prefix)
           write_nl
 
@@ -428,7 +428,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     }
 
     def generate(statement: ScamlComment): Unit = {
-      this << statement.pos;
+      this << statement.pos
       statement match {
         case ScamlComment(text, List()) => {
           this << "//" :: text.getOrElse("") :: Nil
@@ -450,7 +450,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement: Element): Unit = {
 
-      val tag = statement.tag.getOrElse("div");
+      val tag = statement.tag.getOrElse("div")
       if (statement.text.isDefined && !statement.body.isEmpty) {
         throw new InvalidSyntaxException("Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed", statement.pos)
       }
@@ -494,7 +494,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       outer_trim
-      this << statement.pos;
+      this << statement.pos
       write_indent
       write_start_tag
 
@@ -555,7 +555,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               this << asString(s)
             case s: LiteralText =>
               this << s.pos
-              var literal = true;
+              var literal = true
               val parts = s.text.map { part =>
                 // alternate between rendering literal and interpolated expression
                 if (literal) {

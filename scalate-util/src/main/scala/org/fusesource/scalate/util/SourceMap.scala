@@ -91,8 +91,8 @@ class SourceMapStratum(val name: String) {
   def addLine(istart: Int, ifile: Int, icount: Int, oline: Int, oincrement: Int): Unit = {
 
     if (ifile < 0 || files.size <= ifile)
-      throw new IllegalArgumentException("ifile: " + ifile);
-    lines.add(new LineInfo(istart, oline, ifile, icount, oincrement));
+      throw new IllegalArgumentException("ifile: " + ifile)
+    lines.add(new LineInfo(istart, oline, ifile, icount, oincrement))
   }
 
   /**
@@ -102,10 +102,10 @@ class SourceMapStratum(val name: String) {
 
     //Incorporate each LineInfo into the previous LineInfo's
     //outputLineIncrement, if possible
-    var i = 0;
+    var i = 0
     while (i < lines.size() - 1) {
-      val li = lines.get(i);
-      val liNext = lines.get(i + 1);
+      val li = lines.get(i)
+      val liNext = lines.get(i + 1)
       if (li.file == liNext.file
         && liNext.istart == li.istart
         && liNext.icount == 1
@@ -113,18 +113,18 @@ class SourceMapStratum(val name: String) {
         && liNext.ostart == li.ostart + li.icount * li.oincrement) {
 
         li.oincrement = liNext.ostart - li.ostart + liNext.oincrement
-        lines.remove(i + 1);
+        lines.remove(i + 1)
       } else {
-        i += 1;
+        i += 1
       }
     }
 
     //Incorporate each LineInfo into the previous LineInfo's
     //inputLineCount, if possible
-    i = 0;
+    i = 0
     while (i < lines.size() - 1) {
-      val li = lines.get(i);
-      val liNext = lines.get(i + 1);
+      val li = lines.get(i)
+      val liNext = lines.get(i + 1)
       if (li.file == liNext.file
         && liNext.istart == li.istart + li.icount
         && liNext.oincrement == li.oincrement
@@ -132,9 +132,9 @@ class SourceMapStratum(val name: String) {
         == li.ostart
         + li.icount * li.oincrement) {
         li.icount += liNext.icount
-        lines.remove(i + 1);
+        lines.remove(i + 1)
       } else {
-        i += 1;
+        i += 1
       }
     }
   }
@@ -147,12 +147,12 @@ class SourceMapStratum(val name: String) {
 
     // check state and initialize buffer
     if (files.size == 0 || lines.size == 0)
-      return null;
+      return null
 
-    val out = new StringBuilder();
+    val out = new StringBuilder()
 
     // print StratumSection
-    out.append("*S " + name + "\n");
+    out.append("*S " + name + "\n")
 
     // print FileSection
     out.append("*F\n")
@@ -160,22 +160,22 @@ class SourceMapStratum(val name: String) {
     for (i <- 0 until files.size) {
       val (file, filePath) = files.get(i)
       if (filePath != null) {
-        out.append("+ " + i + " " + file + "\n");
-        out.append(filePath.stripPrefix("/") + "\n");
+        out.append("+ " + i + " " + file + "\n")
+        out.append(filePath.stripPrefix("/") + "\n")
       } else {
-        out.append(i + " " + file + "\n");
+        out.append(i + " " + file + "\n")
       }
     }
 
     // print LineSection
-    out.append("*L\n");
+    out.append("*L\n")
     var lastFile = 0
     for (i <- 0 until lines.size()) {
-      val line = lines.get(i);
-      out.append(line.toString(lastFile));
+      val line = lines.get(i)
+      out.append(line.toString(lastFile))
       lastFile = line.file
     }
-    out.toString();
+    out.toString()
   }
 
   /**
@@ -183,11 +183,11 @@ class SourceMapStratum(val name: String) {
    * a particular stratum.
    */
   class LineInfo(var istart: Int, var ostart: Int, var file: Int, var icount: Int = 1, var oincrement: Int = 1) {
-    check(istart > 0);
-    check(file >= 0);
-    check(ostart > 0);
-    check(icount > 0);
-    check(oincrement >= 0);
+    check(istart > 0)
+    check(file >= 0)
+    check(ostart > 0)
+    check(icount > 0)
+    check(oincrement >= 0)
 
     def containsOutputLine(line: Int) = {
       val oend = ostart + (icount * oincrement)
@@ -200,7 +200,7 @@ class SourceMapStratum(val name: String) {
 
     private def check(proc: => Boolean) = {
       if (!proc)
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException()
     }
 
     override def toString() = toString(-1)
@@ -223,8 +223,8 @@ class SourceMapStratum(val name: String) {
       if (oincrement != 1)
         out.append("," + oincrement)
 
-      out.append('\n');
-      out.toString();
+      out.append('\n')
+      out.toString()
     }
   }
 
@@ -293,7 +293,7 @@ class SourceMap {
   }
 
   def mapToStratum(line: Int, name: String = defaultStratum) = {
-    val matches = strata.find(_.name == name);
+    val matches = strata.find(_.name == name)
     if (matches.isDefined) {
       matches.get.mapToStratum(line)
     } else {
@@ -391,7 +391,7 @@ object SourceMap {
     }
 
     def parse(in: String) = {
-      var content = in;
+      var content = in
       if (!in.endsWith("\n")) {
         content = in + "\n"
       }
@@ -644,13 +644,13 @@ object SourceMapInstaller {
         val data = new Array[Byte](len)
         dis.readFully(data)
         rc += (index -> data)
-        i += 1;
+        i += 1
       }
       rc
     }
   }
 
-  val nameSDE = "SourceDebugExtension";
+  val nameSDE = "SourceDebugExtension"
 
   def load(classFile: File): String = {
     load(read(classFile))
@@ -665,13 +665,13 @@ object SourceMapInstaller {
   }
 
   def store(classFile: File, sourceDebug: String): Unit = {
-    val tmpFile = new File(classFile.getPath() + "tmp");
-    store(classFile, sourceDebug, tmpFile);
+    val tmpFile = new File(classFile.getPath() + "tmp")
+    store(classFile, sourceDebug, tmpFile)
     if (!classFile.delete()) {
-      throw new IOException("temp file delete failed");
+      throw new IOException("temp file delete failed")
     }
     if (!tmpFile.renameTo(classFile)) {
-      throw new IOException("temp file rename failed");
+      throw new IOException("temp file rename failed")
     }
   }
 
@@ -703,20 +703,20 @@ object SourceMapInstaller {
   }
   private def read(input: File) = {
     if (!input.exists()) {
-      throw new FileNotFoundException("no such file: " + input);
+      throw new FileNotFoundException("no such file: " + input)
     }
     IOUtil.loadBinaryFile(input)
   }
 
   def main(args: Array[String]) = {
     val smap1 = new SourceMap()
-    smap1.setOutputFileName("foo.scala");
+    smap1.setOutputFileName("foo.scala")
     val straturm = new SourceMapStratum("JSP")
     straturm.addFile("foo.scala", "path/to/foo.scala")
-    straturm.addLine(1, 0, 1, 2, 1);
-    straturm.addLine(2, 0, 1, 3, 1);
-    straturm.addLine(4, 0, 1, 8, 1);
-    straturm.addLine(5, 0, 1, 9, 1);
+    straturm.addLine(1, 0, 1, 2, 1)
+    straturm.addLine(2, 0, 1, 3, 1)
+    straturm.addLine(4, 0, 1, 8, 1)
+    straturm.addLine(5, 0, 1, 9, 1)
     smap1.addStratum(straturm, true)
     val text1 = smap1.toString
     println(text1)
@@ -727,7 +727,7 @@ object SourceMapInstaller {
 
     println(text2 == text1)
 
-    println(smap2.mapToStratum(3));
+    println(smap2.mapToStratum(3))
 
   }
 }
