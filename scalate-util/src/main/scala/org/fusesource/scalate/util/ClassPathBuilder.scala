@@ -27,7 +27,7 @@ import scala.language.reflectiveCalls
 class ClassPathBuilder {
   import ClassPathBuilder._
 
-  private val classpath = new ArrayBuffer[String]
+  private[this] val classpath = new ArrayBuffer[String]
 
   def classPath = {
     val cp = classpath.distinct

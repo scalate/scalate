@@ -8,8 +8,8 @@ import java.util.concurrent.ArrayBlockingQueue
  */
 class ObjectPool[T](number: Int, newInstance: () => T) {
 
-  private val size = new AtomicInteger(0)
-  private val pool = new ArrayBlockingQueue[T](number)
+  private[this] val size = new AtomicInteger(0)
+  private[this] val pool = new ArrayBlockingQueue[T](number)
 
   def fetch(): T = {
     pool.poll() match {

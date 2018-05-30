@@ -77,7 +77,7 @@ class ScalaCompiler(
     }
   }
 
-  private val reporter = new LoggingReporter
+  private[this] val reporter = new LoggingReporter
 
   val compiler = createCompiler(settings, reporter)
 

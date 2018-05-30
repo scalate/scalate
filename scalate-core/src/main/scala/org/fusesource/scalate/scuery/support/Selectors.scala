@@ -24,7 +24,7 @@ import xml.{ Elem, Node }
  * Matches if the CSS class attribute contains the given class name word
  */
 case class ClassSelector(className: String) extends Selector {
-  private val matcher = IncludesMatch(className)
+  private[this] val matcher = IncludesMatch(className)
 
   def matches(node: Node, ancestors: Seq[Node]) = node match {
     case e: Elem =>

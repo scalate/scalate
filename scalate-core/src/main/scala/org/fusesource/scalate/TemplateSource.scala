@@ -34,8 +34,8 @@ trait TemplateSource extends Resource {
   import TemplateSource.log._
 
   var engine: TemplateEngine = _
-  private var _packageName: String = ""
-  private var _simpleClassName: String = _
+  private[this] var _packageName: String = ""
+  private[this] var _simpleClassName: String = _
 
   /**
    * Returns the type of the template (ssp, scaml, mustache etc).

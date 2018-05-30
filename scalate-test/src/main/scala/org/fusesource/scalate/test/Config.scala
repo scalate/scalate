@@ -24,7 +24,7 @@ package org.fusesource.scalate.test
  */
 object Config {
 
-  private var _baseDir: String = _
+  private[this] var _baseDir: String = _
 
   def baseDir: String = {
     if (_baseDir == null) {

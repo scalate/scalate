@@ -12,7 +12,7 @@ object Boot extends Log; import Boot._
 
 class Boot(engine: TemplateEngine) {
 
-  private var _initialised = new AtomicBoolean(false)
+  private[this] var _initialised = new AtomicBoolean(false)
 
   def run: Unit = {
     if (_initialised.compareAndSet(false, true)) {

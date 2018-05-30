@@ -26,8 +26,8 @@ import xml.{ Node, NodeSeq }
  * @version $Revision : 1.1 $
  */
 class NestedTransformer {
-  private val rootTransformer = new Transformer
-  private val threadLocal = new ThreadLocal[Transformer] {
+  private[this] val rootTransformer = new Transformer
+  private[this] val threadLocal = new ThreadLocal[Transformer] {
     override def initialValue = rootTransformer
   }
 

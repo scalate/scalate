@@ -32,7 +32,7 @@ trait ScueryView {
   import ScueryView._
 
   @Context
-  private var _servletContext: ServletContext = _
+  private[this] var _servletContext: ServletContext = _
 
   protected var templateDirectories = List("/WEB-INF", "")
 

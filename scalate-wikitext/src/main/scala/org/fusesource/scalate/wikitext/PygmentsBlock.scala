@@ -48,7 +48,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
   }
 
   // lets calculate once on startup
-  private lazy val _installed: Boolean = {
+  private[this] lazy val _installed: Boolean = {
     try {
       val process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
       thread("pygmetize err handler") {

@@ -231,11 +231,11 @@ class WrappedRequest(request: HttpServletRequest) extends HttpServletRequestWrap
 }
 
 class WrappedResponse(response: HttpServletResponse) extends HttpServletResponseWrapper(response) {
-  private val bos = new ByteArrayOutputStream()
-  private val sos = new ServletOutputStream {
+  private[this] val bos = new ByteArrayOutputStream()
+  private[this] val sos = new ServletOutputStream {
     def write(b: Int) = bos.write(b)
   }
-  private val writer = new PrintWriter(new OutputStreamWriter(bos))
+  private[this] val writer = new PrintWriter(new OutputStreamWriter(bos))
 
   override def getWriter = writer
 
