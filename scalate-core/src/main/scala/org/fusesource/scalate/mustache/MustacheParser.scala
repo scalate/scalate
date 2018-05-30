@@ -60,8 +60,8 @@ class MustacheParser extends RegexParsers {
 
   import MustacheParser._
 
-  private var _open: String = "{{"
-  private var _close: String = "}}"
+  private[this] var _open: String = "{{"
+  private[this] var _close: String = "}}"
 
   def parse(in: String) = {
     phrase(mustache)(new CharSequenceReader(in)) match {

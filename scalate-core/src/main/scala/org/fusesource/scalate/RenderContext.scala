@@ -519,7 +519,7 @@ trait RenderContext {
   //
   /////////////////////////////////////////////////////////////////////
 
-  private val resourceBeanAttribute = "it"
+  private[this] val resourceBeanAttribute = "it"
 
   /**
    * Returns the JAXRS resource bean of the given type or a  [[org.fusesource.scalate.NoValueSetException]]
@@ -542,9 +542,9 @@ trait RenderContext {
   //
   /////////////////////////////////////////////////////////////////////
 
-  private val _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
-  private val _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
-  private val _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
+  private[this] val _numberFormat = new Lazy(NumberFormat.getNumberInstance(locale))
+  private[this] val _percentFormat = new Lazy(NumberFormat.getPercentInstance(locale))
+  private[this] val _dateFormat = new Lazy(DateFormat.getDateInstance(DateFormat.FULL, locale))
 
   /**
    * Returns the formatted string using the locale of the users request or the default locale if not available

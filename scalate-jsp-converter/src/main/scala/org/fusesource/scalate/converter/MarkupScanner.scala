@@ -45,13 +45,13 @@ class MarkupScanner extends ScalaParseSupport {
   def STRING = string1 | string2
 
   // string1   \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*\"
-  private val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
+  private[this] val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
 
   // string2   \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*\'
-  private val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
+  private[this] val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
 
   // nl        \n|\r\n|\r|\f
-  private val nl = """\n|\r\n|\r|\f"""
+  private[this] val nl = """\n|\r\n|\r|\f"""
 
   val S = """\s+""".r
   val repS = """[\s]*""".r

@@ -28,7 +28,7 @@ object DefaultRenderContext extends Log
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(
-  private val _requestUri: String,
+  private[this] val _requestUri: String,
   val engine: TemplateEngine,
   var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
 
@@ -62,7 +62,7 @@ class DefaultRenderContext(
     out.print(value(v).toString)
   }
 
-  private val outStack = new Stack[PrintWriter]
+  private[this] val outStack = new Stack[PrintWriter]
 
   /**
    * Evaluates the body capturing any output written to this page context during the body evaluation

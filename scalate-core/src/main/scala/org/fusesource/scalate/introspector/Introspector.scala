@@ -25,15 +25,15 @@ import java.lang.reflect.{ Modifier, Method }
 
 object Introspector {
 
-  private val rwl = new ReentrantReadWriteLock()
-  private val rlock = rwl.readLock
-  private val wlock = rwl.writeLock
+  private[this] val rwl = new ReentrantReadWriteLock()
+  private[this] val rlock = rwl.readLock
+  private[this] val wlock = rwl.writeLock
 
   /**
    * The global caching strategy for introspection which by default uses a weak hash map
    * to avoid keeping around cached data for classes which are garbage collected
    */
-  private val cache = WeakHashMap.empty[Class[_], Introspector[_]]
+  private[this] val cache = WeakHashMap.empty[Class[_], Introspector[_]]
 
   /**
    * Returns the Introspector for the given type using the current cache if it is defined
@@ -82,7 +82,7 @@ object Introspector {
  * @version $Revision : 1.1 $
  */
 trait Introspector[T] {
-  private lazy val _expressions = createExpressions
+  private[this] lazy val _expressions = createExpressions
 
   def elementType: Class[T]
 

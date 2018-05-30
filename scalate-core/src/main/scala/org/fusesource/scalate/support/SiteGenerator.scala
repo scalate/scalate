@@ -147,7 +147,7 @@ class DummyTemplateEngine(
     uri: String,
     out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
-  private val responseClassName = "_root_." + classOf[DummyResponse].getName
+  private[this] val responseClassName = "_root_." + classOf[DummyResponse].getName
 
   bindings = List(
     Binding("context", "_root_." + classOf[DummyRenderContext].getName, true, isImplicit = true),

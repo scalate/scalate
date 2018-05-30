@@ -93,8 +93,8 @@ trait ScalaParseSupport extends RegexParsers {
   override def accept[U](expected: String, f: PartialFunction[Elem, U]): Parser[U] =
     ('\\' ~> 'u' ~> uniEscapeSeq ^? f) | super.accept(expected, f)
 
-  private lazy val printableChar: Parser[Char] = elem("printable", !isControl(_))
-  private lazy val printableCharNoDoubleQuote: Parser[Char] = elem("nodq", ch => !isControl(ch) && ch != '"')
+  private[this] lazy val printableChar: Parser[Char] = elem("printable", !isControl(_))
+  private[this] lazy val printableCharNoDoubleQuote: Parser[Char] = elem("nodq", ch => !isControl(ch) && ch != '"')
 
   lazy val charEscapeSeq: Parser[Char] = '\\' ~> (
     (accept("escape", simpleEscape))

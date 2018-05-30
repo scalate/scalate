@@ -25,8 +25,8 @@ package org.fusesource.scalate.util
 class Lazy[T](thunk: => T) {
   type OwnerType = Unit
 
-  private var _value: T = _
-  private var _evaluated: Boolean = false
+  private[this] var _value: T = _
+  private[this] var _evaluated: Boolean = false
 
   def evaluated = _evaluated
 

@@ -101,7 +101,7 @@ class TemplateEngine(
    */
   var allowReload = "true" == System.getProperty("scalate.allowReload", "true")
 
-  private var compilerInstalled = true
+  private[this] var compilerInstalled = true
 
   /**
    * Whether a custom classpath should be combined with the deduced classpath
@@ -197,7 +197,7 @@ class TemplateEngine(
     extensionToTemplateExtension.getOrElseUpdate(extension, collection.mutable.Set())
   }
 
-  private val attempt = Exception.ignoring(classOf[Throwable])
+  private[this] val attempt = Exception.ignoring(classOf[Throwable])
 
   /**
    * Returns the file extensions understood by Scalate; all the template engines and pipelines including
@@ -242,7 +242,7 @@ class TemplateEngine(
 
   var classpath: String = null
 
-  private var _workingDirectory: File = null
+  private[this] var _workingDirectory: File = null
 
   var classLoader = getClass().getClassLoader()
 
@@ -252,9 +252,9 @@ class TemplateEngine(
   var bindings = Binding("context", "_root_." + classOf[RenderContext].getName, true, None, "val", false) :: Nil
 
   val finderCache = new ConcurrentHashMap[String, String]
-  private val templateCache = new HashMap[String, CacheEntry]
-  private var _cacheHits = 0
-  private var _cacheMisses = 0
+  private[this] val templateCache = new HashMap[String, CacheEntry]
+  private[this] var _cacheHits = 0
+  private[this] var _cacheMisses = 0
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
   ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn =>

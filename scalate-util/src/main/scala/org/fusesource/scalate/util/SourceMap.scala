@@ -239,11 +239,11 @@ class SourceMapStratum(val name: String) {
  * @author Shawn Bayern
  */
 class SourceMap {
-  private var outputFileName: String = null
-  private var doEmbedded = true
-  private var embedded = List[String]()
-  private var strata = List[SourceMapStratum]()
-  private var defaultStratum = "Java"
+  private[this] var outputFileName: String = null
+  private[this] var doEmbedded = true
+  private[this] var embedded = List[String]()
+  private[this] var strata = List[SourceMapStratum]()
+  private[this] var defaultStratum = "Java"
 
   /**
    * Adds the given string as an embedded SMAP with the given stratum name.

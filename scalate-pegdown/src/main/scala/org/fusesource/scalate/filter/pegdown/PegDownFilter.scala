@@ -47,7 +47,7 @@ class PegDownFilter(val extensions: Int = Extensions.ABBREVIATIONS |
   Extensions.TABLES |
   Extensions.WIKILINKS, processorPoolSize: Int = 10) extends Filter {
 
-  private val pegDownProcessorPool = new ObjectPool[PegDownProcessor](processorPoolSize, () => {
+  private[this] val pegDownProcessorPool = new ObjectPool[PegDownProcessor](processorPoolSize, () => {
     new PegDownProcessor(extensions)
   })
 

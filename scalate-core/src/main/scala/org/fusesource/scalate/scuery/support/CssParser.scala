@@ -47,19 +47,19 @@ class CssScanner extends RegexParsers {
   private def nmchar = """[_a-zA-Z0-9-]""".r | nonascii | escape
 
   // num       [0-9]+|[0-9]*\.[0-9]+
-  private val num = """[0-9]+|[0-9]*"."[0-9]+"""
+  private[this] val num = """[0-9]+|[0-9]*"."[0-9]+"""
 
   // string    {string1}|{string2}
   def STRING = string1 | string2
 
   // string1   \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*\"
-  private val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
+  private[this] val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
 
   // string2   \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*\'
-  private val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
+  private[this] val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
 
   // nl        \n|\r\n|\r|\f
-  private val nl = """\n|\r\n|\r|\f"""
+  private[this] val nl = """\n|\r\n|\r|\f"""
 
   // invalid   {invalid1}|{invalid2}
   // invalid1  \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*

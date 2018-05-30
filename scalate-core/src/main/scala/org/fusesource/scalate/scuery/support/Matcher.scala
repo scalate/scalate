@@ -63,7 +63,7 @@ case class IncludesMatch(word: String) extends TextMatcher {
  * value immediately followed by "-" (U+002D)
  */
 case class DashMatch(value: String) extends TextMatcher {
-  private val valueWithDash = value + "-"
+  private[this] val valueWithDash = value + "-"
 
   def matches(text: String) = text.startsWith(value) || text.startsWith(valueWithDash)
 }
