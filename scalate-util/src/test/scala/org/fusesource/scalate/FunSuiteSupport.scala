@@ -23,7 +23,6 @@ import util.Log
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap, FunSuite }
-import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
