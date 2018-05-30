@@ -39,7 +39,7 @@ trait Filter {
 /**
  * A useful filter for wrapping other filters as a Pipeline (a top level processor of stand alone resources)
  */
-case class NoLayoutFilter(val next: Filter, contentType: String) extends Filter {
+case class NoLayoutFilter(next: Filter, contentType: String) extends Filter {
   def filter(context: RenderContext, content: String) = {
     context.attributes("layout") = "" // disable the layout
     context match {

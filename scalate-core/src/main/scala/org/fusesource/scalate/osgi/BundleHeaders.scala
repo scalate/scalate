@@ -22,7 +22,7 @@ import org.osgi.framework.Bundle
 /**
  * Helper class to work with bundle headers
  */
-case class BundleHeaders(val bundle: Bundle) {
+case class BundleHeaders(bundle: Bundle) {
 
   lazy val classPath = bundle.getHeaders.get("Bundle-ClassPath") match {
     case value: String => value.split(",")
