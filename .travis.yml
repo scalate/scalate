@@ -16,14 +16,5 @@ matrix:
   include:
   - scala: 2.13.0-M4
     script:
-    # compile all without scalate-test
-    # https://gist.github.com/xuwei-k/23872356d5fa3bce51f541a764823642
-    - sbt "++ ${TRAVIS_SCALA_VERSION}!"
-      scalate-jsp-converter/compile
-      scalate-war/compile
-      scalate-camel/compile
-      scalate-jruby/compile
-      scalate-pegdown/compile
-      scalate-markdownj/compile
-      scalate-guice/compile
-      scalate-jrebel/compile
+    # TODO some tests fail
+    - sbt "++ ${TRAVIS_SCALA_VERSION}!" test:compile
