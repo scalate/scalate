@@ -91,9 +91,9 @@ trait Introspector[T] {
    */
   def typeStyleName: String = decapitalize(elementType.getSimpleName)
 
-  def properties: Seq[Property[T]]
+  def properties: collection.Seq[Property[T]]
 
-  lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p): _*)
+  lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p).toSeq: _*)
 
   def property(name: String): Option[Property[T]] = propertyMap.get(name) match {
     case s: Some[Property[T]] => s
