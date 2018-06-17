@@ -142,7 +142,7 @@ class IntrospectorTest extends FunSuiteSupport {
     assertResult(propertyType) { property.propertyType }
   }
 
-  def assertProperties(properties: Seq[Property[_]], expectedSize: Int) = {
+  def assertProperties(properties: collection.Seq[Property[_]], expectedSize: Int) = {
     for (property <- properties) {
       debug("Property: %s", property)
     }

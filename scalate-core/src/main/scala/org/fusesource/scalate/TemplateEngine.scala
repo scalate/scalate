@@ -112,7 +112,7 @@ class TemplateEngine(
    * Sets the import statements used in each generated template class
    */
   var importStatements: List[String] = List(
-    "import _root_.scala.collection.JavaConversions._",
+    "import _root_.scala.collection.JavaConverters._",
     "import _root_.org.fusesource.scalate.support.TemplateConversions._",
     "import _root_.org.fusesource.scalate.util.Measurements._")
 
