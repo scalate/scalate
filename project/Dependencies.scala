@@ -35,9 +35,8 @@ object Dependencies {
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.1"
   val scalaTest = Def.setting {
-    // TODO https://github.com/scalatest/scalatest/issues/1367
     if (scalaVersion.value == "2.13.0-M4")
-      Nil
+      Seq("org.scalatest" %% "scalatest" % "3.0.6-SNAP1")
     else
       Seq("org.scalatest" %% "scalatest" % "3.0.5")
   }
