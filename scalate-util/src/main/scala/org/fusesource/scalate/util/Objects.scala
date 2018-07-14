@@ -63,7 +63,7 @@ object Objects {
     def argumentValue(paramType: Class[_]): Option[AnyRef] =
       injectionValues.find(paramType.isInstance(_))
 
-    def create(c: Constructor[_], args: Array[AnyRef] = Array()): T = {
+    def create(c: Constructor[_], args: Array[AnyRef]): T = {
       val answer = if (args.isEmpty) {
         clazz.newInstance
       } else {
