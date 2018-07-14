@@ -13,6 +13,7 @@ object Dependencies {
   val camelScala = "org.apache.camel" % "camel-scala" % "2.21.0"
   val camelSpring = camelScala.withName("camel-spring")
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
+  val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.0"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
