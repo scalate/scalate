@@ -17,7 +17,6 @@ class JRuby(loadPaths: List[File]) extends Log {
 
   RubyInstanceConfig.FASTEST_COMPILE_ENABLED = true
   RubyInstanceConfig.FASTSEND_COMPILE_ENABLED = true
-  RubyInstanceConfig.INLINE_DYNCALL_ENABLED = true
 
   def run(scriptlet: String*): Either[(Throwable, String), AnyRef] = this.synchronized {
     val errors: StringWriter = new StringWriter

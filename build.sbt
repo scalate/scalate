@@ -79,7 +79,7 @@ lazy val scalateCamel = scalateProject("camel")
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
     description := "Camel component for Scalate.",
-    libraryDependencies ++= Seq(camelScala, camelSpring)
+    libraryDependencies ++= Seq(camelScala, camelSpring, jaxbApi)
   )
 
 lazy val scalateGuice = scalateProject("guice")

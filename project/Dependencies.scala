@@ -13,6 +13,7 @@ object Dependencies {
   val camelScala = "org.apache.camel" % "camel-scala" % "2.21.0"
   val camelSpring = camelScala.withName("camel-spring")
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
+  val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.0"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
@@ -24,7 +25,7 @@ object Dependencies {
   val jRebelSDK = "org.zeroturnaround" % "jr-sdk" % "4.6.2" from
     "https://repos.zeroturnaround.com/nexus/content/groups/zt-public/org/zeroturnaround/jr-sdk/4.6.2/jr-sdk-4.6.2.jar"
 
-  val jRubyComplete = "org.jruby" % "jruby-complete" % "1.6.8"
+  val jRubyComplete = "org.jruby" % "jruby-complete" % "1.7.27"
   val junit = "junit" % "junit" % "4.12"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.1.5"
   val lessCssEngine = "com.asual.lesscss" % "lesscss-engine" % "1.4.2"
