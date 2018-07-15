@@ -284,7 +284,7 @@ trait RenderContext {
    *
    * @param layout if true then applying the layout the included template
    */
-  def include(path: String, layout: Boolean, extraBindings: Traversable[Binding]): Unit = {
+  def include(path: String, layout: Boolean, extraBindings: Iterable[Binding]): Unit = {
     val uri = resolveUri(path)
 
     withUri(uri) {
@@ -302,7 +302,7 @@ trait RenderContext {
   /**
    * Renders a collection of model objects with an optional separator
    */
-  def collection(objects: Traversable[AnyRef], viewName: String = "index", separator: => Any = blankString): Unit = {
+  def collection(objects: Iterable[AnyRef], viewName: String = "index", separator: => Any = blankString): Unit = {
     var first = true
     for (model <- objects) {
       if (first) {

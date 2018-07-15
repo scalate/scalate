@@ -58,7 +58,7 @@ trait ResourceLoader {
   protected def createNotFoundException(uri: String) = new ResourceNotFoundException(uri)
 }
 
-case class FileResourceLoader(sourceDirectories: Traversable[File] = None) extends ResourceLoader {
+case class FileResourceLoader(sourceDirectories: Iterable[File] = None) extends ResourceLoader {
   def resource(uri: String): Option[Resource] = {
     debug("Trying to load uri: " + uri)
 

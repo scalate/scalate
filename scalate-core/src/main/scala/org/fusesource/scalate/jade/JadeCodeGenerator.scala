@@ -31,7 +31,7 @@ import org.fusesource.scalate.support._
  */
 class JadeCodeGenerator extends ScamlCodeGenerator {
 
-  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Traversable[Binding]): Code = {
+  override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Iterable[Binding]): Code = {
 
     val uri = source.uri
     val jadeSource = source.text

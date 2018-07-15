@@ -35,7 +35,7 @@ object ClassLoaders {
   /**
    * Tries to load the named class on the given class loaders
    */
-  def findClass(className: String, classLoaders: Traversable[ClassLoader] = defaultClassLoaders): Option[Class[_]] = {
+  def findClass(className: String, classLoaders: Iterable[ClassLoader] = defaultClassLoaders): Option[Class[_]] = {
     def tryLoadClass(classLoader: ClassLoader) = {
       try {
         Some(classLoader.loadClass(className))
@@ -52,7 +52,7 @@ object ClassLoaders {
   /**
    * Tries to find the named resource on the given class loaders
    */
-  def findResource(name: String, classLoaders: Traversable[ClassLoader] = defaultClassLoaders): Option[URL] = {
+  def findResource(name: String, classLoaders: Iterable[ClassLoader] = defaultClassLoaders): Option[URL] = {
     def tryLoadClass(classLoader: ClassLoader) = {
       try {
         classLoader.getResource(name)
@@ -66,7 +66,7 @@ object ClassLoaders {
   /**
    * Loads the given named class on the given class loaders or fails with a ClassNotFoundException
    */
-  def loadClass(className: String, classLoaders: Traversable[ClassLoader]) = findClass(className, classLoaders) match {
+  def loadClass(className: String, classLoaders: Iterable[ClassLoader]) = findClass(className, classLoaders) match {
     case Some(c) => c
     case _ => throw new ClassNotFoundException(className + " not found in class loaders: " + classLoaders)
   }
