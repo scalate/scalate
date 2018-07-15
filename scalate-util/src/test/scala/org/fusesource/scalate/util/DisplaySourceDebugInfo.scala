@@ -24,16 +24,18 @@ import _root_.java.io.File
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object DisplaySourceDebugInfo {
+object DisplaySourceDebugInfo extends Log {
+
   def main(args: Array[String]) = {
     val fileName = if (args.size > 0) args(0) else "scalate-sample/src/main/webapp/WEB-INF/_scalate/classes/scaml/$_scalate_$missingAttribute_scaml$.class"
-    println("Loading class file: " + fileName)
+    log.info("Loading class file: " + fileName)
 
     val file = new File(fileName)
     if (file.exists) {
-      println(SourceMapInstaller.load(file))
+      log.info(SourceMapInstaller.load(file))
     } else {
-      println("ERROR: " + file + " does not exist!")
+      log.warn("ERROR: " + file + " does not exist!")
     }
   }
+
 }

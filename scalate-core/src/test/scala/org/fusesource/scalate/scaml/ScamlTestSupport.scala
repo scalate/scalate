@@ -38,7 +38,7 @@ class ScamlTestSupport extends TemplateTestSupport {
         try {
           val output = render(description, template.trim)
           if (showOutput) {
-            println(output)
+            log.info(output)
           }
           output.trim
         } finally {

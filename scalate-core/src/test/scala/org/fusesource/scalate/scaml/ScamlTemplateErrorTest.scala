@@ -17,8 +17,6 @@
  */
 package org.fusesource.scalate.scaml
 
-import java.io.{ StringWriter, PrintWriter, File }
-
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */

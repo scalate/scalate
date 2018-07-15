@@ -20,14 +20,13 @@ package org.fusesource.scalate.converter
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
-import _root_.java.io.File
-import _root_.org.fusesource.scalate._
+import org.fusesource.scalate.util.Log
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class ExpressionParseTest extends FunSuite {
+class ExpressionParseTest extends FunSuite with Log {
 
   assertConvert("${foo.bar}", "foo.getBar")
   assertConvert("${foo[123]}", "foo(123)")
@@ -51,16 +50,17 @@ class ExpressionParseTest extends FunSuite {
   }
 
   def convert(el: String): String = {
-    println("Converting EL: " + el)
+    log.info("Converting EL: " + el)
 
     val parser = new ExpressionParser
     val exp = parser.parseExpression(el)
-    println("Expression: " + exp)
+    log.info("Expression: " + exp)
 
     val result = exp.asParam
 
-    println(" => " + result)
-    println
+    log.info(" => " + result)
+
     result
   }
+
 }

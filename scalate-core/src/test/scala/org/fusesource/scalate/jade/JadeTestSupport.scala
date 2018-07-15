@@ -33,28 +33,31 @@ class JadeTestSupport extends ScamlTestSupport {
   override def render(name: String, content: String): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
-    val uri = "/org/fusesource/scalate/jade/test" + name
-    val context = new DefaultRenderContext(uri, engine, out) {
-      val name = "Hiram"
-      val title = "MyPage"
-      val href = "http://scalate.fusesource.org"
-      val quality = "scrumptious"
+    try {
+      val uri = "/org/fusesource/scalate/jade/test" + name
+      val context = new DefaultRenderContext(uri, engine, out) {
+        val name = "Hiram"
+        val title = "MyPage"
+        val href = "http://scalate.fusesource.org"
+        val quality = "scrumptious"
+      }
+
+      engine.bindings = List(Binding("context", context.getClass.getName, true))
+
+      testCounter.incrementAndGet
+      val dir = new File("target/JadeTest")
+      dir.mkdirs
+      engine.workingDirectory = dir
+      context.attributes("context") = context
+      context.attributes("bean") = Bean("red", 10)
+      context.attributes("label") = "Scalate"
+
+      val template = compileJade(uri, content)
+      template.render(context)
+      buffer.toString
+    } finally {
+      out.close
     }
-
-    engine.bindings = List(Binding("context", context.getClass.getName, true))
-
-    val testIdx = testCounter.incrementAndGet
-    val dir = new File("target/JadeTest")
-    dir.mkdirs
-    engine.workingDirectory = dir
-    context.attributes("context") = context
-    context.attributes("bean") = Bean("red", 10)
-    context.attributes("label") = "Scalate"
-
-    val template = compileJade(uri, content)
-    template.render(context)
-    out.close
-    buffer.toString
   }
 
 }

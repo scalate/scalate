@@ -17,14 +17,14 @@
  */
 package org.fusesource.scalate
 
-import scuery.Transformer
-import xml.NodeSeq
+import org.slf4j.LoggerFactory
 
-/**
- * @version $Revision : 1.1 $
- */
+private class Asserts
 
 object Asserts {
+
+  private val logger = LoggerFactory.getLogger(classOf[Asserts])
+
   def assertContains(actual: String, expected: String): Unit = {
     assert(actual.contains(expected), "Should contain \"" + expected + "\" but was: " + actual)
   }
@@ -33,6 +33,7 @@ object Asserts {
     val start = System.currentTimeMillis
     block
     val end = System.currentTimeMillis - start
-    println(name + " " + end + " milli(s)")
+    logger.info(name + " " + end + " milli(s)")
   }
+
 }

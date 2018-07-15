@@ -18,10 +18,8 @@
 package org.fusesource.scalate
 
 import java.io.File
-import java.lang.String
 import collection.immutable.Map
 import util.{ Log, IOUtil }
-import org.slf4j.LoggerFactory
 import org.scalatest.ConfigMap
 
 abstract class TemplateTestSupport extends FunSuiteSupport with Log {
@@ -67,7 +65,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
 
   protected def logOutput(output: String): Unit = {
     if (showOutput) {
-      println("output: '" + output + "'")
+      log.info("output: '" + output + "'")
     } else {
       debug("output: '" + output + "'")
     }

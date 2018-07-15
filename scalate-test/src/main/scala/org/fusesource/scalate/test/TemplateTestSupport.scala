@@ -65,7 +65,7 @@ class TemplateTestSupport extends FunSuiteSupport {
   def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): String = {
     val output = engine.layout(source, attributes)
     if (showOutput) {
-      println("output: '" + output + "'")
+      info("output: '" + output + "'")
     } else {
       debug("output: '" + output + "'")
     }

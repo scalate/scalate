@@ -23,12 +23,16 @@ import _root_.org.scalatest.FunSuite
 import _root_.org.apache.camel.builder.RouteBuilder
 import _root_.org.apache.camel._
 import _root_.org.apache.camel.impl.DefaultCamelContext
+import org.slf4j.LoggerFactory
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
 class CamelScalateEndpointTest extends FunSuite {
+
+  val logger = LoggerFactory.getLogger(classOf[CamelScalateEndpointTest])
+
   val uriPrefix = "scalate:org/fusesource/scalate/camel/"
 
   scenario(uriPrefix + "constant.ssp", "James", "<hello>James</hello>")
@@ -71,7 +75,7 @@ class CamelScalateEndpointTest extends FunSuite {
               in.setBody(body)
               in.setHeader("cheese", headerValue)
 
-              println("sending body: " + exchange.getIn.getBody)
+              logger.info("sending body: " + exchange.getIn.getBody)
             }
           })
 

@@ -18,7 +18,13 @@
 package org.fusesource.scalate.demo;
 
 import org.fusesource.scalate.japi.TemplateEngineFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +33,56 @@ import java.util.Map;
  */
 public class UseScalateFromJava extends TemplateEngineFacade {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UseScalateFromJava.class);
+
+    public static class LoggingOutputStream extends OutputStream {
+
+        private final ByteArrayOutputStream baos = new ByteArrayOutputStream(1000);
+        private final Logger logger;
+        private final LogLevel level;
+
+        public enum LogLevel {
+            TRACE, DEBUG, INFO, WARN, ERROR,
+        }
+
+        public LoggingOutputStream(Logger logger, LogLevel level) {
+            this.logger = logger;
+            this.level = level;
+        }
+
+        @Override
+        public void write(int b) {
+            if (b == '\n') {
+                String line = baos.toString();
+                baos.reset();
+
+                switch (level) {
+                    case TRACE:
+                        logger.trace(line);
+                        break;
+                    case DEBUG:
+                        logger.debug(line);
+                        break;
+                    case ERROR:
+                        logger.error(line);
+                        break;
+                    case INFO:
+                        logger.info(line);
+                        break;
+                    case WARN:
+                        logger.warn(line);
+                        break;
+                }
+            } else {
+                baos.write(b);
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
         if (args.length <= 0) {
-            System.out.println("Usage: UseScalateFromJava templateUri");
+            LOGGER.info("Usage: UseScalateFromJava templateUri");
             System.exit(1);
         }
         TemplateEngineFacade engine = new TemplateEngineFacade();
@@ -37,7 +90,8 @@ public class UseScalateFromJava extends TemplateEngineFacade {
         Map<String,Object> attributes = new HashMap<>();
         attributes.put("name", "James Strachan");
 
-        engine.layout(args[0], System.out, attributes);
+        OutputStream out = new LoggingOutputStream(LOGGER, LoggingOutputStream.LogLevel.INFO);
+        engine.layout(args[0], out, attributes);
     }
 
 }

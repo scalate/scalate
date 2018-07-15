@@ -37,7 +37,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
     for (e <- map.asScala) {
       val key = e.getKey
       val value = e.getValue
-      println(" " + key + " = " + value)
+      log.info(" " + key + " = " + value)
     }
   }
 
@@ -45,7 +45,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
     val a: String = null
 
     val answer = a ?: "default"
-    println("got answer: " + answer)
+    log.info("got answer: " + answer)
     assertResult("default") { answer }
   }
 
@@ -53,7 +53,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
     val a: String = null
 
     val answer = orElse(a, "default")
-    println("got answer: " + answer)
+    log.info("got answer: " + answer)
     assertResult("default") { answer }
   }
 
@@ -61,7 +61,7 @@ class TemplateConversionsTest extends FunSuiteSupport {
     val person = Person("James", null)
 
     val answer = orElse(person.address.city, "default")
-    println("got answer: " + answer)
+    log.info("got answer: " + answer)
     assertResult("default") { answer }
   }
 }
