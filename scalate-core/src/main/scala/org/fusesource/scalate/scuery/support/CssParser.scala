@@ -28,6 +28,9 @@ class CssScanner extends RegexParsers {
   //   ident     [-]?{nmstart}{nmchar}*
   def IDENT = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("") }
 
+  // name      {nmchar}+
+  private def name = rep1(nmchar)
+
   // nmstart   [_a-z]|{nonascii}|{escape}
   private def nmstart = """[_a-zA-Z]""".r | nonascii | escape
 
