@@ -1,18 +1,16 @@
 package org.fusesource.scalate.jruby
 
 import org.fusesource.scalate.util.Log
-import java.io.{ StringWriter, File }
+import java.io.StringWriter
 import org.jruby.RubyInstanceConfig
 import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
-import collection.JavaConverters._
 
 /**
  * A simple interface to the jruby interpreter
  */
-class JRuby(loadPaths: List[File]) extends Log {
+class JRuby extends Log {
 
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
-  container.getProvider.setLoadPaths(loadPaths.asJava)
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)
 
   RubyInstanceConfig.FASTEST_COMPILE_ENABLED = true
