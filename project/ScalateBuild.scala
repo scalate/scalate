@@ -1,14 +1,14 @@
 import com.typesafe.sbt.SbtGit.GitKeys
 import com.typesafe.sbt.osgi.{OsgiKeys, SbtOsgi}
 import com.typesafe.sbt.pgp.PgpKeys
-import sbtbuildinfo.{BuildInfoPlugin, BuildInfoKeys}
-import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
-import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
-import sbtunidoc.BaseUnidocPlugin.autoImport._
-import xerial.sbt.Sonatype
-import Sonatype.SonatypeKeys
+import sbt.Keys._
 import sbt._
-import Keys._
+import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
+import sbtbuildinfo.{BuildInfoKeys, BuildInfoPlugin}
+import sbtunidoc.BaseUnidocPlugin.autoImport._
+import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
+import xerial.sbt.Sonatype
+import xerial.sbt.Sonatype.SonatypeKeys
 
 /** Build support settings and functions. */
 object ScalateBuild {

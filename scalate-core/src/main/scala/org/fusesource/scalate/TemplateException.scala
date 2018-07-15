@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate
 
+import org.fusesource.scalate.support.CompilerError
+
 import scala.util.control.NoStackTrace
 import scala.util.parsing.input.{ NoPosition, Position }
-import support.CompilerError
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>

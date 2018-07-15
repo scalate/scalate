@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package filter
 
-import support.RenderHelper
+import org.fusesource.scalate.support.RenderHelper
 
 /**
  * Escapes any XML/XHTML special characters in the content.

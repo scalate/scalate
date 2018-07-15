@@ -17,12 +17,13 @@
  */
 package org.fusesource.scalate.support
 
-import util.parsing.combinator.RegexParsers
-import CharData._
-import Integer._
-import util.parsing.input.CharArrayReader
+import java.lang.Integer._
+
+import org.fusesource.scalate.support.CharData._
 
 import scala.language.postfixOps
+import scala.util.parsing.combinator.RegexParsers
+import scala.util.parsing.input.CharArrayReader
 
 /**
  * @version $Revision : 1.1 $

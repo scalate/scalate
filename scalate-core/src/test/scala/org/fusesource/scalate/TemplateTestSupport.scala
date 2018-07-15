@@ -18,9 +18,11 @@
 package org.fusesource.scalate
 
 import java.io.File
-import collection.immutable.Map
-import util.{ Log, IOUtil }
+
+import org.fusesource.scalate.util.{ IOUtil, Log }
 import org.scalatest.ConfigMap
+
+import scala.collection.immutable.Map
 
 abstract class TemplateTestSupport extends FunSuiteSupport with Log {
 

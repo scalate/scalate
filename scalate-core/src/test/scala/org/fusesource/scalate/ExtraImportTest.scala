@@ -17,8 +17,7 @@
  */
 package org.fusesource.scalate
 
-import java.io.File
-import Asserts._
+import org.fusesource.scalate.Asserts._
 
 class ExtraImportTest extends TemplateTestSupport {
   test("test template using custom import") {

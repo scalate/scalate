@@ -35,8 +35,8 @@ package org.fusesource.scalate.filter
  * limitations under the License.
  */
 
-import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate._
+import org.fusesource.scalate.support.RenderHelper
 
 /**
  * Surrounds the filtered text with &lt;style&gt; and CDATA tags.

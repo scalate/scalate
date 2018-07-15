@@ -1,7 +1,7 @@
 package org.fusesource.scalate
 package support
 
-import util.Objects
+import org.fusesource.scalate.util.Objects
 
 import scala.language.reflectiveCalls
 

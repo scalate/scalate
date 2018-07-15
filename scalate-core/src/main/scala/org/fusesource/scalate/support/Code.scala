@@ -1,7 +1,7 @@
 package org.fusesource.scalate.support
 
-import _root_.scala.util.parsing.input.{ OffsetPosition }
-import collection.immutable.TreeMap
+import _root_.scala.util.parsing.input.OffsetPosition
+import scala.collection.immutable.TreeMap
 
 case class Code(
   className: String,

@@ -17,9 +17,7 @@
  */
 package org.fusesource.scalate
 
-import Asserts._
-
-import java.io.File
+import org.fusesource.scalate.Asserts._
 
 class PerformanceTest extends TemplateTestSupport {
 

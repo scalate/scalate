@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery
 
-import xml.{ Attribute, Elem, NodeSeq, Null, Text }
+import scala.xml._
 
 /**
  * @version $Revision: 1.1 $

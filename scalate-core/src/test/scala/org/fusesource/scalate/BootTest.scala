@@ -17,9 +17,6 @@
  */
 package org.fusesource.scalate
 
-import servlet.ServletTemplateEngine
-import org.fusesource.scalate.util.ClassLoaders
-
 object MockBootstrap {
   var initialised = false
 }

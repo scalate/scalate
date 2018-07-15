@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 package filter
 
-import org.fusesource.scalate.{ TemplateEngine, TemplateEngineAddOn }
 import org.fusesource.scalamd.Markdown
 
 /**

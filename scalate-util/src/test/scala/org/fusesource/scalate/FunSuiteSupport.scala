@@ -19,7 +19,7 @@ package org.fusesource.scalate
 
 import java.io.File
 
-import util.Log
+import org.fusesource.scalate.util.Log
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap, FunSuite }

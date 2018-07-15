@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package support
 
-import filter.Filter
+import org.fusesource.scalate.filter.Filter
 
 /**
  * Implements a Template using a list of filters

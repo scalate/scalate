@@ -17,8 +17,8 @@
  */
 package org.fusesource.scalate
 
-import collection.immutable.Map
 import java.io.File
+
 import org.scalatest.ConfigMap
 
 class TemplateEngineHelpersTest extends TemplateTestSupport {

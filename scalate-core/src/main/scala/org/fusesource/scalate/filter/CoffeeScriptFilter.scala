@@ -21,10 +21,9 @@ package filter
 import java.util.concurrent.atomic.AtomicBoolean
 
 import javax.script.ScriptException
-import tv.cntt.rhinocoffeescript.Compiler
-
 import org.fusesource.scalate.support.RenderHelper
-import util.Log
+import org.fusesource.scalate.util.Log
+import tv.cntt.rhinocoffeescript.Compiler
 
 /**
  * Surrounds the filtered text with &lt;script&gt; and CDATA tags.

@@ -17,12 +17,12 @@
  */
 package org.fusesource.scalate.support
 
-import scala.collection.immutable.TreeMap
-import util.parsing.input.{ Positional, OffsetPosition, Position }
-import org.fusesource.scalate.{ TemplateSource, Binding, TemplateEngine }
 import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.{ Binding, TemplateEngine, TemplateSource }
 
+import scala.collection.immutable.TreeMap
 import scala.language.postfixOps
+import scala.util.parsing.input.{ OffsetPosition, Position, Positional }
 
 object AbstractCodeGenerator extends Log
 

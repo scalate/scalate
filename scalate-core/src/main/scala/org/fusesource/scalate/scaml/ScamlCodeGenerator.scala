@@ -18,12 +18,11 @@
 package org.fusesource.scalate.scaml
 
 import org.fusesource.scalate._
-import collection.mutable.LinkedHashMap
-import support.{ Text, Code, AbstractCodeGenerator }
-import support.RenderHelper
-import scala.util.parsing.input.OffsetPosition
+import org.fusesource.scalate.support.{ AbstractCodeGenerator, Code, RenderHelper, Text }
 
+import scala.collection.mutable.LinkedHashMap
 import scala.language.implicitConversions
+import scala.util.parsing.input.OffsetPosition
 
 /**
  * Generates a scala class given a HAML document

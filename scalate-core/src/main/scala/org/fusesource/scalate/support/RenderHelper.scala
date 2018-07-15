@@ -34,7 +34,7 @@
 package org.fusesource.scalate
 package support
 
-import collection.mutable.LinkedHashMap
+import scala.collection.mutable.LinkedHashMap
 
 object RenderHelper {
 
