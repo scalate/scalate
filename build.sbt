@@ -9,7 +9,7 @@ import MimaSettings.mimaSettings
 
 name := "Scalate"
 organization := "org.scalatra.scalate"
-version := "1.9.0-SNAPSHOT"
+version := "1.9.0-RC1"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.6", "2.11.12", "2.13.0-M4")
 javacOptions ++= Seq("-source", "1.8")
