@@ -31,7 +31,6 @@ object BootSample {
   def boot: Unit = {
     if (!initialised) {
       info("Startup up template package bootstrap!")
-      println("Startup up template package bootstrap!")
       initialised = true
     }
   }

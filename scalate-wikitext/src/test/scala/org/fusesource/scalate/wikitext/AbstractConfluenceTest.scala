@@ -32,8 +32,8 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
     val context = new DefaultRenderContext("foo.html", new TemplateEngine())
     val actual = filter.filter(context, source)
     info("Generated: %s", actual)
-    println
-    println(actual)
+
+    info(actual)
     actual
   }
 

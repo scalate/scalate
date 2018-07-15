@@ -20,14 +20,15 @@ package org.fusesource.scalate.converter
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatest.junit.JUnitRunner
 import _root_.org.scalatest.FunSuite
-import _root_.java.io.File
+
 import _root_.org.fusesource.scalate._
+import org.fusesource.scalate.util.Log
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class ConvertJspTest extends FunSuite {
+class ConvertJspTest extends FunSuite with Log {
 
   assertJustText("<foo/>")
   assertJustText("text <foo/> text")
@@ -181,13 +182,13 @@ whatnot""")
   }
 
   def convert(jsp: String): String = {
-    println("Converting JSP: " + jsp)
+    log.info("Converting JSP: " + jsp)
 
     val converter = new JspConverter
     val result = converter.convert(jsp)
 
-    println(" => " + result)
-    println
+    log.info(" => " + result)
+
     result
   }
 

@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 package mustache
 
-import org.fusesource.scalate.TemplateTestSupport
 import java.io.File
 import layout.DefaultLayoutStrategy
 
@@ -47,8 +46,8 @@ class LayoutTest extends TemplateTestSupport {
     val output = engine.layout("sample.mustache")
 
     if (showOutput) {
-      println("Generated: ")
-      println(output)
+      log.info("Generated: ")
+      log.info(output)
     }
 
     assertResult(expected) {

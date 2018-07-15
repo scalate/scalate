@@ -17,7 +17,6 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.io.File
 import org.fusesource.scalate._
 import org.fusesource.scalate.test.FunSuiteSupport
 
@@ -30,8 +29,8 @@ class TextileTest extends FunSuiteSupport {
     val context = new DefaultRenderContext("foo.textile", new TemplateEngine())
     val actual = filter.filter(context, source)
     info("Generated: " + actual)
-    println
-    println(actual)
+
+    info(actual)
     actual
   }
 

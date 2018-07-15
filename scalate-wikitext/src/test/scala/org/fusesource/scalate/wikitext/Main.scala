@@ -18,7 +18,9 @@
 package org.fusesource.scalate
 package wikitext
 
-object Main {
+import org.fusesource.scalate.util.Log
+
+object Main extends Log {
 
   def main(args: Array[String]): Unit = {
     for (a <- args) {
@@ -29,6 +31,6 @@ object Main {
   def parseFile(name: String): Unit = {
     val engine = new TemplateEngine
     val output = engine.layout(TemplateSource.fromFile(name))
-    println(output)
+    log.info(output)
   }
 }

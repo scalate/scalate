@@ -17,10 +17,6 @@
  */
 package org.fusesource.scalate.console
 
-/**
- * @version $Revision: 1.1 $
- */
-import _root_.java.io.{ OutputStreamWriter, PrintWriter }
 import _root_.org.fusesource.scalate._
 import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
@@ -28,8 +24,7 @@ import _root_.org.scalatest.FunSuite
 import _root_.org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class EditLinkTest extends FunSuite {
-  val log = Log(getClass)
+class EditLinkTest extends FunSuite with Log {
 
   val file = "src/test/scala/org/fusesource/scalate/console/EditLinkTest.scala"
 
@@ -47,7 +42,7 @@ class EditLinkTest extends FunSuite {
     // lets put a render context in scope
     RenderContext.using(new DefaultRenderContext(file, new TemplateEngine())) {
       val link = EditLink.editLink(file)( /*"Edit file"*/ ())
-      println(name + " link = " + link)
+      log.info(name + " link = " + link)
     }
   }
 }

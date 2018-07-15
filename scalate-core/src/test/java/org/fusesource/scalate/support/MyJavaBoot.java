@@ -18,11 +18,15 @@
 package org.fusesource.scalate.support;
 
 import org.fusesource.scalate.TemplateEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A pure Java Boot class
  */
 public class MyJavaBoot {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyJavaBoot.class);
 
     public static int runCount = 0;
 
@@ -33,7 +37,7 @@ public class MyJavaBoot {
     }
 
     public void run() {
-        System.out.println("Running MyJavaBoot");
+        LOGGER.info("Running MyJavaBoot");
         if (engine == null) {
             throw new NullPointerException("Should have a template engine!");
         }

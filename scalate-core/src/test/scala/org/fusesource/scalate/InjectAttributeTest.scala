@@ -17,16 +17,16 @@
  */
 package org.fusesource.scalate
 
-import java.lang.String
 import collection.immutable.Map
 import java.io.File
 import org.scalatest.ConfigMap
 
 class InjectAttributeTest extends TemplateTestSupport {
+
   test("Using render context directly") {
     val helper = context.inject[SomeHelper]
     assert(helper != null)
-    println("got helper! " + helper)
+    log.info("got helper! " + helper)
   }
 
   // in the following test, the compiler does not pass in the
@@ -37,7 +37,7 @@ class InjectAttributeTest extends TemplateTestSupport {
     test("Using render context directly without explicit type param") {
       val helper: SomeHelper = context.inject
       assert(helper != null)
-      println("got helper! " + helper)
+      log.info("got helper! " + helper)
     }
   }
 
