@@ -63,7 +63,6 @@ object ScalateBuild {
       inAnyProject -- inProjects(filter: _*))
 
   private def projectOpts = Seq(
-    name := name(_.split("-|(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])").map(_.capitalize).mkString(" ")).value,
     version := (version in LocalRootProject).value,
     organization := (organization in LocalRootProject).value,
     organizationName := (organizationName in LocalRootProject).value,
@@ -198,6 +197,11 @@ object ScalateBuild {
         <url>http://www.rossabaker.com/</url>
         <organization>CrowdStrike</organization>
         <organizationUrl>http://www.crowdstrike.com/</organizationUrl>
+      </developer>
+      <developer>
+        <id>seratch</id>
+        <name>Kazuhiro Sera</name>
+        <url>https://github.com/seratch</url>
       </developer>
     </developers>
 

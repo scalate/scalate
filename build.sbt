@@ -1,9 +1,15 @@
 import Dependencies._
 import ScalateBuild._
+import MimaSettings.mimaSettings
+
+// -----------------------------------------------------------------------------------
+// README:
+// Scalate project guarantees bin-compatibities for only core, util
+// -----------------------------------------------------------------------------------
 
 name := "Scalate"
 organization := "org.scalatra.scalate"
-version := "1.8.1-SNAPSHOT"
+version := "1.9.0-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.6", "2.11.12", "2.13.0-M4")
 javacOptions ++= Seq("-source", "1.8")
@@ -36,6 +42,7 @@ lazy val scalateUtil = scalateProject("util")
     addScalaModules(11, scalaXml, scalaParserCombinators),
     addScalaModules(12, scalaXml, scalaParserCombinators),
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
+  .settings(mimaSettings)
 
 lazy val scalateCore = scalateProject("core")
   .scalateSettings
@@ -56,6 +63,9 @@ lazy val scalateCore = scalateProject("core")
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate"),
     unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
+  .settings(mimaSettings)
+
+// -----------------------------------------------------------------------------------
 
 lazy val scalateTest = scalateProject("test")
   .scalateSettings
@@ -71,6 +81,7 @@ lazy val scalateTest = scalateProject("test")
     ), 
     libraryDependencies ++= scalaTest.value,
     description := "Scalate Test Support Classes.")
+  .settings(mimaSettings)
 
 lazy val scalateCamel = scalateProject("camel")
   .scalateSettings
