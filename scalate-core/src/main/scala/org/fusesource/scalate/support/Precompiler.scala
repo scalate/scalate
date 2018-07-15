@@ -18,8 +18,9 @@
 package org.fusesource.scalate.support
 
 import java.io.File
-import org.fusesource.scalate.{ Binding, TemplateEngine }
+
 import org.fusesource.scalate.servlet.ServletRenderContext
+import org.fusesource.scalate.{ Binding, TemplateEngine }
 
 import scala.language.reflectiveCalls
 

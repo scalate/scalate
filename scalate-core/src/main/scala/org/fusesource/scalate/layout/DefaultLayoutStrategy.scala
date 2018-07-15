@@ -18,8 +18,8 @@
 package org.fusesource.scalate
 package layout
 
-import util.Strings.isEmpty
-import util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.util.Strings.isEmpty
+import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
 
 object DefaultLayoutStrategy extends Log
 

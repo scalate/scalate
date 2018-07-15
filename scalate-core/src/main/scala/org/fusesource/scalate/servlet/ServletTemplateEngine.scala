@@ -17,12 +17,14 @@
  */
 package org.fusesource.scalate.servlet
 
-import org.fusesource.scalate.{ Binding, TemplateEngine }
-import org.fusesource.scalate.layout.{ LayoutStrategy, DefaultLayoutStrategy }
-import scala.tools.nsc.Global
-import javax.servlet.{ ServletContext, ServletConfig }
 import java.io.File
+
+import javax.servlet.{ ServletConfig, ServletContext }
+import org.fusesource.scalate.layout.{ DefaultLayoutStrategy, LayoutStrategy }
 import org.fusesource.scalate.util._
+import org.fusesource.scalate.{ Binding, TemplateEngine }
+
+import scala.tools.nsc.Global
 
 object ServletTemplateEngine {
   val log = Log(getClass)

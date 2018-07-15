@@ -17,11 +17,12 @@
  */
 package org.fusesource.scalate
 
-import support.AttributesHashMap
-
 import java.io._
-import collection.mutable.Stack
-import util.{ Log, Resource }
+
+import org.fusesource.scalate.support.AttributesHashMap
+import org.fusesource.scalate.util.{ Log, Resource }
+
+import scala.collection.mutable.Stack
 
 object DefaultRenderContext extends Log
 /**

@@ -18,7 +18,8 @@
 package org.fusesource.scalate.servlet
 
 import java.util.Enumeration
-import javax.servlet.{ FilterConfig, ServletContext, ServletConfig }
+
+import javax.servlet.{ FilterConfig, ServletConfig, ServletContext }
 
 import scala.language.implicitConversions
 

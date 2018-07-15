@@ -17,20 +17,20 @@
  */
 package org.fusesource.scalate
 
-import filter.FilterRequest
-import introspector.Introspector
-import support.RenderHelper
-import util._
-import util.Strings.isEmpty
-
 import java.io.File
 import java.text.{ DateFormat, NumberFormat }
-import java.util.{ Locale, Date }
-import xml.{ Node, PCData, NodeSeq, NodeBuffer }
-import collection.mutable.{ ListBuffer, HashMap }
-import reflect.ClassTag
+import java.util.{ Date, Locale }
 
+import org.fusesource.scalate.filter.FilterRequest
+import org.fusesource.scalate.introspector.Introspector
+import org.fusesource.scalate.support.RenderHelper
+import org.fusesource.scalate.util.Strings.isEmpty
+import org.fusesource.scalate.util._
+
+import scala.collection.mutable.{ HashMap, ListBuffer }
 import scala.language.implicitConversions
+import scala.reflect.ClassTag
+import scala.xml.{ Node, NodeBuffer, NodeSeq, PCData }
 
 object RenderContext {
 

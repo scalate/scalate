@@ -17,10 +17,12 @@
  */
 package org.fusesource.scalate.jade
 
-import org.fusesource.scalate.scaml._
-import util.parsing.input.CharSequenceReader
 import java.io.File
+
+import org.fusesource.scalate.scaml._
 import org.fusesource.scalate.util.IOUtil
+
+import scala.util.parsing.input.CharSequenceReader
 
 /**
  * <p>

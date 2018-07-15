@@ -18,9 +18,9 @@
 package org.fusesource.scalate.servlet
 
 import javax.servlet._
-import http.{ HttpServletRequestWrapper, HttpServletResponse, HttpServletRequest }
+import javax.servlet.http.{ HttpServletRequest, HttpServletRequestWrapper, HttpServletResponse }
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.util.{ Log }
+import org.fusesource.scalate.util.Log
 
 object TemplateEngineFilter extends Log
 

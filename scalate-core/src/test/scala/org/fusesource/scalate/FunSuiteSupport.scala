@@ -17,13 +17,15 @@
  */
 package org.fusesource.scalate
 
+import java.io.File
+
+import org.fusesource.scalate.scuery.XmlHelper._
+import org.fusesource.scalate.util.Log
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap, FunSuite }
-import java.io.File
-import scuery.XmlHelper._
-import org.fusesource.scalate.util.Log
-import xml.NodeSeq
+import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap, FunSuite }
+
+import scala.xml.NodeSeq
 
 /**
  * @version $Revision : 1.1 $

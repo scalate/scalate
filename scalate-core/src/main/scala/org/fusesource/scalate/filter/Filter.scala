@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package filter
 
-import servlet.ServletRenderContext
+import org.fusesource.scalate.servlet.ServletRenderContext
 
 /**
  * Represents a request to filter content.

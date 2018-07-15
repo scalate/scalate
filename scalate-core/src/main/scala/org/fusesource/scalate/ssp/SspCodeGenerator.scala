@@ -18,9 +18,9 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate._
-import collection.mutable.Stack
-import support.{ Text, Code, AbstractCodeGenerator }
+import org.fusesource.scalate.support.{ AbstractCodeGenerator, Code, Text }
 
+import scala.collection.mutable.Stack
 import scala.language.implicitConversions
 
 class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {

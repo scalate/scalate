@@ -17,8 +17,8 @@
  */
 package scalate
 
-import org.fusesource.scalate.{ TemplateEngine, MockBootstrap }
 import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.{ MockBootstrap, TemplateEngine }
 
 /**
  * A simple boot strap mechanism to act as a simple place to host initialisation code which can then be shared across

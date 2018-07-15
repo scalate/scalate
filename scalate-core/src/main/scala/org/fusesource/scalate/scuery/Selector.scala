@@ -17,8 +17,9 @@
  */
 package org.fusesource.scalate.scuery
 
-import support._
-import xml.{ Elem, Node, NodeSeq }
+import org.fusesource.scalate.scuery.support._
+
+import scala.xml.{ Elem, Node, NodeSeq }
 
 /**
  * Implements CSS style selectors

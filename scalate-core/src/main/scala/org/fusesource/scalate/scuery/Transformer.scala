@@ -18,11 +18,11 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.scuery.support._
-import collection.mutable.{ HashMap }
-import xml.{ Elem, Node, NodeSeq, Text }
-import XmlHelper._
+import org.fusesource.scalate.scuery.XmlHelper._
 
+import scala.collection.mutable.HashMap
 import scala.language.implicitConversions
+import scala.xml.{ Elem, Node, NodeSeq, Text }
 
 /**
  * Allows simple XML replacement rules to be registered

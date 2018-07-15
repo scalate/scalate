@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate
 
-import scala.util.parsing.input.Positional
-import ssp.SspParser
+import org.fusesource.scalate.ssp.SspParser
+
 import scala.reflect.ClassTag
+import scala.util.parsing.input.Positional
 
 /**
  * Describes a variable binding that a Scalate template defines.

@@ -17,9 +17,11 @@
  */
 package org.fusesource.scalate
 
-import collection.immutable.Map
 import java.io.File
+
 import org.scalatest.ConfigMap
+
+import scala.collection.immutable.Map
 
 class InjectAttributeTest extends TemplateTestSupport {
 

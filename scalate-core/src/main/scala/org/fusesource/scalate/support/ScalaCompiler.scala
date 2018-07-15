@@ -17,16 +17,16 @@
  */
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate._
-import scala.tools.nsc.Global
-import scala.tools.nsc.Settings
-import tools.nsc.reporters.{ Reporter, ConsoleReporter }
-import scala.reflect.internal.util.{ Position, NoPosition, FakePos }
-import scala.runtime.ByteRef
-import scala.util.parsing.input.OffsetPosition
-import java.io.{ PrintWriter, StringWriter, File }
+import java.io.{ File, PrintWriter, StringWriter }
 
-import util.{ Log, ClassPathBuilder }
+import org.fusesource.scalate._
+import org.fusesource.scalate.util.{ ClassPathBuilder, Log }
+
+import scala.reflect.internal.util.{ FakePos, NoPosition, Position }
+import scala.runtime.ByteRef
+import scala.tools.nsc.{ Global, Settings }
+import scala.tools.nsc.reporters.{ ConsoleReporter, Reporter }
+import scala.util.parsing.input.OffsetPosition
 
 object ScalaCompiler extends Log {
 
@@ -40,7 +40,7 @@ object ScalaCompiler extends Log {
 
 }
 
-import ScalaCompiler._
+import org.fusesource.scalate.support.ScalaCompiler._
 
 class ScalaCompiler(
   bytecodeDirectory: File,

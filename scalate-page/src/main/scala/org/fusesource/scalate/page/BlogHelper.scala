@@ -37,7 +37,7 @@ object BlogHelper {
       .getOrElse(throw new Exception("index page not found."))
       .getParentFile
 
-    println("Using dir: " + dir + " at request path: " + base)
+    log.info("Using dir: " + dir + " at request path: " + base)
 
     val index = new File(dir, "index.page")
     dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page"))

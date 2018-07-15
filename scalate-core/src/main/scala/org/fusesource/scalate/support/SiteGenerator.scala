@@ -17,17 +17,17 @@
  */
 package org.fusesource.scalate.support
 
-import collection.JavaConverters._
-
+import java.io.{ File, PrintWriter }
 import java.{ util => ju }
-import java.io.{ PrintWriter, File }
 
-import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate._
+import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.util._
 
+import scala.collection.JavaConverters._
+
 object SiteGenerator extends Log
-import SiteGenerator._
+import org.fusesource.scalate.support.SiteGenerator._
 
 import scala.language.reflectiveCalls
 

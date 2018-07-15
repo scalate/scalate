@@ -18,8 +18,9 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate.InvalidSyntaxException
-import util.parsing.input.{ Positional, CharSequenceReader }
-import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
+import org.fusesource.scalate.support.{ ScalaParseSupport, Text }
+
+import scala.util.parsing.input.{ CharSequenceReader, Positional }
 
 sealed abstract class PageFragment extends Positional {
   def tokenName = toString

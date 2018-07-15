@@ -17,12 +17,10 @@
  */
 package org.fusesource.scalate.servlet
 
+import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse }
+import javax.servlet.{ ServletConfig, ServletContext }
 import org.fusesource.scalate.TemplateEngine
-import javax.servlet.http.HttpServlet
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
-import javax.servlet.{ ServletContext, ServletConfig }
-import org.fusesource.scalate.util.{ Log }
+import org.fusesource.scalate.util.Log
 
 object TemplateEngineServlet extends Log {
 

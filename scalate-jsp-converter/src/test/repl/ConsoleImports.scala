@@ -17,7 +17,6 @@
  */
 // console script to auto import some useful stuff when we start the console
 
-import java.io._
 import org.fusesource.scalate.converter._
 
 val tool = new JspConvert

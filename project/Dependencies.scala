@@ -1,4 +1,5 @@
-import sbt._, Keys._
+import sbt.Keys._
+import sbt._
 
 /** Build dependency and repository definitions. */
 object Dependencies {

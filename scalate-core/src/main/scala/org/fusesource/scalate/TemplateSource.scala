@@ -18,12 +18,14 @@
 package org.fusesource.scalate
 
 import java.io.File
-import support._
-import util._
-import util.Strings.isEmpty
-import io.Source
 import java.net.{ URI, URL }
 import java.util.regex.Pattern
+
+import org.fusesource.scalate.support._
+import org.fusesource.scalate.util.Strings.isEmpty
+import org.fusesource.scalate.util._
+
+import scala.io.Source
 
 /**
  * Represents the source of a template

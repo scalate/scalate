@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.{ TemplateSource, Binding, TemplateEngine }
+import org.fusesource.scalate.{ Binding, TemplateEngine, TemplateSource }
 
 trait CodeGenerator {
 

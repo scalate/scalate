@@ -17,15 +17,17 @@
  */
 package org.fusesource.scalate.servlet
 
+import java.io._
+import java.util.Locale
+
 import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.http._
-import java.util.{ Locale }
+import javax.servlet.{ ServletContext, ServletException, ServletOutputStream }
+import org.fusesource.scalate.{ AttributeMap, DefaultRenderContext, RenderContext, TemplateEngine }
+
 import scala.collection.JavaConverters._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
-import org.fusesource.scalate.{ RenderContext, AttributeMap, DefaultRenderContext, TemplateEngine }
-import java.io._
-import javax.servlet.{ ServletOutputStream, ServletContext, ServletException }
 
 /**
  * Easy access to servlet request state.

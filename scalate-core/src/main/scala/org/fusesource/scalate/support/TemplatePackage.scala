@@ -18,8 +18,8 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Strings.isEmpty
+import org.fusesource.scalate.util.{ ClassLoaders, Log }
 import org.fusesource.scalate.{ Binding, TemplateSource }
-import org.fusesource.scalate.util.{ Log, ClassLoaders }
 
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates

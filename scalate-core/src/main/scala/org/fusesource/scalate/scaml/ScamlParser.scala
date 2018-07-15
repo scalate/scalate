@@ -17,16 +17,17 @@
  */
 package org.fusesource.scalate.scaml
 
-import annotation.tailrec
-import _root_.org.fusesource.scalate.{ InvalidSyntaxException }
-import scala.util.parsing.combinator._
-import util.parsing.input.{ Positional, CharSequenceReader }
-import scala.None
-import collection.mutable.ListBuffer
-import java.util.regex.Pattern
 import java.io.File
+import java.util.regex.Pattern
+
+import _root_.org.fusesource.scalate.InvalidSyntaxException
+import org.fusesource.scalate.support.{ ScalaParseSupport, Text }
 import org.fusesource.scalate.util.IOUtil
-import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
+
+import scala.annotation.tailrec
+import scala.collection.mutable.ListBuffer
+import scala.util.parsing.combinator._
+import scala.util.parsing.input.{ CharSequenceReader, Positional }
 
 /**
  * Base class for parsers which use indentation to define
@@ -152,7 +153,7 @@ case class FilterStatement(flags: List[Text], filters: List[Text], body: List[Te
 case class Attribute(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean) extends Statement
 case class Doctype(line: List[Text]) extends Statement
 
-import ScamlParser._
+import org.fusesource.scalate.scaml.ScamlParser._
 
 /**
  * Parses a HAML/Scala based document.  Original inspired by the ruby version at http://haml-lang.com/

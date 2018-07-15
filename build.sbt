@@ -1,5 +1,5 @@
-import ScalateBuild._
 import Dependencies._
+import ScalateBuild._
 
 name := "Scalate"
 organization := "org.scalatra.scalate"

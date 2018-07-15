@@ -17,27 +17,27 @@
  */
 package org.fusesource.scalate
 
-import filter._
-import layout.{ NullLayoutStrategy, LayoutStrategy }
-import mustache.MustacheCodeGenerator
-import scaml.ScamlCodeGenerator
-import ssp.SspCodeGenerator
-import jade.JadeCodeGenerator
-import support._
-import util._
-
-import scala.util.parsing.input.{ OffsetPosition, Position }
-import scala.collection.mutable.HashMap
-import scala.collection.immutable.TreeMap
-import scala.util.control.Exception
-import scala.compat.Platform
+import java.io.{ File, PrintWriter, StringWriter }
 import java.net.URLClassLoader
-import java.io.{ StringWriter, PrintWriter, File }
-import xml.NodeSeq
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 
+import org.fusesource.scalate.filter._
+import org.fusesource.scalate.jade.JadeCodeGenerator
+import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
+import org.fusesource.scalate.mustache.MustacheCodeGenerator
+import org.fusesource.scalate.scaml.ScamlCodeGenerator
+import org.fusesource.scalate.ssp.SspCodeGenerator
+import org.fusesource.scalate.support._
+import org.fusesource.scalate.util._
+
+import scala.collection.immutable.TreeMap
+import scala.collection.mutable.HashMap
+import scala.compat.Platform
 import scala.language.existentials
+import scala.util.control.Exception
+import scala.util.parsing.input.{ OffsetPosition, Position }
+import scala.xml.NodeSeq
 
 object TemplateEngine {
 
