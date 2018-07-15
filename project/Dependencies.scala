@@ -9,7 +9,7 @@ object Dependencies {
     "FuseSource Maven" at "http://repo.fusesource.com/nexus/content/groups/public/"
   )
 
-  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.0-RC1"
+  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
   val camelScala = "org.apache.camel" % "camel-scala" % "2.21.0"
   val camelSpring = camelScala.withName("camel-spring")
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
@@ -43,7 +43,7 @@ object Dependencies {
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.25"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.0.4.RELEASE"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.0.7.RELEASE"
   val scalaParserCombinators = (org: String) => s"$org.modules" %% "scala-parser-combinators" % "1.1.1"
   val scalaXml = (org: String) => s"$org.modules" %% "scala-xml" % "1.1.0"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _

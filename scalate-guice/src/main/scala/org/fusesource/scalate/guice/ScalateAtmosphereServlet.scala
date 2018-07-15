@@ -5,6 +5,8 @@ import com.google.inject.{ Inject, Injector, Singleton }
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import org.atmosphere.cpr.AtmosphereServlet
 import org.atmosphere.handler.ReflectorServletProcessor
+import org.atmosphere.cpr.FrameworkConfig.JERSEY_BROADCASTER
+import org.atmosphere.cpr.ApplicationConfig.PROPERTY_SERVLET_MAPPING
 
 /**
  * Atmosphere servlet configured by Scalate/Guice
