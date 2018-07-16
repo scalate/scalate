@@ -26,7 +26,7 @@ class CssScanner extends RegexParsers {
   override def skipWhitespace = false
 
   //   ident     [-]?{nmstart}{nmchar}*
-  def IDENT = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("") }
+  private def ident = (opt("-") ~ nmstart ~ rep(nmchar)) ^^ { case p ~ n ~ l => p.mkString("") + n + l.mkString("") }
 
   // name      {nmchar}+
   private def name = rep1(nmchar)
@@ -84,6 +84,8 @@ class CssScanner extends RegexParsers {
   val NUMBER = num.r
   val INTEGER = """[0-9]""".r
 
+  def IDENT = ident
+  def HASH = ("#" ~> name)
   def DIMENSION = NUMBER ~ IDENT
 
   // D         d|\\0{0,4}(44|64)(\r\n|[ \t\r\n\f])?
@@ -208,7 +210,7 @@ class CssParser extends CssScanner {
 
   def className = ("." ~> IDENT) ^^ { ClassSelector(_) }
 
-  def hash = ("#" ~> IDENT) ^^ { IdSelector(_) }
+  def hash = HASH ^^ { h => IdSelector(h.mkString) }
 
   //  attrib
   //    : '[' S* [ namespace_prefix ]? IDENT S*
