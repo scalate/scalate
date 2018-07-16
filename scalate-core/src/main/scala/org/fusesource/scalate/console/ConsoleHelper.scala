@@ -18,17 +18,19 @@
 package org.fusesource.scalate.console
 
 import _root_.java.util.regex.Pattern
+import java.io.File
+
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
-import java.io.File
+import org.fusesource.scalate.util.{ Log, SourceMap, SourceMapInstaller }
+
+import scala.collection.JavaConverters._
+import scala.collection.immutable.SortedMap
+import scala.collection.mutable.{ ArrayBuffer, ListBuffer }
 import scala.io.Source
-import collection.JavaConverters._
-import collection.immutable.SortedMap
-import collection.mutable.{ ArrayBuffer, ListBuffer }
-import util.parsing.input.{ Position, OffsetPosition }
-import xml.NodeSeq
-import org.fusesource.scalate.util.{ Log, SourceMapInstaller, SourceMap }
+import scala.util.parsing.input.{ OffsetPosition, Position }
+import scala.xml.NodeSeq
 
 case class SourceLine(
   line: Int,

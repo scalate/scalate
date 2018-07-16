@@ -17,10 +17,12 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.javax.servlet.ServletContext
-import _root_.org.fusesource.scalate.servlet.ServletResourceLoader
-import _root_.org.fusesource.scalate.RenderContext
 import java.io.File
+
+import _root_.javax.servlet.ServletContext
+import _root_.org.fusesource.scalate.RenderContext
+import _root_.org.fusesource.scalate.servlet.ServletResourceLoader
+
 import scala.xml.NodeSeq
 
 /**

@@ -25,7 +25,7 @@ import org.fusesource.scalate.util.Resource._
 import org.fusesource.scalate.util.{ FileResourceLoader, Log, ResourceLoader, ResourceNotFoundException }
 
 object ServletResourceLoader extends Log {
-  def apply(context: ServletContext) = new ServletResourceLoader(context)
+  def apply(context: ServletContext) = new ServletResourceLoader(context, new FileResourceLoader())
 }
 import org.fusesource.scalate.servlet.ServletResourceLoader._
 
@@ -36,7 +36,7 @@ import org.fusesource.scalate.servlet.ServletResourceLoader._
  */
 class ServletResourceLoader(
   context: ServletContext,
-  delegate: ResourceLoader = FileResourceLoader()) extends ResourceLoader {
+  delegate: ResourceLoader) extends ResourceLoader {
 
   override def resource(uri: String) = {
     val file = realFile(uri)

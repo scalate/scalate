@@ -100,7 +100,7 @@ class ServletTemplateEngine(
   bindings = List(Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true))
   classpath = buildClassPath
   classLoader = Thread.currentThread.getContextClassLoader
-  resourceLoader = new ServletResourceLoader(config.getServletContext)
+  resourceLoader = new ServletResourceLoader(config.getServletContext, new FileResourceLoader())
   ServletTemplateEngine.setLayoutStrategy(this)
   bootInjections = List(this, config.getServletContext)
 

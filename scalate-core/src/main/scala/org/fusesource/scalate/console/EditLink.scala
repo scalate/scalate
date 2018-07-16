@@ -17,9 +17,11 @@
  */
 package org.fusesource.scalate.console
 
-import org.fusesource.scalate.RenderContext.captureNodeSeq
 import java.io.File
-import xml.NodeSeq
+
+import org.fusesource.scalate.RenderContext.captureNodeSeq
+
+import scala.xml.NodeSeq
 
 /**
  * @version $Revision : 1.1 $
