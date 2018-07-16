@@ -27,6 +27,7 @@ import scala.xml.NodeSeq
  * @version $Revision : 1.1 $
  */
 trait ConsoleSnippets {
+
   def servletContext: ServletContext
 
   def renderContext: RenderContext

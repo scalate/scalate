@@ -26,6 +26,7 @@ import xml.NodeSeq
  */
 
 object EditLink {
+
   var idePluginPort = 51235
 
   def editLink(file: String)(body: => Unit): NodeSeq = editLink(file, None, None)(body)
