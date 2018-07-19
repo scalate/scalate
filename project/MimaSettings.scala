@@ -18,8 +18,8 @@ object MimaSettings {
   //
 
   // NOTE: will start validating bin-compatibility since 1.9
-  // val previousVersions = Set(0).map(patch => s"1.9.$patch")
-  val previousVersions = Set.empty[String]
+  val previousVersions = Set(0).map(patch => s"1.9.$patch")
+  // val previousVersions = Set.empty[String]
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
     mimaPreviousArtifacts := {

@@ -7,9 +7,9 @@ import MimaSettings.mimaSettings
 // Scalate project guarantees bin-compatibities for only core, util
 // -----------------------------------------------------------------------------------
 
-name := "Scalate"
+name := "scalate"
 organization := "org.scalatra.scalate"
-version := "1.9.0"
+version := "1.9.1-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.12.6", "2.11.12", "2.13.0-M4")
 javacOptions ++= Seq("-source", "1.8")
@@ -28,28 +28,26 @@ notPublished
 
 lazy val scalateUtil = scalateProject("util")
   .scalateSettings
-  .osgiSettings
   .published
   .settings(
+    mimaSettings,
     libraryDependencies ++= Seq(
       junit % Test,
       logbackClassic % Test,
       slf4jApi
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    description := "Scalate Utilities.",
     parallelExecution in Test := false,
     addScalaModules(11, scalaXml, scalaParserCombinators),
     addScalaModules(12, scalaXml, scalaParserCombinators),
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
-  .settings(mimaSettings)
 
 lazy val scalateCore = scalateProject("core")
   .scalateSettings
-  .osgiSettings
   .published
-  .dependsOn(scalateUtil)
   .settings(
+    // TODO: somehow, it doesn't work so far due to misdection ofscalate-util
+    // mimaSettings,
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
       logbackClassic % "runtime,optional",
@@ -59,11 +57,9 @@ lazy val scalateCore = scalateProject("core")
       junit % Test
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    description := "Scalate Core",
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate"),
     unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
-  .settings(mimaSettings)
+  .dependsOn(scalateUtil)
 
 // -----------------------------------------------------------------------------------
 
@@ -145,7 +141,6 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Converter for JSP to SSP",
-    resolvers ++= commonRepositories,
     OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
     buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 

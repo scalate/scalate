@@ -9,6 +9,7 @@ import sbtunidoc.BaseUnidocPlugin.autoImport._
 import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
 import xerial.sbt.Sonatype
 import xerial.sbt.Sonatype.SonatypeKeys
+import Dependencies._
 
 /** Build support settings and functions. */
 object ScalateBuild {
@@ -28,10 +29,15 @@ object ScalateBuild {
     def published = u.settings(publishOpts: _*)
 
     def notPublished = u.settings(ScalateBuild.notPublished: _*)
+
   }
 
-  def scalateProject(id: String, base: Option[File] = None): Project =
-    Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
+  def commonSettings = Seq(
+    resolvers ++= commonRepositories
+  )
+
+  def scalateProject(id: String, base: Option[File] = None) =
+    Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id"))).settings(commonSettings)
 
   def addScalaModules(scalaMajor: Int, modules: (String => ModuleID)*) = libraryDependencies := {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -79,10 +85,8 @@ object ScalateBuild {
     unmanagedSourceDirectories in Compile += {
       val base = baseDirectory.value / "src" / "main"
       CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, v)) if v >= 12 =>
-          base / s"scala-2.12+"
-        case _ =>
-          base / s"scala-2.12-"
+        case Some((2, v)) if v >= 12 => base / s"scala-2.12+"
+        case _ => base / s"scala-2.12-"
       }
     },
     scalacOptions in(Compile, compile) ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
@@ -100,10 +104,8 @@ object ScalateBuild {
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
     publishTo := Some(
-      if (isSnapshot.value)
-        Opts.resolver.sonatypeSnapshots
-      else
-        Opts.resolver.sonatypeStaging
+      if (isSnapshot.value) Opts.resolver.sonatypeSnapshots
+      else Opts.resolver.sonatypeStaging
     ),
     SonatypeKeys.sonatypeProfileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
@@ -149,14 +151,12 @@ object ScalateBuild {
     OsgiKeys.additionalHeaders := Map("-removeheaders" → "Include-Resource,Private-Package")
   )
 
-
   /** Create an OSGi version range for standard Scala / Typesafe versioning
     * schemes that describes binary compatible versions. Copied from Slick Build.scala. */
   private def osgiVersionRange(version: String, requireMicro: Boolean = false): String =
     if (version contains '-') "${@}" // M, RC or SNAPSHOT -> exact version
     else if (requireMicro) "$<range;[===,=+)>" // At least the same micro version
     else "${range;[==,=+)}" // Any binary compatible version
-
 
   def developersPomExtra =
     <developers>
@@ -204,7 +204,6 @@ object ScalateBuild {
         <url>https://github.com/seratch</url>
       </developer>
     </developers>
-
 
   def issuesPomExtra =
     <issueManagement>
