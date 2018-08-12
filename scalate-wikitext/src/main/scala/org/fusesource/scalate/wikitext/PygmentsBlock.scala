@@ -51,12 +51,12 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
   private[this] lazy val _installed: Boolean = {
     try {
       val process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
-      thread("pygmetize err handler") {
+      thread("pygmentize err handler") {
         IOUtil.copy(process.getErrorStream, System.err)
       }
 
       val out = new ByteArrayOutputStream()
-      thread("pygmetize out handler") {
+      thread("pygmentize out handler") {
         IOUtil.copy(process.getInputStream, out)
       }
 
@@ -70,7 +70,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       }
     } catch {
       case e: Exception =>
-        debug(e, "Failed to start pygmetize: " + e)
+        debug(e, "Failed to start pygmentize: " + e)
         false
     }
   }
@@ -196,11 +196,11 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
       val process = Runtime.getRuntime.exec(Array("pygmentize", "-O", options, "-f", "html", "-l", lang))
 
-      thread("pygmetize err handler") {
+      thread("pygmentize err handler") {
         IOUtil.copy(process.getErrorStream, System.err)
       }
 
-      thread("pygmetize in handler") {
+      thread("pygmentize in handler") {
         IOUtil.copy(new ByteArrayInputStream(body.getBytes), process.getOutputStream)
         process.getOutputStream.close
       }
