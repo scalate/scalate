@@ -116,7 +116,7 @@ h1. Snippet with id
   }
 
   if (Pygmentize.isInstalled) {
-    test("snippets macro with pygmetize enabled") {
+    test("snippets macro with pygmentize enabled") {
 
       assertFilter(
         """
