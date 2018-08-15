@@ -48,7 +48,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
   }
 
   // lets calculate once on startup
-  private[this] lazy val _installed: Boolean = {
+  private[this] lazy val _installedVersion: Option[String] = {
     try {
       val process = Runtime.getRuntime.exec(Array("pygmentize", "-V"))
       thread("pygmentize err handler") {
@@ -62,20 +62,29 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
       process.waitFor
       if (process.exitValue != 0) {
-        false
+        None
       } else {
         val output = new String(out.toByteArray).trim
         debug("Pygmentize installed: " + output)
-        true
+        val version = output.split("[ ,]")(2)
+
+        Some(version)
       }
     } catch {
       case e: Exception =>
         debug(e, "Failed to start pygmentize: " + e)
-        false
+        None
     }
   }
 
-  def isInstalled: Boolean = _installed
+  def isInstalled: Boolean = _installedVersion match {
+    case Some(_) => true
+    case None => false
+  }
+
+  def version: String = _installedVersion getOrElse ""
+
+  def majorVersion: Int = version(0).asDigit
 
   def unindent(data: String): String = unindent(data.split("""\r?\n""").toList)
 
