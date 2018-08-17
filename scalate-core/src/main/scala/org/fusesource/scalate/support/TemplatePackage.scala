@@ -53,7 +53,7 @@ object TemplatePackage {
       ClassLoaders.findClass(className) match {
         case Some(clazz) =>
           debug("using Scalate Package class: " + clazz.getName)
-          Some(clazz.newInstance.asInstanceOf[TemplatePackage])
+          Some(clazz.getConstructor().newInstance().asInstanceOf[TemplatePackage])
 
         case _ =>
           if (isEmpty(packageName)) {
