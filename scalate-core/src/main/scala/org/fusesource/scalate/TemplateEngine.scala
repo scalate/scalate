@@ -926,7 +926,7 @@ class TemplateEngine(
           cl.loadClass(className.stripPrefix(packagePrefix).stripPrefix("."))
         }
     }
-    clazz.asInstanceOf[Class[Template]].newInstance
+    clazz.asInstanceOf[Class[Template]].getConstructor().newInstance()
   }
 
   /**

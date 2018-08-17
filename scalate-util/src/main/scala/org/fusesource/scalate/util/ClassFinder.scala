@@ -40,7 +40,7 @@ object ClassFinder {
             try {
               val clazz = cl.loadClass(name)
               try {
-                Some(clazz.newInstance.asInstanceOf[T])
+                Some(clazz.getConstructor().newInstance().asInstanceOf[T])
               } catch {
                 case e: Exception =>
                   // It may be a scala object.. check for a module class
