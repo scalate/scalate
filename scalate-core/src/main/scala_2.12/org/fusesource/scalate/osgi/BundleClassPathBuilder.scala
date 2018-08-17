@@ -63,7 +63,7 @@ object BundleClassPathBuilder {
   }
 
   /**
-   * Create a list of AbstractFile instances, representing the bundle and its wired depedencies
+   * Create a list of AbstractFile instances, representing the bundle and its wired dependencies
    */
   def fromBundle(bundle: Bundle): List[AbstractFile] = {
     require(bundle != null, "Bundle should not be null")

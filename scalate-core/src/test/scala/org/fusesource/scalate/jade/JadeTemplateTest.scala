@@ -969,7 +969,7 @@ ol
   - case e:IllegalStateException =>
     p got the expected error
   - case e:Exception =>
-    p some odd error occured
+    p some odd error occurred
 """, """
 <p>in try</p>
 <p>got the expected error</p>

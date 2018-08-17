@@ -70,11 +70,11 @@ You can append query options to the URI in the following format, {{?option=value
   }
 
   protected def assertOccurrences(text: String, m: String, expected: Int): Unit = {
-    val actual = occurences(text, m)
+    val actual = occurrences(text, m)
     assertEquals("Occurences of '" + m, expected, actual)
   }
 
-  protected def occurences(text: String, m: String) = {
+  protected def occurrences(text: String, m: String) = {
     var count = 0;
     var idx = 0
     while (idx >= 0) {

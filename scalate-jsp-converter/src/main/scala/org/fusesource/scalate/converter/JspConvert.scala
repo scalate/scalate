@@ -34,11 +34,11 @@ class JspConvert extends Runnable with Action {
 
   @option(name = "--extension", description = "Extension for output files")
   var outputExtension = ".ssp"
-  @option(name = "--recursion", description = "The number of directroy levels to recusively scan file input files.")
+  @option(name = "--recursion", description = "The number of directory levels to recusively scan file input files.")
   var recursionDepth = -1
   @option(name = "--jaxrs", description = "If in JAXRS mode we will add the 'it' attribute if a template looks like its a resource template.")
   var jaxrs = false
-  @option(name = "--conciseTemplates", description = "If using JAXRS templates should we put templates in teh same directory as the package (rather than a directory per controller).")
+  @option(name = "--conciseTemplates", description = "If using JAXRS templates should we put templates in the same directory as the package (rather than a directory per controller).")
   var conciseJaxrsTemplates = true
 
   var converter = new JspConverter

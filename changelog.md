@@ -33,7 +33,7 @@
 * Adjusted to scala.tools.nsc.io.AbstractFile API change
 * Fixed "missing parameter type" error.
 * scalate-util module declares packaging type bundle. Update dependency coordinate to match that.
-* Update artifactIDs on website with Scala binary compatability tag.
+* Update artifactIDs on website with Scala binary compatibility tag.
 * Vainly add self to pom.
 * Add pooling for pegdown
 * Add a test for pegdown filtering
@@ -56,7 +56,7 @@
 * Changes to support OSGi with 2.10.0
 * Discarding exception: let all subclasses of Error pass unaffected. When a class is found on the classpath but could not be loaded due to an LinkageError, the developer needs to know about this.
 * Discarding caught exception: let subclasses of Error pass unaffected
-* Rethrowing excpetion: use explicit Throwable type ascription to pacify the compiler
+* Rethrowing exception: use explicit Throwable type ascription to pacify the compiler
 * Exception wrapping: let VirtualMachineError and ThreadDeath pass unaffected
 * Removed redundant try/catch
 * updated mvnplugins to 1.27-SNAPSHOT, awaiting Scala 2.10 compatible release
