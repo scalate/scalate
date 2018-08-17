@@ -98,7 +98,7 @@ class IndentedParser extends RegexParsers() {
       rc |= repN(indent_level, indent_unit)
 
       if (!strict) {
-        // preseve emtpy lines inside filters..
+        // preseve empty lines inside filters..
         rc |= repRange(0, indent_level - 1, indent_unit) ~ guard("""\r?\n""".r ~ current_indent(strict))
       }
 

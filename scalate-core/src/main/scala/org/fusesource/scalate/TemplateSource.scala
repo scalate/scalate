@@ -43,7 +43,7 @@ trait TemplateSource extends Resource {
    * Returns the type of the template (ssp, scaml, mustache etc).
    *
    * By default the extension is extracted from the uri but custom implementations
-   * can override this so that a uri could be "foo.html" but the extension overriden to be "mustache"
+   * can override this so that a uri could be "foo.html" but the extension overridden to be "mustache"
    * for example
    */
   def templateType: Option[String] = {

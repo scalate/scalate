@@ -57,7 +57,7 @@ object Selector {
   }
 
   /**
-   * Returns a selector which returns the childen of the given selector
+   * Returns a selector which returns the children of the given selector
    */
   def children(selector: Selector) = ChildrenSelector(selector)
 
