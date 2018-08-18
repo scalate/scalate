@@ -65,7 +65,7 @@ object Objects {
 
     def create(c: Constructor[_], args: Array[AnyRef]): T = {
       val answer = if (args.isEmpty) {
-        clazz.newInstance
+        clazz.getConstructor().newInstance()
       } else {
         debug("About to call constructor: %S on %s with args: %s", c, clazz.getName, args.toList)
         c.newInstance(args: _*)
