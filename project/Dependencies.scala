@@ -4,12 +4,6 @@ import sbt._
 /** Build dependency and repository definitions. */
 object Dependencies {
 
-  val commonRepositories = Seq(
-    "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases",
-    // Scalate Tool + JSC Converter depend on custom Fuse Karaf version
-    "FuseSource Maven" at "http://repo.fusesource.com/nexus/content/groups/public/"
-  )
-
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
   val camelScala = "org.apache.camel" % "camel-scala" % "2.22.0"
   val camelSpring = camelScala.withName("camel-spring")

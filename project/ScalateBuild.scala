@@ -32,12 +32,8 @@ object ScalateBuild {
 
   }
 
-  def commonSettings = Seq(
-    resolvers ++= commonRepositories
-  )
-
   def scalateProject(id: String, base: Option[File] = None) =
-    Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id"))).settings(commonSettings)
+    Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
 
   def addScalaModules(scalaMajor: Int, modules: (String => ModuleID)*) = libraryDependencies := {
     CrossVersion.partialVersion(scalaVersion.value) match {
