@@ -64,7 +64,7 @@ class ScalaCompiler(
 
     override def printMessage(posIn: Position, msg: String): Unit = {
       val pos = if (posIn eq null) NoPosition
-      else if (posIn.isDefined) posIn.inUltimateSource(posIn.source)
+      else if (posIn.isDefined) posIn.finalPosition
       else posIn
       pos match {
         case FakePos(fmsg) => super.printMessage(posIn, msg);
