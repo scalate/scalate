@@ -21,14 +21,14 @@ import java.io.File
 import java.{ lang => jl }
 import org.fusesource.scalate.util.IOUtil._
 
-import org.apache.felix.gogo.commands.{ Action, Option => option, Argument => argument, Command => command }
 import org.apache.felix.service.command.CommandSession
+import org.apache.karaf.shell.api.action.{ Option => option, Argument => argument, Command => command }
 
 /**
  * Converts JSP files into SSP files
  */
 @command(scope = "scalate", name = "jsp2ssp", description = "Converts JSP files to SSP files")
-class JspConvert extends Runnable with Action {
+class JspConvert extends Runnable {
   @argument(index = 0, name = "dir", description = "Root of the directory containing the JSP files.")
   var dir: File = new File(".")
 
