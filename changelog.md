@@ -1,6 +1,64 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.9.0](https://github.com/scalate/scalate/compare/scalate-project-1.8.0...scalate-project-1.9.0), released 2018-07-19
+
+* Move jaxrs and jersey related classes to separate modules
+* Fix build for jaxrs and jersey modules
+* Remove Scalate Tool (no longer maintained)
+* Work needed for the migration from the deprecated sbt.Plugin
+* Remove unused imports
+* Fix the code which unnecessarily uses var instead of val
+* Remvoe unused variables
+* Migrate to sbt 1.x
+* Bump dependencies
+* Fix "Adapting argument list" warnings
+* Bump scalamd to 1.7.1
+* Use classpath#distinc instead of Sequences.removeDuplicates
+* Use scala.collection.Seq instead of scala.Seq
+* Replace TraversableForwarder usages because the module will be removed in Scala 2.13
+* Remove procedure syntax usages
+* Remove unused private fields
+* Remove unnecessary "return"
+* Use "HashMap.empty" instead of "new HashMap"
+* Fix JavaConverters usages which will be removed in Scala 2.13
+* Many necessary changes for Scala 2.13 adoption (thanks to Kenji Yoshida)
+* Bump scala-parser-combinators to 1.1.1
+* Remove unused local default argument
+* Upgrade JRuby version to the latest
+* Add MiMa detection policies
+
+[Scalate 1.8.0](https://github.com/scalate/scalate/compare/scalate-project_2.11-1.7.1...scalate-project-1.8.0), released 2016-11-05
+
+* Fix BundleClassPathBuilder broken switching from 2.11 to 2.10 base branch
+* Provide 'generate-scala' and 'generate-website' tool commands
+* Enable Travis build
+* Add sbt-scalariform to sbt settings + Apply scalariform without manual modifications
+* Fix most of the existing warnings on source code
+* Enable to compile for Scala 2.12.0
+* Bump dependencies
+
+[Scalate 1.7.1](https://github.com/scalate/scalate/compare/scalate-project_2.11-1.7.0...scalate-project_2.11-1.7.1), released 2015-03-16
+
+* Update of documentation contribution page (site.page)
+* Link fixes and updated comments in the development and build pages
+* Edit the User Guide documentation to clarify a few items
+* Grammar fix - subject-verb agreement
+* Add thread-safe RW access of ObjectIntrospector
+* Remove odd maybeCache
+
+[Scalate 1.7.0](https://github.com/scalate/scalate/compare/scalate-project_2.10-1.6.1...scalate-project_2.11-1.7.0), released 2014-05-03
+
+* Fixed distro and tool for 2.10
+* Fix an issue where Spring MVC does not work when there is no ServletConfig
+* Replace Rhino 1.7R2 with RhinoCoffeeScript
+* Fix the problem a SourceMap is not correctly generated when a compiled .scala has large string literal(> 32276)
+* Upgrade to lesscss 1.3.3
+* Enable server side includes in less processing, by providing a lesscss ResourceLoader
+* Enable server side includes into less snippets embedded in HTML
+* Use RenderContext instead of DefaultRenderContext
+* Add the scala-parser-combinators module
+
 [Scalate 1.6.1](http://scalate.fusesource.org/blog/releases/release-1.6.1.html), released 2012-12-29
 
 * Make sure Java 1.6 is targeted (1.6 release only worked with 1.7)
