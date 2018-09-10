@@ -129,7 +129,8 @@ lazy val scalateCore = scalateProject("core")
       osgiCore % "provided,optional",
       rhinoCoffeeScript % Optional,
       scalamd % Optional,
-      junit % Test
+      junit % Test,
+      sprayJson % Test
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),

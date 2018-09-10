@@ -21,6 +21,8 @@ import java.io.File
 import util.parsing.json.JSON
 import org.fusesource.scalate.util.IOUtil
 
+import spray.json._
+
 /**
  * Runs the system tests from the mustache.js distro
  */
@@ -42,19 +44,30 @@ class MustacheJSONTest extends MustacheTestSupport {
       // lets trim the 'var x = ' part to make valid json
       val idx = jText.indexOf("=")
       val jsonText = if (idx >= 0) jText.substring(idx + 1) else jText
-      JSON.parseFull(jsonText) match {
-        case Some(json) =>
-          debug("Parsed json: %s", json)
+      val json = try {
+        JsonParser(jsonText)
+      } catch {
+        case _: Throwable => fail("Could not parse JSON text - strings maybe need quoting?: " + jsonText)
+      }
 
-          json match {
-            case attributes: Map[_, _] =>
-              assertMustacheTest(name, attributes.asInstanceOf[Map[String, Any]])
-            case v =>
-              fail("Cannot process JSON type: " + v)
-          }
-        case _ =>
-          fail("Could not parse JSON text - strings maybe need quoting?: " + jsonText)
+      debug("Parsed json: %s", json)
+
+      convertToAny(json) match {
+        case attributes: Map[_, _] => assertMustacheTest(name, attributes.asInstanceOf[Map[String, Any]])
+        case v => fail("Cannot process JSON type: " + v)
       }
     }
+  }
+
+  // mustache must pass the element type as Any (Map[String, Any] or List[Any]),
+  // it converts all elements.
+  private def convertToAny(j: JsValue): Any = j match {
+    case JsObject(f) => f.map { case (k, v) => (k -> convertToAny(v)) }
+    case JsArray(e) => e.map { convertToAny(_) }
+    case JsString(v) => v
+    case JsNumber(v) => v
+    case JsTrue => true
+    case JsFalse => false
+    case JsNull => null
   }
 }
