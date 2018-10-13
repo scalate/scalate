@@ -48,15 +48,27 @@ class MyBean {
 
 class IntrospectorTest extends FunSuiteSupport {
 
+  lazy val isScala_2_13 = scala.util.Properties.versionNumberString.startsWith("2.13")
+
   test("product introspector") {
     val introspector = Introspector(classOf[MyProduct])
     assertResult("myProduct") { introspector.typeStyleName }
 
     val properties = introspector.properties.sortBy(_.name)
-    assertProperties(properties, 2)
-
-    assertProperty(properties(0), "age", "age", classOf[Int])
-    assertProperty(properties(1), "name", "name", classOf[String])
+    if (isScala_2_13) {
+      // Since Scala 2.13.0-M5, productElementNames has been appended
+      // 0 = {MethodProperty@2349} "MethodProperty(age: int)"
+      // 1 = {MethodProperty@2350} "MethodProperty(name: java.lang.String)"
+      // 2 = {MethodProperty@2351} "MethodProperty(productElementNames: scala.collection.Iterator)"
+      assertProperties(properties, 3)
+      assertProperty(properties(0), "age", "age", classOf[Int])
+      assertProperty(properties(1), "name", "name", classOf[String])
+      assertProperty(properties(2), "productElementNames", "productElementNames", classOf[Iterator[_]])
+    } else {
+      assertProperties(properties, 2)
+      assertProperty(properties(0), "age", "age", classOf[Int])
+      assertProperty(properties(1), "name", "name", classOf[String])
+    }
   }
 
   test("bean introspector") {

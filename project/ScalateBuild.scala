@@ -90,7 +90,15 @@ object ScalateBuild {
   )
 
   private def testOpts = Seq(
+    // NOTE:
+    // Scala 2.13.0-M5 + ScalaTest shows many noisy messages
+    // "Reporter completed abruptly with an exception after receiving event" ...
+    //
+    // Maybe, similar to https://github.com/scalatest/scalatest/issues/556
+    // According to the GitHub issue, `fork in Test := false` is a known workaround for the issue.
+    // However, it doesn't work for Scalate project. If we set it, a portion of tests fail.
     fork in Test := true,
+
     baseDirectory in Test := baseDirectory.value
   )
 

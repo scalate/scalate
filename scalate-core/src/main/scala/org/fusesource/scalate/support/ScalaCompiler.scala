@@ -62,19 +62,33 @@ class ScalaCompiler(
       super.reset()
     }
 
-    override def printMessage(posIn: Position, msg: String): Unit = {
+    override def display(posIn: Position, msg: String, severity: Severity): Unit = {
       val pos = if (posIn eq null) NoPosition
       else if (posIn.isDefined) posIn.finalPosition
       else posIn
       pos match {
-        case FakePos(fmsg) => super.printMessage(posIn, msg);
-        case NoPosition => super.printMessage(posIn, msg);
+        case FakePos(_) => super.display(posIn, msg, severity)
+        case NoPosition => super.display(posIn, msg, severity)
         case _ =>
+          // Adding the detected compilation error
           compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point))
-          super.printMessage(posIn, msg);
-      }
 
+          super.display(posIn, msg, severity)
+      }
     }
+
+    def printSummary(): Unit = {
+      import reflect.internal.util.StringOps.{ countElementsAsString => countAs }
+      def label(severity: Severity): String = severity match {
+        case ERROR => "error"
+        case WARNING => "warning"
+        case INFO => ""
+      }
+      for (k <- List(WARNING, ERROR) if k.count > 0) {
+        display(NoPosition, s"${countAs(k.count, label(k))} found", k)
+      }
+    }
+
   }
 
   private[this] val reporter = new LoggingReporter
