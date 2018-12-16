@@ -2,14 +2,14 @@ language: scala
 sudo: false
 scala:
   - 2.11.12
-  - 2.12.7
+  - 2.12.8
   - 2.13.0-M5
 jdk:
   - oraclejdk8
 matrix:
   include:
   - jdk: openjdk11
-    scala: 2.12.7
+    scala: 2.12.8
 install:
   - sudo apt-get --yes install python-pygments
 script:
