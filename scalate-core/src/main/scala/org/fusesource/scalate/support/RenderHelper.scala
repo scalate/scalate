@@ -68,16 +68,16 @@ object RenderHelper {
     text.foldLeft(new StringBuffer)((acc, ch) => sanitize(ch, acc)).toString
 
   private def sanitize(ch: Char, buffer: StringBuffer): StringBuffer = {
-    buffer.append(ch match {
-      case '"' => { "&quot;" }
-      case '&' => { "&amp;" }
-      case '<' => { "&lt;" }
-      case '>' => { "&gt;" }
+    ch match {
+      case '"' => buffer.append("&quot;")
+      case '&' => buffer.append("&amp;")
+      case '<' => buffer.append("&lt;")
+      case '>' => buffer.append("&gt;")
       // Not sure if there are other chars the need sanitization.. but if we do find
       // some, then the following might work:
-      //    case xxx   => { "&#x" + ch.toInt.toHexString + ";" }
-      case _ => ch
-    })
+      //    case xxx   => buffer.append( "&#x" + ch.toInt.toHexString + ";" )
+      case _ => buffer.append(ch)
+    }
   }
 
   def attributes(context: RenderContext, entries: List[(Any, Any)]): Unit = {
