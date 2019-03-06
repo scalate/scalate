@@ -10,11 +10,12 @@ import com.typesafe.tools.mima.core._
 
 name := "scalate"
 organization := "org.scalatra.scalate"
-version := "1.9.1"
+version := "1.9.2-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
 crossScalaVersions := Seq("2.13.0-M5", "2.12.8", "2.11.12")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging"
 startYear := Some(2010)
 licenses += "The Apache Software License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(
