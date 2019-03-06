@@ -1,6 +1,19 @@
 ![Scalate][logo]
 ===============================
 
+[Scalate 1.9.1](https://github.com/scalate/scalate/compare/scalate-project-1.9.0...scalate-project-1.9.1), released 2019-03-06
+
+* 73003700 Use StringBuffer.append(char) instead of StringBuffer.append(Object) for regular characters. Avoid Char boxing and Character.toString calls.
+* 38a92d89 Support Scala 2.13.0-M5
+* 22a49cac Removed unused repositories
+* 2bd5ab63 org.apache.felix.gogo.commands* are deprecated
+* 71c208de method inUltimateSource is deprecated
+* 4160f2d7 Class#newInstance is deprecated since Java9
+* 424c0212 Class#newInstance is deprecated since Java9
+* a318a00d Fix typos and misspellings #185
+* c7e0ad44 Fixed test code for both pygmentize 1.6 and 2.2
+* a1764797 enabled pygmentize's test on Travis-CI
+
 [Scalate 1.9.0](https://github.com/scalate/scalate/compare/scalate-project-1.8.0...scalate-project-1.9.0), released 2018-07-19
 
 * Move jaxrs and jersey related classes to separate modules
