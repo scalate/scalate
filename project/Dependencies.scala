@@ -5,10 +5,10 @@ import sbt._
 object Dependencies {
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
-  val camelScala = "org.apache.camel" % "camel-scala" % "2.22.3"
+  val camelScala = "org.apache.camel" % "camel-scala" % "2.23.1"
   val camelSpring = camelScala.withName("camel-spring")
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
-  val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.0"
+  val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.1"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
@@ -22,7 +22,7 @@ object Dependencies {
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.6.0"
   val junit = "junit" % "junit" % "4.12"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.2.3"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.2.4"
   // TODO: upgrade to 1.5.x
   val lessCssEngine = "com.asual.lesscss" % "lesscss-engine" % "1.4.2"
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
@@ -39,7 +39,7 @@ object Dependencies {
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.26"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.0.12.RELEASE"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.1.5.RELEASE"
   val scalaParserCombinators = (org: String) => s"$org.modules" %% "scala-parser-combinators" % "1.1.1"
   val scalaXml = (org: String) => s"$org.modules" %% "scala-xml" % "1.1.1"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
