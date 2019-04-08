@@ -110,7 +110,7 @@ class ScalaCompiler(
     }
   }
 
-  override def shutdown() = Unit // = compiler.askShutdown()
+  override def shutdown(): Unit = () // = compiler.askShutdown()
 
   private def errorHandler(message: String): Unit = throw new TemplateException("Compilation failed:\n" + message)
 

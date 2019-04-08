@@ -12,10 +12,10 @@ name := "scalate"
 organization := "org.scalatra.scalate"
 version := "1.9.2-SNAPSHOT"
 scalaVersion := crossScalaVersions.value.head
-crossScalaVersions := Seq("2.13.0-M5", "2.12.8", "2.11.12")
+//scalaVersion := "2.12.8"
+crossScalaVersions := Seq("2.13.0-RC1", "2.12.8", "2.11.12")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
-resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging"
 startYear := Some(2010)
 licenses += "The Apache Software License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(
@@ -124,6 +124,7 @@ lazy val scalateCore = scalateProject("core")
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResource"),
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$")
     ),
+    resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging",
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
       logbackClassic % "runtime,optional",
@@ -165,6 +166,7 @@ lazy val scalateCamel = scalateProject("camel")
     libraryDependencies ++= Seq(camelScala, camelSpring, jaxbApi)
   )
 
+// TODO: Fail to compile with Scala 2.13.0-RC1
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings
   .osgiSettings
@@ -180,7 +182,8 @@ lazy val scalateGuice = scalateProject("guice")
       logbackClassic % Test
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    description := "Guice integration for a Jersey based Scalate web application.")
+    description := "Guice integration for a Jersey based Scalate web application."
+  )
 
 lazy val scalateJrebel = scalateProject("jrebel")
   .scalateSettings

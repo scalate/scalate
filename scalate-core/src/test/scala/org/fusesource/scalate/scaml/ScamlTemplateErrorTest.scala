@@ -95,6 +95,19 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
 """,
     "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3")
 
+  //  // https://github.com/scala/scala-parser-combinators/commit/a6b2b3999dab
+  //  if (!scala.util.Properties.versionNumberString.startsWith("2.10")) {
+  //    testInvalidSyntaxException(
+  //      "Unexpected comma in html attribute list",
+  //      """
+  //%html
+  //  %tab(comma="common", error="true")
+  //  %p commas in attribute lists is a common errro
+  //""",
+  //      "')' expected but ',' found at 2.22")
+  //  }
+
+  // since parser-combinators 1.1.2
   // https://github.com/scala/scala-parser-combinators/commit/a6b2b3999dab
   if (!scala.util.Properties.versionNumberString.startsWith("2.10")) {
     testInvalidSyntaxException(
@@ -104,7 +117,7 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   %tab(comma="common", error="true")
   %p commas in attribute lists is a common errro
 """,
-      "')' expected but ',' found at 2.22")
+      "string matching regex '[ \\t]+' expected but '(' found at 2.7")
   }
 
 }
