@@ -35,18 +35,6 @@ object ScalateBuild {
   def scalateProject(id: String, base: Option[File] = None) =
     Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
 
-  def addScalaModules(scalaMajor: Int, modules: (String => ModuleID)*) = libraryDependencies := {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= scalaMajor => libraryDependencies.value ++ modules.map(_(scalaOrganization.value))
-      case _ => libraryDependencies.value
-    }
-  }
-
-  def addScalaDependentDeps(modules: (Int, ModuleID)*) = libraryDependencies := {
-    val sv = CrossVersion.partialVersion(scalaVersion.value).map(_._2).get
-    libraryDependencies.value ++ modules.collect { case m if m._1 == sv => m._2 }
-  }
-
   def notPublished = Seq(
     publishArtifact := false,
     publish := {},

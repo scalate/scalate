@@ -36,12 +36,13 @@ lazy val scalateUtil = scalateProject("util")
     libraryDependencies ++= Seq(
       junit % Test,
       logbackClassic % Test,
-      slf4jApi
+      slf4jApi,
+      s"${scalaOrganization.value}.modules" %% "scala-parser-combinators" %
+        (if (scalaVersion.value.startsWith("2.11")) "1.1.1" else "1.1.2"),
+      s"${scalaOrganization.value}.modules" %% "scala-xml" % "1.2.0",
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     parallelExecution in Test := false,
-    addScalaModules(11, scalaXml, scalaParserCombinators),
-    addScalaModules(12, scalaXml, scalaParserCombinators),
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
 
 lazy val scalateCore = scalateProject("core")
