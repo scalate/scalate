@@ -107,17 +107,31 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   //      "')' expected but ',' found at 2.22")
   //  }
 
-  // since parser-combinators 1.1.2
+  // since scala-parser-combinators 1.1.2
   // https://github.com/scala/scala-parser-combinators/commit/a6b2b3999dab
-  if (!scala.util.Properties.versionNumberString.startsWith("2.10")) {
-    testInvalidSyntaxException(
-      "Unexpected comma in html attribute list",
-      """
+  val scalaV = scala.util.Properties.versionNumberString
+  if (!scalaV.startsWith("2.10")) {
+
+    if (scalaV.startsWith("2.11")) {
+      // scala-parser-combinators 1.1.1
+      testInvalidSyntaxException(
+        "Unexpected comma in html attribute list",
+        """
 %html
   %tab(comma="common", error="true")
   %p commas in attribute lists is a common errro
 """,
-      "string matching regex '[ \\t]+' expected but '(' found at 2.7")
+        "')' expected but ',' found at 2.22")
+    } else {
+      testInvalidSyntaxException(
+        "Unexpected comma in html attribute list",
+        """
+%html
+  %tab(comma="common", error="true")
+  %p commas in attribute lists is a common errro
+""",
+        "string matching regex '[ \\t]+' expected but '(' found at 2.7")
+    }
   }
 
 }
