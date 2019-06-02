@@ -1,5 +1,23 @@
 ![Scalate][logo]
 ===============================
+git log --pretty=format:'%h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
+
+[Scalate 1.9.4 (WIP)](https://github.com/scalate/scalate/compare/scalate-project-1.9.3...scalate-project-1.9.4), released TBD
+
+* 123fbddb Scala 2.13.0-RC3 by xuwei-k
+* 2d1b96ce Update spring-webmvc to 5.1.7.RELEASE by xuwei-k
+
+[Scalate 1.9.3](https://github.com/scalate/scalate/compare/scalate-project-1.9.2...scalate-project-1.9.3), released 2019-04-13
+
+* e1c246b6 Fix parser-combinators bin-compatibility issue in Scala 2.11 by Kazuhiro Sera
+* b9d841f7 Update jruby-complete to 9.2.7.0 by xuwei-k
+
+[Scalate 1.9.2](https://github.com/scalate/scalate/compare/scalate-project-1.9.1...scalate-project-1.9.2), released 2019-04-08
+
+* 4e3c7f30 Support Scala 2.13.0-RC1 by Kazuhiro Sera
+* 3a6bee40 Update spring-webmvc to 5.1.6.RELEASE by xuwei-k
+* 696cb5d2 Update dependencies by xuwei-k
+* 3c55167b update sbt plugins by xuwei-k
 
 [Scalate 1.9.1](https://github.com/scalate/scalate/compare/scalate-project-1.9.0...scalate-project-1.9.1), released 2019-03-06
 
