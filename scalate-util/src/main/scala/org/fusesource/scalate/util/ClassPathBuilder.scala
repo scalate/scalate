@@ -49,7 +49,7 @@ class ClassPathBuilder {
   def addLibDir(dir: String): ClassPathBuilder = {
 
     def listJars(root: File): Seq[String] = {
-      def makeSeq(a: Array[File]): Seq[File] = if (a == null) Nil else a
+      def makeSeq(a: Array[File]): Seq[File] = if (a == null) Nil else a.toIndexedSeq
       if (root.isFile) List(root.toString)
       else makeSeq(root.listFiles) flatMap { f => listJars(f) }
     }
@@ -97,7 +97,7 @@ class ClassPathBuilder {
           val attrs = m.getMainAttributes
           val v = attrs.get(Attributes.Name.CLASS_PATH)
           if (v != null) {
-            answer = v.toString.trim.split("\\s+").map { n =>
+            answer = v.toString.trim.split("\\s+").toIndexedSeq.map { n =>
               // classpath entries are usually relative to the jar
               if (new File(n).exists) n else new File(parent, n).getPath
             }
@@ -151,7 +151,7 @@ private object ClassPathBuilder extends Log {
 
     case AntLikeClassLoader(acp) =>
       val cp = acp.getClasspath
-      cp.split(File.pathSeparator)
+      cp.split(File.pathSeparator).toIndexedSeq
 
     case _ =>
       warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
@@ -162,7 +162,7 @@ private object ClassPathBuilder extends Log {
 
   def javaClassPath: Seq[String] = {
     val jcp = System.getProperty("java.class.path", "")
-    if (jcp.length > 0) jcp.split(File.pathSeparator)
+    if (jcp.length > 0) jcp.split(File.pathSeparator).toIndexedSeq
     else Nil
   }
 }
