@@ -42,7 +42,7 @@ trait ScalaParseSupport extends RegexParsers {
 
   def chrOf(cs: Char*): Parser[Char] = elem("chrOf", ch => (cs exists (ch ==)))
 
-  def chrOf(cs: String): Parser[Char] = chrOf(cs.toArray: _*)
+  def chrOf(cs: String): Parser[Char] = chrOf(cs.toIndexedSeq: _*)
 
   def takeUntil(cond: Parser[Any]): Parser[String] = takeUntil(cond, anyChar)
 
