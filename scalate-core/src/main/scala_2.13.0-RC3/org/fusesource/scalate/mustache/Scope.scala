@@ -18,12 +18,11 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
-import org.fusesource.scalate.introspector.Introspector
 
 import scala.collection.JavaConverters._
 
 import java.{ lang => jl, util => ju }
-import xml.{ NodeSeq, XML }
+import xml.NodeSeq
 import org.fusesource.scalate.util.Log
 
 object Scope extends Log {
