@@ -152,7 +152,7 @@ class SourceMapStratum(val name: String) {
     val out = new StringBuilder()
 
     // print StratumSection
-    out.append("*S " + name + "\n")
+    out.append(s"*S $name\n")
 
     // print FileSection
     out.append("*F\n")
@@ -160,10 +160,10 @@ class SourceMapStratum(val name: String) {
     for (i <- 0 until files.size) {
       val (file, filePath) = files.get(i)
       if (filePath != null) {
-        out.append("+ " + i + " " + file + "\n")
+        out.append(s"+ $i $file\n")
         out.append(filePath.stripPrefix("/") + "\n")
       } else {
-        out.append(i + " " + file + "\n")
+        out.append(s"$i $file\n")
       }
     }
 
@@ -253,7 +253,7 @@ class SourceMap {
    *                    that produced the <tt>smap</tt> to be embedded
    */
   def addSmap(smap: String, stratumName: String): Unit = {
-    val value = "*O " + stratumName + "\n" + smap + "*C " + stratumName + "\n"
+    val value = s"*O $stratumName\n$smap*C + $stratumName\n"
     embedded = value :: embedded
   }
 
