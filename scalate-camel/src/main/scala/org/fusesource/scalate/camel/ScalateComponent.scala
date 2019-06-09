@@ -30,6 +30,7 @@ import org.fusesource.scalate.util.FileResourceLoader
  * @version $Revision : 1.1 $
  */
 
+@deprecated("because Apache Camel-Scala has become deprecated", since = "1.9.4")
 class ScalateComponent() extends DefaultComponent {
 
   var defaultTemplateExtension: String = "ssp"
