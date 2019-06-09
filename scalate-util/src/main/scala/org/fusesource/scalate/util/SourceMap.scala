@@ -253,7 +253,7 @@ class SourceMap {
    *                    that produced the <tt>smap</tt> to be embedded
    */
   def addSmap(smap: String, stratumName: String): Unit = {
-    val value = s"*O $stratumName\n$smap*C + $stratumName\n"
+    val value = s"*O $stratumName\n$smap*C $stratumName\n"
     embedded = value :: embedded
   }
 
