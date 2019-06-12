@@ -31,6 +31,7 @@ import collection.JavaConverters._
 /**
  * @version $Revision : 1.1 $
  */
+@deprecated("because Apache Camel-Scala has become deprecated", since = "1.9.4")
 class ScalateEndpoint(
   component: ScalateComponent,
   uri: String,
