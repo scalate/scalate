@@ -198,16 +198,11 @@ trait Scope {
   def createScope(name: String, value: Any): Scope = {
     value match {
       case n: NodeSeq => new NodeScope(this, name, n)
-      case v: scala.collection.convert.Wrappers.JMapWrapper[_, _] =>
-        new MapScope(
-          this,
-          name,
-          v.asInstanceOf[scala.collection.convert.Wrappers.JMapWrapper[String, _]])
       case v: scala.collection.Map[_, _] =>
         new MapScope(
           this,
           name,
-          v.asInstanceOf[Map[String, _]])
+          v.asInstanceOf[scala.collection.Map[String, _]])
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)

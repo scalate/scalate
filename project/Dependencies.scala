@@ -30,12 +30,9 @@ object Dependencies {
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val pegdown = "org.pegdown" % "pegdown" % "1.6.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
-  val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.2"
+  val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
-    if (scalaVersion.value == "2.13.0-RC3")
-      Seq("org.scalatest" %% "scalatest" % "3.0.8-RC5")
-    else
-      Seq("org.scalatest" %% "scalatest" % "3.0.5")
+    Seq("org.scalatest" %% "scalatest" % "3.0.8")
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.26"
