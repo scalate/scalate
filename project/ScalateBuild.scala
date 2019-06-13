@@ -69,8 +69,8 @@ object ScalateBuild {
     unmanagedSourceDirectories in Compile += {
       val base = baseDirectory.value / "src" / "main"
       CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, v)) if v >= 12 => base / s"scala-2.12+"
-        case _ => base / s"scala-2.12-"
+        case Some((2, v)) if v >= 13 => base / s"scala-2.13+"
+        case _ => base / s"scala-2.13-"
       }
     },
     scalacOptions in(Compile, compile) ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
