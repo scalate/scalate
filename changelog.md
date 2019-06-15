@@ -2,8 +2,17 @@
 ===============================
 git log --pretty=format:'%h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
 
-[Scalate 1.9.4 (WIP)](https://github.com/scalate/scalate/compare/scalate-project-1.9.3...scalate-project-1.9.4), released TBD
+[Scalate 1.9.4](https://github.com/scalate/scalate/compare/scalate-project-1.9.3...scalate-project-1.9.4), released 2019-06-15
 
+* a658b5eb version 1.9.4 by Kazuhiro Sera
+* 4f9b903b Update spring-webmvc to 5.1.8.RELEASE by xuwei-k
+* 5154b14f Scala 2.13.0 by xuwei-k
+* 089709d9 Use string interpolation to fix deprecations (#222) by magnolia
+* fe05402e Update org.apache.karaf.shell.console to 4.2.6 by xuwei-k
+* 30215031 Deprecated Scalate-Camel by Magnolia.K
+* 978bca60 removed unused import by Magnolia.K
+* 0c689a00 Added explicit conversion from Array to Seq by Magnolia.K
+* 95714eed version 1.9.4-RC1 by Kazuhiro Sera
 * 123fbddb Scala 2.13.0-RC3 by xuwei-k
 * 2d1b96ce Update spring-webmvc to 5.1.7.RELEASE by xuwei-k
 
