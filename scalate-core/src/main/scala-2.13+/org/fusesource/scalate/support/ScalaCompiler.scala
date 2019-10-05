@@ -50,7 +50,7 @@ class ScalaCompiler(
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
   class LoggingReporter(writer: StringWriter = new StringWriter)
-    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) {
+    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) { self =>
 
     var compilerErrors: List[CompilerError] = Nil
     def messages = writer.toString
@@ -79,13 +79,11 @@ class ScalaCompiler(
 
     def printSummary(): Unit = {
       import reflect.internal.util.StringOps.{ countElementsAsString => countAs }
-      def label(severity: Severity): String = severity match {
-        case ERROR => "error"
-        case WARNING => "warning"
-        case INFO => ""
+      if (self.hasErrors) {
+        display(NoPosition, s"""${countAs(self.errorCount, "error")} found""", ERROR)
       }
-      for (k <- List(WARNING, ERROR) if k.count > 0) {
-        display(NoPosition, s"${countAs(k.count, label(k))} found", k)
+      if (self.hasWarnings) {
+        display(NoPosition, s"""${countAs(self.warningCount, "warning")} found""", WARNING)
       }
     }
 
