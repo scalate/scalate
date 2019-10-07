@@ -2,6 +2,25 @@
 ===============================
 git log --pretty=format:'%h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
 
+[Scalate 1.9.5](https://github.com/scalate/scalate/compare/scalate-project-1.9.4...scalate-project-1.9.5), released 2019-10-06
+
+* 4df658bc Support Scala 2.13.1 (drop 2.13.0) by xuwei-k
+* 8d65ab13 Update sbt-updates to 0.4.3 by xuwei-k
+* a18ddc22 Update jetty-server to 9.4.21.v20190926 by xuwei-k
+* 0526f590 Update spring-webmvc to 5.1.10.RELEASE by xuwei-k
+* 731ac41a Update camel-scala to 2.24.2 by xuwei-k
+* 0bd6aa26 Bump sbt to 1.3.0 by kenji yoshida
+* 0d8e34b6 Update jruby-complete to 9.2.8.0 by kenji yoshida
+* ffc3726f Update slf4j-jdk14 to 1.7.28 by kenji yoshida
+* bf4eeb62 Update slf4j-api to 1.7.27 by xuwei-k
+* 93f6531f Update spring-webmvc to 5.1.9.RELEASE by xuwei-k
+* 49c30eb5 Update camel to 2.23.3 by xuwei-k
+* 004e13bb set "dist: trusty" by kenji yoshida
+* fe6a46c1 Update sbt-updates to 0.4.2 by xuwei-k
+* 570324eb Update dependencies by xuwei-k
+* a6e775f2 Update sbt-scalariform to 1.8.3 by xuwei-k
+* c0f4653e Update changelog for 1.9.4 by Kazuhiro Sera
+
 [Scalate 1.9.4](https://github.com/scalate/scalate/compare/scalate-project-1.9.3...scalate-project-1.9.4), released 2019-06-15
 
 * a658b5eb version 1.9.4 by Kazuhiro Sera

@@ -10,7 +10,7 @@ import com.typesafe.tools.mima.core._
 
 name := "scalate"
 organization := "org.scalatra.scalate"
-version := "1.9.5-SNAPSHOT"
+version := "1.9.5"
 scalaVersion := crossScalaVersions.value.head
 //scalaVersion := "2.12.8"
 crossScalaVersions := Seq("2.13.1", "2.12.8", "2.11.12")
