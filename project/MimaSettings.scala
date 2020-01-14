@@ -1,5 +1,8 @@
 import sbt._, Keys._
+import com.typesafe.tools.mima.core.ProblemFilters
+import com.typesafe.tools.mima.core.IncompatibleSignatureProblem
 import com.typesafe.tools.mima.plugin.MimaPlugin
+import com.typesafe.tools.mima.plugin.MimaPlugin.autoImport._
 import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaReportBinaryIssues}
 
 /*
@@ -21,7 +24,12 @@ object MimaSettings {
   val previousVersions = Set(0, 1, 2).map(patch => s"1.9.$patch")
   // val previousVersions = Set.empty[String]
 
-  val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
+  val mimaSettings = Seq(
+    mimaBinaryIssueFilters in ThisBuild ++= Seq(
+      ProblemFilters.exclude[IncompatibleSignatureProblem]("org.fusesource.scalate.*")
+    ),
+    mimaReportSignatureProblems in ThisBuild := true,
+    mimaFailOnNoPrevious in ThisBuild := false,
     mimaPreviousArtifacts := {
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, scalaMajor)) if scalaMajor <= 12 =>
