@@ -44,12 +44,25 @@ lazy val scalateUtil = scalateProject("util")
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     parallelExecution in Test := false,
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
+  .enablePlugins(MimaPlugin)
 
 lazy val scalateCore = scalateProject("core")
   .scalateSettings
   .published
   .settings(
     mimaSettings,
+    mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.childElements"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.filterNode"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.childElements"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.filterNode"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.FirstChildSelector.childElements"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.FirstChildSelector.filterNode"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.childElements"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.filterNode"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.childElements"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.filterNode")
+    ),
     // Somehow, MiMa in scalate-core project fails to recognize the classes that came from scalate-util project
     mimaBinaryIssueFilters ++= Seq(
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.IOUtil$InvalidDirectiveException"),
@@ -138,6 +151,7 @@ lazy val scalateCore = scalateProject("core")
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
   .dependsOn(scalateUtil)
+  .enablePlugins(MimaPlugin)
 
 // -----------------------------------------------------------------------------------
 
@@ -156,6 +170,7 @@ lazy val scalateTest = scalateProject("test")
     libraryDependencies ++= scalaTest.value,
     description := "Scalate Test Support Classes.")
   .settings(mimaSettings)
+  .enablePlugins(MimaPlugin)
 
 lazy val scalateCamel = scalateProject("camel")
   .scalateSettings
