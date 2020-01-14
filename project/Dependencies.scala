@@ -35,7 +35,7 @@ object Dependencies {
     Seq("org.scalatest" %% "scalatest" % "3.0.8")
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
-  val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.29"
+  val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.1.12.RELEASE"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
