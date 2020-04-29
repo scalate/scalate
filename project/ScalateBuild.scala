@@ -47,8 +47,10 @@ object ScalateBuild {
   def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] =
     inConfig(ScalaUnidoc)(inTask(unidoc)(docOptsBase)) ++ Seq(
     scalacOptions in ThisBuild ++= Seq("-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath),
-    apiMappings in ThisBuild += (scalaInstance.value.libraryJar →
-      url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")),
+    apiMappings in ThisBuild ++= scalaInstance.value.libraryJars.collect {
+      case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
+        file -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+    }.toMap,
     unidocProjectFilter in(ScalaUnidoc, unidoc) :=
       inAnyProject -- inProjects(filter: _*))
 
