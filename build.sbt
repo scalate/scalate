@@ -17,13 +17,13 @@ crossScalaVersions := Seq("2.13.1", "2.12.8", "2.11.12")
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
-licenses += "The Apache Software License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
+licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(
-  ScmInfo(url("http://github.com/scalate/scalate"),
+  ScmInfo(url("https://github.com/scalate/scalate"),
   "scm:git:git://github.com/scalate/scalate.git",
   Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
 )
-homepage := Some(url("http://scalate.github.io/scalate"))
+homepage := Some(url("https://scalate.github.io/scalate"))
 enablePlugins(ScalaUnidocPlugin)
 unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
 notPublished
