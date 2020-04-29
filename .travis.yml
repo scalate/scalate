@@ -19,3 +19,8 @@ script:
 cache:
   directories:
     - $HOME/.ivy2/cache
+    - $HOME/.sbt/launchers
+    - $HOME/.cache/coursier/v1
+before_cache:
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+  - find $HOME/.ivy2/cache -name "*SNAPSHOT*" | xargs rm -rf
