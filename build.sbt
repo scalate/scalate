@@ -174,7 +174,6 @@ lazy val scalateTest = scalateProject("test")
 
 lazy val scalateCamel = scalateProject("camel")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
@@ -185,7 +184,6 @@ lazy val scalateCamel = scalateProject("camel")
 // TODO: Fail to compile with Scala 2.13.0-RC1
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore)
   .settings(
@@ -213,7 +211,6 @@ lazy val scalateJrebel = scalateProject("jrebel")
 
 lazy val scalateJruby = scalateProject("jruby")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
@@ -225,7 +222,6 @@ lazy val scalateJruby = scalateProject("jruby")
 
 lazy val scalateJspConverter = scalateProject("jsp-converter")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore)
   .settings(
@@ -236,12 +232,10 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Converter for JSP to SSP",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.converter"),
     buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 
 lazy val scalateLess = scalateProject("less")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
@@ -249,13 +243,11 @@ lazy val scalateLess = scalateProject("less")
       lessCssEngine,
       logbackClassic % Test
     ),
-    description := "Scalate LESS filter.",
-    OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.less",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.less"))
+    description := "Scalate LESS filter."
+  )
 
 lazy val scalateMarkdownJ = scalateProject("markdownj")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
@@ -266,12 +258,10 @@ lazy val scalateMarkdownJ = scalateProject("markdownj")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate MarkdownJ filter.",
-    OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.markdownj",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.markdownj"))
+  )
 
 lazy val scalatePage = scalateProject("page")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateWikitext, scalateTest % Test)
   .settings(
@@ -284,7 +274,6 @@ lazy val scalatePage = scalateProject("page")
 
 lazy val scalatePegdown = scalateProject("pegdown")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
@@ -292,13 +281,11 @@ lazy val scalatePegdown = scalateProject("pegdown")
       pegdown
     ),
     description := "Scalate Pegdown filter.",
-    OsgiKeys.bundleSymbolicName := "org.scalatra.scalate.filter.pegdown",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.filter.pegdown"))
+  )
 
 
 lazy val scalateSpringMVC = scalateProject("spring-mvc")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore)
   .settings(
@@ -309,7 +296,6 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Spring MVC integration.",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate.spring.view"),
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
 
 lazy val scalateWar = scalateProject("war")
@@ -365,7 +351,6 @@ lazy val scalateWeb = scalateProject("web")
 
 lazy val scalateWikitext = scalateProject("wikitext")
   .scalateSettings
-  .osgiSettings
   .published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(

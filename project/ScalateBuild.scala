@@ -1,5 +1,4 @@
 import com.typesafe.sbt.SbtGit.GitKeys
-import com.typesafe.sbt.osgi.{OsgiKeys, SbtOsgi}
 import com.typesafe.sbt.pgp.PgpKeys
 import sbt.Keys._
 import sbt._
@@ -21,8 +20,6 @@ object ScalateBuild {
     def scalateSettings = scalateBaseSettings
       .enablePlugins(BuildInfoPlugin)
       .settings(compileOpts ++ updateOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
-
-    def osgiSettings = u.enablePlugins(SbtOsgi).settings(osgiOpts: _*)
 
     def dependsOn(deps: ModuleID*) = u.settings(libraryDependencies ++= deps)
 
@@ -132,25 +129,6 @@ object ScalateBuild {
   )
 
   private def docOpts: Seq[Setting[_]] = inConfig(Compile)(inTask(doc)(docOptsBase))
-
-  private def osgiOpts = Seq(
-    packagedArtifact in(Compile, packageBin) := ((artifact in(Compile, packageBin)).value, OsgiKeys.bundle.value),
-    OsgiKeys.bundleSymbolicName := s"${organization.value}.${normalizedName.value.stripPrefix("scalate-")}",
-    OsgiKeys.privatePackage := Seq("org.fusesource.scalate." + normalizedName.value.stripPrefix("scalate-")),
-    OsgiKeys.importPackage := Seq("scala*;version=\"%s\"".format(osgiVersionRange(scalaVersion.value)), "*"),
-    OsgiKeys.exportPackage := OsgiKeys.privatePackage(pp => {
-      val p = if (!pp.head.endsWith("*")) pp.head else pp.head.substring(0, pp.head.size - 1)
-      s"!$p*.impl*" +: s"$p*" +: Nil
-    }).value,
-    OsgiKeys.additionalHeaders := Map("-removeheaders" → "Include-Resource,Private-Package")
-  )
-
-  /** Create an OSGi version range for standard Scala / Typesafe versioning
-    * schemes that describes binary compatible versions. Copied from Slick Build.scala. */
-  private def osgiVersionRange(version: String, requireMicro: Boolean = false): String =
-    if (version contains '-') "${@}" // M, RC or SNAPSHOT -> exact version
-    else if (requireMicro) "$<range;[===,=+)>" // At least the same micro version
-    else "${range;[==,=+)}" // Any binary compatible version
 
   def developersPomExtra =
     <developers>
