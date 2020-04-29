@@ -79,7 +79,7 @@ class CamelScalateEndpointTest extends FunSuite {
             }
           })
 
-          val out = response.getOut
+          val out = response.getMessage
           assume(out != null, "out was null when sending to uri: " + uri + " body: " + body)
 
           val actualBody = out.getBody(classOf[String])
