@@ -30,6 +30,7 @@ object Sass extends TemplateEngineAddOn with Log {
   }
 }
 
+@deprecated("Since Ruby saaa is no longer maintained, Ruby sass's filter will be removed in the next major version", "1.9.6")
 class Sass(val jruby: JRuby, val engine: TemplateEngine) extends Filter {
 
   def syntax = "sass"
