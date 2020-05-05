@@ -38,6 +38,8 @@ object PegDownFilter extends TemplateEngineAddOn {
  *
  * @author <a href="mailto:stuart.roebuck@gmail.com">Stuart Roebuck</a>
  */
+
+@deprecated("Since Pegdown is no longer maintained, Pegdown's filter will be removed in the next major version", "1.8.6")
 class PegDownFilter(val extensions: Int = Extensions.ABBREVIATIONS |
   Extensions.AUTOLINKS |
   Extensions.DEFINITIONS |
