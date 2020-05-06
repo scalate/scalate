@@ -61,7 +61,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
         case x: ResourceNotFoundException => false
         case x: TemplateException => true
       }
-    } getOrElse (null)
+    }.orNull
   }
 
   def getSize(arg: AnyRef, argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
