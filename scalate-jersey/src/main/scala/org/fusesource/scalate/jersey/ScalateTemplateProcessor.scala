@@ -101,7 +101,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
 
   def tryFindPath(engine: ServletTemplateEngine, path: String): Option[String] = {
 
-    engine.extensions map { ext => path + "." + ext } find { p =>
+    engine.extensions.map { ext => path + "." + ext }.find { p =>
       try {
         engine.load(p)
         true
