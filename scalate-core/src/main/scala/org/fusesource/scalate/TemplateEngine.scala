@@ -33,7 +33,6 @@ import org.fusesource.scalate.util._
 
 import scala.collection.immutable.TreeMap
 import scala.collection.mutable.HashMap
-import scala.compat.Platform
 import scala.language.existentials
 import scala.util.control.Exception
 import scala.util.parsing.input.{ OffsetPosition, Position }
@@ -724,7 +723,7 @@ class TemplateEngine(
     source: TemplateSource,
     extraBindings: Iterable[Binding]) = {
     val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
-    CacheEntry(template, dependencies, Platform.currentTime)
+    CacheEntry(template, dependencies, System.currentTimeMillis)
   }
 
   private def cache(source: TemplateSource, ce: CacheEntry): Template = {
