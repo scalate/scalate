@@ -53,7 +53,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
   def resolve(engine: ServletTemplateEngine, argType: Class[_]): String = {
     val argBase = argType.getName.replace('.', '/')
 
-    engine.extensions map { ext => "/" + argBase + "." + ext } find { path =>
+    engine.extensions.map { ext => "/" + argBase + "." + ext }.find { path =>
       try {
         engine.load(path)
         true
