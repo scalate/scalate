@@ -100,18 +100,17 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
   }
 
   def tryFindPath(engine: ServletTemplateEngine, path: String): Option[String] = {
-    for (ext <- engine.extensions) {
-      val p = path + "." + ext
+
+    engine.extensions.map { ext => path + "." + ext }.find { p =>
       try {
         engine.load(p)
-        return Some(p)
+        true
       } catch {
-        case x: ResourceNotFoundException =>
-        case x: TemplateException =>
-          return Some(p)
+        case _: ResourceNotFoundException => false
+        case _: TemplateException => true
       }
     }
-    None
+
   }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
