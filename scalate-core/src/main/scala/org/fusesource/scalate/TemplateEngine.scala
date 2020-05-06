@@ -871,10 +871,11 @@ class TemplateEngine(
    */
   protected def pipeline(source: TemplateSource): Option[List[Filter]] = {
     //sort the extensions so we match the longest first.
-    for (ext <- pipelines.keys.toList.sortWith { case (x, y) => if (x.length == y.length) x.compareTo(y) < 0 else x.length > y.length } if source.uri.endsWith("." + ext)) {
-      return pipelines.get(ext)
-    }
-    None
+    pipelines.keys.toList.sortWith {
+      case (x, y) => if (x.length == y.length) x.compareTo(y) < 0 else x.length > y.length
+    }.withFilter(ext => source.uri.endsWith("." + ext)).flatMap { ext =>
+      pipelines.get(ext)
+    }.headOption
   }
 
   /**

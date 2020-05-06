@@ -123,12 +123,10 @@ trait RenderContext {
    * Returns a local link to the given file which should be within the [sourceDirectories]
    */
   def uri(file: File): Option[String] = {
-    for (s <- engine.sourceDirectories) {
-      if (Files.isDescendant(s, file)) {
-        return Some(uri("/" + Files.relativeUri(s, file)))
-      }
+    engine.sourceDirectories.collectFirst {
+      case s if Files.isDescendant(s, file) =>
+        uri("/" + Files.relativeUri(s, file))
     }
-    None
   }
 
   /**
@@ -336,24 +334,21 @@ trait RenderContext {
     }
 
     def viewForClass(clazz: Class[_]): String = {
-      for (prefix <- viewPrefixes; postfix <- viewPostfixes) {
-        val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
-        val fullPath = if (isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
-        if (engine.resourceLoader.exists(fullPath)) {
-          return fullPath
+      viewPrefixes.flatMap { prefix =>
+        viewPostfixes.flatMap { postfix =>
+          val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
+          val fullPath = if (isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
+          if (engine.resourceLoader.exists(fullPath)) {
+            Some(fullPath)
+          } else {
+            None
+          }
         }
-      }
-      null
+      }.headOption.orNull
     }
 
     def searchForView(): String = {
-      for (i <- classSearchList) {
-        val rc = viewForClass(i)
-        if (rc != null) {
-          return rc
-        }
-      }
-      null
+      classSearchList.iterator.map(viewForClass(_)).find(_ != null).orNull
     }
 
     buildClassList(model.getClass)

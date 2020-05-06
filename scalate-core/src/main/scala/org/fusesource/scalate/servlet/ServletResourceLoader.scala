@@ -68,11 +68,12 @@ class ServletResourceLoader(
     // TODO should ideally use the Resource API as then we could try figure out
     // the actual file for URL based resources not using getRealPath
     // (which has issues sometimes with unexpanded WARs and overlays)
-    for (r <- resource(uri); f <- r.toFile if f != null) {
-      return f.getPath
+    resource(uri).flatMap { r =>
+      r.toFile.find(_ != null).map(_.getPath)
+    }.getOrElse {
+      val file = realFile(uri)
+      if (file != null) file.getPath else null
     }
-    val file = realFile(uri)
-    if (file != null) file.getPath else null
   }
 
   override protected def createNotFoundException(uri: String) = {

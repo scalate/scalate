@@ -43,46 +43,51 @@ class TemplateFinder(engine: TemplateEngine) {
   def search(rootOrPath: String): Option[String] = {
     val path = if (rootOrPath == "/") "/index" else rootOrPath
 
-    for (p <- hiddenPatterns; if p.findFirstIn(path).isDefined) {
+    if (hiddenPatterns.exists(_.findFirstIn(path).isDefined)) {
       return None
     }
 
     // Is the uri a direct path to a template??
     // i.e: /path/page.jade -> /path/page.jade
     def findDirect(uri: String): Option[String] = {
-      for (base <- engine.templateDirectories; ext <- extensions) {
-        val path = base + uri
-        if (path.endsWith(ext) && engine.resourceLoader.exists(path)) {
-          return Some(path)
+      engine.templateDirectories.flatMap { base =>
+        extensions.flatMap { ext =>
+          val path = base + uri
+          if (path.endsWith(ext) && engine.resourceLoader.exists(path)) {
+            Some(path)
+          } else {
+            None
+          }
         }
-      }
-      None
+      }.headOption
     }
 
     // Lets try to find the template by appending a template extension to the path
     // i.e: /path/page.html -> /path/page.html.jade
     def findAppended(uri: String): Option[String] = {
-      for (base <- engine.templateDirectories; ext <- extensions) {
-        val path = base + uri + "." + ext
-        if (engine.resourceLoader.exists(path)) {
-          return Some(path)
+      engine.templateDirectories.flatMap { base =>
+        extensions.flatMap { ext =>
+          val path = base + uri + "." + ext
+          if (engine.resourceLoader.exists(path)) {
+            Some(path)
+          } else {
+            None
+          }
         }
-      }
-      None
+      }.headOption
     }
 
     // Lets try to find the template by replacing the extension
     // i.e: /path/page.html -> /path/page.jade
     def findReplaced(): Option[String] = {
-      replacedExtensions.foreach {
+      replacedExtensions.flatMap {
         ext =>
           if (path.endsWith(ext)) {
-            val rc = findAppended(path.stripSuffix(ext))
-            if (rc != None)
-              return rc
+            findAppended(path.stripSuffix(ext))
+          } else {
+            None
           }
-      }
-      None
+      }.headOption
     }
 
     // Lets try to find the template for well known template extensions
@@ -93,19 +98,22 @@ class TemplateFinder(engine: TemplateEngine) {
       val ext = Files.extension(uri)
       lazy val remaining = path.stripSuffix(ext)
       if (ext.size > 0) {
-        engine.extensionToTemplateExtension.get(ext) match {
-          case Some(set) =>
-            for (base <- engine.templateDirectories; ext <- set) {
-              val path = base + remaining + ext
-              if (engine.resourceLoader.exists(path)) {
-                return Some(path)
+        engine.extensionToTemplateExtension.get(ext).flatMap {
+          set =>
+            engine.templateDirectories.flatMap { base =>
+              set.flatMap { ext =>
+                val path = base + remaining + ext
+                if (engine.resourceLoader.exists(path)) {
+                  Some(path)
+                } else {
+                  None
+                }
               }
-            }
-            None
-          case _ => None
+            }.headOption
         }
+      } else {
+        None
       }
-      None
     }
 
     findDirect(path).orElse(findAppended(path).orElse(findTemplateAlias(path).orElse(findReplaced())))
