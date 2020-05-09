@@ -13,6 +13,7 @@ object ScalateReloader extends TemplateEngineAddOn with Logging {
   /**
    * Reloads templates in a template engine if the classes are modified
    */
+  @deprecated("Scalate-jrebel is deprecated", "1.9.6")
   def apply(engine: TemplateEngine): Unit = {
     info("Installing JRebel Scalate plugin on instance: " + engine + " " + System.identityHashCode(engine))
 
