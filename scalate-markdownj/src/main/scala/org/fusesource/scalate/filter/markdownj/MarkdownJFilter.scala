@@ -54,6 +54,7 @@ object MarkdownJFilter extends Filter with TemplateEngineAddOn {
   /**
    * Add the markdown filter tot he template engine.
    */
+  @deprecated("Scalate-markdownj is deprecated", "1.9.6")
   def apply(te: TemplateEngine) = {
     if (!te.filters.contains("markdown")) {
       te.filters += "markdown" -> MarkdownJFilter
