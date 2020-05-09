@@ -58,6 +58,7 @@ class LessPipeline(private val lessEngine: LessEngine) extends Filter {
  * @author <a href="mailto:rafal.krzewski@caltha.pl>Rafał Krzewski</a>
  */
 object LessAddOn extends TemplateEngineAddOn {
+  @deprecated("Scalate-less is deprecated", "1.9.6")
   def apply(te: TemplateEngine): Unit = {
     val lessEngine = new LessEngine(new LessOptions, new ScalateResourceLoader(te))
     te.filters += "less" -> new LessFilter(lessEngine)
