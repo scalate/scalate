@@ -159,8 +159,6 @@ Or you can just create an empty layout. For example if you are using servlets or
 
 Scalate itself auto-recompiles and reloads templates on the fly. However if you are changing Scala code which the Scalate templates use then you normally have to stop and restart your web container.
 
-So for a more RAD approach we recommend using [JRebel](jrebel.html) which can hot-reload the Scala code on the fly, leading to a rapid edit &lt;-&gt; browser reload cycle.
-
 ### How can I access the Servlet request, response or servletContext
 
 When using Scalate with servlets or [Jog](documentation/jog.html) you might wish to access the current request, response, servletContext or servletConfig objects used by the servlet engine. These variables are all available by default thanks to the

@@ -1393,7 +1393,7 @@ Only works the scalate-wikitext module is found on the class path.
 
 #### `:markdown` {#markdown-filter}
 > Parses the filtered text with [Markdown](http://daringfireball.net/projects/markdown).
-Only works if [scalamd](http://scalamd.fusesource.org/) or [MarkdownJ](http://markdownj.org/) is found on the class path.
+Only works if [scalamd](http://scalamd.fusesource.org/) is found on the class path.
 
 <!--
 ### Custom Filters
