@@ -1,6 +1,38 @@
 ![Scalate][logo]
 ===============================
-git log --pretty=format:'%h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
+git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
+
+[Scalate 1.9.6](https://github.com/scalate/scalate/compare/scalate-project-1.9.5...scalate-project-1.9.6), released 2020-05-17
+
+* 89763041 sbt-updates 0.5.1 by kenji yoshida
+* ee756b6e deprecated scalate-less (#270) by magnolia
+* 557ea344 deprecated scalate-markdownj (#269) by magnolia
+* b1faeccd deprecated scalate-jrebel (#268) by magnolia
+* 6d224ad6 Scala 2.13.2 by xuwei-k
+* 35da6bf6 avoid deprecated return statement by xuwei-k
+* b6455752 fix warning. avoid scala.compat.Platform by xuwei-k
+* 830ea95f Removed the anonymous function escape by return statement (#261) by magnolia
+* 2a5f5af2 remove sbt-osgi plugin by xuwei-k
+* a27a0617 Deprecated Ruby sass filter (#260) by magnolia
+* 18db9677 Deprecated Pegdown filter (#259) by magnolia
+* 253c5bcf replaced deprecated api (#258) by magnolia
+* 5a4dd7ee replaced deprecated api by Magnolia.K
+* fb27ccec Update xsbt-web-plugin to 4.2.0 by kenji yoshida
+* 45fb819e update spring-webmvc by kenji yoshida
+* 3b1bd10c Update dependencies by xuwei-k
+* 47630d09 update cache setting by kenji yoshida
+* a8c6bc72 use https by kenji yoshida
+* f0127977 scala-xml 1.3.0 by kenji yoshida
+* e9b8fad1 Update sbt and mima-plugin by xuwei-k
+* 35ef0b96 Update camel-scala to 2.24.3 by xuwei-k
+* fd3218b3 Update jetty-server to 9.4.25.v20191220 by xuwei-k
+* b2ae2447 Update slf4j-api to 1.7.30 by xuwei-k
+* eb2ae75c Update spring-webmvc to 5.1.12.RELEASE by xuwei-k
+* ddc1d3de Update jetty-server to 9.4.24.v20191120 by xuwei-k
+* ef429f03 Update jetty-server to 9.4.23.v20191118 by xuwei-k
+* 6b975a41 Update slf4j-api to 1.7.29 by xuwei-k
+* 366bde80 Update jruby-complete to 9.2.9.0 by xuwei-k
+* c5129c40 Update sbt-updates to 0.5.0 by xuwei-k
 
 [Scalate 1.9.5](https://github.com/scalate/scalate/compare/scalate-project-1.9.4...scalate-project-1.9.5), released 2019-10-06
 
