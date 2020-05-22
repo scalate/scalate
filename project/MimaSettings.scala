@@ -21,7 +21,7 @@ object MimaSettings {
   //
 
   // NOTE: will start validating bin-compatibility since 1.9
-  val previousVersions = Set(0, 1, 2).map(patch => s"1.9.$patch")
+  val previousVersions = (0 to 6).map(patch => s"1.9.$patch").toSet
   // val previousVersions = Set.empty[String]
 
   val mimaSettings = Seq(
@@ -34,7 +34,12 @@ object MimaSettings {
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, scalaMajor)) if scalaMajor <= 12 =>
           previousVersions.map { organization.value % s"${name.value}_${scalaBinaryVersion.value}" % _ }
-        case _ => Set.empty
+        case Some((2, 13)) =>
+          previousVersions.filterNot((0 to 3).map("1.9." + _).toSet).map {
+            organization.value % s"${name.value}_${scalaBinaryVersion.value}" % _
+          }
+        case _ =>
+          Set.empty
       }
     },
     test in Test := {
