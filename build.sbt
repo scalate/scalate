@@ -25,7 +25,7 @@ scmInfo := Some(
 )
 homepage := Some(url("https://scalate.github.io/scalate"))
 enablePlugins(ScalaUnidocPlugin)
-unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
+unidocOpts(filter = scalateWar, scalateWeb)
 notPublished
 
 lazy val scalateUtil = scalateProject("util")
@@ -172,15 +172,6 @@ lazy val scalateTest = scalateProject("test")
   .settings(mimaSettings)
   .enablePlugins(MimaPlugin)
 
-lazy val scalateCamel = scalateProject("camel")
-  .scalateSettings
-  .published
-  .dependsOn(scalateCore, scalateTest % Test)
-  .settings(
-    description := "Camel component for Scalate.",
-    libraryDependencies ++= Seq(camelScala, camelSpring, jaxbApi)
-  )
-
 // TODO: Fail to compile with Scala 2.13.0-RC1
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings
@@ -199,24 +190,13 @@ lazy val scalateGuice = scalateProject("guice")
     description := "Guice integration for a Jersey based Scalate web application."
   )
 
-lazy val scalateJrebel = scalateProject("jrebel")
+lazy val scalateJruby = scalateProject("jruby")
   .scalateSettings
   .published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
-      jRebelSDK % Provided
-    ),
-    description := "JRebel plugin for reloading Scalate templates on class reload.")
-
-lazy val scalateJruby = scalateProject("jruby")
-  .scalateSettings
-  .published
-  .dependsOn(scalateCore, scalateTest % Test)
-  .settings(
-    libraryDependencies ++= Seq(
-      jRubyComplete,
-      logbackClassic % Test
+      jRubyComplete
     ),
     description := "Scalate integration with JRuby including Ruby based filters such as sass.")
 
@@ -234,32 +214,6 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
     description := "Converter for JSP to SSP",
     buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 
-lazy val scalateLess = scalateProject("less")
-  .scalateSettings
-  .published
-  .dependsOn(scalateCore, scalateTest % Test)
-  .settings(
-    libraryDependencies ++= Seq(
-      lessCssEngine,
-      logbackClassic % Test
-    ),
-    description := "Scalate LESS filter."
-  )
-
-lazy val scalateMarkdownJ = scalateProject("markdownj")
-  .scalateSettings
-  .published
-  .dependsOn(scalateCore, scalateTest % Test)
-  .settings(
-    libraryDependencies ++= Seq(
-      markdownJ,
-      junit % Test,
-      logbackClassic % Test
-    ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
-    description := "Scalate MarkdownJ filter.",
-  )
-
 lazy val scalatePage = scalateProject("page")
   .scalateSettings
   .published
@@ -271,18 +225,6 @@ lazy val scalatePage = scalateProject("page")
       snakeYaml
     ),
     description := "Scalate multipart page filter (similar to Webgen page format).")
-
-lazy val scalatePegdown = scalateProject("pegdown")
-  .scalateSettings
-  .published
-  .dependsOn(scalateCore, scalateTest % Test)
-  .settings(
-    libraryDependencies ++= Seq(
-      pegdown
-    ),
-    description := "Scalate Pegdown filter.",
-  )
-
 
 lazy val scalateSpringMVC = scalateProject("spring-mvc")
   .scalateSettings
