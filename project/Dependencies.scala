@@ -20,7 +20,7 @@ object Dependencies {
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.11.1"
   val junit = "junit" % "junit" % "4.12"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.2.8"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.2.9"
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
@@ -31,7 +31,7 @@ object Dependencies {
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.2.6.RELEASE"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.2.7.RELEASE"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "1.26"
