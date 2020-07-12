@@ -15,8 +15,6 @@ object Dependencies {
   val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.30.v20200611"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
-  val jRebelSDK = "org.zeroturnaround" % "jr-sdk" % "4.6.2" from
-    "https://repos.zeroturnaround.com/nexus/content/groups/zt-public/org/zeroturnaround/jr-sdk/4.6.2/jr-sdk-4.6.2.jar"
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.12.0"
   val junit = "junit" % "junit" % "4.12"
