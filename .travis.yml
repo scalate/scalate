@@ -1,5 +1,4 @@
 language: scala
-sudo: false
 dist: trusty
 scala:
   - 2.11.12
