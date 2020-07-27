@@ -122,16 +122,9 @@ h1. Snippet with id
 {snippet:url=test/Test.java|id=doSomething|pygmentize=true}
 """
 
-      // Since the output result changed from Pygmentize 2.x, there are tests for 1.x and 2.x
-      if (Pygmentize.majorVersion >= 2) {
-        assertFilter(
-          source,
-          """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre><span></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>""")
-      } else {
-        assertFilter(
-          source,
-          """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">()</span> <span class="o">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="o">}</span>&#x000A;</pre></div>&#x000A;</div>""")
-      }
+      assertFilter(
+        source,
+        """<h1 id="Snippetwithid">Snippet with id</h1><div class="syntax"><div class="highlight"><pre><span></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span>&#x000A;        <span class="c1">// does something very interesting</span>&#x000A;    <span class="p">}</span>&#x000A;</pre></div>&#x000A;</div>""")
     }
   } else {
     warn("Pygmentize not installed so ignoring the tests")
