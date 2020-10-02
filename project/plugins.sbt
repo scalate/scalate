@@ -1,6 +1,6 @@
 addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "4.2.1")
 addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.2")
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.3")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.6")
 addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.4.3")
 addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "0.8.0")
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")

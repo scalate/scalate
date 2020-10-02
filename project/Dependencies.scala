@@ -12,12 +12,12 @@ object Dependencies {
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
-  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.31.v20200723"
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.32.v20200930"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
-  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.12.0"
-  val junit = "junit" % "junit" % "4.12"
+  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.13.0"
+  val junit = "junit" % "junit" % "4.13"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.2.9"
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
@@ -25,14 +25,14 @@ object Dependencies {
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
-    Seq("org.scalatest" %% "scalatest" % "3.0.8")
+    Seq("org.scalatest" %% "scalatest" % "3.0.9")
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.2.7.RELEASE"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.2.9.RELEASE"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
-  val snakeYaml = "org.yaml" % "snakeyaml" % "1.26"
+  val snakeYaml = "org.yaml" % "snakeyaml" % "1.27"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
