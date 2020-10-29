@@ -1,7 +1,7 @@
 package org.fusesource.scalate.console
 
 //import _root_.org.junit.runner.RunWith
-//import _root_.org.scalatest.junit.JUnitRunner
+//import _root_.org.scalatestplus.junit.JUnitRunner
 //import org.scalatest.{ ConfigMap, FunSuite }
 //import _root_.org.fusesource.scalate.test._
 //import java.io.File

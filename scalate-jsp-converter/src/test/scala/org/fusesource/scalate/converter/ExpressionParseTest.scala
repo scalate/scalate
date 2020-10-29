@@ -18,15 +18,15 @@
 package org.fusesource.scalate.converter
 
 import _root_.org.junit.runner.RunWith
-import _root_.org.scalatest.junit.JUnitRunner
-import _root_.org.scalatest.FunSuite
+import _root_.org.scalatestplus.junit.JUnitRunner
 import org.fusesource.scalate.util.Log
+import org.scalatest.funsuite.AnyFunSuite
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class ExpressionParseTest extends FunSuite with Log {
+class ExpressionParseTest extends AnyFunSuite with Log {
 
   assertConvert("${foo.bar}", "foo.getBar")
   assertConvert("${foo[123]}", "foo(123)")

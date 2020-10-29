@@ -18,17 +18,17 @@
 package org.fusesource.scalate.converter
 
 import _root_.org.junit.runner.RunWith
-import _root_.org.scalatest.junit.JUnitRunner
-import _root_.org.scalatest.FunSuite
+import _root_.org.scalatestplus.junit.JUnitRunner
 
 import _root_.org.fusesource.scalate._
 import org.fusesource.scalate.util.Log
+import org.scalatest.funsuite.AnyFunSuite
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-class ConvertJspTest extends FunSuite with Log {
+class ConvertJspTest extends AnyFunSuite with Log {
 
   assertJustText("<foo/>")
   assertJustText("text <foo/> text")

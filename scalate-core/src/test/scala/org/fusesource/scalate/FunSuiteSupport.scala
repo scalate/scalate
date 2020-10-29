@@ -22,16 +22,17 @@ import java.io.File
 import org.fusesource.scalate.scuery.XmlHelper._
 import org.fusesource.scalate.util.Log
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap, FunSuite }
+import org.scalatestplus.junit.JUnitRunner
+import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap }
 
 import scala.xml.NodeSeq
+import org.scalatest.funsuite.AnyFunSuite
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends FunSuite with Log with BeforeAndAfterAllConfigMap {
+abstract class FunSuiteSupport extends AnyFunSuite with Log with BeforeAndAfterAllConfigMap {
 
   protected var _basedir = "."
 
