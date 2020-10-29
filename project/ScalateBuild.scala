@@ -19,7 +19,7 @@ object ScalateBuild {
 
     def scalateSettings = scalateBaseSettings
       .enablePlugins(BuildInfoPlugin)
-      .settings(compileOpts ++ updateOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
+      .settings(compileOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
 
     def dependsOn(deps: ModuleID*) = u.settings(libraryDependencies ++= deps)
 
@@ -87,10 +87,6 @@ object ScalateBuild {
     fork in Test := true,
 
     baseDirectory in Test := baseDirectory.value
-  )
-
-  private def updateOpts = Seq(
-    updateOptions ~= (_.withCachedResolution(cachedResoluton = true))
   )
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
