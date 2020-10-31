@@ -1,5 +1,5 @@
 import com.typesafe.sbt.SbtGit.GitKeys
-import com.typesafe.sbt.pgp.PgpKeys
+import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
 import sbt.Keys._
 import sbt._
 import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
