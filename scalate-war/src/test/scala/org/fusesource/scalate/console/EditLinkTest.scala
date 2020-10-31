@@ -20,11 +20,11 @@ package org.fusesource.scalate.console
 import _root_.org.fusesource.scalate._
 import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
-import _root_.org.scalatest.FunSuite
-import _root_.org.scalatest.junit.JUnitRunner
+import _root_.org.scalatestplus.junit.JUnitRunner
+import org.scalatest.funsuite.AnyFunSuite
 
 @RunWith(classOf[JUnitRunner])
-class EditLinkTest extends FunSuite with Log {
+class EditLinkTest extends AnyFunSuite with Log {
 
   val file = "src/test/scala/org/fusesource/scalate/console/EditLinkTest.scala"
 

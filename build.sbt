@@ -160,6 +160,10 @@ lazy val scalateTest = scalateProject("test")
   .published
   .dependsOn(scalateCore)
   .settings(
+    mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.TemplateTestSupport"),
+      ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.FunSuiteSupport"),
+    ),
     libraryDependencies ++= Seq(
       jettyServer,
       jettyWebapp,

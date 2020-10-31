@@ -25,7 +25,10 @@ object Dependencies {
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
-    Seq("org.scalatest" %% "scalatest" % "3.0.9")
+    Seq(
+      "org.scalatest" %% "scalatest" % "3.2.2",
+      "org.scalatestplus" %% "junit-4-13" % "3.2.2.0",
+    )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
