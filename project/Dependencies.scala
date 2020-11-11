@@ -12,7 +12,7 @@ object Dependencies {
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
-  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.33.v20201020"
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "9.4.34.v20201102"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
@@ -26,13 +26,13 @@ object Dependencies {
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
     Seq(
-      "org.scalatest" %% "scalatest" % "3.2.3",
-      "org.scalatestplus" %% "junit-4-13" % "3.2.2.0",
+      "org.scalatest" %% "scalatest" % "3.2.2",
+      "org.scalatestplus" %% "junit-4-13" % "3.2.3.0",
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.0"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.1"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "1.27"
