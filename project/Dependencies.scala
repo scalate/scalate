@@ -4,7 +4,7 @@ import sbt._
 /** Build dependency and repository definitions. */
 object Dependencies {
 
-  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
+  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.9.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.1"
   val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
