@@ -38,7 +38,7 @@ lazy val scalateUtil = scalateProject("util")
       logbackClassic % Test,
       slf4jApi,
       s"${scalaOrganization.value}.modules" %% "scala-parser-combinators" %
-        (if (scalaVersion.value.startsWith("2.11")) "1.1.1" else "1.1.2"),
+        (if (scalaVersion.value.startsWith("2.11")) "1.1.2" else "1.1.2"),
       s"${scalaOrganization.value}.modules" %% "scala-xml" % "1.3.0",
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
