@@ -24,5 +24,5 @@ jobs:
         java-version: ${{ matrix.java }}
     - name: Run tests
       run: |
-        sbt test ++${{matrix.Scala}} test unidoc
+        sbt -v "++ ${{matrix.Scala}}" test unidoc
         git diff --exit-code
