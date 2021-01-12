@@ -134,7 +134,7 @@ h1. Snippet with id
       }
     }
   } else {
-    warn("Pygmentize not installed so ignoring the tests")
+    logger.warn("Pygmentize not installed so ignoring the tests")
   }
 
   test("URL prefix handling") {

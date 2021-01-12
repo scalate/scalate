@@ -41,7 +41,7 @@ class RuleTest extends FunSuiteSupport {
   def assertTypes(list: List[AnyRef], types: List[Class[_]]): Unit = {
     for ((t, i) <- types.zipWithIndex) {
       val v = list(i)
-      debug("item at " + i + " = " + v + " should be " + t)
+      logger.debug("item at " + i + " = " + v + " should be " + t)
       assertResult(t, "itemn at " + i) { v.getClass }
     }
   }

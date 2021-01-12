@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 import java.io.InputStream
 import java.util.Properties
 
@@ -26,9 +28,7 @@ import java.util.Properties
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object ClassFinder {
-
-  val log = Log(getClass); import log._
+object ClassFinder extends LazyLogging {
 
   def discoverCommands[T](
     indexPath: String,
@@ -55,7 +55,7 @@ object ClassFinder {
               }
             } catch {
               case e: Throwable =>
-                debug(e, "Invalid class: %s", name)
+                logger.debug(s"Invalid class: $name", e)
                 None
             }
         }
@@ -70,10 +70,10 @@ object ClassFinder {
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {
       val url = resources.nextElement
-      debug("loaded commands from %s", url)
+      logger.debug("loaded commands from %s", url)
       val p = loadProperties(url.openStream)
       if (p == null) {
-        warn("Could not load class list from: %s", url)
+        logger.warn("Could not load class list from: %s", url)
       }
       val enum = p.keys
       while (enum.hasMoreElements) {
@@ -81,7 +81,7 @@ object ClassFinder {
       }
     }
     rc = rc.distinct
-    debug("loaded classes: %s", rc)
+    logger.debug("loaded classes: %s", rc)
     rc
   }
 

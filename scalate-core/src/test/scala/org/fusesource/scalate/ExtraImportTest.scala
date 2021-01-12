@@ -20,6 +20,7 @@ package org.fusesource.scalate
 import org.fusesource.scalate.Asserts._
 
 class ExtraImportTest extends TemplateTestSupport {
+
   test("test template using custom import") {
     val template = engine.compileSsp("""
 <%@ val bean: MyBean = null %>
@@ -28,7 +29,7 @@ Hello ${if (bean != null) bean else "no bean"}
 
     val output = engine.layout("foo.ssp", template).trim
     assertContains(output, "Hello no bean")
-    debug("template generated: %s", output)
+    logger.debug("template generated: %s", output)
   }
 
   override protected def createTemplateEngine = {

@@ -20,16 +20,14 @@ package org.fusesource.scalate.util
 import java.net.URI
 import java.io.File
 import Resource._
-
-object ResourceLoader extends Log
-import ResourceLoader._
+import slogging.LazyLogging
 
 /**
  * A strategy for loading [[Resource]] instances
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-trait ResourceLoader {
+trait ResourceLoader extends LazyLogging {
   val pageFileEncoding = "UTF-8"
 
   def resource(uri: String): Option[Resource]
@@ -49,7 +47,7 @@ trait ResourceLoader {
 
   def resourceOrFail(uri: String): Resource = resource(uri) match {
     case Some(r) =>
-      debug("found resource: " + r)
+      logger.debug("found resource: " + r)
       r
     case _ =>
       throw createNotFoundException(uri)
@@ -58,10 +56,10 @@ trait ResourceLoader {
   protected def createNotFoundException(uri: String) = new ResourceNotFoundException(uri)
 }
 
-case class FileResourceLoader(sourceDirectories: Iterable[File] = Iterable.empty) extends ResourceLoader {
+case class FileResourceLoader(sourceDirectories: Iterable[File] = Iterable.empty) extends ResourceLoader with LazyLogging {
 
   def resource(uri: String): Option[Resource] = {
-    debug("Trying to load uri: " + uri)
+    logger.debug("Trying to load uri: " + uri)
 
     if (uri != null) {
       val file = toFile(uri)

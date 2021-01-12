@@ -18,9 +18,9 @@
 package org.fusesource.scalate
 package wikitext
 
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
-object Main extends Log {
+object Main extends StrictLogging {
 
   def main(args: Array[String]): Unit = {
     for (a <- args) {
@@ -31,6 +31,6 @@ object Main extends Log {
   def parseFile(name: String): Unit = {
     val engine = new TemplateEngine
     val output = engine.layout(TemplateSource.fromFile(name))
-    log.info(output)
+    logger.info(output)
   }
 }

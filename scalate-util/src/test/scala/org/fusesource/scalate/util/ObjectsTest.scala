@@ -19,8 +19,9 @@ package org.fusesource.scalate
 package util
 
 import Objects._
+import slogging.StrictLogging
 
-class ObjectsTest extends FunSuiteSupport {
+class ObjectsTest extends FunSuiteSupport with StrictLogging {
 
   test("inject no params") {
     val a = assertInstantiate(classOf[NoParams])
@@ -33,7 +34,7 @@ class ObjectsTest extends FunSuiteSupport {
   protected def assertInstantiate[T](clazz: Class[T], injectValues: List[AnyRef] = List()): T = {
     val answer = instantiate(clazz, injectValues)
     assert(answer != null, "Should have instantiated an instance of " + clazz.getName)
-    debug("Instantiated: " + answer)
+    logger.debug("Instantiated: " + answer)
     answer
 
   }
@@ -50,4 +51,3 @@ case class StringParam(name: String)
 class NoParams {
   val value = "Hello"
 }
-

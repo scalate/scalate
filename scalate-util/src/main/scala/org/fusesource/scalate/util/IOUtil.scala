@@ -18,16 +18,15 @@
 
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 import java.io._
 import java.util.zip.{ ZipEntry, ZipInputStream }
 import java.net.URL
-import scala.util.parsing.input.{ Position, OffsetPosition }
-
+import scala.util.parsing.input.{ OffsetPosition, Position }
 import scala.language.implicitConversions
 
-object IOUtil {
-
-  val log = Log(getClass); import log._
+object IOUtil extends LazyLogging {
 
   class InvalidDirectiveException(directive: String, pos: Position) extends RuntimeException(directive + " at " + pos, null)
 
@@ -228,7 +227,7 @@ object IOUtil {
         } else {
           val name = entry.getName
           if (!entry.isDirectory && filter(entry)) {
-            debug("processing resource: %s", name)
+            logger.debug(s"processing resource: $name")
             val file = new File(outputDir.getCanonicalPath + "/" + name)
             file.getParentFile.mkdirs
             val bos = new FileOutputStream(file)

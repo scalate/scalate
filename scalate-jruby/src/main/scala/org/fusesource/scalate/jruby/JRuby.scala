@@ -1,6 +1,5 @@
 package org.fusesource.scalate.jruby
 
-import org.fusesource.scalate.util.Log
 import java.io.StringWriter
 import org.jruby.RubyInstanceConfig
 import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
@@ -8,7 +7,7 @@ import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
 /**
  * A simple interface to the jruby interpreter
  */
-class JRuby extends Log {
+class JRuby {
 
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)

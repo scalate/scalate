@@ -20,6 +20,7 @@ package util
 
 import org.scalatest.matchers.should.Matchers
 
+/*
 object LogTest
 
 class LogTest extends FunSuiteSupport with Matchers {
@@ -47,3 +48,4 @@ class LogTest extends FunSuiteSupport with Matchers {
     log.log.getName should equal("org.fusesource.scalate.util.LogTest#InnerObject.postfix")
   }
 }
+ */

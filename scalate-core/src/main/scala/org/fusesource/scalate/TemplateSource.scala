@@ -20,10 +20,10 @@ package org.fusesource.scalate
 import java.io.File
 import java.net.{ URI, URL }
 import java.util.regex.Pattern
-
 import org.fusesource.scalate.support._
 import org.fusesource.scalate.util.Strings.isEmpty
 import org.fusesource.scalate.util._
+import slogging.StrictLogging
 
 import scala.io.Source
 
@@ -32,8 +32,7 @@ import scala.io.Source
  *
  * @version $Revision : 1.1 $
  */
-trait TemplateSource extends Resource {
-  import TemplateSource.log._
+trait TemplateSource extends Resource with StrictLogging {
 
   var engine: TemplateEngine = _
   private[this] var _packageName: String = ""
@@ -125,7 +124,7 @@ trait TemplateSource extends Resource {
         if (sep != "/") {
           // on windows lets replace the \ in a directory name with /
           val newName = name.replace('\\', '/')
-          debug("converted windows path into: " + newName)
+          logger.debug("converted windows path into: " + newName)
           newName
         } else {
           name
@@ -165,7 +164,6 @@ trait TemplateSource extends Resource {
  * Helper methods to create a [[org.fusesource.scalate.TemplateSource]] from various sources
  */
 object TemplateSource {
-  val log = Log(getClass)
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from the actual String contents using the given

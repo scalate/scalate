@@ -25,12 +25,12 @@ class TextileTest extends FunSuiteSupport {
   val filter = TextileFilter
 
   protected def renderTextile(source: String): String = {
-    debug("Converting: " + source)
+    logger.debug("Converting: " + source)
     val context = new DefaultRenderContext("foo.textile", new TemplateEngine())
     val actual = filter.filter(context, source)
-    info("Generated: " + actual)
+    logger.info("Generated: " + actual)
 
-    info(actual)
+    logger.info(actual)
     actual
   }
 

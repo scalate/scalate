@@ -21,27 +21,23 @@ package jersey
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import javax.ws.rs.core.Context
-
 import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import com.sun.jersey.spi.template.ViewProcessor
-
-import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import util.{ Log, ResourceNotFoundException }
-
-object ScalateTemplateProcessor extends Log
+import org.fusesource.scalate.servlet.{ ServletHelper, ServletTemplateEngine, TemplateEngineServlet }
+import slogging.StrictLogging
+import util.ResourceNotFoundException
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates
  * @version $Revision : 1.1 $
  */
-class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
-  import ScalateTemplateProcessor._
+class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with StrictLogging {
 
   @Context
   var servletContext: ServletContext = _
@@ -62,12 +58,12 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
   def resolve(requestPath: String): String = {
 
     if (servletContext == null) {
-      warn("No servlet context")
+      logger.warn("No servlet context")
       return null
     }
     val engine = ServletTemplateEngine(servletContext)
     if (engine == null) {
-      warn("No ServletTemplateEngine context")
+      logger.warn("No ServletTemplateEngine context")
       return null
     }
 
@@ -94,7 +90,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
       }
     } catch {
       case e: MalformedURLException =>
-        warn(e, "Tried to load template using Malformed URL: %s", e.getMessage)
+        logger.warn("Tried to load template using Malformed URL: ${e.getMessage}", e)
         null
     }
   }

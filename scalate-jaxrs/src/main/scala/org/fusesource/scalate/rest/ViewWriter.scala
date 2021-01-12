@@ -39,17 +39,17 @@ import java.io.OutputStream
 import java.lang.reflect.Type
 import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import java.lang.{ String, Class }
+import javax.ws.rs.core.{ Context, MediaType, MultivaluedMap }
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+import java.lang.{ Class, String }
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.servlet.{ ServletHelper, ServletTemplateEngine, TemplateEngineServlet }
+import org.fusesource.scalate.util.ResourceNotFoundException
+import slogging.StrictLogging
+
 import javax.ws.rs.core.UriInfo
 import javax.ws.rs.WebApplicationException
-
-object ViewWriter extends Log
 
 /**
  * Renders a [[org.fusesource.scalate.rest.View]] using the Scalate template engine
@@ -57,8 +57,7 @@ object ViewWriter extends Log
  * @version $Revision : 1.1 $
  */
 @Provider
-class ViewWriter[T] extends MessageBodyWriter[View[T]] {
-  import ViewWriter._
+class ViewWriter[T] extends MessageBodyWriter[View[T]] with StrictLogging {
 
   @Context
   protected var uriInfo: UriInfo = _
@@ -84,7 +83,7 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
       val template = view.uri
       finder.findTemplate(template) match {
         case Some(name) =>
-          info("Attempting to generate View for %s", name)
+          logger.info("Attempting to generate View for %s", name)
           // Ensure headers are committed
           //out.flush()
           view.model match {

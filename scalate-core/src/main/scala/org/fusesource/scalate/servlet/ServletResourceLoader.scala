@@ -19,15 +19,14 @@ package org.fusesource.scalate.servlet
 
 import java.io.File
 import java.net.MalformedURLException
-
 import javax.servlet.ServletContext
 import org.fusesource.scalate.util.Resource._
-import org.fusesource.scalate.util.{ FileResourceLoader, Log, ResourceLoader, ResourceNotFoundException }
+import org.fusesource.scalate.util.{ FileResourceLoader, ResourceLoader, ResourceNotFoundException }
+import slogging.StrictLogging
 
-object ServletResourceLoader extends Log {
+object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context, new FileResourceLoader())
 }
-import org.fusesource.scalate.servlet.ServletResourceLoader._
 
 /**
  * Loads files using <code>ServletContext</code>.
@@ -86,12 +85,12 @@ class ServletResourceLoader(
   protected def realFile(uri: String): File = {
     def findFile(uri: String): File = {
       val path = context.getRealPath(uri)
-      debug("realPath for: " + uri + " is: " + path)
+      logger.debug("realPath for: " + uri + " is: " + path)
 
       var answer: File = null
       if (path != null) {
         val file = new File(path)
-        debug("file from realPath for: " + uri + " is: " + file)
+        logger.debug("file from realPath for: " + uri + " is: " + file)
         if (file.canRead) { answer = file }
       }
       answer

@@ -18,19 +18,17 @@
 package org.fusesource.scalate
 package wikitext
 
-import util.Log
-
-object AttributesTag extends Log; import AttributesTag._
+import slogging.StrictLogging
 
 /**
  * Allows Scalate attributes to be defined inside a confluence template.
  *
  * For example  {attributes:layout=foo.scaml } to change the layout
  */
-class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
+class AttributesTag extends AbstractConfluenceTagSupport("attributes") with StrictLogging {
 
   def setOption(key: String, value: String) = {
-    debug("{attributes} setting %s to %s", key, value)
+    logger.debug("{attributes} setting %s to %s", key, value)
     val context = RenderContext()
     context.attributes(key) = value
   }
@@ -38,4 +36,3 @@ class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
   def doTag() = {
   }
 }
-

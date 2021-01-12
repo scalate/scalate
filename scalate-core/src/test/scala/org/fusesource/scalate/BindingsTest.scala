@@ -26,18 +26,18 @@ class BindingsTest extends TemplateTestSupport {
 
     val text = engine.layout(TemplateSource.fromText("foo.ssp", "hello ${response}"))
 
-    info("Got: " + text)
+    logger.info("Got: " + text)
   }
 
   test("Int binding with a default value") {
     engine.bindings = List(Binding("year", "Int", false, Some("1970")))
 
     val text1 = engine.layout(TemplateSource.fromText("foo2.ssp", "${year.toString}'s is the hippies era"))
-    info("Got: " + text1)
+    logger.info("Got: " + text1)
     assertResult("1970's is the hippies era") { text1.trim }
 
     val text2 = engine.layout(TemplateSource.fromText("foo3.ssp", "${year.toString}'s is the hippies era"), Map("year" -> 1950))
-    info("Got: " + text2)
+    logger.info("Got: " + text2)
     assertResult("1950's is the hippies era") { text2.trim }
   }
 }

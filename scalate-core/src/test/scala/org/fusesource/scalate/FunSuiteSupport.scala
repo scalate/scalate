@@ -18,21 +18,20 @@
 package org.fusesource.scalate
 
 import java.io.File
-
 import org.fusesource.scalate.scuery.XmlHelper._
-import org.fusesource.scalate.util.Log
 import org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
 import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap }
 
 import scala.xml.NodeSeq
 import org.scalatest.funsuite.AnyFunSuite
+import slogging.StrictLogging
 
 /**
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport extends AnyFunSuite with Log with BeforeAndAfterAllConfigMap {
+abstract class FunSuiteSupport extends AnyFunSuite with StrictLogging with BeforeAndAfterAllConfigMap {
 
   protected var _basedir = "."
 
@@ -46,7 +45,7 @@ abstract class FunSuiteSupport extends AnyFunSuite with Log with BeforeAndAfterA
       case Some(basedir) => basedir.toString
       case _ => System.getProperty("basedir", ".")
     }
-    debug("using basedir: %s", _basedir)
+    logger.debug("using basedir: %s", _basedir)
   }
 
   def assertSize(selector: String, result: NodeSeq, expected: Int): Unit = {
