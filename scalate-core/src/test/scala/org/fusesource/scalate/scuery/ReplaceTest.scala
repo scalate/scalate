@@ -20,6 +20,7 @@ package org.fusesource.scalate.scuery
 import _root_.org.fusesource.scalate.FunSuiteSupport
 
 class ReplaceTest extends FunSuiteSupport {
+
   val xml = <html>
               <body>
                 <div id="content">
@@ -40,7 +41,7 @@ class ReplaceTest extends FunSuiteSupport {
 
     val result = transformer(xml)
 
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     val a = (result \\ "a")(0)
     assertResult("http://scalate.fusesource.org/") { (a \ "@href").toString }

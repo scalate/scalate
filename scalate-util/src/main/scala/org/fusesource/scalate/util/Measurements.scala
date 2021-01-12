@@ -1,7 +1,8 @@
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 object Measurements {
-  val log = Log(classOf[UnitOfMeasure])
 
   // computer memory/disk sizes
   val gb = UnitOfMeasure("Gb", "Gb")
@@ -28,9 +29,7 @@ object Measurements {
   val amount = UnitOfMeasure("", "", thousand, 1000)
 }
 
-import Measurements.log
-
-case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeasure = null, size: Double = 0) {
+case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeasure = null, size: Double = 0) extends LazyLogging {
   // we are using null rather than None as it seems a bit easier on the DSL defining the data
   if (parent != null) {
     assert(size != 0, "Unit should never have size of zero if we have a parent!")
@@ -45,7 +44,7 @@ case class UnitOfMeasure(unitsName: String, unitName: String, parent: UnitOfMeas
         apply(text.toDouble, defaultExpression)
       } catch {
         case e: Exception =>
-          log.debug("Could not convert " + text + " to a number: " + e, e)
+          logger.debug("Could not convert " + text + " to a number: " + e, e)
           defaultExpression
       }
     case _ => defaultExpression

@@ -48,7 +48,7 @@ class Boot(engine: TemplateEngine) {
       // lets add the confluence macros...
       ConfluenceLanguageExtensions.extensions ++= List(ExpressionTag("project_version", () => project_version))
 
-      info("Bootstrapped website gen for: %s", project_name)
+      logger.info("Bootstrapped website gen for: %s", project_name)
     }
   }
 }

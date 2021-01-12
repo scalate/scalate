@@ -36,9 +36,9 @@ class WilleScueryTest extends FunSuiteSupport {
 
   def show(m: => String): Unit = {
     if (verbose) {
-      info(m)
+      logger.info(m)
     } else {
-      debug(m)
+      logger.debug(m)
     }
   }
 
@@ -55,4 +55,3 @@ class WilleScueryTest extends FunSuiteSupport {
               </table>
             </div>
 }
-

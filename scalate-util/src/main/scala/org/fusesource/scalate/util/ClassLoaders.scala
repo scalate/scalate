@@ -17,19 +17,19 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 import java.net.URL
 import scala.language.existentials
 
 object ClassLoaders {
-
-  val log = Log(getClass)
 
   /**
    * Returns the default class loaders to use for loading which is the current threads context class loader
    * and the class loader which loaded scalate-core by default
    */
   def defaultClassLoaders: List[ClassLoader] = {
-    List(Thread.currentThread.getContextClassLoader, classOf[Logging].getClassLoader)
+    List(Thread.currentThread.getContextClassLoader, classOf[LazyLogging].getClassLoader)
   }
 
   /**

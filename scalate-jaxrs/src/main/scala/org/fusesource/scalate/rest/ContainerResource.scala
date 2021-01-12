@@ -17,25 +17,23 @@
  */
 package org.fusesource.scalate.rest
 
+import slogging.StrictLogging
+
 import javax.ws.rs.{ POST, Path, PathParam }
-import org.fusesource.scalate.util.{ Log }
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.Response.Status
 
-object ContainerResource extends Log
-
 /**
  * @version $Revision: 1.1 $
  */
-abstract class ContainerResource[K, E, R] {
-  import ContainerResource._
+abstract class ContainerResource[K, E, R] extends StrictLogging {
 
   def container: Container[K, E]
 
   @Path("id/{id}")
   def get(@PathParam("id") key: K): R = {
-    debug("Loading id '%s'", key)
+    logger.debug("Loading id '%s'", key)
 
     container.get(key) match {
       case Some(e) => createChild(e)

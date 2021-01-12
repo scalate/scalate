@@ -72,8 +72,8 @@ class SwizzleLinkFilterTest extends FunSuiteSupport {
       val context = new DefaultRenderContext("foo.html", new TemplateEngine)
       val answer = transformer.filter(context, html)
 
-      info("converted " + html)
-      info("into: " + answer)
+      logger.info("converted " + html)
+      logger.info("into: " + answer)
 
       assertResult(expected) { answer }
     }

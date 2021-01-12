@@ -20,11 +20,12 @@ package org.fusesource.scalate.wikitext
 import collection.mutable.HashMap
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
+
 import io.Source
 import java.io.File
-import java.util.regex.{ Pattern, Matcher }
-import org.eclipse.mylyn.wikitext.core.parser.{ DocumentBuilder, Attributes }
-import org.fusesource.scalate.util.Log
+import java.util.regex.{ Matcher, Pattern }
+import org.eclipse.mylyn.wikitext.core.parser.{ Attributes, DocumentBuilder }
+import slogging.StrictLogging
 
 /**
  * Helper class to access file containing snippets of code:
@@ -32,9 +33,8 @@ import org.fusesource.scalate.util.Log
  * - using a full URL
  * - using a URL that starts with a predefined prefix
  */
-object Snippets {
+object Snippets extends StrictLogging {
 
-  val log = Log(getClass); import log._
   var errorHandler: (SnippetBlock, Throwable) => Unit = logError
 
   var failOnError = false
@@ -79,7 +79,7 @@ object Snippets {
     if (!file.exists) {
       file = new File(url)
     }
-    debug("for location: " + location + " using prefix: " + url)
+    logger.debug("for location: " + location + " using prefix: " + url)
     if (file.exists || !isUrl) {
       Source.fromFile(file, "UTF-8")
     } else {
@@ -88,18 +88,17 @@ object Snippets {
   }
 
   protected def logError(snippet: SnippetBlock, e: Throwable): Unit = {
-    error(e, "Failed to generate snippet: " + snippet.url + ". " + e)
+    logger.error(s"Failed to generate snippet: ${snippet.url}. " + e, e)
     if (failOnError) {
       throw e
     }
   }
 }
-import Snippets.log._
 
 /**
  * Represents a {snippet} block in the wiki markup
  */
-class SnippetBlock extends ParameterizedBlock {
+class SnippetBlock extends ParameterizedBlock with StrictLogging {
 
   var pattern: Pattern = Pattern.compile("\\s*\\{snippet(?::([^\\}]*))?\\}(.*)")
   var matcher: Matcher = null
@@ -168,7 +167,7 @@ class SnippetBlock extends ParameterizedBlock {
       case "url" => url = value
       case "lang" => lang = Some(value)
       case "pygmentize" => pygmentize = value.toBoolean
-      case n => warn("Ignored snippet attribute %s on %s", n, this)
+      case n => logger.warn("Ignored snippet attribute %s on %s", n, this)
     }
   }
 

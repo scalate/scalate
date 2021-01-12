@@ -28,12 +28,12 @@ abstract class AbstractConfluenceTest extends FunSuiteSupport {
   val filter = ConfluenceFilter
 
   protected def renderConfluence(source: String): String = {
-    debug("Converting: %s", source)
+    logger.debug("Converting: %s", source)
     val context = new DefaultRenderContext("foo.html", new TemplateEngine())
     val actual = filter.filter(context, source)
-    info("Generated: %s", actual)
+    logger.info("Generated: %s", actual)
 
-    info(actual)
+    logger.info(actual)
     actual
   }
 

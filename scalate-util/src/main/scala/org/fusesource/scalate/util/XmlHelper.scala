@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.StrictLogging
+
 import scala.xml._
 import scala.xml.parsing.ConstructingParser
 import scala.io.Source
@@ -25,15 +27,14 @@ import scala.io.Source
  * @version $Revision : 1.1 $
  */
 
-object XmlHelper {
-  val log = Log(getClass); import log._
+object XmlHelper extends StrictLogging {
 
   /**
    * Parsers some markup which might not be a single Xml document
    * by wrapping it in a root XML element first
    */
   def textToNodeSeq(text: String): NodeSeq = {
-    debug("parsing markup: " + text)
+    logger.debug("parsing markup: " + text)
 
     val src = Source.fromString("<p>" + text + "</p>")
 

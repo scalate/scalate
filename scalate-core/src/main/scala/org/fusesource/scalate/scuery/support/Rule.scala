@@ -19,9 +19,9 @@ package org.fusesource.scalate.scuery.support
 
 import xml.{ Elem, Node, NodeSeq }
 import org.fusesource.scalate.scuery.XmlHelper._
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
-object Rule extends Log {
+object Rule {
   /**
    * Combines multiple rules to a single rule
    */
@@ -44,14 +44,13 @@ object Rule extends Log {
     }
   }
 }
-import Rule._
 
 /**
  * Represents manipuluation rules
  *
  * @version $Revision : 1.1 $
  */
-trait Rule {
+trait Rule extends StrictLogging {
   def apply(node: Node): NodeSeq
 
   /**
@@ -84,7 +83,7 @@ case class ReplaceContentRule(fn: Node => NodeSeq) extends Rule {
   def apply(node: Node) = node match {
     case e: Elem =>
       val contents = fn(e)
-      debug("Replacing content = " + contents)
+      logger.debug("Replacing content = " + contents)
       replaceContent(e, contents)
     case n => n
   }
@@ -94,7 +93,7 @@ case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
-      debug("Setting attribute %s to %s", name, value)
+      logger.debug("Setting attribute %s to %s", name, value)
       setAttribute(e, name, value)
 
     case n => n
@@ -107,7 +106,7 @@ case class SetSelectiveAttributeRule(name: String, fn: (Node) => String) extends
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
-      debug("Selectively setting attribute %s to %s", name, value)
+      logger.debug("Selectively setting attribute %s to %s", name, value)
       if (e.attribute(name).isDefined) setAttribute(e, name, value) else e
 
     case n => n

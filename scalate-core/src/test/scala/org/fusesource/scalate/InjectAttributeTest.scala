@@ -28,7 +28,7 @@ class InjectAttributeTest extends TemplateTestSupport {
   test("Using render context directly") {
     val helper = context.inject[SomeHelper]
     assert(helper != null)
-    log.info("got helper! " + helper)
+    logger.info("got helper! " + helper)
   }
 
   // in the following test, the compiler does not pass in the
@@ -39,7 +39,7 @@ class InjectAttributeTest extends TemplateTestSupport {
     test("Using render context directly without explicit type param") {
       val helper: SomeHelper = context.inject
       assert(helper != null)
-      log.info("got helper! " + helper)
+      logger.info("got helper! " + helper)
     }
   }
 

@@ -17,14 +17,15 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 import java.lang.reflect.Constructor
 import scala.reflect.ClassTag
 
 /**
  * Helper object for working with objects using reflection
  */
-object Objects {
-  val log = Log(getClass); import log._
+object Objects extends LazyLogging {
 
   /**
    * A helper method to return a non null value or the default value if it is null
@@ -67,7 +68,7 @@ object Objects {
       val answer = if (args.isEmpty) {
         clazz.getConstructor().newInstance()
       } else {
-        debug("About to call constructor: %S on %s with args: %s", c, clazz.getName, args.toList)
+        logger.debug("About to call constructor: %S on %s with args: %s", c, clazz.getName, args.toList)
         c.newInstance(args: _*)
       }
       answer.asInstanceOf[T]

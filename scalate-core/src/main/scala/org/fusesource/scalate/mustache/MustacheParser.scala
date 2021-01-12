@@ -18,9 +18,9 @@
 package org.fusesource.scalate.mustache
 
 import util.parsing.combinator.RegexParsers
-import util.parsing.input.{ Positional, CharSequenceReader, Position }
+import util.parsing.input.{ CharSequenceReader, Position, Positional }
 import org.fusesource.scalate.InvalidSyntaxException
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
 sealed abstract class Statement extends Positional
 
@@ -49,16 +49,12 @@ case class SetDelimiter(open: Text, close: Text) extends Statement
 case class ImplicitIterator(name: String) extends Statement
 case class Pragma(name: Text, options: Map[String, String]) extends Statement
 
-object MustacheParser extends Log
-
 /**
  * Parser for the Mustache template language
  *
  * @version $Revision : 1.1 $
  */
-class MustacheParser extends RegexParsers {
-
-  import MustacheParser._
+class MustacheParser extends RegexParsers with StrictLogging {
 
   private[this] var _open: String = "{{"
   private[this] var _close: String = "}}"
@@ -119,7 +115,7 @@ class MustacheParser extends RegexParsers {
     case a: SetDelimiter =>
       _open = a.open.value
       _close = a.close.value
-      debug("applying new delim '" + a)
+      logger.debug("applying new delim '" + a)
       a
   }
 

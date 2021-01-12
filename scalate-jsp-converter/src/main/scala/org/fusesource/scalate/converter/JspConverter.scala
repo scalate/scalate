@@ -18,8 +18,9 @@
 package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.support.Text
+
 import util.matching.Regex.Match
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
 object ExpressionLanguage {
   protected val operators = Map("eq" -> "==", "ne" -> "!=",
@@ -95,9 +96,8 @@ trait IndentWriter {
 
   def text = out.toString
 }
-object JspConverter extends Log
-class JspConverter extends IndentWriter {
-  import JspConverter._
+
+class JspConverter extends IndentWriter with StrictLogging {
 
   var coreLibraryPrefix: String = "c"
   var whenCount = 0
@@ -192,7 +192,7 @@ class JspConverter extends IndentWriter {
             print("${uri(" + asParam(exp) + ")}")
 
           case _ =>
-            warn("No converter available for tag <" + coreLibraryPrefix + ":" + name + ">: " + e)
+            logger.warn("No converter available for tag <" + coreLibraryPrefix + ":" + name + ">: " + e)
             print(e)
         }
       case _ => print(e)

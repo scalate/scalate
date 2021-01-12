@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.StrictLogging
+
 import io.Source
 import java.io._
 import java.net.{ URISyntaxException, URL }
@@ -153,9 +155,8 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
   def relativeUri(root: File) = Files.relativeUri(root, file)
 }
 
-object URLResource extends Log
-case class URLResource(url: URL) extends WriteableResource {
-  import URLResource._
+case class URLResource(url: URL) extends WriteableResource with StrictLogging {
+
   def uri = url.toExternalForm
 
   lazy val connection = url.openConnection
@@ -181,7 +182,7 @@ case class URLResource(url: URL) extends WriteableResource {
       } catch {
         case e: ThreadDeath => throw e
         case e: VirtualMachineError => throw e
-        case e: Exception => debug(e, "While converting " + url + " to a File I caught: " + e)
+        case e: Exception => logger.debug(s"While converting $url to a File I caught: $e", e)
       }
     }
     if (f != null && f.exists && f.isFile) {

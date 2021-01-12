@@ -23,7 +23,7 @@ import java.io.File
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.util.{ Log, SourceMap, SourceMapInstaller }
+import org.fusesource.scalate.util.{ SourceMap, SourceMapInstaller }
 
 import scala.collection.JavaConverters._
 import scala.collection.immutable.SortedMap
@@ -57,8 +57,6 @@ case class SourceLine(
     }
   }
 }
-
-object ConsoleHelper extends Log
 
 /**
  * Helper snippets for creating the console

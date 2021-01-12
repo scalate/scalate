@@ -37,7 +37,7 @@ class ConvertAbsoluteLinkTest extends FunSuiteSupport {
     test(link + " from " + requestUri) {
       val answer = Links.convertAbsoluteLinks(link, requestUri)
 
-      info("should convert " + link + " at " + requestUri + " -> " + answer)
+      logger.info("should convert " + link + " at " + requestUri + " -> " + answer)
       assertResult(expected) { answer }
     }
   }
@@ -46,7 +46,7 @@ class ConvertAbsoluteLinkTest extends FunSuiteSupport {
     test(link) {
       val answer = Links.convertAbsoluteLinks(link, "/foo/bar.html")
 
-      info("should be unchanged " + link + " -> " + answer)
+      logger.info("should be unchanged " + link + " -> " + answer)
       assertResult(link, "Should not be changed") { answer }
     }
   }

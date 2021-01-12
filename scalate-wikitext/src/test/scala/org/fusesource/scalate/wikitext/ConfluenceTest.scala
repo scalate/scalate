@@ -17,9 +17,11 @@
  */
 package org.fusesource.scalate.wikitext
 
+import slogging.StrictLogging
+
 import java.io.File
 
-class ConfluenceTest extends AbstractConfluenceTest {
+class ConfluenceTest extends AbstractConfluenceTest with StrictLogging {
 
   test("parse confluence wiki") {
     assertFilter(
@@ -61,7 +63,7 @@ END
 
     }
   } else {
-    warn("Pygmentize not installed so ignoring the tests")
+    logger.warn("Pygmentize not installed so ignoring the tests")
   }
 
 }

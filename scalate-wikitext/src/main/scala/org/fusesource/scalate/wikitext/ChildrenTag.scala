@@ -19,17 +19,17 @@ package org.fusesource.scalate
 package wikitext
 
 import StringConverter._
+import slogging.StrictLogging
 
 import java.io.File
 import xml.NodeSeq
-import util.{ Log, Files }
+import util.Files
 
-object ChildrenTag extends Log
 /**
  * Implements the **children** macro in confluence
  */
-class ChildrenTag extends AbstractConfluenceTagSupport("children") {
-  import ChildrenTag._
+class ChildrenTag extends AbstractConfluenceTagSupport("children") with StrictLogging {
+
   var page: Option[String] = None
   var depth = 1
   var all = false
@@ -53,12 +53,12 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
           {
             files.map {
               f =>
-                debug("{children} processing file '%s'", f)
+                logger.debug("{children} processing file '%s'", f)
                 if (f.isFile) {
                   val title = Pages.title(f)
                   val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
                   val child = new File(f.getParentFile, Files.dropExtension(f))
-                  debug("{children} checking child '%s'", child)
+                  logger.debug("{children} checking child '%s'", child)
                   val dirXml = if (child.isDirectory) {
                     showChildren(rootDir, child, level + 1)
                   } else {
@@ -85,18 +85,18 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
     val pageUri = page.getOrElse(Files.dropExtension(pageName))
     SwizzleLinkFilter.findWikiFile(pageUri) match {
       case Some(file) =>
-        info("{children} now going to iterate from file '%s'", file)
+        logger.info("{children} now going to iterate from file '%s'", file)
         val rootDir = file.getParentFile
         val dir = new File(rootDir, Files.dropExtension(file))
         if (!dir.exists) {
-          warn("{children} cannot find directory: %s", dir)
+          logger.warn("{children} cannot find directory: %s", dir)
         } else {
           //context << showChildren(rootDir, dir, 1)
           builder.charactersUnescaped(showChildren(rootDir, dir, 1).toString)
         }
 
       case _ =>
-        warn("Could not find wiki file for page '%s'", pageUri)
+        logger.warn("Could not find wiki file for page '%s'", pageUri)
     }
   }
 }

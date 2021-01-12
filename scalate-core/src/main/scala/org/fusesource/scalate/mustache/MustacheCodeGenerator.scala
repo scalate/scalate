@@ -18,19 +18,16 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate._
-import support.{ Code, AbstractCodeGenerator }
+import slogging.StrictLogging
+import support.{ AbstractCodeGenerator, Code }
+
 import collection.mutable.Stack
-import util.Log
-
 import scala.language.implicitConversions
-
-object MustacheCodeGenerator extends Log
 
 /**
  * @version $Revision: 1.1 $
  */
-class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
-  import MustacheCodeGenerator._
+class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] with StrictLogging {
 
   override val stratumName = "MSC"
 
@@ -103,7 +100,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
           this << "$_scalate_$_context << \"ERROR: This implementation of mustache doesn't understand the '" + name + "' pragma\""
         case SetDelimiter(open, close) =>
         case s => {
-          warn("Unsupported statement: %s", s)
+          logger.warn("Unsupported statement: %s", s)
         }
       }
     }

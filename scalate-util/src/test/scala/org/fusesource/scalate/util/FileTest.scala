@@ -32,7 +32,7 @@ class FileTest extends FunSuiteSupport {
     val f2: File = sources
     assertResult(true) { f2.exists }
 
-    info("created file: " + sources.file)
+    logger.info("created file: " + sources.file)
   }
 
   test("getting text of a file") {
@@ -41,7 +41,7 @@ class FileTest extends FunSuiteSupport {
     val t = file.text.trim
     assertResult("hello world!") { t }
 
-    info("Loaded file: " + file + " as text: " + t)
+    logger.info("Loaded file: " + file + " as text: " + t)
   }
 
   test("getting text of a file with include") {
@@ -51,7 +51,7 @@ class FileTest extends FunSuiteSupport {
 
     assertResult("My header 1\nhello world!") { t }
 
-    info("Loaded file: " + file + " as text: " + t)
+    logger.info("Loaded file: " + file + " as text: " + t)
   }
 
   test("getting text of a file with two includes") {
@@ -61,7 +61,7 @@ class FileTest extends FunSuiteSupport {
 
     assertResult("My header 1\nMy Second Header\ngood bye world!") { t }
 
-    info("Loaded file: " + file + " as text: " + t)
+    logger.info("Loaded file: " + file + " as text: " + t)
   }
 
   test("getting text of a file with include in the middle") {
@@ -71,7 +71,7 @@ class FileTest extends FunSuiteSupport {
 
     assertResult("hello world!\nMy header 1\nAFTER WORLD!") { t }
 
-    info("Loaded file: " + file + " as text: " + t)
+    logger.info("Loaded file: " + file + " as text: " + t)
   }
 
   test("getting text of a file with nested include") {
@@ -81,13 +81,13 @@ class FileTest extends FunSuiteSupport {
 
     assertResult("My header 1\nhello world!\nEnd of 2012 is here") { t }
 
-    info("Loaded file: " + file + " as text: " + t)
+    logger.info("Loaded file: " + file + " as text: " + t)
   }
 
   test("working with names") {
     val file = baseDir / "foo.txt"
 
-    info("name: " + file.name + " extension: " + file.extension)
+    logger.info("name: " + file.name + " extension: " + file.extension)
 
     assertResult("txt", "extension") { file.extension }
     assertResult("foo", "nameDropExtension") { file.nameDropExtension }
@@ -126,7 +126,7 @@ class FileTest extends FunSuiteSupport {
 
   def assertNameSplit(name: String, expectedName: String, expectedExt: String): Unit = {
     test("splitName: " + name) {
-      info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
+      logger.info("Name " + name + " -> name: " + Files.dropExtension(name) + " extension: " + Files.extension(name))
 
       assertResult(expectedExt, "extension") { Files.extension(name) }
       assertResult(expectedName, "name without extension") { Files.dropExtension(name) }

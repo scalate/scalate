@@ -21,24 +21,21 @@ import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.spi.template.ViewProcessor
 import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.core.reflection.ReflectionHelper
 import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
-import org.fusesource.scalate.util.Log
-
-object ScueryTemplateProcessor extends Log
+import slogging.StrictLogging
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scuery transformer
  * @version $Revision : 1.1 $
  */
 
-class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
-  import ScueryTemplateProcessor._
+class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] with StrictLogging {
 
   @Context
   var servletContext: ServletContext = _
@@ -61,11 +58,11 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
   def resolve(requestPath: String): String = {
     if (servletContext == null) {
-      warn("No servlet context")
+      logger.warn("No servlet context")
       return null
     }
 
-    debug("Request path: " + requestPath)
+    logger.debug("Request path: " + requestPath)
     try {
       val path = if (basePath.length > 0) basePath + requestPath else requestPath
 
@@ -89,7 +86,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
       }
     } catch {
       case e: MalformedURLException =>
-        warn(e, "Tried to load template using Malformed URL: %s", e.getMessage)
+        logger.warn(s"Tried to load template using Malformed URL: ${e.getMessage}", e)
         null
     }
   }
@@ -99,7 +96,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
     paths.find {
       t =>
-        debug("Trying to find template: " + t)
+        logger.debug("Trying to find template: " + t)
         servletContext.getResource(t) ne null
     }
   }
@@ -116,7 +113,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
     try {
 
-      debug("Attempt to find '" + resolvedPath + "'")
+      logger.debug("Attempt to find '" + resolvedPath + "'")
 
       //servletContext.getResourceAsStream(resolvedPath)
 

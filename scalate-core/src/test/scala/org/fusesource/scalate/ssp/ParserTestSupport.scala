@@ -48,15 +48,15 @@ abstract class ParserTestSupport extends FunSuiteSupport {
   }
 
   def assertValid(text: String): List[PageFragment] = {
-    debug("Parsing...")
-    debug(text)
-    debug("")
+    logger.debug("Parsing...")
+    logger.debug(text)
+    logger.debug("")
 
     val lines = (new SspParser).getPageFragments(text)
     for (line <- lines) {
-      debug("=> " + line)
+      logger.debug("=> " + line)
     }
-    debug("")
+    logger.debug("")
     lines
   }
 

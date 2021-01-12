@@ -20,18 +20,22 @@ package org.fusesource.scalate.wikitext
 import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
+
 import java.lang.String
 import collection.mutable.ListBuffer
 import org.fusesource.scalate.util.Threads._
+
 import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate._
 import org.fusesource.scalate.filter.Filter
-import java.io.{ File, ByteArrayInputStream, ByteArrayOutputStream }
-import util.{ Files, Log, IOUtil }
+import slogging.StrictLogging
 
-object Pygmentize extends Log with Filter with TemplateEngineAddOn {
+import java.io.{ ByteArrayInputStream, ByteArrayOutputStream, File }
+import util.{ Files, IOUtil }
+
+object Pygmentize extends StrictLogging with Filter with TemplateEngineAddOn {
 
   /**
    * Add the markdown filter to the template engine.
@@ -65,14 +69,14 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
         None
       } else {
         val output = new String(out.toByteArray).trim
-        debug("Pygmentize installed: " + output)
+        logger.debug("Pygmentize installed: " + output)
         val version = output.split("[ ,]")(2)
 
         Some(version)
       }
     } catch {
       case e: Exception =>
-        debug(e, "Failed to start pygmentize: " + e)
+        logger.debug(s"Failed to start pygmentize: $e", e)
         None
     }
   }

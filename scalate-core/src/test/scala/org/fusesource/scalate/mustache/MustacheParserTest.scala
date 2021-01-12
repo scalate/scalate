@@ -120,15 +120,15 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   def assertValid(text: String): List[Statement] = {
-    debug("Parsing...")
-    debug(text)
-    debug("")
+    logger.debug("Parsing...")
+    logger.debug(text)
+    logger.debug("")
 
     val lines = (new MustacheParser).parse(text)
     for (line <- lines) {
-      debug("=> " + line)
+      logger.debug("=> " + line)
     }
-    debug("")
+    logger.debug("")
     lines
   }
 
@@ -142,7 +142,7 @@ class MustacheParserTest extends FunSuiteSupport {
     val e = intercept[InvalidSyntaxException] {
       block
     }
-    debug(e, "caught: " + e)
+    logger.debug("caught: " + e, e)
     e
   }
 

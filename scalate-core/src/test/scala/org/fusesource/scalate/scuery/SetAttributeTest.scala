@@ -21,6 +21,7 @@ import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.Node
 
 class SetAttributeTest extends FunSuiteSupport {
+
   val xml = <html>
               <body>
                 <div id="content">
@@ -47,7 +48,7 @@ class SetAttributeTest extends FunSuiteSupport {
 
     val result = transformer(xml)
 
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertLink((result \\ "a")(0), "http://scalate.fusesource.org/", "foo", "A foo link")
     assertLink((result \\ "a")(1), "http://scalate.fusesource.org/documentation/", "bar", "A bar link")
@@ -55,7 +56,7 @@ class SetAttributeTest extends FunSuiteSupport {
   }
 
   def assertLink(a: Node, href: String, className: String, title: String): Unit = {
-    debug("testing link node: " + a)
+    logger.debug("testing link node: " + a)
     assertResult(href) { (a \ "@href").toString }
     assertResult(className) { (a \ "@class").toString }
     assertResult(title) { (a \ "@title").toString }

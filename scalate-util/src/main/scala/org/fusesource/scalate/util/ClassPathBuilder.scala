@@ -17,14 +17,16 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.LazyLogging
+
 import java.io.File
 import java.net.{ URI, URLClassLoader }
 import scala.collection.mutable.ArrayBuffer
 import java.util.jar.{ Attributes, JarFile }
-
 import scala.language.reflectiveCalls
 
-class ClassPathBuilder {
+class ClassPathBuilder extends LazyLogging {
+
   import ClassPathBuilder._
 
   private[this] val classpath = new ArrayBuffer[String]
@@ -101,19 +103,19 @@ class ClassPathBuilder {
               // classpath entries are usually relative to the jar
               if (new File(n).exists) n else new File(parent, n).getPath
             }
-            debug("Found manifest classpath values %s in ", answer, f)
+            logger.debug("Found manifest classpath values %s in ", answer, f)
           }
         }
       } catch {
         case e: Exception => // ignore any errors probably due to non-jar
-          debug(e, "Ignoring exception trying to open jar file: %s", f)
+          logger.debug(s"Ignoring exception trying to open jar file: $f", e)
       }
     }
     answer
   }
 }
 
-private object ClassPathBuilder extends Log {
+private object ClassPathBuilder extends LazyLogging {
 
   type AntLikeClassLoader = {
     def getClasspath: String
@@ -154,7 +156,7 @@ private object ClassPathBuilder extends Log {
       cp.split(File.pathSeparator).toIndexedSeq
 
     case _ =>
-      warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
+      logger.warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
       val parent = classLoader.getParent
       if (parent != null && parent != classLoader) getClassPathFrom(parent)
       else Nil

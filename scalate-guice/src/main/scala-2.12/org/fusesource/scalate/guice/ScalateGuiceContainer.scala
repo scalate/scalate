@@ -40,7 +40,7 @@ class ScalateGuiceContainer(
     wc: WebConfig): ResourceConfig = injector.getInstance(classOf[ResourceConfig])
 
   override def initiate(rc: ResourceConfig, wa: WebApplication) = {
-    debug("container created with " + rc + " properties: " + rc.getProperties)
+    logger.debug("container created with " + rc + " properties: " + rc.getProperties)
     super.initiate(rc, wa)
   }
 }

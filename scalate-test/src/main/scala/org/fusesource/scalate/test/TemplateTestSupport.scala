@@ -21,11 +21,12 @@ package test
 import java.io.File
 import util.IOUtil
 import org.scalatest.ConfigMap
+import slogging.StrictLogging
 
 /**
  * A useful base class for testing templates
  */
-class TemplateTestSupport extends FunSuiteSupport {
+class TemplateTestSupport extends FunSuiteSupport with StrictLogging {
 
   var engine: TemplateEngine = _
   var showOutput = false
@@ -50,7 +51,7 @@ class TemplateTestSupport extends FunSuiteSupport {
 
   def assertOutput(expectedOutput: String, template: TemplateSource, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
     var output = engine.layout(template, attributes)
-    debug("output: '" + output + "'")
+    logger.debug("output: '" + output + "'")
 
     if (trim) {
       output = output.trim
@@ -65,9 +66,9 @@ class TemplateTestSupport extends FunSuiteSupport {
   def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): String = {
     val output = engine.layout(source, attributes)
     if (showOutput) {
-      info("output: '" + output + "'")
+      logger.info("output: '" + output + "'")
     } else {
-      debug("output: '" + output + "'")
+      logger.debug("output: '" + output + "'")
     }
 
     assertTextContains(output, "template " + source, expected: _*)

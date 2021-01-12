@@ -18,13 +18,13 @@
 package org.fusesource.scalate
 
 import java.io.File
-
-import org.fusesource.scalate.util.{ IOUtil, Log }
+import org.fusesource.scalate.util.IOUtil
 import org.scalatest.ConfigMap
+import slogging.StrictLogging
 
 import scala.collection.immutable.Map
 
-abstract class TemplateTestSupport extends FunSuiteSupport with Log {
+abstract class TemplateTestSupport extends FunSuiteSupport with StrictLogging {
 
   var showOutput = false
   var engine: TemplateEngine = _
@@ -67,9 +67,9 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
 
   protected def logOutput(output: String): Unit = {
     if (showOutput) {
-      log.info("output: '" + output + "'")
+      logger.info("output: '" + output + "'")
     } else {
-      debug("output: '" + output + "'")
+      logger.debug("output: '" + output + "'")
     }
   }
 
@@ -128,7 +128,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     val e = intercept[InvalidSyntaxException] {
       block
     }
-    debug("caught: " + e, e)
+    logger.debug("caught: " + e, e)
     e
   }
 
