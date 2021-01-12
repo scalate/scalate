@@ -17,10 +17,10 @@
  */
 package org.fusesource.scalate.servlet
 
+import org.fusesource.scalate.util.URIs._
+
 import java.io._
 import java.util.Locale
-
-import _root_.org.fusesource.scalate.util.URIs._
 import javax.servlet.http._
 import javax.servlet.{ ServletContext, ServletException, ServletOutputStream }
 import org.fusesource.scalate.{ AttributeMap, DefaultRenderContext, RenderContext, TemplateEngine }

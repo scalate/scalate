@@ -19,8 +19,7 @@ package org.fusesource.scalate
 package scaml
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.io.{ StringWriter, PrintWriter, File }
-
+import java.io.{ File, PrintWriter, StringWriter }
 import org.scalatest.exceptions.TestFailedException
 
 /**

@@ -1,3 +1,0 @@
-hello world!
-@@include("src/test/resources/dummyheader.txt")
-AFTER WORLD!

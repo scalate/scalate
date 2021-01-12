@@ -1,2 +1,0 @@
-@@include("src/test/resources/dummyWithInclude.txt")
-End of 2012 is here

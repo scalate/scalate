@@ -17,20 +17,20 @@
  */
 package org.fusesource.scalate
 
+import org.fusesource.scalate.filter._
+import org.fusesource.scalate.generators.{ SspCodeGenerator, _ }
+import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
+import org.fusesource.scalate.mustache.MustacheCodeGenerator
+import org.fusesource.scalate.parsers._
+import org.fusesource.scalate.resource.{ FileResourceLoader, ResourceLoader }
+import org.fusesource.scalate.support._
+import org.fusesource.scalate.util._
+import slogging.{ LoggerFactory, StrictLogging }
+
 import java.io.{ File, PrintWriter, StringWriter }
 import java.net.URLClassLoader
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-import org.fusesource.scalate.filter._
-import org.fusesource.scalate.jade.JadeCodeGenerator
-import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
-import org.fusesource.scalate.mustache.MustacheCodeGenerator
-import org.fusesource.scalate.scaml.ScamlCodeGenerator
-import org.fusesource.scalate.ssp.SspCodeGenerator
-import org.fusesource.scalate.support._
-import org.fusesource.scalate.util._
-import slogging.{ Logger, LoggerFactory, StrictLogging }
-
 import scala.collection.immutable.TreeMap
 import scala.collection.mutable.HashMap
 import scala.language.existentials
@@ -510,7 +510,7 @@ class TemplateEngine(
     try {
       load(source, extraBindings) != null
     } catch {
-      case e: ResourceNotFoundException => false
+      case e: resource.ResourceNotFoundException => false
     }
   }
 
@@ -768,7 +768,7 @@ class TemplateEngine(
       }
 
       if (!compilerInstalled) {
-        throw new ResourceNotFoundException(
+        throw new resource.ResourceNotFoundException(
           "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
@@ -854,10 +854,10 @@ class TemplateEngine(
           throw new CompilerException(newmessage, errors)
         }
       case e: InvalidSyntaxException =>
-        e.source = source
+        // TODO e.source = source
         throw e
       case e: TemplateException => throw e
-      case e: ResourceNotFoundException => throw e
+      case e: resource.ResourceNotFoundException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }

@@ -22,7 +22,8 @@ import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
 
 import javax.ws.rs._
-import org.fusesource.scalate.{ NoFormParameterException, RenderContext }
+import org.fusesource.scalate.RenderContext
+import org.fusesource.scalate.parsers.NoFormParameterException
 import org.fusesource.scalate.rest.View
 import org.fusesource.scalate.util.IOUtil
 import slogging.StrictLogging

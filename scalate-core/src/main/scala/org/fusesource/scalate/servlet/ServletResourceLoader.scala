@@ -17,12 +17,11 @@
  */
 package org.fusesource.scalate.servlet
 
+import org.fusesource.scalate.resource.{ FileResourceLoader, Resource, ResourceLoader, ResourceNotFoundException, StreamResource }
+
 import java.io.File
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
-import org.fusesource.scalate.util.Resource._
-import org.fusesource.scalate.util.{ FileResourceLoader, ResourceLoader, ResourceNotFoundException }
-import slogging.StrictLogging
 
 object ServletResourceLoader {
   def apply(context: ServletContext) = new ServletResourceLoader(context, new FileResourceLoader())
@@ -41,14 +40,14 @@ class ServletResourceLoader(
     val file = realFile(uri)
     if (file != null) {
       if (file.isFile)
-        Some(fromFile(file))
+        Some(Resource.fromFile(file))
       else
         None
     } else {
       try {
         val url = context.getResource(uri)
         if (url != null) {
-          val resource = fromURL(url)
+          val resource = Resource.fromURL(url)
           Some(resource)
         } else {
           delegate.resource(uri)
@@ -68,7 +67,7 @@ class ServletResourceLoader(
     // the actual file for URL based resources not using getRealPath
     // (which has issues sometimes with unexpanded WARs and overlays)
     resource(uri).flatMap { r =>
-      r.toFile.find(_ != null).map(_.getPath)
+      r.asInstanceOf[StreamResource].toFile.find(_ != null).map(_.getPath)
     }.getOrElse {
       val file = realFile(uri)
       if (file != null) file.getPath else null

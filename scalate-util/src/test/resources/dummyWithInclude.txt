@@ -1,2 +1,0 @@
-@@include("src/test/resources/dummyheader.txt")
-hello world!

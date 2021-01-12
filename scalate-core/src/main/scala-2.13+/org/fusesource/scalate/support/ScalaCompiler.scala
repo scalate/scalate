@@ -18,7 +18,8 @@
 package org.fusesource.scalate.support
 
 import java.io.{ File, PrintWriter, StringWriter }
-import org.fusesource.scalate._
+import org.fusesource.scalate.{ TemplateException => _, _ }
+import org.fusesource.scalate.parsers._
 import org.fusesource.scalate.util.ClassPathBuilder
 import slogging.StrictLogging
 
@@ -69,7 +70,7 @@ class ScalaCompiler(
         case NoPosition => super.display(posIn, msg, severity)
         case _ =>
           // Adding the detected compilation error
-          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point))
+          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(java.nio.CharBuffer.wrap(posIn.source.content), posIn.point))
 
           super.display(posIn, msg, severity)
       }

@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate
 
-import org.fusesource.scalate.ssp.SspParser
+import org.fusesource.scalate.parsers.ssp.SspParser
 
 import scala.reflect.ClassTag
 import scala.util.parsing.input.Positional

@@ -1,6 +1,7 @@
 package org.fusesource.scalate
 package support
 
+import org.fusesource.scalate.parsers.TemplateException
 import org.fusesource.scalate.util.Objects
 
 import scala.language.reflectiveCalls

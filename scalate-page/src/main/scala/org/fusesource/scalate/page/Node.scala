@@ -20,6 +20,7 @@ package org.fusesource.scalate.page
 import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.util.Files
 import org.fusesource.scalate.util.IOUtil._
+
 import java.io.File
 import java.util.Date
 

@@ -28,11 +28,11 @@ import org.fusesource.scalate.scuery.Transformer
 import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
+import org.fusesource.scalate.resource.ResourceNotFoundException
 
 import scala.collection.JavaConverters._
 import xml.{ NodeSeq, XML }
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
-import org.fusesource.scalate.util.ResourceNotFoundException
 import slogging.StrictLogging
 
 /**

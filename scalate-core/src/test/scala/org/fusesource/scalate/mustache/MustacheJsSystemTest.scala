@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate.mustache
 
+import org.fusesource.scalate.parsers.Text
+
 import collection.immutable.Map
 
 case class Item(name: String, current: Boolean, url: String) {

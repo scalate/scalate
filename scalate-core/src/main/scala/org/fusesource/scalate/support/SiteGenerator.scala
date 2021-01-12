@@ -20,6 +20,7 @@ package org.fusesource.scalate.support
 import java.io.{ File, PrintWriter }
 import java.{ util => ju }
 import org.fusesource.scalate._
+import org.fusesource.scalate.parsers.NoValueSetException
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.util._
 import slogging.StrictLogging

@@ -20,7 +20,7 @@ package filter
 
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.script.ScriptException
-import org.fusesource.scalate.support.RenderHelper
+import org.fusesource.scalate.support.{ CompilerException, RenderHelper }
 import slogging.StrictLogging
 import tv.cntt.rhinocoffeescript.Compiler
 

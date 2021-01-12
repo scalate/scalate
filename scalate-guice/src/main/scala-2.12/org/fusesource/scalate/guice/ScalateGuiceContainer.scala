@@ -23,7 +23,6 @@ import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.com.sun.jersey.spi.container.servlet.WebConfig
 import _root_.com.sun.jersey.spi.container.WebApplication
 import _root_.java.util.{ Map => JMap }
-import org.fusesource.scalate.util.Log
 
 object ScalateGuiceContainer extends Log
 /**

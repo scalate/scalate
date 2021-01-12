@@ -18,8 +18,11 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate._
+import org.fusesource.scalate.parsers.{ Comment, ImplicitIterator, InvertSection, MustacheParser, Partial, Pragma, Section, SetDelimiter, Statement, Text, Variable }
 import slogging.StrictLogging
 import support.{ AbstractCodeGenerator, Code }
+
+import collection.mutable.Stack
 
 import collection.mutable.Stack
 import scala.language.implicitConversions
@@ -30,8 +33,6 @@ import scala.language.implicitConversions
 class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] with StrictLogging {
 
   override val stratumName = "MSC"
-
-  implicit def textToString(text: Text) = text.value
 
   implicit def textOptionToString(text: Option[Text]): Option[String] = text match {
     case None => None

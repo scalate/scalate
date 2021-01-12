@@ -18,7 +18,6 @@
 package org.fusesource.scalate.support
 
 import slogging.StrictLogging
-
 import scala.language.implicitConversions
 
 /**

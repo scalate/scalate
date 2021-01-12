@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.mustache
 
+import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
 import util.parsing.json.JSON
-import org.fusesource.scalate.util.IOUtil
 
 /**
  * Runs the system tests from the mustache.js distro

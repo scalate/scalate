@@ -17,15 +17,13 @@
  */
 package org.fusesource.scalate.support
 
-import java.io.{ File, PrintWriter, StringWriter }
-
+import java.io.{File, PrintWriter, StringWriter}
 import org.fusesource.scalate._
-import org.fusesource.scalate.util.{ ClassPathBuilder, Log }
 
-import scala.reflect.internal.util.{ FakePos, NoPosition, Position }
+import scala.reflect.internal.util.{FakePos, NoPosition, Position}
 import scala.runtime.ByteRef
-import scala.tools.nsc.{ Global, Settings }
-import scala.tools.nsc.reporters.{ ConsoleReporter, Reporter }
+import scala.tools.nsc.{Global, Settings}
+import scala.tools.nsc.reporters.{ConsoleReporter, Reporter}
 import scala.util.parsing.input.OffsetPosition
 
 object ScalaCompiler extends Log {

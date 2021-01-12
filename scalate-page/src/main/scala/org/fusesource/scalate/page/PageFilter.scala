@@ -17,17 +17,17 @@
  */
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.filter.{ Pipeline, Filter }
-import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
-import util.IOUtil
-import IOUtil._
+import org.fusesource.scalate.{ InvalidSyntaxException => _, _ }
+import org.fusesource.scalate.filter.{ Filter, Pipeline }
+import org.fusesource.scalate.parsers._
+import org.fusesource.scalate.util.IOUtil, IOUtil._
 
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.yaml.snakeyaml.Yaml
-import scala.util.parsing.input.{ NoPosition, CharSequenceReader }
+
+import scala.util.parsing.input.{ CharSequenceReader, NoPosition }
 import collection.JavaConverters._
 
 case class Attribute(

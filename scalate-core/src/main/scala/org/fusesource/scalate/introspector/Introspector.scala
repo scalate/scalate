@@ -17,11 +17,12 @@
  */
 package org.fusesource.scalate.introspector
 
+import org.fusesource.scalate.util.ProductReflector
+
 import java.beans.{ PropertyDescriptor, Introspector => BeanInt }
 import java.util.concurrent.locks.ReentrantReadWriteLock
-import org.fusesource.scalate.util.ProductReflector
 import collection.mutable.{ HashMap, Map, WeakHashMap }
-import java.lang.reflect.{ Modifier, Method }
+import java.lang.reflect.{ Method, Modifier }
 
 object Introspector {
 

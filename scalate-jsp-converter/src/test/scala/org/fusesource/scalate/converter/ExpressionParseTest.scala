@@ -19,6 +19,7 @@ package org.fusesource.scalate.converter
 
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatestplus.junit.JUnitRunner
+import org.fusesource.scalate.parsers.ExpressionParser
 import org.scalatest.funsuite.AnyFunSuite
 import slogging.StrictLogging
 

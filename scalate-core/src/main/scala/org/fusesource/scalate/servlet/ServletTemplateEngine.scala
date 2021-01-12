@@ -20,7 +20,8 @@ package org.fusesource.scalate.servlet
 import java.io.File
 import javax.servlet.{ ServletConfig, ServletContext }
 import org.fusesource.scalate.layout.{ DefaultLayoutStrategy, LayoutStrategy }
-import org.fusesource.scalate.util._
+import org.fusesource.scalate.resource.FileResourceLoader
+import org.fusesource.scalate.util.ClassPathBuilder
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 import slogging.StrictLogging
 

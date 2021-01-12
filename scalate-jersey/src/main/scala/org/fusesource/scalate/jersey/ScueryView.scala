@@ -17,13 +17,13 @@
  */
 package org.fusesource.scalate.jersey
 
+import org.fusesource.scalate.resource.ResourceNotFoundException
 import org.fusesource.scalate.scuery.Transformer
 
 import xml.{ NodeSeq, XML }
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
 import java.net.URL
-import org.fusesource.scalate.util.ResourceNotFoundException
 import slogging.StrictLogging
 
 /**

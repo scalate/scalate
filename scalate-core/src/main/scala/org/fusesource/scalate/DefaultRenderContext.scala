@@ -18,8 +18,10 @@
 package org.fusesource.scalate
 
 import java.io._
+import org.fusesource.scalate.resource.{ Resource, StreamResource }
+import org.fusesource.scalate.resource.Resource
 import org.fusesource.scalate.support.AttributesHashMap
-import org.fusesource.scalate.util.Resource
+import org.fusesource.scalate.util.IOUtil._
 import slogging.StrictLogging
 
 import scala.collection.mutable.Stack
@@ -48,7 +50,7 @@ class DefaultRenderContext(
   def requestResource: Option[Resource] = engine.resourceLoader.resource(requestUri)
 
   def requestFile: Option[File] = requestResource match {
-    case Some(r) => r.toFile
+    case Some(r) => r.asInstanceOf[StreamResource].toFile
     case _ => None
   }
 

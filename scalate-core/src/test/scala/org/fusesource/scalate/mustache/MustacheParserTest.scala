@@ -17,8 +17,10 @@
  */
 package org.fusesource.scalate.mustache
 
-import org.fusesource.scalate.{ InvalidSyntaxException, FunSuiteSupport }
+import org.fusesource.scalate.FunSuiteSupport
+import org.fusesource.scalate.parsers.{ InvalidSyntaxException, InvertSection, MustacheParser, Partial, Section, SetDelimiter, Statement, Text, Variable }
 import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
 
 /**

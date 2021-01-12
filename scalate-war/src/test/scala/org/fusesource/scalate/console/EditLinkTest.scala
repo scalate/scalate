@@ -18,7 +18,6 @@
 package org.fusesource.scalate.console
 
 import _root_.org.fusesource.scalate._
-import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatestplus.junit.JUnitRunner
 import org.scalatest.funsuite.AnyFunSuite

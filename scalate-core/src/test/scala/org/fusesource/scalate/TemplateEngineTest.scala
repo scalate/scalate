@@ -18,8 +18,8 @@
 package org.fusesource.scalate
 
 import java.io.File
-
 import org.fusesource.scalate.Asserts._
+import org.fusesource.scalate.resource.ResourceNotFoundException
 import org.fusesource.scalate.support.StringTemplateSource
 class TemplateEngineTest extends FunSuiteSupport {
 

@@ -9,6 +9,7 @@ import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
 import xerial.sbt.Sonatype
 import xerial.sbt.Sonatype.SonatypeKeys
 import Dependencies._
+import sbtcrossproject.CrossProject
 
 /** Build support settings and functions. */
 object ScalateBuild {
@@ -26,6 +27,22 @@ object ScalateBuild {
     def published = u.settings(publishOpts: _*)
 
     def notPublished = u.settings(ScalateBuild.notPublished: _*)
+
+  }
+
+  implicit final class ScalateCrossProjectSyntax(val u: CrossProject) extends AnyVal {
+
+    def scalateBaseSettings: CrossProject = u.settings(projectOpts: _*)
+
+    def scalateSettings: CrossProject = scalateBaseSettings
+      .enablePlugins(BuildInfoPlugin)
+      .settings(compileOpts ++ docOpts ++ buildInfoOpts ++ scalaJsTestOpts: _*)
+
+    def dependsOn(deps: ModuleID*): CrossProject = u.settings(libraryDependencies ++= deps)
+
+    def published: CrossProject = u.settings(publishOpts: _*)
+
+    def notPublished: CrossProject = u.settings(ScalateBuild.notPublished: _*)
 
   }
 
@@ -85,10 +102,11 @@ object ScalateBuild {
     // According to the GitHub issue, `fork in Test := false` is a known workaround for the issue.
     // However, it doesn't work for Scalate project. If we set it, a portion of tests fail.
     fork in Test := true,
+  ) ++ scalaJsTestOpts
 
+  private def scalaJsTestOpts = Seq(
     baseDirectory in Test := baseDirectory.value
   )
-
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
     publishTo := Some(
       if (isSnapshot.value) Opts.resolver.sonatypeSnapshots

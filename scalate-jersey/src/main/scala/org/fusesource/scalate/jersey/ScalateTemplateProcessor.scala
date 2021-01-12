@@ -29,9 +29,9 @@ import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import com.sun.jersey.spi.template.ViewProcessor
+import org.fusesource.scalate.parsers.TemplateException
 import org.fusesource.scalate.servlet.{ ServletHelper, ServletTemplateEngine, TemplateEngineServlet }
 import slogging.StrictLogging
-import util.ResourceNotFoundException
 
 /**
  * A template processor for <a href="https://jersey.dev.java.net/">Jersey</a> using Scalate templates

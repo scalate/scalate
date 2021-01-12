@@ -18,6 +18,7 @@
 package org.fusesource.scalate
 package page
 
+import org.fusesource.scalate.resource.StreamResource
 import org.fusesource.scalate.util.IOUtil._
 import slogging.StrictLogging
 
@@ -32,7 +33,7 @@ object BlogHelper extends StrictLogging {
 
     val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
     val dir = context.engine.resourceLoader.resource(base + "/index.page")
-      .flatMap(_.toFile)
+      .flatMap(_.asInstanceOf[StreamResource].toFile)
       .getOrElse(throw new Exception("index page not found."))
       .getParentFile
 

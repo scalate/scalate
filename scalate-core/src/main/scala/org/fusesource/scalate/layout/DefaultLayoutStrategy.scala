@@ -19,7 +19,6 @@ package org.fusesource.scalate
 package layout
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util.ResourceNotFoundException
 import slogging.StrictLogging
 
 /**

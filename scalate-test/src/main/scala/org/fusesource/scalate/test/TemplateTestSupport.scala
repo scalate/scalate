@@ -18,8 +18,9 @@
 package org.fusesource.scalate
 package test
 
+import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
-import util.IOUtil
 import org.scalatest.ConfigMap
 import slogging.StrictLogging
 

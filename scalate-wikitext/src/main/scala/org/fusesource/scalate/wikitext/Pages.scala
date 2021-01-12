@@ -17,8 +17,9 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.io.File
 import org.fusesource.scalate.util.Files
+
+import java.io.File
 
 /**
  * Helper class for working with wiki pages

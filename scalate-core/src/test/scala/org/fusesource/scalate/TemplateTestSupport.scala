@@ -125,7 +125,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with StrictLogging {
   }
 
   def syntaxException(block: => Unit) = {
-    val e = intercept[InvalidSyntaxException] {
+    val e = intercept[org.fusesource.scalate.parsers.InvalidSyntaxException] {
       block
     }
     logger.debug("caught: " + e, e)

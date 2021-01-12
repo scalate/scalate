@@ -17,6 +17,8 @@
  */
 package org.fusesource.scalate.rest
 
+import org.fusesource.scalate.resource.ResourceNotFoundException
+
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.io.OutputStream
@@ -25,8 +27,8 @@ import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import javax.ws.rs.ext.{ Provider, MessageBodyWriter }
 import javax.ws.rs.core.{ UriInfo, MultivaluedMap, MediaType, Context }
 import org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import org.fusesource.scalate.TemplateException
-import org.fusesource.scalate.util.ResourceNotFoundException
+import org.fusesource.scalate.parsers.TemplateException
+import org.fusesource.scalate.resource.ResourceNotFoundException
 
 import javax.ws.rs.WebApplicationException
 

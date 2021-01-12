@@ -189,7 +189,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
               //this << "case Some(value: "+binding.className+") => value"
               this << "case Some(value) => value.asInstanceOf[" + binding.className + "]"
               if (binding.defaultValue.isEmpty) {
-                this << "case None => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
+                this << "case None => throw new _root_.org.fusesource.scalate.parsers.NoValueSetException(" + asString(binding.name) + ")"
               } else {
                 this << "case None => " + binding.defaultValue.get
               }

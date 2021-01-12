@@ -19,15 +19,14 @@ package org.fusesource.scalate.support
 
 import java.io.File
 import java.net.URL
-
 import org.fusesource.scalate.TemplateSource
-import org.fusesource.scalate.util._
+import org.fusesource.scalate.resource.{ DelegateResource, FileResource, ResourceLoader, SourceResource, StringResource, URLResource, UriResource }
 
 import scala.io.Source
 
 class StringTemplateSource(
   uri: String,
-  text: String) extends StringResource(uri, text) with TemplateSource
+  override val text: String) extends StringResource(uri, text) with TemplateSource
 
 class UriTemplateSource(
   uri: String,

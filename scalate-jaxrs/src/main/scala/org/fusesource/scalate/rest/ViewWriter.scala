@@ -35,6 +35,8 @@ package org.fusesource.scalate.rest
  * limitations under the License.
  */
 
+import org.fusesource.scalate.resource.ResourceNotFoundException
+
 import java.io.OutputStream
 import java.lang.reflect.Type
 import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
@@ -45,9 +47,7 @@ import java.lang.{ Class, String }
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.servlet.{ ServletHelper, ServletTemplateEngine, TemplateEngineServlet }
-import org.fusesource.scalate.util.ResourceNotFoundException
 import slogging.StrictLogging
-
 import javax.ws.rs.core.UriInfo
 import javax.ws.rs.WebApplicationException
 
