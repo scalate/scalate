@@ -22,7 +22,7 @@ object Dependencies {
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
-  val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.10.0"
+  val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
     Seq(
