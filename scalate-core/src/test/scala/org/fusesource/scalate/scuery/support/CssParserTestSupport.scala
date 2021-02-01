@@ -23,6 +23,7 @@ import org.fusesource.scalate.scuery.XmlHelper._
 import xml.{ Elem, Node, NodeSeq }
 
 abstract class CssParserTestSupport extends FunSuiteSupport {
+
   var parser = new CssParser
 
   def xml: Node
@@ -31,7 +32,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     test("assertFilter: " + selector) {
       val actual = xml.$(selector)
 
-      debug("filtering selector: %s expected: %s actual: %s", selector, expected, actual)
+      logger.debug("filtering selector: %s expected: %s actual: %s", selector, expected, actual)
       assertResult(expected) { actual }
     }
   }
@@ -44,7 +45,7 @@ abstract class CssParserTestSupport extends FunSuiteSupport {
     test(message + css + " on " + summary(node)) {
       val selector = Selector(css)
       val ancestors = ancestorsOf(node)
-      debug("testing selector: " + selector + " on " + summary(node) + " with ancestors: " + summary(ancestors))
+      logger.debug("testing selector: " + selector + " on " + summary(node) + " with ancestors: " + summary(ancestors))
       assertResult(expected) { selector.matches(node, ancestors) }
     }
   }

@@ -22,6 +22,7 @@ import org.eclipse.jetty.server.{ Connector, Server, ServerConnector }
 import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
+
 import java.io.{ File, FileInputStream }
 
 /**

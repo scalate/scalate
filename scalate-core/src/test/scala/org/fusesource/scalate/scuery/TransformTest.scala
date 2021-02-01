@@ -53,7 +53,7 @@ class TransformTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertResult("Hiram") { (result \\ "td")(0).text }
     assertResult("Tampa") { (result \\ "td" \\ "b")(0).text }

@@ -17,6 +17,9 @@
  */
 package org.fusesource.scalate.ssp
 
+import org.fusesource.scalate.parsers.ssp
+import org.fusesource.scalate.parsers.ssp.IfFragment
+
 /**
  * @version $Revision : 1.1 $
  */
@@ -53,7 +56,7 @@ class VelocityDirectiveParseTest extends ParserTestSupport {
  Hey James
 #end
 """)
-    assertResult(IfFragment("foo.bar(123) == \"James\"")) { lines(1) }
+    assertResult(ssp.IfFragment("foo.bar(123) == \"James\"")) { lines(1) }
   }
 
   test("if with parens in string or char expression") {
@@ -64,6 +67,6 @@ class VelocityDirectiveParseTest extends ParserTestSupport {
  Hey James
 #end
 """)
-    assertResult(IfFragment("foo.bar(\")\") == ')'")) { lines(1) }
+    assertResult(ssp.IfFragment("foo.bar(\")\") == ')'")) { lines(1) }
   }
 }

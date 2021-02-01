@@ -17,8 +17,10 @@
  */
 package org.fusesource.scalate.mustache
 
-import org.fusesource.scalate.{ InvalidSyntaxException, FunSuiteSupport }
+import org.fusesource.scalate.FunSuiteSupport
+import org.fusesource.scalate.parsers.{ InvalidSyntaxException, InvertSection, MustacheParser, Partial, Section, SetDelimiter, Statement, Text, Variable }
 import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
 
 /**
@@ -120,15 +122,15 @@ class MustacheParserTest extends FunSuiteSupport {
   }
 
   def assertValid(text: String): List[Statement] = {
-    debug("Parsing...")
-    debug(text)
-    debug("")
+    logger.debug("Parsing...")
+    logger.debug(text)
+    logger.debug("")
 
     val lines = (new MustacheParser).parse(text)
     for (line <- lines) {
-      debug("=> " + line)
+      logger.debug("=> " + line)
     }
-    debug("")
+    logger.debug("")
     lines
   }
 
@@ -142,7 +144,7 @@ class MustacheParserTest extends FunSuiteSupport {
     val e = intercept[InvalidSyntaxException] {
       block
     }
-    debug(e, "caught: " + e)
+    logger.debug("caught: " + e, e)
     e
   }
 

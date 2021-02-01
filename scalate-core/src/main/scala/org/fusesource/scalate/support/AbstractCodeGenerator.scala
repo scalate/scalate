@@ -17,14 +17,11 @@
  */
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{ Binding, TemplateEngine, TemplateSource }
 
 import scala.collection.immutable.TreeMap
 import scala.language.postfixOps
 import scala.util.parsing.input.{ OffsetPosition, Position, Positional }
-
-object AbstractCodeGenerator extends Log
 
 /**
  * Provides a common base class for CodeGenerator implementations.
@@ -192,7 +189,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
               //this << "case Some(value: "+binding.className+") => value"
               this << "case Some(value) => value.asInstanceOf[" + binding.className + "]"
               if (binding.defaultValue.isEmpty) {
-                this << "case None => throw new _root_.org.fusesource.scalate.NoValueSetException(" + asString(binding.name) + ")"
+                this << "case None => throw new _root_.org.fusesource.scalate.parsers.NoValueSetException(" + asString(binding.name) + ")"
               } else {
                 this << "case None => " + binding.defaultValue.get
               }

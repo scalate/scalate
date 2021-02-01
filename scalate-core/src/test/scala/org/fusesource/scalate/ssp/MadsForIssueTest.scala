@@ -82,8 +82,8 @@ object ${name} extends ${name} with LongKeyedMetaMapper[${name}]
 """)
 
     val output = engine.layout("dummy.ssp", template, attributes)
-    debug("Output:")
-    debug(output)
+    logger.debug("Output:")
+    logger.debug(output)
   }
 
 }

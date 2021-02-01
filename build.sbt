@@ -8,44 +8,71 @@ import com.typesafe.tools.mima.core._
 // Scalate project guarantees bin-compatibities for only core, util
 // -----------------------------------------------------------------------------------
 
-name := "scalate"
-organization := "org.scalatra.scalate"
-version := "1.9.7-SNAPSHOT"
-scalaVersion := crossScalaVersions.value.head
-//scalaVersion := "2.12.8"
-crossScalaVersions := Seq("2.13.2", "2.12.8", "2.11.12")
-javacOptions ++= Seq("-source", "1.8")
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
-startYear := Some(2010)
-licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0")
-scmInfo := Some(
-  ScmInfo(url("https://github.com/scalate/scalate"),
-  "scm:git:git://github.com/scalate/scalate.git",
-  Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
-)
-homepage := Some(url("https://scalate.github.io/scalate"))
-enablePlugins(ScalaUnidocPlugin)
-unidocOpts(filter = scalateWar, scalateWeb)
-notPublished
+inThisBuild(Seq(
+  organization := "org.scalatra.scalate",
+  version := "1.9.7-SNAPSHOT",
+  //scalaVersion := "2.12.8"
+  crossScalaVersions := Seq("2.13.4", "2.12.12", "2.11.12"),
+  scalaVersion := crossScalaVersions.value.head,
+  startYear := Some(2010),
+  licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"),
+  scmInfo := Some(
+    ScmInfo(url("https://github.com/scalate/scalate"),
+      "scm:git:git://github.com/scalate/scalate.git",
+      Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
+  ),
+  homepage := Some(url("https://scalate.github.io/scalate")),
+  //enablePlugins(ScalaUnidocPlugin),
 
-lazy val scalateUtil = scalateProject("util")
+))//++ unidocOpts(filter = scalateWar, scalateWeb)++notPublished)
+
+lazy val commonSettings = Seq(
+  javacOptions ++= Seq("-source", "1.8"),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+)
+lazy val scalateUtil =
+  crossProject(JSPlatform, JVMPlatform)
+    .withoutSuffixFor(JVMPlatform)
+    .in(file("scalate-util"))
+    .settings(commonSettings)
+    .settings(
+      name := "scalate-util"
+    )
   .scalateSettings
   .published
   .settings(
-    mimaSettings,
     libraryDependencies ++= Seq(
-      junit % Test,
-      logbackClassic % Test,
-      slf4jApi,
-      s"${scalaOrganization.value}.modules" %% "scala-parser-combinators" %
+      s"${scalaOrganization.value}.modules" %%% "scala-parser-combinators" %
         (if (scalaVersion.value.startsWith("2.11")) "1.1.1" else "1.1.2"),
-      s"${scalaOrganization.value}.modules" %% "scala-xml" % "1.3.0",
+      s"${scalaOrganization.value}.modules" %%% "scala-xml" % "1.3.0",
     ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
+    libraryDependencies ++= Seq(scalaTest.value).map(_ % Test),
     parallelExecution in Test := false,
+    fork in Test := false,
     unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
-  .enablePlugins(MimaPlugin)
-
+    .jvmConfigure(_.enablePlugins(MimaPlugin))
+    .jvmSettings(
+      mimaSettings,
+      libraryDependencies ++= Seq(
+        junit % Test,
+        logbackClassic % Test,
+        slf4jApi,
+        "biz.enef" %% "slogging-slf4j" % "0.6.2",
+      )
+    )
+    .jsConfigure(_.enablePlugins(ScalaJSJUnitPlugin))
+    .jsSettings(
+      libraryDependencies ++= Seq(
+        "biz.enef" %%% "slogging" % "0.6.2",
+      ),
+    )
+lazy val scalateParsers = crossProject(JSPlatform, JVMPlatform)
+  .withoutSuffixFor(JVMPlatform)
+  .in(file("scalate-parsers"))
+  .dependsOn(scalateUtil)
+  .settings(
+    name := "scalate-parsers"
+  )
 lazy val scalateCore = scalateProject("core")
   .scalateSettings
   .published
@@ -147,10 +174,10 @@ lazy val scalateCore = scalateProject("core")
       scalamd % Optional,
       junit % Test
     ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
+    libraryDependencies ++= scalaTestJVM.value.map(_ % Test),
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
     unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
-  .dependsOn(scalateUtil)
+  .dependsOn(scalateUtil.jvm, scalateParsers.jvm)
   .enablePlugins(MimaPlugin)
 
 // -----------------------------------------------------------------------------------
@@ -171,7 +198,7 @@ lazy val scalateTest = scalateProject("test")
       junit,
       seleniumDriver
     ), 
-    libraryDependencies ++= scalaTest.value,
+    libraryDependencies ++= scalaTestJVM.value,
     description := "Scalate Test Support Classes.")
   .settings(mimaSettings)
   .enablePlugins(MimaPlugin)
@@ -190,7 +217,7 @@ lazy val scalateGuice = scalateProject("guice")
       junit % Test,
       logbackClassic % Test
     ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
+    libraryDependencies ++= scalaTestJVM.value.map(_ % Test),
     description := "Guice integration for a Jersey based Scalate web application."
   )
 
@@ -214,7 +241,7 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
       junit % Test,
       logbackClassic % Test
     ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
+    libraryDependencies ++= scalaTestJVM.value.map(_ % Test),
     description := "Converter for JSP to SSP",
     buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
 
@@ -240,7 +267,7 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
       springMVC,
       junit % Test
     ),
-    libraryDependencies ++= scalaTest.value.map(_ % Test),
+    libraryDependencies ++= scalaTestJVM.value.map(_ % Test),
     description := "Scalate Spring MVC integration.",
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
 

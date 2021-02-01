@@ -17,15 +17,13 @@
  */
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.util.Log
-
+import slogging.StrictLogging
 import scala.language.implicitConversions
 
 /**
  * A number of helper implicit conversions for use in templates
  */
-object TemplateConversions {
-  val log = Log(getClass); import log._
+object TemplateConversions extends StrictLogging {
 
   /**
    * Provide access to the elvis operator so that we can use it to provide null handling nicely
@@ -52,7 +50,7 @@ object TemplateConversions {
       }
     } catch {
       case e: NullPointerException =>
-        debug(e, "Handling null pointer " + e)
+        logger.debug("Handling null pointer " + e, e)
         defaultValue
     }
   }

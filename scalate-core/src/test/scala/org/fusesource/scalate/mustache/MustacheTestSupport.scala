@@ -17,15 +17,18 @@
  */
 package org.fusesource.scalate.mustache
 
+import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
 import org.fusesource.scalate.{ TemplateEngine, TemplateSource, TemplateTestSupport }
-import org.fusesource.scalate.util.IOUtil
+
 import collection.immutable.Map
 
 /**
  * Base class for Mustache test cases based on mustache.js and mustache.ruby test cases
  */
 abstract class MustacheTestSupport extends TemplateTestSupport {
+
   var trimOutputAndTemplate = true
 
   def mustacheTest(name: String, attributes: Map[String, Any]): Unit = mustacheTest(name, "", attributes)
@@ -37,7 +40,7 @@ abstract class MustacheTestSupport extends TemplateTestSupport {
   }
 
   protected def assertMustacheTest(name: String, attributes: Map[String, Any]): Unit = {
-    debug("Using template reasource loader: " + engine.resourceLoader)
+    logger.debug("Using template reasource loader: " + engine.resourceLoader)
 
     val template = engine.load(engine.source(name + ".html", "mustache"))
     val expectedOutput = IOUtil.loadTextFile(new File(rootDir, name + ".txt"))
@@ -49,7 +52,7 @@ abstract class MustacheTestSupport extends TemplateTestSupport {
   }
 
   override protected def createTemplateEngine = {
-    debug("Using rootDir: " + rootDir)
+    logger.debug("Using rootDir: " + rootDir)
     new TemplateEngine(Some(rootDir))
   }
 

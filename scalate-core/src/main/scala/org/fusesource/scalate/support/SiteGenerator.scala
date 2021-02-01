@@ -19,16 +19,13 @@ package org.fusesource.scalate.support
 
 import java.io.{ File, PrintWriter }
 import java.{ util => ju }
-
 import org.fusesource.scalate._
+import org.fusesource.scalate.parsers.NoValueSetException
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.util._
+import slogging.StrictLogging
 
 import scala.collection.JavaConverters._
-
-object SiteGenerator extends Log
-import org.fusesource.scalate.support.SiteGenerator._
-
 import scala.language.reflectiveCalls
 
 /**
@@ -37,7 +34,7 @@ import scala.language.reflectiveCalls
  *
  * @author <a href="http://macstrac.blogspot.com">James Strachan</a>
  */
-class SiteGenerator {
+class SiteGenerator extends StrictLogging {
 
   var workingDirectory: File = _
   var webappDirectory: File = _
@@ -53,8 +50,8 @@ class SiteGenerator {
       throw new IllegalArgumentException("The webappDirectory properly is not properly set")
     }
 
-    info("Generating static website from Scalate Templates and wiki files...")
-    info("template properties: " + templateProperties)
+    logger.info("Generating static website from Scalate Templates and wiki files...")
+    logger.info("template properties: " + templateProperties)
 
     val engine = new DummyTemplateEngine(webappDirectory)
     engine.classLoader = Thread.currentThread.getContextClassLoader
@@ -103,7 +100,7 @@ class SiteGenerator {
               val html = engine.layout(source, attributes)
               val sourceFile = new File(targetDirectory, appendHtmlPostfix(uri.stripPrefix("/")))
 
-              info("    processing " + file + " with uri: " + uri + " => ")
+              logger.info("    processing " + file + " with uri: " + uri + " => ")
               sourceFile.getParentFile.mkdirs
               //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
               IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
@@ -115,7 +112,7 @@ class SiteGenerator {
             }
           } else {
             // let's copy the file across if its not a template
-            debug("    copying " + file + " with uri: " + uri + " extension: " + ext + " not in " + engine.extensions)
+            logger.debug("    copying " + file + " with uri: " + uri + " extension: " + ext + " not in " + engine.extensions)
             val sourceFile = new File(targetDirectory, uri.stripPrefix("/"))
             IOUtil.copy(file, sourceFile)
           }

@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.mustache
 
+import org.fusesource.scalate.util.IOUtil
+
 import java.io.File
 import util.parsing.json.JSON
-import org.fusesource.scalate.util.IOUtil
 
 /**
  * Runs the system tests from the mustache.js distro
@@ -44,7 +45,7 @@ class MustacheJSONTest extends MustacheTestSupport {
       val jsonText = if (idx >= 0) jText.substring(idx + 1) else jText
       JSON.parseFull(jsonText) match {
         case Some(json) =>
-          debug("Parsed json: %s", json)
+          logger.debug("Parsed json: %s", json)
 
           json match {
             case attributes: Map[_, _] =>

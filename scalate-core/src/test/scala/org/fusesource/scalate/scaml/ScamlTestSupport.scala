@@ -19,14 +19,14 @@ package org.fusesource.scalate
 package scaml
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.io.{ StringWriter, PrintWriter, File }
-
+import java.io.{ File, PrintWriter, StringWriter }
 import org.scalatest.exceptions.TestFailedException
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScamlTestSupport extends TemplateTestSupport {
+
   val testCounter = new AtomicInteger(1)
 
   val NOOP = () => {}
@@ -38,7 +38,7 @@ class ScamlTestSupport extends TemplateTestSupport {
         try {
           val output = render(description, template.trim)
           if (showOutput) {
-            log.info(output)
+            logger.info(output)
           }
           output.trim
         } finally {
@@ -57,7 +57,7 @@ class ScamlTestSupport extends TemplateTestSupport {
     test(description) {
       try {
         val data = render(description, template.trim).trim
-        debug(data)
+        logger.debug(data)
         fail("Expected InvalidSyntaxException was not thrown")
       } catch {
         case e: TestFailedException => throw e
@@ -82,7 +82,7 @@ class ScamlTestSupport extends TemplateTestSupport {
     test(description) {
       try {
         val data = render(description, template.trim).trim
-        debug(data)
+        logger.debug(data)
         fail("Expected CompilerException was not thrown")
       } catch {
         case e: TestFailedException => throw e

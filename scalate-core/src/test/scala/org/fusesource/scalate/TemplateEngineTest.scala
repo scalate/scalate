@@ -18,8 +18,8 @@
 package org.fusesource.scalate
 
 import java.io.File
-
 import org.fusesource.scalate.Asserts._
+import org.fusesource.scalate.resource.ResourceNotFoundException
 import org.fusesource.scalate.support.StringTemplateSource
 class TemplateEngineTest extends FunSuiteSupport {
 
@@ -58,7 +58,7 @@ Hello ${name}!
 
     val output = engine.layout("foo3.ssp", template, Map("name" -> "James")).trim
     assertContains(output, "Hello James")
-    debug("template generated: " + output)
+    logger.debug("template generated: " + output)
   }
 
   test("throws ResourceNotFoundException if template file does not exist") {
@@ -78,7 +78,7 @@ Hello ${name}!
     val lines = output.split('\n')
 
     for (line <- lines) {
-      debug("line: " + line)
+      logger.debug("line: " + line)
     }
 
     assertResult("<%@ val it : java.lang.String %>") { lines(0) }

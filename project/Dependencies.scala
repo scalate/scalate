@@ -1,5 +1,5 @@
-import sbt.Keys._
 import sbt._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 /** Build dependency and repository definitions. */
 object Dependencies {
@@ -19,15 +19,18 @@ object Dependencies {
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.14.0"
   val junit = "junit" % "junit" % "4.13.1"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.3.0"
+  val slogging = "biz.enef" %% "slogging-slf4j" % "0.6.2"
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
-  val scalaTest = Def.setting {
+  val scalaTest = Def.setting("org.scalatest" %%% "scalatest" % "3.2.3")
+  val scalaTestJunit = "org.scalatestplus" %% "junit-4-13" % "3.2.3.0"
+  val scalaTestJVM = Def.setting {
     Seq(
-      "org.scalatest" %% "scalatest" % "3.2.3",
-      "org.scalatestplus" %% "junit-4-13" % "3.2.3.0",
+      scalaTest.value,
+      scalaTestJunit,
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"

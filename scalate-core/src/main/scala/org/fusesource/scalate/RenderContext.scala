@@ -20,12 +20,12 @@ package org.fusesource.scalate
 import java.io.File
 import java.text.{ DateFormat, NumberFormat }
 import java.util.{ Date, Locale }
-
 import org.fusesource.scalate.filter.FilterRequest
 import org.fusesource.scalate.introspector.Introspector
+import org.fusesource.scalate.parsers._
+import org.fusesource.scalate.resource.Resource
 import org.fusesource.scalate.support.RenderHelper
-import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util._
+import org.fusesource.scalate.util.{ Files, Lazy, Objects, Strings, XmlHelper }
 
 import scala.collection.mutable.{ HashMap, ListBuffer }
 import scala.language.implicitConversions
@@ -152,7 +152,7 @@ trait RenderContext {
   def attributeKeys = attributes.keySet.toList.sortWith(_ < _)
 
   /**
-   * Returns the attribute of the given type or a [[org.fusesource.scalate.NoValueSetException]] exception is thrown
+   * Returns the attribute of the given type or a [[NoValueSetException]] exception is thrown
    */
   def attribute[T](name: String): T =
     attributeOrElse(name, throw new NoValueSetException(name))
@@ -337,7 +337,7 @@ trait RenderContext {
       viewPrefixes.flatMap { prefix =>
         viewPostfixes.flatMap { postfix =>
           val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
-          val fullPath = if (isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
+          val fullPath = if (Strings.isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
           if (engine.resourceLoader.exists(fullPath)) {
             Some(fullPath)
           } else {
@@ -517,7 +517,7 @@ trait RenderContext {
   private[this] val resourceBeanAttribute = "it"
 
   /**
-   * Returns the JAXRS resource bean of the given type or a  [[org.fusesource.scalate.NoValueSetException]]
+   * Returns the JAXRS resource bean of the given type or a  [[NoValueSetException]]
    * exception is thrown
    */
   def resource[T]: T = {

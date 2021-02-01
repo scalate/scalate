@@ -46,8 +46,8 @@ class LayoutTest extends TemplateTestSupport {
     val output = engine.layout("sample.mustache")
 
     if (showOutput) {
-      log.info("Generated: ")
-      log.info(output)
+      logger.info("Generated: ")
+      logger.info(output)
     }
 
     assertResult(expected) {
@@ -56,7 +56,7 @@ class LayoutTest extends TemplateTestSupport {
   }
 
   override protected def createTemplateEngine = {
-    debug("Using rootDir: %s", rootDir)
+    logger.debug("Using rootDir: %s", rootDir)
     val engine = new TemplateEngine(Some(rootDir))
     engine.layoutStrategy = new DefaultLayoutStrategy(engine, "mylayout.mustache")
     engine

@@ -18,6 +18,9 @@
 package org.fusesource.scalate.ssp
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+import org.fusesource.scalate.parsers.{AttributeFragment, ssp}
+import org.fusesource.scalate.parsers.ssp.{AttributeFragment, CommentFragment, DollarExpressionFragment, ExpressionFragment, ScriptletFragment}
+
 import collection.mutable.HashMap
 
 /**
@@ -48,7 +51,7 @@ class ParserTest extends ParserTestSupport {
   </body>
 </html>
 """)
-    assertAttribute(lines, AttributeFragment("val", "name", "String", Some("new String(\"spiros\")"), false))
+    assertAttribute(lines, ssp.AttributeFragment("val", "name", "String", Some("new String(\"spiros\")"), false))
   }
 
   test("parse valid SSP file with attribute with default value") {
@@ -61,7 +64,7 @@ class ParserTest extends ParserTestSupport {
 </html>
 """)
 
-    assertAttribute(lines, AttributeFragment("val", "name", "String", Some("\"Hello\""), false))
+    assertAttribute(lines, ssp.AttributeFragment("val", "name", "String", Some("\"Hello\""), false))
   }
 
   test("parse valid SSP file with special symbols in code") {

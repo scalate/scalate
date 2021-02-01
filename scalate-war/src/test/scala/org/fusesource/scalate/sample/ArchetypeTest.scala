@@ -34,7 +34,7 @@ class ArchetypeTest extends FunSuiteSupport {
   test("use tableView archetype") {
     val output = engine.layout("/WEB-INF/scalate/archetypes/views/index/tableView.ssp", Map("resourceType" -> classOf[Person])).trim
 
-    log.info("Generated SSP:")
-    log.info(output)
+    logger.info("Generated SSP:")
+    logger.info(output)
   }
 }

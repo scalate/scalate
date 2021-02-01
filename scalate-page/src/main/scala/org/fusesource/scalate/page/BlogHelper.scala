@@ -18,13 +18,13 @@
 package org.fusesource.scalate
 package page
 
+import org.fusesource.scalate.resource.StreamResource
 import org.fusesource.scalate.util.IOUtil._
+import slogging.StrictLogging
+
 import java.io.File
-import util.Log
 
-object BlogHelper {
-  val log = Log(getClass)
-
+object BlogHelper extends StrictLogging {
   /**
    * Returns the blog posts from the current request's directory by default sorted in date order
    */
@@ -33,11 +33,11 @@ object BlogHelper {
 
     val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
     val dir = context.engine.resourceLoader.resource(base + "/index.page")
-      .flatMap(_.toFile)
+      .flatMap(_.asInstanceOf[StreamResource].toFile)
       .getOrElse(throw new Exception("index page not found."))
       .getParentFile
 
-    log.info("Using dir: " + dir + " at request path: " + base)
+    logger.info("Using dir: " + dir + " at request path: " + base)
 
     val index = new File(dir, "index.page")
     dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page"))

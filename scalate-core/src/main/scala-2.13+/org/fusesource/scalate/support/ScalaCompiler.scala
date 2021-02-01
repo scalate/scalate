@@ -18,9 +18,10 @@
 package org.fusesource.scalate.support
 
 import java.io.{ File, PrintWriter, StringWriter }
-
-import org.fusesource.scalate._
-import org.fusesource.scalate.util.{ ClassPathBuilder, Log }
+import org.fusesource.scalate.{ TemplateException => _, _ }
+import org.fusesource.scalate.parsers._
+import org.fusesource.scalate.util.ClassPathBuilder
+import slogging.StrictLogging
 
 import scala.reflect.internal.util.{ FakePos, NoPosition, Position }
 import scala.runtime.ByteRef
@@ -28,7 +29,7 @@ import scala.tools.nsc.{ Global, Settings }
 import scala.tools.nsc.reporters.{ ConsoleReporter, Reporter }
 import scala.util.parsing.input.OffsetPosition
 
-object ScalaCompiler extends Log {
+object ScalaCompiler {
 
   def create(engine: TemplateEngine): ScalaCompiler = {
     Thread.currentThread.getContextClassLoader match {
@@ -40,12 +41,10 @@ object ScalaCompiler extends Log {
 
 }
 
-import org.fusesource.scalate.support.ScalaCompiler._
-
 class ScalaCompiler(
   bytecodeDirectory: File,
   classpath: String,
-  combineClasspath: Boolean = false) extends Compiler {
+  combineClasspath: Boolean = false) extends Compiler with StrictLogging {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
@@ -71,7 +70,7 @@ class ScalaCompiler(
         case NoPosition => super.display(posIn, msg, severity)
         case _ =>
           // Adding the detected compilation error
-          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point))
+          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(java.nio.CharBuffer.wrap(posIn.source.content), posIn.point))
 
           super.display(posIn, msg, severity)
       }
@@ -134,10 +133,10 @@ class ScalaCompiler(
       classPathFromClassLoader
     }
 
-    debug("using classpath: " + useCP)
-    debug("system class loader: " + ClassLoader.getSystemClassLoader)
-    debug("context class loader: " + Thread.currentThread.getContextClassLoader)
-    debug("scalate class loader: " + getClass.getClassLoader)
+    logger.debug("using classpath: " + useCP)
+    logger.debug("system class loader: " + ClassLoader.getSystemClassLoader)
+    logger.debug("context class loader: " + Thread.currentThread.getContextClassLoader)
+    logger.debug("scalate class loader: " + getClass.getClassLoader)
 
     val settings = new Settings(errorHandler)
     settings.classpath.value = useCP
@@ -154,7 +153,7 @@ class ScalaCompiler(
   }
 
   protected def createCompiler(settings: Settings, reporter: Reporter): Global = {
-    debug("creating non-OSGi compiler")
+    logger.debug("creating non-OSGi compiler")
     new Global(settings, reporter)
   }
 }

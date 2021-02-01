@@ -19,7 +19,6 @@ package org.fusesource.scalate.converter
 
 import java.io.File
 import java.{ lang => jl }
-import org.fusesource.scalate.util.IOUtil._
 
 import org.apache.felix.service.command.CommandSession
 import org.apache.karaf.shell.api.action.{ Option => option, Argument => argument, Command => command }

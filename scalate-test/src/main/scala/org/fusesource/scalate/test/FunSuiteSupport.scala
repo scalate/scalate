@@ -19,10 +19,11 @@ package org.fusesource.scalate.test
 
 import _root_.org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
-import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap }
+import org.scalatest.{ BeforeAndAfterAllConfigMap, ConfigMap }
+
 import java.io.File
-import org.fusesource.scalate.util.Log
 import org.scalatest.funsuite.AnyFunSuite
+import slogging.StrictLogging
 
 /**
  * @version $Revision : 1.1 $
@@ -31,7 +32,7 @@ import org.scalatest.funsuite.AnyFunSuite
 abstract class FunSuiteSupport
   extends AnyFunSuite
   with BeforeAndAfterAllConfigMap
-  with Log {
+  with StrictLogging {
 
   /**
    * Returns the base directory of the current project
@@ -43,7 +44,7 @@ abstract class FunSuiteSupport
       case Some(basedir) => Config.baseDir = basedir.toString
       case _ =>
     }
-    debug("using basedir: %s", Config.baseDir)
+    logger.debug("using basedir: %s", Config.baseDir)
   }
 
 }

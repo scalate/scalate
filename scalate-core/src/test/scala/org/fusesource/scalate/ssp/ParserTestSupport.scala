@@ -18,8 +18,10 @@
 package org.fusesource.scalate.ssp
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+import org.fusesource.scalate.parsers.ssp.{AttributeFragment, SspParser}
+import org.fusesource.scalate.parsers.{PageFragment, Text}
+
 import collection.mutable.HashMap
-import org.fusesource.scalate.support.Text
 
 /**
  * @version $Revision : 1.1 $
@@ -48,15 +50,15 @@ abstract class ParserTestSupport extends FunSuiteSupport {
   }
 
   def assertValid(text: String): List[PageFragment] = {
-    debug("Parsing...")
-    debug(text)
-    debug("")
+    logger.debug("Parsing...")
+    logger.debug(text)
+    logger.debug("")
 
     val lines = (new SspParser).getPageFragments(text)
     for (line <- lines) {
-      debug("=> " + line)
+      logger.debug("=> " + line)
     }
-    debug("")
+    logger.debug("")
     lines
   }
 

@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.scuery.support
 
+import org.fusesource.scalate.parsers.TemplateException
+
 import util.parsing.combinator.RegexParsers
 import util.parsing.input.{ CharSequenceReader, NoPosition, Position }
-import org.fusesource.scalate.TemplateException
 import org.fusesource.scalate.scuery._
 
 class CssScanner extends RegexParsers {

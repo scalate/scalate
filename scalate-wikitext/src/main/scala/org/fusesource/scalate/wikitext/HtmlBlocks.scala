@@ -18,11 +18,12 @@
 package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
+
 import collection.mutable.ListBuffer
-import java.util.regex.{ Pattern, Matcher }
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ ParameterizedBlock, AbstractConfluenceDelimitedBlock }
-import org.eclipse.mylyn.wikitext.core.parser.{ TableRowAttributes, TableAttributes, TableCellAttributes, Attributes }
-import org.fusesource.scalate.util.Log
+import java.util.regex.{ Matcher, Pattern }
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ AbstractConfluenceDelimitedBlock, ParameterizedBlock }
+import org.eclipse.mylyn.wikitext.core.parser.{ Attributes, TableAttributes, TableCellAttributes, TableRowAttributes }
+import slogging.StrictLogging
 
 class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
 
@@ -255,15 +256,14 @@ class CenterBlock extends AbstractNestedBlock("center") {
     Blocks.setOption(attributes, key, value)
 }
 
-object Blocks {
-  val log = Log(getClass); import log._
+object Blocks extends StrictLogging {
 
   def unknownAttribute(key: String, value: String): Unit = {
-    warn("Unknown attribute '%s' with value: %s", key, value)
+    logger.warn("Unknown attribute '%s' with value: %s", key, value)
   }
 
   def unknownOption(option: String) = {
-    warn("Not sure how to set the option: %s", option)
+    logger.warn("Not sure how to set the option: %s", option)
   }
 
   def setOption(attributes: Attributes, key: String, value: String) = {

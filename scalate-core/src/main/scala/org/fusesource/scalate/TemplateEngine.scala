@@ -17,20 +17,20 @@
  */
 package org.fusesource.scalate
 
+import org.fusesource.scalate.filter._
+import org.fusesource.scalate.generators.{ SspCodeGenerator, _ }
+import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
+import org.fusesource.scalate.mustache.MustacheCodeGenerator
+import org.fusesource.scalate.parsers._
+import org.fusesource.scalate.resource.{ FileResourceLoader, ResourceLoader }
+import org.fusesource.scalate.support._
+import org.fusesource.scalate.util._
+import slogging.{ LoggerFactory, StrictLogging }
+
 import java.io.{ File, PrintWriter, StringWriter }
 import java.net.URLClassLoader
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-
-import org.fusesource.scalate.filter._
-import org.fusesource.scalate.jade.JadeCodeGenerator
-import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
-import org.fusesource.scalate.mustache.MustacheCodeGenerator
-import org.fusesource.scalate.scaml.ScamlCodeGenerator
-import org.fusesource.scalate.ssp.SspCodeGenerator
-import org.fusesource.scalate.support._
-import org.fusesource.scalate.util._
-
 import scala.collection.immutable.TreeMap
 import scala.collection.mutable.HashMap
 import scala.language.existentials
@@ -39,8 +39,6 @@ import scala.util.parsing.input.{ OffsetPosition, Position }
 import scala.xml.NodeSeq
 
 object TemplateEngine {
-
-  val log = Log(getClass)
 
   def apply(sourceDirectories: Iterable[File], mode: String): TemplateEngine = {
     new TemplateEngine(sourceDirectories, mode)
@@ -66,8 +64,7 @@ object TemplateEngine {
  */
 class TemplateEngine(
   var sourceDirectories: Iterable[File] = None,
-  var mode: String = System.getProperty("scalate.mode", "production")) {
-  import TemplateEngine.log._
+  var mode: String = System.getProperty("scalate.mode", "production")) extends StrictLogging {
 
   private case class CacheEntry(
     template: Template,
@@ -142,7 +139,7 @@ class TemplateEngine(
         } catch {
           case e: Throwable =>
             // if it's not, then disable class reloading..
-            debug("Scala compiler not found on the class path. Template reloading disabled.")
+            logger.debug("Scala compiler not found on the class path. Template reloading disabled.")
             allowReload = false
             compilerInstalled = false
         }
@@ -153,7 +150,7 @@ class TemplateEngine(
           Boots.invokeBoot(clazz, bootInjections)
 
         case _ =>
-          info("No bootstrap class " + bootClassName + " found on classloader: " + classLoader)
+          logger.info("No bootstrap class " + bootClassName + " found on classloader: " + classLoader)
       }
     }
   }
@@ -257,7 +254,7 @@ class TemplateEngine(
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
   ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn =>
-    debug("Installing Scalate add on " + addOn.getClass)
+    logger.debug("Installing Scalate add on " + addOn.getClass)
     addOn(this)
   }
 
@@ -286,7 +283,7 @@ class TemplateEngine(
           _workingDirectory = f
           f.deleteOnExit
         } else {
-          warn("Could not delete file %s so we could create a temp directory", f)
+          logger.warn("Could not delete file %s so we could create a temp directory", f)
           _workingDirectory = new File(new File(System.getProperty("java.io.tmpdir")), "_scalate")
         }
       }
@@ -513,7 +510,7 @@ class TemplateEngine(
     try {
       load(source, extraBindings) != null
     } catch {
-      case e: ResourceNotFoundException => false
+      case e: resource.ResourceNotFoundException => false
     }
   }
 
@@ -731,7 +728,7 @@ class TemplateEngine(
       templateCache += (source.uri -> ce)
     }
     val answer = ce.template
-    debug("Loaded uri: " + source.uri + " template: " + answer)
+    logger.debug("Loaded uri: " + source.uri + " template: " + answer)
     answer
   }
 
@@ -750,7 +747,7 @@ class TemplateEngine(
     new File(sourceDirectory, uri.replace(':', '_') + ".scala")
   }
 
-  protected val sourceMapLog = Log(getClass, "SourceMap")
+  protected val sourceMapLog = LoggerFactory.getLogger(s"$loggerName.SourceMap")
 
   private def compileAndLoad(
     source: TemplateSource,
@@ -771,7 +768,7 @@ class TemplateEngine(
       }
 
       if (!compilerInstalled) {
-        throw new ResourceNotFoundException(
+        throw new resource.ResourceNotFoundException(
           "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
       }
 
@@ -850,17 +847,17 @@ class TemplateEngine(
               CompilerError(uri, olderror.message, pos, olderror)
             }
         }
-        error(e)
+        logger.error("Caught exception", e)
         if (e.errors.isEmpty) {
           throw e
         } else {
           throw new CompilerException(newmessage, errors)
         }
       case e: InvalidSyntaxException =>
-        e.source = source
+        // TODO e.source = source
         throw e
       case e: TemplateException => throw e
-      case e: ResourceNotFoundException => throw e
+      case e: resource.ResourceNotFoundException => throw e
       case e: Throwable => throw new TemplateException(e.getMessage, e)
     }
   }
