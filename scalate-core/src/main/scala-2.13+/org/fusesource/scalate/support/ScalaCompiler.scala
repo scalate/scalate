@@ -71,7 +71,7 @@ class ScalaCompiler(
         case NoPosition => super.display(posIn, msg, severity)
         case _ =>
           // Adding the detected compilation error
-          compilerErrors ::= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content, posIn.point))
+          compilerErrors :+= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content.mkString, posIn.point))
 
           super.display(posIn, msg, severity)
       }

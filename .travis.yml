@@ -3,7 +3,7 @@ dist: trusty
 scala:
   - 2.11.12
   - 2.12.8
-  - 2.13.2
+  - 2.13.4
 jdk:
   - oraclejdk8
 matrix:
