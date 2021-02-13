@@ -17,7 +17,7 @@ object Dependencies {
   val jettyUtil = jettyServer.withName("jetty-util")
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.14.0"
-  val junit = "junit" % "junit" % "4.13.1"
+  val junit = "junit" % "junit" % "4.13.2"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.3.0"
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
