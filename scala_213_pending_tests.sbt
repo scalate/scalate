@@ -10,7 +10,7 @@ val pendingTests = Set(
   "org.fusesource.scalate.scaml.ScamlTemplateErrorTest"
 )
 
-testOptions in Test in ThisBuild ++= {
+(ThisBuild / Test / testOptions) ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, v)) if v >= 13 =>
       Seq(Tests.Exclude(pendingTests))

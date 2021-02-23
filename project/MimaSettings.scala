@@ -25,11 +25,11 @@ object MimaSettings {
   // val previousVersions = Set.empty[String]
 
   val mimaSettings = Seq(
-    mimaBinaryIssueFilters in ThisBuild ++= Seq(
+    ThisBuild / mimaBinaryIssueFilters ++= Seq(
       ProblemFilters.exclude[IncompatibleSignatureProblem]("org.fusesource.scalate.*")
     ),
-    mimaReportSignatureProblems in ThisBuild := true,
-    mimaFailOnNoPrevious in ThisBuild := false,
+    ThisBuild / mimaReportSignatureProblems := true,
+    ThisBuild / mimaFailOnNoPrevious := false,
     mimaPreviousArtifacts := {
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, scalaMajor)) if scalaMajor <= 12 =>
@@ -42,9 +42,9 @@ object MimaSettings {
           Set.empty
       }
     },
-    test in Test := {
+    (Test / test) := {
       mimaReportBinaryIssues.value
-      (test in Test).value
+      (Test / test).value
     }
   )
 }

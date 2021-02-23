@@ -42,8 +42,8 @@ lazy val scalateUtil = scalateProject("util")
       s"${scalaOrganization.value}.modules" %% "scala-xml" % "1.3.0",
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    parallelExecution in Test := false,
-    unmanagedSourceDirectories in Test += (sourceDirectory in Test).value / s"scala_${scalaBinaryVersion.value}")
+    Test / parallelExecution := false,
+    (Test / unmanagedSourceDirectories) += (Test / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}")
   .enablePlugins(MimaPlugin)
 
 lazy val scalateCore = scalateProject("core")
@@ -149,7 +149,7 @@ lazy val scalateCore = scalateProject("core")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
-    unmanagedSourceDirectories in Compile += (sourceDirectory in Compile).value / s"scala_${scalaBinaryVersion.value}")
+    (Compile / unmanagedSourceDirectories) += (Compile / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}")
   .dependsOn(scalateUtil)
   .enablePlugins(MimaPlugin)
 
@@ -256,9 +256,9 @@ lazy val scalateWar = scalateProject("war")
       jerseyCore
     ),
     description := "Scalate Base Web Application",
-    publishArtifact in (Compile, packageBin) := false,
-    parallelExecution in Test := false,
-    unmanagedResourceDirectories in Test += baseDirectory.value / "src/main/webapp")
+    Compile / packageBin / publishArtifact := false,
+    Test / parallelExecution := false,
+    (Test / unmanagedResourceDirectories) += baseDirectory.value / "src/main/webapp")
 
 lazy val scalateJAXRS = scalateProject("jaxrs")
   .scalateSettings

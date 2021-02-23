@@ -43,37 +43,37 @@ object ScalateBuild {
 
   def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] =
     inConfig(ScalaUnidoc)(inTask(unidoc)(docOptsBase)) ++ Seq(
-    scalacOptions in ThisBuild ++= Seq("-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath),
-    apiMappings in ThisBuild ++= scalaInstance.value.libraryJars.collect {
+    (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
+    (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
       case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
         file -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
     }.toMap,
-    unidocProjectFilter in(ScalaUnidoc, unidoc) :=
+    ScalaUnidoc / unidoc / unidocProjectFilter :=
       inAnyProject -- inProjects(filter: _*))
 
   private def projectOpts = Seq(
-    version := (version in LocalRootProject).value,
-    organization := (organization in LocalRootProject).value,
-    organizationName := (organizationName in LocalRootProject).value,
-    organizationHomepage := (organizationHomepage in LocalRootProject).value,
-    licenses := (licenses in LocalRootProject).value,
-    scmInfo := (scmInfo in LocalRootProject).value,
-    startYear := (startYear in LocalRootProject).value,
-    homepage := (homepage in LocalRootProject).value,
+    version := (LocalRootProject / version).value,
+    organization := (LocalRootProject / organization).value,
+    organizationName := (LocalRootProject / organizationName).value,
+    organizationHomepage := (LocalRootProject / organizationHomepage).value,
+    licenses := (LocalRootProject / licenses).value,
+    scmInfo := (LocalRootProject / scmInfo).value,
+    startYear := (LocalRootProject / startYear).value,
+    homepage := (LocalRootProject / homepage).value,
   )
 
   private def compileOpts = Seq(
-    scalaVersion := (scalaVersion in LocalRootProject).value,
-    crossScalaVersions := (crossScalaVersions in LocalRootProject).value,
-    unmanagedSourceDirectories in Compile += {
+    scalaVersion := (LocalRootProject / scalaVersion).value,
+    crossScalaVersions := (LocalRootProject / crossScalaVersions).value,
+    (Compile / unmanagedSourceDirectories) += {
       val base = baseDirectory.value / "src" / "main"
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, v)) if v >= 13 => base / s"scala-2.13+"
         case _ => base / s"scala-2.13-"
       }
     },
-    scalacOptions in(Compile, compile) ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
-    scalacOptions in(Test, compile) ++= Seq(Opts.compile.deprecation)
+    Compile / compile / scalacOptions ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
+    Test / compile / scalacOptions ++= Seq(Opts.compile.deprecation)
   )
 
   private def testOpts = Seq(
@@ -84,9 +84,9 @@ object ScalateBuild {
     // Maybe, similar to https://github.com/scalatest/scalatest/issues/556
     // According to the GitHub issue, `fork in Test := false` is a known workaround for the issue.
     // However, it doesn't work for Scalate project. If we set it, a portion of tests fail.
-    fork in Test := true,
+    Test / fork := true,
 
-    baseDirectory in Test := baseDirectory.value
+    (Test / baseDirectory) := baseDirectory.value
   )
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
