@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         java: [8, 11]
-        Scala: ['2.11.12', '2.12.8', '2.13.5']
+        scala: ['2_11', '2_12', '2_13']
 
     steps:
     - uses: actions/checkout@v2
@@ -23,5 +23,18 @@ jobs:
         java-version: ${{ matrix.java }}
     - name: Run tests
       run: |
-        sbt -v "++ ${{matrix.Scala}}" test unidoc
+        case ${{ matrix.scala }} in
+          "2_11")
+            sbt -v SetScala211 test unidoc
+            ;;
+          "2_12")
+            sbt -v SetScala212 test unidoc
+            ;;
+          "2_13")
+            sbt -v SetScala213 test unidoc
+            ;;
+          *)
+            echo "unknown scala version"
+            exit 1
+        esac
         git diff --exit-code
