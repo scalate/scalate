@@ -25,7 +25,7 @@ class FeedFilterTest extends TemplateTestSupport {
   test("feed filter") {
     val output = engine.layout("/blog/index.feed")
     if (showOutput) {
-      info("Output: " + output)
+      logger.info("Output: " + output)
     }
 
     val xml = XML.loadString(output)

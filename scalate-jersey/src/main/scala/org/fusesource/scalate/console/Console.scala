@@ -17,15 +17,14 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import _root_.javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import _root_.javax.servlet.ServletContext
 import _root_.javax.ws.rs._
 import _root_.org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine }
 import _root_.org.fusesource.scalate.util.Constraints._
-import javax.ws.rs.core.Context
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
-object Console extends Log; import Console._
+import javax.ws.rs.core.Context
 
 /**
  * The Scalate development console
@@ -33,7 +32,7 @@ object Console extends Log; import Console._
  * @version $Revision : 1.1 $
  */
 @Path("/scalate")
-class Console extends DefaultRepresentations {
+class Console extends DefaultRepresentations with StrictLogging {
 
   @Context
   var _servletContext: ServletContext = _
@@ -57,7 +56,7 @@ class Console extends DefaultRepresentations {
   @POST
   @Path("invalidateCachedTemplates")
   def invalidateCachedTemplates() = {
-    info("Clearing template cache")
+    logger.info("Clearing template cache")
     val engine = ServletTemplateEngine(servletContext)
     engine.invalidateCachedTemplates
   }

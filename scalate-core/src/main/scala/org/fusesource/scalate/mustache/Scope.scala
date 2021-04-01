@@ -18,14 +18,13 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
+import slogging.StrictLogging
 
 import scala.collection.JavaConverters._
-
 import java.{ lang => jl, util => ju }
 import xml.NodeSeq
-import org.fusesource.scalate.util.Log
 
-object Scope extends Log {
+object Scope {
   def apply(context: RenderContext) = {
     context.attributeOrElse[Scope]("scope", RenderContextScope(context))
   }
@@ -36,8 +35,8 @@ object Scope extends Log {
  *
  * @version $Revision : 1.1 $
  */
-trait Scope {
-  import Scope._
+trait Scope extends StrictLogging {
+
   def parent: Option[Scope]
 
   def context: RenderContext
@@ -56,7 +55,7 @@ trait Scope {
           case _ => null
         }
     }
-    debug("renderVariable %s = %s on %s", name, v, this)
+    logger.debug("renderVariable %s = %s on %s", name, v, this)
     renderValue(v, unescape)
   }
 
@@ -99,7 +98,7 @@ trait Scope {
     apply(name) match {
       case Some(t) =>
         val v = toIterable(t, block)
-        debug("section value " + name + " = " + v + " in " + this)
+        logger.debug("section value " + name + " = " + v + " in " + this)
         v match {
 
           // TODO we have to be really careful to distinguish between collections of things
@@ -132,7 +131,7 @@ trait Scope {
       case None => parent match {
         case Some(ps) => ps.section(name)(block)
         case None => // do nothing, no value
-          debug("No value for " + name + " in " + this)
+          logger.debug("No value for " + name + " in " + this)
 
       }
     }
@@ -142,7 +141,7 @@ trait Scope {
     apply(name) match {
       case Some(t) =>
         val v = toIterable(t, block)
-        debug("invertedSection value " + name + " = " + v + " in " + this)
+        logger.debug("invertedSection value " + name + " = " + v + " in " + this)
         v match {
 
           // TODO we have to be really careful to distinguish between collections of things
@@ -182,14 +181,14 @@ trait Scope {
   }
 
   def childScope(name: String, v: Any)(block: Scope => Unit): Unit = {
-    debug("Creating scope for: " + v)
+    logger.debug("Creating scope for: " + v)
     val scope = createScope(name, v)
     block(scope)
   }
 
   def foreachScope[T](name: String, s: Iterable[T])(block: Scope => Unit): Unit = {
     for (i <- s) {
-      debug("Creating traversable scope for: " + i)
+      logger.debug("Creating traversable scope for: " + i)
       val scope = createScope(name, i)
       block(scope)
     }
@@ -207,7 +206,7 @@ trait Scope {
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
       case v =>
-        warn("Unable to process value: %s", v)
+        logger.warn("Unable to process value: %s", v)
         new EmptyScope(this)
     }
   }

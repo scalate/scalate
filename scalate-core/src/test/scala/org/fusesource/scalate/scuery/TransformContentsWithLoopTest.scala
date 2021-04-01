@@ -21,6 +21,7 @@ import _root_.org.fusesource.scalate.FunSuiteSupport
 import _root_.scala.xml.Node
 
 class TransformContentsWithLoopTest extends FunSuiteSupport {
+
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
   val xml = <ul class="people">
@@ -49,14 +50,14 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertPersonLink((result \ "li" \ "a")(0), "James")
     assertPersonLink((result \ "li" \ "a")(1), "Hiram")
   }
 
   protected def assertPersonLink(a: Node, name: String): Unit = {
-    debug("Testing " + a + " for name: " + name)
+    logger.debug("Testing " + a + " for name: " + name)
     assertResult(name) { a.text }
     assertResult("http://acme.com/bookstore/" + name) { (a \ "@href").toString }
   }

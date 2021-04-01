@@ -18,18 +18,18 @@
 package org.fusesource.scalate.jersey
 
 import org.fusesource.scalate.scuery.Transformer
-import xml.{ XML, NodeSeq }
+
+import xml.{ NodeSeq, XML }
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
 import java.net.URL
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.util.ResourceNotFoundException
+import slogging.StrictLogging
 
 /**
  * @version $Revision : 1.1 $
  */
-object ScueryView extends Log
-trait ScueryView {
-  import ScueryView._
+trait ScueryView extends StrictLogging {
 
   @Context
   private[this] var _servletContext: ServletContext = _
@@ -57,15 +57,15 @@ trait ScueryView {
 
   protected def findResource(path: String): Option[URL] = {
     val cname = getClass.getName
-    debug("Using class name: " + cname)
+    logger.debug("Using class name: " + cname)
     val classDirectory = "/" + cname.replace('.', '/') + "."
 
     var answer: Option[URL] = None
     for (subDir <- List(classDirectory, ""); dir <- templateDirectories if answer.isEmpty) {
       val t = dir + subDir + path
-      debug("Trying to find template: " + t)
+      logger.debug("Trying to find template: " + t)
       val u = servletContext.getResource(t)
-      debug("Found: " + u)
+      logger.debug("Found: " + u)
       if (u != null) {
         answer = Some(u)
       }

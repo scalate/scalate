@@ -20,9 +20,11 @@ package wikitext
 
 import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.support.Links
+
 import java.io.File
-import util.{ Log, IOUtil, Files }
+import util.{ Files, IOUtil }
 import IOUtil._
+import slogging.StrictLogging
 
 /**
  * Converts links used in wiki notation to find the template or wiki markup files on the file system.
@@ -33,15 +35,13 @@ import IOUtil._
  */
 case class SwizzleLinkFilter(
   sourceDirectories: Iterable[File],
-  extensions: Set[String]) extends Filter {
-
-  import SwizzleLinkFilter._
+  extensions: Set[String]) extends Filter with StrictLogging {
 
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
   def filter(context: RenderContext, html: String) = {
-    debug("Transforming links with " + this)
+    logger.debug("Transforming links with " + this)
     linkRegex.replaceAllIn(html, {
       // for some reason we don't just get the captured group - no idea why. Instead we get...
       //
@@ -78,7 +78,7 @@ case class SwizzleLinkFilter(
     val name1 = link.stripPrefix("/").toLowerCase
     val name2 = name1.replace(' ', '-')
 
-    info("Looking for files matching %s from %s", name2, requestUri)
+    logger.info("Looking for files matching %s from %s", name2, requestUri)
 
     def matchesName(f: File) = {
       val n = f.nameDropExtension.toLowerCase
@@ -125,7 +125,7 @@ case class SwizzleLinkFilter(
   protected val linkRegex = "(?i)<(?>link|a|img|script)[^>]*?(?>href|src)\\s*?=\\s*?(\\\".*?\\\"|'.*?')[^>]*?".r
 }
 
-object SwizzleLinkFilter extends Log {
+object SwizzleLinkFilter {
   def apply(renderContext: RenderContext): SwizzleLinkFilter = apply(renderContext.engine)
 
   def apply(te: TemplateEngine): SwizzleLinkFilter = {

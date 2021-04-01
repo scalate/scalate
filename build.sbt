@@ -42,6 +42,7 @@ lazy val scalateUtil = scalateProject("util")
     mimaSettings,
     libraryDependencies ++= Seq(
       junit % Test,
+      slogging.value,
       logbackClassic % Test,
       slf4jApi,
       s"${scalaOrganization.value}.modules" %% "scala-parser-combinators" %

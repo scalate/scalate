@@ -21,6 +21,7 @@ import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.NodeSeq
 
 class TransformTableStripeTest extends FunSuiteSupport {
+
   val xml = <table class="people">
               <thead>
                 <tr>
@@ -65,7 +66,7 @@ class TransformTableStripeTest extends FunSuiteSupport {
   test("stripe table") {
     val transformer = new PersonTransformer(List(Person("James", "Beckington"), Person("Hiram", "Tampa")))
     val result = transformer(xml)
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertSize("tbody tr", result, 2)
     assertSize("tbody tr.odd", result, 1)
@@ -80,7 +81,7 @@ class TransformTableStripeTest extends FunSuiteSupport {
   test("stripe empty table") {
     val striper = new PersonTransformer(List())
     val result = striper(xml)
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertSize("tbody tr", result, 1)
     assertSize("tbody tr.empty", result, 1)

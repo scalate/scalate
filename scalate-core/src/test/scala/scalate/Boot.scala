@@ -17,19 +17,17 @@
  */
 package scalate
 
-import org.fusesource.scalate.util.Log
 import org.fusesource.scalate.{ MockBootstrap, TemplateEngine }
+import slogging.StrictLogging
 
 /**
  * A simple boot strap mechanism to act as a simple place to host initialisation code which can then be shared across
  * web apps or static site gen
  */
-object Boot extends Log
-class Boot(engine: TemplateEngine) {
-  import Boot._
+class Boot(engine: TemplateEngine) extends StrictLogging {
 
   def run: Unit = {
-    info("scalate bootstrap starting with template engine: %s", engine)
+    logger.info("scalate bootstrap starting with template engine: %s", engine)
     MockBootstrap.initialised = true
   }
 

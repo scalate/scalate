@@ -20,17 +20,17 @@ package org.fusesource.scalate.console
 import _root_.java.io.File
 import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
+
 import javax.ws.rs._
 import org.fusesource.scalate.{ NoFormParameterException, RenderContext }
 import org.fusesource.scalate.rest.View
-import org.fusesource.scalate.util.{ Log, IOUtil }
+import org.fusesource.scalate.util.IOUtil
+import slogging.StrictLogging
 
-object ArchetypeResource extends Log
 /**
  * @version $Revision : 1.1 $
  */
-class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets {
-  import ArchetypeResource._
+class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets with StrictLogging {
 
   var _form: Form = _
 
@@ -63,7 +63,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
   @Consumes(Array("application/x-www-form-urlencoded"))
   def post(form: Form) = {
     _form = form
-    debug("Posted: %s", form)
+    logger.debug("Posted: %s", form)
 
     // TODO - find the post template
     // validate it, if missing parameters, barf and re-render the view with the current values
@@ -88,7 +88,7 @@ class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets 
    * Creates a file of the given name using the body as the content
    */
   def createFile(fileName: String)(body: => Unit): Unit = {
-    info("archetype creating file: %s", fileName)
+    logger.info("archetype creating file: %s", fileName)
 
     val text = RenderContext.capture(body)
 

@@ -18,8 +18,9 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util.{ ClassLoaders, Log }
+import org.fusesource.scalate.util.ClassLoaders
 import org.fusesource.scalate.{ Binding, TemplateSource }
+import slogging.StrictLogging
 
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates
@@ -33,8 +34,7 @@ abstract class TemplatePackage {
   def header(source: TemplateSource, bindings: List[Binding]): String
 }
 
-object TemplatePackage {
-  val log = Log(getClass); import log._
+object TemplatePackage extends StrictLogging {
 
   val scalatePackageClassName = "ScalatePackage"
 
@@ -48,16 +48,16 @@ object TemplatePackage {
       else
         packageName + "." + scalatePackageClassName
 
-      debug("Trying to find Scalate Package class: " + className)
+      logger.debug("Trying to find Scalate Package class: " + className)
 
       ClassLoaders.findClass(className) match {
         case Some(clazz) =>
-          debug("using Scalate Package class: " + clazz.getName)
+          logger.debug("using Scalate Package class: " + clazz.getName)
           Some(clazz.getConstructor().newInstance().asInstanceOf[TemplatePackage])
 
         case _ =>
           if (isEmpty(packageName)) {
-            debug("No ScalatePackage class found from templates package: " + source.packageName +
+            logger.debug("No ScalatePackage class found from templates package: " + source.packageName +
               " on the class loaders: " + ClassLoaders.defaultClassLoaders)
             None
           } else {

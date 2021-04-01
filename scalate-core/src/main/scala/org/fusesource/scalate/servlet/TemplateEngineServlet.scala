@@ -20,9 +20,8 @@ package org.fusesource.scalate.servlet
 import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse }
 import javax.servlet.{ ServletConfig, ServletContext }
 import org.fusesource.scalate.TemplateEngine
-import org.fusesource.scalate.util.Log
 
-object TemplateEngineServlet extends Log {
+object TemplateEngineServlet {
 
   protected var singleton: TemplateEngineServlet = _
 

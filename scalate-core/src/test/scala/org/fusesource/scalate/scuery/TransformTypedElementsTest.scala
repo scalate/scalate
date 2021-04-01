@@ -24,6 +24,7 @@ case class Car(make: String, model: String, color: String)
 case class Dog(name: String, breed: String, color: String, age: Int)
 
 class TransformTypedElementsTest extends FunSuiteSupport {
+
   val car1 = Car("Ford", "SMax", "Silver")
   val car2 = Car("Porsche", "Carerra", "Black")
   val things = List(car1, car2, Dog("Emma", "Labrador", "Golden", 9))
@@ -84,7 +85,7 @@ class TransformTypedElementsTest extends FunSuiteSupport {
     }
 
     val result = transformer(xml)
-    debug("got result: " + result)
+    logger.debug("got result: " + result)
 
     assertSize("li.car", result, 2)
     assertSize("li.car img", result, 2)

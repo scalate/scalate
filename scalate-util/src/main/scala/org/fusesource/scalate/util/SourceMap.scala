@@ -17,12 +17,13 @@
  */
 package org.fusesource.scalate.util
 
+import slogging.StrictLogging
+
 import java.util.ArrayList
 import java.io._
 import scala.util.parsing.combinator._
 import scala.util.parsing.input._
 import collection.JavaConverters._
-
 import scala.language.reflectiveCalls
 
 /**
@@ -238,7 +239,8 @@ class SourceMapStratum(val name: String) {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  * @author Shawn Bayern
  */
-class SourceMap {
+class SourceMap extends StrictLogging {
+
   private[this] var outputFileName: String = null
   private[this] var doEmbedded = true
   private[this] var embedded = List[String]()
@@ -424,9 +426,7 @@ object SourceMapInstaller {
    */
   val SOURCE_DEBUG_EXTENSION_MAX_SIZE = Integer.getInteger("SOURCE_DEBUG_EXTENSION_MAX_SIZE", 65535).intValue
 
-  object Writer extends Log
-  class Writer(val orig: Array[Byte], val sourceDebug: String) {
-    import Writer._
+  class Writer(val orig: Array[Byte], val sourceDebug: String) extends StrictLogging {
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)
@@ -517,7 +517,7 @@ object SourceMapInstaller {
           case 1 =>
             var len: Int = copyShort & 0xFFFF
             if (len < 0) {
-              warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
+              logger.warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
               len = 0
             }
             val data = new Array[Byte](len)
@@ -572,7 +572,6 @@ object SourceMapInstaller {
     }
   }
 
-  object Reader extends Log
   class Reader(val orig: Array[Byte]) {
 
     val bais = new ByteArrayInputStream(orig)

@@ -17,21 +17,22 @@
  */
 package org.fusesource.scalate.osgi
 
-import java.io.{ InputStream, IOException, File }
+import java.io.{ File, IOException, InputStream }
 import scala.reflect.io.AbstractFile
 import java.net.URL
 import java.lang.String
-import org.osgi.framework.{ ServiceReference, Bundle }
-import collection.mutable.{ ListBuffer, LinkedHashSet }
+import org.osgi.framework.{ Bundle, ServiceReference }
+
+import collection.mutable.{ LinkedHashSet, ListBuffer }
 import org.osgi.service.packageadmin.PackageAdmin
-import org.fusesource.scalate.util.{ Log, Strings }
+import org.fusesource.scalate.util.Strings
+import slogging.StrictLogging
 
 /**
  * Helper methods to transform OSGi bundles into {@link AbstractFile} implementations
  * suitable for use with the Scala compiler
  */
-object BundleClassPathBuilder {
-  val log = Log(getClass); import log._
+object BundleClassPathBuilder extends StrictLogging {
 
   // These were removed in Scala 2.11.  We still use them.
   private trait AbstractFileCompatibility { this: AbstractFile =>
@@ -81,19 +82,19 @@ object BundleClassPathBuilder {
    * Find bundles that have exports wired to the given and bundle
    */
   def fromWires(bundle: Bundle): List[AbstractFile] = {
-    debug("Checking OSGi bundle wiring for %s", bundle)
+    logger.debug("Checking OSGi bundle wiring for %s", bundle)
     val context = bundle.getBundleContext
     val ref: ServiceReference[_] = context.getServiceReference(classOf[PackageAdmin].getName)
 
     if (ref == null) {
-      warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
+      logger.warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
       return List()
     }
 
     try {
       var admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
       if (admin == null) {
-        warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
+        logger.warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
         List()
       } else {
         fromWires(admin, bundle)
@@ -110,9 +111,9 @@ object BundleClassPathBuilder {
       val bundles = pkg.getImportingBundles();
       if (bundles != null) {
         for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
-          debug("Bundle imports %s from %s", pkg, pkg.getExportingBundle)
+          logger.debug("Bundle imports %s from %s", pkg, pkg.getExportingBundle)
           if (b.getBundleId == 0) {
-            debug("Ignoring system bundle")
+            logger.debug("Ignoring system bundle")
           } else {
             set += pkg.getExportingBundle
           }

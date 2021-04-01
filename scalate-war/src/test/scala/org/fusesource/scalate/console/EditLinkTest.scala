@@ -22,9 +22,10 @@ import _root_.org.fusesource.scalate.util._
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatestplus.junit.JUnitRunner
 import org.scalatest.funsuite.AnyFunSuite
+import slogging.StrictLogging
 
 @RunWith(classOf[JUnitRunner])
-class EditLinkTest extends AnyFunSuite with Log {
+class EditLinkTest extends AnyFunSuite with StrictLogging {
 
   val file = "src/test/scala/org/fusesource/scalate/console/EditLinkTest.scala"
 
@@ -42,7 +43,7 @@ class EditLinkTest extends AnyFunSuite with Log {
     // lets put a render context in scope
     RenderContext.using(new DefaultRenderContext(file, new TemplateEngine())) {
       val link = EditLink.editLink(file)( /*"Edit file"*/ ())
-      log.info(name + " link = " + link)
+      logger.info(name + " link = " + link)
     }
   }
 }

@@ -19,10 +19,9 @@ package org.fusesource.scalate
 package filter
 
 import java.util.concurrent.atomic.AtomicBoolean
-
 import javax.script.ScriptException
 import org.fusesource.scalate.support.RenderHelper
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 import tv.cntt.rhinocoffeescript.Compiler
 
 /**
@@ -32,7 +31,7 @@ import tv.cntt.rhinocoffeescript.Compiler
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-object CoffeeScriptFilter extends Filter with Log {
+object CoffeeScriptFilter extends Filter with StrictLogging {
 
   /**
    * Server side compilation of coffeescript is enabled by default. Disable this flag
@@ -56,7 +55,7 @@ object CoffeeScriptFilter extends Filter with Log {
       // we don't have rhino on the classpath
       // so lets do client side compilation
       if (warnedMissingRhino.compareAndSet(false, true)) {
-        warn("No Rhino on the classpath: " + e + ". Using client side CoffeeScript compile", e)
+        logger.warn("No Rhino on the classpath: " + e + ". Using client side CoffeeScript compile", e)
       }
       clientSideCompile
     }
@@ -65,7 +64,7 @@ object CoffeeScriptFilter extends Filter with Log {
       try {
         CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
           error =>
-            warn("Could not compile coffeescript: " + error, error)
+            logger.warn("Could not compile coffeescript: " + error, error)
             throw new CompilerException(error.message, Nil)
         }, {
           coffee =>
@@ -88,7 +87,7 @@ object CoffeeScriptFilter extends Filter with Log {
 /**
  * Compiles a .coffee file into JS on the server side
  */
-object CoffeeScriptPipeline extends Filter with Log {
+object CoffeeScriptPipeline extends Filter with StrictLogging {
 
   /**
    * Installs the coffeescript pipeline
@@ -101,7 +100,7 @@ object CoffeeScriptPipeline extends Filter with Log {
   def filter(context: RenderContext, content: String) = {
     CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
       error =>
-        warn("Could not compile coffeescript: " + error, error)
+        logger.warn("Could not compile coffeescript: " + error, error)
         throw new CompilerException(error.message, Nil)
     }, {
       coffee => coffee

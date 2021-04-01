@@ -20,6 +20,7 @@ package org.fusesource.scalate.scuery
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.NodeSeq
 class LoopTest extends FunSuiteSupport {
+
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
   val xml = <html>
@@ -120,7 +121,7 @@ class LoopTest extends FunSuiteSupport {
   }
 
   def assertTransformed(result: NodeSeq): Unit = {
-    debug("got result: %s", result)
+    logger.debug("got result: %s", result)
 
     assertResult("James") { (result \\ "td")(0).text }
     assertResult("Beckington") { (result \\ "td")(1).text }

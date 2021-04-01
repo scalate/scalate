@@ -18,9 +18,9 @@
 package org.fusesource.scalate
 package support
 
-import util.{ Log, ClassLoaders, Files }
+import slogging.StrictLogging
+import util.{ ClassLoaders, Files }
 
-object DefaultTemplatePackage extends Log
 /**
  * A TemplatePackage where we try and find an object/controller/resource type based on the name of the current template and if we can
  * find it then we create a variable called **it** of the controller type and import its values into the template.
@@ -28,8 +28,7 @@ object DefaultTemplatePackage extends Log
  * This approach can be used for JAXRS controllers or for template views of objects. It avoids having to explicitly
  * import the controller or 'it' variable from the attribute scope
  */
-class DefaultTemplatePackage extends TemplatePackage {
-  import DefaultTemplatePackage._
+class DefaultTemplatePackage extends TemplatePackage with StrictLogging {
 
   def header(source: TemplateSource, bindings: List[Binding]) = {
     bindings.find(_.name == "it") match {
@@ -56,7 +55,7 @@ class DefaultTemplatePackage extends TemplatePackage {
           case _ =>
             if (!className.split('.').last.startsWith("_")) {
               // lets ignore partial templates which are never bound to a resource directly
-              debug("Could not find a class on the classpath based on the current url: %s", cleanUri)
+              logger.debug("Could not find a class on the classpath based on the current url: %s", cleanUri)
             }
             ""
         }

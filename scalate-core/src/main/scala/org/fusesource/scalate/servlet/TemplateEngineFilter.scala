@@ -20,9 +20,7 @@ package org.fusesource.scalate.servlet
 import javax.servlet._
 import javax.servlet.http.{ HttpServletRequest, HttpServletRequestWrapper, HttpServletResponse }
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.util.Log
-
-object TemplateEngineFilter extends Log
+import slogging.StrictLogging
 
 /**
  * Servlet filter which auto routes to the scalate engines for paths which have a scalate template
@@ -30,8 +28,7 @@ object TemplateEngineFilter extends Log
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateEngineFilter extends Filter {
-  import TemplateEngineFilter._
+class TemplateEngineFilter extends Filter with StrictLogging {
 
   var config: FilterConfig = _
   var engine: ServletTemplateEngine = _
@@ -70,10 +67,10 @@ class TemplateEngineFilter extends Filter {
       case (request: HttpServletRequest, response: HttpServletResponse) =>
         val request_wrapper = wrap(request)
 
-        debug("Checking '%s'", request.getRequestURI)
+        logger.debug("Checking '%s'", request.getRequestURI)
         findTemplate(request.getRequestURI.substring(request.getContextPath.length)) match {
           case Some(template) =>
-            debug("Rendering '%s' using template '%s'", request.getRequestURI, template)
+            logger.debug("Rendering '%s' using template '%s'", request.getRequestURI, template)
             val context = new ServletRenderContext(engine, request_wrapper, response, config.getServletContext)
 
             try {
@@ -93,7 +90,7 @@ class TemplateEngineFilter extends Filter {
 
   def showErrorPage(request: HttpServletRequest, response: HttpServletResponse, e: Throwable): Unit = {
 
-    info(e, "failure: %s", e)
+    logger.info(s"failure: $e", e)
 
     // we need to expose all the errors property here...
     request.setAttribute("javax.servlet.error.exception", e)

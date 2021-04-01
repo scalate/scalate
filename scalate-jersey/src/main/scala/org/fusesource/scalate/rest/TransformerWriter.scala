@@ -23,19 +23,17 @@ import java.lang.reflect.Type
 import java.net.URL
 import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
-
+import javax.ws.rs.core.{ Context, MediaType, MultivaluedMap }
 import org.fusesource.scalate.scuery.Transformer
 import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
 import scala.collection.JavaConverters._
-import xml.{ XML, NodeSeq }
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
-
-object TransformerWriter extends Log
+import xml.{ NodeSeq, XML }
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+import org.fusesource.scalate.util.ResourceNotFoundException
+import slogging.StrictLogging
 
 /**
  * Converts an Scuery [[org.fusesource.scalate.scuery.Transformer]] to output
@@ -43,8 +41,7 @@ object TransformerWriter extends Log
  * @version $Revision : 1.1 $
  */
 @Provider
-class TransformerWriter extends MessageBodyWriter[Transformer] {
-  import TransformerWriter._
+class TransformerWriter extends MessageBodyWriter[Transformer] with StrictLogging {
 
   @Context
   protected var uriInfo: ExtendedUriInfo = _
@@ -107,8 +104,8 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
       if (!resources.isEmpty) {
         val resource = resources.head
         val className = resource.getClass.getName
-        debug("resource class: " + className)
-        debug("viewName: " + viewName)
+        logger.debug("resource class: " + className)
+        logger.debug("viewName: " + viewName)
 
         try {
           val templateName = "/" + className.replace('.', '/') + "." + viewName + ".html"
@@ -177,9 +174,9 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     var answer: Option[URL] = None
     for (dir <- templateDirectories if answer.isEmpty) {
       val t = dir + path
-      debug("Trying to find template: " + t)
+      logger.debug("Trying to find template: " + t)
       val u = servletContext.getResource(t)
-      debug("Found: " + u)
+      logger.debug("Found: " + u)
       if (u != null) {
         answer = Some(u)
       }

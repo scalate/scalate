@@ -17,20 +17,19 @@
  */
 package org.fusesource.scalate.boot
 
-import org.fusesource.scalate.util.Log
+import slogging.StrictLogging
 
 /**
  * Helper class to help test that we can write custom bootstrap code
  * using the ScalatePackage mechanism
  */
-object BootSample {
-  val log = Log(getClass); import log._
+object BootSample extends StrictLogging {
 
   var initialised = false
 
   def boot: Unit = {
     if (!initialised) {
-      info("Startup up template package bootstrap!")
+      logger.info("Startup up template package bootstrap!")
       initialised = true
     }
   }
