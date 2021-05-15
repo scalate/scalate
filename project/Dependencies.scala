@@ -18,7 +18,7 @@ object Dependencies {
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.17.0"
   val junit = "junit" % "junit" % "4.13.2"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.3.1"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.3.2"
   // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
