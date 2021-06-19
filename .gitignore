@@ -22,3 +22,7 @@ overlays
 .history
 .cache
 .ensime*
+
+.metals/
+.vscode/
+.bsp/

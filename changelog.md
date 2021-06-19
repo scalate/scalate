@@ -2,6 +2,164 @@
 ===============================
 git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
 
+[Scalate 1.9.7](https://github.com/scalate/scalate/compare/scalate-project-1.9.6...scalate-project-1.9.7), released 2021-06-20
+
+* b12cd64e Update scala-parser-combinators to 2.0.0 (#356) by scala-steward-bot
+* 8d9f2c52 Update scala-compiler, scala-library to 2.12.14 (#364) by scala-steward-bot
+* bc57c541 Compile with scala 2.12.13 (#351) by Anil Kumar Myla
+* 8c4e7cc8 Update slf4j-api to 1.7.31 by Scala Steward
+* e7d6b10e Update jruby-complete to 9.2.19.0 by Scala Steward
+* 854e1fe3 Update sbt to 1.5.4 by Scala Steward
+* cb4e6437 Update jetty-server, jetty-util, ... to 11.0.5 by Scala Steward
+* 1bdd3286 Update spring-webmvc to 5.3.8 by Scala Steward
+* 8ce912ef Update jetty-server, jetty-util, ... to 11.0.4 by Scala Steward
+* fb192771 Update jruby-complete to 9.2.18.0 by Scala Steward
+* 05d5e09b Update snakeyaml to 1.29 by Scala Steward
+* 9dd222fd Update sbt to 1.5.3 by Scala Steward
+* 1754b011 Update sbt-mima-plugin to 0.9.2 by Scala Steward
+* a5be61bc Update sbt-git to 1.0.1 by Scala Steward
+* f9e6361e Update jetty-server, jetty-util, ... to 11.0.3 by Scala Steward
+* d405dd55 Update scala-compiler, scala-library to 2.13.6 by Scala Steward
+* 72646ea9 Update org.apache.karaf.shell.console to 4.3.2 by Scala Steward
+* 265a254d Update junit-4-13 to 3.2.9.0 (#358) by scala-steward-bot
+* 70dc0b32 Update scalatest to 3.2.9 by Scala Steward
+* 2685748f Update sbt-mima-plugin to 0.9.1 (#355) by scala-steward-bot
+* 72f29ebb Update spring-webmvc to 5.3.7 by Scala Steward
+* 24e9696f fail-fast: false by kenji yoshida
+* b9f8523b Update sbt to 1.5.2 by Scala Steward
+* db675fe0 Update sbt-mima-plugin to 0.9.0 (#352) by scala-steward-bot
+* 6f9a2b30 Update sbt to 1.5.1 by Scala Steward
+* 33c05876 Update junit-4-13 to 3.2.8.0 by Scala Steward
+* a2300757 Update scalatest to 3.2.8 by Scala Steward
+* d84a6d43 Update spring-webmvc to 5.3.6 by Scala Steward
+* b53d2c04 Update sbt-updates to 0.5.3 by Scala Steward
+* 03d464bc Bump actions/setup-java from v1 to v2 (#345) by dependabot[bot]
+* e7337a45 Update sbt to 1.5.0 by Scala Steward
+* 27a2c5e7 Update org.apache.karaf.shell.console to 4.3.1 by Scala Steward
+* 149e8136 Update scalatest to 3.2.7 by Scala Steward
+* 0c5cf4ab Update jruby-complete to 9.2.17.0 by Scala Steward
+* d60f2181 Update jetty-server, jetty-util, ... to 11.0.2 by Scala Steward
+* 9a29ded3 Update spring-webmvc to 5.3.5 by Scala Steward
+* d671e4a0 Update sbt-sonatype to 3.9.7 by Scala Steward
+* 25ea5525 Update sbt-sonatype to 3.9.6 by Scala Steward
+* b6ab5ad6 Update sbt to 1.4.9 by Scala Steward
+* d023f52e Update junit-4-13 to 3.2.6.0 (#334) by scala-steward-bot
+* 5540483b Update scalatest to 3.2.6 by Scala Steward
+* 8939b247 fix build setting by xuwei-k
+* 4caf6eec remove branch setting by kenji yoshida
+* dbd6cdb0 Update sbt to 1.4.8 by Scala Steward
+* 1f475b62 fix readme (#330) by Magnolia.K
+* 2d06fe22 Update Scala 2.13.5 (#329) by Magnolia.K
+* 1675a687 Update sbt-updates to 0.5.2 by Scala Steward
+* 2cba0898 Update jruby-complete to 9.2.16.0 by Scala Steward
+* e8f43745 Update jruby-complete to 9.2.15.0 by Scala Steward
+* f70b48d3 use slash syntax by xuwei-k
+* 139b16ca Update jetty-server, jetty-util, ... to 11.0.1 by Scala Steward
+* 2a4bbd47 Update snakeyaml to 1.28 by Scala Steward
+* 2a68a773 Update junit-4-13 to 3.2.5.0 (#321) by scala-steward-bot
+* 8d97b733 Update scalatest to 3.2.5 by Scala Steward
+* 4bc74335 Delete .travis.yml by kenji yoshida
+* 5414c51b Update junit-4-13 to 3.2.4.0 by Scala Steward
+* afa88edb Update scalatest to 3.2.4 by Scala Steward
+* dda0a362 Update spring-webmvc to 5.3.4 by Scala Steward
+* 0951f7a5 Update sbt-pgp to 2.1.2 by Scala Steward
+* de53da60 Update junit to 4.13.2 by Scala Steward
+* f78cf9fe Update xsbt-web-plugin to 4.2.2 by Scala Steward
+* 58ab73f7 Update to scala 2.13.4 (#313) by Ivan Stanislavciuc
+* 54d2ef30 Update sbt to 1.4.7 by Scala Steward
+* e99896e7 Update rhinocoffeescript to 1.12.7 by Scala Steward
+* 3e60c36b Update spring-webmvc to 5.3.3 by Scala Steward
+* 83ab010f Update issue templates by Magnolia.K
+* a37d201e Update sbt to 1.4.6 by Scala Steward
+* 595e007c Update sbt to 1.4.5 by Scala Steward
+* 158365ca Update spring-webmvc to 5.3.2 by Scala Steward
+* fcf5c8d2 Update jruby-complete to 9.2.14.0 by Scala Steward
+* 232bc06c Update scala.yml by kenji yoshida
+* 481ea7e0 Update jetty-server, jetty-util, ... to 11.0.0 by Scala Steward
+* ac643a32 Update sbt-pgp to 2.1.1 by Scala Steward
+* fbed9af8 Update sbt-pgp to 2.1.0 by Scala Steward
+* a02c6789 Update sbt-pgp to 2.0.2 by Scala Steward
+* cb9c9f4c Delete scala-steward.yml by kenji yoshida
+* b707ecfd Update jetty-server, jetty-util, ... to 9.4.35.v20201120 (#294) by github-actions[bot]
+* 9e8902c3 Update sbt to 1.4.4 (#295) by github-actions[bot]
+* 8239e824 Update scala-steward.yml by kenji yoshida
+* da5687db timeout-minutes: 10 by kenji yoshida
+* 3007e385 add dependabot.yml by kenji yoshida
+* 925da7b6 Update sbt to 1.4.3 by github-actions[bot]
+* 18d77977 Update scalatest to 3.2.3 (#289) by github-actions[bot]
+* 645ec477 Update jetty-server, jetty-util, ... to 9.4.34.v20201102 by github-actions[bot]
+* 7e8f0132 Update junit-4-13 to 3.2.3.0 by github-actions[bot]
+* ec15ea52 Update spring-webmvc to 5.3.1 by github-actions[bot]
+* 02cd0dc8 Update scala-steward.yml by kenji yoshida
+* 81bf60c2 Update sbt-sonatype to 3.9.5 by github-actions[bot]
+* 75cc9b17 Update sbt to 1.4.2 by github-actions[bot]
+* 1751cb90 Update scalatest to 3.2.2 (#282) by github-actions[bot]
+* 6c9fca94 Update org.apache.karaf.shell.console to 4.3.0 (#285) by github-actions[bot]
+* 1dce98a3 Update sbt-pgp to 2.0.1 by xuwei-k
+* df68f97e Update sbt to 1.4.1 by github-actions[bot]
+* c92f0855 Update spring-webmvc to 5.3.0 by github-actions[bot]
+* 468f587a Update spring-webmvc to 5.2.10.RELEASE by github-actions[bot]
+* d11957db remove "cachedResoluton = true" by kenji yoshida
+* 355fae58 Update sbt-mima-plugin to 0.8.1 by github-actions[bot]
+* bcf5d87f Update sbt-pgp to 1.1.2-1 by github-actions[bot]
+* 6b2b420b Create CODEOWNERS by kenji yoshida
+* 6ab52795 Create scala-steward.yml by kenji yoshida
+* 9da9d0a0 jetty 9.4.33.v20201020 by kenji yoshida
+* 0acf897c Update org.apache.karaf.shell.console to 4.2.10 by kenji yoshida
+* 367fdaf1 junit 4.13.1 by kenji yoshida
+* 035bd38c sbt-sonatype 3.9.4 by kenji yoshida
+* 85b07d83 Update dependencies by xuwei-k
+* 092029ab mima 0.8.0 by kenji yoshida
+* 1b4fb732 sbt-buildinfo 0.10.0 by kenji yoshida
+* 8cd17337 jetty 9.4.31.v20200723 by kenji yoshida
+* 5d01ba2c fix warning by kenji yoshida
+* 93cbd76b deleted sudo (#273) by magnolia
+* 2c672db3 Added GitHub Actions Badge by magnolia
+* 8dd6b3cc Added GitHub Actions for build by magnolia
+* eee7570c removed unnecessary dependencies (#272) by magnolia
+* ed368acc Update jruby-complete to 9.2.12.0 by kenji yoshida
+* d1e138c5 sbt 1.3.13 by kenji yoshida
+* 92f3ba60 Update xsbt-web-plugin to 4.2.1 by kenji yoshida
+* 746bbf3f jetty 9.4.30.v20200611 by kenji yoshida
+* 7b7b0a17 Update dependencies by kenji yoshida
+* 65da1007 sbt 1.3.12 by kenji yoshida
+* ce2916a4 sbt 1.3.11 by kenji yoshida
+* 2f2c989f drop deprecated modules (#271) by magnolia
+* 4be9bce1 Update mima settings by xuwei-k
+* 474d00fd Update jetty to 9.4.29.v20200521 by kenji yoshida
+* ca4cb4b2 Start 1.9.7 dev by Kazuhiro Sera
+* bc43b993 version 1.9.6 by Kazuhiro Sera
+* 89763041 sbt-updates 0.5.1 by kenji yoshida
+* ee756b6e deprecated scalate-less (#270) by magnolia
+* 557ea344 deprecated scalate-markdownj (#269) by magnolia
+* b1faeccd deprecated scalate-jrebel (#268) by magnolia
+* 6d224ad6 Scala 2.13.2 by xuwei-k
+* 35da6bf6 avoid deprecated return statement by xuwei-k
+* b6455752 fix warning. avoid scala.compat.Platform by xuwei-k
+* 830ea95f Removed the anonymous function escape by return statement (#261) by magnolia
+* 2a5f5af2 remove sbt-osgi plugin by xuwei-k
+* a27a0617 Deprecated Ruby sass filter (#260) by magnolia
+* 18db9677 Deprecated Pegdown filter (#259) by magnolia
+* 253c5bcf replaced deprecated api (#258) by magnolia
+* 5a4dd7ee replaced deprecated api by Magnolia.K
+* fb27ccec Update xsbt-web-plugin to 4.2.0 by kenji yoshida
+* 45fb819e update spring-webmvc by kenji yoshida
+* 3b1bd10c Update dependencies by xuwei-k
+* 47630d09 update cache setting by kenji yoshida
+* a8c6bc72 use https by kenji yoshida
+* f0127977 scala-xml 1.3.0 by kenji yoshida
+* e9b8fad1 Update sbt and mima-plugin by xuwei-k
+* 35ef0b96 Update camel-scala to 2.24.3 by xuwei-k
+* fd3218b3 Update jetty-server to 9.4.25.v20191220 by xuwei-k
+* b2ae2447 Update slf4j-api to 1.7.30 by xuwei-k
+* eb2ae75c Update spring-webmvc to 5.1.12.RELEASE by xuwei-k
+* ddc1d3de Update jetty-server to 9.4.24.v20191120 by xuwei-k
+* ef429f03 Update jetty-server to 9.4.23.v20191118 by xuwei-k
+* 6b975a41 Update slf4j-api to 1.7.29 by xuwei-k
+* 366bde80 Update jruby-complete to 9.2.9.0 by xuwei-k
+* c5129c40 Update sbt-updates to 0.5.0 by xuwei-k
+* 5b154165 Start 1.9.6 dev by Kazuhiro Sera
+
 [Scalate 1.9.6](https://github.com/scalate/scalate/compare/scalate-project-1.9.5...scalate-project-1.9.6), released 2020-05-17
 
 * 89763041 sbt-updates 0.5.1 by kenji yoshida
