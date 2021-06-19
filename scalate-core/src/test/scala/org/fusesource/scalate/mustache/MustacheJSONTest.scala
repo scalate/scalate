@@ -18,8 +18,10 @@
 package org.fusesource.scalate.mustache
 
 import java.io.File
-import util.parsing.json.JSON
 import org.fusesource.scalate.util.IOUtil
+
+import org.json4s._
+import org.json4s.native.JsonMethods._
 
 /**
  * Runs the system tests from the mustache.js distro
@@ -35,6 +37,7 @@ class MustacheJSONTest extends MustacheTestSupport {
 
   // Implementation methods
   //-------------------------------------------------------------------------
+  implicit val formats: Formats = DefaultFormats
 
   def mustacheJsonTest(name: String): Unit = {
     test(name + " JSON") {
@@ -42,11 +45,11 @@ class MustacheJSONTest extends MustacheTestSupport {
       // lets trim the 'var x = ' part to make valid json
       val idx = jText.indexOf("=")
       val jsonText = if (idx >= 0) jText.substring(idx + 1) else jText
-      JSON.parseFull(jsonText) match {
+      parseOpt(jsonText) match {
         case Some(json) =>
           debug("Parsed json: %s", json)
 
-          json match {
+          json.extract[Map[String, Any]] match {
             case attributes: Map[_, _] =>
               assertMustacheTest(name, attributes.asInstanceOf[Map[String, Any]])
             case v =>
