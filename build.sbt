@@ -59,6 +59,7 @@ lazy val scalateCore = scalateProject("core")
   .settings(
     mimaSettings,
     mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.ScalaCompiler#LoggingReporter.printMessage"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.childElements"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.filterNode"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.childElements"),
