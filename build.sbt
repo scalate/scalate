@@ -9,7 +9,7 @@ import com.typesafe.tools.mima.core._
 // -----------------------------------------------------------------------------------
 
 def Scala211 = "2.11.12"
-def Scala212 = "2.12.8"
+def Scala212 = "2.12.13"
 def Scala213 = "2.13.6"
 
 addCommandAlias("SetScala211", s"++ ${Scala211}!")
@@ -59,6 +59,7 @@ lazy val scalateCore = scalateProject("core")
   .settings(
     mimaSettings,
     mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.ScalaCompiler#LoggingReporter.printMessage"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.childElements"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.filterNode"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.childElements"),
