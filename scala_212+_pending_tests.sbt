@@ -12,7 +12,7 @@ val pendingTests = Set(
 
 (ThisBuild / Test / testOptions) ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, v)) if v >= 13 =>
+    case Some((2, v)) if v >= 12 =>
       Seq(Tests.Exclude(pendingTests))
     case _ =>
       Nil

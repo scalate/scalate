@@ -29,7 +29,11 @@ case class Person(first: String, last: String)
 @RunWith(classOf[JUnitRunner])
 class ArchetypeTest extends FunSuiteSupport {
   val engine = new TemplateEngine
-  engine.workingDirectory = new File(baseDir, "target/test-data/ArchetypeTest")
+
+  // If the version number is not added, class files of different major versions will be reused,
+  // so the compile-time version number is added to the directory name to distinguish them.
+  val ver = scala.tools.nsc.Properties.versionString
+  engine.workingDirectory = new File(baseDir, "target/test-data/ArchetypeTest" + ver)
 
   test("use tableView archetype") {
     val output = engine.layout("/WEB-INF/scalate/archetypes/views/index/tableView.ssp", Map("resourceType" -> classOf[Person])).trim

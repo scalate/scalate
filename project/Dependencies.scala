@@ -12,11 +12,11 @@ object Dependencies {
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
-  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.3"
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.5"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
-  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.17.0"
+  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.2.19.0"
   val junit = "junit" % "junit" % "4.13.2"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.3.2"
   // TODO: upgrade to 1.5.x
@@ -31,11 +31,11 @@ object Dependencies {
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
-  val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.30"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.7"
+  val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.31"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.8"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
-  val snakeYaml = "org.yaml" % "snakeyaml" % "1.28"
+  val snakeYaml = "org.yaml" % "snakeyaml" % "1.29"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
