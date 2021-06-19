@@ -1,8 +1,8 @@
-![Scalate][logo]
+Scalate Changelog
 ===============================
-git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
 
 [Scalate 1.9.7](https://github.com/scalate/scalate/compare/scalate-project-1.9.6...scalate-project-1.9.7), released 2021-06-20
+----
 
 * b12cd64e Update scala-parser-combinators to 2.0.0 (#356) by scala-steward-bot
 * 8d9f2c52 Update scala-compiler, scala-library to 2.12.14 (#364) by scala-steward-bot
@@ -161,6 +161,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * 5b154165 Start 1.9.6 dev by Kazuhiro Sera
 
 [Scalate 1.9.6](https://github.com/scalate/scalate/compare/scalate-project-1.9.5...scalate-project-1.9.6), released 2020-05-17
+----
 
 * 89763041 sbt-updates 0.5.1 by kenji yoshida
 * ee756b6e deprecated scalate-less (#270) by magnolia
@@ -193,6 +194,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * c5129c40 Update sbt-updates to 0.5.0 by xuwei-k
 
 [Scalate 1.9.5](https://github.com/scalate/scalate/compare/scalate-project-1.9.4...scalate-project-1.9.5), released 2019-10-06
+----
 
 * 4df658bc Support Scala 2.13.1 (drop 2.13.0) by xuwei-k
 * 8d65ab13 Update sbt-updates to 0.4.3 by xuwei-k
@@ -212,6 +214,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * c0f4653e Update changelog for 1.9.4 by Kazuhiro Sera
 
 [Scalate 1.9.4](https://github.com/scalate/scalate/compare/scalate-project-1.9.3...scalate-project-1.9.4), released 2019-06-15
+----
 
 * a658b5eb version 1.9.4 by Kazuhiro Sera
 * 4f9b903b Update spring-webmvc to 5.1.8.RELEASE by xuwei-k
@@ -226,11 +229,13 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * 2d1b96ce Update spring-webmvc to 5.1.7.RELEASE by xuwei-k
 
 [Scalate 1.9.3](https://github.com/scalate/scalate/compare/scalate-project-1.9.2...scalate-project-1.9.3), released 2019-04-13
+----
 
 * e1c246b6 Fix parser-combinators bin-compatibility issue in Scala 2.11 by Kazuhiro Sera
 * b9d841f7 Update jruby-complete to 9.2.7.0 by xuwei-k
 
 [Scalate 1.9.2](https://github.com/scalate/scalate/compare/scalate-project-1.9.1...scalate-project-1.9.2), released 2019-04-08
+----
 
 * 4e3c7f30 Support Scala 2.13.0-RC1 by Kazuhiro Sera
 * 3a6bee40 Update spring-webmvc to 5.1.6.RELEASE by xuwei-k
@@ -238,6 +243,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * 3c55167b update sbt plugins by xuwei-k
 
 [Scalate 1.9.1](https://github.com/scalate/scalate/compare/scalate-project-1.9.0...scalate-project-1.9.1), released 2019-03-06
+----
 
 * 73003700 Use StringBuffer.append(char) instead of StringBuffer.append(Object) for regular characters. Avoid Char boxing and Character.toString calls.
 * 38a92d89 Support Scala 2.13.0-M5
@@ -251,6 +257,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * a1764797 enabled pygmentize's test on Travis-CI
 
 [Scalate 1.9.0](https://github.com/scalate/scalate/compare/scalate-project-1.8.0...scalate-project-1.9.0), released 2018-07-19
+----
 
 * Move jaxrs and jersey related classes to separate modules
 * Fix build for jaxrs and jersey modules
@@ -278,6 +285,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * Add MiMa detection policies
 
 [Scalate 1.8.0](https://github.com/scalate/scalate/compare/scalate-project_2.11-1.7.1...scalate-project-1.8.0), released 2016-11-05
+----
 
 * Fix BundleClassPathBuilder broken switching from 2.11 to 2.10 base branch
 * Provide 'generate-scala' and 'generate-website' tool commands
@@ -288,6 +296,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * Bump dependencies
 
 [Scalate 1.7.1](https://github.com/scalate/scalate/compare/scalate-project_2.11-1.7.0...scalate-project_2.11-1.7.1), released 2015-03-16
+----
 
 * Update of documentation contribution page (site.page)
 * Link fixes and updated comments in the development and build pages
@@ -297,6 +306,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * Remove odd maybeCache
 
 [Scalate 1.7.0](https://github.com/scalate/scalate/compare/scalate-project_2.10-1.6.1...scalate-project_2.11-1.7.0), released 2014-05-03
+----
 
 * Fixed distro and tool for 2.10
 * Fix an issue where Spring MVC does not work when there is no ServletConfig
@@ -309,6 +319,7 @@ git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull r
 * Add the scala-parser-combinators module
 
 [Scalate 1.6.1](http://scalate.fusesource.org/blog/releases/release-1.6.1.html), released 2012-12-29
+----
 
 * Make sure Java 1.6 is targeted (1.6 release only worked with 1.7)
 
@@ -608,5 +619,11 @@ Initial release with support for the following template languages
 * [Ssp](http://scalate.fusesource.org/documentation/ssp-reference.html#syntax) which is like a Scala version of JSP or Erb from Rails 
 * [Scaml](http://scalate.fusesource.org/documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) for very DRY markup
 
-[logo]: http://scalate.fusesource.org/images/project-logo.png "Scalate"
+
+---
+Command to collect changes for a new version
+
+```
+git log --pretty=format:'* %h %s by %an' --abbrev-commit | grep -v "Merge pull request " | head -50
+```
 
