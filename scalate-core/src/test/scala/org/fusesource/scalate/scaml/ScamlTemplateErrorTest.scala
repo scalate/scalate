@@ -21,17 +21,31 @@ package org.fusesource.scalate.scaml
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class ScamlTemplateErrorTest extends ScamlTestSupport {
+  val scalaV = scala.util.Properties.versionNumberString
 
-  testCompilerException(
-    "Compile Error",
-    """
+  if (scalaV.startsWith("2.11")) {
+    testCompilerException(
+      "Compile Error",
+      """
 %html
   %body
     %ul
       - for (i <- unknown)
         %li= i
 """,
-    "error: not found: value unknown")
+      "error: not found: value unknown")
+  } else {
+    testCompilerException(
+      "Compile Error",
+      """
+%html
+  %body
+    %ul
+      - for (i <- unknown)
+        %li= i
+""",
+      "not found: value unknown")
+  }
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -95,44 +109,13 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
 """,
     "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3")
 
-  //  // https://github.com/scala/scala-parser-combinators/commit/a6b2b3999dab
-  //  if (!scala.util.Properties.versionNumberString.startsWith("2.10")) {
-  //    testInvalidSyntaxException(
-  //      "Unexpected comma in html attribute list",
-  //      """
-  //%html
-  //  %tab(comma="common", error="true")
-  //  %p commas in attribute lists is a common errro
-  //""",
-  //      "')' expected but ',' found at 2.22")
-  //  }
-
-  // since scala-parser-combinators 1.1.2
-  // https://github.com/scala/scala-parser-combinators/commit/a6b2b3999dab
-  val scalaV = scala.util.Properties.versionNumberString
-  if (!scalaV.startsWith("2.10")) {
-
-    if (scalaV.startsWith("2.11")) {
-      // scala-parser-combinators 1.1.1
-      testInvalidSyntaxException(
-        "Unexpected comma in html attribute list",
-        """
+  testInvalidSyntaxException(
+    "Unexpected comma in html attribute list",
+    """
 %html
-  %tab(comma="common", error="true")
-  %p commas in attribute lists is a common errro
+%tab(comma="common", error="true")
+%p commas in attribute lists is a common errro
 """,
-        "')' expected but ',' found at 2.22")
-    } else {
-      testInvalidSyntaxException(
-        "Unexpected comma in html attribute list",
-        """
-%html
-  %tab(comma="common", error="true")
-  %p commas in attribute lists is a common errro
-""",
-        "string matching regex '[ \\t]+' expected but '(' found at 2.7")
-    }
-  }
+    "')' expected but ',' found at 2.20")
 
 }
-
