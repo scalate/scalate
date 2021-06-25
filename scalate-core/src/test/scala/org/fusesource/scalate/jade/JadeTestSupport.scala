@@ -28,6 +28,14 @@ import org.fusesource.scalate.scaml.ScamlTestSupport
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
+
+class JadeDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter) extends DefaultRenderContext(uri, templaeEngine, outWriter) {
+  val name = "Hiram"
+  val title = "MyPage"
+  val href = "http://scalate.fusesource.org"
+  val quality = "scrumptious"
+}
+
 class JadeTestSupport extends ScamlTestSupport {
 
   override def render(name: String, content: String): String = {
@@ -35,12 +43,8 @@ class JadeTestSupport extends ScamlTestSupport {
     val out = new PrintWriter(buffer)
     try {
       val uri = "/org/fusesource/scalate/jade/test" + name
-      val context = new DefaultRenderContext(uri, engine, out) {
-        val name = "Hiram"
-        val title = "MyPage"
-        val href = "http://scalate.fusesource.org"
-        val quality = "scrumptious"
-      }
+
+      val context = new JadeDefaultRenderContext(uri, engine, out)
 
       engine.bindings = List(Binding("context", context.getClass.getName, true))
 

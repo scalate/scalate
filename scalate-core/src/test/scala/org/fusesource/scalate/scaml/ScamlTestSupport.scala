@@ -26,6 +26,14 @@ import org.scalatest.exceptions.TestFailedException
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
+
+class ScamlDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter) extends DefaultRenderContext(uri, templaeEngine, outWriter) {
+  val name = "Hiram"
+  val title = "MyPage"
+  val href = "http://scalate.fusesource.org"
+  val quality = "scrumptious"
+}
+
 class ScamlTestSupport extends TemplateTestSupport {
   val testCounter = new AtomicInteger(1)
 
@@ -102,12 +110,8 @@ class ScamlTestSupport extends TemplateTestSupport {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     val uri = "/org/fusesource/scalate/scaml/test" + name
-    val context = new DefaultRenderContext(uri, engine, out) {
-      val name = "Hiram"
-      val title = "MyPage"
-      val href = "http://scalate.fusesource.org"
-      val quality = "scrumptious"
-    }
+
+    val context = new ScamlDefaultRenderContext(uri, engine, out)
 
     engine.bindings = List(Binding("context", context.getClass.getName, true))
 
