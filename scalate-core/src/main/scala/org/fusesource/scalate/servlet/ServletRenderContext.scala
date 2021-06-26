@@ -218,7 +218,7 @@ class ServletRenderContext(
 
   protected def requestDispatcher(page: String) = {
     // lets flush first to avoid missing current output
-    flush
+    flush()
 
     val dispatcher = request.getRequestDispatcher(page)
     if (dispatcher == null) {

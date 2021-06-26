@@ -66,7 +66,7 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
     if (blockLineCount == 0) {
       setOptions(matcher.group(1))
       offset = matcher.start(2)
-      beginBlock
+      beginBlock()
       nesting = true
       end = offset
     } else {
@@ -140,11 +140,11 @@ class DivBlock extends AbstractNestedBlock("div") {
   override def beginBlock() = {
     //attributes.setCssClass("syntax")
     builder.beginBlock(BlockType.DIV, attributes)
-    super.beginBlock
+    super.beginBlock()
   }
 
   override def endBlock() = {
-    super.endBlock
+    super.endBlock()
     builder.endBlock()
     attributes = new Attributes()
   }
@@ -164,20 +164,20 @@ class SectionBlock extends AbstractNestedBlock("section") {
   override def beginBlock() = {
     builder.beginBlock(BlockType.TABLE, tableAttributes)
     builder.beginBlock(BlockType.TABLE_ROW, rowAttributes)
-    super.beginBlock
+    super.beginBlock()
   }
 
   override def endBlock() = {
-    super.endBlock
+    super.endBlock()
     builder.endBlock()
     builder.endBlock()
-    content.clear
+    content.clear()
   }
 
   override def canStart(line: String, lineOffset: Int): Boolean = {
     val ret = super.canStart(line, lineOffset)
     if (ret) {
-      defaultAttr
+      defaultAttr()
     }
     ret
   }
@@ -204,18 +204,18 @@ class ColumnBlock extends AbstractNestedBlock("column") {
 
   override def beginBlock() = {
     builder.beginBlock(BlockType.TABLE_CELL_NORMAL, attributes)
-    super.beginBlock
+    super.beginBlock()
   }
 
   override def endBlock() = {
-    super.endBlock
+    super.endBlock()
     builder.endBlock()
   }
 
   override def canStart(line: String, lineOffset: Int): Boolean = {
     val ret = super.canStart(line, lineOffset)
     if (ret) {
-      defaultAttr
+      defaultAttr()
     }
     ret;
   }
@@ -239,11 +239,11 @@ class CenterBlock extends AbstractNestedBlock("center") {
   override def beginBlock() = {
     attributes.setCssStyle("text-align: center;")
     builder.beginBlock(BlockType.DIV, attributes)
-    super.beginBlock
+    super.beginBlock()
   }
 
   override def endBlock() = {
-    super.endBlock
+    super.endBlock()
     builder.endBlock()
     attributes = new Attributes()
   }

@@ -83,7 +83,7 @@ trait IndentWriter {
       print(indentText)
     }
     print(line)
-    println
+    println()
     this
   }
 
@@ -103,7 +103,7 @@ class JspConverter extends IndentWriter {
   var whenCount = 0
 
   def convert(jsp: String): String = {
-    reset
+    reset()
 
     val parser = new JspParser
     val result = parser.parsePage(jsp)

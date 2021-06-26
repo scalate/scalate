@@ -72,7 +72,7 @@ class Precompiler {
     if (bootClassName != null) {
       engine.bootClassName = bootClassName
     }
-    engine.boot
+    engine.boot()
 
     var paths = List[String]()
     for (extension <- engine.codeGenerators.keysIterator; sd <- sources if sd.exists) {

@@ -266,7 +266,7 @@ trait Scope {
    */
   def capture(block: Scope => Unit): String = {
     def body(): Unit = block(this)
-    context.capture(body)
+    context.capture(body())
   }
 
   def isParam1[T](f: Function1[_, _], clazz: Class[T]): Boolean = {

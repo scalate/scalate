@@ -68,7 +68,7 @@ class SiteGenerator {
       workingDirectory.mkdirs()
     }
 
-    engine.boot
+    engine.boot()
 
     val attributes: Map[String, Any] = if (templateProperties != null) {
       templateProperties.asScala.toMap

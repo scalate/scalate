@@ -77,7 +77,7 @@ class DefaultRenderContext(
       out.close()
       buffer.toString
     } finally {
-      out = outStack.pop
+      out = outStack.pop()
     }
   }
 
@@ -94,7 +94,7 @@ class DefaultRenderContext(
       out.close()
       buffer.toString
     } finally {
-      out = outStack.pop
+      out = outStack.pop()
     }
   }
 

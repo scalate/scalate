@@ -62,7 +62,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       if (suppress_indent) {
         suppress_indent = false
       } else {
-        text_buffer.append(indent_string)
+        text_buffer.append(indent_string())
       }
     }
 
@@ -108,7 +108,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate_with_flush(statements: List[Statement]): Unit = {
       generate_no_flush(statements)
-      flush_text
+      flush_text()
     }
 
     def generate_no_flush(statements: List[Statement]): Unit = {
@@ -166,7 +166,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement: Doctype): Unit = {
       this << statement.pos
-      write_indent
+      write_indent()
       statement.line.map { _.value } match {
         case List("XML") =>
           write_text("<?xml version=\"1.0\" encoding=\"utf-8\" ?>")
@@ -205,7 +205,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
           }
       }
-      write_nl
+      write_nl()
     }
 
     def generate(statement: FilterStatement): Unit = {
@@ -254,23 +254,23 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         suffix = ") ) " + suffix
       }
 
-      write_indent
-      flush_text
+      write_indent()
+      flush_text()
 
       this << prefix + "$_scalate_$_context.capture { "
       indent {
         generateTextExpression(text, false)
-        flush_text
+        flush_text()
       }
       this << "} " + suffix
-      write_nl
+      write_nl()
     }
 
     def generateTextExpression(statement: TextExpression, is_line: Boolean): Unit = {
       statement match {
         case s: LiteralText => {
           if (is_line) {
-            write_indent
+            write_indent()
           }
           var literal = true
           for (part <- s.text) {
@@ -279,7 +279,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               write_text(part)
               literal = false
             } else {
-              flush_text
+              flush_text()
               s.sanitize match {
                 case None =>
                   this << "$_scalate_$_context <<< ( " :: part :: " );" :: Nil
@@ -292,7 +292,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             }
           }
           if (is_line) {
-            write_nl
+            write_nl()
           }
         }
         case s: EvaluatedText => {
@@ -324,9 +324,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           suffix = ") " + suffix
 
           if (is_line) {
-            write_indent
+            write_indent()
           }
-          flush_text
+          flush_text()
           if (s.body.isEmpty) {
             this << prefix
             indent {
@@ -345,14 +345,14 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             this << suffix
           }
           if (is_line) {
-            write_nl
+            write_nl()
           }
         }
       }
     }
 
     def generate(statement: Executed): Unit = {
-      flush_text
+      flush_text()
       if (statement.body.isEmpty) {
         statement.code.foreach {
           (line) =>
@@ -369,7 +369,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         }
         indent {
           generate_no_flush(statement.body)
-          flush_text
+          flush_text()
         }
         this << "}"
       }
@@ -394,7 +394,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       statement match {
         case HtmlComment(_, text, List()) => {
-          write_indent
+          write_indent()
           this << statement.pos
           write_text(prefix + " ")
           if (text.isDefined) {
@@ -402,21 +402,21 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             write_text(text.get.trim)
           }
           write_text(" " + suffix)
-          write_nl
+          write_nl()
         }
         case HtmlComment(_, None, list) => {
-          write_indent
+          write_indent()
           this << statement.pos
           write_text(prefix)
-          write_nl
+          write_nl()
 
           element_level += 1
           generate_no_flush(list)
           element_level -= 1
 
-          write_indent
+          write_indent()
           write_text(suffix)
-          write_nl
+          write_nl()
         }
         case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html comment and nested within it", statement.pos);
       }
@@ -481,31 +481,31 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       def outer_trim = statement.trim match {
-        case Some(Trim.Outer) => { trim_whitespace; true }
-        case Some(Trim.Both) => { trim_whitespace; true }
+        case Some(Trim.Outer) => { trim_whitespace(); true }
+        case Some(Trim.Both) => { trim_whitespace(); true }
         case _ => { false }
       }
 
       def inner_trim = statement.trim match {
-        case Some(Trim.Inner) => { trim_whitespace; true }
-        case Some(Trim.Both) => { trim_whitespace; true }
+        case Some(Trim.Inner) => { trim_whitespace(); true }
+        case Some(Trim.Both) => { trim_whitespace(); true }
         case _ => { false }
       }
 
       outer_trim
       this << statement.pos
-      write_indent
+      write_indent()
       write_start_tag
 
       statement match {
         case Element(_, _, text, List(), _, _) => {
           generateTextExpression(text.getOrElse(LiteralText(List(Text("")), Some(false))), false)
           write_end_tag
-          write_nl
+          write_nl()
           outer_trim
         }
         case Element(_, _, None, list, _, _) => {
-          write_nl
+          write_nl()
 
           if (!inner_trim) {
             element_level += 1
@@ -515,9 +515,9 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             element_level -= 1
           }
 
-          write_indent
+          write_indent()
           write_end_tag
-          write_nl
+          write_nl()
           outer_trim
         }
         case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html element and nested within it", statement.pos);
@@ -572,7 +572,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                     case _ => prev ::: " + " :: sum
                   }
               }
-              flush_text
+              flush_text()
             case s: EvaluatedText =>
               if (s.body.isEmpty) {
                 this << s.code :: Nil
@@ -587,7 +587,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           }
         }
 
-        flush_text
+        flush_text()
         this << "$_scalate_$_context << $_scalate_$_attributes( $_scalate_$_context, List( ("
         indent {
           var first = true
@@ -666,7 +666,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     val builder = new SourceBuilder()
     builder.generate(engine, source, bindings, statements)
-    Code(source.className, builder.code, Set(uri), builder.positions)
+    Code(source.className, builder.code, Set(uri), builder.positions())
   }
 
 }

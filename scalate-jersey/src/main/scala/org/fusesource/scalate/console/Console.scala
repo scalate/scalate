@@ -59,6 +59,6 @@ class Console extends DefaultRepresentations {
   def invalidateCachedTemplates() = {
     info("Clearing template cache")
     val engine = ServletTemplateEngine(servletContext)
-    engine.invalidateCachedTemplates
+    engine.invalidateCachedTemplates()
   }
 }

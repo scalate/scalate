@@ -131,7 +131,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
         // conflict with definitions declared in the template
         this << "def $_scalate_$render($_scalate_$_context: _root_.org.fusesource.scalate.RenderContext): Unit = {"
         indent {
-          generateInitialImports
+          generateInitialImports()
           generateBindings(bindings) {
             generateTemplatePackage(source, bindings)
 
@@ -145,9 +145,9 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
         this << "}"
       }
       this << "}"
-      this <<
+      this << ""
 
-      this <<;
+      this << "";
       this << "class " + className + " extends _root_.org.fusesource.scalate.Template {"
       indent {
         this << "def render(context: _root_.org.fusesource.scalate.RenderContext): Unit = " + className + ".$_scalate_$render(context)"
@@ -208,7 +208,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
     protected def generateTemplatePackage(source: TemplateSource, bindings: Iterable[Binding]): Unit = {
       val templatePackage = TemplatePackage.findTemplatePackage(source).getOrElse(new DefaultTemplatePackage())
       this << templatePackage.header(source, bindings.toList)
-      this <<
+      this << ""
     }
 
     def asString(text: String): String = {
