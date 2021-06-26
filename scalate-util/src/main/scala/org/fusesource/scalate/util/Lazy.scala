@@ -72,12 +72,12 @@ class Lazy[T](thunk: => T) {
 
   def apply[Q](v: Q)(implicit e: Q => T): OwnerType = {
     this.set(v)
-    fieldOwner
+    fieldOwner()
   }
 
   def apply(v: T): OwnerType = { // issue 154
     this.set(v)
-    fieldOwner
+    fieldOwner()
   }
 
   def fieldOwner(): OwnerType = {}

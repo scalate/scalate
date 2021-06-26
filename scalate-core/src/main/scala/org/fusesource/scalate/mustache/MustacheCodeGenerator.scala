@@ -117,7 +117,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
       name
     }
 
-    protected def popScope = scopes.pop
+    protected def popScope = scopes.pop()
   }
 
   override def generate(engine: TemplateEngine, source: TemplateSource, bindings: Iterable[Binding]): Code = {
@@ -132,6 +132,6 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     val sb = new SourceBuilder
     sb.generate(engine, source, bindings, fragments)
 
-    Code(source.className, sb.code, Set(uri), sb.positions)
+    Code(source.className, sb.code, Set(uri), sb.positions())
   }
 }

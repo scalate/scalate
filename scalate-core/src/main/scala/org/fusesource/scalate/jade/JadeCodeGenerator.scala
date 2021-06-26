@@ -39,7 +39,7 @@ class JadeCodeGenerator extends ScamlCodeGenerator {
 
     val builder = new SourceBuilder()
     builder.generate(engine, source, bindings, statements)
-    Code(source.className, builder.code, Set(uri), builder.positions)
+    Code(source.className, builder.code, Set(uri), builder.positions())
   }
 
 }

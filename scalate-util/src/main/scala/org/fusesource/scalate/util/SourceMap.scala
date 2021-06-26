@@ -459,10 +459,10 @@ object SourceMapInstaller {
     def store: Array[Byte] = {
       copy(4 + 2 + 2)
       val constantPoolCountPos: Int = baos.position
-      var constantPoolCount: Int = copyShort & 0xFFFF
+      var constantPoolCount: Int = copyShort() & 0xFFFF
       sdeIndex = copyConstantPool(constantPoolCount)
       if (sdeIndex < 0) {
-        writeSourceDebugConstant
+        writeSourceDebugConstant()
         sdeIndex = constantPoolCount
         constantPoolCount += 1
         baos.update(constantPoolCountPos) {
@@ -472,8 +472,8 @@ object SourceMapInstaller {
       copy(2 + 2 + 2)
       val interfaceCount = copyShort()
       copy(interfaceCount * 2)
-      copyMembers
-      copyMembers
+      copyMembers()
+      copyMembers()
       val attrCountPos: Int = baos.position
       var attrCount: Int = dis.readShort
       dos.writeShort(attrCount)
@@ -515,7 +515,7 @@ object SourceMapInstaller {
             copy(8)
             i += 1
           case 1 =>
-            var len: Int = copyShort & 0xFFFF
+            var len: Int = copyShort() & 0xFFFF
             if (len < 0) {
               warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
               len = 0
@@ -589,8 +589,8 @@ object SourceMapInstaller {
       dis.skip(2 + 2 + 2)
       val interfaceCount = dis.readShort
       dis.skip(interfaceCount * 2)
-      skipMembers
-      skipMembers
+      skipMembers()
+      skipMembers()
 
       val attrbute = readAttributes().get(sdeIndex.get)
       new String(attrbute.get, "UTF-8")

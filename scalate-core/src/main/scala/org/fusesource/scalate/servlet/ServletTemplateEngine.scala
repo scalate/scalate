@@ -52,7 +52,7 @@ object ServletTemplateEngine {
   def update(servletContext: ServletContext, templateEngine: ServletTemplateEngine): Unit = {
     servletContext.setAttribute(templateEngineKey, templateEngine)
     // now lets fire the bootstrap code
-    templateEngine.boot
+    templateEngine.boot()
   }
 
   /**
@@ -98,7 +98,7 @@ class ServletTemplateEngine(
 
   templateDirectories ::= "/WEB-INF"
   bindings = List(Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true))
-  classpath = buildClassPath
+  classpath = buildClassPath()
   classLoader = Thread.currentThread.getContextClassLoader
   resourceLoader = new ServletResourceLoader(config.getServletContext, new FileResourceLoader())
   ServletTemplateEngine.setLayoutStrategy(this)

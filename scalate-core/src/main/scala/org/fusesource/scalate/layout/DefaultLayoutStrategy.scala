@@ -79,10 +79,10 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
       true
     } catch {
       case e: ResourceNotFoundException =>
-        removeLayout
+        removeLayout()
         false
       case e: Exception =>
-        removeLayout
+        removeLayout()
         error(e, "Unhandled: %s", e)
         throw e
     }

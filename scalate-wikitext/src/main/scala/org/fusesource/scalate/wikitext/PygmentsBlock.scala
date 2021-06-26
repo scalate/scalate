@@ -278,7 +278,7 @@ class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
   override def endBlock() = {
     import Pygmentize._
     builder.charactersUnescaped(pygmentize(unindent(content), language, lines))
-    content.clear
+    content.clear()
     builder.endBlock();
   }
 

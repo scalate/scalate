@@ -232,7 +232,7 @@ class TemplateEngine(
     ScalaCompiler.create(this)
   }
 
-  def shutdown() = if (compilerInitialized) compiler.shutdown
+  def shutdown() = if (compilerInitialized) compiler.shutdown()
 
   def sourceDirectory = new File(workingDirectory, "src")
   def bytecodeDirectory = new File(workingDirectory, "classes")
@@ -417,7 +417,7 @@ class TemplateEngine(
       // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
       if (_cacheHits == 0 && _cacheMisses == 0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE")) {
         // this deletes generated scala and class files.
-        invalidateCachedTemplates
+        invalidateCachedTemplates()
       }
 
       // Determine whether to build/rebuild the template, load existing .class files from the file system,
@@ -439,7 +439,7 @@ class TemplateEngine(
         // It was in the cache..
         case Some(entry) =>
           // check for staleness
-          if (allowReload && entry.isStale) {
+          if (allowReload && entry.isStale()) {
             // Cache entry is stale, re-compile it
             _cacheMisses += 1
             cache(source, compileAndLoadEntry(source, extraBindings))
@@ -536,8 +536,8 @@ class TemplateEngine(
    */
   def invalidateCachedTemplates() = {
     templateCache.synchronized {
-      templateCache.clear
-      finderCache.clear
+      templateCache.clear()
+      finderCache.clear()
       IOUtil.recursiveDelete(sourceDirectory)
       IOUtil.recursiveDelete(bytecodeDirectory)
       sourceDirectory.mkdirs
@@ -706,7 +706,7 @@ class TemplateEngine(
       // We still need to parse the template to figure out it's dependencies..
       val code = generateScala(source, extraBindings)
       val entry = CacheEntry(template, code.dependencies, lastModified(template.getClass))
-      if (entry.isStale) {
+      if (entry.isStale()) {
         // Throw an exception since we should not load stale pre-compiled classes.
         throw new StaleCacheEntryException(source)
       }
@@ -978,7 +978,7 @@ class TemplateEngine(
             stratum.addLine(in, fileId, 1, out, 1)
         }
     }
-    stratum.optimize
+    stratum.optimize()
 
     val sourceMap: SourceMap = new SourceMap
     sourceMap.setOutputFileName(scalaFile.getName)

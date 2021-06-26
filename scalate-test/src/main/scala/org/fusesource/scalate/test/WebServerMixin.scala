@@ -40,10 +40,10 @@ trait WebServerMixin extends BeforeAndAfterAllConfigMap {
       case _ =>
     }
 
-    webServer.start
+    webServer.start()
   }
 
-  override protected def afterAll(configMap: ConfigMap) = webServer.stop
+  override protected def afterAll(configMap: ConfigMap) = webServer.stop()
 
   def rootUrl = webServer.rootUrl
 }

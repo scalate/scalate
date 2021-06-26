@@ -29,7 +29,7 @@ object Main {
       val text = args(0)
       server.port = Integer.parseInt(text)
     }
-    server.start
+    server.start()
   }
 
 }

@@ -162,7 +162,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     val sb = new SourceBuilder
     sb.generate(engine, source, bindings, fragments)
 
-    Code(source.className, sb.code, Set(uri), sb.positions)
+    Code(source.className, sb.code, Set(uri), sb.positions())
   }
 
   /**
@@ -206,7 +206,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       case f: EndFragment => if (endStack.isEmpty) {
         throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.pos)
       } else {
-        endStack.pop
+        endStack.pop()
       }
       case f: ElseIfFragment => expect(f, classOf[IfFragment], "if", "else", false)
       case f: ElseFragment => expect(f, classOf[IfFragment], "if", "else", true)

@@ -132,7 +132,7 @@ class SnippetBlock extends ParameterizedBlock {
     setOptions(matcher.group(1))
     val end = matcher.start(2)
 
-    handler.begin
+    handler.begin()
     try {
       for (snippetLine <- getSnippet) {
         handler.addLine(snippetLine)
@@ -140,7 +140,7 @@ class SnippetBlock extends ParameterizedBlock {
     } catch {
       case e: Exception => Snippets.errorHandler(this, e)
     }
-    handler.done
+    handler.done()
 
     if (end < line.length) {
       state.setLineSegmentEndOffset(end)
@@ -153,7 +153,7 @@ class SnippetBlock extends ParameterizedBlock {
    * Extract the snippet from the Source file
    */
   def getSnippet: Iterator[String] = {
-    val lines = Snippets.getSource(url).getLines
+    val lines = Snippets.getSource(url).getLines()
     id match {
       case None => lines
       case Some(snippet) => lines.dropWhile(!_.contains("START SNIPPET: " + snippet))

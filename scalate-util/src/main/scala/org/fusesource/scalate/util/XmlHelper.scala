@@ -47,7 +47,7 @@ object XmlHelper {
           case _ => super.replacementText(entityName);
         }
       }
-      nextch; // !!important, to initialize the parser
+      nextch(); // !!important, to initialize the parser
     }
     parser.document().docElem.child
     /*
