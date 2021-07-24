@@ -21,8 +21,6 @@ object ScalateBuild {
       .enablePlugins(BuildInfoPlugin)
       .settings(compileOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
 
-    def dependsOn(deps: ModuleID*) = u.settings(libraryDependencies ++= deps)
-
     def published = u.settings(publishOpts: _*)
 
     def notPublished = u.settings(ScalateBuild.notPublished: _*)
