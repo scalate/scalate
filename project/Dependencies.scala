@@ -4,6 +4,23 @@ import sbt._
 /** Build dependency and repository definitions. */
 object Dependencies {
 
+  val scalaParserCombinators = Def.setting(
+    if (scalaBinaryVersion.value == "2.11") {
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1"
+    } else {
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.0.0"
+    }
+  )
+
+  val scalaXml = Def.setting(
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 11 | 12)) =>
+        "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
+      case _ =>
+        "org.scala-lang.modules" %% "scala-xml" % "2.0.0"
+    }
+  )
+
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.1"

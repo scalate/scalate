@@ -44,9 +44,8 @@ lazy val scalateUtil = scalateProject("util")
       junit % Test,
       logbackClassic % Test,
       slf4jApi,
-      s"${scalaOrganization.value}.modules" %% "scala-parser-combinators" %
-        (if (scalaVersion.value.startsWith("2.11")) "1.1.1" else "2.0.0"),
-      s"${scalaOrganization.value}.modules" %% "scala-xml" % "1.3.0",
+      scalaParserCombinators.value,
+      scalaXml.value,
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
@@ -169,6 +168,7 @@ lazy val scalateTest = scalateProject("test")
   .published
   .dependsOn(scalateCore)
   .settings(
+    libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always",
     mimaBinaryIssueFilters ++= Seq(
       ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.TemplateTestSupport"),
       ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.FunSuiteSupport"),
