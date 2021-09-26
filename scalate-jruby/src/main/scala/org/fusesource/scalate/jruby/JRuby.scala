@@ -13,9 +13,6 @@ class JRuby extends Log {
   var container = new ScriptingContainer(LocalContextScope.SINGLETON)
   container.setCompileMode(RubyInstanceConfig.CompileMode.JIT)
 
-  RubyInstanceConfig.FASTEST_COMPILE_ENABLED = true
-  RubyInstanceConfig.FASTSEND_COMPILE_ENABLED = true
-
   def run(scriptlet: String*): Either[(Throwable, String), AnyRef] = this.synchronized {
     val errors: StringWriter = new StringWriter
     try {
