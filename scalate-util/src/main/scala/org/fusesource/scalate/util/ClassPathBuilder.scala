@@ -19,9 +19,10 @@ package org.fusesource.scalate.util
 
 import java.io.File
 import java.net.{ URI, URLClassLoader }
-import scala.collection.mutable.ArrayBuffer
 import java.util.jar.{ Attributes, JarFile }
-
+import scala.annotation.tailrec
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.language.reflectiveCalls
 
 class ClassPathBuilder {
@@ -34,55 +35,6 @@ class ClassPathBuilder {
     // lets transform to the canonical path to remove duplicates
     val all = (cp ++ findManifestEntries(cp)).map { s => val f = new File(s); if (f.exists) f.getCanonicalPath else s }
     all.distinct.mkString(File.pathSeparator)
-  }
-
-  def addClassesDir(dir: String): ClassPathBuilder = addEntry(dir)
-
-  def addJar(jar: String): ClassPathBuilder = addEntry(jar)
-
-  def addEntry(path: String): ClassPathBuilder = {
-    if (path != null && path.length > 0)
-      classpath += path
-    this
-  }
-
-  def addLibDir(dir: String): ClassPathBuilder = {
-
-    def listJars(root: File): Seq[String] = {
-      def makeSeq(a: Array[File]): Seq[File] = if (a == null) Nil else a.toIndexedSeq
-      if (root.isFile) List(root.toString)
-      else makeSeq(root.listFiles) flatMap { f => listJars(f) }
-    }
-
-    if (dir != null)
-      classpath ++= listJars(new File(dir))
-    this
-  }
-
-  def addPathFrom(clazz: Class[_]): ClassPathBuilder = {
-    if (clazz != null)
-      addPathFrom(clazz.getClassLoader)
-    this
-  }
-
-  def addPathFrom(loader: ClassLoader): ClassPathBuilder = {
-    classpath ++= getClassPathFrom(loader)
-    this
-  }
-
-  def addPathFromContextClassLoader(): ClassPathBuilder = {
-    addPathFrom(Thread.currentThread.getContextClassLoader)
-    this
-  }
-
-  def addPathFromSystemClassLoader(): ClassPathBuilder = {
-    addPathFrom(ClassLoader.getSystemClassLoader)
-    this
-  }
-
-  def addJavaPath(): ClassPathBuilder = {
-    classpath ++= javaClassPath
-    this
   }
 
   protected def findManifestEntries(cp: collection.Seq[String]): collection.Seq[String] = cp.flatMap { p =>
@@ -111,12 +63,103 @@ class ClassPathBuilder {
     }
     answer
   }
+
+  def addClassesDir(dir: String): ClassPathBuilder = addEntry(dir)
+
+  def addEntry(path: String): ClassPathBuilder = {
+    if (path != null && path.nonEmpty)
+      classpath += path
+    this
+  }
+
+  def addJar(jar: String): ClassPathBuilder = addEntry(jar)
+
+  def addLibDir(dir: String): ClassPathBuilder = {
+
+    def listJars(root: File): Seq[String] = {
+      def makeSeq(a: Array[File]): Seq[File] = if (a == null) Nil else a.toIndexedSeq
+      if (root.isFile) List(root.toString)
+      else makeSeq(root.listFiles) flatMap { f => listJars(f) }
+    }
+
+    if (dir != null)
+      classpath ++= listJars(new File(dir))
+    this
+  }
+
+  def addPathFrom(clazz: Class[_]): ClassPathBuilder = {
+    if (clazz != null)
+      addPathFrom(clazz.getClassLoader)
+    this
+  }
+
+  def addPathFromContextClassLoader(): ClassPathBuilder = {
+    addPathFrom(Thread.currentThread.getContextClassLoader)
+    this
+  }
+
+  def addPathFromSystemClassLoader(): ClassPathBuilder = {
+    addPathFrom(ClassLoader.getSystemClassLoader)
+    this
+  }
+
+  def addPathFrom(loader: ClassLoader): ClassPathBuilder = {
+    classpath ++= getClassPathFrom(Option(loader))
+    this
+  }
+
+  def addJavaPath(): ClassPathBuilder = {
+    classpath ++= javaClassPath
+    this
+  }
 }
 
 private object ClassPathBuilder extends Log {
 
   type AntLikeClassLoader = {
     def getClasspath: String
+  }
+
+  @tailrec
+  def getClassPathFrom(optionalClassLoader: Option[ClassLoader], result: mutable.Builder[String, Set[String]] = Set.newBuilder[String]): Set[String] = {
+    val next = optionalClassLoader.flatMap {
+      case x if x == x.getParent => None
+      case x => Option(x.getParent)
+    }
+
+    optionalClassLoader match {
+      case None => result.result()
+
+      case Some(cl: URLClassLoader) =>
+        getClassPathFrom(
+          next,
+          result ++= {
+            for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
+              // on windows the path can include %20
+              // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
+              // so lets use URI as a workaround
+              new File(path).getCanonicalPath
+              //val n = new File(uri.getPath).getCanonicalPath
+              //if (n.contains(' ')) {"\"" + n + "\""} else {n}
+            }
+          })
+
+      case Some(AntLikeClassLoader(acp)) =>
+        val cp = acp.getClasspath
+        getClassPathFrom(
+          next,
+          result ++= cp.split(File.pathSeparator).toIndexedSeq)
+
+      case _ =>
+        warn("Cannot introspect on class loader: %s of type %s", optionalClassLoader, optionalClassLoader.getClass.getCanonicalName)
+        getClassPathFrom(next, result)
+    }
+  }
+
+  def javaClassPath: Seq[String] = {
+    val jcp = System.getProperty("java.class.path", "")
+    if (jcp.nonEmpty) jcp.split(File.pathSeparator).toIndexedSeq
+    else Nil
   }
 
   object AntLikeClassLoader {
@@ -129,40 +172,8 @@ private object ClassPathBuilder extends Log {
         else
           None
       } catch {
-        case e: NoSuchMethodException => None
+        case _: NoSuchMethodException => None
       }
     }
-  }
-
-  def getClassPathFrom(classLoader: ClassLoader): Seq[String] = classLoader match {
-
-    case null => Nil
-
-    case cl: URLClassLoader =>
-      for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
-
-        // on windows the path can include %20
-        // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
-        // so lets use URI as a workaround
-        new File(path).getCanonicalPath
-        //val n = new File(uri.getPath).getCanonicalPath
-        //if (n.contains(' ')) {"\"" + n + "\""} else {n}
-      }
-
-    case AntLikeClassLoader(acp) =>
-      val cp = acp.getClasspath
-      cp.split(File.pathSeparator).toIndexedSeq
-
-    case _ =>
-      warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
-      val parent = classLoader.getParent
-      if (parent != null && parent != classLoader) getClassPathFrom(parent)
-      else Nil
-  }
-
-  def javaClassPath: Seq[String] = {
-    val jcp = System.getProperty("java.class.path", "")
-    if (jcp.length > 0) jcp.split(File.pathSeparator).toIndexedSeq
-    else Nil
   }
 }
