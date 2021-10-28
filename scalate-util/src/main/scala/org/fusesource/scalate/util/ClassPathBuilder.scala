@@ -104,7 +104,7 @@ class ClassPathBuilder {
   }
 
   def addPathFrom(loader: ClassLoader): ClassPathBuilder = {
-    classpath ++= getClassPathFrom(Option(loader))
+    classpath ++= getClassPathFrom(loader)
     this
   }
 
@@ -120,41 +120,72 @@ private object ClassPathBuilder extends Log {
     def getClasspath: String
   }
 
-  @tailrec
-  def getClassPathFrom(optionalClassLoader: Option[ClassLoader], result: mutable.Builder[String, Set[String]] = Set.newBuilder[String]): Set[String] = {
-    val next = optionalClassLoader.flatMap {
-      case x if x == x.getParent => None
-      case x => Option(x.getParent)
-    }
+  def getClassPathFrom(classLoader: ClassLoader): Seq[String] = {
 
-    optionalClassLoader match {
-      case None => result.result()
+    val paths = classLoader match {
 
-      case Some(cl: URLClassLoader) =>
-        getClassPathFrom(
-          next,
-          result ++= {
-            for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
-              // on windows the path can include %20
-              // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
-              // so lets use URI as a workaround
-              new File(path).getCanonicalPath
-              //val n = new File(uri.getPath).getCanonicalPath
-              //if (n.contains(' ')) {"\"" + n + "\""} else {n}
-            }
-          })
+      case null => Nil
 
-      case Some(AntLikeClassLoader(acp)) =>
+      case cl: URLClassLoader =>
+        for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
+
+          // on windows the path can include %20
+          // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
+          // so lets use URI as a workaround
+          new File(path).getCanonicalPath
+          //val n = new File(uri.getPath).getCanonicalPath
+          //if (n.contains(' ')) {"\"" + n + "\""} else {n}
+        }
+
+      case AntLikeClassLoader(acp) =>
         val cp = acp.getClasspath
-        getClassPathFrom(
-          next,
-          result ++= cp.split(File.pathSeparator).toIndexedSeq)
+        cp.split(File.pathSeparator).toIndexedSeq
 
       case _ =>
-        warn("Cannot introspect on class loader: %s of type %s", optionalClassLoader, optionalClassLoader.getClass.getCanonicalName)
-        getClassPathFrom(next, result)
+        warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
+        Nil
+    }
+
+    Option(classLoader).flatMap(x => Option(x.getParent)).fold(paths) {
+      paths ++ getClassPathFrom(_)
     }
   }
+
+  //  @tailrec
+  //  def getClassPathFrom(optionalClassLoader: Option[ClassLoader], result: mutable.Builder[String, Set[String]] = Set.newBuilder[String]): Set[String] = {
+  //    val next = optionalClassLoader.flatMap {
+  //      case x if x == x.getParent => None
+  //      case x => Option(x.getParent)
+  //    }
+  //
+  //    optionalClassLoader match {
+  //      case None => result.result()
+  //
+  //      case Some(cl: URLClassLoader) =>
+  //        getClassPathFrom(
+  //          next,
+  //          result ++= {
+  //            for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
+  //              // on windows the path can include %20
+  //              // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
+  //              // so lets use URI as a workaround
+  //              new File(path).getCanonicalPath
+  //              //val n = new File(uri.getPath).getCanonicalPath
+  //              //if (n.contains(' ')) {"\"" + n + "\""} else {n}
+  //            }
+  //          })
+  //
+  //      case Some(AntLikeClassLoader(acp)) =>
+  //        val cp = acp.getClasspath
+  //        getClassPathFrom(
+  //          next,
+  //          result ++= cp.split(File.pathSeparator).toIndexedSeq)
+  //
+  //      case _ =>
+  //        warn("Cannot introspect on class loader: %s of type %s", optionalClassLoader, optionalClassLoader.getClass.getCanonicalName)
+  //        getClassPathFrom(next, result)
+  //    }
+  //  }
 
   def javaClassPath: Seq[String] = {
     val jcp = System.getProperty("java.class.path", "")
