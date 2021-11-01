@@ -151,6 +151,7 @@ private object ClassPathBuilder extends Log {
     }
   }
 
+  //  FIXME: Rewrite to null safe in next update
   //  @tailrec
   //  def getClassPathFrom(optionalClassLoader: Option[ClassLoader], result: mutable.Builder[String, Set[String]] = Set.newBuilder[String]): Set[String] = {
   //    val next = optionalClassLoader.flatMap {

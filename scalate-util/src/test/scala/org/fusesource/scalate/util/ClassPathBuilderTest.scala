@@ -18,8 +18,9 @@
 package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+
 import java.io.File
-import java.net.{ URL, URLClassLoader }
+import java.net.{URL, URLClassLoader}
 
 class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
@@ -115,6 +116,22 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     assert(builder.classPath.contains("fake-jar"))
   }
 
+  test("Contains the classpaths of all class loaders including parents") {
+    val builder = new ClassPathBuilder
+
+    Thread.currentThread.setContextClassLoader(ValidChildClassLoader)
+
+    builder.addPathFromContextClassLoader()
+
+    val expectFiles = Seq(
+      ValidChildClassLoader.getClasspath,
+      ValidAntLikeClassLoader.getClasspath
+    )
+    builder.classPath.split(":").map { path =>
+      assert(expectFiles.contains(new File(path).getCanonicalPath))
+    }
+  }
+
   def assertFiles(actualPath: String, expectedPath: String) = {
     val actualFile = new File(actualPath)
     val expectedFile = new File(expectedPath)
@@ -128,6 +145,10 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 object ClassPathBuilderTest {
 
   def testLibDir = new java.io.File(getClass.getClassLoader.getResource("test-lib").toURI).getParent
+
+  object ValidChildClassLoader extends ClassLoader(ValidAntLikeClassLoader) {
+    def getClasspath: String = "/path/to/child.jar"
+  }
 
   object ValidAntLikeClassLoader extends ClassLoader(null) {
     def getClasspath: String = "/path/to/file.jar"
