@@ -21,7 +21,6 @@ import _root_.org.fusesource.scalate.FunSuiteSupport
 
 import java.io.File
 import java.net.{ URL, URLClassLoader }
-import scala.util.Try
 
 class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
@@ -78,11 +77,17 @@ class ClassPathBuilderTest extends FunSuiteSupport {
   //    // We assume that the Scala jar is in the class path
   //  }
 
-  test("Add enty from a URLClassLoader") {
+  test("Add entry from a URLClassLoader") {
     val loader = new URLClassLoader(Array(new URL("file:///path/to/file.jar")))
+    val parentClassPathBuilder = new ClassPathBuilder
+    parentClassPathBuilder.addPathFrom(getClass.getClassLoader)
+
     val builder = new ClassPathBuilder
     builder.addPathFrom(loader)
-    assertFiles(builder.classPath, "/path/to/file.jar")
+
+    assertFiles(
+      builder.classPath.split(":").toList,
+      parentClassPathBuilder.classPath.split(":").filter(_.nonEmpty).+:("/path/to/file.jar").toList)
   }
 
   test("Add path from AntLikeClassLoader") {
@@ -132,12 +137,16 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     }
   }
 
-  def assertFiles(actualPath: String, expectedPath: String) = Try {
+  def assertFiles(actualPath: String, expectedPath: String) = {
     val actualFile = new File(actualPath)
     val expectedFile = new File(expectedPath)
     assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
-  }.getOrElse {
-    assert(actualPath === expectedPath)
+  }
+
+  def assertFiles(actualPaths: List[String], expectedPaths: List[String]) = {
+    val actualFile = actualPaths.map(new File(_).getCanonicalPath)
+    val expectedFile = expectedPaths.map(new File(_).getCanonicalPath)
+    assert(actualFile === expectedFile)
   }
 }
 
