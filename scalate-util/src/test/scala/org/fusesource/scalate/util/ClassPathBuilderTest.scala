@@ -18,6 +18,7 @@
 package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
+
 import java.io.File
 import java.net.{ URL, URLClassLoader }
 
@@ -76,11 +77,17 @@ class ClassPathBuilderTest extends FunSuiteSupport {
   //    // We assume that the Scala jar is in the class path
   //  }
 
-  test("Add enty from a URLClassLoader") {
+  test("Add entry from a URLClassLoader") {
     val loader = new URLClassLoader(Array(new URL("file:///path/to/file.jar")))
+    val parentClassPathBuilder = new ClassPathBuilder
+    parentClassPathBuilder.addPathFrom(getClass.getClassLoader)
+
     val builder = new ClassPathBuilder
     builder.addPathFrom(loader)
-    assertFiles(builder.classPath, "/path/to/file.jar")
+
+    assertFiles(
+      builder.classPath.split(":").toList,
+      parentClassPathBuilder.classPath.split(":").filter(_.nonEmpty).+:("/path/to/file.jar").toList)
   }
 
   test("Add path from AntLikeClassLoader") {
@@ -115,10 +122,31 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     assert(builder.classPath.contains("fake-jar"))
   }
 
+  test("Contains the classpaths of all class loaders including parents") {
+    val builder = new ClassPathBuilder
+
+    Thread.currentThread.setContextClassLoader(ValidChildClassLoader)
+
+    builder.addPathFromContextClassLoader()
+
+    val expectFiles = Seq(
+      ValidChildClassLoader.getClasspath,
+      ValidAntLikeClassLoader.getClasspath)
+    builder.classPath.split(":").map { path =>
+      assert(expectFiles.contains(new File(path).getCanonicalPath))
+    }
+  }
+
   def assertFiles(actualPath: String, expectedPath: String) = {
     val actualFile = new File(actualPath)
     val expectedFile = new File(expectedPath)
     assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
+  }
+
+  def assertFiles(actualPaths: List[String], expectedPaths: List[String]) = {
+    val actualFile = actualPaths.map(new File(_).getCanonicalPath)
+    val expectedFile = expectedPaths.map(new File(_).getCanonicalPath)
+    assert(actualFile === expectedFile)
   }
 }
 
@@ -128,6 +156,10 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 object ClassPathBuilderTest {
 
   def testLibDir = new java.io.File(getClass.getClassLoader.getResource("test-lib").toURI).getParent
+
+  object ValidChildClassLoader extends ClassLoader(ValidAntLikeClassLoader) {
+    def getClasspath: String = "/path/to/child.jar"
+  }
 
   object ValidAntLikeClassLoader extends ClassLoader(null) {
     def getClasspath: String = "/path/to/file.jar"
