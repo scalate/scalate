@@ -20,7 +20,8 @@ package org.fusesource.scalate.util
 import _root_.org.fusesource.scalate.FunSuiteSupport
 
 import java.io.File
-import java.net.{URL, URLClassLoader}
+import java.net.{ URL, URLClassLoader }
+import scala.util.Try
 
 class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
@@ -125,17 +126,18 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 
     val expectFiles = Seq(
       ValidChildClassLoader.getClasspath,
-      ValidAntLikeClassLoader.getClasspath
-    )
+      ValidAntLikeClassLoader.getClasspath)
     builder.classPath.split(":").map { path =>
       assert(expectFiles.contains(new File(path).getCanonicalPath))
     }
   }
 
-  def assertFiles(actualPath: String, expectedPath: String) = {
+  def assertFiles(actualPath: String, expectedPath: String) = Try {
     val actualFile = new File(actualPath)
     val expectedFile = new File(expectedPath)
     assert(actualFile.getCanonicalPath === expectedFile.getCanonicalPath)
+  }.getOrElse {
+    assert(actualPath === expectedPath)
   }
 }
 
