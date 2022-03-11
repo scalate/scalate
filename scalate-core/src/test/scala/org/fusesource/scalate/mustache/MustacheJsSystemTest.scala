@@ -17,6 +17,7 @@
  */
 package org.fusesource.scalate.mustache
 
+import java.util.Locale
 import collection.immutable.Map
 
 case class Item(name: String, current: Boolean, url: String) {
@@ -39,6 +40,7 @@ case class HigherOrder(name: String, helper: String) {
  * Runs the system tests from the mustache.js distro
  */
 class MustacheJsSystemTest extends MustacheTestSupport {
+  Locale.setDefault(Locale.US)
   // TODO FixMe
   val runFailingTests = false
 
