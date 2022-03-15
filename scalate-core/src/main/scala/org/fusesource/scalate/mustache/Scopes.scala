@@ -43,6 +43,8 @@ case class RenderContextScope(
   def parent: Option[Scope] = _parent
 
   def localVariable(name: String): Option[Any] = context.attributes.get(name)
+
+  def hasVariable(name: String): Boolean = context.attributes.keySet.contains(name)
 }
 
 /**
@@ -69,6 +71,8 @@ case class MarkupAttributeContextScope(
         None
     }
   } else None
+
+  def hasVariable(name: String): Boolean = name == attributeName
 }
 
 abstract class ChildScope(parentScope: Scope) extends Scope {
@@ -86,6 +90,8 @@ class MapScope(
   map: collection.Map[String, _]) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = map.get(name)
+
+  def hasVariable(name: String): Boolean = map.keySet.contains(name)
 }
 
 class NodeScope(
@@ -94,12 +100,16 @@ class NodeScope(
   node: NodeSeq) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = Some(node \ name)
+
+  def hasVariable(name: String): Boolean = true
 }
 
 class EmptyScope(
   parent: Scope) extends ChildScope(parent) {
 
   def localVariable(name: String) = None
+
+  def hasVariable(name: String): Boolean = false
 }
 
 /**
@@ -112,6 +122,8 @@ class ObjectScope[T <: AnyRef](
   val introspector = Introspector[T](value.getClass.asInstanceOf[Class[T]])
 
   def localVariable(name: String) = introspector.get(name, value)
+
+  def hasVariable(name: String): Boolean = introspector.expressions.contains(name)
 
   override def iteratorObject = Some(value)
 }

@@ -18,6 +18,9 @@
 package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
+import org.fusesource.scalate.mustache.VariableResult.NoValue
+import org.fusesource.scalate.mustache.VariableResult.NoVariable
+import org.fusesource.scalate.mustache.VariableResult.SomeValue
 
 import scala.collection.JavaConverters._
 
@@ -52,7 +55,7 @@ trait Scope {
       case Some(a) => a
       case None =>
         parent match {
-          case Some(p) => p.apply(name)
+          case Some(p) if !name.contains(".") => p.apply(name)
           case _ => null
         }
     }
@@ -70,18 +73,63 @@ trait Scope {
    * Returns the variable of the given name looking in this scope or parent scopes to resolve the variable
    */
   def apply(name: String): Option[Any] = {
-    val value = localVariable(name)
-    value match {
-      case Some(v) => value
-      case _ =>
-        if (implicitIterator.isDefined && implicitIterator.get == name) {
-          iteratorObject
-        } else {
+    dottedVariable(name, topLevel = true).toOption
+  }
+
+  private def variable(n: String, topLevel: Boolean) = {
+    val value: VariableResult = localVariableOrImplicitIterator(n)
+    if (topLevel) {
+      value match {
+        case NoVariable =>
           parent match {
-            case Some(p) => p.apply(name)
-            case _ => None
+            case Some(p) =>
+              p.dottedVariable(n, true)
+            case _ => NoVariable
           }
+        case _ => value
+      }
+    } else {
+      value
+    }
+  }
+
+  private def localVariableOrImplicitIterator(name: String): VariableResult = {
+    val value = VariableResult(localVariable(name), hasVariable(name))
+    value match {
+      case NoVariable =>
+        if (implicitIterator.isDefined && implicitIterator.get == name) {
+          VariableResult(iteratorObject, true)
+        } else {
+          NoVariable
         }
+      case _ => value
+    }
+  }
+
+  private def dottedVariable(name: String, topLevel: Boolean): VariableResult = {
+    val headAndTail = splitByDot(name)
+    headAndTail match {
+      case None =>
+        variable(name, topLevel)
+      case Some((head, tail)) =>
+        val headValue = variable(head, topLevel)
+        headValue.flatMap {
+          v =>
+            val nestedScope = createScope(head, v)
+            //ignore missing nested variables to keep Context Precedence
+            nestedScope.dottedVariable(tail, topLevel = false).noVariableAsNoValue
+        }
+    }
+  }
+
+  private def splitByDot(name: String): Option[(String, String)] = {
+    val dotPos = name.indexOf('.')
+    if (dotPos <= 0) {
+      None
+    } else {
+      val head = name.substring(0, dotPos)
+      val tail = name.substring(dotPos + 1)
+      Some((head, tail))
     }
   }
 
@@ -95,9 +143,21 @@ trait Scope {
    */
   def localVariable(name: String): Option[Any]
 
+  def hasVariable(name: String): Boolean
+
   def section(name: String)(block: Scope => Unit): Unit = {
-    apply(name) match {
-      case Some(t) =>
+    val headAndTail = splitByDot(name)
+    headAndTail match {
+      case None =>
+        sectionElementary(name)(block)
+      case Some((head, tail)) =>
+        sectionElementary(head)(_.section(tail)(block))
+    }
+  }
+
+  private def sectionElementary(name: String)(block: Scope => Unit): Unit = {
+    dottedVariable(name, topLevel = true) match {
+      case SomeValue(t) =>
         val v = toIterable(t, block)
         debug("section value " + name + " = " + v + " in " + this)
         v match {
@@ -129,18 +189,20 @@ trait Scope {
           // lets treat anything as an an object rather than a collection
           case a => childScope(name, a)(block)
         }
-      case None => parent match {
+      case NoVariable => parent match {
         case Some(ps) => ps.section(name)(block)
         case None => // do nothing, no value
           debug("No value for " + name + " in " + this)
-
       }
+      case NoValue =>
+        // do nothing, no value
+        debug("No value for " + name + " in " + this)
     }
   }
 
   def invertedSection(name: String)(block: Scope => Unit): Unit = {
-    apply(name) match {
-      case Some(t) =>
+    dottedVariable(name, topLevel = true) match {
+      case SomeValue(t) =>
         val v = toIterable(t, block)
         debug("invertedSection value " + name + " = " + v + " in " + this)
         v match {
@@ -170,7 +232,7 @@ trait Scope {
           // lets treat anything as an an object rather than a collection
           case a =>
         }
-      case None => block(this)
+      case _ => block(this)
     }
   }
 

@@ -1,6 +1,8 @@
-import sbt._, Keys._
+import sbt._
+import Keys._
 import com.typesafe.tools.mima.core.ProblemFilters
 import com.typesafe.tools.mima.core.IncompatibleSignatureProblem
+import com.typesafe.tools.mima.core.ReversedMissingMethodProblem
 import com.typesafe.tools.mima.plugin.MimaPlugin
 import com.typesafe.tools.mima.plugin.MimaPlugin.autoImport._
 import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaReportBinaryIssues}
@@ -26,7 +28,8 @@ object MimaSettings {
 
   val mimaSettings = Seq(
     ThisBuild / mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[IncompatibleSignatureProblem]("org.fusesource.scalate.*")
+      ProblemFilters.exclude[IncompatibleSignatureProblem]("org.fusesource.scalate.*"),
+      ProblemFilters.exclude[ReversedMissingMethodProblem]("org.fusesource.scalate.mustache.Scope.hasVariable")
     ),
     ThisBuild / mimaReportSignatureProblems := true,
     ThisBuild / mimaFailOnNoPrevious := false,
