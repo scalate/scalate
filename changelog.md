@@ -1,6 +1,90 @@
 Scalate Changelog
 ===============================
 
+[Scalate 1.9.8](https://github.com/scalate/scalate/compare/scalate-project-1.9.7...scalate-project-1.9.8), released 2022-03-27
+----
+
+* 015af614 Update jruby-complete to 9.3.4.0 by Scala Steward
+* 646fd499 Update spring-webmvc to 5.3.17 by Scala Steward
+* 7d2b49f9 Mustache - add support for dotted names (#453) by Damian Gołda
+* dc46d1b3 Bump actions/checkout from 2 to 3 by dependabot[bot]
+* c4407bbe Update logback-classic to 1.2.11 by Scala Steward
+* a20ee78a Update scala-parser-combinators to 2.1.1 by Scala Steward
+* 9465f885 Update sbt-sonatype to 3.9.12 by Scala Steward
+* 693d25c8 Update sbt-buildinfo to 0.11.0 (#447) by scala-steward-bot
+* 2a378021 Update spring-webmvc to 5.3.16 by Scala Steward
+* 7cce934b Update sbt-sonatype to 3.9.11 by Scala Steward
+* e9ea3df9 Update slf4j-api to 1.7.36 by Scala Steward
+* dbf2b21e Update jetty-server, jetty-util, ... to 11.0.8 by Scala Steward
+* f8005cb4 Update sbt-updates to 0.6.2 by Scala Steward
+* 52a3bb91 Update sbt to 1.6.2 by Scala Steward
+* 4a6a7a86 Update slf4j-api to 1.7.35 by Scala Steward
+* 09eaa0cf Update slf4j-api to 1.7.34 by Scala Steward
+* 08062a0d Update scalatest to 3.2.11 (#438) by scala-steward-bot
+* 7830634d Update json4s-native to 4.0.4 by Scala Steward
+* 66e6d9e9 Update jruby-complete to 9.3.3.0 by Scala Steward
+* 0d838a58 Update org.apache.karaf.shell.console to 4.3.6 (#435) by scala-steward-bot
+* d457a1c0 Update slf4j-api to 1.7.33 (#434) by scala-steward-bot
+* 1839ad86 Update spring-webmvc to 5.3.15 by Scala Steward
+* f8d10658 Update scala-compiler, scala-library to 2.13.8 by Scala Steward
+* bf285d71 Update sbt to 1.6.1 by Scala Steward
+* 629f6376 Update sbt to 1.6.0 by Scala Steward
+* 9f8f28b8 Update logback-classic to 1.2.10 by Scala Steward
+* bd94d8fc Update org.apache.karaf.shell.console to 4.3.5 by Scala Steward
+* 290fd20b Update sbt-updates to 0.6.1 by Scala Steward
+* 8a5fc6f1 Update sbt to 1.5.8 by Scala Steward
+* 2efa393d Update org.apache.karaf.shell.console to 4.3.4 by Scala Steward
+* 845e893d Update logback-classic to 1.2.9 by Scala Steward
+* 1ce490c7 Update spring-webmvc to 5.3.14 by Scala Steward
+* bc8f2583 Update snakeyaml to 1.30 by Scala Steward
+* c38ffeeb Update sbt to 1.5.7 by Scala Steward
+* 68e0c187 Update logback-classic to 1.2.8 by Scala Steward
+* 08a6fdbd Update sbt to 1.5.6 by Scala Steward
+* 2323407a Update jruby-complete to 9.3.2.0 by Scala Steward
+* b02ddd9e Update logback-classic to 1.2.7 by Scala Steward
+* a5659fc4 Update spring-webmvc to 5.3.13 by Scala Steward
+* 3a4cfde5 Recursively loads the classpath of the parent class loader (#414) by giiita
+* e689a806 Update scala-compiler, scala-library to 2.13.7 by Scala Steward
+* 6522c9d9 Update sbt-unidoc to 0.5.0 by Scala Steward
+* 7813f080 Update spring-webmvc to 5.3.12 by Scala Steward
+* d9f6fd49 Update spring-webmvc to 5.3.11 by Scala Steward
+* 2a971cab Update jruby-complete to 9.3.1.0 by Scala Steward
+* 718b3357 Update jetty-server, jetty-util, ... to 11.0.7 by Scala Steward
+* 726b7bc9 Update sbt-git to 1.0.2 by Scala Steward
+* 74d912cf Update sbt-mima-plugin to 1.0.1 by Scala Steward
+* 9f8a6ad6 Update scala-parser-combinators to 2.1.0 by Scala Steward
+* c06bbd05 Update jruby-complete to 9.3.0.0 by Scala Steward
+* 3eb95a81 Removed deprecated settings (#403) by Magnolia.K
+* d3f757c0 Update scalatest to 3.2.10 (#400) by scala-steward-bot
+* c0e6fe71 Update spring-webmvc to 5.3.10 by Scala Steward
+* 9cd8c00f Update scala-compiler, scala-library to 2.12.15 by Scala Steward
+* ad04cc1a Update logback-classic to 1.2.6 by Scala Steward
+* e8c88261 Update org.apache.karaf.shell.console to 4.3.3 by Scala Steward
+* b5c6fd14 Update sbt-sonatype to 3.9.10 by Scala Steward
+* e5687f3c Update sbt-mima-plugin to 1.0.0 by Scala Steward
+* eefeb797 Update sbt-sonatype to 3.9.9 by Scala Steward
+* 836d3415 Update sbt-updates to 0.6.0 by Scala Steward
+* 300fed70 Update logback-classic to 1.2.5 (#390) by scala-steward-bot
+* 27b53ded Update json4s-native to 4.0.3 by Scala Steward
+* 50281814 Update json4s-native to 4.0.2 by Scala Steward
+* 4e86cc80 Update scala-xml to 2.0.1 by Scala Steward
+* f231dd03 Update scala-xml by xuwei-k
+* 30f01f94 remove unused code in build file by kenji yoshida
+* 93f80541 Update logback-classic to 1.2.4 by Scala Steward
+* 80aeb387 Update slf4j-api to 1.7.32 by Scala Steward
+* 120f9d81 Update xsbt-web-plugin to 4.2.4 (#383) by scala-steward-bot
+* 2c028661 Update spring-webmvc to 5.3.9 by Scala Steward
+* 4738c160 Update sbt to 1.5.5 by Scala Steward
+* c5fd0c3a Update jetty-server, jetty-util, ... to 11.0.6 by Scala Steward
+* cb281f5e Update xsbt-web-plugin to 4.2.3 by Scala Steward
+* cc4d77cd Update json4s-native to 4.0.1 by Scala Steward
+* e7d4913c supplied the empty argument list `()` explicitly (#377) by Magnolia.K
+* 76fc10c0 Fix permissions on license file (#376) by Magnolia.K
+* 176c96ed Enabled tests that had been disabled (#375) by Magnolia.K
+* f0f92760 Update MimaSettings.scala by kenji yoshida
+* 11d5ba31 Updat the CHAGELOG format by Kazuhiro Sera
+* 8e9bef64 Start 1.9.8 dev by Kazuhiro Sera
+
 [Scalate 1.9.7](https://github.com/scalate/scalate/compare/scalate-project-1.9.6...scalate-project-1.9.7), released 2021-06-20
 ----
 
