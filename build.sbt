@@ -18,7 +18,7 @@ addCommandAlias("SetScala213", s"++ ${Scala213}!")
 
 name := "scalate"
 organization := "org.scalatra.scalate"
-version := "1.9.8"
+version := "1.9.9-SNAPSHOT"
 scalaVersion := Scala213
 crossScalaVersions := Seq(Scala213, Scala212, Scala211)
 javacOptions ++= Seq("-source", "1.8")
