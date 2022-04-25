@@ -43,7 +43,7 @@ object Dependencies {
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
   val scalaTest = Def.setting {
     Seq(
-      "org.scalatest" %% "scalatest" % "3.2.11",
+      "org.scalatest" %% "scalatest" % "3.2.12",
       "org.scalatestplus" %% "junit-4-13" % "3.2.12.0",
     )
   }
