@@ -214,6 +214,10 @@ class TemplateEngine(
   attempt(filters += "escaped" -> EscapedFilter)
 
   attempt {
+    ScalaMarkdownFilter(this)
+  }
+
+  attempt {
     CoffeeScriptPipeline(this)
   }
 
