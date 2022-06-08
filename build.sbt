@@ -9,7 +9,7 @@ import com.typesafe.tools.mima.core._
 // -----------------------------------------------------------------------------------
 
 def Scala211 = "2.11.12"
-def Scala212 = "2.12.15"
+def Scala212 = "2.12.16"
 def Scala213 = "2.13.8"
 
 addCommandAlias("SetScala211", s"++ ${Scala211}!")
