@@ -44,7 +44,7 @@ object Dependencies {
   val scalaTest = Def.setting {
     Seq(
       "org.scalatest" %% "scalatest" % "3.2.12",
-      "org.scalatestplus" %% "junit-4-13" % "3.2.12.0",
+      "org.scalatestplus" %% "junit-4-13" % "3.2.13.0",
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
