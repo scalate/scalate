@@ -36,7 +36,6 @@ object Dependencies {
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.3.7.0"
   val junit = "junit" % "junit" % "4.13.2"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.1"
-  // TODO: upgrade to 1.5.x
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.0"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
@@ -52,7 +51,7 @@ object Dependencies {
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.22"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
-  val snakeYaml = "org.yaml" % "snakeyaml" % "1.30"
+  val snakeYaml = "org.yaml" % "snakeyaml" % "1.31"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
