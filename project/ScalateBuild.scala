@@ -1,4 +1,4 @@
-import com.typesafe.sbt.SbtGit.GitKeys
+import com.github.sbt.git.SbtGit.GitKeys
 import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
 import sbt.Keys._
 import sbt._
