@@ -36,7 +36,7 @@ object Dependencies {
   val jRubyComplete = "org.jruby" % "jruby-complete" % "9.3.8.0"
   val junit = "junit" % "junit" % "4.13.2"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.1"
-  val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.0"
+  val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.1"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
   val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
@@ -47,8 +47,8 @@ object Dependencies {
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
-  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.0"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.22"
+  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.1"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.23"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "1.32"
