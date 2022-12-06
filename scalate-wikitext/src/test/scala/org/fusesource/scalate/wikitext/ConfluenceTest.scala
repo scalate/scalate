@@ -47,19 +47,11 @@ START
 END
 """
 
-      // Since the output result changed from Pygmentize 2.x, there are tests for 1.x and 2.x
-      if (Pygmentize.majorVersion >= 2) {
-        assertFilter(
-          source,
-          """<p>START</p><div class="syntax"><div class="highlight"><pre><span></span><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
-      } else {
-        assertFilter(
-          source,
-          """<p>START</p><div class="syntax"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
-
-      }
-
+      assertFilter(
+        source,
+        """<p>START</p><div class="syntax"><div class="highlight"><pre><span></span><span class="nt">&lt;ul&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>one<span class="nt">&lt;/li&gt;</span>&#x000A;  <span class="nt">&lt;li&gt;</span>two<span class="nt">&lt;/li&gt;</span>&#x000A;<span class="nt">&lt;/ul&gt;</span>&#x000A;</pre></div>&#x000A;</div><p>END</p>""")
     }
+
   } else {
     warn("Pygmentize not installed so ignoring the tests")
   }
