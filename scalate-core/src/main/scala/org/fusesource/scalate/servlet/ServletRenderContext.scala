@@ -25,7 +25,7 @@ import javax.servlet.http._
 import javax.servlet.{ ServletContext, ServletException, ServletOutputStream }
 import org.fusesource.scalate.{ AttributeMap, DefaultRenderContext, RenderContext, TemplateEngine }
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 

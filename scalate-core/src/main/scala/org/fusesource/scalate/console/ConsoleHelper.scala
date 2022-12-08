@@ -25,7 +25,7 @@ import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.util.{ Log, SourceMap, SourceMapInstaller }
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.collection.immutable.SortedMap
 import scala.collection.mutable.{ ArrayBuffer, ListBuffer }
 import scala.io.Source

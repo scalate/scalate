@@ -24,7 +24,7 @@ import org.fusesource.scalate._
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.util._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object SiteGenerator extends Log
 import org.fusesource.scalate.support.SiteGenerator._

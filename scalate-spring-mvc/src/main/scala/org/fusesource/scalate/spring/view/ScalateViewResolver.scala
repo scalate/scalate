@@ -24,7 +24,7 @@ import org.fusesource.scalate.servlet.ServletTemplateEngine
 import javax.servlet.ServletConfig
 import javax.servlet.ServletContext
 import java.util.Enumeration
-import scala.collection.JavaConverters.asJavaEnumerationConverter
+import scala.jdk.CollectionConverters._
 
 class ScalateViewResolver()
   extends AbstractTemplateViewResolver

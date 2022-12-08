@@ -21,7 +21,7 @@ import java.{ util => ju }
 
 import org.fusesource.scalate.AttributeMap
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * The default implementation for <code>AttributeMap</code> backed

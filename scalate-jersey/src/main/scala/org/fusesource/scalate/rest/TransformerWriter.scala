@@ -30,7 +30,7 @@ import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import xml.{ XML, NodeSeq }
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }

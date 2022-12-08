@@ -22,7 +22,7 @@ import org.fusesource.scalate.mustache.VariableResult.NoValue
 import org.fusesource.scalate.mustache.VariableResult.NoVariable
 import org.fusesource.scalate.mustache.VariableResult.SomeValue
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import java.{ lang => jl, util => ju }
 import xml.NodeSeq

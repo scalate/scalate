@@ -21,7 +21,7 @@ import java.util.ArrayList
 import java.io._
 import scala.util.parsing.combinator._
 import scala.util.parsing.input._
-import collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import scala.language.reflectiveCalls
 
