@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import org.yaml.snakeyaml.Yaml
 import scala.util.parsing.input.{ NoPosition, CharSequenceReader }
-import collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 case class Attribute(
   key: Text,

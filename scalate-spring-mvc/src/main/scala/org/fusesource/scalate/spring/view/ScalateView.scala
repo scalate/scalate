@@ -23,7 +23,7 @@ import _root_.javax.servlet.http.HttpServletResponse
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
-import _root_.scala.collection.JavaConverters._
+import _root_.scala.jdk.CollectionConverters._
 import _root_.org.fusesource.scalate.TemplateException
 import _root_.org.springframework.web.servlet.view.{ AbstractView, AbstractTemplateView }
 import _root_.org.slf4j.LoggerFactory

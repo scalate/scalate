@@ -21,7 +21,7 @@ import org.fusesource.scalate.FunSuiteSupport
 import java.{ util => ju }
 
 // the following imports are included by default in TemplateEngine
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import TemplateConversions._
 
 case class Address(city: String, country: String)

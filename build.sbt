@@ -46,6 +46,7 @@ lazy val scalateUtil = scalateProject("util")
       slf4jApi,
       scalaParserCombinators.value,
       scalaXml.value,
+      scalaCollectionCompat,
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
@@ -152,6 +153,7 @@ lazy val scalateCore = scalateProject("core")
       osgiCore % "provided,optional",
       rhinoCoffeeScript % Optional,
       scalamd % Optional,
+      scalaCollectionCompat,
       junit % Test,
       json4s % Test
     ),
@@ -235,7 +237,8 @@ lazy val scalatePage = scalateProject("page")
     libraryDependencies ++= Seq(
       rhinoCoffeeScript,
       scalamd,
-      snakeYaml
+      snakeYaml,
+      scalaCollectionCompat,
     ),
     description := "Scalate multipart page filter (similar to Webgen page format).")
 
@@ -247,6 +250,7 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     libraryDependencies ++= Seq(
       javaxServlet % Provided,
       springMVC,
+      scalaCollectionCompat,
       junit % Test
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
@@ -290,7 +294,8 @@ lazy val scalateJersey = scalateProject("jersey")
       javaxServlet % Provided,
       jerseyCore % Provided,
       jerseyServlet % Provided,
-      jerseyServer % Provided
+      jerseyServer % Provided,
+      scalaCollectionCompat,
     ),
     description := "Jersey integration for a Scalate web application")
 
@@ -312,6 +317,7 @@ lazy val scalateWikitext = scalateProject("wikitext")
     libraryDependencies ++= Seq(
       wikitextConfluence,
       wikitextTextile,
+      scalaCollectionCompat,
       logbackClassic % Test
     ),
     description := "Scalate WikiText integration for Markdown and Confluence notations.")

@@ -20,7 +20,7 @@ package org.fusesource.scalate.wikitext
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
 import java.{ util => ju }
-import collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * Registry of language extensions
