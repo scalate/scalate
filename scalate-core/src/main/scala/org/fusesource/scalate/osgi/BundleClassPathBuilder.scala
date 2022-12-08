@@ -91,7 +91,7 @@ object BundleClassPathBuilder {
     }
 
     try {
-      var admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
+      val admin: PackageAdmin = context.getService(ref).asInstanceOf[PackageAdmin]
       if (admin == null) {
         warn("PackageAdmin service is unavailable - unable to check bundle wiring information")
         List()
@@ -256,8 +256,8 @@ object BundleClassPathBuilder {
       def lookupNameUnchecked(name: String, directory: Boolean) = lookupName(path, directory)
 
       def absolute = unsupported("absolute() is unsupported")
-      def create = unsupported("create() is unsupported")
-      def delete = unsupported("create() is unsupported")
+      def create() = unsupported("create() is unsupported")
+      def delete() = unsupported("delete() is unsupported")
     }
 
     class FileEntry(url: URL, parent: DirEntry) extends BundleEntry(url, parent) {
@@ -275,8 +275,8 @@ object BundleClassPathBuilder {
       def iterator = Iterator.empty
 
       def absolute = unsupported("absolute() is unsupported")
-      def create = unsupported("create() is unsupported")
-      def delete = unsupported("create() is unsupported")
+      def create() = unsupported("create() is unsupported")
+      def delete() = unsupported("delete() is unsupported")
     }
 
     new DirEntry(bundle.getResource("/"), null) {
