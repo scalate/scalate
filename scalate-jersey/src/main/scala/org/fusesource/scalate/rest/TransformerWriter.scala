@@ -67,13 +67,6 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     classOf[Transformer].isAssignableFrom(aClass)
   }
 
-  def getSize(
-    transformer: Transformer,
-    aClass: Class[_],
-    aType: Type,
-    annotations: Array[Annotation],
-    mediaType: MediaType) = -1L
-
   def writeTo(
     transformer: Transformer,
     aClass: Class[_],

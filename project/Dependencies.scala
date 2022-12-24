@@ -26,7 +26,7 @@ object Dependencies {
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxbApi = "javax.xml.bind" % "jaxb-api" % "2.3.1"
-  val jaxrsApi = "org.jboss.spec.javax.ws.rs" % "jboss-jaxrs-api_1.1_spec" % "1.0.1.Final"
+  val jaxrsApi = "jakarta.ws.rs" % "jakarta.ws.rs-api" % "2.1.6"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision

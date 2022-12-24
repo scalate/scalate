@@ -39,8 +39,6 @@ class NodeWriter extends MessageBodyWriter[NodeSeq] {
     classOf[NodeSeq].isAssignableFrom(aClass)
   }
 
-  def getSize(nodes: NodeSeq, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
-
   def writeTo(nodes: NodeSeq, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, stringObjectMultivaluedMap: MultivaluedMap[String, Object], outputStream: OutputStream): Unit = {
     val answer = nodes.toString();
     outputStream.write(answer.getBytes());

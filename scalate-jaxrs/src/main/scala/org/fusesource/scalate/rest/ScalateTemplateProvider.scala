@@ -64,8 +64,6 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     }.orNull
   }
 
-  def getSize(arg: AnyRef, argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
-
   def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     var answer = false
     if (mediaType.getType == "text" && mediaType.getSubtype == "html") {
