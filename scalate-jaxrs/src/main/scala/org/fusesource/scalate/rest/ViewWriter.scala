@@ -75,8 +75,6 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
     classOf[View[T]].isAssignableFrom(aClass)
   }
 
-  def getSize(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = -1L
-
   def writeTo(view: View[T], aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
     def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
 
