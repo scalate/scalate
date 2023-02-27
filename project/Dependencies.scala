@@ -30,7 +30,7 @@ object Dependencies {
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
-  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.13"
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.14"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
