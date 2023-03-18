@@ -32,7 +32,7 @@ import scala.util.parsing.input.OffsetPosition
 class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
   override val stratumName = "SCAML"
 
-  implicit def textToString(text: Text) = text.value
+  implicit def textToString(text: Text): String = text.value
 
   implicit def textOptionToString(text: Option[Text]): Option[String] = text match {
     case None => None
@@ -98,7 +98,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
     }
 
-    override def generateInitialImports = {
+    override def generateInitialImports(): Unit = {
       this << "import _root_.org.fusesource.scalate.support.RenderHelper.{sanitize=>$_scalate_$_sanitize, preserve=>$_scalate_$_preserve, indent=>$_scalate_$_indent, smart_sanitize=>$_scalate_$_smart_sanitize, attributes=>$_scalate_$_attributes}"
     }
 
@@ -336,7 +336,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           } else {
             this << prefix
             indent {
-              this << s.code :: " {" :: Nil
+              this << s.code.trim :: " {" :: Nil
               indent {
                 generate_with_flush(s.body)
               }
@@ -364,7 +364,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             if (line ne statement.code.last) {
               this << line :: Nil
             } else {
-              this << line :: "{" :: Nil
+              this << line.trim :: "{" :: Nil
             }
         }
         indent {
@@ -577,7 +577,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               if (s.body.isEmpty) {
                 this << s.code :: Nil
               } else {
-                this << s.code :: " {" :: Nil
+                this << s.code.trim :: " {" :: Nil
                 indent {
                   generate_with_flush(s.body)
                 }

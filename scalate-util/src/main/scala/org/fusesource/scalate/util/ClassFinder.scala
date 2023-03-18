@@ -75,9 +75,9 @@ object ClassFinder {
       if (p == null) {
         warn("Could not load class list from: %s", url)
       }
-      val enum = p.keys
-      while (enum.hasMoreElements) {
-        rc = rc ::: enum.nextElement.asInstanceOf[String] :: Nil
+      val keyEnum = p.keys
+      while (keyEnum.hasMoreElements) {
+        rc = rc ::: keyEnum.nextElement.asInstanceOf[String] :: Nil
       }
     }
     rc = rc.distinct

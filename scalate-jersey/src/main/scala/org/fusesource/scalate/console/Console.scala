@@ -32,7 +32,7 @@ object Console extends Log; import Console._
  *
  * @version $Revision : 1.1 $
  */
-@Path("/scalate")
+@javax.ws.rs.Path("/scalate")
 class Console extends DefaultRepresentations {
 
   @Context
@@ -48,15 +48,15 @@ class Console extends DefaultRepresentations {
 
   def response: HttpServletResponse = assertInjected(_response, "response")
 
-  def templateEngine = ServletTemplateEngine(servletContext)
-  def renderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
+  def templateEngine: ServletTemplateEngine = ServletTemplateEngine(servletContext)
+  def renderContext: ServletRenderContext = new ServletRenderContext(templateEngine, request, response, servletContext)
 
   @Path("archetypes/{name}")
-  def archetype(@PathParam("name") name: String) = new ArchetypeResource(this, name)
+  def archetype(@PathParam("name") name: String): ArchetypeResource = new ArchetypeResource(this, name)
 
   @POST
   @Path("invalidateCachedTemplates")
-  def invalidateCachedTemplates() = {
+  def invalidateCachedTemplates(): Unit = {
     info("Clearing template cache")
     val engine = ServletTemplateEngine(servletContext)
     engine.invalidateCachedTemplates()

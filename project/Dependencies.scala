@@ -21,6 +21,15 @@ object Dependencies {
     }
   )
 
+  val scalaCompiler = Def.setting(
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) =>
+        "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
+      case _ =>
+        "org.scala-lang" % "scala-compiler" % scalaVersion.value
+    }
+  )
+
   val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.9.0"
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
@@ -40,7 +49,7 @@ object Dependencies {
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.5"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
-  val scalamd = "org.scalatra.scalate" %% "scalamd" % "1.7.3"
+  val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.7.3").cross(CrossVersion.for3Use2_13)
   val scalaTest = Def.setting {
     Seq(
       "org.scalatest" %% "scalatest-funsuite" % "3.2.15",
@@ -51,7 +60,6 @@ object Dependencies {
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.6"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.25"
-  val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "2.0"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"

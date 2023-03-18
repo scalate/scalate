@@ -35,7 +35,7 @@ object TemplateConversions {
   /**
    * Provide easy coercion from a Tuple2 returned when iterating over Java Maps to a Map.Entry type object
    */
-  implicit def tuple2ToMapEntry[A, B](value: Tuple2[A, B]) = MapEntry[A, B](value._1, value._2)
+  implicit def tuple2ToMapEntry[A, B](value: Tuple2[A, B]): MapEntry[A, B] = MapEntry[A, B](value._1, value._2)
 
   /**
    * A helper method for dealing with null pointers and also NullPointerException when navigating object expressions.

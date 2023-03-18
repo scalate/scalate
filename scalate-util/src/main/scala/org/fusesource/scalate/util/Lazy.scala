@@ -52,7 +52,7 @@ class Lazy[T](thunk: => T) {
   }
 
   def :=[Q](v: Q)(implicit e: Q => T): T = {
-    set(v)
+    set(e(v))
   }
 
   def :=(v: T): T = {
@@ -67,11 +67,11 @@ class Lazy[T](thunk: => T) {
    * are all the same
    */
   def update[Q](v: Q)(implicit e: Q => T): Unit = {
-    this.set(v)
+    this.set(e(v))
   }
 
   def apply[Q](v: Q)(implicit e: Q => T): OwnerType = {
-    this.set(v)
+    this.set(e(v))
     fieldOwner()
   }
 

@@ -887,7 +887,7 @@ class TemplateEngine(
    * in the the codeGenerators map.
    */
   protected def generator(source: TemplateSource): CodeGenerator = {
-    extension(source) match {
+    `extension`(source) match {
       case Some(ext) =>
         generatorForExtension(ext)
       case None =>

@@ -44,7 +44,7 @@ class SiteGenerator {
   var targetDirectory: File = _
   var templateProperties: ju.Map[String, String] = _
   var bootClassName: String = _
-  var info: { def apply(v1: String): Unit } = (value: String) => println(value)
+  var info: (String) => Unit = (value: String) => println(value)
 
   def execute() = {
     targetDirectory.mkdirs()

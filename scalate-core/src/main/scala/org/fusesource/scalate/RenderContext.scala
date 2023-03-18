@@ -187,7 +187,7 @@ trait RenderContext {
   def captureAttributeAppend(name: String)(body: => Unit): Unit = {
     val text = capture(body)
     val v = attributes.get(name) match {
-      case Some(t) => t + text
+      case Some(t) => t.toString + text
       case _ => text
     }
     attributes(name) = v

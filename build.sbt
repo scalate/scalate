@@ -11,16 +11,18 @@ import com.typesafe.tools.mima.core._
 def Scala211 = "2.11.12"
 def Scala212 = "2.12.17"
 def Scala213 = "2.13.10"
+def Scala3 = "3.2.2"
 
 addCommandAlias("SetScala211", s"++ ${Scala211}!")
 addCommandAlias("SetScala212", s"++ ${Scala212}!")
 addCommandAlias("SetScala213", s"++ ${Scala213}!")
+addCommandAlias("SetScala3", s"++ ${Scala3}!")
 
 name := "scalate"
 organization := "org.scalatra.scalate"
 version := "1.9.9-SNAPSHOT"
 scalaVersion := Scala213
-crossScalaVersions := Seq(Scala213, Scala212, Scala211)
+crossScalaVersions := Seq(Scala3, Scala213, Scala212, Scala211)
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
@@ -50,7 +52,12 @@ lazy val scalateUtil = scalateProject("util")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
-    (Test / unmanagedSourceDirectories) += (Test / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}")
+    (Test / unmanagedSourceDirectories) += (Test / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
+    mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.util.SourceMapInstaller#Writer.baos"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.util.SourceMapInstaller#Writer.<clinit>")
+    ),
+  )
   .enablePlugins(MimaPlugin)
 
 lazy val scalateCore = scalateProject("core")
@@ -69,7 +76,9 @@ lazy val scalateCore = scalateProject("core")
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.childElements"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.filterNode"),
       ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.filterNode")
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.filterNode"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.Precompiler.<clinit>"),
+      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.SiteGenerator.<clinit>")
     ),
     // Somehow, MiMa in scalate-core project fails to recognize the classes that came from scalate-util project
     mimaBinaryIssueFilters ++= Seq(
@@ -144,7 +153,15 @@ lazy val scalateCore = scalateProject("core")
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Strings"),
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Log"),
       ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$")
+      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$"),
+      ProblemFilters.exclude[MissingClassProblem]("org.scalatra.scalate.core.buildinfo.BuildInfo"),
+      ProblemFilters.exclude[MissingClassProblem]("org.scalatra.scalate.core.buildinfo.BuildInfo$")
+    ),
+    mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.support.Precompiler.info"),
+      ProblemFilters.exclude[IncompatibleMethTypeProblem]("org.fusesource.scalate.support.Precompiler.info_="),
+      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.support.SiteGenerator.info"),
+      ProblemFilters.exclude[IncompatibleMethTypeProblem]("org.fusesource.scalate.support.SiteGenerator.info_="),
     ),
     resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging",
     libraryDependencies ++= Seq(
@@ -158,8 +175,10 @@ lazy val scalateCore = scalateProject("core")
       json4s % Test
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    libraryDependencies += scalaCompiler(scalaOrganization.value, scalaVersion.value),
-    (Compile / unmanagedSourceDirectories) += (Compile / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}")
+    libraryDependencies += scalaCompiler.value,
+    (Compile / unmanagedSourceDirectories) += (Compile / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
+    buildInfoPackage := "org.fusesource.scalate.buildinfo"
+  )
   .dependsOn(scalateUtil)
   .enablePlugins(MimaPlugin)
 

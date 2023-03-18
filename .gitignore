@@ -26,3 +26,5 @@ overlays
 .metals/
 .vscode/
 .bsp/
+.bloop/
+metals.sbt

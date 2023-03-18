@@ -49,13 +49,16 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
     }
 
     def <<[T](list: List[T]): this.type = {
+      val functionStart = list.lastOption.contains("{")
       for (i <- 0 until indentLevel) {
         code += "  "
       }
       for (value <- list) value match {
-        case text: Positional => this << text.pos << text.toString
-        case pos: Position => this << pos
-        case _ => code += value.toString
+        case text: Positional =>
+          this << text.pos << text.toString; if (functionStart) { code = code.trim }
+        case pos: Position =>
+          this << pos; if (functionStart) { code = code.trim }
+        case _ => code += value.toString; if (functionStart) { code = code.trim }
       }
       code += "\n"
       this

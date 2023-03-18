@@ -26,7 +26,7 @@ import org.fusesource.scalate.support.Text
  */
 abstract class ParserTestSupport extends FunSuiteSupport {
 
-  implicit def stringToText(x: String) = Text(x)
+  implicit def stringToText(x: String): Text = Text(x)
 
   def countTypes(lines: List[PageFragment]): HashMap[Class[_], Int] = {
     val map = new HashMap[Class[_], Int]
