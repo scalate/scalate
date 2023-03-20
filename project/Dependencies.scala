@@ -49,7 +49,7 @@ object Dependencies {
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
-  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.6"
+  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.7"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.25"
   val scalaCompiler: (String, String) => ModuleID = _ % "scala-compiler" % _
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
