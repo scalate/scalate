@@ -336,7 +336,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           } else {
             this << prefix
             indent {
-              this << s.code.trim :: " {" :: Nil
+              this << s.code :: " {" :: Nil
               indent {
                 generate_with_flush(s.body)
               }
@@ -364,7 +364,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             if (line ne statement.code.last) {
               this << line :: Nil
             } else {
-              this << line.trim :: "{" :: Nil
+              this << line :: "{" :: Nil
             }
         }
         indent {
@@ -577,7 +577,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               if (s.body.isEmpty) {
                 this << s.code :: Nil
               } else {
-                this << s.code.trim :: " {" :: Nil
+                this << s.code :: " {" :: Nil
                 indent {
                   generate_with_flush(s.body)
                 }
