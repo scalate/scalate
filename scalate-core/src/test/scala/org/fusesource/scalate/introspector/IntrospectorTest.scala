@@ -43,7 +43,7 @@ class MyBean {
   // should be a value which returns a function
   def bold(text: String) = "<b>" + text + "</b>"
 
-  override def toString = "MyBean(" + getName + ", " + getAge + ")"
+  override def toString = "MyBean(" + getName() + ", " + getAge() + ")"
 }
 
 class IntrospectorTest extends FunSuiteSupport {

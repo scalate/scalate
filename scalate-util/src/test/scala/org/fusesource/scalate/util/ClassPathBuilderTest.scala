@@ -86,8 +86,8 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     builder.addPathFrom(loader)
 
     assertFiles(
-      builder.classPath.split(":").toList,
-      parentClassPathBuilder.classPath.split(":").filter(_.nonEmpty).+:("/path/to/file.jar").toList)
+      builder.classPath.split(File.pathSeparator).toList,
+      parentClassPathBuilder.classPath.split(File.pathSeparator).filter(_.nonEmpty).+:("/path/to/file.jar").toList)
   }
 
   test("Add path from AntLikeClassLoader") {
@@ -123,6 +123,8 @@ class ClassPathBuilderTest extends FunSuiteSupport {
   }
 
   test("Contains the classpaths of all class loaders including parents") {
+    assume(!System.getProperty("os.name").toLowerCase.contains("windows"))
+
     val builder = new ClassPathBuilder
 
     Thread.currentThread.setContextClassLoader(ValidChildClassLoader)
@@ -132,7 +134,7 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     val expectFiles = Seq(
       ValidChildClassLoader.getClasspath,
       ValidAntLikeClassLoader.getClasspath)
-    builder.classPath.split(":").map { path =>
+    builder.classPath.split(File.pathSeparator).foreach { path =>
       assert(expectFiles.contains(new File(path).getCanonicalPath))
     }
   }

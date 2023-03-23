@@ -22,8 +22,6 @@ import java.io.File
 import org.fusesource.scalate.servlet.ServletRenderContext
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 
-import scala.language.reflectiveCalls
-
 /**
  * This class can precompile Scalate templates into JVM
  * classes.
@@ -36,7 +34,7 @@ class Precompiler {
   var workingDirectory: File = _
   var targetDirectory: File = _
   var templates = Array[String]()
-  var info: { def apply(v1: String): Unit } = (value: String) => println(value)
+  var info: String => Unit = value => println(value)
   var contextClass: String = _
   var bootClassName: String = _
 

@@ -23,6 +23,7 @@ import _root_.org.fusesource.scalate._
 import _root_.org.fusesource.scalate.test.FunSuiteSupport
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatestplus.junit.JUnitRunner
+import com.google.common.io.Files
 
 case class Person(first: String, last: String)
 
@@ -32,7 +33,7 @@ class ArchetypeTest extends FunSuiteSupport {
 
   // If the version number is not added, class files of different major versions will be reused,
   // so the compile-time version number is added to the directory name to distinguish them.
-  val ver = scala.tools.nsc.Properties.versionString
+  val ver = buildinfo.BuildInfo.scalaVersion
   engine.workingDirectory = new File(baseDir, "target/test-data/ArchetypeTest" + ver)
 
   test("use tableView archetype") {

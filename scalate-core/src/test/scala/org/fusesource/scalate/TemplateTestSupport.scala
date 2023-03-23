@@ -39,7 +39,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
       IOUtil.recursiveDelete(workingDir)
     }
     engine.workingDirectory = workingDir
-    configureTemplateEngine
+    configureTemplateEngine()
   }
 
   protected def createTemplateEngine = new TemplateEngine

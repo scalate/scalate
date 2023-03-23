@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [8, 11]
-        scala: ['2_11', '2_12', '2_13']
+        scala: ['2_11', '2_12', '2_13', '3']
 
     steps:
     - uses: actions/checkout@v3
@@ -34,6 +34,9 @@ jobs:
             ;;
           "2_13")
             sbt -v SetScala213 test unidoc
+            ;;
+          "3")
+            sbt -v SetScala3 test unidoc
             ;;
           *)
             echo "unknown scala version"

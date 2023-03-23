@@ -23,8 +23,6 @@ import scala.util.parsing.combinator._
 import scala.util.parsing.input._
 import scala.jdk.CollectionConverters._
 
-import scala.language.reflectiveCalls
-
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  * @author Jayson Falkner
@@ -430,15 +428,7 @@ object SourceMapInstaller {
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)
-    val baos = new ByteArrayOutputStream(orig.length + (sourceDebug.length * 2) + 100) {
-      def position: Int = count
-      def update(location: Int)(proc: => Unit): Unit = {
-        val original: Int = count
-        count = location
-        proc
-        count = original
-      }
-    }
+    val baos = new EnhancedByteArrayOutputStream(orig.length + (sourceDebug.length * 2) + 100)
     val dos = new DataOutputStream(baos)
     var sdeIndex = -1
 
@@ -729,5 +719,15 @@ object SourceMapInstaller {
 
     println(smap2.mapToStratum(3))
 
+  }
+}
+
+class EnhancedByteArrayOutputStream(size: Int) extends ByteArrayOutputStream(size) {
+  def position: Int = count
+  def update(location: Int)(proc: => Unit): Unit = {
+    val original: Int = count
+    count = location
+    proc
+    count = original
   }
 }

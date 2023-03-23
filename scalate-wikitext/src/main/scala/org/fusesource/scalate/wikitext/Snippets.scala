@@ -177,7 +177,7 @@ class SnippetBlock extends ParameterizedBlock {
    */
   def language = {
     lang match {
-      case None => extension(url)
+      case None => `extension`(url)
       case Some(lang) => lang
     }
   }

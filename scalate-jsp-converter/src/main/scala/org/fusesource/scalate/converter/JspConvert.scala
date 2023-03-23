@@ -53,7 +53,7 @@ class JspConvert extends Runnable {
   /**
    * Runs the command given the command line arguments
    */
-  def run = run(dir)
+  def run(): Unit = run(dir)
 
   /**
    * Recurses down the di

@@ -34,7 +34,7 @@ object VariableResult {
   }
 
   def apply(maybeValue: Option[Any], variableExist: => Boolean): VariableResult = {
-    maybeValue.map(SomeValue).getOrElse {
+    maybeValue.map(SomeValue.apply).getOrElse {
       if (variableExist) NoValue else NoVariable
     }
   }

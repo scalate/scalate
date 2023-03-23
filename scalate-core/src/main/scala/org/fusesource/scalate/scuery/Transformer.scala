@@ -32,9 +32,9 @@ import scala.xml.{ Elem, Node, NodeSeq, Text }
 class Transformer {
   protected val _rules = new HashMap[Selector, Rule]
 
-  implicit def toSXml(node: Node) = SXml(node)
+  implicit def toSXml(node: Node): SXml = SXml(node)
 
-  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
+  implicit def toSXml(nodes: NodeSeq): SXml = SXml(nodes)
 
   def $(cssSelector: String): RuleFactory = $(Selector(cssSelector))
 
@@ -255,5 +255,5 @@ case class SXml(nodes: NodeSeq) {
  * Makes it easy to pass around a node object along with its ancestor
  */
 case class NodeAndAncestors(node: Node, ancestors: Seq[Node]) {
-  implicit def toNode = node
+  implicit def toNode: Node = node
 }

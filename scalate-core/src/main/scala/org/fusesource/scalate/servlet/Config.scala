@@ -24,14 +24,14 @@ import javax.servlet.{ FilterConfig, ServletConfig, ServletContext }
 import scala.language.implicitConversions
 
 object Config {
-  implicit def servletConfig2Config(servletConfig: ServletConfig) = new Config {
+  implicit def servletConfig2Config(servletConfig: ServletConfig): Config = new Config {
     def getName = servletConfig.getServletName
     def getServletContext = servletConfig.getServletContext
     def getInitParameter(name: String) = servletConfig.getInitParameter(name)
     def getInitParameterNames = servletConfig.getInitParameterNames
   }
 
-  implicit def filterConfig2Config(filterConfig: FilterConfig) = new Config {
+  implicit def filterConfig2Config(filterConfig: FilterConfig): Config = new Config {
     def getName = filterConfig.getFilterName
     def getServletContext = filterConfig.getServletContext
     def getInitParameter(name: String) = filterConfig.getInitParameter(name)

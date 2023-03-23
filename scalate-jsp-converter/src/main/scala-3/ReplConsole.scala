@@ -15,21 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fusesource.scalate
+package org.fusesource.scalate.converter
 
-object MockBootstrap {
-  var initialised = false
-}
+import dotty.tools.MainGenericRunner
 
-class BootTest extends TemplateTestSupport {
+/**
+ * A console which comes with a sample convert tool created
+ */
+object ReplConsole {
 
-  test("scalate.Boot gets invoked") {
-
-    val engine = new TemplateEngine()
-    engine.boot()
-
-    //assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
-
-    assertResult(true, "scalate.Boot not invoked!") { MockBootstrap.initialised }
+  def main(args: Array[String]): Unit = {
+    MainGenericRunner.main(args ++ Array("-i", "src/test/repl/ConsoleImports.scala"))
+    System.exit(0)
   }
+
 }

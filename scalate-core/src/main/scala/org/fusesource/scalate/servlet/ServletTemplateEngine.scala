@@ -24,8 +24,6 @@ import org.fusesource.scalate.layout.{ DefaultLayoutStrategy, LayoutStrategy }
 import org.fusesource.scalate.util._
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 
-import scala.tools.nsc.Global
-
 object ServletTemplateEngine {
   val log = Log(getClass)
 
@@ -120,7 +118,7 @@ class ServletTemplateEngine(
       .addPathFrom(classOf[Product])
 
     try {
-      builder.addPathFrom(classOf[Global])
+      builder.addPathFrom(classOf[java.lang.Appendable])
     } catch {
       case x: Throwable => // the scala compiler might not be on the path.
     }

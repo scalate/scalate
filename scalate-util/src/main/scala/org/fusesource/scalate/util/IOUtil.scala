@@ -34,7 +34,7 @@ object IOUtil {
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files
    */
-  implicit def toResource(file: File) = FileResource(file, file.getPath)
+  implicit def toResource(file: File): FileResource = FileResource(file, file.getPath)
   implicit def toFile(resource: FileResource): File = resource.asFile
 
   /**
@@ -79,7 +79,7 @@ object IOUtil {
     else {
       matches.foldLeft(sourceCode) { (result, include) =>
         val includeSource: String = try {
-          val includeRegEx(fileName) = include
+          val includeRegEx(fileName) = include: @unchecked
           loadTextFile(new java.io.File(fileName), encoding)
         } catch {
           case m: MatchError =>

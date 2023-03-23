@@ -27,7 +27,7 @@ import java.io.File
 
 class MustacheParserTest extends FunSuiteSupport {
 
-  implicit def stringToText(x: String) = Text(x)
+  implicit def stringToText(x: String): Text = Text(x)
 
   test("set directive") {
     assertParses(

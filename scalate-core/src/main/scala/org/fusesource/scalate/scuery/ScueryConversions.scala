@@ -26,9 +26,9 @@ import scala.xml.{ Node, NodeSeq }
 trait ScueryConversions {
   implicit def toNodes(transform: Transform): NodeSeq = transform()
 
-  implicit def toSXml(node: Node) = SXml(node)
+  implicit def toSXml(node: Node): SXml = SXml(node)
 
-  implicit def toSXml(nodes: NodeSeq) = SXml(nodes)
+  implicit def toSXml(nodes: NodeSeq): SXml = SXml(nodes)
 
   implicit def toNode(nodeAndAncestors: NodeAndAncestors): Node = nodeAndAncestors.node
 }
