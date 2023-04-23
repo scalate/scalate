@@ -73,7 +73,7 @@ class SourceMapStratum(val name: String) {
    *
    * @param istart starting line in the source file
    *        (SMAP <tt>InputStartLine</tt>)
-   * @param file the filepath (or name) from which the input comes
+   * @param ifile the filepath (or name) from which the input comes
    *        (yields SMAP <tt>LineFileID</tt>)  Use unqualified names
    *        carefully, and only when they uniquely identify a file.
    * @param icount the number of lines in the input to map

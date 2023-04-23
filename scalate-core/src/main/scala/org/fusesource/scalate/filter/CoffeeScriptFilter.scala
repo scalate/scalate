@@ -119,7 +119,6 @@ object CoffeeScriptCompiler {
    *
    * @param code the Coffeescript code
    * @param sourceName a descriptive name for the code unit under compilation (e.g a filename)
-   * @param bare if true, no function wrapper will be generated
    * @return the compiled Javascript code
    */
   def compile(code: String, sourceName: Option[String] = None): Either[CompilationError, String] =
