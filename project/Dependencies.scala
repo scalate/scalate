@@ -8,7 +8,7 @@ object Dependencies {
     if (scalaBinaryVersion.value == "2.11") {
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1"
     } else {
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.2.0"
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
     }
   )
 
