@@ -81,10 +81,6 @@ object ScalateBuild {
   )
 
   private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
-    publishTo := Some(
-      if (isSnapshot.value) Opts.resolver.sonatypeSnapshots
-      else Opts.resolver.sonatypeStaging
-    ),
     SonatypeKeys.sonatypeProfileName := "org.scalatra.scalate",
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
