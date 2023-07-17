@@ -15,7 +15,7 @@ object Dependencies {
   val scalaXml = Def.setting(
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 11)) =>
-        "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
+        "org.scala-lang.modules" %% "scala-xml" % "1.3.1"
       case _ =>
         "org.scala-lang.modules" %% "scala-xml" % "2.2.0"
     }
