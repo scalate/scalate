@@ -147,7 +147,7 @@ trait TemplateSource extends Resource {
 
       // lets find the tail of matching package names to use
       val lastIndex = packages.lastIndexWhere(invalidPackageName(_))
-      if (lastIndex > 0) {
+      if (lastIndex >= 0) {
         packages = packages.drop(lastIndex + 1)
       }
       val packageName = packages.mkString(".")
