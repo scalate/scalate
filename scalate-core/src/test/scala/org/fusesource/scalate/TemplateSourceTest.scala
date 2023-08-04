@@ -27,4 +27,25 @@ class TemplateSourceTest extends FunSuiteSupport {
     val source = TemplateSource.fromFile("foo.txt").templateType("mustache")
     assertResult(Some("mustache")) { source.templateType }
   }
+
+  test("empty package name") {
+    val engine = new TemplateEngine
+    val source = TemplateSource.fromFile("foo.ssp")
+    source.engine = engine
+    assertResult("") { source.packageName }
+  }
+
+  test("illegal package name - first token") {
+    val engine = new TemplateEngine
+    val source = TemplateSource.fromFile("/var/tmp2/foo.ssp")
+    source.engine = engine
+    assertResult("tmp2") { source.packageName }
+  }
+
+  test("illegal package name - second token") {
+    val engine = new TemplateEngine
+    val source = TemplateSource.fromFile("/tmp/var/tmp2/foo.ssp")
+    source.engine = engine
+    assertResult("tmp2") { source.packageName }
+  }
 }
