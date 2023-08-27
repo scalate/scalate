@@ -61,7 +61,7 @@ object Dependencies {
   val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.7"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.29"
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
-  val snakeYaml = "org.yaml" % "snakeyaml" % "2.1"
+  val snakeYaml = "org.yaml" % "snakeyaml" % "2.2"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
