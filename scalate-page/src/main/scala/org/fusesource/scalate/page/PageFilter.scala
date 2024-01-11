@@ -183,7 +183,7 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     parts.foreach { part =>
       val name = part.name.map(_.value).getOrElse(default_name)
       if (page_parts.contains(name)) {
-        throw new InvalidSyntaxException("A page part named: %s was already defined.".format(name), part.name.map(_.pos).getOrElse(NoPosition))
+        throw new InvalidSyntaxException(s"A page part named: ${name} was already defined.", part.name.map(_.pos).getOrElse(NoPosition))
       }
       page_parts += name -> part
     }
