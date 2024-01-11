@@ -179,7 +179,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
               |""".stripMargin.format(title1, colored1, title2, colored2)
 
             if (wide) {
-              rc = """<div class="wide">%s</div>""".format(rc)
+              rc = s"""<div class="wide">${rc}</div>"""
             }
             rc
 
