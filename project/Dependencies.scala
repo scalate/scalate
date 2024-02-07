@@ -53,7 +53,7 @@ object Dependencies {
   val scalaTest = Def.setting {
     Seq(
       "org.scalatest" %% "scalatest-funsuite" % "3.2.18",
-      "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.17",
+      "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.18",
       "org.scalatestplus" %% "junit-4-13" % "3.2.17.0",
     )
   }
