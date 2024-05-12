@@ -23,8 +23,8 @@ object MimaSettings {
   //
 
   // NOTE: will start validating bin-compatibility since 1.9
-  val previousVersions = (0 to 7).map(patch => s"1.9.$patch").toSet
-  // val previousVersions = Set.empty[String]
+  // val previousVersions = (0 to 7).map(patch => s"1.10.$patch").toSet
+  val previousVersions = Set.empty[String]
 
   val mimaSettings = Seq(
     ThisBuild / mimaBinaryIssueFilters ++= Seq(

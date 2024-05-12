@@ -8,7 +8,7 @@ object Dependencies {
     if (scalaBinaryVersion.value == "2.11") {
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1"
     } else {
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0"
+      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
     }
   )
 
@@ -17,7 +17,7 @@ object Dependencies {
       case Some((2, 11)) =>
         "org.scala-lang.modules" %% "scala-xml" % "1.3.1"
       case _ =>
-        "org.scala-lang.modules" %% "scala-xml" % "2.2.0"
+        "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
     }
   )
 
@@ -30,7 +30,7 @@ object Dependencies {
     }
   )
 
-  val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0"
+  val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.12.0"
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.9.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
@@ -43,13 +43,13 @@ object Dependencies {
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
-  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.4.6.0"
+  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.4.7.0"
   val junit = "junit" % "junit" % "4.13.2"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.5"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.6"
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.14"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
-  val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.7.3").cross(CrossVersion.for3Use2_13)
+  val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.8.0").cross(CrossVersion.for3Use2_13)
   val scalaTest = Def.setting {
     Seq(
       "org.scalatest" %% "scalatest-funsuite" % "3.2.18",
@@ -58,8 +58,8 @@ object Dependencies {
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
-  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.12"
-  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.32"
+  val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.13"
+  val springMVC = "org.springframework" % "spring-webmvc" % "5.3.34"
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "2.2"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
