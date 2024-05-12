@@ -5,20 +5,11 @@ import sbt._
 object Dependencies {
 
   val scalaParserCombinators = Def.setting(
-    if (scalaBinaryVersion.value == "2.11") {
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1"
-    } else {
-      "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
-    }
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
   )
 
   val scalaXml = Def.setting(
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 11)) =>
-        "org.scala-lang.modules" %% "scala-xml" % "1.3.1"
-      case _ =>
-        "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
-    }
+    "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
   )
 
   val scalaCompiler = Def.setting(
