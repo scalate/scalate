@@ -50,7 +50,6 @@ lazy val scalateUtil = scalateProject("util")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
-    (Test / unmanagedSourceDirectories) += (Test / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
   )
   .enablePlugins(MimaPlugin)
 
@@ -72,7 +71,6 @@ lazy val scalateCore = scalateProject("core")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     libraryDependencies += scalaCompiler.value,
-    (Compile / unmanagedSourceDirectories) += (Compile / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
     buildInfoPackage := "org.fusesource.scalate.buildinfo"
   )
   .dependsOn(scalateUtil)
