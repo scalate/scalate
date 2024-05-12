@@ -8,12 +8,10 @@ import com.typesafe.tools.mima.core._
 // Scalate project guarantees bin-compatibities for only core, util
 // -----------------------------------------------------------------------------------
 
-def Scala211 = "2.11.12"
 def Scala212 = "2.12.19"
 def Scala213 = "2.13.14"
 def Scala3 = "3.3.3"
 
-addCommandAlias("SetScala211", s"++ ${Scala211}!")
 addCommandAlias("SetScala212", s"++ ${Scala212}!")
 addCommandAlias("SetScala213", s"++ ${Scala213}!")
 addCommandAlias("SetScala3", s"++ ${Scala3}!")
@@ -22,7 +20,7 @@ name := "scalate"
 organization := "org.scalatra.scalate"
 version := "1.10.1"
 scalaVersion := Scala213
-crossScalaVersions := Seq(Scala3, Scala213, Scala212, Scala211)
+crossScalaVersions := Seq(Scala3, Scala213, Scala212)
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)

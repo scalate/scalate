@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [8, 11]
-        scala: ['2_11', '2_12', '2_13', '3']
+        scala: ['2_12', '2_13', '3']
 
     steps:
     - uses: actions/checkout@v4
@@ -26,9 +26,6 @@ jobs:
     - name: Run tests
       run: |
         case ${{ matrix.scala }} in
-          "2_11")
-            sbt -v SetScala211 test unidoc
-            ;;
           "2_12")
             sbt -v SetScala212 test unidoc
             ;;
