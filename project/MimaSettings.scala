@@ -22,28 +22,13 @@ object MimaSettings {
   //  - in this case, the incompatibility won't be detected
   //
 
-  // NOTE: will start validating bin-compatibility since 1.9
-  // val previousVersions = (0 to 7).map(patch => s"1.10.$patch").toSet
-  val previousVersions = Set.empty[String]
+  val previousVersions = Set("1.10.1")
 
   val mimaSettings = Seq(
-    ThisBuild / mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[IncompatibleSignatureProblem]("org.fusesource.scalate.*"),
-      ProblemFilters.exclude[ReversedMissingMethodProblem]("org.fusesource.scalate.mustache.Scope.hasVariable")
-    ),
     ThisBuild / mimaReportSignatureProblems := true,
     ThisBuild / mimaFailOnNoPrevious := false,
     mimaPreviousArtifacts := {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, scalaMajor)) if scalaMajor <= 12 =>
-          previousVersions.map { organization.value % s"${name.value}_${scalaBinaryVersion.value}" % _ }
-        case Some((2, 13)) =>
-          previousVersions.filterNot((0 to 3).map("1.9." + _).toSet).map {
-            organization.value % s"${name.value}_${scalaBinaryVersion.value}" % _
-          }
-        case _ =>
-          Set.empty
-      }
+      previousVersions.map { organization.value % s"${name.value}_${scalaBinaryVersion.value}" % _ }
     },
     (Test / test) := {
       mimaReportBinaryIssues.value
