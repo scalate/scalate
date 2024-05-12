@@ -49,7 +49,7 @@ object Dependencies {
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.14"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
-  val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.8.0").cross(CrossVersion.for3Use2_13)
+  val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.8.0")
   val scalaTest = Def.setting {
     Seq(
       "org.scalatest" %% "scalatest-funsuite" % "3.2.18",
