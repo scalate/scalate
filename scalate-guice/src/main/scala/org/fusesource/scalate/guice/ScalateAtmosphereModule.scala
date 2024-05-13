@@ -1,6 +1,6 @@
 package org.fusesource.scalate.guice
 
-import collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /**
  * ScalateModule that also configures the Atmosphere framework
@@ -14,7 +14,7 @@ class ScalateAtmosphereModule extends ScalateModule {
   override def configureServlets(): Unit = {
     // We don't need to call super.applyJerseyFilter here because Atmosphere
     // will configure / is using Jersey
-    applyScalateServlets
+    applyScalateServlets()
     applyAtmosphereServlets()
   }
 
