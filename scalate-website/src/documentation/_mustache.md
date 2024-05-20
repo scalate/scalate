@@ -5,7 +5,7 @@
 
 ## Introduction
 
-Scalate's Mustache is a Scala/Java implementation of the [Mustache](http://mustache.github.com/) template language.
+Scalate's Mustache is a Scala/Java implementation of the [Mustache](https://mustache.github.io/) template language.
 
 Mustache provides logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js) - so ideal for HTML templates which your designers own. 
 
@@ -283,5 +283,5 @@ If you want just the children an element, create a section for it and use **{{_}
 
 ## Other Resources
 
-* [Mustache reference](http://mustache.github.com/mustache.5.html)
-* [Other Mustache implementations](http://mustache.github.com/)
+* [Mustache reference](https://mustache.github.io/mustache.5.html)
+* [Other Mustache implementations](https://mustache.github.io/)
