@@ -28,7 +28,7 @@ The following template languages are supported through the same common API:
   markup along with the
   [Jade](http://scalate.fusesource.org/documentation/jade.html) syntax
 * [Mustache](http://scalate.fusesource.org/documentation/mustache.html)
-  which is a Scala dialect of [Mustache](http://mustache.github.com/) for
+  which is a Scala dialect of [Mustache](https://mustache.github.io/) for
   logic-less templates which also work inside the browser using
   [mustache.js](http://github.com/janl/mustache.js)
 
