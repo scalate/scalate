@@ -45,7 +45,7 @@ object Dependencies {
     Seq(
       "org.scalatest" %% "scalatest-funsuite" % "3.2.19",
       "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.19",
-      "org.scalatestplus" %% "junit-4-13" % "3.2.18.0",
+      "org.scalatestplus" %% "junit-4-13" % "3.2.19.0",
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
