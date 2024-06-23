@@ -43,9 +43,9 @@ object Dependencies {
   val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.8.0")
   val scalaTest = Def.setting {
     Seq(
-      "org.scalatest" %% "scalatest-funsuite" % "3.2.18",
-      "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.18",
-      "org.scalatestplus" %% "junit-4-13" % "3.2.18.0",
+      "org.scalatest" %% "scalatest-funsuite" % "3.2.19",
+      "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.19",
+      "org.scalatestplus" %% "junit-4-13" % "3.2.19.0",
     )
   }
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
