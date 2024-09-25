@@ -10,7 +10,7 @@ import com.typesafe.tools.mima.core._
 
 def Scala212 = "2.12.20"
 def Scala213 = "2.13.15"
-def Scala3 = "3.3.3"
+def Scala3 = "3.3.4"
 
 addCommandAlias("SetScala212", s"++ ${Scala212}!")
 addCommandAlias("SetScala213", s"++ ${Scala213}!")
