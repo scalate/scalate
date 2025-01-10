@@ -23,6 +23,7 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: adopt
+    - uses: sbt/setup-sbt@v1
     - name: Run tests
       run: |
         case ${{ matrix.scala }} in
