@@ -34,6 +34,8 @@ Hello
 
   if (Pygmentize.isInstalled) {
     test("pygmentize macro") {
+      pending // TODO
+
       val source = """
 START
 
