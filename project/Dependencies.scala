@@ -34,7 +34,7 @@ object Dependencies {
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
-  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.4.12.0"
+  val jRubyComplete = "org.jruby" % "jruby-complete" % "9.4.12.1"
   val junit = "junit" % "junit" % "4.13.2"
   val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.7"
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.15"
