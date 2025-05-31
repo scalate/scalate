@@ -9,7 +9,7 @@ object Dependencies {
   )
 
   val scalaXml = Def.setting(
-    "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
+    "org.scala-lang.modules" %% "scala-xml" % "2.4.0"
   )
 
   val scalaCompiler = Def.setting(
