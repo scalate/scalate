@@ -98,7 +98,7 @@ trait Selector {
     }
   }
 
-  protected def attrEquals(e: Elem, name: String, value: String) = e.attribute(name) match {
+  protected def attrEquals(e: Elem, name: String, value: String): Boolean = e.attribute(name) match {
     case Some(n) => n.toString == value
     case _ => false
   }
@@ -106,12 +106,12 @@ trait Selector {
   /**
    * Returns the child elements of the given node
    */
-  protected def childElements(node: Node) = node.child.filter(_.isInstanceOf[Elem])
+  protected def childElements(node: Node): collection.Seq[Node] = node.child.filter(_.isInstanceOf[Elem])
 
   /**
    * Returns the child elements of the immediate ancestor
    */
-  protected def ancestorChildElements(ancestors: Seq[Node]) =
+  protected def ancestorChildElements(ancestors: Seq[Node]): collection.Seq[Node] =
     if (ancestors.isEmpty)
       Nil
     else
