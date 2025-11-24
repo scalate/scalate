@@ -17,7 +17,7 @@ jobs:
         scala: ['2_12', '2_13', '3']
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set up JDK
       uses: actions/setup-java@v5.0.0
       with:
