@@ -56,5 +56,5 @@ object Dependencies {
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
-  val json4s = "org.json4s" %% "json4s-native" % "4.0.7"
+  val json4s = "io.github.json4s" %% "json4s-native" % "4.1.0"
 }
