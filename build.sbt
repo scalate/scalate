@@ -8,21 +8,19 @@ import com.typesafe.tools.mima.core._
 // Scalate project guarantees bin-compatibities for only core, util
 // -----------------------------------------------------------------------------------
 
-def Scala211 = "2.11.12"
-def Scala212 = "2.12.19"
-def Scala213 = "2.13.14"
-def Scala3 = "3.3.3"
+def Scala212 = "2.12.21"
+def Scala213 = "2.13.18"
+def Scala3 = "3.3.7"
 
-addCommandAlias("SetScala211", s"++ ${Scala211}!")
 addCommandAlias("SetScala212", s"++ ${Scala212}!")
 addCommandAlias("SetScala213", s"++ ${Scala213}!")
 addCommandAlias("SetScala3", s"++ ${Scala3}!")
 
 name := "scalate"
 organization := "org.scalatra.scalate"
-version := "1.10.0"
+version := "1.10.1"
 scalaVersion := Scala213
-crossScalaVersions := Seq(Scala3, Scala213, Scala212, Scala211)
+crossScalaVersions := Seq(Scala3, Scala213, Scala212)
 javacOptions ++= Seq("-source", "1.8")
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 startYear := Some(2010)
@@ -52,11 +50,6 @@ lazy val scalateUtil = scalateProject("util")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
-    (Test / unmanagedSourceDirectories) += (Test / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
-    mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.util.SourceMapInstaller#Writer.baos"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.util.SourceMapInstaller#Writer.<clinit>")
-    ),
   )
   .enablePlugins(MimaPlugin)
 
@@ -65,104 +58,6 @@ lazy val scalateCore = scalateProject("core")
   .published
   .settings(
     mimaSettings,
-    mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.ScalaCompiler#LoggingReporter.printMessage"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.LastChildSelector.filterNode"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.AnySelector.filterNode"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.FirstChildSelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.FirstChildSelector.filterNode"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.RootSelector.filterNode"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.childElements"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.scuery.support.NoNamespaceSelector.filterNode"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.Precompiler.<clinit>"),
-      ProblemFilters.exclude[DirectMissingMethodProblem]("org.fusesource.scalate.support.SiteGenerator.<clinit>")
-    ),
-    // Somehow, MiMa in scalate-core project fails to recognize the classes that came from scalate-util project
-    mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.IOUtil$InvalidDirectiveException"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Files"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.URLResource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassLoaders"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassPathBuilder$AntLikeClassLoader$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Resource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.IOUtil$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResourceLoader$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapStratum"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceCodeHelper"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassLoaders$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassPathBuilder"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.JavaInterops"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Lazy"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceResource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$Writer"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.WriteableResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMap$SmapParser$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Measurements$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ResourceNotFoundException$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.UnitOfMeasure"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Logging"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Log$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.UriResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Objects$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMap$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Strings$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.UriResource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ResourceLoader"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.XmlHelper"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.TextResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Measurements"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapStratum$LineInfo$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Threads"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ProductReflector"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.XmlHelper$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$Writer$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$Reader$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Objects"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassFinder"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassFinder$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Constraints$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMap"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ResourceLoader$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.StringResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Threads$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceCodeHelper$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ObjectPool"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.URIs$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ProductReflector$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.DelegateResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.UnitOfMeasure$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapStratum$LineInfo"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.JavaInterops$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.URIs"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResourceLoader"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Resource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Constraints"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ClassPathBuilder$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.URLResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Files$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.StringResource$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.ResourceNotFoundException"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.IOUtil"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$Reader"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Strings"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.Log"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.FileResource"),
-      ProblemFilters.exclude[MissingClassProblem]("org.fusesource.scalate.util.SourceMapInstaller$"),
-      ProblemFilters.exclude[MissingClassProblem]("org.scalatra.scalate.core.buildinfo.BuildInfo"),
-      ProblemFilters.exclude[MissingClassProblem]("org.scalatra.scalate.core.buildinfo.BuildInfo$")
-    ),
-    mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.support.Precompiler.info"),
-      ProblemFilters.exclude[IncompatibleMethTypeProblem]("org.fusesource.scalate.support.Precompiler.info_="),
-      ProblemFilters.exclude[IncompatibleResultTypeProblem]("org.fusesource.scalate.support.SiteGenerator.info"),
-      ProblemFilters.exclude[IncompatibleMethTypeProblem]("org.fusesource.scalate.support.SiteGenerator.info_="),
-    ),
     resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging",
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
@@ -176,7 +71,6 @@ lazy val scalateCore = scalateProject("core")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     libraryDependencies += scalaCompiler.value,
-    (Compile / unmanagedSourceDirectories) += (Compile / sourceDirectory).value / s"scala_${scalaBinaryVersion.value}",
     buildInfoPackage := "org.fusesource.scalate.buildinfo"
   )
   .dependsOn(scalateUtil)
@@ -190,10 +84,6 @@ lazy val scalateTest = scalateProject("test")
   .dependsOn(scalateCore)
   .settings(
     libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always",
-    mimaBinaryIssueFilters ++= Seq(
-      ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.TemplateTestSupport"),
-      ProblemFilters.exclude[MissingTypesProblem]("org.fusesource.scalate.test.FunSuiteSupport"),
-    ),
     libraryDependencies ++= Seq(
       jettyServer,
       jettyWebapp,

@@ -26,7 +26,7 @@ Scalate is a [Scala 2.9 and 2.10](http://www.scala-lang.org) based <a href="http
 
 Scalate supports the following template formats
 
-* [Mustache](documentation/mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+* [Mustache](documentation/mustache.html) which is a Scala dialect of [Mustache](https://mustache.github.io/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 * [Scaml](documentation/scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) and is very DRY for generating HTML / XHTML 
 * [Jade](documentation/jade.html) which is an even more DRY dialect of [Scaml](documentation/scaml-reference.html) for HTML / XHTML markup generation
 * [SSP](documentation/ssp-reference.html) which is like [Velocity](documentation/ssp-reference.html#velocity_style_directives), JSP or Erb from Rails 

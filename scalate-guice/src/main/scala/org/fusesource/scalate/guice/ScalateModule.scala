@@ -38,14 +38,14 @@ class ScalateModule extends ServletModule {
   /**
    * The implicit type conversion to avoid the 'with' method in the DSL
    */
-  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder) = new RichBuilder(builder)
+  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder): RichBuilder = new RichBuilder(builder)
 
   /**
    * Configure any servlets or filters for the application
    */
   override def configureServlets = {
-    applyScalateServlets
-    applyJerseyFilter
+    applyScalateServlets()
+    applyJerseyFilter()
   }
 
   var scalateServletUris: List[String] = TemplateEngine.templateTypes.map(s => "*." + s)

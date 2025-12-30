@@ -23,18 +23,7 @@ package org.fusesource.scalate.scaml
 class ScamlTemplateErrorTest extends ScamlTestSupport {
   val scalaV = org.fusesource.scalate.buildinfo.BuildInfo.scalaVersion
 
-  if (scalaV.startsWith("2.11")) {
-    testCompilerException(
-      "Compile Error",
-      """
-%html
-  %body
-    %ul
-      - for (i <- unknown)
-        %li= i
-""",
-      "error: not found: value unknown")
-  } else if (scalaV.startsWith("3")) {
+  if (scalaV.startsWith("3")) {
     testCompilerException(
       "Compile Error",
       """

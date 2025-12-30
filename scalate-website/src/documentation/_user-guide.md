@@ -10,7 +10,7 @@ Scalate is a template engine based on the Scala language.
 * Supports multiple template syntaxes
   * [SSP](ssp-reference.html) which is like [Velocity](http://velocity.apache.org/), JSP or Erb from Rails
   * [Scaml](scaml-reference.html) which is a Scala dialect of [Haml](http://haml-lang.com/) along with the [Jade syntax](jade.html)
-  * [Mustache](mustache.html) which is a Scala dialect of [Mustache](http://mustache.github.com/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
+  * [Mustache](mustache.html) which is a Scala dialect of [Mustache](https://mustache.github.io/) for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js)
 
 * Support for [layouts](#layouts) of templates and wiki markup
 * Has a powerful [console](console.html) and [command line shell](tool.html) with Scalate converters for [JSP](jspConvert.html) or [HTML](htmlConvert.html)
@@ -108,7 +108,7 @@ For more details see the [Jade reference](jade.html)
 
 ### Mustache
 
-The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](http://mustache.github.com/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js).
+The [Scalate Mustache](mustache.html) template language is a Scala dialect of cross-language [Mustache](https://mustache.github.io/) template engine for logic-less templates which also work inside the browser using [mustache.js](http://github.com/janl/mustache.js).
 
 Mustache is logic-less, using simple tags which can be used to represent loops, expressions or logical branching.
 
