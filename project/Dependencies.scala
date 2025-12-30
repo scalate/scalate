@@ -21,7 +21,7 @@ object Dependencies {
     }
   )
 
-  val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.13.0"
+  val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.14.0"
 
   val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
@@ -30,14 +30,14 @@ object Dependencies {
   val jerseyServlet = "com.sun.jersey" % "jersey-servlet" % jerseyCore.revision
   val jerseyGuice = "com.sun.jersey.contribs" % "jersey-guice" % jerseyCore.revision
   val jerseyServer = "com.sun.jersey" % "jersey-server" % jerseyCore.revision
-  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.25"
+  val jettyServer = "org.eclipse.jetty" % "jetty-server" % "11.0.26"
   val jettyWebapp = jettyServer.withName("jetty-webapp")
   val jettyUtil = jettyServer.withName("jetty-util")
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "10.0.2.0"
   val junit = "junit" % "junit" % "4.13.2"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.7"
-  val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.15"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.9"
+  val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.3.16"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
   val scalamd = ("org.scalatra.scalate" %% "scalamd" % "1.8.0")
@@ -52,7 +52,7 @@ object Dependencies {
   val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.17"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.39"
   val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
-  val snakeYaml = "org.yaml" % "snakeyaml" % "2.4"
+  val snakeYaml = "org.yaml" % "snakeyaml" % "2.5"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
 
