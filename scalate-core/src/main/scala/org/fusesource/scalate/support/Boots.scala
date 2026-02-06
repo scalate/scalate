@@ -15,7 +15,7 @@ object Boots {
   def invokeBoot(clazz: Class[_], injectionParameters: List[AnyRef]): Unit = {
     // Structural Typing to make Reflection easier.
     type Boot = {
-      def run: Unit
+      def run(): Unit
     }
 
     lazy val bootClassName = clazz.getName
@@ -28,7 +28,7 @@ object Boots {
     }
 
     try {
-      o.run
+      o.run()
     } catch {
       case e: VirtualMachineError => throw e
       case e: ThreadDeath => throw e
