@@ -28,7 +28,7 @@ object ResourceParams {
     new ResourceParams(formParam("packageName"), formParam("className"), formParam("resourceUri"))
   }
 }
-case class ResourceParams(val packageName: String, val className: String, val resourceUri: String) {
+case class ResourceParams(packageName: String, className: String, resourceUri: String) {
 
   /**
    * Returns the fully qualified class name of the resource to be generated
