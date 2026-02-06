@@ -202,7 +202,7 @@ object TemplateSource {
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from a URL
    */
-  def fromURL(url: String): URLTemplateSource = fromURL(new URL(url))
+  def fromURL(url: String): URLTemplateSource = fromURL(new URI(url).toURL)
 
   /**
    * Creates a [[org.fusesource.scalate.TemplateSource]] from the [[scala.io.Source]] and the given URI.
