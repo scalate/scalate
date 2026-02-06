@@ -82,7 +82,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
           val idx = path.lastIndexOf('/')
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
-            tryFindPath(newPath).getOrElse(null)
+            tryFindPath(newPath).orNull
           } else {
             null
           }
