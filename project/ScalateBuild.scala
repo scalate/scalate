@@ -15,15 +15,20 @@ object ScalateBuild {
 
   implicit final class ScalateProjectSyntax(val u: Project) extends AnyVal {
 
-    def scalateBaseSettings = u.settings(projectOpts: _*)
+    def scalateBaseSettings = u.settings(projectOpts)
 
     def scalateSettings = scalateBaseSettings
       .enablePlugins(BuildInfoPlugin)
-      .settings(compileOpts ++ docOpts ++ buildInfoOpts ++ testOpts: _*)
+      .settings(
+        compileOpts,
+        docOpts,
+        buildInfoOpts,
+        testOpts,
+      )
 
-    def published = u.settings(publishOpts: _*)
+    def published = u.settings(publishOpts)
 
-    def notPublished = u.settings(ScalateBuild.notPublished: _*)
+    def notPublished = u.settings(ScalateBuild.notPublished)
 
   }
 
@@ -39,7 +44,7 @@ object ScalateBuild {
     publishTo := Some(Resolver.file("file",  target.value / "m2-cache/"))
   )
 
-  def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] =
+  def unidocOpts(filter: ProjectReference*): Seq[Setting[?]] =
     inConfig(ScalaUnidoc)(inTask(unidoc)(docOptsBase)) ++ Seq(
     (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
     (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
@@ -47,7 +52,7 @@ object ScalateBuild {
         file -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
     }.toMap,
     ScalaUnidoc / unidoc / unidocProjectFilter :=
-      inAnyProject -- inProjects(filter: _*))
+      inAnyProject -- inProjects(filter *))
 
   private def projectOpts = Seq(
     version := (LocalRootProject / version).value,
@@ -115,7 +120,7 @@ object ScalateBuild {
     }
   )
 
-  private def docOpts: Seq[Setting[_]] = inConfig(Compile)(inTask(doc)(docOptsBase))
+  private def docOpts: Seq[Setting[?]] = inConfig(Compile)(inTask(doc)(docOptsBase))
 
   def developersPomExtra =
     <developers>
