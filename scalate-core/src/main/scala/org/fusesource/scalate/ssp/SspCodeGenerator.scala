@@ -316,43 +316,39 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
     def isMatch = last != null && last.isInstanceOf[MatchFragment]
 
     val pass1 = fragments.filter {
-      _ match {
-        case t: TextFragment if (isMatch) =>
-          val trim = t.text.trim
-          if (trim.length == 0) {
-            false
-          } else {
-            throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found '" + trim + "'", t.pos)
-          }
+      case t: TextFragment if (isMatch) =>
+        val trim = t.text.trim
+        if (trim.length == 0) {
+          false
+        } else {
+          throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found '" + trim + "'", t.pos)
+        }
 
-        case p =>
-          if (isMatch) {
-            if (!p.isInstanceOf[CaseFragment] && !p.isInstanceOf[OtherwiseFragment]) {
-              throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found " + p.tokenName, p.pos)
-            }
+      case p =>
+        if (isMatch) {
+          if (!p.isInstanceOf[CaseFragment] && !p.isInstanceOf[OtherwiseFragment]) {
+            throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found " + p.tokenName, p.pos)
           }
-          last = p
-          true
-      }
+        }
+        last = p
+        true
     }
 
     val pass2 = pass1.flatMap {
-      _ match {
-        case t: TextFragment =>
-          val str = t.text.value
-          val transformed = stripEscapedNewlines(t.text.value)
-          if (str != transformed) {
-            if (transformed.isEmpty) {
-              None
-            } else {
-              Some(TextFragment(Text(transformed).setPos(t.pos)))
-            }
+      case t: TextFragment =>
+        val str = t.text.value
+        val transformed = stripEscapedNewlines(t.text.value)
+        if (str != transformed) {
+          if (transformed.isEmpty) {
+            None
           } else {
-            Some(t)
+            Some(TextFragment(Text(transformed).setPos(t.pos)))
           }
+        } else {
+          Some(t)
+        }
 
-        case p => Some(p)
-      }
+      case p => Some(p)
     }
 
     pass2
