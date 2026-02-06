@@ -25,7 +25,7 @@ class RenderContextTest extends FunSuiteSupport {
 
   test("change the numberFormat") {
 
-    var df = new DecimalFormat
+    val df = new DecimalFormat
     df.setGroupingUsed(false)
     context.numberFormat = df
     val value = context.value(1234, false).toString

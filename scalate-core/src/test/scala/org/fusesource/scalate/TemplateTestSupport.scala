@@ -96,7 +96,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     assertOutputContains(template, Map[String, Any](), expected: _*)
 
   def assertOutputContains(template: Template, attributes: Map[String, Any], expected: String*): String = {
-    var output = engine.layout("dummy.ssp", template, attributes)
+    val output = engine.layout("dummy.ssp", template, attributes)
     logOutput(output)
 
     assertTextContains(output, "template " + template, expected: _*)
