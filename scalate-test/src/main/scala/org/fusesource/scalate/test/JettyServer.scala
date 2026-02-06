@@ -23,6 +23,7 @@ import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
 import java.io.{ File, FileInputStream }
+import scala.annotation.tailrec
 
 /**
  * @version $Revision : 1.1 $
@@ -108,6 +109,7 @@ class JettyServer {
 
   protected def findOverlayModuleWebAppDir(basedir: String): String = {
     /**Lets walk up the directory tree looking for the overlayProject */
+    @tailrec
     def findOverlayModuleInParent(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
       case Some(file) => file.getAbsolutePath
       case _ =>
