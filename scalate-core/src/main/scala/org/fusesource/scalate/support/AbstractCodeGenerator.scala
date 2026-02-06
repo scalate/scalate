@@ -80,14 +80,12 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
     }
 
     def positions() = {
-      var rc = new TreeMap[OffsetPosition, OffsetPosition]()(new Ordering[OffsetPosition] {
-        def compare(p1: OffsetPosition, p2: OffsetPosition): Int = {
-          val rc = p1.line - p2.line
-          if (rc == 0) {
-            p1.column - p2.column
-          } else {
-            rc
-          }
+      var rc = new TreeMap[OffsetPosition, OffsetPosition]()((p1: OffsetPosition, p2: OffsetPosition) => {
+        val rc = p1.line - p2.line
+        if (rc == 0) {
+          p1.column - p2.column
+        } else {
+          rc
         }
       })
       generatedPositions.foreach {
