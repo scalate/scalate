@@ -31,6 +31,7 @@ import org.fusesource.scalate.ssp.SspCodeGenerator
 import org.fusesource.scalate.support._
 import org.fusesource.scalate.util._
 
+import scala.annotation.tailrec
 import scala.collection.immutable.TreeMap
 import scala.collection.mutable.HashMap
 import scala.language.existentials
@@ -756,6 +757,7 @@ class TemplateEngine(
 
   protected val sourceMapLog = Log(getClass, "SourceMap")
 
+  @tailrec
   private def compileAndLoad(
     source: TemplateSource,
     extraBindings: Iterable[Binding],

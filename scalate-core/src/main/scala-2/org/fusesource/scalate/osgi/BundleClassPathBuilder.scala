@@ -26,6 +26,8 @@ import collection.mutable.{ ListBuffer, LinkedHashSet }
 import org.osgi.service.packageadmin.PackageAdmin
 import org.fusesource.scalate.util.{ Log, Strings }
 
+import scala.annotation.tailrec
+
 /**
  * Helper methods to transform OSGi bundles into {@link AbstractFile} implementations
  * suitable for use with the Scala compiler
@@ -232,6 +234,7 @@ object BundleClassPathBuilder {
               null
           }
 
+          @tailrec
           private def removeTralingSlash(s: String): String =
             if (s == null || s.length == 0)
               s

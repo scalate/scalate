@@ -21,6 +21,8 @@ import org.fusesource.scalate.util.Strings.isEmpty
 import org.fusesource.scalate.util.{ ClassLoaders, Log }
 import org.fusesource.scalate.{ Binding, TemplateSource }
 
+import scala.annotation.tailrec
+
 /**
  * The base class for any **ScalatePackage** class added to the classpath to customize the templates
  */
@@ -42,6 +44,7 @@ object TemplatePackage {
    * Finds the ScalatePackage class by walking from the templates package up the tree until it finds one
    */
   def findTemplatePackage(source: TemplateSource): Option[TemplatePackage] = {
+    @tailrec
     def packageWalk(packageName: String): Option[TemplatePackage] = {
       val className = if (isEmpty(packageName))
         scalatePackageClassName
