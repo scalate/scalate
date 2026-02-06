@@ -14,7 +14,7 @@ class ObjectPool[T](number: Int, newInstance: () => T) {
   def fetch(): T = {
     pool.poll() match {
       case null => createOrBlock
-      case o => o.asInstanceOf[T]
+      case o => o
     }
   }
 
