@@ -28,7 +28,7 @@ class ScalatePackage extends TemplatePackage {
 
       import org.fusesource.scalate.boot.BootSample._
       // lets call the bootstrap code
-      boot
+      boot()
 
       def foo = "bar"
 

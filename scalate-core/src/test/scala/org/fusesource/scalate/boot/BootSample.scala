@@ -28,7 +28,7 @@ object BootSample {
 
   var initialised = false
 
-  def boot: Unit = {
+  def boot(): Unit = {
     if (!initialised) {
       info("Startup up template package bootstrap!")
       initialised = true

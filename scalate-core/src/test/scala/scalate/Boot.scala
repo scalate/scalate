@@ -28,7 +28,7 @@ object Boot extends Log
 class Boot(engine: TemplateEngine) {
   import Boot._
 
-  def run: Unit = {
+  def run(): Unit = {
     info("scalate bootstrap starting with template engine: %s", engine)
     MockBootstrap.initialised = true
   }
