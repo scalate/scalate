@@ -20,7 +20,7 @@ package org.fusesource.scalate.util
 import _root_.org.fusesource.scalate.FunSuiteSupport
 
 import java.io.File
-import java.net.{ URL, URLClassLoader }
+import java.net.{ URI, URLClassLoader }
 
 class ClassPathBuilderTest extends FunSuiteSupport {
   import ClassPathBuilderTest._
@@ -78,7 +78,7 @@ class ClassPathBuilderTest extends FunSuiteSupport {
   //  }
 
   test("Add entry from a URLClassLoader") {
-    val loader = new URLClassLoader(Array(new URL("file:///path/to/file.jar")))
+    val loader = new URLClassLoader(Array(new URI("file:///path/to/file.jar").toURL))
     val parentClassPathBuilder = new ClassPathBuilder
     parentClassPathBuilder.addPathFrom(getClass.getClassLoader)
 
