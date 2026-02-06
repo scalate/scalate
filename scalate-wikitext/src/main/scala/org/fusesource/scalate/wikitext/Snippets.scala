@@ -211,8 +211,8 @@ trait SnippetHandler {
  * Default handler for the {snippet} code (renders a <div class="snippet"><pre class="<language>">
  */
 case class DefaultSnippetHandler(
-  val builder: DocumentBuilder,
-  val language: String) extends SnippetHandler {
+  builder: DocumentBuilder,
+  language: String) extends SnippetHandler {
 
   def begin() = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))
@@ -243,7 +243,7 @@ case class DefaultSnippetHandler(
 /**
  * Uses pygmentize to handles syntax coloring for the {snippet}'s code
  */
-case class PygmentizeSnippetHandler(val block: PygmentsBlock) extends SnippetHandler {
+case class PygmentizeSnippetHandler(block: PygmentsBlock) extends SnippetHandler {
 
   def begin() = block.beginBlock
   def addLine(line: String) = block.handleBlockContent(line)
