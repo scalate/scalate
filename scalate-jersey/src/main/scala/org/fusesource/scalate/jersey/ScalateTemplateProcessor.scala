@@ -87,7 +87,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
           val idx = path.lastIndexOf('/')
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
-            tryFindPath(engine, newPath).getOrElse(null)
+            tryFindPath(engine, newPath).orNull
           } else {
             null
           }
