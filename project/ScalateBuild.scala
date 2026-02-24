@@ -6,8 +6,6 @@ import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
 import sbtbuildinfo.{BuildInfoKeys, BuildInfoPlugin}
 import sbtunidoc.BaseUnidocPlugin.autoImport._
 import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
-import xerial.sbt.Sonatype
-import xerial.sbt.Sonatype.SonatypeKeys
 import Dependencies._
 
 /** Build support settings and functions. */
@@ -85,12 +83,8 @@ object ScalateBuild {
     (Test / baseDirectory) := baseDirectory.value
   )
 
-  private def publishOpts = Sonatype.sonatypeSettings ++ Seq(
-    publishTo := Some(
-      if (isSnapshot.value) Opts.resolver.sonatypeSnapshots
-      else Opts.resolver.sonatypeStaging
-    ),
-    SonatypeKeys.sonatypeProfileName := "org.scalatra.scalate",
+  private def publishOpts = Seq(
+    publishTo := (if(isSnapshot.value) None else localStaging.value),
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
     publish := PgpKeys.publishSigned.value,
