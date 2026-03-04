@@ -162,11 +162,29 @@ import org.fusesource.scalate.scaml.ScamlParser._
  */
 class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends IndentedParser() with ScalaParseSupport {
 
-  override def upto[T](p1: Parser[T]): Parser[Text] = {
-    text(
-      text("""\z""".r) ~ failure("end of file") ^^ { null } |
-        guard(p1) ^^ { _ => "" } |
-        rep1(not(p1) ~> upto_type.r) ^^ { _.mkString("") })
+  override def upto[T](p: Parser[T]): Parser[Text] = Parser { in =>
+    val source = in.source
+    val offset = in.offset
+    val start = offset
+    var current = in
+    var found = false
+    while (!found && !current.atEnd) {
+      p(current) match {
+        case Success(_, _) => found = true
+        case _ =>
+          if (upto_type == UPTO_TYPE_SINGLE_LINE && (source.charAt(current.offset) == '\r' || source.charAt(current.offset) == '\n')) {
+            found = true
+          } else {
+            current = current.rest
+          }
+      }
+    }
+    val text = source.subSequence(start, current.offset).toString
+    if (text.isEmpty && !found) {
+      Failure("nothing found", in)
+    } else {
+      Success(Text(text).setPos(in.pos), current)
+    }
   }
 
   val dot = text(""".+""".r)
