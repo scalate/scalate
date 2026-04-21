@@ -20,7 +20,7 @@ package org.fusesource.scalate.wikitext
 import collection.mutable.HashMap
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
-import io.Source
+import scala.io.Source
 import java.io.File
 import java.util.regex.{ Pattern, Matcher }
 import org.eclipse.mylyn.wikitext.core.parser.{ DocumentBuilder, Attributes }
