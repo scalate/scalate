@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.util
 
-import io.Source
+import scala.io.Source
 import java.io._
 import java.net.{ URISyntaxException, URL }
 
