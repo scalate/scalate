@@ -40,7 +40,7 @@ object XmlHelper {
     // lets deal with HTML entities
     // lets preserve whitespace for <pre> stuff to avoid trimming indentation with code
     object parser extends ConstructingParser(src, true /* keep ws*/ ) {
-      override def replacementText(entityName: String): io.Source = {
+      override def replacementText(entityName: String): scala.io.Source = {
         entityName match {
           ///case "nbsp" => io.Source.fromString("\u0160");
           case "nbsp" => io.Source.fromString("<![CDATA[&nbsp;]]>");
