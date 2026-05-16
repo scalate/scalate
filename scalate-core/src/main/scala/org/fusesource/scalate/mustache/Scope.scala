@@ -179,8 +179,8 @@ trait Scope {
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] => childScope(name, a)(block)
 
-          // any other traversable treat as a collection
-          case s: Traversable[Any] => foreachScope(name, s.toIterable)(block)
+          // any other iterable treat as a collection
+          case s: Iterable[Any] => foreachScope(name, s.toIterable)(block)
 
           case true => block(this)
           case false =>
@@ -222,8 +222,8 @@ trait Scope {
           // maps and so forth, treat as child scopes
           case a: PartialFunction[_, _] =>
 
-          // any other traversible treat as a collection
-          case s: Traversable[Any] => if (s.isEmpty) block(this)
+          // any other iterable treat as a collection
+          case s: Iterable[Any] => if (s.isEmpty) block(this)
 
           case true =>
           case false => block(this)
