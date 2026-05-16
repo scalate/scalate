@@ -1,7 +1,8 @@
 import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
 import sbt.Keys.*
 import sbt.*
-import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
+import sbtbuildinfo.BuildInfoPlugin.autoImport.*
+import sbtbuildinfo.BuildInfoPlugin.autoImport.given
 import sbtbuildinfo.BuildInfoKeys
 import sbtbuildinfo.BuildInfoPlugin
 import sbtunidoc.BaseUnidocPlugin.autoImport.*
@@ -45,10 +46,12 @@ object ScalateBuild {
   def unidocOpts(filter: ProjectReference*): Seq[Setting[?]] =
     inConfig(ScalaUnidoc)(Project.inTask(unidoc)(docOptsBase)) ++ Seq(
       (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
-      (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
+      (ThisBuild / apiMappings) ++= Def.uncached(scalaInstance.value.libraryJars.collect {
         case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
-          file -> url(s"https://www.scala-lang.org/api/${scalaVersion.value}/")
-      }.toMap,
+          fileConverter.value.toVirtualFile(file.toPath) -> url(
+            s"https://www.scala-lang.org/api/${scalaVersion.value}/"
+          )
+      }.toMap),
       ScalaUnidoc / unidoc / unidocProjectFilter :=
         inAnyProject -- inProjects(filter*)
     )
@@ -65,6 +68,9 @@ object ScalateBuild {
   )
 
   val scalacOptionsOpts = Def.settings(
+    scalacOptions ++= Seq(
+      "-release:8",
+    ),
     scalacOptions ++= {
       scalaBinaryVersion.value match {
         case "2.12" =>
@@ -85,6 +91,7 @@ object ScalateBuild {
   private def compileOpts = Def.settings(
     scalaVersion := (LocalRootProject / scalaVersion).value,
     crossScalaVersions := (LocalRootProject / crossScalaVersions).value,
+    exportJars := false,
     scalacOptionsOpts,
   )
 
@@ -97,7 +104,8 @@ object ScalateBuild {
     // According to the GitHub issue, `fork in Test := false` is a known workaround for the issue.
     // However, it doesn't work for Scalate project. If we set it, a portion of tests fail.
     Test / fork := true,
-
+    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Raw,
+    Test / parallelExecution := false,
     (Test / baseDirectory) := baseDirectory.value
   )
 
@@ -117,7 +125,7 @@ object ScalateBuild {
   private def docOptsBase = Seq(
     autoAPIMappings := true,
     scalacOptions ++= {
-      val rev = sys.process.Process("git rev-parse HEAD").lineStream_!.head
+      val rev = sys.process.Process("git rev-parse HEAD").lazyLines_!.head
       val ver = version.value
       Seq(
         "-doc-source-url",

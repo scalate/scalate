@@ -6,39 +6,41 @@ def Scala212 = "2.12.21"
 def Scala213 = "2.13.18"
 def Scala3 = "3.3.7"
 
-name := "scalate"
-organization := "io.github.scalate"
-scalaVersion := Scala213
-crossScalaVersions := Seq(Scala3, Scala213, Scala212)
-javacOptions ++= Seq("-source", "1.8")
-scalacOptionsOpts
-startYear := Some(2010)
-licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0")
-scmInfo := Some(
-  ScmInfo(
-    url("https://github.com/scalate/scalate"),
-    "scm:git:git://github.com/scalate/scalate.git",
-    Some("scm:git:ssh://git@github.com:scalate/scalate.git")
+val scalateRoot = rootProject.autoAggregate
+  .settings(
+    name := "scalate",
+    organization := "io.github.scalate",
+    scalaVersion := Scala213,
+    crossScalaVersions := Seq(Scala3, Scala213, Scala212),
+    javacOptions ++= Seq("-source", "1.8"),
+    scalacOptionsOpts,
+    startYear := Some(2010),
+    licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/scalate/scalate"),
+        "scm:git:git://github.com/scalate/scalate.git",
+        Some("scm:git:ssh://git@github.com:scalate/scalate.git")
+      )
+    ),
+    homepage := Some(url("https://scalate.github.io/scalate")),
+    unidocOpts(scalateWeb),
+    notPublished,
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      releaseStepCommandAndRemaining("+ publishSigned"),
+      releaseStepCommandAndRemaining("sonaRelease"),
+      setNextVersion,
+      commitNextVersion,
+      pushChanges,
+    ),
+    releaseCrossBuild := true,
   )
-)
-homepage := Some(url("https://scalate.github.io/scalate"))
-enablePlugins(ScalaUnidocPlugin)
-unidocOpts(scalateWeb)
-notPublished
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  releaseStepCommandAndRemaining("+ publishSigned"),
-  releaseStepCommandAndRemaining("sonaRelease"),
-  setNextVersion,
-  commitNextVersion,
-  pushChanges,
-)
-releaseCrossBuild := true
+  .enablePlugins(ScalaUnidocPlugin)
 
 lazy val scalateUtil = scalateProject("util").scalateSettings.published
   .settings(
@@ -51,7 +53,6 @@ lazy val scalateUtil = scalateProject("util").scalateSettings.published
       scalaCollectionCompat,
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
-    Test / parallelExecution := false,
   )
 
 lazy val scalateCore = scalateProject("core").scalateSettings.published
