@@ -195,7 +195,6 @@ class JspConverter extends IndentWriter {
             warn("No converter available for tag <" + coreLibraryPrefix + ":" + name + ">: " + e)
             print(e)
         }
-      case _ => print(e)
     }
   }
 
