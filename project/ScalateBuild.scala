@@ -34,12 +34,13 @@ object ScalateBuild {
     Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
 
   def notPublished = Seq(
+    publish / skip := true,
     publishArtifact := false,
     publish := {},
     publishLocal := {},
     PgpKeys.publishLocalSigned := {},
     PgpKeys.publishSigned := {},
-    publishTo := Some(Resolver.file("file",  target.value / "m2-cache/"))
+    publishTo := None,
   )
 
   def unidocOpts(filter: ProjectReference*): Seq[Setting[?]] =
