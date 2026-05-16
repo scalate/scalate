@@ -60,7 +60,7 @@ abstract class FunSuiteSupport extends AnyFunSuite with Log with BeforeAndAfterA
     assertResult(expected, "text of elements matching: " + selector) { result.$(selector).text }
   }
 
-  def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
+  def assertType(anyRef: AnyRef, expectedClass: Class[?]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
     assertResult(expectedClass) { anyRef.getClass }
   }

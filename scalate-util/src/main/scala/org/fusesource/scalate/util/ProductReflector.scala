@@ -33,7 +33,7 @@ object ProductReflector {
     casemethods.map(_.getName).zip(values).foldLeft(Map[String, Any]())(_ + _)
   }
 
-  def accessorMethods(c: Class[_]) = {
+  def accessorMethods(c: Class[?]) = {
     val predefined = List("copy$default$1", "copy$default$2", "curry", "curried", "$tag", "productArity", "productElements", "productIterator", "productPrefix", "hashCode", "toString", "tuple", "tupled")
 
     c.getMethods.toList.filter {

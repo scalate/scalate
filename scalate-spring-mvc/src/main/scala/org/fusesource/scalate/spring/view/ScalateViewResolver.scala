@@ -51,7 +51,7 @@ class ScalateViewResolver()
 
   setViewClass(requiredViewClass())
 
-  override def requiredViewClass(): java.lang.Class[_] = classOf[org.fusesource.scalate.spring.view.ScalateView]
+  override def requiredViewClass(): java.lang.Class[?] = classOf[org.fusesource.scalate.spring.view.ScalateView]
 
   override def buildView(viewName: String): AbstractUrlBasedView = {
     var view: AbstractScalateView = null

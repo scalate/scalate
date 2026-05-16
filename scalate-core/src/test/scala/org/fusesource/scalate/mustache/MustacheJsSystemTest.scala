@@ -58,8 +58,8 @@ class MustacheJsSystemTest extends MustacheTestSupport {
       Map("name" -> "green", "current" -> false, "url" -> "#Green"),
       Map("name" -> "blue", "current" -> false, "url" -> "#Blue")),
     "link" -> ((s: Scope) => !(s("current").get.asInstanceOf[Boolean])),
-    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
-    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
+    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[?]].size > 0),
+    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[?]].size == 0)))
 
   mustacheTest("complex", "case class", Map(
     "header" -> (() => "Colors"),
@@ -67,8 +67,8 @@ class MustacheJsSystemTest extends MustacheTestSupport {
       Item("red", true, "#Red"),
       Item("green", false, "#Green"),
       Item("blue", false, "#Blue")),
-    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size > 0),
-    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[_]].size == 0)))
+    "list" -> ((s: Scope) => s("item").get.asInstanceOf[List[?]].size > 0),
+    "empty" -> ((s: Scope) => s("item").get.asInstanceOf[List[?]].size == 0)))
 
   mustacheTest("complex", "nested case class", Map(
     "it" -> Complex("Colors", List(

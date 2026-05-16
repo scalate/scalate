@@ -140,7 +140,7 @@ class ConsoleHelper(
    * Returns the current template names used in the current context
    */
   def templates: List[String] = attributes.get("scalateTemplates") match {
-    case Some(list: List[_]) =>
+    case Some(list: List[?]) =>
       list.map(_.asInstanceOf[String]).distinct.sortWith(_ < _)
     case _ => Nil
   }
@@ -149,7 +149,7 @@ class ConsoleHelper(
    * Returns the current layouts used in the current context
    */
   def layouts: List[String] = attributes.get("scalateLayouts") match {
-    case Some(list: List[_]) =>
+    case Some(list: List[?]) =>
       list.map(_.asInstanceOf[String]).distinct.sortWith(_ < _)
     case _ => Nil
   }

@@ -46,5 +46,5 @@ trait Config {
   def getName: String
   def getServletContext: ServletContext
   def getInitParameter(name: String): String
-  def getInitParameterNames: Enumeration[_]
+  def getInitParameterNames: Enumeration[?]
 }

@@ -135,7 +135,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       }
     }
 
-    protected def wrapInParens(code: Text): List[_] = if (canWrapInParens(code)) { List("( ", code, " );") } else { List(code) }
+    protected def wrapInParens(code: Text): List[?] = if (canWrapInParens(code)) { List("( ", code, " );") } else { List(code) }
 
     /**
      * Returns true if the code expression can be safely wrapped in parens
@@ -176,7 +176,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       endStack.push(f)
       clauseOpen = true
     }
-    def expect(f: PageFragment, expectedType: Class[_], name: String, closeName: String, closes: Boolean): Unit = if (endStack.isEmpty) {
+    def expect(f: PageFragment, expectedType: Class[?], name: String, closeName: String, closes: Boolean): Unit = if (endStack.isEmpty) {
       throw new InvalidSyntaxException("Missing " + name, f.pos)
     } else {
       if (closes) {

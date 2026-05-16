@@ -28,7 +28,7 @@ object SourceCodeHelper {
    * Gives you the name of the given class as string that
    * can be used in Scala source code.
    */
-  def name(clazz: Class[_]): String = {
+  def name(clazz: Class[?]): String = {
     (split_name(clazz).mkString(".") match {
       case "byte" => "Byte"
       case "char" => "Char"
@@ -52,17 +52,17 @@ object SourceCodeHelper {
     })
   }
 
-  def type_parms(clazz: Class[_], prefix: String = "[", suffix: String = "]"): String = {
+  def type_parms(clazz: Class[?], prefix: String = "[", suffix: String = "]"): String = {
     if (clazz.getTypeParameters.length > 0) {
       val types = clazz.getTypeParameters.toList.map { x =>
-        name(x.getBounds.apply(0).asInstanceOf[Class[_]])
+        name(x.getBounds.apply(0).asInstanceOf[Class[?]])
       }
       prefix + types.mkString(",") + suffix
     } else {
       ""
     }
   }
-  def split_name(clazz: Class[_]): List[String] = {
+  def split_name(clazz: Class[?]): List[String] = {
     if (clazz.getEnclosingClass != null) {
       split_name(clazz.getEnclosingClass) ::: clazz.getSimpleName :: Nil
     } else if (clazz.getPackage != null) {

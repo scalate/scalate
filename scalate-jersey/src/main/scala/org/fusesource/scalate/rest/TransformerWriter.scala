@@ -60,7 +60,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
   protected def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
   def isWriteable(
-    aClass: Class[_],
+    aClass: Class[?],
     aType: Type,
     annotations: Array[Annotation],
     mediaType: MediaType) = {
@@ -69,7 +69,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
   def writeTo(
     transformer: Transformer,
-    aClass: Class[_],
+    aClass: Class[?],
     aType: Type,
     annotations: Array[Annotation],
     mediaType: MediaType,

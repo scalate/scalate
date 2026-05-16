@@ -33,7 +33,7 @@ object Introspector {
    * The global caching strategy for introspection which by default uses a weak hash map
    * to avoid keeping around cached data for classes which are garbage collected
    */
-  private[this] val cache = WeakHashMap.empty[Class[_], Introspector[_]]
+  private[this] val cache = WeakHashMap.empty[Class[?], Introspector[?]]
 
   /**
    * Returns the Introspector for the given type using the current cache if it is defined
@@ -45,14 +45,14 @@ object Introspector {
   /**
    * Does thread-safe access and modification of the cache map using read and write locks
    */
-  private def safeGetOrElseUpdate[T](key: Class[T]): Introspector[_] = {
-    def get(): Option[Introspector[_]] = {
+  private def safeGetOrElseUpdate[T](key: Class[T]): Introspector[?] = {
+    def get(): Option[Introspector[?]] = {
       rlock.lock
       try {
         cache.get(key).filterNot(_ == null)
       } finally rlock.unlock
     }
-    def update(): Introspector[_] = {
+    def update(): Introspector[?] = {
       wlock.lock
       try {
         get() getOrElse {
@@ -69,7 +69,7 @@ object Introspector {
   /**
    * Creates a new introspector
    */
-  def createIntrospector(aType: Class[_]): Introspector[_] = {
+  def createIntrospector(aType: Class[?]): Introspector[?] = {
     if (classOf[Product].isAssignableFrom(aType)) {
       new ProductIntrospector(aType)
     } else {
@@ -161,14 +161,14 @@ trait Introspector[T] {
     answer
   }
 
-  protected def isSingleParameterOfType(method: Method, paramType: Class[_]): Boolean = {
+  protected def isSingleParameterOfType(method: Method, paramType: Class[?]): Boolean = {
     val types = method.getParameterTypes
     types.size == 1 && paramType.isAssignableFrom(types(0))
   }
 
   protected def decapitalize(name: String): String = BeanInt.decapitalize(name)
 
-  protected def isValidReturnType(clazz: Class[_]): Boolean = clazz != classOf[Void] && clazz != Void.TYPE
+  protected def isValidReturnType(clazz: Class[?]): Boolean = clazz != classOf[Void] && clazz != Void.TYPE
 }
 
 trait Expression[T] {
@@ -178,7 +178,7 @@ trait Expression[T] {
 trait Property[T] extends Expression[T] {
   def name: String
 
-  def propertyType: Class[_]
+  def propertyType: Class[?]
 
   def label: String
 

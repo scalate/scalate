@@ -35,7 +35,7 @@ object ClassLoaders {
   /**
    * Tries to load the named class on the given class loaders
    */
-  def findClass(className: String, classLoaders: Iterable[ClassLoader] = defaultClassLoaders): Option[Class[_]] = {
+  def findClass(className: String, classLoaders: Iterable[ClassLoader] = defaultClassLoaders): Option[Class[?]] = {
     def tryLoadClass(classLoader: ClassLoader) = {
       try {
         Some(classLoader.loadClass(className))

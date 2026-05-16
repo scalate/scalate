@@ -178,7 +178,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
     def generateBinding(binding: Binding): Unit = {
       def generateImplicit = if (binding.isImplicit) "implicit " else ""
 
-      def attributeMethodCall: List[_] = if (binding.defaultValue.isEmpty) {
+      def attributeMethodCall: List[?] = if (binding.defaultValue.isEmpty) {
         "attribute(" :: asString(binding.name) :: ")" :: Nil
       } else {
         "attributeOrElse(" :: asString(binding.name) :: ", " :: binding.defaultValuePositionalOrText :: ")" :: Nil

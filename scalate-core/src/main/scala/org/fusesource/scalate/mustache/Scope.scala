@@ -174,10 +174,10 @@ trait Scope {
 
           // lets treat empty maps as being empty collections
           // due to bug in JSON parser returning Map() for JSON expression []
-          case s: collection.Map[_, _] => if (!s.isEmpty) childScope(name, s)(block)
+          case s: collection.Map[?, ?] => if (!s.isEmpty) childScope(name, s)(block)
 
           // maps and so forth, treat as child scopes
-          case a: PartialFunction[_, _] => childScope(name, a)(block)
+          case a: PartialFunction[?, ?] => childScope(name, a)(block)
 
           // any other iterable treat as a collection
           case s: Iterable[Any] => foreachScope(name, s.toIterable)(block)
@@ -213,14 +213,14 @@ trait Scope {
           case FunctionResult(r) =>
 
           case s: NodeSeq => if (s.isEmpty) block(this)
-          case s: Seq[_] => if (s.isEmpty) block(this)
+          case s: Seq[?] => if (s.isEmpty) block(this)
           case Some(a) =>
           case None => block(this)
 
-          case s: collection.Map[_, _] => if (s.isEmpty) block(this)
+          case s: collection.Map[?, ?] => if (s.isEmpty) block(this)
 
           // maps and so forth, treat as child scopes
-          case a: PartialFunction[_, _] =>
+          case a: PartialFunction[?, ?] =>
 
           // any other iterable treat as a collection
           case s: Iterable[Any] => if (s.isEmpty) block(this)
@@ -260,11 +260,11 @@ trait Scope {
   def createScope(name: String, value: Any): Scope = {
     value match {
       case n: NodeSeq => new NodeScope(this, name, n)
-      case v: scala.collection.Map[_, _] =>
+      case v: scala.collection.Map[?, ?] =>
         new MapScope(
           this,
           name,
-          v.asInstanceOf[scala.collection.Map[String, _]])
+          v.asInstanceOf[scala.collection.Map[String, ?]])
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)
@@ -278,21 +278,21 @@ trait Scope {
   def toTraversable(v: Any, block: Scope => Unit): Any = toIterable(v, block)
 
   def toIterable(v: Any, block: Scope => Unit): Any = v match {
-    case t: Seq[_] => t
-    case t: Array[_] => t.toSeq
-    case t: ju.Map[_, _] => t.asScala
+    case t: Seq[?] => t
+    case t: Array[?] => t.toSeq
+    case t: ju.Map[?, ?] => t.asScala
 
-    case f: Function0[_] => toIterable(f(), block)
-    case f: Function1[_, _] =>
+    case f: Function0[?] => toIterable(f(), block)
+    case f: Function1[?, ?] =>
       if (isParam1(f, classOf[Object])) {
         // Java lambda support since 1.8
         try {
-          val f2 = f.asInstanceOf[Function1[Scope, _]]
+          val f2 = f.asInstanceOf[Function1[Scope, ?]]
           toIterable(f2(this), block)
         } catch {
           case e: Exception =>
             try {
-              val f2 = f.asInstanceOf[Function1[String, _]]
+              val f2 = f.asInstanceOf[Function1[String, ?]]
               FunctionResult(f2(capture(block)))
             } catch {
               case e: Exception =>
@@ -303,19 +303,19 @@ trait Scope {
         f
       }
 
-    case c: ju.Collection[_] => c.asScala
-    case i: ju.Iterator[_] => i.asScala
-    case i: jl.Iterable[_] => i.asScala
+    case c: ju.Collection[?] => c.asScala
+    case i: ju.Iterator[?] => i.asScala
+    case i: jl.Iterable[?] => i.asScala
 
     case _ => v
   }
 
   def format(v: Any): Any = v match {
-    case f: Function0[_] => format(f())
-    case f: Function1[_, _] if isParam1(f, classOf[Scope]) => format(f.asInstanceOf[Function1[Scope, _]](this))
-    case f: Function1[_, _] =>
+    case f: Function0[?] => format(f())
+    case f: Function1[?, ?] if isParam1(f, classOf[Scope]) => format(f.asInstanceOf[Function1[Scope, ?]](this))
+    case f: Function1[?, ?] =>
       try {
-        format(f.asInstanceOf[Function1[Object, _]](this))
+        format(f.asInstanceOf[Function1[Object, ?]](this))
       } catch {
         case e: ClassCastException =>
           v
@@ -331,7 +331,7 @@ trait Scope {
     context.capture(body())
   }
 
-  def isParam1[T](f: Function1[_, _], clazz: Class[T]): Boolean = {
+  def isParam1[T](f: Function1[?, ?], clazz: Class[T]): Boolean = {
     try {
       f.getClass.getMethod("apply", clazz)
       true

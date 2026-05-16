@@ -35,11 +35,11 @@ import scala.xml.NodeSeq
 @Provider
 class NodeWriter extends MessageBodyWriter[NodeSeq] {
 
-  def isWriteable(aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
+  def isWriteable(aClass: Class[?], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     classOf[NodeSeq].isAssignableFrom(aClass)
   }
 
-  def writeTo(nodes: NodeSeq, aClass: Class[_], aType: Type, annotations: Array[Annotation], mediaType: MediaType, stringObjectMultivaluedMap: MultivaluedMap[String, Object], outputStream: OutputStream): Unit = {
+  def writeTo(nodes: NodeSeq, aClass: Class[?], aType: Type, annotations: Array[Annotation], mediaType: MediaType, stringObjectMultivaluedMap: MultivaluedMap[String, Object], outputStream: OutputStream): Unit = {
     val answer = nodes.toString();
     outputStream.write(answer.getBytes());
   }
