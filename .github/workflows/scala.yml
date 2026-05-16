@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 25]
+        java: [17, 25]
         scala: ['2_12', '2_13', '3']
 
     steps:
@@ -30,13 +30,13 @@ jobs:
       run: |
         case ${{ matrix.scala }} in
           "2_12")
-            sbt -v '++ 2.12.x' scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
+            sbt -v --server '++ 2.12.x' scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
             ;;
           "2_13")
-            sbt -v '++ 2.13.x' scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
+            sbt -v --server '++ 2.13.x' scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
             ;;
           "3")
-            sbt -v '++ 3.x'    scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
+            sbt -v --server '++ 3.x'    scalafmtSbtCheck scalafmtCheckAll Test/compile test unidoc publishLocal
             ;;
           *)
             echo "unknown scala version"
