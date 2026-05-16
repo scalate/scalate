@@ -20,8 +20,6 @@ package org.fusesource.scalate.util
 import java.io.File
 import java.net.{ URI, URLClassLoader }
 import java.util.jar.{ Attributes, JarFile }
-import scala.annotation.tailrec
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.language.reflectiveCalls
 
@@ -142,8 +140,14 @@ private object ClassPathBuilder extends Log {
         cp.split(File.pathSeparator).toIndexedSeq
 
       case _ =>
-        warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getCanonicalName)
-        Nil
+        if (classLoader eq ClassLoader.getSystemClassLoader) {
+          javaClassPath
+        } else if (classLoader.getClass.getName == "jdk.internal.loader.ClassLoaders$PlatformClassLoader") {
+          Nil
+        } else {
+          warn("Cannot introspect on class loader: %s of type %s", classLoader, classLoader.getClass.getName)
+          Nil
+        }
     }
 
     Option(classLoader).flatMap(x => Option(x.getParent)).fold(paths) {

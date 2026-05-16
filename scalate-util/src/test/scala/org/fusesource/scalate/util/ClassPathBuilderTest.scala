@@ -122,6 +122,12 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     assert(builder.classPath.contains("fake-jar"))
   }
 
+  test("Add path from JDK 9+ system classloader") {
+    val builder = new ClassPathBuilder
+    builder.addPathFrom(ClassLoader.getSystemClassLoader)
+    assert(builder.classPath.nonEmpty || builder.classPath === "")
+  }
+
   test("Contains the classpaths of all class loaders including parents") {
     assume(!System.getProperty("os.name").toLowerCase.contains("windows"))
 
