@@ -65,6 +65,19 @@ object ScalateBuild {
   private def compileOpts = Seq(
     scalaVersion := (LocalRootProject / scalaVersion).value,
     crossScalaVersions := (LocalRootProject / crossScalaVersions).value,
+    scalacOptions ++= {
+      scalaBinaryVersion.value match {
+        case "2.12" =>
+          Seq("-Xsource:3")
+        case "2.13" =>
+          Seq(
+            "-Xsource:3-cross",
+            "-Wconf:cat=scala3-migration:info",
+          )
+        case "3" =>
+          Nil
+      }
+    },
     Compile / compile / scalacOptions ++= Seq(Opts.compile.deprecation, Opts.compile.unchecked, "-feature", "-Xlint"),
     Test / compile / scalacOptions ++= Seq(Opts.compile.deprecation)
   )
