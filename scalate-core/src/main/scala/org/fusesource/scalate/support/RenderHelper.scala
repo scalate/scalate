@@ -137,7 +137,7 @@ object RenderHelper {
       case x: Node =>
         context.value(value)
 
-      case x: Traversable[Any] =>
+      case x: Iterable[Any] =>
         x.map( smart_sanitize(context, _) ).mkString("")
 
       case _ =>

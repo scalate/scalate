@@ -244,7 +244,7 @@ trait RenderContext {
 
       case n: Node => n.toString
 
-      case x: Traversable[Any] =>
+      case x: Iterable[Any] =>
         x.map(value(_, shouldSanitize)).mkString("")
 
       // TODO for any should we use the renderView?
