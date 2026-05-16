@@ -48,7 +48,7 @@ object ScalateBuild {
     (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
     (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
       case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
-        file -> url(s"http://www.scala-lang.org/api/${scalaVersion.value}/")
+        file -> url(s"https://www.scala-lang.org/api/${scalaVersion.value}/")
     }.toMap,
     ScalaUnidoc / unidoc / unidocProjectFilter :=
       inAnyProject -- inProjects(filter *))
