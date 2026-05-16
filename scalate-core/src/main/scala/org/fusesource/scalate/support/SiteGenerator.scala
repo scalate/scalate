@@ -29,8 +29,6 @@ import scala.jdk.CollectionConverters._
 object SiteGenerator extends Log
 import org.fusesource.scalate.support.SiteGenerator._
 
-import scala.language.reflectiveCalls
-
 /**
  * This class generates static HTML files for your website using the Scalate templates, filters and wiki markups
  * you are using.

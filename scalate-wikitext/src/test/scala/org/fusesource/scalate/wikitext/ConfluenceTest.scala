@@ -17,8 +17,6 @@
  */
 package org.fusesource.scalate.wikitext
 
-import java.io.File
-
 class ConfluenceTest extends AbstractConfluenceTest {
 
   test("parse confluence wiki") {

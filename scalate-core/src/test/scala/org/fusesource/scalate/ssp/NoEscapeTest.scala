@@ -18,8 +18,6 @@
 package org.fusesource.scalate.ssp
 
 import _root_.org.fusesource.scalate._
-import _root_.org.fusesource.scalate.FunSuiteSupport
-import java.io.File
 
 /**
  * @version $Revision : 1.1 $

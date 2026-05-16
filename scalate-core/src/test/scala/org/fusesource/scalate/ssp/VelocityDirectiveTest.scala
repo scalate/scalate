@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate.{ CompilerException, TemplateTestSupport }
+import org.fusesource.scalate.TemplateTestSupport
 
 /**
  * @version $Revision : 1.1 $

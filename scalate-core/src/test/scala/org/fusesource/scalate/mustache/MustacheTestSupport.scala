@@ -18,7 +18,7 @@
 package org.fusesource.scalate.mustache
 
 import java.io.File
-import org.fusesource.scalate.{ TemplateEngine, TemplateSource, TemplateTestSupport }
+import org.fusesource.scalate.{ TemplateEngine, TemplateTestSupport }
 import org.fusesource.scalate.util.IOUtil
 import collection.immutable.Map
 

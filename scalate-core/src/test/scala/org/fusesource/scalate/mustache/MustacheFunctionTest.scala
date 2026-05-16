@@ -19,7 +19,6 @@ package org.fusesource.scalate.mustache
  */
 
 import org.fusesource.scalate.TemplateTestSupport
-import java.{ util => ju }
 
 class MustacheFunctionTest extends TemplateTestSupport {
 
