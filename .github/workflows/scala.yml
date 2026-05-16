@@ -28,13 +28,13 @@ jobs:
       run: |
         case ${{ matrix.scala }} in
           "2_12")
-            sbt -v SetScala212 test unidoc
+            sbt -v '++ 2.12.x' test unidoc
             ;;
           "2_13")
-            sbt -v SetScala213 test unidoc
+            sbt -v '++ 2.13.x' test unidoc
             ;;
           "3")
-            sbt -v SetScala3 test unidoc
+            sbt -v '++ 3.x' test unidoc
             ;;
           *)
             echo "unknown scala version"

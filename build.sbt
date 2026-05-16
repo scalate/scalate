@@ -12,10 +12,6 @@ def Scala212 = "2.12.21"
 def Scala213 = "2.13.18"
 def Scala3 = "3.3.7"
 
-addCommandAlias("SetScala212", s"++ ${Scala212}!")
-addCommandAlias("SetScala213", s"++ ${Scala213}!")
-addCommandAlias("SetScala3", s"++ ${Scala3}!")
-
 name := "scalate"
 organization := "org.scalatra.scalate"
 version := "1.10.1"
