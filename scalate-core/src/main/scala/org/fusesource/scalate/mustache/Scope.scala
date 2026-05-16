@@ -180,7 +180,7 @@ trait Scope {
           case a: PartialFunction[_, _] => childScope(name, a)(block)
 
           // any other iterable treat as a collection
-          case s: Iterable[Any] => foreachScope(name, s.toIterable)(block)
+          case s: Iterable[Any] => foreachScope(name, s.toSeq)(block)
 
           case true => block(this)
           case false =>
