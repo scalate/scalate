@@ -1,7 +1,6 @@
 import Dependencies._
 import ScalateBuild._
 import MimaSettings.mimaSettings
-import com.typesafe.tools.mima.core._
 
 // -----------------------------------------------------------------------------------
 // README:

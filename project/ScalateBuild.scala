@@ -6,7 +6,6 @@ import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
 import sbtbuildinfo.{BuildInfoKeys, BuildInfoPlugin}
 import sbtunidoc.BaseUnidocPlugin.autoImport._
 import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
-import Dependencies._
 
 /** Build support settings and functions. */
 object ScalateBuild {
