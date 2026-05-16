@@ -1,11 +1,6 @@
 import Dependencies._
 import ScalateBuild._
 
-// -----------------------------------------------------------------------------------
-// README:
-// Scalate project guarantees bin-compatibities for only core, util
-// -----------------------------------------------------------------------------------
-
 def Scala212 = "2.12.21"
 def Scala213 = "2.13.18"
 def Scala3 = "3.3.7"
