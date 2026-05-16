@@ -2,7 +2,7 @@
 ===============================
 
 [![build](https://github.com/scalate/scalate/actions/workflows/scala.yml/badge.svg?event=push)](https://github.com/scalate/scalate/actions/workflows/scala.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/org.scalatra.scalate/scalate-core_2.12.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.scalatra.scalate%22%20a%3A%22scalate-core_2.12%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.scalate/scalate-core_3.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.scalate/scalate-core_3)
 
 Scalate is a [Scala](http://www.scala-lang.org) based template engine which supports HAML, Mustache and JSP, Erb and Velocity style syntaxes.
 
