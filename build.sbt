@@ -68,7 +68,6 @@ lazy val scalateCore = scalateProject("core").scalateSettings.published
 lazy val scalateTest = scalateProject("test").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
-    libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always",
     libraryDependencies ++= Seq(
       jettyServer,
       jettyWebapp,
