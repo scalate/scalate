@@ -58,7 +58,6 @@ lazy val scalateCore = scalateProject("core")
   .published
   .settings(
     mimaSettings,
-    resolvers += "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging",
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
       logbackClassic % "runtime,optional",
