@@ -19,7 +19,7 @@ package org.fusesource.scalate.util
 
 import scala.io.Source
 import java.io._
-import java.net.{ URISyntaxException, URL }
+import java.net.{ URISyntaxException, URI, URL }
 
 /**
  * Represents a string, file or URI based resource
@@ -263,7 +263,7 @@ object Resource {
   /**
    * Creates a [[org.fusesource.scalate.support.Resource]] from a URL
    */
-  def fromURL(url: String): URLResource = fromURL(new URL(url))
+  def fromURL(url: String): URLResource = fromURL(new URI(url).toURL)
 
   /**
    * Creates a [[org.fusesource.scalate.support.Resource]] from the [[scala.io.Source]] and the given URI.
