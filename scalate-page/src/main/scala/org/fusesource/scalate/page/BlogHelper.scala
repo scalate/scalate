@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package page
 
-import org.fusesource.scalate.util.IOUtil._
+import org.fusesource.scalate.util.IOUtil.*
 import java.io.File
 import util.Log
 
@@ -32,7 +32,8 @@ object BlogHelper {
     val context = RenderContext()
 
     val base = context.requestUri.replaceFirst("""/?[^/]+$""", "")
-    val dir = context.engine.resourceLoader.resource(base + "/index.page")
+    val dir = context.engine.resourceLoader
+      .resource(base + "/index.page")
       .flatMap(_.toFile)
       .getOrElse(throw new Exception("index page not found."))
       .getParentFile
@@ -40,7 +41,8 @@ object BlogHelper {
     log.info("Using dir: " + dir + " at request path: " + base)
 
     val index = new File(dir, "index.page")
-    dir.descendants.filter(f => f != index && !f.isDirectory && f.name.endsWith(".page"))
+    dir.descendants
+      .filter(f => f != index && !f.isDirectory && f.name.endsWith(".page"))
       .map { file =>
         val page = PageFilter.parse(context, file)
         page.link = file.relativeUri(dir).stripSuffix(".page") + ".html"

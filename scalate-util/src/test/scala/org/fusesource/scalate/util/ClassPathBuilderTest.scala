@@ -18,12 +18,12 @@
 package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-
 import java.io.File
-import java.net.{ URI, URLClassLoader }
+import java.net.URI
+import java.net.URLClassLoader
 
 class ClassPathBuilderTest extends FunSuiteSupport {
-  import ClassPathBuilderTest._
+  import ClassPathBuilderTest.*
 
   test("Construct an empty class path") {
     val builder = new ClassPathBuilder
@@ -32,7 +32,8 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 
   test("All methods accept null") {
     val builder = new ClassPathBuilder
-    builder.addClassesDir(null)
+    builder
+      .addClassesDir(null)
       .addLibDir(null)
       .addJar(null)
       .addPathFrom(null: Class[?])
@@ -87,7 +88,8 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 
     assertFiles(
       builder.classPath.split(File.pathSeparator).toList,
-      parentClassPathBuilder.classPath.split(File.pathSeparator).filter(_.nonEmpty).+:("/path/to/file.jar").toList)
+      parentClassPathBuilder.classPath.split(File.pathSeparator).filter(_.nonEmpty).+:("/path/to/file.jar").toList
+    )
   }
 
   test("Add path from AntLikeClassLoader") {
@@ -131,9 +133,7 @@ class ClassPathBuilderTest extends FunSuiteSupport {
 
     builder.addPathFromContextClassLoader()
 
-    val expectFiles = Seq(
-      ValidChildClassLoader.getClasspath,
-      ValidAntLikeClassLoader.getClasspath)
+    val expectFiles = Seq(ValidChildClassLoader.getClasspath, ValidAntLikeClassLoader.getClasspath)
     builder.classPath.split(File.pathSeparator).foreach { path =>
       assert(expectFiles.contains(new File(path).getCanonicalPath))
     }

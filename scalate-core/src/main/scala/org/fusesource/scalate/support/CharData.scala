@@ -13,8 +13,8 @@ object CharData {
     case '\\' => '\\'
   }
 
-  val zeroDigit: PartialFunction[Char, Char] = {
-    case '0' => '0'
+  val zeroDigit: PartialFunction[Char, Char] = { case '0' =>
+    '0'
   }
   val isNonZeroDigit: PartialFunction[Char, Char] = {
     case '1' => '1'

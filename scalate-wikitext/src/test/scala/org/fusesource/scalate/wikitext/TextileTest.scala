@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.wikitext
 
-import org.fusesource.scalate._
+import org.fusesource.scalate.*
 import org.fusesource.scalate.test.FunSuiteSupport
 
 class TextileTest extends FunSuiteSupport {
@@ -48,7 +48,8 @@ Hello
 * two
 """,
 
-      """<h1 id="Title">Title</h1><p>Hello</p><ul><li>one</li><li>two</li></ul>""")
+      """<h1 id="Title">Title</h1><p>Hello</p><ul><li>one</li><li>two</li></ul>"""
+    )
   }
 
 }

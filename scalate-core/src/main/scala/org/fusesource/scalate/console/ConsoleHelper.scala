@@ -19,22 +19,22 @@ package org.fusesource.scalate.console
 
 import _root_.java.util.regex.Pattern
 import java.io.File
-
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.util.{ Log, SourceMap, SourceMapInstaller }
-
-import scala.jdk.CollectionConverters._
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.SourceMap
+import org.fusesource.scalate.util.SourceMapInstaller
+import scala.jdk.CollectionConverters.*
 import scala.collection.immutable.SortedMap
-import scala.collection.mutable.{ ArrayBuffer, ListBuffer }
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.ListBuffer
 import scala.io.Source
-import scala.util.parsing.input.{ OffsetPosition, Position }
+import scala.util.parsing.input.OffsetPosition
+import scala.util.parsing.input.Position
 import scala.xml.NodeSeq
 
-case class SourceLine(
-  line: Int,
-  source: String) {
+case class SourceLine(line: Int, source: String) {
 
   def style(errorLine: Int): String = if (line == errorLine) "line error" else "line"
 
@@ -65,9 +65,8 @@ object ConsoleHelper extends Log
  *
  * @version $Revision : 1.1 $
  */
-class ConsoleHelper(
-  context: RenderContext) extends ConsoleSnippets {
-  import context._
+class ConsoleHelper(context: RenderContext) extends ConsoleSnippets {
+  import context.*
 
   val consoleParameter = "_scalate"
 
@@ -99,7 +98,10 @@ class ConsoleHelper(
       val prefixes = List("src/main/scala/", "src/main/java/")
       val postfixes = List(".scala", ".java")
 
-      val names = for (prefix <- prefixes; postfix <- postfixes) yield new File(prefix + fileName + postfix)
+      val names = for {
+        prefix <- prefixes
+        postfix <- postfixes
+      } yield new File(prefix + fileName + postfix)
       names.find(_.exists)
 
     case _ => None
@@ -157,17 +159,20 @@ class ConsoleHelper(
   /**
    * Returns true if the option is enabled
    */
-  def optionEnabled(name: String): Boolean = context.asInstanceOf[ServletRenderContext].parameterValues(consoleParameter).contains(name)
+  def optionEnabled(name: String): Boolean =
+    context.asInstanceOf[ServletRenderContext].parameterValues(consoleParameter).contains(name)
 
   /**
    * Link to the current page with the option enabled
    */
-  def enableLink(name: String): String = context.asInstanceOf[ServletRenderContext].currentUriPlus(consoleParameter + "=" + name)
+  def enableLink(name: String): String =
+    context.asInstanceOf[ServletRenderContext].currentUriPlus(consoleParameter + "=" + name)
 
   /**
    * Link to the current page with the option disabled
    */
-  def disableLink(name: String): String = context.asInstanceOf[ServletRenderContext] currentUriMinus (consoleParameter + "=" + name)
+  def disableLink(name: String): String =
+    context.asInstanceOf[ServletRenderContext] currentUriMinus (consoleParameter + "=" + name)
 
   /**
    * Retrieves a chunk of lines either side of the given error line
@@ -234,11 +239,11 @@ class ConsoleHelper(
   def systemProperties: SortedMap[String, String] = {
     // TODO is there a better way?
     val m: Map[String, String] = System.getProperties.asScala.toMap
-    SortedMap(m.iterator.toSeq: _*)
+    SortedMap(m.iterator.toSeq*)
   }
 
   // Error Handling helper methods
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
   def exception = attributes("javax.servlet.error.exception")
 
   def errorMessage = attributeOrElse("javax.servlet.error.message", "")
@@ -263,7 +268,7 @@ class ConsoleHelper(
           case None =>
           case Some((file, line)) =>
             rc = editLink(file, Some(line), Some(1)) {
-              RenderContext() << <pre class="stacktrace">at ({ file }:{ line })</pre>
+              RenderContext() << <pre class="stacktrace">at ({file}:{line})</pre>
             }
         }
       } catch {
@@ -274,7 +279,9 @@ class ConsoleHelper(
     }
 
     if (rc == null)
-      <pre class="stacktrace">at { stack.getClassName }.{ stack.getMethodName }({ stack.getFileName }:{ stack.getLineNumber })</pre>
+      <pre class="stacktrace">at {stack.getClassName}.{stack.getMethodName}({stack.getFileName}:{
+        stack.getLineNumber
+      })</pre>
     else
       rc
   }

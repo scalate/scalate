@@ -20,7 +20,7 @@ package wikitext
 
 import util.Log
 
-object AttributesTag extends Log; import AttributesTag._
+object AttributesTag extends Log;
 
 /**
  * Allows Scalate attributes to be defined inside a confluence template.
@@ -28,6 +28,7 @@ object AttributesTag extends Log; import AttributesTag._
  * For example  {attributes:layout=foo.scaml } to change the layout
  */
 class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
+  import AttributesTag.debug
 
   def setOption(key: String, value: String) = {
     debug("{attributes} setting %s to %s", key, value)
@@ -35,7 +36,5 @@ class AttributesTag extends AbstractConfluenceTagSupport("attributes") {
     context.attributes(key) = value
   }
 
-  def doTag() = {
-  }
+  def doTag() = {}
 }
-

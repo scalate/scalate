@@ -17,11 +17,15 @@
  */
 package org.fusesource.scalate.introspector
 
-import java.beans.{ PropertyDescriptor, Introspector => BeanInt }
+import java.beans.PropertyDescriptor
+import java.beans.Introspector as BeanInt
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import org.fusesource.scalate.util.ProductReflector
-import collection.mutable.{ HashMap, Map, WeakHashMap }
-import java.lang.reflect.{ Modifier, Method }
+import collection.mutable.HashMap
+import collection.mutable.Map
+import collection.mutable.WeakHashMap
+import java.lang.reflect.Modifier
+import java.lang.reflect.Method
 
 object Introspector {
 
@@ -93,7 +97,7 @@ trait Introspector[T] {
 
   def properties: collection.Seq[Property[T]]
 
-  lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p).toSeq: _*)
+  lazy val propertyMap = Map[String, Property[T]](properties.map(p => p.name -> p).toSeq*)
 
   def property(name: String): Option[Property[T]] = propertyMap.get(name) match {
     case s: Some[Property[T]] => s
@@ -147,7 +151,8 @@ trait Introspector[T] {
       }
     }
 
-    val nonVoidPublicMethods = elementType.getMethods.filter(m => Modifier.isPublic(m.getModifiers) && isValidReturnType(m.getReturnType))
+    val nonVoidPublicMethods =
+      elementType.getMethods.filter(m => Modifier.isPublic(m.getModifiers) && isValidReturnType(m.getReturnType))
 
     // include all methods which have no arguments
     for (m <- nonVoidPublicMethods if m.getParameterTypes.isEmpty) {
@@ -197,7 +202,8 @@ trait Property[T] extends Expression[T] {
 
 class BeanIntrospector[T](val elementType: Class[T]) extends Introspector[T] {
   val beanInfo = BeanInt.getBeanInfo(elementType)
-  val _properties = beanInfo.getPropertyDescriptors.filter(p => p.getReadMethod != null && p.getName != "class").map(createProperty(_))
+  val _properties =
+    beanInfo.getPropertyDescriptors.filter(p => p.getReadMethod != null && p.getName != "class").map(createProperty(_))
 
   def properties = {
     _properties

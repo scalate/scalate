@@ -17,8 +17,11 @@
  */
 package org.fusesource.scalate.servlet
 
-import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse }
-import javax.servlet.{ ServletConfig, ServletContext }
+import javax.servlet.http.HttpServlet
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.ServletConfig
+import javax.servlet.ServletContext
 import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.util.Log
 
@@ -35,7 +38,8 @@ object TemplateEngineServlet extends Log {
     templateEngine: TemplateEngine,
     servletContext: ServletContext,
     request: HttpServletRequest,
-    response: HttpServletResponse): Unit = {
+    response: HttpServletResponse
+  ): Unit = {
     val context = new ServletRenderContext(templateEngine, request, response, servletContext)
 
     if (template == null || template.length == 0 || template == "/") {
@@ -45,7 +49,7 @@ object TemplateEngineServlet extends Log {
         case Some(name) =>
           servletContext.log("asked to resolve uri: " + template + " so delegating to: " + name)
           servletContext.getRequestDispatcher(name).forward(request, response)
-        //context.include(name, true)
+        // context.include(name, true)
 
         case _ =>
           servletContext.log("No template available for: " + template)

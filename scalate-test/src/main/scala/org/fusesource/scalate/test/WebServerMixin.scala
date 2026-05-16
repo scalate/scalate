@@ -17,7 +17,9 @@
  */
 package org.fusesource.scalate.test
 
-import org.scalatest.{ ConfigMap, Suite, BeforeAndAfterAllConfigMap }
+import org.scalatest.ConfigMap
+import org.scalatest.Suite
+import org.scalatest.BeforeAndAfterAllConfigMap
 
 /**
  * A trait which boots up a JettyServer and uses it for all the test cases in this class

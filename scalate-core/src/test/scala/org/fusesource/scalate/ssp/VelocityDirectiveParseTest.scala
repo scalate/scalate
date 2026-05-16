@@ -57,7 +57,7 @@ class VelocityDirectiveParseTest extends ParserTestSupport {
   }
 
   test("if with parens in string or char expression") {
-    //logging = true
+    // logging = true
 
     val lines = assertValid("""some text
 #if (foo.bar(")") == ')')

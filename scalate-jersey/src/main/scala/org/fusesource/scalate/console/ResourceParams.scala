@@ -24,7 +24,7 @@ package org.fusesource.scalate.console
  */
 object ResourceParams {
   def apply(controller: ArchetypeResource): ResourceParams = {
-    import controller._
+    import controller.*
     new ResourceParams(formParam("packageName"), formParam("className"), formParam("resourceUri"))
   }
 }

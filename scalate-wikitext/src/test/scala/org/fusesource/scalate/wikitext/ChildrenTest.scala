@@ -24,14 +24,23 @@ import org.scalatest.ConfigMap
 class ChildrenTest extends TemplateTestSupport {
 
   test("children depth 1") {
-    assertUriOutputContains("foo.conf", """<a href="foo/a.html">""",
+    assertUriOutputContains(
+      "foo.conf",
+      """<a href="foo/a.html">""",
       """<a href="foo/b.html">""",
-      """<a href="foo/user-guide.html">""", "User Guide")
+      """<a href="foo/user-guide.html">""",
+      "User Guide"
+    )
   }
 
   test("children all") {
-    assertUriOutputContains("all.conf", """<a href="foo/a.html">""", """<a href="foo/b.html">""",
-      """<a href="foo/b/b1.html">""", """<a href="foo/b/b2.html">""")
+    assertUriOutputContains(
+      "all.conf",
+      """<a href="foo/a.html">""",
+      """<a href="foo/b.html">""",
+      """<a href="foo/b/b1.html">""",
+      """<a href="foo/b/b2.html">"""
+    )
   }
 
   test("children of b") {

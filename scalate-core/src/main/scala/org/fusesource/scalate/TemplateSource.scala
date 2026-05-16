@@ -18,13 +18,12 @@
 package org.fusesource.scalate
 
 import java.io.File
-import java.net.{ URI, URL }
+import java.net.URI
+import java.net.URL
 import java.util.regex.Pattern
-
-import org.fusesource.scalate.support._
+import org.fusesource.scalate.support.*
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util._
-
+import org.fusesource.scalate.util.*
 import scala.io.Source
 
 /**
@@ -33,7 +32,7 @@ import scala.io.Source
  * @version $Revision : 1.1 $
  */
 trait TemplateSource extends Resource {
-  import TemplateSource.log._
+  import TemplateSource.log.*
 
   var engine: TemplateEngine = _
   private[this] var _packageName: String = ""
@@ -113,7 +112,8 @@ trait TemplateSource extends Resource {
 
     def processClassName(cn: String) = cn.replace('.', '_').replace("-", "$dash")
 
-    def invalidPackageName(name: String): Boolean = isEmpty(name) || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
+    def invalidPackageName(name: String): Boolean =
+      isEmpty(name) || reservedWords.contains(name) || name(0).isDigit || name(0) == '_'
 
     val normalizedURI: String = try {
       new URI(uri).normalize.toString
@@ -138,7 +138,8 @@ trait TemplateSource extends Resource {
       val cn = "$_scalate_$" + processClassName(normalizedURI)
       ("", cn)
     } else {
-      val unsafePackageNameWithWebInf = matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
+      val unsafePackageNameWithWebInf =
+        matcher.group(1).replaceAll("[^A-Za-z0-9_/]", "_").replaceAll("/", ".").replaceFirst("^\\.", "")
 
       // lets remove WEB-INF from the first name, since we should consider stuff in WEB-INF/org/foo as being in package org.foo
       val unsafePackageName = unsafePackageNameWithWebInf.stripPrefix("WEB_INF.")
@@ -157,8 +158,8 @@ trait TemplateSource extends Resource {
     }
   }
 
-  protected val reservedWords = Set[String](
-    "package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var")
+  protected val reservedWords =
+    Set[String]("package", "class", "trait", "if", "else", "while", "def", "extends", "val", "var")
 }
 
 /**

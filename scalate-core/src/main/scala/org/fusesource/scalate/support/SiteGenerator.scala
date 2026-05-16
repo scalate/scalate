@@ -17,17 +17,15 @@
  */
 package org.fusesource.scalate.support
 
-import java.io.{ File, PrintWriter }
-import java.{ util => ju }
-
-import org.fusesource.scalate._
+import java.io.File
+import java.io.PrintWriter
+import java.util as ju
+import org.fusesource.scalate.*
 import org.fusesource.scalate.servlet.ServletTemplateEngine
-import org.fusesource.scalate.util._
-
-import scala.jdk.CollectionConverters._
+import org.fusesource.scalate.util.*
+import scala.jdk.CollectionConverters.*
 
 object SiteGenerator extends Log
-import org.fusesource.scalate.support.SiteGenerator._
 
 /**
  * This class generates static HTML files for your website using the Scalate templates, filters and wiki markups
@@ -36,6 +34,7 @@ import org.fusesource.scalate.support.SiteGenerator._
  * @author <a href="http://macstrac.blogspot.com">James Strachan</a>
  */
 class SiteGenerator {
+  import SiteGenerator.debug
 
   var workingDirectory: File = _
   var webappDirectory: File = _
@@ -103,13 +102,15 @@ class SiteGenerator {
 
               info("    processing " + file + " with uri: " + uri + " => ")
               sourceFile.getParentFile.mkdirs
-              //IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
+              // IOUtil.writeBinaryFile(sourceFile, transformHtml(html, uri, rootDir).getBytes("UTF-8"))
               IOUtil.writeBinaryFile(sourceFile, html.getBytes("UTF-8"))
             } catch {
-              case e: NoValueSetException => info(e.getMessage + ". Ignored template file due to missing attributes: " + file.getCanonicalPath)
+              case e: NoValueSetException =>
+                info(e.getMessage + ". Ignored template file due to missing attributes: " + file.getCanonicalPath)
               case e: VirtualMachineError => throw e
               case e: ThreadDeath => throw e
-              case e: Throwable => throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
+              case e: Throwable =>
+                throw new Exception(e.getMessage + ". When processing file: " + file.getCanonicalPath, e)
             }
           } else {
             // let's copy the file across if its not a template
@@ -138,26 +139,22 @@ class SiteGenerator {
 
 }
 
-class DummyTemplateEngine(
-  rootDirectory: File) extends TemplateEngine(Some(rootDirectory)) {
+class DummyTemplateEngine(rootDirectory: File) extends TemplateEngine(Some(rootDirectory)) {
 
-  override protected def createRenderContext(
-    uri: String,
-    out: PrintWriter) = new DummyRenderContext(uri, this, out)
+  override protected def createRenderContext(uri: String, out: PrintWriter) = new DummyRenderContext(uri, this, out)
 
   private[this] val responseClassName = "_root_." + classOf[DummyResponse].getName
 
   bindings = List(
     Binding("context", "_root_." + classOf[DummyRenderContext].getName, true, isImplicit = true),
-    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()")))
+    Binding("response", responseClassName, defaultValue = Some("new " + responseClassName + "()"))
+  )
 
   ServletTemplateEngine.setLayoutStrategy(this)
 }
 
-class DummyRenderContext(
-  val _requestUri: String,
-  _engine: TemplateEngine,
-  _out: PrintWriter) extends DefaultRenderContext(_requestUri, _engine, _out) {
+class DummyRenderContext(val _requestUri: String, _engine: TemplateEngine, _out: PrintWriter)
+    extends DefaultRenderContext(_requestUri, _engine, _out) {
 
   // for static website stuff we must zap the root dir typically
   override def uri(name: String) = {

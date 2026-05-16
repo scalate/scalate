@@ -17,26 +17,28 @@
  */
 package org.fusesource.scalate
 
-import java.io.{ File, PrintWriter, StringWriter }
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.net.URLClassLoader
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-
-import org.fusesource.scalate.filter._
+import org.fusesource.scalate.filter.*
 import org.fusesource.scalate.jade.JadeCodeGenerator
-import org.fusesource.scalate.layout.{ LayoutStrategy, NullLayoutStrategy }
+import org.fusesource.scalate.layout.LayoutStrategy
+import org.fusesource.scalate.layout.NullLayoutStrategy
 import org.fusesource.scalate.mustache.MustacheCodeGenerator
 import org.fusesource.scalate.scaml.ScamlCodeGenerator
 import org.fusesource.scalate.ssp.SspCodeGenerator
-import org.fusesource.scalate.support._
-import org.fusesource.scalate.util._
-
+import org.fusesource.scalate.support.*
+import org.fusesource.scalate.util.*
 import scala.annotation.tailrec
 import scala.collection.immutable.TreeMap
 import scala.collection.mutable.HashMap
 import scala.language.existentials
 import scala.util.control.Exception
-import scala.util.parsing.input.{ OffsetPosition, Position }
+import scala.util.parsing.input.OffsetPosition
+import scala.util.parsing.input.Position
 import scala.xml.NodeSeq
 
 object TemplateEngine {
@@ -67,13 +69,11 @@ object TemplateEngine {
  */
 class TemplateEngine(
   var sourceDirectories: Iterable[File] = None,
-  var mode: String = System.getProperty("scalate.mode", "production")) {
-  import TemplateEngine.log._
+  var mode: String = System.getProperty("scalate.mode", "production")
+) {
+  import TemplateEngine.log.*
 
-  private case class CacheEntry(
-    template: Template,
-    dependencies: Set[String],
-    timestamp: Long) {
+  private case class CacheEntry(template: Template, dependencies: Set[String], timestamp: Long) {
 
     def isStale() = timestamp != 0 && dependencies.exists {
       resourceLoader.lastModified(_) > timestamp
@@ -114,7 +114,8 @@ class TemplateEngine(
   var importStatements: List[String] = List(
     "import _root_.scala.jdk.CollectionConverters._",
     "import _root_.org.fusesource.scalate.support.TemplateConversions._",
-    "import _root_.org.fusesource.scalate.util.Measurements._")
+    "import _root_.org.fusesource.scalate.util.Measurements._"
+  )
 
   /**
    * Loads resources such as the templates based on URIs
@@ -170,17 +171,25 @@ class TemplateEngine(
   /**
    * The supported template engines and their default extensions
    */
-  var codeGenerators: Map[String, CodeGenerator] = Map("ssp" -> new SspCodeGenerator, "scaml" -> new ScamlCodeGenerator,
-    "mustache" -> new MustacheCodeGenerator, "jade" -> new JadeCodeGenerator)
+  var codeGenerators: Map[String, CodeGenerator] = Map(
+    "ssp" -> new SspCodeGenerator,
+    "scaml" -> new ScamlCodeGenerator,
+    "mustache" -> new MustacheCodeGenerator,
+    "jade" -> new JadeCodeGenerator
+  )
 
   var filters: Map[String, Filter] = Map()
 
-  def filter(name: String) = codeGenerators.get(name).map(gen =>
-    new Filter() {
-      def filter(context: RenderContext, content: String) = {
-        context.capture(compileText(name, content))
+  def filter(name: String) = codeGenerators
+    .get(name)
+    .map(gen =>
+      new Filter() {
+        def filter(context: RenderContext, content: String) = {
+          context.capture(compileText(name, content))
+        }
       }
-    }).orElse(filters.get(name))
+    )
+    .orElse(filters.get(name))
 
   var pipelines: Map[String, List[Filter]] = Map()
 
@@ -188,7 +197,8 @@ class TemplateEngine(
    * Maps file extensions to possible template extensions for custom mappins such as for
    * Map("js" -> Set("coffee"), "css" => Set("sass", "scss"))
    */
-  var extensionToTemplateExtension: collection.mutable.Map[String, collection.mutable.Set[String]] = collection.mutable.Map()
+  var extensionToTemplateExtension: collection.mutable.Map[String, collection.mutable.Set[String]] =
+    collection.mutable.Map()
 
   /**
    * Returns the mutable set of template extensions which are mapped to the given URI extension.
@@ -261,9 +271,10 @@ class TemplateEngine(
   private[this] var _cacheMisses = 0
 
   // Discover bits that can enhance the default template engine configuration. (like filters)
-  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach { addOn =>
-    debug("Installing Scalate add on " + addOn.getClass)
-    addOn(this)
+  ClassFinder.discoverCommands[TemplateEngineAddOn]("META-INF/services/org.fusesource.scalate/addon.index").foreach {
+    addOn =>
+      debug("Installing Scalate add on " + addOn.getClass)
+      addOn(this)
   }
 
   override def toString = getClass.getSimpleName + "(sourceDirectories: " + sourceDirectories + ")"
@@ -412,15 +423,15 @@ class TemplateEngine(
    * is re-compiled if the template file has been updated since
    * it was last compiled.
    */
-  def load(
-    source: TemplateSource,
-    extraBindings: Iterable[Binding] = Nil): Template = {
+  def load(source: TemplateSource, extraBindings: Iterable[Binding] = Nil): Template = {
 
     source.engine = this
     templateCache.synchronized {
 
       // on the first load request, check to see if the INVALIDATE_CACHE JVM option is enabled
-      if (_cacheHits == 0 && _cacheMisses == 0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE")) {
+      if (
+        _cacheHits == 0 && _cacheMisses == 0 && java.lang.Boolean.getBoolean("org.fusesource.scalate.INVALIDATE_CACHE")
+      ) {
         // this deletes generated scala and class files.
         invalidateCachedTemplates()
       }
@@ -551,7 +562,7 @@ class TemplateEngine(
   }
 
   // Layout as text methods
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   /**
    *  Renders the given template URI using the current layoutStrategy
@@ -580,27 +591,17 @@ class TemplateEngine(
   /**
    * Renders the given template URI returning the output
    */
-  def layout(
-    uri: String,
-    attributes: Map[String, Any] = Map(),
-    extraBindings: Iterable[Binding] = Nil): String = {
+  def layout(uri: String, attributes: Map[String, Any] = Map(), extraBindings: Iterable[Binding] = Nil): String = {
     val template = load(uri, extraBindings)
     layout(uri, template, attributes)
   }
 
-  def layout(
-    uri: String,
-    out: PrintWriter,
-    attributes: Map[String, Any]): Unit = {
+  def layout(uri: String, out: PrintWriter, attributes: Map[String, Any]): Unit = {
     val template = load(uri)
     layout(uri, template, out, attributes)
   }
 
-  protected def layout(
-    uri: String,
-    template: Template,
-    out: PrintWriter,
-    attributes: Map[String, Any]): Unit = {
+  protected def layout(uri: String, template: Template, out: PrintWriter, attributes: Map[String, Any]): Unit = {
     val context = createRenderContext(uri, out)
     for ((key, value) <- attributes) {
       context.attributes(key) = value
@@ -611,10 +612,7 @@ class TemplateEngine(
   /**
    * Renders the given template returning the output
    */
-  def layout(
-    uri: String,
-    template: Template,
-    attributes: Map[String, Any]): String = {
+  def layout(uri: String, template: Template, attributes: Map[String, Any]): String = {
     val buffer = new StringWriter()
     val out = new PrintWriter(buffer)
     layout(uri, template, out, attributes)
@@ -629,6 +627,7 @@ class TemplateEngine(
    *  Renders the given template source using the current layoutStrategy
    */
   def layout(source: TemplateSource): String = layout(source, Map[String, Any]())
+
   /**
    *  Renders the given template source using the current layoutStrategy
    */
@@ -636,13 +635,11 @@ class TemplateEngine(
     val template = load(source)
     layout(source.uri, template, attributes)
   }
+
   /**
    *  Renders the given template source using the current layoutStrategy
    */
-  def layout(
-    source: TemplateSource,
-    context: RenderContext,
-    extraBindings: Iterable[Binding]): Unit = {
+  def layout(source: TemplateSource, context: RenderContext, extraBindings: Iterable[Binding]): Unit = {
     val template = load(source, extraBindings)
     layout(template, context)
   }
@@ -656,7 +653,7 @@ class TemplateEngine(
   }
 
   // Layout as markup methods
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   /**
    * Renders the given template URI returning the output
@@ -664,7 +661,8 @@ class TemplateEngine(
   def layoutAsNodes(
     uri: String,
     attributes: Map[String, Any] = Map(),
-    extraBindings: Iterable[Binding] = Nil): NodeSeq = {
+    extraBindings: Iterable[Binding] = Nil
+  ): NodeSeq = {
     val template = load(uri, extraBindings)
     layoutAsNodes(uri, template, attributes)
   }
@@ -672,10 +670,7 @@ class TemplateEngine(
   /**
    * Renders the given template returning the output
    */
-  def layoutAsNodes(
-    uri: String,
-    template: Template,
-    attributes: Map[String, Any]): NodeSeq = {
+  def layoutAsNodes(uri: String, template: Template, attributes: Map[String, Any]): NodeSeq = {
     // TODO there is a much better way of doing this by adding native NodeSeq
     // support into the generated templates - especially for Scaml!
     // for now lets do it a crappy way...
@@ -686,7 +681,7 @@ class TemplateEngine(
     for ((key, value) <- attributes) {
       context.attributes(key) = value
     }
-    //layout(template, context)
+    // layout(template, context)
     context.captureNodeSeq(template)
   }
 
@@ -697,11 +692,10 @@ class TemplateEngine(
    * Factory method used by the layout helper methods that should be overloaded by template engine implementations
    * if they wish to customize the render context implementation
    */
-  protected def createRenderContext(uri: String, out: PrintWriter): RenderContext = new DefaultRenderContext(uri, this, out)
+  protected def createRenderContext(uri: String, out: PrintWriter): RenderContext =
+    new DefaultRenderContext(uri, this, out)
 
-  private def loadPrecompiledEntry(
-    source: TemplateSource,
-    extraBindings: Iterable[Binding]) = {
+  private def loadPrecompiledEntry(source: TemplateSource, extraBindings: Iterable[Binding]) = {
     source.engine = this
     val className = source.className
     val template = loadCompiledTemplate(className, allowCaching)
@@ -724,9 +718,7 @@ class TemplateEngine(
     }
   }
 
-  private def compileAndLoadEntry(
-    source: TemplateSource,
-    extraBindings: Iterable[Binding]) = {
+  private def compileAndLoadEntry(source: TemplateSource, extraBindings: Iterable[Binding]) = {
     val (template, dependencies) = compileAndLoad(source, extraBindings, 0)
     CacheEntry(template, dependencies, System.currentTimeMillis)
   }
@@ -761,7 +753,8 @@ class TemplateEngine(
   private def compileAndLoad(
     source: TemplateSource,
     extraBindings: Iterable[Binding],
-    attempt: Int): (Template, Set[String]) = {
+    attempt: Int
+  ): (Template, Set[String]) = {
     source.engine = this
     var code: Code = null
     try {
@@ -778,7 +771,8 @@ class TemplateEngine(
 
       if (!compilerInstalled) {
         throw new ResourceNotFoundException(
-          "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates")
+          "Scala compiler not on the classpath.  You must either add it to the classpath or precompile all the templates"
+        )
       }
 
       val g = generator(source)
@@ -841,20 +835,19 @@ class TemplateEngine(
         }
 
         var newmessage = "Compilation failed:\n"
-        val errors = e.errors.map {
-          (olderror) =>
-            val uri = source.uri
-            val pos = template_pos(olderror.pos)
-            if (pos == null) {
-              newmessage += ":" + olderror.pos + " " + olderror.message + "\n"
-              newmessage += olderror.pos.longString + "\n"
-              olderror
-            } else {
-              newmessage += uri + ":" + pos + " " + olderror.message + "\n"
-              newmessage += pos.longString + "\n"
-              // TODO should we pass the source?
-              CompilerError(uri, olderror.message, pos, olderror)
-            }
+        val errors = e.errors.map { (olderror) =>
+          val uri = source.uri
+          val pos = template_pos(olderror.pos)
+          if (pos == null) {
+            newmessage += ":" + olderror.pos + " " + olderror.message + "\n"
+            newmessage += olderror.pos.longString + "\n"
+            olderror
+          } else {
+            newmessage += uri + ":" + pos + " " + olderror.message + "\n"
+            newmessage += pos.longString + "\n"
+            // TODO should we pass the source?
+            CompilerError(uri, olderror.message, pos, olderror)
+          }
         }
         error(e)
         if (e.errors.isEmpty) {
@@ -876,12 +869,16 @@ class TemplateEngine(
    * in the the pipelines map.
    */
   protected def pipeline(source: TemplateSource): Option[List[Filter]] = {
-    //sort the extensions so we match the longest first.
-    pipelines.keys.toList.sortWith {
-      case (x, y) => if (x.length == y.length) x.compareTo(y) < 0 else x.length > y.length
-    }.withFilter(ext => source.uri.endsWith("." + ext)).flatMap { ext =>
-      pipelines.get(ext)
-    }.headOption
+    // sort the extensions so we match the longest first.
+    pipelines.keys.toList
+      .sortWith { case (x, y) =>
+        if (x.length == y.length) x.compareTo(y) < 0 else x.length > y.length
+      }
+      .withFilter(ext => source.uri.endsWith("." + ext))
+      .flatMap { ext =>
+        pipelines.get(ext)
+      }
+      .headOption
   }
 
   /**
@@ -893,7 +890,9 @@ class TemplateEngine(
       case Some(ext) =>
         generatorForExtension(ext)
       case None =>
-        throw new TemplateException("Template file extension missing. Cannot determine which template processor to use.")
+        throw new TemplateException(
+          "Template file extension missing. Cannot determine which template processor to use."
+        )
     }
   }
 
@@ -909,13 +908,13 @@ class TemplateEngine(
   protected def generatorForExtension(extension: String) = codeGenerators.get(extension) match {
     case None =>
       val extensions = pipelines.keySet.toList ::: codeGenerators.keySet.toList
-      throw new TemplateException("Not a template file extension (" + extensions.mkString(" | ") + "), you requested: " + extension);
+      throw new TemplateException(
+        "Not a template file extension (" + extensions.mkString(" | ") + "), you requested: " + extension
+      );
     case Some(generator) => generator
   }
 
-  private def loadCompiledTemplate(
-    className: String,
-    from_cache: Boolean = true): Template = {
+  private def loadCompiledTemplate(className: String, from_cache: Boolean = true): Template = {
     val cl = if (from_cache) {
       new URLClassLoader(Array(bytecodeDirectory.toURI.toURL), classLoader)
     } else {
@@ -960,7 +959,8 @@ class TemplateEngine(
     stratumName: String,
     uri: String,
     scalaFile: File,
-    positions: TreeMap[OffsetPosition, OffsetPosition]) = {
+    positions: TreeMap[OffsetPosition, OffsetPosition]
+  ) = {
     val shortName = uri.split("/").last
     val longName = uri.stripPrefix("/")
 
@@ -969,20 +969,17 @@ class TemplateEngine(
 
     // build a map of input-line -> List( output-line )
     var smap = new TreeMap[Int, List[Int]]()
-    positions.foreach {
-      case (out, in) =>
-        val outs = out.line :: smap.getOrElse(in.line, Nil)
-        smap += in.line -> outs
+    positions.foreach { case (out, in) =>
+      val outs = out.line :: smap.getOrElse(in.line, Nil)
+      smap += in.line -> outs
     }
     // sort the output lines..
     smap = smap.transform { (x, y) => y.sortWith(_ < _) }
 
-    smap.foreach {
-      case (in, outs) =>
-        outs.foreach {
-          out =>
-            stratum.addLine(in, fileId, 1, out, 1)
-        }
+    smap.foreach { case (in, outs) =>
+      outs.foreach { out =>
+        stratum.addLine(in, fileId, 1, out, 1)
+      }
     }
     stratum.optimize()
 

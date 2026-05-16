@@ -21,19 +21,24 @@ import java.io.OutputStream
 import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.net.URL
-import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
+import javax.ws.rs.ext.MessageBodyWriter
+import javax.ws.rs.ext.Provider
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
-
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.MultivaluedMap
+import javax.ws.rs.core.MediaType
 import org.fusesource.scalate.scuery.Transformer
-import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
+import org.fusesource.scalate.servlet.ServletHelper
+import org.fusesource.scalate.servlet.TemplateEngineServlet
 import com.sun.jersey.api.core.ExtendedUriInfo
 import com.sun.jersey.api.container.ContainerException
-
-import scala.jdk.CollectionConverters._
-import xml.{ XML, NodeSeq }
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
+import scala.jdk.CollectionConverters.*
+import xml.XML
+import xml.NodeSeq
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletRequest
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.ResourceNotFoundException
 
 object TransformerWriter extends Log
 
@@ -44,7 +49,7 @@ object TransformerWriter extends Log
  */
 @Provider
 class TransformerWriter extends MessageBodyWriter[Transformer] {
-  import TransformerWriter._
+  import TransformerWriter.*
 
   @Context
   protected var uriInfo: ExtendedUriInfo = _
@@ -59,11 +64,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
 
   protected def templateDirectories = TemplateEngineServlet().templateEngine.templateDirectories
 
-  def isWriteable(
-    aClass: Class[?],
-    aType: Type,
-    annotations: Array[Annotation],
-    mediaType: MediaType) = {
+  def isWriteable(aClass: Class[?], aType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     classOf[Transformer].isAssignableFrom(aClass)
   }
 
@@ -74,13 +75,14 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
     annotations: Array[Annotation],
     mediaType: MediaType,
     httpHeaders: MultivaluedMap[String, Object],
-    out: OutputStream): Unit = {
+    out: OutputStream
+  ): Unit = {
 
     /*
         println("aClass: " + aClass.getName)
         println("transformer: " + transformer)
         println("uriInfo: " + uriInfo)
-    */
+     */
 
     if (uriInfo != null) {
       var viewName = "index"
@@ -147,7 +149,7 @@ class TransformerWriter extends MessageBodyWriter[Transformer] {
             println("getMatchedResults: " + uriInfo.getMatchedResults())
             println("getMatchedTemplates: " + uriInfo.getMatchedTemplates())
             println("getPathParameters: " + uriInfo.getPathParameters)
-      */
+       */
     }
 
   }

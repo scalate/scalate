@@ -19,7 +19,8 @@ package org.fusesource.scalate.test
 
 import _root_.org.junit.runner.RunWith
 import org.scalatestplus.junit.JUnitRunner
-import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap }
+import org.scalatest.ConfigMap
+import org.scalatest.BeforeAndAfterAllConfigMap
 import java.io.File
 import org.fusesource.scalate.util.Log
 import org.scalatest.funsuite.AnyFunSuite
@@ -28,10 +29,7 @@ import org.scalatest.funsuite.AnyFunSuite
  * @version $Revision : 1.1 $
  */
 @RunWith(classOf[JUnitRunner])
-abstract class FunSuiteSupport
-  extends AnyFunSuite
-  with BeforeAndAfterAllConfigMap
-  with Log {
+abstract class FunSuiteSupport extends AnyFunSuite with BeforeAndAfterAllConfigMap with Log {
 
   /**
    * Returns the base directory of the current project

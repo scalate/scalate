@@ -28,8 +28,7 @@ class DefaultTemplatePackageTest extends TemplateTestSupport {
 
   test("template using 'it' attribute auto defined by ScalatePackage") {
     val attributes = Map("it" -> SomeObject("James", "Mells"))
-    assertUriOutputContains("/org/fusesource/scalate/rest/SomeObject.index.ssp", attributes,
-      "name: James town: Mells")
+    assertUriOutputContains("/org/fusesource/scalate/rest/SomeObject.index.ssp", attributes, "name: James town: Mells")
   }
 
   override protected def beforeAll(configMap: ConfigMap) = {
@@ -38,8 +37,6 @@ class DefaultTemplatePackageTest extends TemplateTestSupport {
   }
 }
 
-case class SomeObject(name: String, town: String) {
-}
+case class SomeObject(name: String, town: String) {}
 
-class SamplePackage extends DefaultTemplatePackage {
-}
+class SamplePackage extends DefaultTemplatePackage {}

@@ -18,13 +18,14 @@
 package org.fusesource.scalate
 
 import java.io.File
-
 import org.scalatest.ConfigMap
 
 class TemplateEngineHelpersTest extends TemplateTestSupport {
 
   test("generate URI link for existing file") {
-    assertResult(Some("/moustache.js/array_of_strings.js")) { context.uri(new File(baseDir, "src/test/resources/moustache.js/array_of_strings.js")) }
+    assertResult(Some("/moustache.js/array_of_strings.js")) {
+      context.uri(new File(baseDir, "src/test/resources/moustache.js/array_of_strings.js"))
+    }
   }
 
   test("no link for file outside of source dir") {

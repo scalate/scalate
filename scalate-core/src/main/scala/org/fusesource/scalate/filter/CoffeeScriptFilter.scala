@@ -19,7 +19,6 @@ package org.fusesource.scalate
 package filter
 
 import java.util.concurrent.atomic.AtomicBoolean
-
 import javax.script.ScriptException
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate.util.Log
@@ -63,18 +62,21 @@ object CoffeeScriptFilter extends Filter with Log {
 
     if (serverSideCompile) {
       try {
-        CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
-          error =>
-            warn("Could not compile coffeescript: " + error, error)
-            throw new CompilerException(error.message, Nil)
-        }, {
-          coffee =>
-            """<script type='text/javascript'>
+        CoffeeScriptCompiler
+          .compile(content, Some(context.currentTemplate))
+          .fold(
+            { error =>
+              warn("Could not compile coffeescript: " + error, error)
+              throw new CompilerException(error.message, Nil)
+            },
+            { coffee =>
+              """<script type='text/javascript'>
             |  //<![CDATA[
             |    """.stripMargin + RenderHelper.indent("    ", coffee) + """
             |  //]]>
             |</script>""".stripMargin
-        })
+            }
+          )
       } catch {
         case e: NoClassDefFoundError => missingRhino(e)
         case e: ClassNotFoundException => missingRhino(e)
@@ -99,13 +101,17 @@ object CoffeeScriptPipeline extends Filter with Log {
   }
 
   def filter(context: RenderContext, content: String) = {
-    CoffeeScriptCompiler.compile(content, Some(context.currentTemplate)).fold({
-      error =>
-        warn("Could not compile coffeescript: " + error, error)
-        throw new CompilerException(error.message, Nil)
-    }, {
-      coffee => coffee
-    })
+    CoffeeScriptCompiler
+      .compile(content, Some(context.currentTemplate))
+      .fold(
+        { error =>
+          warn("Could not compile coffeescript: " + error, error)
+          throw new CompilerException(error.message, Nil)
+        },
+        { coffee =>
+          coffee
+        }
+      )
   }
 }
 
@@ -121,18 +127,17 @@ object CoffeeScriptCompiler {
    * @param sourceName a descriptive name for the code unit under compilation (e.g a filename)
    * @return the compiled Javascript code
    */
-  def compile(code: String, sourceName: Option[String] = None): Either[CompilationError, String] =
-    {
-      try {
-        Right(Compiler.compile(code))
-      } catch {
-        case e: ScriptException =>
-          val line = e.getLineNumber
-          val column = e.getColumnNumber
-          val message = "CoffeeScript syntax error at %d:%d".format(line, column)
-          Left(CompilationError(sourceName, message))
-      }
+  def compile(code: String, sourceName: Option[String] = None): Either[CompilationError, String] = {
+    try {
+      Right(Compiler.compile(code))
+    } catch {
+      case e: ScriptException =>
+        val line = e.getLineNumber
+        val column = e.getColumnNumber
+        val message = "CoffeeScript syntax error at %d:%d".format(line, column)
+        Left(CompilationError(sourceName, message))
     }
+  }
 }
 
 case class CompilationError(sourceName: Option[String], message: String)

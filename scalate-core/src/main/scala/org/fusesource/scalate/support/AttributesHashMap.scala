@@ -17,11 +17,9 @@
  */
 package org.fusesource.scalate.support
 
-import java.{ util => ju }
-
+import java.util as ju
 import org.fusesource.scalate.AttributeMap
-
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 /**
  * The default implementation for <code>AttributeMap</code> backed

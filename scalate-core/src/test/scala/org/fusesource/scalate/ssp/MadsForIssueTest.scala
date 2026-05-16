@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate.{ TemplateTestSupport }
+import org.fusesource.scalate.TemplateTestSupport
 
 /**
  * @version $Revision : 1.1 $
@@ -25,7 +25,9 @@ import org.fusesource.scalate.{ TemplateTestSupport }
 class MadsForIssueTest extends TemplateTestSupport {
 
   test("issue with #for") {
-    val template = compileSsp("using #for", """<%@ var fields:List[String] %>
+    val template = compileSsp(
+      "using #for",
+      """<%@ var fields:List[String] %>
 start
 <% fields.foreach{ field => %>
 f1 ${field}
@@ -35,24 +37,28 @@ f1 ${field}
 f2 ${field}
 #end
 done
-""")
+"""
+    )
 
-    assertTrimOutput("""start
+    assertTrimOutput(
+      """start
 f1 a
 f1 b
 
 f2 a
 f2 b
-done""", template, Map("fields" -> List("a", "b")))
+done""",
+      template,
+      Map("fields" -> List("a", "b"))
+    )
   }
 
   test("mads sample") {
-    val attributes = Map(
-      "name" -> "Cheese",
-      "thePackage" -> "org.acme.cheese",
-      "fields" -> List("foo", "bar"))
+    val attributes = Map("name" -> "Cheese", "thePackage" -> "org.acme.cheese", "fields" -> List("foo", "bar"))
 
-    val template = compileSsp("Mads sample", """
+    val template = compileSsp(
+      "Mads sample",
+      """
 <%@ var name:String %>
 <%@ var thePackage:String %>
 <%@ var fields:List[String] %>
@@ -79,7 +85,8 @@ class ${name} extends LongKeyedMapper[${name}] with IdPK {
 
 }
 object ${name} extends ${name} with LongKeyedMetaMapper[${name}]    
-""")
+"""
+    )
 
     val output = engine.layout("dummy.ssp", template, attributes)
     debug("Output:")

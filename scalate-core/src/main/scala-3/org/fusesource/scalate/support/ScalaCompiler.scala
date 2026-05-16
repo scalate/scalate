@@ -17,15 +17,19 @@
  */
 package org.fusesource.scalate.support
 
-import java.io.{ File, PrintWriter, StringWriter }
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import org.fusesource.scalate.*
-import org.fusesource.scalate.util.{ ClassPathBuilder, Log }
-
+import org.fusesource.scalate.util.ClassPathBuilder
+import org.fusesource.scalate.util.Log
 import scala.runtime.ByteRef
 import scala.util.parsing.input.OffsetPosition
 import dotty.tools.*
-import dotty.tools.dotc.reporting.{ ConsoleReporter, Reporter }
+import dotty.tools.dotc.reporting.ConsoleReporter
+import dotty.tools.dotc.reporting.Reporter
 import org.fusesource.scalate.support.Compiler
+import org.fusesource.scalate.support.ScalaCompiler.*
 
 object ScalaCompiler extends Log {
 
@@ -39,12 +43,7 @@ object ScalaCompiler extends Log {
 
 }
 
-import org.fusesource.scalate.support.ScalaCompiler._
-
-class ScalaCompiler(
-  bytecodeDirectory: File,
-  classpath: String,
-  combineClasspath: Boolean = false) extends Compiler {
+class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Compiler {
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
   def compile(file: File): Unit = {
@@ -54,7 +53,9 @@ class ScalaCompiler(
 
       if (reporter.hasErrors) {
         println(reporter.summary)
-        val errors = reporter.allErrors.map(e => CompilerError(e.pos.source.file.path, e.message, OffsetPosition(String(e.pos.source.content()), e.pos.start)))
+        val errors = reporter.allErrors.map(e =>
+          CompilerError(e.pos.source.file.path, e.message, OffsetPosition(String(e.pos.source.content()), e.pos.start))
+        )
         throw new CompilerException("Compilation failed:\n" + reporter.summary, errors)
       }
     }
@@ -88,11 +89,7 @@ class ScalaCompiler(
     debug("context class loader: " + Thread.currentThread.getContextClassLoader)
     debug("scalate class loader: " + getClass.getClassLoader)
 
-    val args = Seq(
-      "-classpath",
-      useCP,
-      "-d",
-      bytecodeDirectory.toString)
+    val args = Seq("-classpath", useCP, "-d", bytecodeDirectory.toString)
 
     args
   }

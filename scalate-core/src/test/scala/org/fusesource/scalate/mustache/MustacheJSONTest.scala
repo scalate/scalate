@@ -19,9 +19,8 @@ package org.fusesource.scalate.mustache
 
 import java.io.File
 import org.fusesource.scalate.util.IOUtil
-
-import org.json4s._
-import org.json4s.native.JsonMethods._
+import org.json4s.*
+import org.json4s.native.JsonMethods.*
 
 /**
  * Runs the system tests from the mustache.js distro
@@ -36,7 +35,7 @@ class MustacheJSONTest extends MustacheTestSupport {
   mustacheJsonTest("template_partial")
 
   // Implementation methods
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
   implicit val formats: Formats = DefaultFormats
 
   def mustacheJsonTest(name: String): Unit = {

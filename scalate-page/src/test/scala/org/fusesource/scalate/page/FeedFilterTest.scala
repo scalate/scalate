@@ -18,7 +18,8 @@
 package org.fusesource.scalate.page
 
 import org.fusesource.scalate.test.TemplateTestSupport
-import xml.{ NodeSeq, XML }
+import xml.NodeSeq
+import xml.XML
 
 class FeedFilterTest extends TemplateTestSupport {
 
@@ -34,7 +35,7 @@ class FeedFilterTest extends TemplateTestSupport {
 
     val channel = xml \\ "rss" \\ "channel"
     assertResult("The Scalate Blog") { trimText(channel \ "title") }
-    //assertResult("Scalate Team") { trimText(channel \ "author") }
+    // assertResult("Scalate Team") { trimText(channel \ "author") }
     assertResult("http://scalate.fusesource.org/blog/") { trimText(channel \ "link") }
     assertResult("Some text goes here") { trimText(channel \ "description") }
   }

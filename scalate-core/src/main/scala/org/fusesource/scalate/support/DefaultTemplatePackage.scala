@@ -18,9 +18,12 @@
 package org.fusesource.scalate
 package support
 
-import util.{ Log, ClassLoaders, Files }
+import util.Log
+import util.ClassLoaders
+import util.Files
 
 object DefaultTemplatePackage extends Log
+
 /**
  * A TemplatePackage where we try and find an object/controller/resource type based on the name of the current template and if we can
  * find it then we create a variable called **it** of the controller type and import its values into the template.
@@ -29,7 +32,7 @@ object DefaultTemplatePackage extends Log
  * import the controller or 'it' variable from the attribute scope
  */
 class DefaultTemplatePackage extends TemplatePackage {
-  import DefaultTemplatePackage._
+  import DefaultTemplatePackage.*
 
   def header(source: TemplateSource, bindings: List[Binding]) = {
     bindings.find(_.name == "it") match {
@@ -40,11 +43,13 @@ class DefaultTemplatePackage extends TemplatePackage {
         val cleanUri = source.uri.stripPrefix("/").stripPrefix("WEB-INF/")
         val extensions = cleanUri.split('.').tail
         var className = cleanUri.replace('/', '.')
-        extensions.map {
-          e =>
+        extensions
+          .map { e =>
             className = Files.dropExtension(className)
             ClassLoaders.findClass(className)
-        }.find(_.isDefined).flatten match {
+          }
+          .find(_.isDefined)
+          .flatten match {
           case Some(clazz) =>
             val it = "val " + variableName + " = attribute[_root_." + clazz.getName + "](\"" + variableName + "\")\n"
             if (importMethod) {

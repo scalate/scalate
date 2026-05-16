@@ -23,67 +23,88 @@ class WhitespaceTest extends TemplateTestSupport {
   showOutput = true
 
   test("regular ssp directive") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   person: James
   person: Hiram
-""", """
+""",
+      """
 <% val people = List("James", "Hiram") %>
 <% for (p <- people) { %>
   person: ${p}
 <% } %>
-""")
+"""
+    )
   }
 
   test("velocity style ssp directive") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   person: James
   person: Hiram
-""", """
+""",
+      """
 <% val people = List("James", "Hiram") %>
 #for(p <- people)
   person: ${p}
 #end
-""")
+"""
+    )
   }
 
   test("ssp ${...} expression whitespace") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   Copyright 2010 MyCompany
-""", """
+""",
+      """
 <% val year = "2010" %>
   Copyright ${year} MyCompany
-""")
+"""
+    )
   }
 
   test("ssp <%=...%> expression whitespace") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   Copyright 2010 MyCompany
-""", """
+""",
+      """
 <% val year = "2010" %>
   Copyright <%=year%> MyCompany
-""")
+"""
+    )
   }
 
   test("ssp <%=...%> expression whitespace 2") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   <tr class="featured">
-""", """
+""",
+      """
   <tr<% if(true) { %> class="featured"<% } %>>
-""")
+"""
+    )
   }
 
   test("ssp <%=...%> expression whitespace 3") {
-    assertSspOutput("""
-  Hello World!""", """
+    assertSspOutput(
+      """
+  Hello World!""",
+      """
   Hello <% if(true) { %>World!<% } %>
-""")
+"""
+    )
   }
 
   test("ssp <%=...%> expression whitespace 4") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   Hello World!
-""", """
+""",
+      """
   Hello <% if(true) { %>World!<% } +%>
-""")
+"""
+    )
   }
 }

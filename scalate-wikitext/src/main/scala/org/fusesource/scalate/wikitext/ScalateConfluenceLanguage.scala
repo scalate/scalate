@@ -19,8 +19,8 @@ package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block
 import org.eclipse.mylyn.wikitext.confluence.core.ConfluenceLanguage
-import java.{ util => ju }
-import scala.jdk.CollectionConverters._
+import java.util as ju
+import scala.jdk.CollectionConverters.*
 
 /**
  * Registry of language extensions
@@ -43,15 +43,22 @@ class ScalateConfluenceLanguage extends ConfluenceLanguage {
 
     blocks.addAll(ConfluenceLanguageExtensions.extensions.asJava)
 
-    List(new PygmentsBlock, new SnippetBlock,
-      new HtmlBlock, new DivBlock,
-      new SectionBlock, new ColumnBlock,
+    List(
+      new PygmentsBlock,
+      new SnippetBlock,
+      new HtmlBlock,
+      new DivBlock,
+      new SectionBlock,
+      new ColumnBlock,
       new CenterBlock,
 
       // tags
-      new AttributesTag, new IncludeTag, new ChildrenTag).foreach { b =>
-        blocks.add(b)
-        paragraphBreakingBlocks.add(b)
-      }
+      new AttributesTag,
+      new IncludeTag,
+      new ChildrenTag
+    ).foreach { b =>
+      blocks.add(b)
+      paragraphBreakingBlocks.add(b)
+    }
   }
 }

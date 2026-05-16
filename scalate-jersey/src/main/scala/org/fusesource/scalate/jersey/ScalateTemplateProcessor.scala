@@ -21,18 +21,21 @@ package jersey
 import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletRequest
 import javax.ws.rs.core.Context
-
-import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
+import com.sun.jersey.api.core.HttpContext
+import com.sun.jersey.api.core.ResourceConfig
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.core.reflection.ReflectionHelper
 import com.sun.jersey.server.impl.container.servlet.RequestDispatcherWrapper
 import com.sun.jersey.spi.template.ViewProcessor
-
-import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import org.fusesource.scalate.servlet.ServletHelper
+import org.fusesource.scalate.servlet.TemplateEngineServlet
+import util.Log
+import util.ResourceNotFoundException
 
 object ScalateTemplateProcessor extends Log
 
@@ -41,7 +44,7 @@ object ScalateTemplateProcessor extends Log
  * @version $Revision : 1.1 $
  */
 class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
-  import ScalateTemplateProcessor._
+  import ScalateTemplateProcessor.*
 
   @Context
   var servletContext: ServletContext = _
@@ -83,7 +86,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
            however we prefer to use this naming convention
              com/acme/foo/SomeClass.index.ssp
            so lets add a little hook in here
-          */
+           */
           val idx = path.lastIndexOf('/')
           if (idx > 1) {
             val newPath = path.substring(0, idx) + "." + path.substring(idx + 1)
@@ -115,9 +118,12 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     if (hc.isTracingEnabled()) {
-      hc.trace("forwarding view to Scalate template: \"%s\", it = %s".format(
-        resolvedPath,
-        ReflectionHelper.objectToString(viewable.getModel())));
+      hc.trace(
+        "forwarding view to Scalate template: \"%s\", it = %s".format(
+          resolvedPath,
+          ReflectionHelper.objectToString(viewable.getModel())
+        )
+      );
     }
 
     // Ensure headers are committed
@@ -137,7 +143,12 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
    * little more efficient plus it avoids issues with using jersey with
    * guice-servlet not correctly dispatching to the servlet
    */
-  def writeToUsingServletTemplateEngine(engine: TemplateEngine, resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
+  def writeToUsingServletTemplateEngine(
+    engine: TemplateEngine,
+    resolvedPath: String,
+    viewable: Viewable,
+    out: OutputStream
+  ): Unit = {
     // lets use the singleton servlet as its a bit more efficient and avoids issues with
     // using jersey with guice-servlet not correctly dispatching to the servlet
     request.setAttribute("it", viewable.getModel)
@@ -198,7 +209,7 @@ class ScalateTemplateProcessor(@Context resourceConfig: ResourceConfig) extends 
     try {
       val wrapper = new RequestDispatcherWrapper(dispatcher, basePath, hc, viewable)
       wrapper.forward(request, response)
-      //wrapper.forward(requestInvoker.get(), responseInvoker.get())
+      // wrapper.forward(requestInvoker.get(), responseInvoker.get())
     } catch {
       case e: Exception =>
         // lets forward to the error handler

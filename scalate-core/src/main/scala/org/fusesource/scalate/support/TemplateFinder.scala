@@ -80,13 +80,12 @@ class TemplateFinder(engine: TemplateEngine) {
     // Lets try to find the template by replacing the extension
     // i.e: /path/page.html -> /path/page.jade
     def findReplaced(): Option[String] = {
-      replacedExtensions.flatMap {
-        ext =>
-          if (path.endsWith(ext)) {
-            findAppended(path.stripSuffix(ext))
-          } else {
-            None
-          }
+      replacedExtensions.flatMap { ext =>
+        if (path.endsWith(ext)) {
+          findAppended(path.stripSuffix(ext))
+        } else {
+          None
+        }
       }.headOption
     }
 
@@ -98,18 +97,17 @@ class TemplateFinder(engine: TemplateEngine) {
       val ext = Files.extension(uri)
       lazy val remaining = path.stripSuffix(ext)
       if (ext.size > 0) {
-        engine.extensionToTemplateExtension.get(ext).flatMap {
-          set =>
-            engine.templateDirectories.flatMap { base =>
-              set.flatMap { ext =>
-                val path = base + remaining + ext
-                if (engine.resourceLoader.exists(path)) {
-                  Some(path)
-                } else {
-                  None
-                }
+        engine.extensionToTemplateExtension.get(ext).flatMap { set =>
+          engine.templateDirectories.flatMap { base =>
+            set.flatMap { ext =>
+              val path = base + remaining + ext
+              if (engine.resourceLoader.exists(path)) {
+                Some(path)
+              } else {
+                None
               }
-            }.headOption
+            }
+          }.headOption
         }
       } else {
         None

@@ -18,18 +18,19 @@
 package org.fusesource.scalate
 package wikitext
 
-import StringConverter._
-
+import StringConverter.*
 import java.io.File
 import xml.NodeSeq
-import util.{ Log, Files }
+import util.Log
+import util.Files
 
 object ChildrenTag extends Log
+
 /**
  * Implements the **children** macro in confluence
  */
 class ChildrenTag extends AbstractConfluenceTagSupport("children") {
-  import ChildrenTag._
+  import ChildrenTag.*
   var page: Option[String] = None
   var depth = 1
   var all = false
@@ -51,28 +52,27 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
       if (all || level <= depth && files.nonEmpty) {
         <ul>
           {
-            files.map {
-              f =>
-                debug("{children} processing file '%s'", f)
-                if (f.isFile) {
-                  val title = Pages.title(f)
-                  val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
-                  val child = new File(f.getParentFile, Files.dropExtension(f))
-                  debug("{children} checking child '%s'", child)
-                  val dirXml = if (child.isDirectory) {
-                    showChildren(rootDir, child, level + 1)
-                  } else {
-                    Nil
-                  }
-                  <li>
-                    <a href={ link }>
-                      { title }
+          files.map { f =>
+            debug("{children} processing file '%s'", f)
+            if (f.isFile) {
+              val title = Pages.title(f)
+              val link = Files.relativeUri(rootDir, new File(f.getParentFile, Files.dropExtension(f) + ".html"))
+              val child = new File(f.getParentFile, Files.dropExtension(f))
+              debug("{children} checking child '%s'", child)
+              val dirXml = if (child.isDirectory) {
+                showChildren(rootDir, child, level + 1)
+              } else {
+                Nil
+              }
+              <li>
+                    <a href={link}>
+                      {title}
                     </a>
-                    { dirXml }
+                    {dirXml}
                   </li>
-                }
             }
           }
+        }
         </ul>
       } else {
         Nil
@@ -91,7 +91,7 @@ class ChildrenTag extends AbstractConfluenceTagSupport("children") {
         if (!dir.exists) {
           warn("{children} cannot find directory: %s", dir)
         } else {
-          //context << showChildren(rootDir, dir, 1)
+          // context << showChildren(rootDir, dir, 1)
           builder.charactersUnescaped(showChildren(rootDir, dir, 1).toString)
         }
 

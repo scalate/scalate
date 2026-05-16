@@ -19,9 +19,14 @@ package org.fusesource.scalate.wikitext
 
 import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import collection.mutable.ListBuffer
-import java.util.regex.{ Pattern, Matcher }
-import org.eclipse.mylyn.internal.wikitext.confluence.core.block.{ ParameterizedBlock, AbstractConfluenceDelimitedBlock }
-import org.eclipse.mylyn.wikitext.core.parser.{ TableRowAttributes, TableAttributes, TableCellAttributes, Attributes }
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
+import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
+import org.eclipse.mylyn.wikitext.core.parser.TableRowAttributes
+import org.eclipse.mylyn.wikitext.core.parser.TableAttributes
+import org.eclipse.mylyn.wikitext.core.parser.TableCellAttributes
+import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.fusesource.scalate.util.Log
 
 class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
@@ -31,7 +36,7 @@ class HtmlBlock extends AbstractConfluenceDelimitedBlock("html") {
   override def beginBlock() = {
     if (div) {
       val attributes = new Attributes()
-      //attributes.setCssClass("syntax")
+      // attributes.setCssClass("syntax")
       builder.beginBlock(BlockType.DIV, attributes)
     }
   }
@@ -124,11 +129,9 @@ abstract class AbstractNestedBlock(val name: String) extends ParameterizedBlock 
     super.setClosed(closed)
   }
 
-  def beginBlock() = {
-  }
+  def beginBlock() = {}
 
-  def endBlock() = {
-  }
+  def endBlock() = {}
 
   override def beginNesting(): Boolean = nesting
 }
@@ -138,7 +141,7 @@ class DivBlock extends AbstractNestedBlock("div") {
   var textBuffer = new StringBuilder
 
   override def beginBlock() = {
-    //attributes.setCssClass("syntax")
+    // attributes.setCssClass("syntax")
     builder.beginBlock(BlockType.DIV, attributes)
     super.beginBlock()
   }
@@ -256,7 +259,7 @@ class CenterBlock extends AbstractNestedBlock("center") {
 }
 
 object Blocks {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   def unknownAttribute(key: String, value: String): Unit = {
     warn("Unknown attribute '%s' with value: %s", key, value)
@@ -273,11 +276,12 @@ object Blocks {
       case "id" => attributes.setId(value)
       case "lang" => attributes.setLanguage(value)
       case "title" => attributes.setTitle(value)
-      case "width" => attributes match {
-        case a: TableAttributes => a.setWidth(value)
-        case a: TableCellAttributes => a.setWidth(value)
-        case _ => unknownAttribute(key, value)
-      }
+      case "width" =>
+        attributes match {
+          case a: TableAttributes => a.setWidth(value)
+          case a: TableCellAttributes => a.setWidth(value)
+          case _ => unknownAttribute(key, value)
+        }
       case _ => unknownAttribute(key, value)
     }
   }

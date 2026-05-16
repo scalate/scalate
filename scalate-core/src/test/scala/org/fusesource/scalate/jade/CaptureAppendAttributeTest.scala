@@ -14,7 +14,8 @@ class CaptureAppendAttributeTest extends JadeTestSupport {
 html
   head
     = attribute("foo")
-""", """
+""",
+    """
 <html>
   <head>
     hello
@@ -22,5 +23,6 @@ html
 
   </head>
 </html>
-""")
+"""
+  )
 }

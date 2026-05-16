@@ -18,9 +18,9 @@
 package org.fusesource.scalate.support
 
 import java.io.File
-
 import org.fusesource.scalate.servlet.ServletRenderContext
-import org.fusesource.scalate.{ Binding, TemplateEngine }
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateEngine
 
 /**
  * This class can precompile Scalate templates into JVM
@@ -60,7 +60,9 @@ class Precompiler {
     if (contextClass != null) {
       engine.bindings = List(Binding("context", contextClass, true, isImplicit = true))
     } else {
-      engine.bindings = List(Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true))
+      engine.bindings = List(
+        Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true)
+      )
     }
 
     if (workingDirectory != null) {
@@ -73,7 +75,10 @@ class Precompiler {
     engine.boot()
 
     var paths = List[String]()
-    for (extension <- engine.codeGenerators.keysIterator; sd <- sources if sd.exists) {
+    for {
+      extension <- engine.codeGenerators.keysIterator
+      sd <- sources if sd.exists
+    } {
       paths = collectUrisWithExtension(sd, "", "." + extension) ::: paths
     }
 
@@ -102,8 +107,7 @@ class Precompiler {
           } else {
             if (file.getName().endsWith(extension)) {
               collected = baseuri + "/" + file.getName() :: collected
-            } else {
-            }
+            } else {}
 
           }
         }

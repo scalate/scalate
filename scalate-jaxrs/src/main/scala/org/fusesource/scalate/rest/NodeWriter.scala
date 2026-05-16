@@ -19,12 +19,13 @@ package org.fusesource.scalate.rest
 
 import java.io.OutputStream
 import java.lang.annotation.Annotation
-import java.lang.{ String, Class }
-
-import javax.ws.rs.core.{ MultivaluedMap, MediaType }
-import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
+import java.lang.String
+import java.lang.Class
+import javax.ws.rs.core.MultivaluedMap
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.ext.MessageBodyWriter
+import javax.ws.rs.ext.Provider
 import java.lang.reflect.Type
-
 import scala.xml.NodeSeq
 
 /**
@@ -39,7 +40,15 @@ class NodeWriter extends MessageBodyWriter[NodeSeq] {
     classOf[NodeSeq].isAssignableFrom(aClass)
   }
 
-  def writeTo(nodes: NodeSeq, aClass: Class[?], aType: Type, annotations: Array[Annotation], mediaType: MediaType, stringObjectMultivaluedMap: MultivaluedMap[String, Object], outputStream: OutputStream): Unit = {
+  def writeTo(
+    nodes: NodeSeq,
+    aClass: Class[?],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType,
+    stringObjectMultivaluedMap: MultivaluedMap[String, Object],
+    outputStream: OutputStream
+  ): Unit = {
     val answer = nodes.toString();
     outputStream.write(answer.getBytes());
   }

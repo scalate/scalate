@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.ssp
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.support.{ AbstractCodeGenerator, Code, Text }
-
+import org.fusesource.scalate.*
+import org.fusesource.scalate.support.AbstractCodeGenerator
+import org.fusesource.scalate.support.Code
+import org.fusesource.scalate.support.Text
 import scala.collection.mutable.Stack
 import scala.language.implicitConversions
 
@@ -45,8 +46,18 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
           case p: AttributeFragment =>
             this << p.pos
-            generateBindings(List(Binding(p.name, p.className, p.autoImport, p.defaultValue,
-              classNamePositional = Some(p.className), defaultValuePositional = p.defaultValue))) {
+            generateBindings(
+              List(
+                Binding(
+                  p.name,
+                  p.className,
+                  p.autoImport,
+                  p.defaultValue,
+                  classNamePositional = Some(p.className),
+                  defaultValuePositional = p.defaultValue
+                )
+              )
+            ) {
               generate(remaining)
             }
             remaining = Nil
@@ -59,8 +70,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
 
     def generate(fragment: PageFragment): Unit = {
       fragment match {
-        case CommentFragment(code) => {
-        }
+        case CommentFragment(code) => {}
         case ScriptletFragment(code) => {
           this << code :: Nil
         }
@@ -68,8 +78,7 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
           this << fragment.pos
           this << "$_scalate_$_context << ( " + asString(text) + " );"
         }
-        case af: AttributeFragment => {
-        }
+        case af: AttributeFragment => {}
         case DollarExpressionFragment(code) => {
           this << "$_scalate_$_context <<< " :: wrapInParens(code)
         }
@@ -135,7 +144,8 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       }
     }
 
-    protected def wrapInParens(code: Text): List[?] = if (canWrapInParens(code)) { List("( ", code, " );") } else { List(code) }
+    protected def wrapInParens(code: Text): List[?] = if (canWrapInParens(code)) { List("( ", code, " );") }
+    else { List(code) }
 
     /**
      * Returns true if the code expression can be safely wrapped in parens
@@ -176,24 +186,35 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       endStack.push(f)
       clauseOpen = true
     }
-    def expect(f: PageFragment, expectedType: Class[?], name: String, closeName: String, closes: Boolean): Unit = if (endStack.isEmpty) {
+    def expect(f: PageFragment, expectedType: Class[?], name: String, closeName: String, closes: Boolean): Unit = if (
+      endStack.isEmpty
+    ) {
       throw new InvalidSyntaxException("Missing " + name, f.pos)
     } else {
       if (closes) {
         // closing clause like #else
         if (!clauseOpen) {
-          throw new InvalidSyntaxException("Cannot have more than one " + f.tokenName + " within a single #" + name, f.pos)
+          throw new InvalidSyntaxException(
+            "Cannot have more than one " + f.tokenName + " within a single #" + name,
+            f.pos
+          )
         }
         clauseOpen = false
       } else {
         // non close like #eliseif
         if (!clauseOpen) {
-          throw new InvalidSyntaxException("The " + f.tokenName + " cannot come after the #" + closeName + " inside the #" + name, f.pos)
+          throw new InvalidSyntaxException(
+            "The " + f.tokenName + " cannot come after the #" + closeName + " inside the #" + name,
+            f.pos
+          )
         }
       }
       val head = endStack.head
       if (!expectedType.isInstance(head)) {
-        throw new InvalidSyntaxException("The " + f.tokenName + " should be nested inside #" + name + " but was inside " + head.tokenName, f.pos)
+        throw new InvalidSyntaxException(
+          "The " + f.tokenName + " should be nested inside #" + name + " but was inside " + head.tokenName,
+          f.pos
+        )
       }
     }
 
@@ -203,11 +224,12 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
       case f: DoFragment => open(f)
       case f: IfFragment => open(f)
       case f: MatchFragment => open(f)
-      case f: EndFragment => if (endStack.isEmpty) {
-        throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.pos)
-      } else {
-        endStack.pop()
-      }
+      case f: EndFragment =>
+        if (endStack.isEmpty) {
+          throw new InvalidSyntaxException("Extra #end without matching #if, #for, #match", f.pos)
+        } else {
+          endStack.pop()
+        }
       case f: ElseIfFragment => expect(f, classOf[IfFragment], "if", "else", false)
       case f: ElseFragment => expect(f, classOf[IfFragment], "if", "else", true)
       case f: CaseFragment => expect(f, classOf[MatchFragment], "match", "otherwise", false)
@@ -321,13 +343,19 @@ class SspCodeGenerator extends AbstractCodeGenerator[PageFragment] {
         if (trim.length == 0) {
           false
         } else {
-          throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found '" + trim + "'", t.pos)
+          throw new InvalidSyntaxException(
+            "Only whitespace allowed between #match and #case but found '" + trim + "'",
+            t.pos
+          )
         }
 
       case p =>
         if (isMatch) {
           if (!p.isInstanceOf[CaseFragment] && !p.isInstanceOf[OtherwiseFragment]) {
-            throw new InvalidSyntaxException("Only whitespace allowed between #match and #case but found " + p.tokenName, p.pos)
+            throw new InvalidSyntaxException(
+              "Only whitespace allowed between #match and #case but found " + p.tokenName,
+              p.pos
+            )
           }
         }
         last = p

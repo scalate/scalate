@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.ssp
 
-import _root_.org.fusesource.scalate._
+import _root_.org.fusesource.scalate.*
 
 /**
  * @version $Revision : 1.1 $
@@ -25,14 +25,20 @@ import _root_.org.fusesource.scalate._
 class NoEscapeTest extends TemplateTestSupport {
 
   test("disable markup escaping") {
-    assertSspOutput("a = x > 5 && y < 3", """<% escapeMarkup = false %>
+    assertSspOutput(
+      "a = x > 5 && y < 3",
+      """<% escapeMarkup = false %>
 <% val foo = "x > 5 && y < 3" %>
-a = ${foo}""")
+a = ${foo}"""
+    )
   }
 
   test("using unescape function") {
-    assertSspOutput("b = x > 5 && y < 3", """<% val foo = "x > 5 && y < 3" %>
-b = ${unescape(foo)}""")
+    assertSspOutput(
+      "b = x > 5 && y < 3",
+      """<% val foo = "x > 5 && y < 3" %>
+b = ${unescape(foo)}"""
+    )
   }
 
 }

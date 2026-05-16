@@ -1,7 +1,7 @@
 package org.fusesource.scalate
 package util
 
-import Measurements._
+import Measurements.*
 
 class UnitFormatterTest extends FunSuiteSupport {
 

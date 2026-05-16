@@ -18,11 +18,14 @@
 package org.fusesource.scalate.test
 
 import org.apache.commons.logging.LogFactory
-import org.eclipse.jetty.server.{ Connector, Server, ServerConnector }
+import org.eclipse.jetty.server.Connector
+import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.ResourceCollection
 import org.fusesource.scalate.util.IOUtil
-import java.io.{ File, FileInputStream }
+import java.io.File
+import java.io.FileInputStream
 import scala.annotation.tailrec
 
 /**
@@ -71,10 +74,12 @@ class JettyServer {
       if (file.exists) {
         webAppDir = defaultWebAppDir
       } else {
-        LOG.info("defaultWebAppDir does not exist! " + file + " so using defaultDirectory: " + defaultDirectory + " with " + defaultWebAppDir)
+        LOG.info(
+          "defaultWebAppDir does not exist! " + file + " so using defaultDirectory: " + defaultDirectory + " with " + defaultWebAppDir
+        )
         webAppDir = defaultDirectory + "/" + defaultWebAppDir
       }
-      //webAppDir += "," + overlayWebAppDir
+      // webAppDir += "," + overlayWebAppDir
     }
     if (overlayWebAppDir == null) {
       overlayWebAppDir = findOverlayModuleWebAppDir(basedir)
@@ -108,9 +113,12 @@ class JettyServer {
   }
 
   protected def findOverlayModuleWebAppDir(basedir: String): String = {
+
     /**Lets walk up the directory tree looking for the overlayProject */
     @tailrec
-    def findOverlayModuleInParent(dir: String): String = exists(dir + "/" + overlayProject + "/" + mavenWebAppSubDir) match {
+    def findOverlayModuleInParent(dir: String): String = exists(
+      dir + "/" + overlayProject + "/" + mavenWebAppSubDir
+    ) match {
       case Some(file) => file.getAbsolutePath
       case _ =>
         val parent = new File(dir).getParent
@@ -121,7 +129,8 @@ class JettyServer {
         }
     }
 
-    if (basedir.contains(overlayProject)) { null } else {
+    if (basedir.contains(overlayProject)) { null }
+    else {
       var answer = findOverlayModuleInParent(basedir)
       if (answer == null) {
         // lets try find the WAR in the local repo
@@ -136,7 +145,12 @@ class JettyServer {
           if (version == null) {
             LOG.warn("No version available for " + p)
           } else {
-            val war = new File(System.getProperty("user.home", "~") + "/.m2/repository/org/fusesource/scalate/scalate-war/" + version + "/scalate-war-" + version + ".war")
+            val war = new File(
+              System.getProperty(
+                "user.home",
+                "~"
+              ) + "/.m2/repository/org/fusesource/scalate/scalate-war/" + version + "/scalate-war-" + version + ".war"
+            )
             println("Looking for war at " + war.getAbsolutePath + " exists: " + war.exists)
             if (war.exists) {
               // lets extract the war to a temporary directory...

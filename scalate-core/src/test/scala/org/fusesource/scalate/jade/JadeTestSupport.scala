@@ -18,8 +18,9 @@
 package org.fusesource.scalate
 package jade
 
-import java.io.{ StringWriter, PrintWriter, File }
-
+import java.io.StringWriter
+import java.io.PrintWriter
+import java.io.File
 import org.fusesource.scalate.scaml.ScamlTestSupport
 
 /**
@@ -29,7 +30,8 @@ import org.fusesource.scalate.scaml.ScamlTestSupport
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 
-class JadeDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter) extends DefaultRenderContext(uri, templaeEngine, outWriter) {
+class JadeDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter)
+    extends DefaultRenderContext(uri, templaeEngine, outWriter) {
   val name = "Hiram"
   val title = "MyPage"
   val href = "http://scalate.fusesource.org"

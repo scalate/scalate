@@ -28,44 +28,42 @@ import java.util.Properties
  */
 object ClassFinder {
 
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   def discoverCommands[T](
     indexPath: String,
-    classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders): List[T] = {
+    classLoaders: List[ClassLoader] = ClassLoaders.defaultClassLoaders
+  ): List[T] = {
     classLoaders.flatMap { cl =>
       ClassLoaders.withContextClassLoader(cl) {
-        discoverCommandClasses(indexPath, cl).flatMap {
-          name =>
+        discoverCommandClasses(indexPath, cl).flatMap { name =>
+          try {
+            val clazz = cl.loadClass(name)
             try {
-              val clazz = cl.loadClass(name)
-              try {
-                Some(clazz.getConstructor().newInstance().asInstanceOf[T])
-              } catch {
-                case e: Exception =>
-                  // It may be a scala object.. check for a module class
-                  try {
-                    val moduleField = cl.loadClass(name + "$").getDeclaredField("MODULE$")
-                    Some(moduleField.get(null).asInstanceOf[T])
-                  } catch {
-                    case e2: Throwable =>
-                      // throw the original error...
-                      throw e
-                  }
-              }
+              Some(clazz.getConstructor().newInstance().asInstanceOf[T])
             } catch {
-              case e: Throwable =>
-                debug(e, "Invalid class: %s", name)
-                None
+              case e: Exception =>
+                // It may be a scala object.. check for a module class
+                try {
+                  val moduleField = cl.loadClass(name + "$").getDeclaredField("MODULE$")
+                  Some(moduleField.get(null).asInstanceOf[T])
+                } catch {
+                  case e2: Throwable =>
+                    // throw the original error...
+                    throw e
+                }
             }
+          } catch {
+            case e: Throwable =>
+              debug(e, "Invalid class: %s", name)
+              None
+          }
         }
       }
     }.distinct
   }
 
-  def discoverCommandClasses(
-    indexPath: String,
-    cl: ClassLoader = getClass.getClassLoader): List[String] = {
+  def discoverCommandClasses(indexPath: String, cl: ClassLoader = getClass.getClassLoader): List[String] = {
     var rc: List[String] = Nil
     val resources = cl.getResources(indexPath)
     while (resources.hasMoreElements) {

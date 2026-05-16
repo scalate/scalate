@@ -17,23 +17,24 @@
  */
 package org.fusesource.scalate
 
-import java.io._
-
+import java.io.*
 import org.fusesource.scalate.support.AttributesHashMap
-import org.fusesource.scalate.util.{ Log, Resource }
-
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.Resource
 import scala.collection.mutable.Stack
 
 object DefaultRenderContext extends Log
+
 /**
  * Default implementation of [[org.fusesource.scalate.RenderContext]]
  */
 class DefaultRenderContext(
   private[this] val _requestUri: String,
   val engine: TemplateEngine,
-  var out: PrintWriter = new PrintWriter(new StringWriter())) extends RenderContext {
+  var out: PrintWriter = new PrintWriter(new StringWriter())
+) extends RenderContext {
 
-  import DefaultRenderContext._
+  import DefaultRenderContext.*
 
   val attributes: AttributeMap = new AttributesHashMap() {
     update("context", DefaultRenderContext.this)
@@ -44,7 +45,7 @@ class DefaultRenderContext(
   //
   // RenderContext implementation
   //
-  //////////////////////////////////x///////////////////////////////////
+  ////////////////////////////////// x///////////////////////////////////
 
   def requestUri = _requestUri
 

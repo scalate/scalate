@@ -22,8 +22,10 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.ParameterizedBlock
 import scala.io.Source
 import java.io.File
-import java.util.regex.{ Pattern, Matcher }
-import org.eclipse.mylyn.wikitext.core.parser.{ DocumentBuilder, Attributes }
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder
+import org.eclipse.mylyn.wikitext.core.parser.Attributes
 import org.fusesource.scalate.util.Log
 
 /**
@@ -34,7 +36,8 @@ import org.fusesource.scalate.util.Log
  */
 object Snippets {
 
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
+
   var errorHandler: (SnippetBlock, Throwable) => Unit = logError
 
   var failOnError = false
@@ -94,12 +97,12 @@ object Snippets {
     }
   }
 }
-import Snippets.log._
 
 /**
  * Represents a {snippet} block in the wiki markup
  */
 class SnippetBlock extends ParameterizedBlock {
+  import Snippets.log.warn
 
   var pattern: Pattern = Pattern.compile("\\s*\\{snippet(?::([^\\}]*))?\\}(.*)")
   var matcher: Matcher = null
@@ -146,7 +149,8 @@ class SnippetBlock extends ParameterizedBlock {
       state.setLineSegmentEndOffset(end)
     }
     setClosed(true)
-    if (end == line.length) { -1 } else { end }
+    if (end == line.length) { -1 }
+    else { end }
   }
 
   /**
@@ -156,9 +160,11 @@ class SnippetBlock extends ParameterizedBlock {
     val lines = Snippets.getSource(url).getLines()
     id match {
       case None => lines
-      case Some(snippet) => lines.dropWhile(!_.contains("START SNIPPET: " + snippet))
-        .takeWhile(!_.contains("END SNIPPET: " + snippet))
-        .drop(1)
+      case Some(snippet) =>
+        lines
+          .dropWhile(!_.contains("START SNIPPET: " + snippet))
+          .takeWhile(!_.contains("END SNIPPET: " + snippet))
+          .drop(1)
     }
   }
 
@@ -210,9 +216,7 @@ trait SnippetHandler {
 /**
  * Default handler for the {snippet} code (renders a <div class="snippet"><pre class="<language>">
  */
-case class DefaultSnippetHandler(
-  builder: DocumentBuilder,
-  language: String) extends SnippetHandler {
+case class DefaultSnippetHandler(builder: DocumentBuilder, language: String) extends SnippetHandler {
 
   def begin() = {
     builder.beginBlock(BlockType.DIV, cssClass("snippet"))

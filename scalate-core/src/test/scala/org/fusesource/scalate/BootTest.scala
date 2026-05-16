@@ -28,7 +28,7 @@ class BootTest extends TemplateTestSupport {
     val engine = new TemplateEngine()
     engine.boot()
 
-    //assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
+    // assertOutputContains(TemplateSource.fromText("foo/something.ssp", "hello world!"), "hello world!")
 
     assertResult(true, "scalate.Boot not invoked!") { MockBootstrap.initialised }
   }

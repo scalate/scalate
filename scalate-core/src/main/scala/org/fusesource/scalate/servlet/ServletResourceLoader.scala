@@ -19,24 +19,24 @@ package org.fusesource.scalate.servlet
 
 import java.io.File
 import java.net.MalformedURLException
-
 import javax.servlet.ServletContext
-import org.fusesource.scalate.util.Resource._
-import org.fusesource.scalate.util.{ FileResourceLoader, Log, ResourceLoader, ResourceNotFoundException }
+import org.fusesource.scalate.util.Resource.*
+import org.fusesource.scalate.util.FileResourceLoader
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.ResourceLoader
+import org.fusesource.scalate.util.ResourceNotFoundException
 
 object ServletResourceLoader extends Log {
   def apply(context: ServletContext) = new ServletResourceLoader(context, new FileResourceLoader())
 }
-import org.fusesource.scalate.servlet.ServletResourceLoader._
 
 /**
  * Loads files using <code>ServletContext</code>.
  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletResourceLoader(
-  context: ServletContext,
-  delegate: ResourceLoader) extends ResourceLoader {
+class ServletResourceLoader(context: ServletContext, delegate: ResourceLoader) extends ResourceLoader {
+  import ServletResourceLoader.debug
 
   override def resource(uri: String) = {
     val file = realFile(uri)
@@ -68,12 +68,14 @@ class ServletResourceLoader(
     // TODO should ideally use the Resource API as then we could try figure out
     // the actual file for URL based resources not using getRealPath
     // (which has issues sometimes with unexpanded WARs and overlays)
-    resource(uri).flatMap { r =>
-      r.toFile.find(_ != null).map(_.getPath)
-    }.getOrElse {
-      val file = realFile(uri)
-      if (file != null) file.getPath else null
-    }
+    resource(uri)
+      .flatMap { r =>
+        r.toFile.find(_ != null).map(_.getPath)
+      }
+      .getOrElse {
+        val file = realFile(uri)
+        if (file != null) file.getPath else null
+      }
   }
 
   override protected def createNotFoundException(uri: String) = {
@@ -99,11 +101,12 @@ class ServletResourceLoader(
 
     findFile(uri) match {
       case file: File => file
-      case _ => if (uri.startsWith("/") && !uri.startsWith("/WEB-INF")) {
-        findFile("/WEB-INF" + uri)
-      } else {
-        null
-      }
+      case _ =>
+        if (uri.startsWith("/") && !uri.startsWith("/WEB-INF")) {
+          findFile("/WEB-INF" + uri)
+        } else {
+          null
+        }
     }
   }
 

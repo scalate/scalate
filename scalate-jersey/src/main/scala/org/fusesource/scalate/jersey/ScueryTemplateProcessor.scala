@@ -21,13 +21,16 @@ import java.io.OutputStream
 import java.net.MalformedURLException
 import javax.ws.rs.core.Context
 import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletRequest
 import com.sun.jersey.api.view.Viewable
 import com.sun.jersey.spi.template.ViewProcessor
-import com.sun.jersey.api.core.{ HttpContext, ResourceConfig }
+import com.sun.jersey.api.core.HttpContext
+import com.sun.jersey.api.core.ResourceConfig
 import com.sun.jersey.api.container.ContainerException
 import com.sun.jersey.core.reflection.ReflectionHelper
-import org.fusesource.scalate.servlet.{ ServletHelper, TemplateEngineServlet }
+import org.fusesource.scalate.servlet.ServletHelper
+import org.fusesource.scalate.servlet.TemplateEngineServlet
 import org.fusesource.scalate.util.Log
 
 object ScueryTemplateProcessor extends Log
@@ -38,7 +41,7 @@ object ScueryTemplateProcessor extends Log
  */
 
 class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends ViewProcessor[String] {
-  import ScueryTemplateProcessor._
+  import ScueryTemplateProcessor.*
 
   @Context
   var servletContext: ServletContext = _
@@ -95,20 +98,25 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
   }
 
   def tryFindPath(path: String): Option[String] = {
-    val paths = for (prefix <- templateDirectories; postfix <- templateSuffixes) yield prefix + path + postfix
+    val paths = for {
+      prefix <- templateDirectories
+      postfix <- templateSuffixes
+    } yield prefix + path + postfix
 
-    paths.find {
-      t =>
-        debug("Trying to find template: " + t)
-        servletContext.getResource(t) ne null
+    paths.find { t =>
+      debug("Trying to find template: " + t)
+      servletContext.getResource(t) ne null
     }
   }
 
   def writeTo(resolvedPath: String, viewable: Viewable, out: OutputStream): Unit = {
     if (hc.isTracingEnabled()) {
-      hc.trace("forwarding view to Scuery template: \"%s\", it = %s".format(
-        resolvedPath,
-        ReflectionHelper.objectToString(viewable.getModel())));
+      hc.trace(
+        "forwarding view to Scuery template: \"%s\", it = %s".format(
+          resolvedPath,
+          ReflectionHelper.objectToString(viewable.getModel())
+        )
+      );
     }
 
     // Ensure headers are committed
@@ -118,7 +126,7 @@ class ScueryTemplateProcessor(@Context resourceConfig: ResourceConfig) extends V
 
       debug("Attempt to find '" + resolvedPath + "'")
 
-      //servletContext.getResourceAsStream(resolvedPath)
+      // servletContext.getResourceAsStream(resolvedPath)
 
     } catch {
       case e: Exception =>

@@ -27,6 +27,7 @@ object ServletHelper {
   /**
    * The default URIs to look for error templates
    */
-  def errorUris(errorCode: String = "500"): List[String] = TemplateEngine.templateTypes.map("/WEB-INF/scalate/errors/" + errorCode + "." + _)
+  def errorUris(errorCode: String = "500"): List[String] =
+    TemplateEngine.templateTypes.map("/WEB-INF/scalate/errors/" + errorCode + "." + _)
 
 }

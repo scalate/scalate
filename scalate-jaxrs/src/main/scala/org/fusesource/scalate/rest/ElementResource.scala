@@ -17,14 +17,13 @@
  */
 package org.fusesource.scalate.rest
 
-import javax.ws.rs.{ PUT, DELETE }
+import javax.ws.rs.PUT
+import javax.ws.rs.DELETE
 
 /**
  * @version $Revision: 1.1 $
  */
-class ElementResource[K, E](
-  element: E,
-  container: Container[K, E]) {
+class ElementResource[K, E](element: E, container: Container[K, E]) {
 
   @PUT
   def put(updatedElement: E): Unit = {

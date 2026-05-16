@@ -17,12 +17,14 @@
  */
 package org.fusesource.scalate.scuery
 
-import _root_.org.fusesource.scalate.scuery.support._
-import org.fusesource.scalate.scuery.XmlHelper._
-
+import _root_.org.fusesource.scalate.scuery.support.*
+import org.fusesource.scalate.scuery.XmlHelper.*
 import scala.collection.mutable.HashMap
 import scala.language.implicitConversions
-import scala.xml.{ Elem, Node, NodeSeq, Text }
+import scala.xml.Elem
+import scala.xml.Node
+import scala.xml.NodeSeq
+import scala.xml.Text
 
 /**
  * Allows simple XML replacement rules to be registered
@@ -67,7 +69,7 @@ class Transformer {
   def createChild: Transformer = {
     // TODO inherit transformer rules?
     val child = new Transformer()
-    //child._rules ++= _rules
+    // child._rules ++= _rules
     child
   }
 
@@ -96,7 +98,7 @@ class Transformer {
     }
 
     // Contents
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     def contents = new ContentsRuleFactory()
 
@@ -154,7 +156,7 @@ class Transformer {
     }
 
     // Attributes
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Sets the given attribute on each matching node found by this selector

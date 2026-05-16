@@ -21,13 +21,21 @@ import java.lang.annotation.Annotation
 import java.lang.reflect.Type
 import java.io.OutputStream
 import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import javax.ws.rs.ext.{ Provider, MessageBodyWriter }
-import javax.ws.rs.core.{ UriInfo, MultivaluedMap, MediaType, Context }
-import org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletRequest
+import javax.ws.rs.ext.Provider
+import javax.ws.rs.ext.MessageBodyWriter
+import javax.ws.rs.core.UriInfo
+import javax.ws.rs.core.MultivaluedMap
+import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Context
+import org.fusesource.scalate.servlet.ServletRenderContext
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import org.fusesource.scalate.servlet.ServletHelper
+import org.fusesource.scalate.servlet.TemplateEngineServlet
 import org.fusesource.scalate.TemplateException
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
-
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.ResourceNotFoundException
 import javax.ws.rs.WebApplicationException
 
 object ScalateTemplateProvider extends Log
@@ -53,15 +61,18 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
   def resolve(engine: ServletTemplateEngine, argType: Class[?]): String = {
     val argBase = argType.getName.replace('.', '/')
 
-    engine.extensions.map { ext => "/" + argBase + "." + ext }.find { path =>
-      try {
-        engine.load(path)
-        true
-      } catch {
-        case x: ResourceNotFoundException => false
-        case x: TemplateException => true
+    engine.extensions
+      .map { ext => "/" + argBase + "." + ext }
+      .find { path =>
+        try {
+          engine.load(path)
+          true
+        } catch {
+          case x: ResourceNotFoundException => false
+          case x: TemplateException => true
+        }
       }
-    }.orNull
+      .orNull
   }
 
   def isWriteable(argType: Class[?], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
@@ -76,7 +87,15 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     answer
   }
 
-  def writeTo(arg: AnyRef, argType: Class[?], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
+  def writeTo(
+    arg: AnyRef,
+    argType: Class[?],
+    genericType: Type,
+    annotations: Array[Annotation],
+    media: MediaType,
+    headers: MultivaluedMap[String, AnyRef],
+    out: OutputStream
+  ) = {
     // Ensure headers are committed
     out.flush()
 

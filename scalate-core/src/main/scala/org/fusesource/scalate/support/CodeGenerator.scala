@@ -17,14 +17,13 @@
  */
 package org.fusesource.scalate.support
 
-import org.fusesource.scalate.{ Binding, TemplateEngine, TemplateSource }
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.TemplateSource
 
 trait CodeGenerator {
 
-  def generate(
-    engine: TemplateEngine,
-    source: TemplateSource,
-    bindings: Iterable[Binding]): Code
+  def generate(engine: TemplateEngine, source: TemplateSource, bindings: Iterable[Binding]): Code
 
   val stratumName: String
 

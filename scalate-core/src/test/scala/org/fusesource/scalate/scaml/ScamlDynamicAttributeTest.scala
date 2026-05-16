@@ -50,14 +50,16 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     %a(href="foo.html" title="#{sayHello("Ben")}")
       Hey
 
-""", """<html>
+""",
+      """<html>
   <body>
     <a href="foo.html" title="Hello Ben">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+    )
   }
 
   testRender(
@@ -67,14 +69,16 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     %a(href="foo.html" title='#{sayHello("James")}')
       Hey
 
-""", """<html>
+""",
+    """<html>
   <body>
     <a href="foo.html" title="Hello James">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+  )
 
   testRender(
     "dynamic attribute expressions with string argument and no quotes",
@@ -83,14 +87,16 @@ class ScamlDynamicAttributeTest extends ScamlTestSupport {
     %a(href="foo.html" title={sayHello("Hiram")})
       Hey
 
-""", """<html>
+""",
+    """<html>
   <body>
     <a href="foo.html" title="Hello Hiram">
       Hey
     </a>
   </body>
 </html>
-""")
+"""
+  )
 
   override protected def configureTemplateEngine() = {
     engine.importStatements ::= "import org.fusesource.scalate.scaml.SampleSnippets._"

@@ -17,10 +17,8 @@
  */
 package org.fusesource.scalate.support
 
-import java.lang.Integer._
-
-import org.fusesource.scalate.support.CharData._
-
+import java.lang.Integer.*
+import org.fusesource.scalate.support.CharData.*
 import scala.language.postfixOps
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input.CharArrayReader
@@ -42,7 +40,7 @@ trait ScalaParseSupport extends RegexParsers {
 
   def chrOf(cs: Char*): Parser[Char] = elem("chrOf", ch => (cs exists (ch ==)))
 
-  def chrOf(cs: String): Parser[Char] = chrOf(cs.toIndexedSeq: _*)
+  def chrOf(cs: String): Parser[Char] = chrOf(cs.toIndexedSeq*)
 
   def takeUntil(cond: Parser[Any]): Parser[String] = takeUntil(cond, anyChar)
 
@@ -78,14 +76,16 @@ trait ScalaParseSupport extends RegexParsers {
     text(
       text("""\z""".r) ~ failure("end of file") ^^ { null } |
         guard(p) ^^ { _ => "" } |
-        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") })
+        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") }
+    )
   }
 
   def someUpto[T](p: Parser[T]): Parser[Text] = {
     text(
       text("""\z""".r) ~ failure("end of file") ^^ { null } |
         guard(p) ~ failure("expected any text before " + p) ^^ { null } |
-        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") })
+        rep1(not(p) ~> ".|\r|\n".r) ^^ { _.mkString("") }
+    )
   }
 
   lazy val octalDigit: Parser[Char] = accept("octalDigit", isOctalDigit)
@@ -97,14 +97,13 @@ trait ScalaParseSupport extends RegexParsers {
   private[this] lazy val printableChar: Parser[Char] = elem("printable", !isControl(_))
   private[this] lazy val printableCharNoDoubleQuote: Parser[Char] = elem("nodq", ch => !isControl(ch) && ch != '"')
 
-  lazy val charEscapeSeq: Parser[Char] = '\\' ~> (
-    (accept("escape", simpleEscape))
+  lazy val charEscapeSeq: Parser[Char] = '\\' ~> ((accept("escape", simpleEscape))
     | (octalEscapeSeq)
     | ('u' ~> uniEscapeSeq))
   lazy val uniEscapeSeq: Parser[Char] = (repN(4, hexDigit)) ^^ (x => parseInt(x.mkString, 16).toChar)
 
-  lazy val octalEscapeSeq: Parser[Char] = octalDigit ~ opt(octalDigit) ~ opt(octalDigit) ^^ {
-    case x ~ y ~ z => val digits = x :: List(y, z).flatMap(x => x); parseInt(digits.mkString, 8).toChar // 0377
+  lazy val octalEscapeSeq: Parser[Char] = octalDigit ~ opt(octalDigit) ~ opt(octalDigit) ^^ { case x ~ y ~ z =>
+    val digits = x :: List(y, z).flatMap(x => x); parseInt(digits.mkString, 8).toChar // 0377
   }
 
   lazy val characterLiteral: Parser[String] = squoted(charEscapeSeq | printableChar) ^^ { case x => "'" + x + "'" }

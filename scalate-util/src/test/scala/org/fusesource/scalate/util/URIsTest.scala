@@ -18,7 +18,7 @@
 package org.fusesource.scalate.util
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import org.fusesource.scalate.util.URIs._
+import org.fusesource.scalate.util.URIs.*
 
 /**
  * @version $Revision: 1.1 $

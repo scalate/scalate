@@ -19,7 +19,7 @@ package org.fusesource.scalate.page
 
 import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.util.Files
-import org.fusesource.scalate.util.IOUtil._
+import org.fusesource.scalate.util.IOUtil.*
 import java.io.File
 import java.util.Date
 
@@ -32,8 +32,7 @@ trait Node {
 /**
  * Represents a regular file which has no metadata other than of the file itself
  */
-class FileNode(
-  file: File) extends Node {
+class FileNode(file: File) extends Node {
 
   def title = Files.dropExtension(file).replace('-', ' ').split("\\s+").map(_.capitalize).mkString(" ")
 

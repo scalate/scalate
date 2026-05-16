@@ -20,6 +20,4 @@ package org.fusesource.scalate
 /**
  * All the various implicit conversions for the scuery package
  */
-package object scuery extends ScueryConversions {
-
-}
+package object scuery extends ScueryConversions {}

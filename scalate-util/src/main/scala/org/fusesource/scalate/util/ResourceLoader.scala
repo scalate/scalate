@@ -19,10 +19,9 @@ package org.fusesource.scalate.util
 
 import java.net.URI
 import java.io.File
-import Resource._
+import org.fusesource.scalate.util.Resource.*
 
 object ResourceLoader extends Log
-import ResourceLoader._
 
 /**
  * A strategy for loading [[Resource]] instances
@@ -30,6 +29,8 @@ import ResourceLoader._
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 trait ResourceLoader {
+  import ResourceLoader.debug
+
   val pageFileEncoding = "UTF-8"
 
   def resource(uri: String): Option[Resource]
@@ -59,6 +60,7 @@ trait ResourceLoader {
 }
 
 case class FileResourceLoader(sourceDirectories: Iterable[File] = Iterable.empty) extends ResourceLoader {
+  import ResourceLoader.debug
 
   def resource(uri: String): Option[Resource] = {
     debug("Trying to load uri: " + uri)
@@ -94,7 +96,8 @@ case class FileResourceLoader(sourceDirectories: Iterable[File] = Iterable.empty
 }
 
 class ResourceNotFoundException(resource: String, root: String = "", description: String = "")
-  extends Exception(
-    "Could not load resource: [" + resource +
-      (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
-      (if (description == "") "" else ". " + description))
+    extends Exception(
+      "Could not load resource: [" + resource +
+        (if (root == "") "]" else "]; are you sure it's within [" + root + "]?") +
+        (if (description == "") "" else ". " + description)
+    )

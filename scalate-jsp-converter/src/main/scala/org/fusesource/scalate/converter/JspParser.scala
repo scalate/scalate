@@ -18,51 +18,43 @@
 package org.fusesource.scalate.converter
 
 import org.fusesource.scalate.TemplateException
-import util.parsing.input.{ Positional, CharSequenceReader, NoPosition, Position }
+import util.parsing.input.Positional
+import util.parsing.input.CharSequenceReader
+import util.parsing.input.NoPosition
+import util.parsing.input.Position
 import org.fusesource.scalate.support.Text
 
-sealed abstract class PageFragment extends Positional {
-}
+sealed abstract class PageFragment extends Positional {}
 
-case class QualifiedName(
-  prefix: String,
-  name: String) extends Positional {
+case class QualifiedName(prefix: String, name: String) extends Positional {
 
   val qualifiedName = prefix + ":" + name
 
   override def toString = qualifiedName
 }
 
-case class Attribute(
-  name: String,
-  value: Expression) extends Positional
+case class Attribute(name: String, value: Expression) extends Positional
 
-case class CommentFragment(
-  comment: Text) extends PageFragment
+case class CommentFragment(comment: Text) extends PageFragment
 
-case class DollarExpressionFragment(
-  code: Text) extends PageFragment {
+case class DollarExpressionFragment(code: Text) extends PageFragment {
 
   val toScala = ExpressionLanguage.asScala(code.toString)
 
   override def toString = "${" + toScala + "}"
 }
 
-case class TextFragment(
-  text: Text) extends PageFragment {
+case class TextFragment(text: Text) extends PageFragment {
 
   override def toString = text.toString
 
 }
 
-case class Element(
-  qname: QualifiedName,
-  attributes: List[Attribute],
-  body: List[PageFragment]) extends PageFragment {
+case class Element(qname: QualifiedName, attributes: List[Attribute], body: List[PageFragment]) extends PageFragment {
 
   val qualifiedName = qname.qualifiedName
 
-  lazy val attributeMap: Map[String, Expression] = Map(attributes.map(a => a.name -> a.value): _*)
+  lazy val attributeMap: Map[String, Expression] = Map(attributes.map(a => a.name -> a.value)*)
 
   /**
    * Returns the mandatory expression for the given attribute name or throw an expression if its not found
@@ -104,8 +96,8 @@ class JspParser extends MarkupScanner {
 
   def markup: Parser[PageFragment] = element | emptyElement
 
-  def emptyElement = (openElement("/>")) ^^ {
-    case q ~ al => Element(q, al, Nil)
+  def emptyElement = (openElement("/>")) ^^ { case q ~ al =>
+    Element(q, al, Nil)
   }
 
   def element = (openElement(">") ~ rep(markup | expression | elementTextContent) ~ closeElement) ^^ {
@@ -114,7 +106,9 @@ class JspParser extends MarkupScanner {
       Element(q, al, b)
   }
 
-  def qualifiedName: Parser[QualifiedName] = positioned(((IDENT <~ ":") ~ IDENT) ^^ { case p ~ n => QualifiedName(p, n) })
+  def qualifiedName: Parser[QualifiedName] = positioned(((IDENT <~ ":") ~ IDENT) ^^ { case p ~ n =>
+    QualifiedName(p, n)
+  })
 
   def openElement(end: String) = "<" ~> qualifiedName ~ attributeList <~ end
 
@@ -129,6 +123,5 @@ class JspParser extends MarkupScanner {
   def toExpression(text: String) = expressionParser.parseExpression(text)
 }
 
-class InvalidJspException(
-  val brief: String,
-  val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)
+class InvalidJspException(val brief: String, val pos: Position = NoPosition)
+    extends TemplateException(brief + " at " + pos)

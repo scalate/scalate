@@ -18,9 +18,9 @@
 package org.fusesource.scalate.servlet
 
 import java.util.Enumeration
-
-import javax.servlet.{ FilterConfig, ServletConfig, ServletContext }
-
+import javax.servlet.FilterConfig
+import javax.servlet.ServletConfig
+import javax.servlet.ServletContext
 import scala.language.implicitConversions
 
 object Config {

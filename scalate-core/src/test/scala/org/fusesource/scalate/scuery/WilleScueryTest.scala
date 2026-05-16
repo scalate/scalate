@@ -10,12 +10,11 @@ class WilleScueryTest extends FunSuiteSupport {
 
     object transformer extends Transformer {
       $(".person") { node =>
-        people.flatMap {
-          p =>
-            new Transform(node) {
-              $(".name").contents = p.name
-              $(".location").contents = p.location
-            }
+        people.flatMap { p =>
+          new Transform(node) {
+            $(".name").contents = p.name
+            $(".location").contents = p.location
+          }
         }
       }
     }
@@ -55,4 +54,3 @@ class WilleScueryTest extends FunSuiteSupport {
               </table>
             </div>
 }
-

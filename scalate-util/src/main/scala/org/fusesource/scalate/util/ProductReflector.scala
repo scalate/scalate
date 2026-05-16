@@ -34,14 +34,27 @@ object ProductReflector {
   }
 
   def accessorMethods(c: Class[?]) = {
-    val predefined = List("copy$default$1", "copy$default$2", "curry", "curried", "$tag", "productArity", "productElements", "productIterator", "productPrefix", "hashCode", "toString", "tuple", "tupled")
+    val predefined = List(
+      "copy$default$1",
+      "copy$default$2",
+      "curry",
+      "curried",
+      "$tag",
+      "productArity",
+      "productElements",
+      "productIterator",
+      "productPrefix",
+      "hashCode",
+      "toString",
+      "tuple",
+      "tupled"
+    )
 
-    c.getMethods.toList.filter {
-      n =>
-        (n.getParameterTypes.size == 0) &&
-          (n.getDeclaringClass != classOf[Object]) &&
-          !predefined.exists(_ == n.getName) &&
-          !n.getName.matches("_\\d+")
+    c.getMethods.toList.filter { n =>
+      (n.getParameterTypes.size == 0) &&
+      (n.getDeclaringClass != classOf[Object]) &&
+      !predefined.exists(_ == n.getName) &&
+      !n.getName.matches("_\\d+")
     }
   }
 }

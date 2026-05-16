@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.util
 
-import _root_.java.lang.{ Throwable, String }
-import org.slf4j.{ MDC, LoggerFactory }
-
+import _root_.java.lang.Throwable
+import _root_.java.lang.String
+import org.slf4j.MDC
+import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -30,7 +31,9 @@ object Log {
     override lazy val log = LoggerFactory.getLogger(name)
   }
   def apply(clazz: Class[?]): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#"))
-  def apply(clazz: Class[?], suffix: String): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#") + "." + suffix)
+  def apply(clazz: Class[?], suffix: String): Log = apply(
+    clazz.getName.replace("$", "#").stripSuffix("#") + "." + suffix
+  )
 
   val exception_id_generator = new AtomicLong(System.currentTimeMillis)
   def next_exception_id = exception_id_generator.incrementAndGet.toHexString
@@ -40,7 +43,7 @@ object Log {
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 trait Log {
-  import Log._
+  import Log.*
 
   lazy val log = LoggerFactory.getLogger(getClass.getName.replace("$", "#").stripSuffix("#"))
 
@@ -67,7 +70,7 @@ trait Log {
     if (args.isEmpty) {
       message
     } else {
-      message.format(args.map(_.asInstanceOf[AnyRef]): _*)
+      message.format(args.map(_.asInstanceOf[AnyRef])*)
     }
   }
 

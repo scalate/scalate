@@ -19,24 +19,23 @@ package org.fusesource.scalate.mustache
 
 import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.introspector.Introspector
-
-import xml.{ NodeSeq, XML }
+import xml.NodeSeq
+import xml.XML
 
 /**
  * Scope for the render context
  */
-case class RenderContextScope(
-  context: RenderContext,
-  defaultObjectName: Option[String] = Some("it")) extends Scope {
+case class RenderContextScope(context: RenderContext, defaultObjectName: Option[String] = Some("it")) extends Scope {
 
   // lets create a parent scope which is the defaultObject scope so we look there last
   val rootScope = MarkupAttributeContextScope(context, "html")
 
   val _parent: Option[Scope] = defaultObjectName match {
-    case Some(name) => apply(name) match {
-      case Some(value) => Some(rootScope.createScope(name, value))
-      case _ => Some(rootScope)
-    }
+    case Some(name) =>
+      apply(name) match {
+        case Some(value) => Some(rootScope.createScope(name, value))
+        case _ => Some(rootScope)
+      }
     case _ => Some(rootScope)
   }
 
@@ -51,9 +50,7 @@ case class RenderContextScope(
  * A context intended for use in layouts which looks up an attribute in the render context and if it exists
  * returns a new child scope for walking the templates markup
  */
-case class MarkupAttributeContextScope(
-  context: RenderContext,
-  attributeName: String) extends Scope {
+case class MarkupAttributeContextScope(context: RenderContext, attributeName: String) extends Scope {
 
   def parent = None
 
@@ -84,28 +81,21 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
   def context = parentScope.context
 }
 
-class MapScope(
-  parent: Scope,
-  name: String,
-  map: collection.Map[String, ?]) extends ChildScope(parent) {
+class MapScope(parent: Scope, name: String, map: collection.Map[String, ?]) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = map.get(name)
 
   def hasVariable(name: String): Boolean = map.keySet.contains(name)
 }
 
-class NodeScope(
-  parent: Scope,
-  name: String,
-  node: NodeSeq) extends ChildScope(parent) {
+class NodeScope(parent: Scope, name: String, node: NodeSeq) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = Some(node \ name)
 
   def hasVariable(name: String): Boolean = true
 }
 
-class EmptyScope(
-  parent: Scope) extends ChildScope(parent) {
+class EmptyScope(parent: Scope) extends ChildScope(parent) {
 
   def localVariable(name: String) = None
 
@@ -115,9 +105,7 @@ class EmptyScope(
 /**
  * Constructs a scope for a non-null and not None value
  */
-class ObjectScope[T <: AnyRef](
-  parent: Scope,
-  value: T) extends ChildScope(parent) {
+class ObjectScope[T <: AnyRef](parent: Scope, value: T) extends ChildScope(parent) {
 
   val introspector = Introspector[T](value.getClass.asInstanceOf[Class[T]])
 
@@ -128,5 +116,4 @@ class ObjectScope[T <: AnyRef](
   override def iteratorObject = Some(value)
 }
 
-case class FunctionResult(
-  value: Any)
+case class FunctionResult(value: Any)

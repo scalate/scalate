@@ -25,19 +25,25 @@ import org.fusesource.scalate.test.TemplateTestSupport
 class PageFilterTest extends TemplateTestSupport {
 
   test("example 1") {
-    assertUriOutput("""<h1 id = "FAQ">FAQ</h1>
+    assertUriOutput(
+      """<h1 id = "FAQ">FAQ</h1>
 
 <ul>
 <li>This is the default page part</li>
 <li>It's name is content.</li>
-</ul>""", "example1.page")
+</ul>""",
+      "example1.page"
+    )
   }
 
   test("example 2") {
-    assertUriOutput("""<script type='text/javascript'>
+    assertUriOutput(
+      """<script type='text/javascript'>
   //<![CDATA[
     var t = "Hello World"
   //]]>
-</script>""", "example2.page")
+</script>""",
+      "example2.page"
+    )
   }
 }

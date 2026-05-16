@@ -35,16 +35,13 @@ class TransformContentsWithLoopTest extends FunSuiteSupport {
   test("transform contents") {
 
     object transformer extends Transformer {
-      $(".people").contents {
-        node =>
-          people.flatMap {
-            p =>
-              transform(node.$("li:first-child")) {
-                $ =>
-                  $("a.person").contents = p.name
-                  $("a.person").attribute("href").value = "http://acme.com/bookstore/" + p.name
-              }
+      $(".people").contents { node =>
+        people.flatMap { p =>
+          transform(node.$("li:first-child")) { $ =>
+            $("a.person").contents = p.name
+            $("a.person").attribute("href").value = "http://acme.com/bookstore/" + p.name
           }
+        }
       }
     }
 

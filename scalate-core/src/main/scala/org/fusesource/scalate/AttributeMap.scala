@@ -18,7 +18,9 @@
 package org.fusesource.scalate
 
 import scala.collection.Set
-import scala.collection.mutable.{ LinkedHashSet, ListBuffer, ListMap }
+import scala.collection.mutable.LinkedHashSet
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ListMap
 
 /**
  * Represents a small map like thing which is easy to implement on top of any attribute storage mechanism without

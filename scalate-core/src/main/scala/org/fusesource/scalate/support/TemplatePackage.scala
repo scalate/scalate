@@ -18,9 +18,10 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util.{ ClassLoaders, Log }
-import org.fusesource.scalate.{ Binding, TemplateSource }
-
+import org.fusesource.scalate.util.ClassLoaders
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateSource
 import scala.annotation.tailrec
 
 /**
@@ -36,7 +37,7 @@ abstract class TemplatePackage {
 }
 
 object TemplatePackage {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   val scalatePackageClassName = "ScalatePackage"
 
@@ -46,10 +47,11 @@ object TemplatePackage {
   def findTemplatePackage(source: TemplateSource): Option[TemplatePackage] = {
     @tailrec
     def packageWalk(packageName: String): Option[TemplatePackage] = {
-      val className = if (isEmpty(packageName))
-        scalatePackageClassName
-      else
-        packageName + "." + scalatePackageClassName
+      val className =
+        if (isEmpty(packageName))
+          scalatePackageClassName
+        else
+          packageName + "." + scalatePackageClassName
 
       debug("Trying to find Scalate Package class: " + className)
 
@@ -60,8 +62,10 @@ object TemplatePackage {
 
         case _ =>
           if (isEmpty(packageName)) {
-            debug("No ScalatePackage class found from templates package: " + source.packageName +
-              " on the class loaders: " + ClassLoaders.defaultClassLoaders)
+            debug(
+              "No ScalatePackage class found from templates package: " + source.packageName +
+                " on the class loaders: " + ClassLoaders.defaultClassLoaders
+            )
             None
           } else {
             // lets iterate up the package tree looking for a class

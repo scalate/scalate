@@ -18,9 +18,11 @@
 package org.fusesource.scalate.scuery.support
 
 import util.parsing.combinator.RegexParsers
-import util.parsing.input.{ CharSequenceReader, NoPosition, Position }
+import util.parsing.input.CharSequenceReader
+import util.parsing.input.NoPosition
+import util.parsing.input.Position
 import org.fusesource.scalate.TemplateException
-import org.fusesource.scalate.scuery._
+import org.fusesource.scalate.scuery.*
 
 class CssScanner extends RegexParsers {
   override def skipWhitespace = false
@@ -53,10 +55,14 @@ class CssScanner extends RegexParsers {
   def STRING = string1 | string2
 
   // string1   \"([^\n\r\f\\"]|\\{nl}|{nonascii}|{escape})*\"
-  private[this] val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ { case l => l.mkString("") }
+  private[this] val string1 = ("\"" ~> rep("""[^\n\r\f\\"]""".r | ("\\" + nl).r | nonascii | escape) <~ "\"") ^^ {
+    case l => l.mkString("")
+  }
 
   // string2   \'([^\n\r\f\\']|\\{nl}|{nonascii}|{escape})*\'
-  private[this] val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ { case l => l.mkString("") }
+  private[this] val string2 = ("'" ~> rep("""[^\n\r\f\']""".r | ("\\" + nl).r | nonascii | escape) <~ "'") ^^ {
+    case l => l.mkString("")
+  }
 
   // nl        \n|\r\n|\r|\f
   private[this] val nl = """\n|\r\n|\r|\f"""
@@ -133,28 +139,27 @@ class CssParser extends CssScanner {
   //  selector
   //    : simple_selector_sequence [ combinator simple_selector_sequence ]*
 
-  def selector = (simple_selector_sequence ~ rep(combinator_simple_selector_sequence)) ^^ {
-    case s ~ cs =>
-      if (cs.isEmpty) {
-        s
-      } else {
-        Selector(s, cs)
-      }
+  def selector = (simple_selector_sequence ~ rep(combinator_simple_selector_sequence)) ^^ { case s ~ cs =>
+    if (cs.isEmpty) {
+      s
+    } else {
+      Selector(s, cs)
+    }
   }
 
   //  combinator
   //    /* combinators can be surrounded by whitespace */
   //    : PLUS S* | GREATER S* | TILDE S* | S+
 
-  def combinator_simple_selector_sequence = (((repS ~> (PLUS | GREATER | TILDE) <~ repS) | rep1S) ~ simple_selector_sequence) ^^ {
-    case c ~ s =>
+  def combinator_simple_selector_sequence =
+    (((repS ~> (PLUS | GREATER | TILDE) <~ repS) | rep1S) ~ simple_selector_sequence) ^^ { case c ~ s =>
       c match {
         case ">" => ChildCombinator(s)
         case "+" => AdjacentSiblingdCombinator(s)
         case "~" => GeneralSiblingCombinator(s)
         case _ => DescendantCombinator(s)
       }
-  }
+    }
 
   //  simple_selector_sequence
   //    : [ type_selector | universal ]
@@ -172,8 +177,8 @@ class CssParser extends CssScanner {
   //  type_selector
   //    : [ namespace_prefix ]? element_name
 
-  def type_selector = (opt(namespace_prefix) ~ element_name) ^^ {
-    case on ~ e => on match {
+  def type_selector = (opt(namespace_prefix) ~ element_name) ^^ { case on ~ e =>
+    on match {
       case Some(n) => Selector(n :: e :: Nil)
       case _ => e
     }
@@ -182,8 +187,8 @@ class CssParser extends CssScanner {
   //  namespace_prefix
   //    : [ IDENT | '*' ]? '|'
 
-  def namespace_prefix = ((opt(IDENT | "*")) <~ "|") ^^ {
-    case o => o match {
+  def namespace_prefix = ((opt(IDENT | "*")) <~ "|") ^^ { case o =>
+    o match {
       case Some("*") => AnySelector
       case Some(prefix) => NamespacePrefixSelector(prefix)
       case _ => NoNamespaceSelector
@@ -198,8 +203,8 @@ class CssParser extends CssScanner {
   //  universal
   //    : [ namespace_prefix ]? '*'
 
-  def universal = (opt(namespace_prefix) <~ "*") ^^ {
-    case op => op match {
+  def universal = (opt(namespace_prefix) <~ "*") ^^ { case op =>
+    op match {
       case Some(p) => p
       case _ => AnyElementSelector
     }
@@ -222,34 +227,33 @@ class CssParser extends CssScanner {
   //              DASHMATCH ] S* [ IDENT | STRING ] S*
   //          ]? ']'
 
-  def attrib = (("[" ~ repS) ~> attribute_name ~ opt(attribute_value) <~ "]") ^^ {
-    case np ~ i ~ v =>
-      val matcher = v match {
-        case Some(v) => v
-        case _ => MatchesAny
-      }
-      np match {
-        case Some(p) => p match {
+  def attrib = (("[" ~ repS) ~> attribute_name ~ opt(attribute_value) <~ "]") ^^ { case np ~ i ~ v =>
+    val matcher = v match {
+      case Some(v) => v
+      case _ => MatchesAny
+    }
+    np match {
+      case Some(p) =>
+        p match {
           case p: NamespacePrefixSelector => NamespacedAttributeNameSelector(i, p.prefix, matcher)
           case _ => AttributeNameSelector(i, matcher)
         }
-        case _ => AttributeNameSelector(i, matcher)
-      }
+      case _ => AttributeNameSelector(i, matcher)
+    }
   }
 
   def attribute_name = opt(namespace_prefix) ~ IDENT <~ repS
 
   def attribute_value = ((PREFIXMATCH | SUFFIXMATCH | SUBSTRINGMATCH | "=" | INCLUDES | DASHMATCH) <~ repS) ~
-    ((IDENT | STRING) <~ repS) ^^ {
-      case p ~ i =>
-        p match {
-          case PREFIXMATCH => PrefixMatch(i)
-          case SUFFIXMATCH => SuffixMatch(i)
-          case SUBSTRINGMATCH => SubstringMatch(i)
-          case "=" => EqualsMatch(i)
-          case INCLUDES => IncludesMatch(i)
-          case DASHMATCH => DashMatch(i)
-        }
+    ((IDENT | STRING) <~ repS) ^^ { case p ~ i =>
+      p match {
+        case PREFIXMATCH => PrefixMatch(i)
+        case SUFFIXMATCH => SuffixMatch(i)
+        case SUBSTRINGMATCH => SubstringMatch(i)
+        case "=" => EqualsMatch(i)
+        case INCLUDES => IncludesMatch(i)
+        case DASHMATCH => DashMatch(i)
+      }
     }
 
   //  pseudo
@@ -267,7 +271,9 @@ class CssParser extends CssScanner {
   //    : FUNCTION S* expression ')'
 
   def functional_pseudo = (IDENT <~ ("(" ~ repS)) ~ (expression <~ ")") ^^ { case f ~ e => Selector.pseudoFunction(f) }
-  def functional_nth_pseudo = ("nth-" ~> IDENT <~ ("(" ~ repS)) ~ (repS ~> nth <~ ")") ^^ { case f ~ e => Selector.pseudoFunction("nth-" + f, e) }
+  def functional_nth_pseudo = ("nth-" ~> IDENT <~ ("(" ~ repS)) ~ (repS ~> nth <~ ")") ^^ { case f ~ e =>
+    Selector.pseudoFunction("nth-" + f, e)
+  }
 
   //  expression
   //    /* In CSS3, the expressions are identifiers, strings, */
@@ -282,23 +288,26 @@ class CssParser extends CssScanner {
   def nth = (opt("-" | "+") ~ (opt(integer) <~ N) ~ opt((repS ~> ("-" | "+") <~ repS) ~ integer)) ^^ {
     case os ~ on ~ on2 =>
       val a = on match {
-        case Some(n) => if (os == Some("-")) { n * -1 } else { n }
+        case Some(n) =>
+          if (os == Some("-")) { n * -1 }
+          else { n }
         case _ => 0
       }
       val b = on2 match {
         case Some(s ~ i) =>
-          if (s == "-") { i * -1 } else { i }
+          if (s == "-") { i * -1 }
+          else { i }
         case _ => 0
       }
       NthCounter(a, b)
-  } | (opt("-" | "+") ~ integer) ^^ {
-    case os ~ i =>
-      val b = if (os == Some("-")) { i * -1 } else { i }
-      NthCounter(0, b)
-  } | (O ~ D ~ D) ^^ {
-    case _ => OddCounter
-  } | (E ~ V ~ E ~ N) ^^ {
-    case _ => EvenCounter
+  } | (opt("-" | "+") ~ integer) ^^ { case os ~ i =>
+    val b = if (os == Some("-")) { i * -1 }
+    else { i }
+    NthCounter(0, b)
+  } | (O ~ D ~ D) ^^ { case _ =>
+    OddCounter
+  } | (E ~ V ~ E ~ N) ^^ { case _ =>
+    EvenCounter
   }
 
   def integer = INTEGER ^^ { Integer.parseInt(_) }
@@ -314,4 +323,5 @@ class CssParser extends CssScanner {
 
 }
 
-class InvalidCssSelectorException(val brief: String, val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos)
+class InvalidCssSelectorException(val brief: String, val pos: Position = NoPosition)
+    extends TemplateException(brief + " at " + pos)

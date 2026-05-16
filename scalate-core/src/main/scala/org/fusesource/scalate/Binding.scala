@@ -18,7 +18,6 @@
 package org.fusesource.scalate
 
 import org.fusesource.scalate.ssp.SspParser
-
 import scala.reflect.ClassTag
 import scala.util.parsing.input.Positional
 
@@ -35,7 +34,8 @@ case class Binding(
   kind: String = "val",
   isImplicit: Boolean = false,
   classNamePositional: Option[Positional] = None,
-  defaultValuePositional: Option[Positional] = None) {
+  defaultValuePositional: Option[Positional] = None
+) {
 
   def classNamePositionalOrText: String = classNamePositional match {
     case Some(positional) => positional.toString
@@ -60,6 +60,7 @@ object Binding {
     importMembers: Boolean = false,
     defaultValue: Option[String] = None,
     kind: String = "val",
-    isImplicit: Boolean = false)(implicit m: ClassTag[T]) =
+    isImplicit: Boolean = false
+  )(implicit m: ClassTag[T]) =
     new Binding(name, m.runtimeClass.getName, importMembers, defaultValue, kind, isImplicit)
 }

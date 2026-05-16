@@ -46,7 +46,11 @@ import org.fusesource.scalate.TemplateTestSupport
 class DottedNamesTest extends TemplateTestSupport {
   // Dotted names should be considered a form of shorthand for sections.
   test("Basic Interpolation") {
-    assertMoustacheOutput("'Joe' == 'Joe'", "'{{person.name}}' == '{{#person}}{{name}}{{/person}}'", Map("person" -> Map("name" -> "Joe")))
+    assertMoustacheOutput(
+      "'Joe' == 'Joe'",
+      "'{{person.name}}' == '{{#person}}{{name}}{{/person}}'",
+      Map("person" -> Map("name" -> "Joe"))
+    )
   }
 
   // Dotted names should be considered a form of shorthand for sections.
@@ -57,11 +61,19 @@ class DottedNamesTest extends TemplateTestSupport {
   }
 
   test("Nested section") {
-    assertMoustacheOutput("'Joe' == 'Joe'", "'{{details.person.name}}' == '{{#details}}{{#person}}{{name}}{{/person}}{{/details}}'", Map("details" -> Map("person" -> Map("name" -> "Joe"))))
+    assertMoustacheOutput(
+      "'Joe' == 'Joe'",
+      "'{{details.person.name}}' == '{{#details}}{{#person}}{{name}}{{/person}}{{/details}}'",
+      Map("details" -> Map("person" -> Map("name" -> "Joe")))
+    )
   }
 
   test("Dotted name section") {
-    assertMoustacheOutput("'Joe' == 'Joe'", "'{{details.person.name}}' == '{{#details.person}}{{name}}{{/details.person}}'", Map("details" -> Map("person" -> Map("name" -> "Joe"))))
+    assertMoustacheOutput(
+      "'Joe' == 'Joe'",
+      "'{{details.person.name}}' == '{{#details.person}}{{name}}{{/details.person}}'",
+      Map("details" -> Map("person" -> Map("name" -> "Joe")))
+    )
   }
 
   // Dotted names should be considered a form of shorthand for sections.
@@ -74,12 +86,20 @@ class DottedNamesTest extends TemplateTestSupport {
 
   // Dotted names should be considered a form of shorthand for sections.
   test("Ampersand Interpolation") {
-    assertMoustacheOutput("'Joe' == 'Joe'", "'{{&person.name}}' == '{{#person}}{{&name}}{{/person}}'", Map("person" -> Map("name" -> "Joe")))
+    assertMoustacheOutput(
+      "'Joe' == 'Joe'",
+      "'{{&person.name}}' == '{{#person}}{{&name}}{{/person}}'",
+      Map("person" -> Map("name" -> "Joe"))
+    )
   }
 
   // Dotted names should be functional to any level of nesting.
   test("Arbitrary Depth") {
-    assertMoustacheOutput("'Phil' == 'Phil'", "'{{a.b.c.d.e.name}}' == 'Phil'", Map("a" -> Map("b" -> Map("c" -> Map("d" -> Map("e" -> Map("name" -> "Phil")))))))
+    assertMoustacheOutput(
+      "'Phil' == 'Phil'",
+      "'{{a.b.c.d.e.name}}' == 'Phil'",
+      Map("a" -> Map("b" -> Map("c" -> Map("d" -> Map("e" -> Map("name" -> "Phil"))))))
+    )
   }
 
   // Any falsey value prior to the last part of the name should yield "".
@@ -89,9 +109,7 @@ class DottedNamesTest extends TemplateTestSupport {
 
   // Each part of a dotted name should resolve only against its parent.
   test("Broken Chain Resolution") {
-    val data = Map(
-      "a" -> Map("b" -> Map()),
-      "c" -> Map("name" -> "Jim"))
+    val data = Map("a" -> Map("b" -> Map()), "c" -> Map("name" -> "Jim"))
     assertMoustacheOutput("'' == ''", "'{{a.b.c.name}}' == ''", data)
   }
 
@@ -100,32 +118,26 @@ class DottedNamesTest extends TemplateTestSupport {
     val data =
       Map(
         "a" -> Map("b" -> Map("c" -> Map("d" -> Map("e" -> Map("name" -> "Phil"))))),
-        "b" -> Map("c" -> Map("d" -> Map("e" -> Map("name" -> "Wrong")))))
+        "b" -> Map("c" -> Map("d" -> Map("e" -> Map("name" -> "Wrong"))))
+      )
     assertMoustacheOutput("'Phil' == 'Phil'", "'{{#a}}{{b.c.d.e.name}}{{/a}}' == 'Phil'", data)
   }
 
   // Dotted names should be resolved against former resolutions.
   test("Context Precedence") {
-    val data = Map(
-      "a" -> Map("b" -> Map()),
-      "b" -> Map("c" -> "ERROR"))
+    val data = Map("a" -> Map("b" -> Map()), "b" -> Map("c" -> "ERROR"))
     assertMoustacheOutput("", "{{#a}}{{b.c}}{{/a}}", data)
   }
 
   test("Context Precedence2") {
-    val data = Map(
-      "a" -> Map("b" -> "James"),
-      "b" -> "ERROR")
+    val data = Map("a" -> Map("b" -> "James"), "b" -> "ERROR")
     assertMoustacheOutput("James", "{{#a}}{{b}}{{/a}}", data)
   }
 
   test("List test 1") {
     val names = List("Hiram", "James")
 
-    assertMoustacheOutput(
-      "start <Hiram> <James> end",
-      "start {{#names}}<{{.}}> {{/names}}end",
-      Map("names" -> names))
+    assertMoustacheOutput("start <Hiram> <James> end", "start {{#names}}<{{.}}> {{/names}}end", Map("names" -> names))
   }
 
   test("List test 2") {
@@ -134,7 +146,8 @@ class DottedNamesTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "start <Hiram> <James> end",
       "start {{#persons}}<{{name}}> {{/persons}}end",
-      Map("persons" -> persons))
+      Map("persons" -> persons)
+    )
   }
 
   test("List test 3") {
@@ -143,8 +156,8 @@ class DottedNamesTest extends TemplateTestSupport {
     assertMoustacheOutput(
       "start <Hiram> <James> end",
       "start {{#all.persons}}<{{name}}> {{/all.persons}}end",
-      Map("all" -> Map("persons" -> persons)))
+      Map("all" -> Map("persons" -> persons))
+    )
   }
 
 }
-

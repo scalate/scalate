@@ -27,7 +27,9 @@ import _root_.java.io.File
 object DisplaySourceDebugInfo extends Log {
 
   def main(args: Array[String]) = {
-    val fileName = if (args.size > 0) args(0) else "scalate-sample/src/main/webapp/WEB-INF/_scalate/classes/scaml/$_scalate_$missingAttribute_scaml$.class"
+    val fileName =
+      if (args.size > 0) args(0)
+      else "scalate-sample/src/main/webapp/WEB-INF/_scalate/classes/scaml/$_scalate_$missingAttribute_scaml$.class"
     log.info("Loading class file: " + fileName)
 
     val file = new File(fileName)

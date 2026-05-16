@@ -18,7 +18,9 @@
 package org.fusesource.scalate.mustache
 
 import util.parsing.combinator.RegexParsers
-import util.parsing.input.{ Positional, CharSequenceReader, Position }
+import util.parsing.input.Positional
+import util.parsing.input.CharSequenceReader
+import util.parsing.input.Position
 import org.fusesource.scalate.InvalidSyntaxException
 import org.fusesource.scalate.util.Log
 
@@ -58,7 +60,7 @@ object MustacheParser extends Log
  */
 class MustacheParser extends RegexParsers {
 
-  import MustacheParser._
+  import MustacheParser.*
 
   private[this] var _open: String = "{{"
   private[this] var _close: String = "}}"
@@ -71,13 +73,14 @@ class MustacheParser extends RegexParsers {
   }
 
   // Grammar
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
   def mustache: Parser[List[Statement]] = rep(statement | someText)
 
   def someText: Parser[Statement] = upto(open)
 
-  def statement: Parser[Statement] = unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
-    failure("invalid statement")
+  def statement: Parser[Statement] =
+    unescapeVariable | partial | pragma | section | invert | comment | setDelimiter | variable |
+      failure("invalid statement")
 
   def unescapeVariable: Parser[Statement] = unescapeVariableAmp | unescapeVariableMustash
 
@@ -85,26 +88,25 @@ class MustacheParser extends RegexParsers {
 
   def unescapeVariableMustash: Parser[Statement] = expression("{" ~> trimmed <~ "}" ^^ { Variable(_, true) })
 
-  def section: Parser[Statement] = positioned(nested("#") ^^ {
-    case (name, body) => Section(name, body)
+  def section: Parser[Statement] = positioned(nested("#") ^^ { case (name, body) =>
+    Section(name, body)
   })
 
-  def invert: Parser[Statement] = positioned(nested("^") ^^ {
-    case (name, body) => InvertSection(name, body)
+  def invert: Parser[Statement] = positioned(nested("^") ^^ { case (name, body) =>
+    InvertSection(name, body)
   })
 
   def partial = expression(operation(">") ^^ { Partial(_) })
 
-  def pragma = expression(operation("%") ~ rep(option) ^^ {
-    case p ~ o =>
-      val options = Map(o: _*)
-      p match {
-        case Text("IMPLICIT-ITERATOR") =>
-          val name = options.getOrElse("iterator", ".")
-          ImplicitIterator(name)
-        case _ =>
-          Pragma(p, options)
-      }
+  def pragma = expression(operation("%") ~ rep(option) ^^ { case p ~ o =>
+    val options = Map(o*)
+    p match {
+      case Text("IMPLICIT-ITERATOR") =>
+        val name = options.getOrElse("iterator", ".")
+        ImplicitIterator(name)
+      case _ =>
+        Pragma(p, options)
+    }
   })
 
   def option = trimmed ~ ("=" ~> trimmed) ^^ { case n ~ v => n.value -> v.value }
@@ -113,18 +115,17 @@ class MustacheParser extends RegexParsers {
 
   def variable = expression(trimmed ^^ { Variable(_, false) })
 
-  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ {
-    case a ~ b => SetDelimiter(a, b)
-  }) <~ opt(whiteSpace) ^^ {
-    case a: SetDelimiter =>
-      _open = a.open.value
-      _close = a.close.value
-      debug("applying new delim '" + a)
-      a
+  def setDelimiter = expression(("=" ~> text("""\S+""".r) <~ " ") ~ (upto("=" ~ close) <~ ("=")) ^^ { case a ~ b =>
+    SetDelimiter(a, b)
+  }) <~ opt(whiteSpace) ^^ { case a: SetDelimiter =>
+    _open = a.open.value
+    _close = a.close.value
+    debug("applying new delim '" + a)
+    a
   }
 
   // Helper methods
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   def open = eval(_open)
 
@@ -132,11 +133,12 @@ class MustacheParser extends RegexParsers {
 
   def operation(prefix: String): Parser[Text] = trim(prefix) ~> trimmed
 
-  def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ { case x => Text(x.value) }) >> {
-    case name: Text =>
-      opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ {
-        case body => (name, body)
-      } | error("Missing section end '" + _open + "/" + name + _close + "' for section beginning", name.pos)
+  def nested(prefix: String): Parser[(Text, List[Statement])] = expression(operation(prefix) ^^ { case x =>
+    Text(x.value)
+  }) >> { case name: Text =>
+    opt(whiteSpace) ~> mustache <~ expression(trim("/") ~> trim(text(name.value))) <~ opt(whiteSpace) ^^ { case body =>
+      (name, body)
+    } | error("Missing section end '" + _open + "/" + name + _close + "' for section beginning", name.pos)
   }
 
   override def skipWhitespace = false

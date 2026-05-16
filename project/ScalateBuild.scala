@@ -1,9 +1,10 @@
 import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
-import sbt.Keys._
-import sbt._
+import sbt.Keys.*
+import sbt.*
 import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
-import sbtbuildinfo.{BuildInfoKeys, BuildInfoPlugin}
-import sbtunidoc.BaseUnidocPlugin.autoImport._
+import sbtbuildinfo.BuildInfoKeys
+import sbtbuildinfo.BuildInfoPlugin
+import sbtunidoc.BaseUnidocPlugin.autoImport.*
 import sbtunidoc.ScalaUnidocPlugin.autoImport.ScalaUnidoc
 
 /** Build support settings and functions. */
@@ -43,13 +44,14 @@ object ScalateBuild {
 
   def unidocOpts(filter: ProjectReference*): Seq[Setting[?]] =
     inConfig(ScalaUnidoc)(Project.inTask(unidoc)(docOptsBase)) ++ Seq(
-    (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
-    (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
-      case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
-        file -> url(s"https://www.scala-lang.org/api/${scalaVersion.value}/")
-    }.toMap,
-    ScalaUnidoc / unidoc / unidocProjectFilter :=
-      inAnyProject -- inProjects(filter *))
+      (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
+      (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
+        case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
+          file -> url(s"https://www.scala-lang.org/api/${scalaVersion.value}/")
+      }.toMap,
+      ScalaUnidoc / unidoc / unidocProjectFilter :=
+        inAnyProject -- inProjects(filter*)
+    )
 
   private def projectOpts = Seq(
     version := (LocalRootProject / version).value,
@@ -62,9 +64,7 @@ object ScalateBuild {
     homepage := (LocalRootProject / homepage).value,
   )
 
-  private def compileOpts = Seq(
-    scalaVersion := (LocalRootProject / scalaVersion).value,
-    crossScalaVersions := (LocalRootProject / crossScalaVersions).value,
+  val scalacOptionsOpts = Def.settings(
     scalacOptions ++= {
       scalaBinaryVersion.value match {
         case "2.12" =>
@@ -82,6 +82,12 @@ object ScalateBuild {
     Test / compile / scalacOptions ++= Seq(Opts.compile.deprecation)
   )
 
+  private def compileOpts = Def.settings(
+    scalaVersion := (LocalRootProject / scalaVersion).value,
+    crossScalaVersions := (LocalRootProject / crossScalaVersions).value,
+    scalacOptionsOpts,
+  )
+
   private def testOpts = Seq(
     // NOTE:
     // Scala 2.13.0-M5 + ScalaTest shows many noisy messages
@@ -96,7 +102,7 @@ object ScalateBuild {
   )
 
   private def publishOpts = Seq(
-    publishTo := (if(isSnapshot.value) None else localStaging.value),
+    publishTo := (if (isSnapshot.value) None else localStaging.value),
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
     publish := PgpKeys.publishSigned.value,
@@ -114,10 +120,12 @@ object ScalateBuild {
       val rev = sys.process.Process("git rev-parse HEAD").lineStream_!.head
       val ver = version.value
       Seq(
-        "-doc-source-url", s"https://github.com/scalate/scalate/blob/${rev}€{FILE_PATH}.scala",
-        s"-doc-version", ver,
-        s"-doc-footer", s"${name.value} $ver (Rev: $rev) Scala ${
-          scalaBinaryVersion.value} API Documentation.",
+        "-doc-source-url",
+        s"https://github.com/scalate/scalate/blob/${rev}€{FILE_PATH}.scala",
+        s"-doc-version",
+        ver,
+        s"-doc-footer",
+        s"${name.value} $ver (Rev: $rev) Scala ${scalaBinaryVersion.value} API Documentation.",
         "-implicits",
         "-diagrams"
       )

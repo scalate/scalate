@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.util
 
-import scala.xml._
+import scala.xml.*
 import scala.xml.parsing.ConstructingParser
 import scala.io.Source
 
@@ -26,7 +26,7 @@ import scala.io.Source
  */
 
 object XmlHelper {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   /**
    * Parsers some markup which might not be a single Xml document
@@ -42,7 +42,7 @@ object XmlHelper {
     object parser extends ConstructingParser(src, true /* keep ws*/ ) {
       override def replacementText(entityName: String): scala.io.Source = {
         entityName match {
-          ///case "nbsp" => io.Source.fromString("\u0160");
+          /// case "nbsp" => io.Source.fromString("\u0160");
           case "nbsp" => io.Source.fromString("<![CDATA[&nbsp;]]>");
           case _ => super.replacementText(entityName);
         }
@@ -53,7 +53,7 @@ object XmlHelper {
     /*
         val cpa = ConstructingParser.fromSource(src, false);
         cpa.document().docElem.child
-    */
+     */
   }
 
 }

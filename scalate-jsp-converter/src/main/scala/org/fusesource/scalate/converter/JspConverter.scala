@@ -22,10 +22,8 @@ import util.matching.Regex.Match
 import org.fusesource.scalate.util.Log
 
 object ExpressionLanguage {
-  protected val operators = Map("eq" -> "==", "ne" -> "!=",
-    "gt" -> ">", "ge" -> ">=",
-    "lt" -> "<", "le" -> "<=",
-    "not" -> "!")
+  protected val operators =
+    Map("eq" -> "==", "ne" -> "!=", "gt" -> ">", "ge" -> ">=", "lt" -> "<", "le" -> "<=", "not" -> "!")
 
   protected val notEmptyRegex = """(\s|^)(not\s+empty)\s(.+)""".r
   protected val emptyRegex = """(\s|^)(empty)\s(.+)""".r
@@ -33,9 +31,7 @@ object ExpressionLanguage {
 
   def asScala(el: String): String = {
     // lets switch the EL style indexing to Scala parens and switch single quotes to doubles
-    var text = el.replace('[', '(').
-      replace(']', ')').
-      replace('\'', '\"')
+    var text = el.replace('[', '(').replace(']', ')').replace('\'', '\"')
 
     def space(m: Match): String = if (m.start == 0) "" else " "
 
@@ -52,13 +48,17 @@ object ExpressionLanguage {
 
     // foo.bar => foo.getBar
     var first = true
-    text = text.split('.').map(s =>
-      if (!first && s.length > 0 && s(0).isUnicodeIdentifierStart) {
-        "get" + s.capitalize
-      } else {
-        first = false
-        s
-      }).mkString(".")
+    text = text
+      .split('.')
+      .map(s =>
+        if (!first && s.length > 0 && s(0).isUnicodeIdentifierStart) {
+          "get" + s.capitalize
+        } else {
+          first = false
+          s
+        }
+      )
+      .mkString(".")
 
     // fn:length(foo) => foo.size
     text = lengthRegex.replaceAllIn(text, { m => m.subgroups.last + ".size" })
@@ -97,7 +97,7 @@ trait IndentWriter {
 }
 object JspConverter extends Log
 class JspConverter extends IndentWriter {
-  import JspConverter._
+  import JspConverter.*
 
   var coreLibraryPrefix: String = "c"
   var whenCount = 0
@@ -217,6 +217,7 @@ class JspConverter extends IndentWriter {
    * Returns the text of an expression as a method parameter
    */
   protected def asParam(exp: Expression): String = exp.asParam
+
   /**
    * Returns the text of an expression as a method parameter
    */

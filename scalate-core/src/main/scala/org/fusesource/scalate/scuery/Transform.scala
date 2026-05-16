@@ -18,7 +18,8 @@
 package org.fusesource.scalate.scuery
 
 import scala.language.implicitConversions
-import scala.xml.{ Node, NodeSeq }
+import scala.xml.Node
+import scala.xml.NodeSeq
 
 object Transform {
   implicit def toNodes(transform: Transform): NodeSeq = transform()

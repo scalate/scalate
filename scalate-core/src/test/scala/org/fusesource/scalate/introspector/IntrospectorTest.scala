@@ -135,7 +135,13 @@ class IntrospectorTest extends FunSuiteSupport {
     }
   }
 
-  def assertStringFunctor[T](introspector: Introspector[T], instance: T, name: String, arg: String, expected: Any): Unit = {
+  def assertStringFunctor[T](
+    introspector: Introspector[T],
+    instance: T,
+    name: String,
+    arg: String,
+    expected: Any
+  ): Unit = {
     introspector.get(name, instance) match {
       case Some(f: Function1[?, ?]) =>
         val _f = f.asInstanceOf[Function1[String, ?]]
