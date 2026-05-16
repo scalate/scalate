@@ -89,7 +89,6 @@ object ScalateBuild {
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
     publish := PgpKeys.publishSigned.value,
-    publishLocal := PgpKeys.publishLocalSigned.value
   )
 
   private def buildInfoOpts = Seq(
