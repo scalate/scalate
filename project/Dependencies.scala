@@ -51,7 +51,6 @@ object Dependencies {
   val seleniumDriver = "org.seleniumhq.selenium" % "selenium-htmlunit-driver" % "2.52.0"
   val slf4jApi = "org.slf4j" % "slf4j-api" % "2.0.18"
   val springMVC = "org.springframework" % "spring-webmvc" % "5.3.39"
-  val scalaReflect: (String, String) => ModuleID = _ % "scala-reflect" % _
   val snakeYaml = "org.yaml" % "snakeyaml" % "2.6"
   val wikitextConfluence = "org.fusesource.wikitext" % "confluence-core" % "1.4"
   val wikitextTextile = wikitextConfluence.withName("textile-core")
