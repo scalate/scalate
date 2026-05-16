@@ -43,7 +43,7 @@ object ScalateBuild {
   )
 
   def unidocOpts(filter: ProjectReference*): Seq[Setting[?]] =
-    inConfig(ScalaUnidoc)(inTask(unidoc)(docOptsBase)) ++ Seq(
+    inConfig(ScalaUnidoc)(Project.inTask(unidoc)(docOptsBase)) ++ Seq(
     (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
     (ThisBuild / apiMappings) ++= scalaInstance.value.libraryJars.collect {
       case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
@@ -113,7 +113,7 @@ object ScalateBuild {
     }
   )
 
-  private def docOpts: Seq[Setting[?]] = inConfig(Compile)(inTask(doc)(docOptsBase))
+  private def docOpts: Seq[Setting[?]] = inConfig(Compile)(Project.inTask(doc)(docOptsBase))
 
   def developersPomExtra =
     <developers>
