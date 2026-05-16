@@ -1,13 +1,13 @@
 import Dependencies._
 import ScalateBuild._
+import ReleaseTransformations._
 
 def Scala212 = "2.12.21"
 def Scala213 = "2.13.18"
 def Scala3 = "3.3.7"
 
 name := "scalate"
-organization := "org.scalatra.scalate"
-version := "1.10.1"
+organization := "io.github.scalate"
 scalaVersion := Scala213
 crossScalaVersions := Seq(Scala3, Scala213, Scala212)
 javacOptions ++= Seq("-source", "1.8")
@@ -25,6 +25,20 @@ homepage := Some(url("https://scalate.github.io/scalate"))
 enablePlugins(ScalaUnidocPlugin)
 unidocOpts(scalateWeb)
 notPublished
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommandAndRemaining("+ publishSigned"),
+  releaseStepCommandAndRemaining("sonaRelease"),
+  setNextVersion,
+  commitNextVersion,
+  pushChanges,
+)
+releaseCrossBuild := true
 
 lazy val scalateUtil = scalateProject("util").scalateSettings.published
   .settings(
