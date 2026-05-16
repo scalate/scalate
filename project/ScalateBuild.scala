@@ -1,4 +1,3 @@
-import com.github.sbt.git.SbtGit.GitKeys
 import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
 import sbt.Keys._
 import sbt._
@@ -99,13 +98,12 @@ object ScalateBuild {
   private def docOptsBase = Seq(
     autoAPIMappings := true,
     scalacOptions ++= {
-      def rev = GitKeys.gitHeadCommit.value map (_ take 7)
-      def branch = GitKeys.gitCurrentBranch
-      def ver = version.value
+      val rev = sys.process.Process("git rev-parse HEAD").lineStream_!.head
+      val ver = version.value
       Seq(
-        "-doc-source-url", s"https://github.com/scalate/scalate/blob/${rev getOrElse branch}€{FILE_PATH}.scala",
+        "-doc-source-url", s"https://github.com/scalate/scalate/blob/${rev}€{FILE_PATH}.scala",
         s"-doc-version", ver,
-        s"-doc-footer", s"${name.value} $ver ${rev map (s"(Rev: " + _ + ") ") getOrElse ""}Scala ${
+        s"-doc-footer", s"${name.value} $ver (Rev: $rev) Scala ${
           scalaBinaryVersion.value} API Documentation.",
         "-implicits",
         "-diagrams"
