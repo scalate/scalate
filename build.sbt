@@ -27,7 +27,7 @@ scmInfo := Some(
 )
 homepage := Some(url("https://scalate.github.io/scalate"))
 enablePlugins(ScalaUnidocPlugin)
-unidocOpts(filter = scalateWar, scalateWeb)
+unidocOpts(scalateWeb)
 notPublished
 
 lazy val scalateUtil = scalateProject("util")
@@ -158,22 +158,6 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Spring MVC integration.",
     buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
-
-lazy val scalateWar = scalateProject("war")
-  .scalateSettings
-  .notPublished
-  .dependsOn(scalateWeb, scalateJersey, scalateTest % Test)
-  .enablePlugins(TomcatPlugin)
-  .settings(
-    libraryDependencies ++= Seq(
-      logbackClassic,
-      jerseyServer,
-      jerseyCore
-    ),
-    description := "Scalate Base Web Application",
-    Compile / packageBin / publishArtifact := false,
-    Test / parallelExecution := false,
-    (Test / unmanagedResourceDirectories) += baseDirectory.value / "src/main/webapp")
 
 lazy val scalateJAXRS = scalateProject("jaxrs")
   .scalateSettings
