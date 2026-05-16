@@ -18,7 +18,6 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.NodeSeq
 
 class TransformTableStripeTest extends FunSuiteSupport {
   val xml = <table class="people">

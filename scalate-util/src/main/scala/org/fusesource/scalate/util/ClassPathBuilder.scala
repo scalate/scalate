@@ -20,8 +20,6 @@ package org.fusesource.scalate.util
 import java.io.File
 import java.net.{ URI, URLClassLoader }
 import java.util.jar.{ Attributes, JarFile }
-import scala.annotation.tailrec
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.language.reflectiveCalls
 

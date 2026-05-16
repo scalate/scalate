@@ -20,7 +20,6 @@ package org.fusesource.scalate.converter
 import _root_.org.junit.runner.RunWith
 import _root_.org.scalatestplus.junit.JUnitRunner
 
-import _root_.org.fusesource.scalate._
 import org.fusesource.scalate.util.Log
 import org.scalatest.funsuite.AnyFunSuite
 

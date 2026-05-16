@@ -19,9 +19,7 @@ package org.fusesource.scalate.mustache
  */
 
 import org.fusesource.scalate.TemplateTestSupport
-import collection.immutable.TreeMap
 import java.{ util => ju }
-import java.util.Arrays
 
 /**
  * @version $Revision: 1.1 $

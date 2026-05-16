@@ -1,7 +1,6 @@
 package org.fusesource.scalate.filter
 
 import org.fusesource.scalate.TemplateTestSupport
-import org.fusesource.scalate.util.ResourceLoader
 import org.fusesource.scalate.support.TemplateFinder
 
 class CoffeeScriptPipelineTest extends TemplateTestSupport {
