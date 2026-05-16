@@ -17,7 +17,8 @@
  */
 package org.fusesource.scalate.converter
 
-import util.parsing.input.{ Positional, CharSequenceReader }
+import util.parsing.input.Positional
+import util.parsing.input.CharSequenceReader
 import org.fusesource.scalate.support.Text
 import org.fusesource.scalate.InvalidSyntaxException
 
@@ -94,7 +95,7 @@ class ExpressionParser extends MarkupScanner {
   }
 
   // grammar
-  //-------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   def expressionList = rep(dollarExpression | staticText)
 

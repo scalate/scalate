@@ -32,10 +32,7 @@ class EscapeTest extends TemplateTestSupport {
 
     if (mustacheUsesEscapeMarkup) {
 
-      assertMoustacheOutput(
-        "start <h1>SomeTitle</h1> end",
-        "start {{title}} end",
-        Map("title" -> "<h1>SomeTitle</h1>"))
+      assertMoustacheOutput("start <h1>SomeTitle</h1> end", "start {{title}} end", Map("title" -> "<h1>SomeTitle</h1>"))
     }
   }
 }

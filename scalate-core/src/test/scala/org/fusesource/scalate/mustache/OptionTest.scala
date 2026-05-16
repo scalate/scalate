@@ -50,7 +50,11 @@ class OptionTest extends TemplateTestSupport {
   }
 
   test("Some is treated like a collection of 1") {
-    assertMoustacheOutput("Hey James!", "{{#person}}Hey {{name}}!{{/person}}", Map("person" -> Some(Map("name" -> "James"))))
+    assertMoustacheOutput(
+      "Hey James!",
+      "{{#person}}Hey {{name}}!{{/person}}",
+      Map("person" -> Some(Map("name" -> "James")))
+    )
   }
 
   test("None is treated like a collection of 0") {

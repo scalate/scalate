@@ -19,15 +19,17 @@ package org.fusesource.scalate
 package scaml
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.io.{ StringWriter, PrintWriter, File }
-
+import java.io.StringWriter
+import java.io.PrintWriter
+import java.io.File
 import org.scalatest.exceptions.TestFailedException
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 
-class ScamlDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter) extends DefaultRenderContext(uri, templaeEngine, outWriter) {
+class ScamlDefaultRenderContext(val uri: String, val templaeEngine: TemplateEngine, var outWriter: PrintWriter)
+    extends DefaultRenderContext(uri, templaeEngine, outWriter) {
   val name = "Hiram"
   val title = "MyPage"
   val href = "http://scalate.fusesource.org"
@@ -39,7 +41,13 @@ class ScamlTestSupport extends TemplateTestSupport {
 
   val NOOP = () => {}
 
-  def testRender(description: String, template: String, result: String, before: () => Unit = NOOP, after: () => Unit = NOOP) = {
+  def testRender(
+    description: String,
+    template: String,
+    result: String,
+    before: () => Unit = NOOP,
+    after: () => Unit = NOOP
+  ) = {
     test(description) {
       assertResult(result.trim) {
         before()
@@ -56,9 +64,14 @@ class ScamlTestSupport extends TemplateTestSupport {
     }
   }
 
-  def ignoreRender(description: String, template: String, result: String, before: () => Unit = NOOP, after: () => Unit = NOOP) = {
-    ignore(description) {
-    }
+  def ignoreRender(
+    description: String,
+    template: String,
+    result: String,
+    before: () => Unit = NOOP,
+    after: () => Unit = NOOP
+  ) = {
+    ignore(description) {}
   }
 
   def testInvalidSyntaxException(description: String, template: String, error: String) = {
@@ -82,8 +95,7 @@ class ScamlTestSupport extends TemplateTestSupport {
   }
 
   def ignoreInvalidSyntaxException(description: String, template: String, error: String) = {
-    ignore(description) {
-    }
+    ignore(description) {}
   }
 
   def testCompilerException(description: String, template: String, error: String) = {

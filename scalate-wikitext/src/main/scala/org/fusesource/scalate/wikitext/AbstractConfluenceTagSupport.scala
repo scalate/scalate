@@ -59,4 +59,3 @@ abstract class AbstractConfluenceTagSupport(tag: String) extends ParameterizedBl
 
   def doTag(): Unit
 }
-

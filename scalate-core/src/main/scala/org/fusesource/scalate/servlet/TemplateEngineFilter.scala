@@ -17,8 +17,10 @@
  */
 package org.fusesource.scalate.servlet
 
-import javax.servlet._
-import javax.servlet.http.{ HttpServletRequest, HttpServletRequestWrapper, HttpServletResponse }
+import javax.servlet.*
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletRequestWrapper
+import javax.servlet.http.HttpServletResponse
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.util.Log
 
@@ -31,7 +33,7 @@ object TemplateEngineFilter extends Log
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
 class TemplateEngineFilter extends Filter {
-  import TemplateEngineFilter._
+  import TemplateEngineFilter.*
 
   var config: FilterConfig = _
   var engine: ServletTemplateEngine = _
@@ -59,8 +61,7 @@ class TemplateEngineFilter extends Filter {
   /**
    * Called by the servlet engine on shut down.
    */
-  def destroy = {
-  }
+  def destroy = {}
 
   /**
    * Performs the actual filter

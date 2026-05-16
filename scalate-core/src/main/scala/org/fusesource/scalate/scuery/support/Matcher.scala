@@ -58,6 +58,7 @@ case class SubstringMatch(substring: String) extends TextMatcher {
 case class IncludesMatch(word: String) extends TextMatcher {
   def matches(text: String) = text.split("\\s").contains(word)
 }
+
 /**
  * Matches text starting with the given value or with
  * value immediately followed by "-" (U+002D)

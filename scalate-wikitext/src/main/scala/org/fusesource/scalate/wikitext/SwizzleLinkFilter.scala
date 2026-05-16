@@ -21,8 +21,10 @@ package wikitext
 import org.fusesource.scalate.filter.Filter
 import org.fusesource.scalate.support.Links
 import java.io.File
-import util.{ Log, IOUtil, Files }
-import IOUtil._
+import util.Log
+import util.IOUtil
+import util.Files
+import IOUtil.*
 
 /**
  * Converts links used in wiki notation to find the template or wiki markup files on the file system.
@@ -31,29 +33,33 @@ import IOUtil._
  * and directories you often want to move the wiki files into directory trees. This filter will fix up these
  * bad links, searching for wiki files in your source tree and swizzling the generated links to use those.
  */
-case class SwizzleLinkFilter(
-  sourceDirectories: Iterable[File],
-  extensions: Set[String]) extends Filter {
+case class SwizzleLinkFilter(sourceDirectories: Iterable[File], extensions: Set[String]) extends Filter {
 
-  import SwizzleLinkFilter._
+  import SwizzleLinkFilter.*
 
   /**
    * Lets fix up any links which are local and do notcontain a file extension
    */
   def filter(context: RenderContext, html: String) = {
     debug("Transforming links with " + this)
-    linkRegex.replaceAllIn(html, {
-      // for some reason we don't just get the captured group - no idea why. Instead we get...
-      //
-      //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
-      //   m.group(1) == "linkUri"
-      //
-      // so lets replace the link URI in the matched text to just change the contents of the link
-      m =>
-        val link = m.group(1)
-        val matched = m.matched
-        matched.dropRight(link.size - 1) + transformLink(link.substring(1, link.size - 1), context.requestUri) + matched.last
-    })
+    linkRegex.replaceAllIn(
+      html,
+      {
+        // for some reason we don't just get the captured group - no idea why. Instead we get...
+        //
+        //   m.matched == m.group(0) == "<a class="foo" href='linkUri'"
+        //   m.group(1) == "linkUri"
+        //
+        // so lets replace the link URI in the matched text to just change the contents of the link
+        m =>
+          val link = m.group(1)
+          val matched = m.matched
+          matched.dropRight(link.size - 1) + transformLink(
+            link.substring(1, link.size - 1),
+            context.requestUri
+          ) + matched.last
+      }
+    )
   }
 
   /**

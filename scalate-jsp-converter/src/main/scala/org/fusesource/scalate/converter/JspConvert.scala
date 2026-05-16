@@ -18,11 +18,12 @@
 package org.fusesource.scalate.converter
 
 import java.io.File
-import java.{ lang => jl }
-import org.fusesource.scalate.util.IOUtil._
-
+import java.lang as jl
+import org.fusesource.scalate.util.IOUtil.*
 import org.apache.felix.service.command.CommandSession
-import org.apache.karaf.shell.api.action.{ Option => option, Argument => argument, Command => command }
+import org.apache.karaf.shell.api.action.Option as option
+import org.apache.karaf.shell.api.action.Argument as argument
+import org.apache.karaf.shell.api.action.Command as command
 
 /**
  * Converts JSP files into SSP files
@@ -36,9 +37,16 @@ class JspConvert extends Runnable {
   var outputExtension = ".ssp"
   @option(name = "--recursion", description = "The number of directory levels to recusively scan file input files.")
   var recursionDepth = -1
-  @option(name = "--jaxrs", description = "If in JAXRS mode we will add the 'it' attribute if a template looks like its a resource template.")
+  @option(
+    name = "--jaxrs",
+    description = "If in JAXRS mode we will add the 'it' attribute if a template looks like its a resource template."
+  )
   var jaxrs = false
-  @option(name = "--conciseTemplates", description = "If using JAXRS templates should we put templates in the same directory as the package (rather than a directory per controller).")
+  @option(
+    name = "--conciseTemplates",
+    description =
+      "If using JAXRS templates should we put templates in the same directory as the package (rather than a directory per controller)."
+  )
   var conciseJaxrsTemplates = true
 
   var converter = new JspConverter

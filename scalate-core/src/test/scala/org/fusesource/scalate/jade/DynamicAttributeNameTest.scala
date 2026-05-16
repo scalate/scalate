@@ -10,9 +10,11 @@ class DynamicAttributeNameTest extends JadeTestSupport {
 html
   - val n = "foo"
   a{n => "bar"} Hey
-""", """
+""",
+    """
 <html>
   <a foo="bar">Hey</a>
 </html>
-""")
+"""
+  )
 }

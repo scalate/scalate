@@ -17,15 +17,20 @@
  */
 package org.fusesource.scalate.support
 
-import java.io.{ File, PrintWriter, StringWriter }
-
-import org.fusesource.scalate._
-import org.fusesource.scalate.util.{ ClassPathBuilder, Log }
-
-import scala.reflect.internal.util.{ FakePos, NoPosition, Position }
+import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
+import org.fusesource.scalate.*
+import org.fusesource.scalate.util.ClassPathBuilder
+import org.fusesource.scalate.util.Log
+import scala.reflect.internal.util.FakePos
+import scala.reflect.internal.util.NoPosition
+import scala.reflect.internal.util.Position
 import scala.runtime.ByteRef
-import scala.tools.nsc.{ Global, Settings }
-import scala.tools.nsc.reporters.{ ConsoleReporter, Reporter }
+import scala.tools.nsc.Global
+import scala.tools.nsc.Settings
+import scala.tools.nsc.reporters.ConsoleReporter
+import scala.tools.nsc.reporters.Reporter
 import scala.util.parsing.input.OffsetPosition
 
 object ScalaCompiler extends Log {
@@ -40,17 +45,13 @@ object ScalaCompiler extends Log {
 
 }
 
-import org.fusesource.scalate.support.ScalaCompiler._
-
-class ScalaCompiler(
-  bytecodeDirectory: File,
-  classpath: String,
-  combineClasspath: Boolean = false) extends Compiler {
+class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath: Boolean = false) extends Compiler {
+  import org.fusesource.scalate.support.ScalaCompiler.*
 
   val settings = generateSettings(bytecodeDirectory, classpath, combineClasspath)
 
   class LoggingReporter(writer: StringWriter = new StringWriter)
-    extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) { self =>
+      extends ConsoleReporter(settings, Console.in, new PrintWriter(writer)) { self =>
 
     var compilerErrors: List[CompilerError] = Nil
     def messages = writer.toString
@@ -63,22 +64,27 @@ class ScalaCompiler(
     }
 
     override def display(posIn: Position, msg: String, severity: Severity): Unit = {
-      val pos = if (posIn eq null) NoPosition
-      else if (posIn.isDefined) posIn.finalPosition
-      else posIn
+      val pos =
+        if (posIn eq null) NoPosition
+        else if (posIn.isDefined) posIn.finalPosition
+        else posIn
       pos match {
         case FakePos(_) => super.display(posIn, msg, severity)
         case NoPosition => super.display(posIn, msg, severity)
         case _ =>
           // Adding the detected compilation error
-          compilerErrors :+= CompilerError(posIn.source.file.file.getPath, msg, OffsetPosition(posIn.source.content.mkString, posIn.point))
+          compilerErrors :+= CompilerError(
+            posIn.source.file.file.getPath,
+            msg,
+            OffsetPosition(posIn.source.content.mkString, posIn.point)
+          )
 
           super.display(posIn, msg, severity)
       }
     }
 
     def printSummary(): Unit = {
-      import reflect.internal.util.StringOps.{ countElementsAsString => countAs }
+      import reflect.internal.util.StringOps.countElementsAsString as countAs
       if (self.hasErrors) {
         display(NoPosition, s"""${countAs(self.errorCount, "error")} found""", ERROR)
       }
@@ -143,7 +149,7 @@ class ScalaCompiler(
     settings.classpath.value = useCP
     settings.outdir.value = bytecodeDirectory.toString
     settings.deprecation.value = true
-    //settings.unchecked.value = true
+    // settings.unchecked.value = true
 
     // from play-scalate
     settings.debuginfo.value = "vars"

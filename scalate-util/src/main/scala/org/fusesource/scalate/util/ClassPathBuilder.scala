@@ -18,20 +18,24 @@
 package org.fusesource.scalate.util
 
 import java.io.File
-import java.net.{ URI, URLClassLoader }
-import java.util.jar.{ Attributes, JarFile }
+import java.net.URI
+import java.net.URLClassLoader
+import java.util.jar.Attributes
+import java.util.jar.JarFile
 import scala.collection.mutable.ArrayBuffer
 import scala.language.reflectiveCalls
 
 class ClassPathBuilder {
-  import ClassPathBuilder._
+  import ClassPathBuilder.*
 
   private[this] val classpath = new ArrayBuffer[String]
 
   def classPath = {
     val cp = classpath.distinct
     // lets transform to the canonical path to remove duplicates
-    val all = (cp ++ findManifestEntries(cp)).map { s => val f = new File(s); if (f.exists) f.getCanonicalPath else s }
+    val all = (cp ++ findManifestEntries(cp)).map { s =>
+      val f = new File(s); if (f.exists) f.getCanonicalPath else s
+    }
     all.distinct.mkString(File.pathSeparator)
   }
 
@@ -125,14 +129,18 @@ private object ClassPathBuilder extends Log {
       case null => Nil
 
       case cl: URLClassLoader =>
-        for (url <- cl.getURLs.toList; uri = new URI(url.toString); path = uri.getPath; if (path != null)) yield {
+        for {
+          url <- cl.getURLs.toList
+          uri = new URI(url.toString)
+          path = uri.getPath if (path != null)
+        } yield {
 
           // on windows the path can include %20
           // see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4466485
           // so lets use URI as a workaround
           new File(path).getCanonicalPath
-          //val n = new File(uri.getPath).getCanonicalPath
-          //if (n.contains(' ')) {"\"" + n + "\""} else {n}
+          // val n = new File(uri.getPath).getCanonicalPath
+          // if (n.contains(' ')) {"\"" + n + "\""} else {n}
         }
 
       case AntLikeClassLoader(acp) =>

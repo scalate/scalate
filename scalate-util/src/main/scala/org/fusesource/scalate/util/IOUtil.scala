@@ -18,18 +18,20 @@
 
 package org.fusesource.scalate.util
 
-import java.io._
-import java.util.zip.{ ZipEntry, ZipInputStream }
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 import java.net.URL
-import scala.util.parsing.input.{ Position, OffsetPosition }
-
+import scala.util.parsing.input.Position
+import scala.util.parsing.input.OffsetPosition
 import scala.language.implicitConversions
 
 object IOUtil {
 
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
-  class InvalidDirectiveException(directive: String, pos: Position) extends RuntimeException(directive + " at " + pos, null)
+  class InvalidDirectiveException(directive: String, pos: Position)
+      extends RuntimeException(directive + " at " + pos, null)
 
   /**
    * Allows a File to be converted to a FileResource which also provides a Rich API for files

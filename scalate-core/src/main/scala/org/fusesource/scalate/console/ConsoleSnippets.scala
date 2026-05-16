@@ -18,11 +18,9 @@
 package org.fusesource.scalate.console
 
 import java.io.File
-
 import _root_.javax.servlet.ServletContext
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletResourceLoader
-
 import scala.xml.NodeSeq
 
 /**
@@ -43,7 +41,8 @@ trait ConsoleSnippets {
    */
   def editLink(template: String)(body: => Unit): NodeSeq = editLink(template, None, None)(body)
 
-  def editLink(template: String, line: Int, col: Int)(body: => Unit): NodeSeq = editLink(template, Some(line), Some(col))(body)
+  def editLink(template: String, line: Int, col: Int)(body: => Unit): NodeSeq =
+    editLink(template, Some(line), Some(col))(body)
 
   /**
    * returns an edit link for the given URI, discovering the right URL
@@ -61,7 +60,7 @@ trait ConsoleSnippets {
       }
       EditLink.editLink(actualPath, line, col)(body)
     } else {
-      <span>{ body }</span>
+      <span>{body}</span>
     }
   }
 

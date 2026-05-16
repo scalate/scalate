@@ -18,7 +18,7 @@
 package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{ NodeSeq }
+import xml.NodeSeq
 
 case class Car(make: String, model: String, color: String)
 case class Dog(name: String, breed: String, color: String, age: Int)
@@ -60,26 +60,23 @@ class TransformTypedElementsTest extends FunSuiteSupport {
 
   test("transform contents") {
     object transformer extends Transformer {
-      $("ul.items").contents {
-        node =>
-          things.flatMap {
-            case c: Car =>
-              transform(node.$("li.car")) {
-                $ =>
-                  $(".make").contents = c.make
-                  $(".model").contents = c.model
-                  $(".color").contents = c.color
-              }
-            case d: Dog =>
-              transform(node.$("li.dog")) {
-                $ =>
-                  $(".name").contents = d.name
-                  $(".breed").contents = d.breed
-                  $(".color").contents = d.color
-                  $(".age").contents = d.age
-              }
-            case _ => Nil
-          }
+      $("ul.items").contents { node =>
+        things.flatMap {
+          case c: Car =>
+            transform(node.$("li.car")) { $ =>
+              $(".make").contents = c.make
+              $(".model").contents = c.model
+              $(".color").contents = c.color
+            }
+          case d: Dog =>
+            transform(node.$("li.dog")) { $ =>
+              $(".name").contents = d.name
+              $(".breed").contents = d.breed
+              $(".color").contents = d.color
+              $(".age").contents = d.age
+            }
+          case _ => Nil
+        }
       }
     }
 

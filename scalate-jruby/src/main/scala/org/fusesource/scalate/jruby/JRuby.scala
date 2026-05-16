@@ -3,7 +3,8 @@ package org.fusesource.scalate.jruby
 import org.fusesource.scalate.util.Log
 import java.io.StringWriter
 import org.jruby.RubyInstanceConfig
-import org.jruby.embed.{ LocalContextScope, ScriptingContainer }
+import org.jruby.embed.LocalContextScope
+import org.jruby.embed.ScriptingContainer
 
 /**
  * A simple interface to the jruby interpreter

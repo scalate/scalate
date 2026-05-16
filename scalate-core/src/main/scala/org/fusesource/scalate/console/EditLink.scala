@@ -18,9 +18,7 @@
 package org.fusesource.scalate.console
 
 import java.io.File
-
 import org.fusesource.scalate.RenderContext.captureNodeSeq
-
 import scala.xml.NodeSeq
 
 /**
@@ -53,8 +51,8 @@ object EditLink {
 
   def editLinkFileScheme(file: String, line: Option[Int], col: Option[Int])(body: => Unit): NodeSeq = {
     val bodyText = captureNodeSeq(body)
-    <a href={ "file://" + file } title="Open File" target="_blank">
-      { bodyText }
+    <a href={"file://" + file} title="Open File" target="_blank">
+      {bodyText}
     </a>
   }
 
@@ -64,8 +62,8 @@ object EditLink {
       (if (line.isDefined) "&line=" + line.get else "") +
       (if (col.isDefined) "&col=" + col.get else "")
 
-    <a href={ href } title="Open in TextMate">
-      { bodyText }
+    <a href={href} title="Open in TextMate">
+      {bodyText}
     </a>
   }
 
@@ -79,7 +77,9 @@ object EditLink {
     } else 0
 
     <span>
-      { bodyText }<img class="ide-icon tb_right_mid" id={ "ide-" + file.hashCode } title={ bodyText } onclick={ "this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);" } alt="Open in IDE" src={ "http://localhost:" + idePluginPort + "/icon" }/>
+      {bodyText}<img class="ide-icon tb_right_mid" id={"ide-" + file.hashCode} title={bodyText} onclick={
+      "this.src='http://localhost:" + idePluginPort + "/file?file=" + file + "&line=" + lineNumber + "&id=' + Math.floor(Math.random()*1000);"
+    } alt="Open in IDE" src={"http://localhost:" + idePluginPort + "/icon"}/>
     </span>
   }
 

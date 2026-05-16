@@ -33,7 +33,9 @@ class VelocityDirectiveTest extends TemplateTestSupport {
   }
 
   test("if elseif else") {
-    val template = compileSsp("if elseif else", """<%@ val n: String %>
+    val template = compileSsp(
+      "if elseif else",
+      """<%@ val n: String %>
 #if (n == "James")
 Hey James
 #elseif (n == "Hiram")
@@ -41,7 +43,8 @@ Yo Hiram
 #else
 Dunno
 #end
-""")
+"""
+    )
 
     assertTrimOutput("Hey James", template, Map("n" -> "James"))
     assertTrimOutput("Yo Hiram", template, Map("n" -> "Hiram"))
@@ -49,7 +52,9 @@ Dunno
   }
 
   test("match case otherwise") {
-    val template = compileSsp("match case otherwise", """<%@ val n: String %>
+    val template = compileSsp(
+      "match case otherwise",
+      """<%@ val n: String %>
 #match(n)
 #case("James")
 Hey James
@@ -58,7 +63,8 @@ Yo Hiram
 #otherwise
 Dunno
 #end
-""")
+"""
+    )
 
     assertTrimOutput("Hey James", template, Map("n" -> "James"))
     assertTrimOutput("Yo Hiram", template, Map("n" -> "Hiram"))
@@ -66,40 +72,52 @@ Dunno
   }
 
   test("import test") {
-    val template = compileSsp("import test", """
+    val template = compileSsp(
+      "import test",
+      """
 #import(java.util.Date)
 time is: ${new Date()}
-""")
+"""
+    )
     val output = engine.layout("foo1.ssp", template).trim
     assert(output.startsWith("time is:"))
   }
 
   test("import using block") {
-    val template = compileSsp("import using block", """
+    val template = compileSsp(
+      "import using block",
+      """
 #{
   import java.util.Date
 }#
 time is: ${new Date()}
-""")
+"""
+    )
     val output = engine.layout("foo2.ssp", template).trim
     assert(output.startsWith("time is:"))
   }
 
   test("do with no expression works ok") {
-    val template = compileSsp("do with no expression", """
+    val template = compileSsp(
+      "do with no expression",
+      """
 start
 #do()
 foo
 #end
 end
-""")
+"""
+    )
     val output = engine.layout("foo3.ssp", template).trim
     assertResult(List("start", "foo", "end")) { output.split("\\s+").toList }
   }
 
   // #match and #case issues
   testSspSyntaxEception("non whitespace between #match #case", "#match(n) bad #case(5) a #otherwise b #end")
-  testSspSyntaxEception("cannot have other directive between #match #case", "#match(n) #if(5) #case(5) a #otherwise b #end")
+  testSspSyntaxEception(
+    "cannot have other directive between #match #case",
+    "#match(n) #if(5) #case(5) a #otherwise b #end"
+  )
 
   // correct use of #end
   testSspSyntaxEception("missing #end", "#for(i <- 1 to 3) blah")
@@ -126,7 +144,9 @@ end
 
   // check that we can open/close clauses within a parent close
   test("nested if statements") {
-    assertTrimSspOutput("worked", """<%@ val x: Int %>
+    assertTrimSspOutput(
+      "worked",
+      """<%@ val x: Int %>
 #if (x < 1)
 foo
 #else
@@ -138,7 +158,9 @@ foo
   foo3
   #end
 #end
-""", Map("x" -> 5))
+""",
+      Map("x" -> 5)
+    )
   }
 
 }

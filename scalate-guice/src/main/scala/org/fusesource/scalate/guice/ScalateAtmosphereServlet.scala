@@ -1,7 +1,9 @@
 package org.fusesource.scalate.guice
 
 import javax.servlet.ServletConfig
-import com.google.inject.{ Inject, Injector, Singleton }
+import com.google.inject.Inject
+import com.google.inject.Injector
+import com.google.inject.Singleton
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import org.atmosphere.cpr.AtmosphereServlet
 import org.atmosphere.handler.ReflectorServletProcessor
@@ -14,15 +16,14 @@ import org.atmosphere.cpr.ApplicationConfig.PROPERTY_SERVLET_MAPPING
  * @author Sven Jacobs <mail@svenjacobs.com>
  */
 @Singleton
-class ScalateAtmosphereServlet @Inject() (
-  private[this] val injector: Injector) extends AtmosphereServlet {
+class ScalateAtmosphereServlet @Inject() (private[this] val injector: Injector) extends AtmosphereServlet {
 
   /**
    * Most of the code to set up AtmosphereServlet has been borrowed from
    * {@link org.atmosphere.guice.AtmosphereGuiceServlet#detectSupportedFramework}
    */
   override def detectSupportedFramework(sc: ServletConfig): Boolean = {
-    import AtmosphereServlet._
+    import AtmosphereServlet.*
 
     setDefaultBroadcasterClassName(JERSEY_BROADCASTER)
 

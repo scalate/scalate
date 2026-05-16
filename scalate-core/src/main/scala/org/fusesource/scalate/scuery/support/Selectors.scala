@@ -18,7 +18,8 @@
 package org.fusesource.scalate.scuery.support
 
 import org.fusesource.scalate.scuery.Selector
-import xml.{ Elem, Node }
+import xml.Elem
+import xml.Node
 
 /**
  * Matches if the CSS class attribute contains the given class name word
@@ -66,6 +67,7 @@ case class AttributeNameSelector(name: String, matcher: Matcher) extends Selecto
     case _ => false
   }
 }
+
 /**
  * Matches the current element if it has a namespaced attribute name
  */
@@ -143,7 +145,10 @@ object AnyElementSelector extends Selector {
  */
 case class ChildSelector(childSelector: Selector, ancestorSelector: Selector) extends Selector {
   def matches(node: Node, ancestors: Seq[Node]) = {
-    !ancestors.isEmpty && childSelector.matches(node, ancestors) && ancestorSelector.matches(ancestors.head, ancestors.tail)
+    !ancestors.isEmpty && childSelector.matches(node, ancestors) && ancestorSelector.matches(
+      ancestors.head,
+      ancestors.tail
+    )
   }
 }
 

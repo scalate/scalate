@@ -19,7 +19,7 @@ package org.fusesource.scalate.util
 
 import org.fusesource.scalate.FunSuiteSupport
 import java.io.File
-import IOUtil._
+import IOUtil.*
 
 class FileTest extends FunSuiteSupport {
   test("using rich file API to navigate") {

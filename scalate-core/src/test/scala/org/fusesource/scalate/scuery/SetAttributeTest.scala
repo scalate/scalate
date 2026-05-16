@@ -39,9 +39,8 @@ class SetAttributeTest extends FunSuiteSupport {
 
       $("a.bar").attribute("href").value = "http://scalate.fusesource.org/documentation/"
 
-      $("a.jog").attribute("href") {
-        e =>
-          "http://scalate.fusesource.org/documentation/" + (e \ "@class") + ".html"
+      $("a.jog").attribute("href") { e =>
+        "http://scalate.fusesource.org/documentation/" + (e \ "@class") + ".html"
       }
     }
 

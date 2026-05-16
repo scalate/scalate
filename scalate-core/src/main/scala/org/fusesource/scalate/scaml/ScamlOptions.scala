@@ -28,13 +28,7 @@ object ScamlOptions {
   }
 
   val DEFAULT_FORMAT = Format.xhtml
-  val DEFAULT_AUTOCLOSE = List(
-    "meta",
-    "img",
-    "link",
-    "br",
-    "hr",
-    "input")
+  val DEFAULT_AUTOCLOSE = List("meta", "img", "link", "br", "hr", "input")
 
   val DEFAULT_INDENT = "  "
   val DEFAULT_NL = "\n"

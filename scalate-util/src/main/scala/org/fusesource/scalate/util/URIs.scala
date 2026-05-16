@@ -57,7 +57,8 @@ object URIs {
   /**
    * Split a query expression into separate clauses
    */
-  protected def splitQuery(query: String): Seq[String] = if (query != null && query.length > 0) query.split("&").toSeq else Nil
+  protected def splitQuery(query: String): Seq[String] =
+    if (query != null && query.length > 0) query.split("&").toSeq else Nil
 
   protected def joinQuery(queryArgs: Seq[String]) = queryArgs.mkString("&")
 }

@@ -21,10 +21,9 @@ import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.mustache.VariableResult.NoValue
 import org.fusesource.scalate.mustache.VariableResult.NoVariable
 import org.fusesource.scalate.mustache.VariableResult.SomeValue
-
-import scala.jdk.CollectionConverters._
-
-import java.{ lang => jl, util => ju }
+import scala.jdk.CollectionConverters.*
+import java.lang as jl
+import java.util as ju
 import xml.NodeSeq
 import org.fusesource.scalate.util.Log
 
@@ -40,7 +39,7 @@ object Scope extends Log {
  * @version $Revision : 1.1 $
  */
 trait Scope {
-  import Scope._
+  import Scope.*
   def parent: Option[Scope]
 
   def context: RenderContext
@@ -113,11 +112,10 @@ trait Scope {
         variable(name, topLevel)
       case Some((head, tail)) =>
         val headValue = variable(head, topLevel)
-        headValue.flatMap {
-          v =>
-            val nestedScope = createScope(head, v)
-            //ignore missing nested variables to keep Context Precedence
-            nestedScope.dottedVariable(tail, topLevel = false).noVariableAsNoValue
+        headValue.flatMap { v =>
+          val nestedScope = createScope(head, v)
+          // ignore missing nested variables to keep Context Precedence
+          nestedScope.dottedVariable(tail, topLevel = false).noVariableAsNoValue
         }
     }
   }
@@ -189,11 +187,12 @@ trait Scope {
           // lets treat anything as an an object rather than a collection
           case a => childScope(name, a)(block)
         }
-      case NoVariable => parent match {
-        case Some(ps) => ps.section(name)(block)
-        case None => // do nothing, no value
-          debug("No value for " + name + " in " + this)
-      }
+      case NoVariable =>
+        parent match {
+          case Some(ps) => ps.section(name)(block)
+          case None => // do nothing, no value
+            debug("No value for " + name + " in " + this)
+        }
       case NoValue =>
         // do nothing, no value
         debug("No value for " + name + " in " + this)
@@ -261,10 +260,7 @@ trait Scope {
     value match {
       case n: NodeSeq => new NodeScope(this, name, n)
       case v: scala.collection.Map[?, ?] =>
-        new MapScope(
-          this,
-          name,
-          v.asInstanceOf[scala.collection.Map[String, ?]])
+        new MapScope(this, name, v.asInstanceOf[scala.collection.Map[String, ?]])
       case null => new EmptyScope(this)
       case None => new EmptyScope(this)
       case v: AnyRef => new ObjectScope(this, v)

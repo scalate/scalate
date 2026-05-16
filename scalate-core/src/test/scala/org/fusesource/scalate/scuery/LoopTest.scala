@@ -19,6 +19,7 @@ package org.fusesource.scalate.scuery
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import xml.NodeSeq
+
 class LoopTest extends FunSuiteSupport {
   val people = List(Person("James", "Beckington"), Person("Hiram", "Tampa"))
 
@@ -60,7 +61,7 @@ class LoopTest extends FunSuiteSupport {
     }
     assertTransformed(transformer1(xml))
   }
-  */
+   */
 
   test("loop using new Transform statement on each person") {
     object transformer2 extends Transformer {
@@ -95,10 +96,13 @@ class LoopTest extends FunSuiteSupport {
       $(".person") { node =>
         people.flatMap { p =>
           // TODO how to know what the current ancestor is?
-          transform(node, new Transformer {
-            $(".name").contents = p.name
-            $(".location").contents = p.location
-          })
+          transform(
+            node,
+            new Transformer {
+              $(".name").contents = p.name
+              $(".location").contents = p.location
+            }
+          )
         }
       }
     }

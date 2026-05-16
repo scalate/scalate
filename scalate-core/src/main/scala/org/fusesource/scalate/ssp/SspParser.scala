@@ -18,9 +18,10 @@
 package org.fusesource.scalate.ssp
 
 import org.fusesource.scalate.InvalidSyntaxException
-import org.fusesource.scalate.support.{ ScalaParseSupport, Text }
-
-import scala.util.parsing.input.{ CharSequenceReader, Positional }
+import org.fusesource.scalate.support.ScalaParseSupport
+import org.fusesource.scalate.support.Text
+import scala.util.parsing.input.CharSequenceReader
+import scala.util.parsing.input.Positional
 
 sealed abstract class PageFragment extends Positional {
   def tokenName = toString
@@ -31,12 +32,8 @@ case class DollarExpressionFragment(code: Text) extends PageFragment
 case class ExpressionFragment(code: Text) extends PageFragment
 case class ScriptletFragment(code: Text) extends PageFragment
 case class TextFragment(text: Text) extends PageFragment
-case class AttributeFragment(
-  kind: Text,
-  name: Text,
-  className: Text,
-  defaultValue: Option[Text],
-  autoImport: Boolean) extends PageFragment
+case class AttributeFragment(kind: Text, name: Text, className: Text, defaultValue: Option[Text], autoImport: Boolean)
+    extends PageFragment
 
 abstract class Directive(override val tokenName: String) extends PageFragment
 
@@ -62,12 +59,11 @@ class SspParser extends ScalaParseSupport {
 
   override def skipWhitespace = skipWhitespaceOn
 
-  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] {
-    in =>
-      skipWhitespaceOn = true
-      val result = p(in)
-      skipWhitespaceOn = false
-      result
+  def skip_whitespace[T](p: => Parser[T]): Parser[T] = Parser[T] { in =>
+    skipWhitespaceOn = true
+    val result = p(in)
+    skipWhitespaceOn = false
+    result
   }
 
   val anySpace = text("""[ \t]*""".r)
@@ -75,8 +71,11 @@ class SspParser extends ScalaParseSupport {
   val typeName = text(scalaType)
   val someText = text(""".+""".r)
 
-  val attribute = skip_whitespace(opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
-    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default => AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
+  val attribute = skip_whitespace(
+    opt(text("import")) ~ text("var" | "val") ~ identifier ~ (":" ~> typeName)
+  ) ~ ("""\s*""".r ~> opt("""=\s*""".r ~> upto("""\s*%>""".r))) ^^ {
+    case (p_import ~ p_kind ~ p_name ~ p_type) ~ p_default =>
+      AttributeFragment(p_kind, p_name, p_type, p_default, p_import.isDefined)
   }
 
   val literalPart: Parser[Text] =
@@ -85,10 +84,11 @@ class SspParser extends ScalaParseSupport {
         """\<%""" ~ opt(literalPart) ^^ { case x ~ y => "<%" + y.getOrElse("") } |
           """\${""" ~ opt(literalPart) ^^ { case x ~ y => "${" + y.getOrElse("") } |
           """\#""" ~ opt(literalPart) ^^ { case x ~ y => "#" + y.getOrElse("") } |
-          """\\""" ^^ { s => """\""" }) ^^ {
-          case x ~ Some(y) => x + y
-          case x ~ None => x
-        }
+          """\\""" ^^ { s => """\""" }
+      ) ^^ {
+        case x ~ Some(y) => x + y
+        case x ~ None => x
+      }
 
   val tagEnding = "+%>" | """%>[ \t]*\r?\n""".r | "%>"
   val commentFragment = wrapped("<%--", "--%>") ^^ { CommentFragment(_) }
@@ -99,9 +99,11 @@ class SspParser extends ScalaParseSupport {
   val scriptletFragment = wrapped("<%", tagEnding) ^^ { ScriptletFragment(_) }
   val textFragment = literalPart ^^ { TextFragment(_) }
 
-  val pageFragment: Parser[PageFragment] = positioned(directives | commentFragment | altCommentFragment | dollarExpressionFragment |
-    attributeFragement | expressionFragment | scriptletFragment |
-    textFragment)
+  val pageFragment: Parser[PageFragment] = positioned(
+    directives | commentFragment | altCommentFragment | dollarExpressionFragment |
+      attributeFragement | expressionFragment | scriptletFragment |
+      textFragment
+  )
 
   val pageFragments = rep(pageFragment)
 
@@ -144,15 +146,13 @@ class SspParser extends ScalaParseSupport {
   def expressionDirective[T](p: Parser[T]) = ("#" ~ p ~ anySpace ~ "(") ~> scalaExpression <~ """\)[ \t]*\r?\n?""".r
 
   def scalaExpression: Parser[Text] = {
-    text(
-      (rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ {
-        case a ~ b ~ c =>
-          val mid = b match {
-            case Some(tb) => "(" + tb + ")"
-            case tb => ""
-          }
-          a.mkString("") + mid + c.mkString("")
-      })
+    text((rep(nonParenText) ~ opt("(" ~> scalaExpression <~ ")") ~ rep(nonParenText)) ^^ { case a ~ b ~ c =>
+      val mid = b match {
+        case Some(tb) => "(" + tb + ")"
+        case tb => ""
+      }
+      a.mkString("") + mid + c.mkString("")
+    })
   }
 
   val nonParenText = characterLiteral | stringLiteral | """[^\(\)\'\"]+""".r
@@ -174,4 +174,3 @@ class SspParser extends ScalaParseSupport {
   }
 
 }
-

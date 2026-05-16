@@ -17,48 +17,50 @@
  */
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.filter.{ Pipeline, Filter }
-import org.fusesource.scalate.support.{ Text, ScalaParseSupport }
+import org.fusesource.scalate.*
+import org.fusesource.scalate.filter.Pipeline
+import org.fusesource.scalate.filter.Filter
+import org.fusesource.scalate.support.Text
+import org.fusesource.scalate.support.ScalaParseSupport
 import util.IOUtil
-import IOUtil._
-
+import IOUtil.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import org.yaml.snakeyaml.Yaml
-import scala.util.parsing.input.{ NoPosition, CharSequenceReader }
-import scala.jdk.CollectionConverters._
+import scala.util.parsing.input.NoPosition
+import scala.util.parsing.input.CharSequenceReader
+import scala.jdk.CollectionConverters.*
 
-case class Attribute(
-  key: Text,
-  value: Text)
+case class Attribute(key: Text, value: Text)
 
-case class PagePart(
-  attributes: List[Attribute],
-  content: Text) {
+case class PagePart(attributes: List[Attribute], content: Text) {
 
   def attribute(name: String) = attributes.find(_.key.value == name).map(_.value)
   def name = attribute("name")
 
   def pipeline = attribute("pipeline")
 
-  def filter(engine: TemplateEngine) = Pipeline(pipeline.map(_.value).getOrElse("ssp,markdown").split(",").map { fn =>
-    engine.filter(fn) match {
-      case Some(filter) => filter
-      case _ =>
-        throw new InvalidSyntaxException("Invalid filter name: " + fn, pipeline.map(_.pos).getOrElse(NoPosition))
-    }
-  }.toList)
+  def filter(engine: TemplateEngine) = Pipeline(
+    pipeline
+      .map(_.value)
+      .getOrElse("ssp,markdown")
+      .split(",")
+      .map { fn =>
+        engine.filter(fn) match {
+          case Some(filter) => filter
+          case _ =>
+            throw new InvalidSyntaxException("Invalid filter name: " + fn, pipeline.map(_.pos).getOrElse(NoPosition))
+        }
+      }
+      .toList
+  )
 
   def render(context: RenderContext) = filter(context.engine).filter(context, content.value)
 }
 
-case class Page(
-  context: RenderContext,
-  file: Option[File],
-  headers: Map[String, AnyRef],
-  parts: Map[String, PagePart]) extends Node {
+case class Page(context: RenderContext, file: Option[File], headers: Map[String, AnyRef], parts: Map[String, PagePart])
+    extends Node {
 
   protected lazy val fileNode = file.map(new FileNode(_))
 
@@ -144,18 +146,16 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
   def filter(context: RenderContext, content: String) = {
     val page = parse(context, content)
-    page.headers.foreach {
-      case (name, value) =>
-        context.attributes(name) = value
+    page.headers.foreach { case (name, value) =>
+      context.attributes(name) = value
     }
     var rc = ""
-    page.parts.foreach {
-      case (name, part) =>
-        if (name != default_name) {
-          context.attributes(name) = part.render(context)
-        } else {
-          rc = part.render(context)
-        }
+    page.parts.foreach { case (name, part) =>
+      if (name != default_name) {
+        context.attributes(name) = part.render(context)
+      } else {
+        rc = part.render(context)
+      }
     }
     rc
   }
@@ -172,9 +172,8 @@ object PageFilter extends Filter with TemplateEngineAddOn {
 
     var headers = Map[String, AnyRef]()
     meta_data(context, parts).foreach { meta_data =>
-      meta_data.foreach {
-        case (key, value) =>
-          headers += key -> value
+      meta_data.foreach { case (key, value) =>
+        headers += key -> value
       }
       parts = parts.drop(1)
     }
@@ -183,7 +182,10 @@ object PageFilter extends Filter with TemplateEngineAddOn {
     parts.foreach { part =>
       val name = part.name.map(_.value).getOrElse(default_name)
       if (page_parts.contains(name)) {
-        throw new InvalidSyntaxException(s"A page part named: ${name} was already defined.", part.name.map(_.pos).getOrElse(NoPosition))
+        throw new InvalidSyntaxException(
+          s"A page part named: ${name} was already defined.",
+          part.name.map(_.pos).getOrElse(NoPosition)
+        )
       }
       page_parts += name -> part
     }

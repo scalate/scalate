@@ -18,10 +18,8 @@
 package org.fusesource.scalate.jade
 
 import java.io.File
-
-import org.fusesource.scalate.scaml._
+import org.fusesource.scalate.scaml.*
 import org.fusesource.scalate.util.IOUtil
-
 import scala.util.parsing.input.CharSequenceReader
 
 /**
@@ -35,8 +33,8 @@ import scala.util.parsing.input.CharSequenceReader
 class JadeParser extends ScamlParser {
 
   override def full_element_statement: Parser[Element] =
-    opt(tag_ident) ~ attributes ~ opt(trim) <~ ("/" ~! opt_space ~ nl) ^^ {
-      case (tag ~ attributes ~ wsc) => Element(tag, attributes, None, List(), wsc, true)
+    opt(tag_ident) ~ attributes ~ opt(trim) <~ ("/" ~! opt_space ~ nl) ^^ { case (tag ~ attributes ~ wsc) =>
+      Element(tag, attributes, None, List(), wsc, true)
     } |
       opt(tag_ident) ~ attributes ~ opt(trim) ~ element_text ~ statement_block ^^ {
         case ((tag ~ attributes ~ wsc ~ text) ~ body) => Element(tag, attributes, text, body, wsc, false)
@@ -44,8 +42,7 @@ class JadeParser extends ScamlParser {
 
   override def element_statement: Parser[Element] = full_element_statement
 
-  override def text_statement = (
-    prefixed("""\""", literal_text(None)) |
+  override def text_statement = (prefixed("""\""", literal_text(None)) |
     prefixed("&==" ~ opt_space, literal_text(Some(true))) |
     prefixed("!==" ~ opt_space, literal_text(Some(false))) |
     prefixed("&" ~ space, literal_text(Some(true))) |

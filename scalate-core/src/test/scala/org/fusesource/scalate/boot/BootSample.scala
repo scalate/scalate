@@ -24,7 +24,7 @@ import org.fusesource.scalate.util.Log
  * using the ScalatePackage mechanism
  */
 object BootSample {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   var initialised = false
 

@@ -18,8 +18,10 @@
 package org.fusesource.scalate.util
 
 import scala.io.Source
-import java.io._
-import java.net.{ URISyntaxException, URI, URL }
+import java.io.*
+import java.net.URISyntaxException
+import java.net.URI
+import java.net.URL
 
 /**
  * Represents a string, file or URI based resource
@@ -58,6 +60,7 @@ trait Resource {
  * Not all resources are writeable so this optional trait is for those
  */
 trait WriteableResource extends Resource {
+
   /**
    * Writes text to the resource replacing its previous content
    */
@@ -155,7 +158,7 @@ case class FileResource(file: File, uri: String) extends WriteableResource {
 
 object URLResource extends Log
 case class URLResource(url: URL) extends WriteableResource {
-  import URLResource._
+  import URLResource.*
   def uri = url.toExternalForm
 
   lazy val connection = url.openConnection

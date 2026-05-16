@@ -17,15 +17,19 @@
  */
 package org.fusesource.scalate.osgi
 
-import java.io.{ InputStream, IOException, File }
+import java.io.InputStream
+import java.io.IOException
+import java.io.File
 import scala.reflect.io.AbstractFile
 import java.net.URL
 import java.lang.String
-import org.osgi.framework.{ ServiceReference, Bundle }
-import collection.mutable.{ ListBuffer, LinkedHashSet }
+import org.osgi.framework.ServiceReference
+import org.osgi.framework.Bundle
+import collection.mutable.ListBuffer
+import collection.mutable.LinkedHashSet
 import org.osgi.service.packageadmin.PackageAdmin
-import org.fusesource.scalate.util.{ Log, Strings }
-
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.Strings
 import scala.annotation.tailrec
 
 /**
@@ -33,7 +37,7 @@ import scala.annotation.tailrec
  * suitable for use with the Scala compiler
  */
 object BundleClassPathBuilder {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   // These were removed in Scala 2.11.  We still use them.
   private trait AbstractFileCompatibility { this: AbstractFile =>
@@ -44,7 +48,8 @@ object BundleClassPathBuilder {
     private def lookup(
       getFile: (AbstractFile, String, Boolean) => AbstractFile,
       path0: String,
-      directory: Boolean): AbstractFile = {
+      directory: Boolean
+    ): AbstractFile = {
       val separator = java.io.File.separatorChar
       // trim trailing '/'s
       val path: String = if (path0.last == separator) path0 dropRight 1 else path0
@@ -108,10 +113,10 @@ object BundleClassPathBuilder {
   def fromWires(admin: PackageAdmin, bundle: Bundle): List[AbstractFile] = {
     val exported = admin.getExportedPackages(null: Bundle)
     val set = new LinkedHashSet[Bundle]
-    for (pkg <- exported; if pkg.getExportingBundle.getBundleId != 0) {
+    for (pkg <- exported if pkg.getExportingBundle.getBundleId != 0) {
       val bundles = pkg.getImportingBundles();
       if (bundles != null) {
-        for (b <- bundles; if b.getBundleId == bundle.getBundleId) {
+        for (b <- bundles if b.getBundleId == bundle.getBundleId) {
           debug("Bundle imports %s from %s", pkg, pkg.getExportingBundle)
           if (b.getBundleId == 0) {
             debug("Ignoring system bundle")

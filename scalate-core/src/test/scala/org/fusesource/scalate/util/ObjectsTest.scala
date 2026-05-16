@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package util
 
-import Objects._
+import Objects.*
 import scalate.Boot
 
 class ObjectsTest extends FunSuiteSupport {
@@ -36,4 +36,3 @@ class ObjectsTest extends FunSuiteSupport {
 
   }
 }
-

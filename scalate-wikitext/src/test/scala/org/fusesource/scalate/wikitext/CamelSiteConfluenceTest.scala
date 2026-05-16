@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package wikitext
 
-import org.junit.Assert._
+import org.junit.Assert.*
 
 class CamelSiteConfluenceTest extends AbstractConfluenceTest {
 
@@ -26,8 +26,7 @@ class CamelSiteConfluenceTest extends AbstractConfluenceTest {
 
   if (includeSimpleTests) {
     test("parse table without div") {
-      val output = renderConfluence(
-        """
+      val output = renderConfluence("""
 h2. Bean Component
 
 The *bean:* component binds beans to Camel message exchanges.
@@ -48,8 +47,7 @@ You can append query options to the URI in the following format, {{?option=value
   }
 
   test("parse table with div") {
-    val output = renderConfluence(
-      """
+    val output = renderConfluence("""
 h2. Bean Component
 
 The *bean:* component binds beans to Camel message exchanges.

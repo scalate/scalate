@@ -45,10 +45,20 @@ class TemplateTestSupport extends FunSuiteSupport {
 
   protected def createTemplateEngine = new TemplateEngine
 
-  def assertUriOutput(expectedOutput: String, uri: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): String =
+  def assertUriOutput(
+    expectedOutput: String,
+    uri: String,
+    attributes: Map[String, Any] = Map(),
+    trim: Boolean = false
+  ): String =
     assertOutput(expectedOutput, fromUri(uri), attributes, trim)
 
-  def assertOutput(expectedOutput: String, template: TemplateSource, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
+  def assertOutput(
+    expectedOutput: String,
+    template: TemplateSource,
+    attributes: Map[String, Any] = Map(),
+    trim: Boolean = false
+  ): String = {
     var output = engine.layout(template, attributes)
     debug("output: '" + output + "'")
 
@@ -60,7 +70,7 @@ class TemplateTestSupport extends FunSuiteSupport {
   }
 
   def assertOutputContains(source: TemplateSource, expected: String*): String =
-    assertOutputContains(source, Map[String, Any](), expected: _*)
+    assertOutputContains(source, Map[String, Any](), expected*)
 
   def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): String = {
     val output = engine.layout(source, attributes)
@@ -70,15 +80,15 @@ class TemplateTestSupport extends FunSuiteSupport {
       debug("output: '" + output + "'")
     }
 
-    assertTextContains(output, "template " + source, expected: _*)
+    assertTextContains(output, "template " + source, expected*)
     output
   }
 
   def assertUriOutputContains(uri: String, expected: String*): String =
-    assertUriOutputContains(uri, Map[String, Any](), expected: _*)
+    assertUriOutputContains(uri, Map[String, Any](), expected*)
 
   def assertUriOutputContains(uri: String, attributes: Map[String, Any], expected: String*): String =
-    assertOutputContains(fromUri(uri), attributes, expected: _*)
+    assertOutputContains(fromUri(uri), attributes, expected*)
 
   protected def fromUri(uri: String) = TemplateSource.fromUri(uri, engine.resourceLoader)
 

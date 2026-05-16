@@ -17,8 +17,10 @@
  */
 package org.fusesource.scalate.rest
 
-import javax.ws.rs.{ POST, Path, PathParam }
-import org.fusesource.scalate.util.{ Log }
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import org.fusesource.scalate.util.Log
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.Response.Status
@@ -29,7 +31,7 @@ object ContainerResource extends Log
  * @version $Revision: 1.1 $
  */
 abstract class ContainerResource[K, E, R] {
-  import ContainerResource._
+  import ContainerResource.*
 
   def container: Container[K, E]
 

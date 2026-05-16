@@ -24,7 +24,9 @@ class JQueryTest extends TemplateTestSupport {
 
   test("jQuery generated code") {
     assertOutputContains(
-      TemplateSource.fromText("foo.ssp", """
+      TemplateSource.fromText(
+        "foo.ssp",
+        """
 <p>start of html</p>
 
 <script>
@@ -38,11 +40,13 @@ $("a").click(function() {
 </script>
 
 <p>end of html</p>
-"""),
+"""
+      ),
       "start of html",
       "$(document).ready",
       """$("a").click""",
-      "end of html")
+      "end of html"
+    )
   }
 
 }

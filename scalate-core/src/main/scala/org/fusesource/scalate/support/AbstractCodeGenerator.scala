@@ -18,10 +18,13 @@
 package org.fusesource.scalate.support
 
 import org.fusesource.scalate.util.Log
-import org.fusesource.scalate.{ Binding, TemplateEngine, TemplateSource }
-
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.TemplateSource
 import scala.collection.immutable.TreeMap
-import scala.util.parsing.input.{ OffsetPosition, Position, Positional }
+import scala.util.parsing.input.OffsetPosition
+import scala.util.parsing.input.Position
+import scala.util.parsing.input.Positional
 
 object AbstractCodeGenerator extends Log
 
@@ -87,9 +90,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
           rc
         }
       })
-      generatedPositions.foreach {
-        entry =>
-          rc = rc + (OffsetPosition(code, entry._2) -> entry._1)
+      generatedPositions.foreach { entry =>
+        rc = rc + (OffsetPosition(code, entry._2) -> entry._1)
       }
       rc
     }
@@ -105,7 +107,8 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
       engine: TemplateEngine,
       source: TemplateSource,
       bindings: Iterable[Binding],
-      statements: List[T]): Unit = {
+      statements: List[T]
+    ): Unit = {
 
       val packageName = source.packageName
       val className = source.simpleClassName
@@ -198,7 +201,7 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
               }
             }
             this << "});"
-      */
+       */
 
       if (binding.importMembers) {
         this << "import " + binding.name + "._"

@@ -18,16 +18,14 @@
 package org.fusesource.scalate
 
 import org.fusesource.scalate.support.CompilerError
-
 import scala.util.control.NoStackTrace
-import scala.util.parsing.input.{ NoPosition, Position }
+import scala.util.parsing.input.NoPosition
+import scala.util.parsing.input.Position
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class TemplateException(
-  message: String,
-  cause: Throwable) extends RuntimeException(message, cause) {
+class TemplateException(message: String, cause: Throwable) extends RuntimeException(message, cause) {
 
   def this(message: String) = {
     this(message, null)
@@ -37,9 +35,8 @@ class TemplateException(
 /**
  * Indicates a syntax error trying to parse the template
  */
-class InvalidSyntaxException(
-  val brief: String,
-  val pos: Position = NoPosition) extends TemplateException(brief + " at " + pos) {
+class InvalidSyntaxException(val brief: String, val pos: Position = NoPosition)
+    extends TemplateException(brief + " at " + pos) {
 
   var source: TemplateSource = _
 
@@ -50,26 +47,25 @@ class InvalidSyntaxException(
 /**
  * Indicates a Scala compiler error occurred when converting the template into bytecode
  */
-class CompilerException(
-  msg: String,
-  val errors: List[CompilerError]) extends TemplateException(msg)
+class CompilerException(msg: String, val errors: List[CompilerError]) extends TemplateException(msg)
 
-class NoValueSetException(
-  val attribute: String) extends TemplateException("The value for '" + attribute + "' was not set")
+class NoValueSetException(val attribute: String)
+    extends TemplateException("The value for '" + attribute + "' was not set")
 
-class NoFormParameterException(
-  val parameter: String) extends TemplateException("The form parameter '" + parameter + "' was not set")
+class NoFormParameterException(val parameter: String)
+    extends TemplateException("The form parameter '" + parameter + "' was not set")
 
-class NoSuchViewException(
-  val model: AnyRef,
-  val view: String) extends TemplateException("No '" + view +
-  "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName)
+class NoSuchViewException(val model: AnyRef, val view: String)
+    extends TemplateException(
+      "No '" + view +
+        "' view template could be found for model object '" + model + "' of type: " + model.getClass.getCanonicalName
+    )
 
-class NoSuchFilterException(
-  val filter: String) extends TemplateException("No '" + filter + "' filter available.")
+class NoSuchFilterException(val filter: String) extends TemplateException("No '" + filter + "' filter available.")
 
-class NoInjectionException(
-  val injectClass: Class[?]) extends TemplateException("Could not inject type  '" + injectClass + "' was not set")
+class NoInjectionException(val injectClass: Class[?])
+    extends TemplateException("Could not inject type  '" + injectClass + "' was not set")
 
-class StaleCacheEntryException(
-  source: TemplateSource) extends TemplateException("The compiled template for " + source + " needs to get recompiled") with NoStackTrace
+class StaleCacheEntryException(source: TemplateSource)
+    extends TemplateException("The compiled template for " + source + " needs to get recompiled")
+    with NoStackTrace

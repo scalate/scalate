@@ -19,8 +19,10 @@ package org.fusesource.scalate.scuery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
 import org.fusesource.scalate.scuery.Selector
-import org.fusesource.scalate.scuery.XmlHelper._
-import xml.{ Elem, Node, NodeSeq }
+import org.fusesource.scalate.scuery.XmlHelper.*
+import xml.Elem
+import xml.Node
+import xml.NodeSeq
 
 abstract class CssParserTestSupport extends FunSuiteSupport {
   var parser = new CssParser

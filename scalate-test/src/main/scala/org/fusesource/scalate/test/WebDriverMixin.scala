@@ -18,8 +18,10 @@
 package org.fusesource.scalate.test
 
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import org.scalatest.{ ConfigMap, BeforeAndAfterAllConfigMap }
-import org.openqa.selenium.{ WebDriver, WebElement }
+import org.scalatest.ConfigMap
+import org.scalatest.BeforeAndAfterAllConfigMap
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.internal.FindsByXPath
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -47,7 +49,10 @@ trait WebDriverMixin extends BeforeAndAfterAllConfigMap { this: AnyFunSuite =>
       if (index >= 0) {
         index += text.length
       } else {
-        assume(false, "Page does not contain '" + text + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
+        assume(
+          false,
+          "Page does not contain '" + text + "' for " + webDriver.getCurrentUrl + " when page was\n" + source
+        )
       }
     }
   }
@@ -58,7 +63,10 @@ trait WebDriverMixin extends BeforeAndAfterAllConfigMap { this: AnyFunSuite =>
     for (text <- textLines) {
       val index = source.indexOf(text)
       if (index >= 0) {
-        assume(false, "Page contains '" + text + "' at index " + index + " for " + webDriver.getCurrentUrl + " when page was\n" + source)
+        assume(
+          false,
+          "Page contains '" + text + "' at index " + index + " for " + webDriver.getCurrentUrl + " when page was\n" + source
+        )
       }
     }
   }
@@ -66,20 +74,23 @@ trait WebDriverMixin extends BeforeAndAfterAllConfigMap { this: AnyFunSuite =>
   def pageMatches(regex: String): Unit = {
     val source = pageSource
     assume(source != null, "page source was null for " + webDriver.getCurrentUrl)
-    assume(source.matches(regex), "Page does not match '" + regex + "' for " + webDriver.getCurrentUrl + " when page was\n" + source)
+    assume(
+      source.matches(regex),
+      "Page does not match '" + regex + "' for " + webDriver.getCurrentUrl + " when page was\n" + source
+    )
   }
 
   def pageSource = webDriver.getPageSource
 
   def testPageContains(uri: String, textLines: String*): Unit = {
     testPage(uri) {
-      pageContains(textLines: _*)
+      pageContains(textLines*)
     }
   }
 
   def testPageNotContains(uri: String, textLines: String*): Unit = {
     testPage(uri) {
-      pageNotContains(textLines: _*)
+      pageNotContains(textLines*)
     }
   }
 
@@ -91,7 +102,8 @@ trait WebDriverMixin extends BeforeAndAfterAllConfigMap { this: AnyFunSuite =>
 
   def testPage(uri: String)(func: => Unit): Unit = {
     test("page: " + uri) {
-      val fullUri = if (uri.startsWith("http")) { uri } else { rootUrl + uri }
+      val fullUri = if (uri.startsWith("http")) { uri }
+      else { rootUrl + uri }
 
       println("Loading page: " + fullUri)
       webDriver.get(fullUri)

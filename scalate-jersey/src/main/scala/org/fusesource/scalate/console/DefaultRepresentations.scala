@@ -27,6 +27,4 @@ import javax.ws.rs.Produces
  */
 @ImplicitProduces(Array("text/html;qs=5"))
 @Produces(Array("application/xml", "text/xml", "application/json"))
-trait DefaultRepresentations {
-
-}
+trait DefaultRepresentations {}

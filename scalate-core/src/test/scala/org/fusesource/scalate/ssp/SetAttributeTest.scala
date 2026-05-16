@@ -42,12 +42,22 @@ class SetAttributeTest extends TemplateTestSupport {
   test("set attribute") {
     showOutput = true
 
-    assertOutputContains(TemplateSource.fromText("setAttr.ssp", """<%@ val x: Int %>
+    assertOutputContains(
+      TemplateSource.fromText(
+        "setAttr.ssp",
+        """<%@ val x: Int %>
 #set (foo)
 x = 5
 #end
 start ${attribute("foo")} : ${attribute("foo")} end
-"""), Map("x" -> 5), "start", "x = 5", "x = 5", "end")
+"""
+      ),
+      Map("x" -> 5),
+      "start",
+      "x = 5",
+      "x = 5",
+      "end"
+    )
   }
 
 }

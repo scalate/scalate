@@ -43,21 +43,18 @@ class TransformTableStripeTest extends FunSuiteSupport {
             </table>
 
   class PersonTransformer(people: List[Person]) extends Transformer {
-    $("tbody").contents {
-      node =>
-        if (people.isEmpty) {
-          node.$("tr.empty")
-        } else {
-          people.zipWithIndex.flatMap {
-            case (p, i) =>
-              val row = if (i % 2 == 0) node.$("tr.odd") else node.$("tr.even")
-              transform(row) {
-                $ =>
-                  $(".name").contents = p.name
-                  $(".location").contents = p.location
-              }
+    $("tbody").contents { node =>
+      if (people.isEmpty) {
+        node.$("tr.empty")
+      } else {
+        people.zipWithIndex.flatMap { case (p, i) =>
+          val row = if (i % 2 == 0) node.$("tr.odd") else node.$("tr.even")
+          transform(row) { $ =>
+            $(".name").contents = p.name
+            $(".location").contents = p.location
           }
         }
+      }
     }
   }
 

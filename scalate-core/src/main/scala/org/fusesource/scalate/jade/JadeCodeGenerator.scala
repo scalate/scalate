@@ -17,9 +17,9 @@
  */
 package org.fusesource.scalate.jade
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.scaml._
-import org.fusesource.scalate.support._
+import org.fusesource.scalate.*
+import org.fusesource.scalate.scaml.*
+import org.fusesource.scalate.support.*
 
 /**
  * <p>

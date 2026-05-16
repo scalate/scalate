@@ -17,11 +17,14 @@
  */
 package org.fusesource.scalate.scuery.support
 
-import xml.{ Elem, Node, NodeSeq }
-import org.fusesource.scalate.scuery.XmlHelper._
+import xml.Elem
+import xml.Node
+import xml.NodeSeq
+import org.fusesource.scalate.scuery.XmlHelper.*
 import org.fusesource.scalate.util.Log
 
 object Rule extends Log {
+
   /**
    * Combines multiple rules to a single rule
    */
@@ -44,7 +47,6 @@ object Rule extends Log {
     }
   }
 }
-import Rule._
 
 /**
  * Represents manipuluation rules
@@ -81,6 +83,8 @@ case class ReplaceRule(fn: Node => NodeSeq) extends Rule {
 }
 
 case class ReplaceContentRule(fn: Node => NodeSeq) extends Rule {
+  import Rule.debug
+
   def apply(node: Node) = node match {
     case e: Elem =>
       val contents = fn(e)
@@ -91,6 +95,8 @@ case class ReplaceContentRule(fn: Node => NodeSeq) extends Rule {
 }
 
 case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
+  import Rule.debug
+
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)
@@ -104,6 +110,8 @@ case class SetAttributeRule(name: String, fn: (Node) => String) extends Rule {
 }
 
 case class SetSelectiveAttributeRule(name: String, fn: (Node) => String) extends Rule {
+  import Rule.debug
+
   def apply(node: Node) = node match {
     case e: Elem =>
       val value = fn(e)

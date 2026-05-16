@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.scuery.support
 
-import org.fusesource.scalate.scuery._
+import org.fusesource.scalate.scuery.*
 
 /**
  * @version $Revision : 1.1 $

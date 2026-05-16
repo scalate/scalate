@@ -17,15 +17,18 @@
  */
 package org.fusesource.scalate.servlet
 
-import java.io._
+import java.io.*
 import java.util.Locale
-
-import _root_.org.fusesource.scalate.util.URIs._
-import javax.servlet.http._
-import javax.servlet.{ ServletContext, ServletException, ServletOutputStream }
-import org.fusesource.scalate.{ AttributeMap, DefaultRenderContext, RenderContext, TemplateEngine }
-
-import scala.jdk.CollectionConverters._
+import _root_.org.fusesource.scalate.util.URIs.*
+import javax.servlet.http.*
+import javax.servlet.ServletContext
+import javax.servlet.ServletException
+import javax.servlet.ServletOutputStream
+import org.fusesource.scalate.AttributeMap
+import org.fusesource.scalate.DefaultRenderContext
+import org.fusesource.scalate.RenderContext
+import org.fusesource.scalate.TemplateEngine
+import scala.jdk.CollectionConverters.*
 import scala.collection.Set
 import scala.collection.mutable.HashSet
 
@@ -44,7 +47,8 @@ object ServletRenderContext {
    */
   def renderContext: ServletRenderContext = RenderContext() match {
     case s: ServletRenderContext => s
-    case n => throw new IllegalArgumentException("This threads RenderContext is not a ServletRenderContext as it is: " + n)
+    case n =>
+      throw new IllegalArgumentException("This threads RenderContext is not a ServletRenderContext as it is: " + n)
   }
 
   def request: HttpServletRequest = renderContext.request
@@ -64,13 +68,15 @@ class ServletRenderContext(
   out: PrintWriter,
   val request: HttpServletRequest,
   val response: HttpServletResponse,
-  val servletContext: ServletContext) extends DefaultRenderContext(request.getRequestURI, engine, out) {
+  val servletContext: ServletContext
+) extends DefaultRenderContext(request.getRequestURI, engine, out) {
 
   def this(
     engine: TemplateEngine,
     request: HttpServletRequest,
     response: HttpServletResponse,
-    servletContext: ServletContext) = {
+    servletContext: ServletContext
+  ) = {
     this(engine, response.getWriter, request, response, servletContext)
   }
 
@@ -120,7 +126,10 @@ class ServletRenderContext(
    */
   def servletConfig: Config = engine match {
     case servletEngine: ServletTemplateEngine => servletEngine.config
-    case _ => throw new IllegalArgumentException("render context not created with ServletTemplateEngine so cannot provide a ServletConfig")
+    case _ =>
+      throw new IllegalArgumentException(
+        "render context not created with ServletTemplateEngine so cannot provide a ServletConfig"
+      )
   }
 
   override def locale: Locale = {

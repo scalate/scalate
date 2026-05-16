@@ -33,7 +33,7 @@ object Files {
     } else {
       if (filter(file)) Some(file) else None
     }
-*/
+     */
   }
 
   def recursiveFind(directories: Iterable[File])(filter: File => Boolean): Option[File] = {
@@ -44,11 +44,9 @@ object Files {
     def iterator = if (file.isDirectory) file.listFiles.iterator else Iterator.empty
   }
 
-  def descendants(file: File): Iterable[File] = (
-    children(file).view.flatMap(andDescendants(_)))
+  def descendants(file: File): Iterable[File] = (children(file).view.flatMap(andDescendants(_)))
 
-  def andDescendants(file: File): Iterable[File] = (
-    Seq(file) ++ descendants(file))
+  def andDescendants(file: File): Iterable[File] = (Seq(file) ++ descendants(file))
 
   /**
    * Returns true if
@@ -99,4 +97,3 @@ object Files {
    */
   def dropExtension(file: File): String = dropExtension(file.getName)
 }
-

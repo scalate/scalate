@@ -17,9 +17,11 @@
  */
 package org.fusesource.scalate.scaml
 
-import org.fusesource.scalate._
-import org.fusesource.scalate.support.{ AbstractCodeGenerator, Code, RenderHelper, Text }
-
+import org.fusesource.scalate.*
+import org.fusesource.scalate.support.AbstractCodeGenerator
+import org.fusesource.scalate.support.Code
+import org.fusesource.scalate.support.RenderHelper
+import org.fusesource.scalate.support.Text
 import scala.collection.mutable.LinkedHashMap
 import scala.language.implicitConversions
 import scala.util.parsing.input.OffsetPosition
@@ -121,8 +123,18 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         fragment match {
           case attribute: Attribute =>
             this << attribute.pos
-            generateBindings(List(Binding(attribute.name.value, attribute.className.value, attribute.autoImport, attribute.defaultValue,
-              classNamePositional = Some(attribute.className), defaultValuePositional = attribute.defaultValue))) {
+            generateBindings(
+              List(
+                Binding(
+                  attribute.name.value,
+                  attribute.className.value,
+                  attribute.autoImport,
+                  attribute.defaultValue,
+                  classNamePositional = Some(attribute.className),
+                  defaultValuePositional = attribute.defaultValue
+                )
+              )
+            ) {
               generate(remaining)
             }
             remaining = Nil
@@ -136,10 +148,8 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement: Statement): Unit = {
       statement match {
-        case s: Newline => {
-        }
-        case s: Attribute => {
-        }
+        case s: Newline => {}
+        case s: Attribute => {}
         case s: ScamlComment => {
           generate(s)
         }
@@ -177,28 +187,46 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
             case ScamlOptions.Format.xhtml =>
               statement.line.map { _.value } match {
                 case List("Strict") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">"""
+                  )
                 case List("Frameset") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">"""
+                  )
                 case List("5") =>
                   write_text("""<!DOCTYPE html>""")
                 case List("1.1") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">"""
+                  )
                 case List("Basic") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> """)
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd"> """
+                  )
                 case List("Mobile") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">"""
+                  )
                 case _ =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"""
+                  )
               }
             case ScamlOptions.Format.html4 =>
               statement.line.map { _.value } match {
                 case List("Strict") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">"""
+                  )
                 case List("Frameset") =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">"""
+                  )
                 case _ =>
-                  write_text("""<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">""")
+                  write_text(
+                    """<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">"""
+                  )
               }
             case ScamlOptions.Format.html5 =>
               write_text("""<!DOCTYPE html>""")
@@ -354,18 +382,16 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
     def generate(statement: Executed): Unit = {
       flush_text()
       if (statement.body.isEmpty) {
-        statement.code.foreach {
-          (line) =>
-            this << line :: Nil
+        statement.code.foreach { (line) =>
+          this << line :: Nil
         }
       } else {
-        statement.code.foreach {
-          (line) =>
-            if (line ne statement.code.last) {
-              this << line :: Nil
-            } else {
-              this << line :: "{" :: Nil
-            }
+        statement.code.foreach { (line) =>
+          if (line ne statement.code.last) {
+            this << line :: Nil
+          } else {
+            this << line :: "{" :: Nil
+          }
         }
         indent {
           generate_no_flush(statement.body)
@@ -418,7 +444,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_text(suffix)
           write_nl()
         }
-        case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html comment and nested within it", statement.pos);
+        case _ =>
+          throw new InvalidSyntaxException(
+            "Illegal nesting: content can't be both given on the same line as html comment and nested within it",
+            statement.pos
+          );
       }
 
       if (prefix.length != 0) {
@@ -444,14 +474,19 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def isAutoClosed(statement: Element) = {
       statement.text == None && statement.body.isEmpty &&
-        statement.tag.isDefined && (ScamlOptions.autoclose == null || ScamlOptions.autoclose.contains(statement.tag.get.value))
+      statement.tag.isDefined && (ScamlOptions.autoclose == null || ScamlOptions.autoclose.contains(
+        statement.tag.get.value
+      ))
     }
 
     def generate(statement: Element): Unit = {
 
       val tag = statement.tag.getOrElse("div")
       if (statement.text.isDefined && !statement.body.isEmpty) {
-        throw new InvalidSyntaxException("Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed", statement.pos)
+        throw new InvalidSyntaxException(
+          "Illegal nesting: content can't be given on the same line as html element or nested within it if the tag is closed",
+          statement.pos
+        )
       }
 
       def write_start_tag = {
@@ -473,8 +508,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       }
 
       statement.trim match {
-        case Some(Trim.Outer) => {
-        }
+        case Some(Trim.Outer) => {}
         case Some(Trim.Inner) => {}
         case Some(Trim.Both) => {}
         case _ => {}
@@ -520,7 +554,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
           write_nl()
           outer_trim
         }
-        case _ => throw new InvalidSyntaxException("Illegal nesting: content can't be both given on the same line as html element and nested within it", statement.pos);
+        case _ =>
+          throw new InvalidSyntaxException(
+            "Illegal nesting: content can't be both given on the same line as html element and nested within it",
+            statement.pos
+          );
       }
     }
 
@@ -565,12 +603,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
                   List[AnyRef]("$_scalate_$_context.value(", part, ", false)")
                 }
               }
-              this << parts.foldRight(List[AnyRef]()) {
-                case (prev, sum) =>
-                  sum match {
-                    case List() => prev
-                    case _ => prev ::: " + " :: sum
-                  }
+              this << parts.foldRight(List[AnyRef]()) { case (prev, sum) =>
+                sum match {
+                  case List() => prev
+                  case _ => prev ::: " + " :: sum
+                }
               }
               flush_text()
             case s: EvaluatedText =>
@@ -591,19 +628,18 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         this << "$_scalate_$_context << $_scalate_$_attributes( $_scalate_$_context, List( ("
         indent {
           var first = true
-          entries.foreach {
-            (entry) =>
-              if (!first) {
-                this << "), ("
-              }
-              first = false
-              indent {
-                write_expression(entry._1)
-              }
-              this << ","
-              indent {
-                write_expression(entry._2)
-              }
+          entries.foreach { (entry) =>
+            if (!first) {
+              this << "), ("
+            }
+            first = false
+            indent {
+              write_expression(entry._1)
+            }
+            this << ","
+            indent {
+              write_expression(entry._2)
+            }
           }
         }
         this << ") ) )"
@@ -628,12 +664,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
         if (!entries_class.isEmpty) {
           var value: Option[Text] = None
-          value = entries_class.foldLeft(value) {
-            (rc, x) =>
-              rc match {
-                case None => Some(value_of(x._2))
-                case Some(y) => Some(y + " " + value_of(x._2))
-              }
+          value = entries_class.foldLeft(value) { (rc, x) =>
+            rc match {
+              case None => Some(value_of(x._2))
+              case Some(y) => Some(y + " " + value_of(x._2))
+            }
           }
           map += Text("class") -> value.get
         }
@@ -641,15 +676,14 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
         entries_rest.foreach { me => map += value_of(me._1) -> value_of(me._2) }
 
         if (!map.isEmpty) {
-          map.foreach {
-            case (name, value) =>
-              write_text(" ")
-              this << name.pos
-              write_text(name)
-              write_text("=\"")
-              this << value.pos
-              write_text(RenderHelper.sanitize(value))
-              write_text("\"")
+          map.foreach { case (name, value) =>
+            write_text(" ")
+            this << name.pos
+            write_text(name)
+            write_text("=\"")
+            this << value.pos
+            write_text(RenderHelper.sanitize(value))
+            write_text("\"")
           }
         }
 

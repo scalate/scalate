@@ -16,22 +16,22 @@ version := "1.10.1"
 scalaVersion := Scala213
 crossScalaVersions := Seq(Scala3, Scala213, Scala212)
 javacOptions ++= Seq("-source", "1.8")
-scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+scalacOptionsOpts
 startYear := Some(2010)
 licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0")
 scmInfo := Some(
-  ScmInfo(url("https://github.com/scalate/scalate"),
-  "scm:git:git://github.com/scalate/scalate.git",
-  Some("scm:git:ssh://git@github.com:scalate/scalate.git"))
+  ScmInfo(
+    url("https://github.com/scalate/scalate"),
+    "scm:git:git://github.com/scalate/scalate.git",
+    Some("scm:git:ssh://git@github.com:scalate/scalate.git")
+  )
 )
 homepage := Some(url("https://scalate.github.io/scalate"))
 enablePlugins(ScalaUnidocPlugin)
 unidocOpts(scalateWeb)
 notPublished
 
-lazy val scalateUtil = scalateProject("util")
-  .scalateSettings
-  .published
+lazy val scalateUtil = scalateProject("util").scalateSettings.published
   .settings(
     libraryDependencies ++= Seq(
       junit % Test,
@@ -45,9 +45,7 @@ lazy val scalateUtil = scalateProject("util")
     Test / parallelExecution := false,
   )
 
-lazy val scalateCore = scalateProject("core")
-  .scalateSettings
-  .published
+lazy val scalateCore = scalateProject("core").scalateSettings.published
   .settings(
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
@@ -67,9 +65,7 @@ lazy val scalateCore = scalateProject("core")
 
 // -----------------------------------------------------------------------------------
 
-lazy val scalateTest = scalateProject("test")
-  .scalateSettings
-  .published
+lazy val scalateTest = scalateProject("test").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % "always",
@@ -79,13 +75,12 @@ lazy val scalateTest = scalateProject("test")
       jettyUtil,
       junit,
       seleniumDriver
-    ), 
+    ),
     libraryDependencies ++= scalaTest.value,
-    description := "Scalate Test Support Classes.")
+    description := "Scalate Test Support Classes."
+  )
 
-lazy val scalateGuice = scalateProject("guice")
-  .scalateSettings
-  .published
+lazy val scalateGuice = scalateProject("guice").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
@@ -100,19 +95,16 @@ lazy val scalateGuice = scalateProject("guice")
     description := "Guice integration for a Jersey based Scalate web application."
   )
 
-lazy val scalateJruby = scalateProject("jruby")
-  .scalateSettings
-  .published
+lazy val scalateJruby = scalateProject("jruby").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
       jRubyComplete
     ),
-    description := "Scalate integration with JRuby including Ruby based filters such as sass.")
+    description := "Scalate integration with JRuby including Ruby based filters such as sass."
+  )
 
-lazy val scalateJspConverter = scalateProject("jsp-converter")
-  .scalateSettings
-  .published
+lazy val scalateJspConverter = scalateProject("jsp-converter").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
@@ -122,11 +114,10 @@ lazy val scalateJspConverter = scalateProject("jsp-converter")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Converter for JSP to SSP",
-    buildInfoPackage := "org.fusesource.scalate.converter.buildinfo")
+    buildInfoPackage := "org.fusesource.scalate.converter.buildinfo"
+  )
 
-lazy val scalatePage = scalateProject("page")
-  .scalateSettings
-  .published
+lazy val scalatePage = scalateProject("page").scalateSettings.published
   .dependsOn(scalateCore, scalateWikitext, scalateTest % Test)
   .settings(
     libraryDependencies ++= Seq(
@@ -135,11 +126,10 @@ lazy val scalatePage = scalateProject("page")
       snakeYaml,
       scalaCollectionCompat,
     ),
-    description := "Scalate multipart page filter (similar to Webgen page format).")
+    description := "Scalate multipart page filter (similar to Webgen page format)."
+  )
 
-lazy val scalateSpringMVC = scalateProject("spring-mvc")
-  .scalateSettings
-  .published
+lazy val scalateSpringMVC = scalateProject("spring-mvc").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
@@ -150,22 +140,20 @@ lazy val scalateSpringMVC = scalateProject("spring-mvc")
     ),
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     description := "Scalate Spring MVC integration.",
-    buildInfoPackage := "org.fusesource.scalate.spring.buildinfo")
+    buildInfoPackage := "org.fusesource.scalate.spring.buildinfo"
+  )
 
-lazy val scalateJAXRS = scalateProject("jaxrs")
-  .scalateSettings
-  .published
+lazy val scalateJAXRS = scalateProject("jaxrs").scalateSettings.published
   .dependsOn(scalateCore)
   .settings(
     libraryDependencies ++= Seq(
       javaxServlet % Provided,
       jaxrsApi % Provided
     ),
-    description := "JAXRS integration for a Scalate web application")
+    description := "JAXRS integration for a Scalate web application"
+  )
 
-lazy val scalateJersey = scalateProject("jersey")
-  .scalateSettings
-  .published
+lazy val scalateJersey = scalateProject("jersey").scalateSettings.published
   .dependsOn(scalateJAXRS, scalateTest % Test)
   .settings(
     libraryDependencies ++= Seq(
@@ -176,21 +164,19 @@ lazy val scalateJersey = scalateProject("jersey")
       jerseyServer % Provided,
       scalaCollectionCompat,
     ),
-    description := "Jersey integration for a Scalate web application")
+    description := "Jersey integration for a Scalate web application"
+  )
 
-lazy val scalateWeb = scalateProject("web")
-  .scalateSettings
-  .published
+lazy val scalateWeb = scalateProject("web").scalateSettings.published
   .dependsOn(scalatePage, scalateTest % Test)
   .settings(
     libraryDependencies ++= Seq(
       javaxServlet % Provided
     ),
-    description := "Single dependency for all modules required to use Scalate and common wiki formats.")
+    description := "Single dependency for all modules required to use Scalate and common wiki formats."
+  )
 
-lazy val scalateWikitext = scalateProject("wikitext")
-  .scalateSettings
-  .published
+lazy val scalateWikitext = scalateProject("wikitext").scalateSettings.published
   .dependsOn(scalateCore, scalateTest % Test)
   .settings(
     libraryDependencies ++= Seq(
@@ -199,4 +185,5 @@ lazy val scalateWikitext = scalateProject("wikitext")
       scalaCollectionCompat,
       logbackClassic % Test
     ),
-    description := "Scalate WikiText integration for Markdown and Confluence notations.")
+    description := "Scalate WikiText integration for Markdown and Confluence notations."
+  )

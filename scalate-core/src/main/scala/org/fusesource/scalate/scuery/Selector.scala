@@ -17,9 +17,10 @@
  */
 package org.fusesource.scalate.scuery
 
-import org.fusesource.scalate.scuery.support._
-
-import scala.xml.{ Elem, Node, NodeSeq }
+import org.fusesource.scalate.scuery.support.*
+import scala.xml.Elem
+import scala.xml.Node
+import scala.xml.NodeSeq
 
 /**
  * Implements CSS style selectors
@@ -68,7 +69,9 @@ object Selector {
     case _ => throw new IllegalArgumentException("pseudo :" + identifier + " not supported")
   }
 
-  def pseudoFunction(expression: AnyRef): Selector = throw new IllegalArgumentException("pseudo function :" + expression + " not supported")
+  def pseudoFunction(expression: AnyRef): Selector = throw new IllegalArgumentException(
+    "pseudo function :" + expression + " not supported"
+  )
 
   def pseudoFunction(name: String, counter: NthCounter): Selector = name match {
     case "nth-child" => NthChildSelector(counter)
@@ -92,8 +95,8 @@ trait Selector {
   protected def filterNode(n: Node, ancestors: Seq[Node]): NodeSeq = {
     if (matches(n, ancestors)) { n }
     else {
-      n.child.flatMap {
-        c => filterNode(c, n +: ancestors)
+      n.child.flatMap { c =>
+        filterNode(c, n +: ancestors)
       }
     }
   }

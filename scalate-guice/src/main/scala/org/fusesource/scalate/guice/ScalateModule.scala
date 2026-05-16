@@ -19,13 +19,15 @@ package org.fusesource.scalate.guice
 
 import _root_.org.fusesource.scalate.servlet.TemplateEngineServlet
 import _root_.com.google.inject.servlet.ServletModule
-import _root_.com.google.inject.{ Injector, Provides, Singleton }
-import _root_.com.sun.jersey.api.core.{ PackagesResourceConfig, ResourceConfig }
+import _root_.com.google.inject.Injector
+import _root_.com.google.inject.Provides
+import _root_.com.google.inject.Singleton
+import _root_.com.sun.jersey.api.core.PackagesResourceConfig
+import _root_.com.sun.jersey.api.core.ResourceConfig
 import _root_.com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import _root_.javax.servlet.http.HttpServlet
-import _root_.java.{ util => ju }
+import _root_.java.util as ju
 import org.fusesource.scalate.TemplateEngine
-
 import scala.language.implicitConversions
 
 /**
@@ -38,7 +40,9 @@ class ScalateModule extends ServletModule {
   /**
    * The implicit type conversion to avoid the 'with' method in the DSL
    */
-  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder): RichBuilder = new RichBuilder(builder)
+  implicit def builderToRichBuilder(builder: ServletModule.ServletKeyBindingBuilder): RichBuilder = new RichBuilder(
+    builder
+  )
 
   /**
    * Configure any servlets or filters for the application
@@ -104,7 +108,8 @@ class ScalateModule extends ServletModule {
 
       "com.sun.jersey.config.feature.ImplicitViewables" -> "true",
       "com.sun.jersey.config.feature.Redirect" -> "true",
-      "com.sun.jersey.config.feature.Trace" -> "true")
+      "com.sun.jersey.config.feature.Trace" -> "true"
+    )
 
     // as of Jersey 1.1.4-ea05 we don't need to mess with a regex
     // see: https://jersey.dev.java.net/issues/show_bug.cgi?id=485
@@ -136,14 +141,16 @@ class ScalateModule extends ServletModule {
    * A helper method to avoid <a href="https://lampsvn.epfl.ch/trac/scala/ticket/3230">this compiler bug</a>
    * when using `with` or the RichBuilder (which uses `with`) inside a loop
    */
-  protected def serveWith[T <: HttpServlet](urlPattern: String, aClass: Class[T]): Unit = serve(urlPattern).`with`(aClass)
+  protected def serveWith[T <: HttpServlet](urlPattern: String, aClass: Class[T]): Unit =
+    serve(urlPattern).`with`(aClass)
 
   /**
    * Returns the list of file types which should be excluded from the Jersey filter
    * (until we can get the FilterForwardOn404 setting working) so that they are rendered correctly
    * using the servlet engine
    */
-  protected def fileExtensionsExcludedFromJersey: List[String] = List("ico", "jpg", "jpeg", "gif", "png", "css", "js", "jscon")
+  protected def fileExtensionsExcludedFromJersey: List[String] =
+    List("ico", "jpg", "jpeg", "gif", "png", "css", "js", "jscon")
 
   /**
    * Returns the default list of template extensions which are rendered directly with Scalate

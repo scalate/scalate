@@ -24,11 +24,9 @@ import org.fusesource.scalate.servlet.ServletTemplateEngine
 import javax.servlet.ServletConfig
 import javax.servlet.ServletContext
 import java.util.Enumeration
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
-class ScalateViewResolver()
-  extends AbstractTemplateViewResolver
-  with ServletConfigAware {
+class ScalateViewResolver() extends AbstractTemplateViewResolver with ServletConfigAware {
 
   var templateEngine: ServletTemplateEngine = _
 

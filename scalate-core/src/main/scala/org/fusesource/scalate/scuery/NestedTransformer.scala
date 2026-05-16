@@ -17,7 +17,8 @@
  */
 package org.fusesource.scalate.scuery
 
-import scala.xml.{ Node, NodeSeq }
+import scala.xml.Node
+import scala.xml.NodeSeq
 
 /**
  * A transformer which makes it easy to create nested transformations by switching the thread local

@@ -1,6 +1,6 @@
 package org.fusesource.scalate.guice
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 /**
  * ScalateModule that also configures the Atmosphere framework
@@ -19,9 +19,11 @@ class ScalateAtmosphereModule extends ScalateModule {
   }
 
   protected def applyAtmosphereServlets(): Unit = {
-    val props: Map[String, String] = (for ((name, value) <- createResourceConfigProperties) yield (name, value.toString)) ++ Map(
-      "org.atmosphere.useWebSocket" -> "true",
-      "org.atmosphere.useNative" -> "true")
+    val props: Map[String, String] =
+      (for ((name, value) <- createResourceConfigProperties) yield (name, value.toString)) ++ Map(
+        "org.atmosphere.useWebSocket" -> "true",
+        "org.atmosphere.useNative" -> "true"
+      )
 
     // This regex matches everything except when the URI ends with common file extensions (.js, .css, etc).
     // The outer group is required by Guice's servlet configuration and matches the whole URI

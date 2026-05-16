@@ -37,15 +37,23 @@ package org.fusesource.scalate.rest
 
 import java.io.OutputStream
 import java.lang.reflect.Type
-import javax.ws.rs.ext.{ MessageBodyWriter, Provider }
+import javax.ws.rs.ext.MessageBodyWriter
+import javax.ws.rs.ext.Provider
 import javax.servlet.ServletContext
-import javax.ws.rs.core.{ Context, MultivaluedMap, MediaType }
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import java.lang.{ String, Class }
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.MultivaluedMap
+import javax.ws.rs.core.MediaType
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpServletRequest
+import java.lang.String
+import java.lang.Class
 import java.lang.annotation.Annotation
 import org.fusesource.scalate.support.TemplateFinder
-import org.fusesource.scalate.servlet.{ ServletTemplateEngine, ServletHelper, TemplateEngineServlet }
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.servlet.ServletTemplateEngine
+import org.fusesource.scalate.servlet.ServletHelper
+import org.fusesource.scalate.servlet.TemplateEngineServlet
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.ResourceNotFoundException
 import javax.ws.rs.core.UriInfo
 import javax.ws.rs.WebApplicationException
 
@@ -58,7 +66,7 @@ object ViewWriter extends Log
  */
 @Provider
 class ViewWriter[T] extends MessageBodyWriter[View[T]] {
-  import ViewWriter._
+  import ViewWriter.*
 
   @Context
   protected var uriInfo: UriInfo = _
@@ -75,7 +83,15 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
     classOf[View[T]].isAssignableFrom(aClass)
   }
 
-  def writeTo(view: View[T], aClass: Class[?], aType: Type, annotations: Array[Annotation], mediaType: MediaType, httpHeaders: MultivaluedMap[String, Object], out: OutputStream): Unit = {
+  def writeTo(
+    view: View[T],
+    aClass: Class[?],
+    aType: Type,
+    annotations: Array[Annotation],
+    mediaType: MediaType,
+    httpHeaders: MultivaluedMap[String, Object],
+    out: OutputStream
+  ): Unit = {
     def render(template: String) = TemplateEngineServlet.render(template, engine, servletContext, request, response)
 
     try {
@@ -84,7 +100,7 @@ class ViewWriter[T] extends MessageBodyWriter[View[T]] {
         case Some(name) =>
           info("Attempting to generate View for %s", name)
           // Ensure headers are committed
-          //out.flush()
+          // out.flush()
           view.model match {
             case Some(it) => request.setAttribute("it", it)
             case _ =>

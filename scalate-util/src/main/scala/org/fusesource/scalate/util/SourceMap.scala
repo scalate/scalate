@@ -18,10 +18,10 @@
 package org.fusesource.scalate.util
 
 import java.util.ArrayList
-import java.io._
-import scala.util.parsing.combinator._
-import scala.util.parsing.input._
-import scala.jdk.CollectionConverters._
+import java.io.*
+import scala.util.parsing.combinator.*
+import scala.util.parsing.input.*
+import scala.jdk.CollectionConverters.*
 
 /**
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
@@ -98,17 +98,19 @@ class SourceMapStratum(val name: String) {
    */
   def optimize() = {
 
-    //Incorporate each LineInfo into the previous LineInfo's
-    //outputLineIncrement, if possible
+    // Incorporate each LineInfo into the previous LineInfo's
+    // outputLineIncrement, if possible
     var i = 0
     while (i < lines.size() - 1) {
       val li = lines.get(i)
       val liNext = lines.get(i + 1)
-      if (li.file == liNext.file
+      if (
+        li.file == liNext.file
         && liNext.istart == li.istart
         && liNext.icount == 1
         && li.icount == 1
-        && liNext.ostart == li.ostart + li.icount * li.oincrement) {
+        && liNext.ostart == li.ostart + li.icount * li.oincrement
+      ) {
 
         li.oincrement = liNext.ostart - li.ostart + liNext.oincrement
         lines.remove(i + 1)
@@ -117,18 +119,20 @@ class SourceMapStratum(val name: String) {
       }
     }
 
-    //Incorporate each LineInfo into the previous LineInfo's
-    //inputLineCount, if possible
+    // Incorporate each LineInfo into the previous LineInfo's
+    // inputLineCount, if possible
     i = 0
     while (i < lines.size() - 1) {
       val li = lines.get(i)
       val liNext = lines.get(i + 1)
-      if (li.file == liNext.file
+      if (
+        li.file == liNext.file
         && liNext.istart == li.istart + li.icount
         && liNext.oincrement == li.oincrement
         && liNext.ostart
-        == li.ostart
-        + li.icount * li.oincrement) {
+          == li.ostart
+          + li.icount * li.oincrement
+      ) {
         li.icount += liNext.icount
         lines.remove(i + 1)
       } else {
@@ -328,64 +332,59 @@ object SourceMap {
       ("*S " ~> dot <~ nl) ~
         opt(
           "*F" ~ nl ~>
-            rep1(
-              ("+ " ~> number <~ " ") ~ (dot <~ nl) ~ (dot <~ nl) ^^ {
-                case n ~ name ~ path => (n, name, path)
-              } | (number <~ " ") ~ dot <~ nl ^^ {
-                case n ~ name => (n, name, null)
-              }) ^^ {
-                case list =>
-                  var rc = Map[Int, (String, String)]()
-                  list.foreach {
-                    case (n, name, path) => {
-                      rc += n -> ((name, path))
-                    }
-                  }
-                  rc
-              }) ~
-          opt(
-            "*L" ~ nl ~>
-              rep1(number ~ opt("#" ~> number) ~ opt("," ~> number) ~ ":" ~ number ~ opt("," ~> number) <~ nl ^^ {
-                case istart ~ file ~ icount ~ ":" ~ ostart ~ oincrement =>
-                  (istart, file, icount.getOrElse(1), ostart, oincrement.getOrElse(1))
-              })) ^^ {
-              case (name) ~ ofiles ~ lines =>
-                val rc = new SourceMapStratum(name)
-                var files = Map(0 -> 0)
-                if (ofiles.isDefined) {
-                  files = ofiles.get.transform {
-                    case (index, value) =>
-                      rc.addFile(value._1, value._2)
-                  }
+            rep1(("+ " ~> number <~ " ") ~ (dot <~ nl) ~ (dot <~ nl) ^^ { case n ~ name ~ path =>
+              (n, name, path)
+            } | (number <~ " ") ~ dot <~ nl ^^ { case n ~ name =>
+              (n, name, null)
+            }) ^^ { case list =>
+              var rc = Map[Int, (String, String)]()
+              list.foreach {
+                case (n, name, path) => {
+                  rc += n -> ((name, path))
                 }
-                if (lines.isDefined) {
-                  var lastFile = 0
-                  lines.get.foreach {
-                    case (istart, file, icount, ostart, oincrement) =>
-                      val f = if (file.isDefined) {
-                        lastFile = files.get(file.get).get
-                        lastFile
-                      } else {
-                        lastFile
-                      }
-                      rc.addLine(istart, f, icount, ostart, oincrement)
-                  }
-                }
-                rc
+              }
+              rc
             }
+        ) ~
+        opt(
+          "*L" ~ nl ~>
+            rep1(number ~ opt("#" ~> number) ~ opt("," ~> number) ~ ":" ~ number ~ opt("," ~> number) <~ nl ^^ {
+              case istart ~ file ~ icount ~ ":" ~ ostart ~ oincrement =>
+                (istart, file, icount.getOrElse(1), ostart, oincrement.getOrElse(1))
+            })
+        ) ^^ { case (name) ~ ofiles ~ lines =>
+          val rc = new SourceMapStratum(name)
+          var files = Map(0 -> 0)
+          if (ofiles.isDefined) {
+            files = ofiles.get.transform { case (index, value) =>
+              rc.addFile(value._1, value._2)
+            }
+          }
+          if (lines.isDefined) {
+            var lastFile = 0
+            lines.get.foreach { case (istart, file, icount, ostart, oincrement) =>
+              val f = if (file.isDefined) {
+                lastFile = files.get(file.get).get
+                lastFile
+              } else {
+                lastFile
+              }
+              rc.addLine(istart, f, icount, ostart, oincrement)
+            }
+          }
+          rc
+        }
 
     val smap_header: Parser[(String ~ Option[String])] = "SMAP" ~ nl ~> (dot <~ nl) ~ opt(dot <~ nl)
 
-    val smap = smap_header ~ rep(stratum) <~ "*E" ~ nl ^^ {
-      case (outputFileName ~ defaultStratum) ~ stratums =>
-        val rc = new SourceMap()
-        rc.setOutputFileName(outputFileName)
-        stratums.foreach {
-          case stratum: SourceMapStratum =>
-            val isDefault = stratum.name == defaultStratum.get
-            rc.addStratum(stratum, isDefault)
-        }
-        rc
+    val smap = smap_header ~ rep(stratum) <~ "*E" ~ nl ^^ { case (outputFileName ~ defaultStratum) ~ stratums =>
+      val rc = new SourceMap()
+      rc.setOutputFileName(outputFileName)
+      stratums.foreach { case stratum: SourceMapStratum =>
+        val isDefault = stratum.name == defaultStratum.get
+        rc.addStratum(stratum, isDefault)
+      }
+      rc
     }
 
     def parse(in: String) = {
@@ -424,7 +423,7 @@ object SourceMapInstaller {
 
   object Writer extends Log
   class Writer(val orig: Array[Byte], val sourceDebug: String) {
-    import Writer._
+    import Writer.*
 
     val bais = new ByteArrayInputStream(orig)
     val dis = new DataInputStream(bais)
@@ -449,7 +448,7 @@ object SourceMapInstaller {
     def store: Array[Byte] = {
       copy(4 + 2 + 2)
       val constantPoolCountPos: Int = baos.position
-      var constantPoolCount: Int = copyShort() & 0xFFFF
+      var constantPoolCount: Int = copyShort() & 0xffff
       sdeIndex = copyConstantPool(constantPoolCount)
       if (sdeIndex < 0) {
         writeSourceDebugConstant()
@@ -505,7 +504,7 @@ object SourceMapInstaller {
             copy(8)
             i += 1
           case 1 =>
-            var len: Int = copyShort() & 0xFFFF
+            var len: Int = copyShort() & 0xffff
             if (len < 0) {
               warn("Index is " + len + " for constantPoolCount: " + constantPoolCount + " nothing to write")
               len = 0
@@ -589,7 +588,7 @@ object SourceMapInstaller {
     def readConstantPoolStrings(): Map[String, Short] = {
       var rc = Map[String, Short]()
       var i = 1
-      val count = dis.readShort & 0xFFFF
+      val count = dis.readShort & 0xffff
       while (i < count) {
         val tag = dis.readByte
         tag match {
@@ -601,7 +600,7 @@ object SourceMapInstaller {
             dis.skip(8)
             i += 1;
           case 1 =>
-            val len: Int = dis.readShort & 0xFFFF
+            val len: Int = dis.readShort & 0xffff
             val data = new Array[Byte](len)
             dis.readFully(data)
             val str: String = new String(data, "UTF-8")

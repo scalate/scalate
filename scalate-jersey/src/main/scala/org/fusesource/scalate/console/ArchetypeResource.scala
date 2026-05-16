@@ -20,17 +20,20 @@ package org.fusesource.scalate.console
 import _root_.java.io.File
 import javax.servlet.ServletContext
 import com.sun.jersey.api.representation.Form
-import javax.ws.rs._
-import org.fusesource.scalate.{ NoFormParameterException, RenderContext }
+import javax.ws.rs.*
+import org.fusesource.scalate.NoFormParameterException
+import org.fusesource.scalate.RenderContext
 import org.fusesource.scalate.rest.View
-import org.fusesource.scalate.util.{ Log, IOUtil }
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.IOUtil
 
 object ArchetypeResource extends Log
+
 /**
  * @version $Revision : 1.1 $
  */
 class ArchetypeResource(console: Console, name: String) extends ConsoleSnippets {
-  import ArchetypeResource._
+  import ArchetypeResource.*
 
   var _form: Form = _
 

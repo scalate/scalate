@@ -18,19 +18,23 @@
 package org.fusesource.scalate
 
 import java.io.File
-import java.text.{ DateFormat, NumberFormat }
-import java.util.{ Date, Locale }
-
+import java.text.DateFormat
+import java.text.NumberFormat
+import java.util.Date
+import java.util.Locale
 import org.fusesource.scalate.filter.FilterRequest
 import org.fusesource.scalate.introspector.Introspector
 import org.fusesource.scalate.support.RenderHelper
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util._
-
-import scala.collection.mutable.{ HashMap, ListBuffer }
+import org.fusesource.scalate.util.*
+import scala.collection.mutable.HashMap
+import scala.collection.mutable.ListBuffer
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
-import scala.xml.{ Node, NodeBuffer, NodeSeq, PCData }
+import scala.xml.Node
+import scala.xml.NodeBuffer
+import scala.xml.NodeSeq
+import scala.xml.PCData
 
 object RenderContext {
 
@@ -161,7 +165,8 @@ trait RenderContext {
    * Returns the attribute of the given name and type or the default value if it is not available
    */
   def attributeOrElse[T](name: String, defaultValue: => T): T = {
-    attributes.get(name)
+    attributes
+      .get(name)
       .getOrElse(defaultValue)
       .asInstanceOf[T]
   }
@@ -208,9 +213,10 @@ trait RenderContext {
   //
   // Rendering API
   //
-  //////////////////////////////////x///////////////////////////////////
+  ////////////////////////////////// x///////////////////////////////////
   def value(any: Any, shouldSanitize: Boolean = escapeMarkup): Any = {
-    def sanitize(text: String): Any = if (shouldSanitize) { Unescaped(RenderHelper.sanitize(text)) } else { text }
+    def sanitize(text: String): Any = if (shouldSanitize) { Unescaped(RenderHelper.sanitize(text)) }
+    else { text }
 
     any match {
       case u: Unit => ""
@@ -234,12 +240,11 @@ trait RenderContext {
       // No need to sanitize nodes as they are already sanitized
       case s: NodeBuffer =>
         // No need to sanitize nodes as they are already sanitized
-        (s.foldLeft(new StringBuilder) {
-          (rc, x) =>
-            x match {
-              case cd: PCData => rc.append(cd.data)
-              case _ => rc.append(x)
-            }
+        (s.foldLeft(new StringBuilder) { (rc, x) =>
+          x match {
+            case cd: PCData => rc.append(cd.data)
+            case _ => rc.append(x)
+          }
         }).toString
 
       case n: Node => n.toString
@@ -334,17 +339,21 @@ trait RenderContext {
     }
 
     def viewForClass(clazz: Class[?]): String = {
-      viewPrefixes.flatMap { prefix =>
-        viewPostfixes.flatMap { postfix =>
-          val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
-          val fullPath = if (isEmpty(prefix)) { "/" + path } else { "/" + prefix + "/" + path }
-          if (engine.resourceLoader.exists(fullPath)) {
-            Some(fullPath)
-          } else {
-            None
+      viewPrefixes
+        .flatMap { prefix =>
+          viewPostfixes.flatMap { postfix =>
+            val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
+            val fullPath = if (isEmpty(prefix)) { "/" + path }
+            else { "/" + prefix + "/" + path }
+            if (engine.resourceLoader.exists(fullPath)) {
+              Some(fullPath)
+            } else {
+              None
+            }
           }
         }
-      }.headOption.orNull
+        .headOption
+        .orNull
     }
 
     def searchForView(): String = {
@@ -499,7 +508,7 @@ trait RenderContext {
     }
 
     implicit def toBody(body: => Unit): Body = new Body(this, body)
-  */
+   */
 
   /////////////////////////////////////////////////////////////////////
   //
@@ -545,7 +554,7 @@ trait RenderContext {
    * Returns the formatted string using the locale of the users request or the default locale if not available
    */
   def format(pattern: String, args: AnyRef*) = {
-    String.format(locale, pattern, args: _*)
+    String.format(locale, pattern, args*)
   }
 
   def percent(number: Number) = percentFormat.format(number)

@@ -24,7 +24,7 @@ import scala.reflect.ClassTag
  * Helper object for working with objects using reflection
  */
 object Objects {
-  val log = Log(getClass); import log._
+  val log = Log(getClass); import log.*
 
   /**
    * A helper method to return a non null value or the default value if it is null
@@ -41,7 +41,8 @@ object Objects {
     value
   }
 
-  def assertInjected[T <: AnyRef](value: T)(implicit m: ClassTag[T]): T = notNull(value, "Value of type " + m.runtimeClass.getName + " has not been injected!")
+  def assertInjected[T <: AnyRef](value: T)(implicit m: ClassTag[T]): T =
+    notNull(value, "Value of type " + m.runtimeClass.getName + " has not been injected!")
 
   /**
    * Instantiates the given object class using the possible list of values to be injected.
@@ -52,8 +53,11 @@ object Objects {
   def instantiate[T](clazz: Class[T], injectionValues: List[AnyRef] = Nil): T =
     tryInstantiate[T](clazz, injectionValues) match {
       case Some(v) => v
-      case _ => throw new IllegalArgumentException("No valid constructor could be found for " + clazz.getName +
-        " and values: " + injectionValues)
+      case _ =>
+        throw new IllegalArgumentException(
+          "No valid constructor could be found for " + clazz.getName +
+            " and values: " + injectionValues
+        )
     }
 
   /**
@@ -68,7 +72,7 @@ object Objects {
         clazz.getConstructor().newInstance()
       } else {
         debug("About to call constructor: %S on %s with args: %s", c, clazz.getName, args.toList)
-        c.newInstance(args: _*)
+        c.newInstance(args*)
       }
       answer.asInstanceOf[T]
     }

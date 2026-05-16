@@ -19,7 +19,8 @@ package org.fusesource.scalate
 package layout
 
 import org.fusesource.scalate.util.Strings.isEmpty
-import org.fusesource.scalate.util.{ Log, ResourceNotFoundException }
+import org.fusesource.scalate.util.Log
+import org.fusesource.scalate.util.ResourceNotFoundException
 
 object DefaultLayoutStrategy extends Log
 
@@ -35,7 +36,7 @@ object DefaultLayoutStrategy extends Log
  * @version $Revision : 1.1 $
  */
 class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: String*) extends LayoutStrategy {
-  import DefaultLayoutStrategy._
+  import DefaultLayoutStrategy.*
 
   def layout(template: Template, context: RenderContext): Unit = {
 
@@ -65,13 +66,15 @@ class DefaultLayoutStrategy(val engine: TemplateEngine, val defaultLayouts: Stri
 
   private def tryLayout(layoutTemplate: String, body: String, context: RenderContext): Boolean = {
     def removeLayout() = {
-      context.attributes("scalateLayouts") = context.attributeOrElse[List[String]]("scalateLayouts", List()).filterNot(_ == layoutTemplate)
+      context.attributes("scalateLayouts") =
+        context.attributeOrElse[List[String]]("scalateLayouts", List()).filterNot(_ == layoutTemplate)
     }
 
     try {
       debug("Attempting to load layout: %s", layoutTemplate)
 
-      context.attributes("scalateLayouts") = layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List())
+      context.attributes("scalateLayouts") =
+        layoutTemplate :: context.attributeOrElse[List[String]]("scalateLayouts", List())
       context.attributes("body") = body
       engine.load(layoutTemplate).render(context)
 

@@ -23,9 +23,10 @@ import _root_.javax.servlet.http.HttpServletResponse
 import _root_.org.fusesource.scalate.RenderContext
 import _root_.org.fusesource.scalate.servlet.ServletRenderContext
 import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
-import _root_.scala.jdk.CollectionConverters._
+import _root_.scala.jdk.CollectionConverters.*
 import _root_.org.fusesource.scalate.TemplateException
-import _root_.org.springframework.web.servlet.view.{ AbstractView, AbstractTemplateView }
+import _root_.org.springframework.web.servlet.view.AbstractView
+import _root_.org.springframework.web.servlet.view.AbstractTemplateView
 import _root_.org.slf4j.LoggerFactory
 import org.fusesource.scalate.util.ResourceNotFoundException
 
@@ -37,9 +38,7 @@ trait ScalateRenderStrategy {
 
 }
 
-trait LayoutScalateRenderStrategy
-  extends AbstractTemplateView
-  with ScalateRenderStrategy {
+trait LayoutScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
 
   def templateEngine: ServletTemplateEngine
 
@@ -52,9 +51,7 @@ trait LayoutScalateRenderStrategy
   }
 }
 
-trait DefaultScalateRenderStrategy
-  extends AbstractTemplateView
-  with ScalateRenderStrategy {
+trait DefaultScalateRenderStrategy extends AbstractTemplateView with ScalateRenderStrategy {
 
   override def render(context: ServletRenderContext, model: Map[String, Any]): Unit = {
     log.debug("Rendering view with name '" + getUrl + "' with model " + model)
@@ -62,8 +59,7 @@ trait DefaultScalateRenderStrategy
   }
 }
 
-trait ViewScalateRenderStrategy
-  extends ScalateRenderStrategy {
+trait ViewScalateRenderStrategy extends ScalateRenderStrategy {
 
   override def render(context: ServletRenderContext, model: Map[String, Any]): Unit = {
     log.debug("Rendering with model " + model)
@@ -82,15 +78,13 @@ trait AbstractScalateView extends AbstractView {
 
 }
 
-class ScalateUrlView
-  extends AbstractTemplateView
-  with AbstractScalateView
-  with LayoutScalateRenderStrategy {
+class ScalateUrlView extends AbstractTemplateView with AbstractScalateView with LayoutScalateRenderStrategy {
 
   override def renderMergedTemplateModel(
     model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse): Unit = {
+    response: HttpServletResponse
+  ): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {
@@ -111,16 +105,15 @@ class ScalateUrlView
 
 }
 
-class ScalateView
-  extends AbstractScalateView
-  with ViewScalateRenderStrategy {
+class ScalateView extends AbstractScalateView with ViewScalateRenderStrategy {
 
   override def checkResource(locale: Locale) = true
 
   override def renderMergedOutputModel(
     model: java.util.Map[String, Object],
     request: HttpServletRequest,
-    response: HttpServletResponse): Unit = {
+    response: HttpServletResponse
+  ): Unit = {
 
     val context = new ServletRenderContext(templateEngine, request, response, getServletContext)
     RenderContext.using(context) {

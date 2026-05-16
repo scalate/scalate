@@ -22,14 +22,18 @@ import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder.BlockType
 import org.eclipse.mylyn.internal.wikitext.confluence.core.block.AbstractConfluenceDelimitedBlock
 import java.lang.String
 import collection.mutable.ListBuffer
-import org.fusesource.scalate.util.Threads._
+import org.fusesource.scalate.util.Threads.*
 import util.parsing.input.CharSequenceReader
 import util.parsing.combinator.RegexParsers
 import org.fusesource.scalate.support.RenderHelper
-import org.fusesource.scalate._
+import org.fusesource.scalate.*
 import org.fusesource.scalate.filter.Filter
-import java.io.{ File, ByteArrayInputStream, ByteArrayOutputStream }
-import util.{ Files, Log, IOUtil }
+import java.io.File
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import util.Files
+import util.Log
+import util.IOUtil
 
 object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
@@ -175,7 +179,8 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
             val colored1 = pygmentize(data1, lang1, lines)
             val colored2 = pygmentize(data2, lang2, lines)
 
-            var rc = """<div class="compare"><div class="compare-left"><h3>%s</h3><div class="syntax">%s</div></div><div class="compare-right"><h3>%s</h3><div class="syntax">%s</div></div><br class="clear"/></div>
+            var rc =
+              """<div class="compare"><div class="compare-left"><h3>%s</h3><div class="syntax">%s</div></div><div class="compare-right"><h3>%s</h3><div class="syntax">%s</div></div><br class="clear"/></div>
               |""".stripMargin.format(title1, colored1, title2, colored2)
 
             if (wide) {
@@ -196,7 +201,9 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
 
   def pygmentize(body: String, lang: String, lines: Boolean): String = {
     if (!isInstalled) {
-      "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" + RenderHelper.sanitize(body) + "</code></pre>"
+      "<pre name='code' class='brush: " + lang + "; gutter: " + lines + ";'><code>" + RenderHelper.sanitize(
+        body
+      ) + "</code></pre>"
     } else {
       var options = "style=colorful"
       if (lines) {
@@ -218,7 +225,11 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       IOUtil.copy(process.getInputStream, out)
       process.waitFor
       if (process.exitValue != 0) {
-        throw new RuntimeException("'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(process.exitValue))
+        throw new RuntimeException(
+          "'pygmentize' execution failed: %d.  Did you install it from http://pygments.org/download/ ?".format(
+            process.exitValue
+          )
+        )
       }
 
       new String(out.toByteArray).replaceAll("""\r?\n""", "&#x000A;")
@@ -242,7 +253,9 @@ object PygmentizeHelpers {
     Pygmentize.pygmentize(content, defaultLang)
   }
 
-  def pygmentizeUri(uri: String, lang: String = "", lines: Boolean = false)(implicit resourceContext: RenderContext): String = {
+  def pygmentizeUri(uri: String, lang: String = "", lines: Boolean = false)(implicit
+    resourceContext: RenderContext
+  ): String = {
     val content = resourceContext.load(uri)
     val defaultLang = getOrUseExtension(lang, uri)
     Pygmentize.pygmentize(content, defaultLang)
@@ -276,7 +289,7 @@ class PygmentsBlock extends AbstractConfluenceDelimitedBlock("pygmentize") {
   }
 
   override def endBlock() = {
-    import Pygmentize._
+    import Pygmentize.*
     builder.charactersUnescaped(pygmentize(unindent(content), language, lines))
     content.clear()
     builder.endBlock();

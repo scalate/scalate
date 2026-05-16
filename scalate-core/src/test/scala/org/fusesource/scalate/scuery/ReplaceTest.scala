@@ -30,10 +30,9 @@ class ReplaceTest extends FunSuiteSupport {
 
   test(" transform") {
     object transformer extends Transformer {
-      $("a.foo") {
-        n =>
-          <a href="http://scalate.fusesource.org/" class={ n \ "@class" } title={ n \ "@title" }>
-            { n.text }
+      $("a.foo") { n =>
+        <a href="http://scalate.fusesource.org/" class={n \ "@class"} title={n \ "@title"}>
+            {n.text}
           </a>
       }
     }

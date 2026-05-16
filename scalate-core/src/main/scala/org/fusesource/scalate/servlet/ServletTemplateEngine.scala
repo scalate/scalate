@@ -18,11 +18,13 @@
 package org.fusesource.scalate.servlet
 
 import java.io.File
-
-import javax.servlet.{ ServletConfig, ServletContext }
-import org.fusesource.scalate.layout.{ DefaultLayoutStrategy, LayoutStrategy }
-import org.fusesource.scalate.util._
-import org.fusesource.scalate.{ Binding, TemplateEngine }
+import javax.servlet.ServletConfig
+import javax.servlet.ServletContext
+import org.fusesource.scalate.layout.DefaultLayoutStrategy
+import org.fusesource.scalate.layout.LayoutStrategy
+import org.fusesource.scalate.util.*
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateEngine
 
 object ServletTemplateEngine {
   val log = Log(getClass)
@@ -37,8 +39,10 @@ object ServletTemplateEngine {
   def apply(servletContext: ServletContext): ServletTemplateEngine = {
     val answer = servletContext.getAttribute(templateEngineKey)
     if (answer == null) {
-      throw new IllegalArgumentException("No ServletTemplateEngine instance registered on ServletContext for key " +
-        templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?")
+      throw new IllegalArgumentException(
+        "No ServletTemplateEngine instance registered on ServletContext for key " +
+          templateEngineKey + ". Are you sure your web application has registered the Scalate TemplateEngineServlet?"
+      )
     } else {
       answer.asInstanceOf[ServletTemplateEngine]
     }
@@ -63,7 +67,8 @@ object ServletTemplateEngine {
    *   * "WEB-INF/scalate/layouts/default.ssp"
    */
   def setLayoutStrategy(engine: TemplateEngine): LayoutStrategy = {
-    engine.layoutStrategy = new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _): _*)
+    engine.layoutStrategy =
+      new DefaultLayoutStrategy(engine, TemplateEngine.templateTypes.map("/WEB-INF/scalate/layouts/default." + _)*)
     engine.layoutStrategy
   }
 
@@ -90,9 +95,9 @@ object ServletTemplateEngine {
  *  *
  * @author <a href="http://hiramchirino.com">Hiram Chirino</a>
  */
-class ServletTemplateEngine(
-  val config: Config) extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
-  import ServletTemplateEngine.log._
+class ServletTemplateEngine(val config: Config)
+    extends TemplateEngine(ServletTemplateEngine.sourceDirectories(config)) {
+  import ServletTemplateEngine.log.*
 
   templateDirectories ::= "/WEB-INF"
   bindings = List(Binding("context", "_root_." + classOf[ServletRenderContext].getName, true, isImplicit = true))
@@ -113,7 +118,8 @@ class ServletTemplateEngine(
     builder.addEntry(config.getInitParameter("compiler.classpath.prefix"))
 
     // Add containers class path
-    builder.addPathFrom(getClass)
+    builder
+      .addPathFrom(getClass)
       .addPathFrom(classOf[ServletConfig])
       .addPathFrom(classOf[Product])
 

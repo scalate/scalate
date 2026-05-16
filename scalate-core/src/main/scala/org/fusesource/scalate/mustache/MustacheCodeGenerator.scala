@@ -17,11 +17,11 @@
  */
 package org.fusesource.scalate.mustache
 
-import org.fusesource.scalate._
-import support.{ Code, AbstractCodeGenerator }
+import org.fusesource.scalate.*
+import support.Code
+import support.AbstractCodeGenerator
 import collection.mutable.Stack
 import util.Log
-
 import scala.language.implicitConversions
 
 object MustacheCodeGenerator extends Log
@@ -30,7 +30,7 @@ object MustacheCodeGenerator extends Log
  * @version $Revision: 1.1 $
  */
 class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
-  import MustacheCodeGenerator._
+  import MustacheCodeGenerator.*
 
   override val stratumName = "MSC"
 
@@ -46,7 +46,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
     protected var scopeIndex = 1
 
     protected def isImportStatementOrCommentOrWhitespace(fragment: Statement) = fragment match {
-      //case s: Text if (s.value.trim.length == 0) => true
+      // case s: Text if (s.value.trim.length == 0) => true
       case s: Comment => true
       case _ => false
     }
@@ -62,8 +62,7 @@ class MustacheCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(fragment: Statement): Unit = {
       fragment match {
-        case Comment(code) => {
-        }
+        case Comment(code) => {}
         case Text(text) => {
           this << fragment.pos
           this << "$_scalate_$_context << ( " + asString(text) + " )"

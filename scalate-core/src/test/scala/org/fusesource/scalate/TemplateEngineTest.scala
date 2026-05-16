@@ -18,9 +18,9 @@
 package org.fusesource.scalate
 
 import java.io.File
-
-import org.fusesource.scalate.Asserts._
+import org.fusesource.scalate.Asserts.*
 import org.fusesource.scalate.support.StringTemplateSource
+
 class TemplateEngineTest extends FunSuiteSupport {
 
   val engine = new TemplateEngine

@@ -18,10 +18,9 @@
 package org.fusesource.scalate
 
 import java.io.File
-
-import org.fusesource.scalate.util.{ IOUtil, Log }
+import org.fusesource.scalate.util.IOUtil
+import org.fusesource.scalate.util.Log
 import org.scalatest.ConfigMap
-
 import scala.collection.immutable.Map
 
 abstract class TemplateTestSupport extends FunSuiteSupport with Log {
@@ -44,8 +43,7 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
 
   protected def createTemplateEngine = new TemplateEngine
 
-  protected def configureTemplateEngine(): Unit = {
-  }
+  protected def configureTemplateEngine(): Unit = {}
 
   def assertTrimSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map()): String =
     assertSspOutput(expectedOutput, templateText, attributes, true)
@@ -53,13 +51,23 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
   def assertTrimOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map()): String =
     assertOutput(expectedOutput, template, attributes, true)
 
-  def assertSspOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
+  def assertSspOutput(
+    expectedOutput: String,
+    templateText: String,
+    attributes: Map[String, Any] = Map(),
+    trim: Boolean = false
+  ): String = {
     val template = engine.compileSsp(templateText)
 
     assertOutput(expectedOutput, template, attributes, trim)
   }
 
-  def assertMoustacheOutput(expectedOutput: String, templateText: String, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
+  def assertMoustacheOutput(
+    expectedOutput: String,
+    templateText: String,
+    attributes: Map[String, Any] = Map(),
+    trim: Boolean = false
+  ): String = {
     val template = engine.compileMoustache(templateText)
 
     assertOutput(expectedOutput, template, attributes, trim)
@@ -73,7 +81,12 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     }
   }
 
-  def assertOutput(expectedOutput: String, template: Template, attributes: Map[String, Any] = Map(), trim: Boolean = false): String = {
+  def assertOutput(
+    expectedOutput: String,
+    template: Template,
+    attributes: Map[String, Any] = Map(),
+    trim: Boolean = false
+  ): String = {
     var output = engine.layout("dummy.ssp", template, attributes)
     logOutput(output)
 
@@ -85,29 +98,29 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
   }
 
   def assertOutputContains(source: TemplateSource, expected: String*): String =
-    assertOutputContains(source, Map[String, Any](), expected: _*)
+    assertOutputContains(source, Map[String, Any](), expected*)
 
   def assertOutputContains(source: TemplateSource, attributes: Map[String, Any], expected: String*): String = {
     val template = engine.compile(source)
-    assertOutputContains(template, attributes, expected: _*)
+    assertOutputContains(template, attributes, expected*)
   }
 
   def assertOutputContains(template: Template, expected: String*): String =
-    assertOutputContains(template, Map[String, Any](), expected: _*)
+    assertOutputContains(template, Map[String, Any](), expected*)
 
   def assertOutputContains(template: Template, attributes: Map[String, Any], expected: String*): String = {
     val output = engine.layout("dummy.ssp", template, attributes)
     logOutput(output)
 
-    assertTextContains(output, "template " + template, expected: _*)
+    assertTextContains(output, "template " + template, expected*)
     output
   }
 
   def assertUriOutputContains(uri: String, expected: String*): String =
-    assertUriOutputContains(uri, Map[String, Any](), expected: _*)
+    assertUriOutputContains(uri, Map[String, Any](), expected*)
 
   def assertUriOutputContains(uri: String, attributes: Map[String, Any], expected: String*): String =
-    assertOutputContains(fromUri(uri), attributes, expected: _*)
+    assertOutputContains(fromUri(uri), attributes, expected*)
 
   protected def fromUri(uri: String) = TemplateSource.fromUri(uri, engine.resourceLoader)
 
@@ -164,11 +177,15 @@ abstract class TemplateTestSupport extends FunSuiteSupport with Log {
     buffer
   }
 
-  def compileScaml(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
+  def compileScaml(name: String, templateText: String) =
+    engine.compile(TemplateSource.fromText(safeName(name) + ".scaml", templateText))
 
-  def compileJade(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".jade", templateText))
+  def compileJade(name: String, templateText: String) =
+    engine.compile(TemplateSource.fromText(safeName(name) + ".jade", templateText))
 
-  def compileSsp(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
+  def compileSsp(name: String, templateText: String) =
+    engine.compile(TemplateSource.fromText(safeName(name) + ".ssp", templateText))
 
-  def compileMoustache(name: String, templateText: String) = engine.compile(TemplateSource.fromText(safeName(name) + ".moustache", templateText))
+  def compileMoustache(name: String, templateText: String) =
+    engine.compile(TemplateSource.fromText(safeName(name) + ".moustache", templateText))
 }

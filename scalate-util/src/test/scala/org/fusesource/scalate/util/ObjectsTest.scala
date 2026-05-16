@@ -18,7 +18,7 @@
 package org.fusesource.scalate
 package util
 
-import Objects._
+import Objects.*
 
 class ObjectsTest extends FunSuiteSupport {
 
@@ -50,4 +50,3 @@ case class StringParam(name: String)
 class NoParams {
   val value = "Hello"
 }
-

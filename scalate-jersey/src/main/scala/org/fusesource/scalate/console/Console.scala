@@ -17,11 +17,13 @@
  */
 package org.fusesource.scalate.console
 
-import _root_.javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
+import _root_.javax.servlet.http.HttpServletResponse
+import _root_.javax.servlet.http.HttpServletRequest
 import _root_.javax.servlet.ServletContext
-import _root_.javax.ws.rs._
-import _root_.org.fusesource.scalate.servlet.{ ServletRenderContext, ServletTemplateEngine }
-import _root_.org.fusesource.scalate.util.Constraints._
+import _root_.javax.ws.rs.*
+import _root_.org.fusesource.scalate.servlet.ServletRenderContext
+import _root_.org.fusesource.scalate.servlet.ServletTemplateEngine
+import _root_.org.fusesource.scalate.util.Constraints.*
 import javax.ws.rs.core.Context
 import org.fusesource.scalate.util.Log
 
@@ -35,7 +37,7 @@ object Console extends Log
 @javax.ws.rs.Path("/scalate")
 class Console extends DefaultRepresentations {
 
-  import Console._
+  import Console.*
 
   @Context
   var _servletContext: ServletContext = _

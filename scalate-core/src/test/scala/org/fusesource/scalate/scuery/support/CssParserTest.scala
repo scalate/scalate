@@ -28,8 +28,8 @@ class CssParserTest extends CssParserTestSupport {
               <tr id="tr1" class="personRow odd">
                 <td class="person">Hey</td>
               </tr>
-              { cheese }
-              { a }
+              {cheese}
+              {a}
             </table>
 
   val tr1 = (xml \\ "tr")(0)
@@ -109,8 +109,8 @@ class CssParserTest extends CssParserTestSupport {
 
   // TODO regex bug!!!
   // not sure yet why the parser fails to parse this!
-  //assertMatches("[hreflang|=\"en\"]", a)
-  //assertMatches("[hreflang|=en]", a)
+  // assertMatches("[hreflang|=\"en\"]", a)
+  // assertMatches("[hreflang|=en]", a)
 
   assertMatches("[hreflang |= en]", a)
   assertMatches("[hreflang |= en-US]", a)

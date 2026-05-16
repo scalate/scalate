@@ -17,7 +17,8 @@
  */
 package org.fusesource.scalate.layout
 
-import org.fusesource.scalate.{ RenderContext, Template }
+import org.fusesource.scalate.RenderContext
+import org.fusesource.scalate.Template
 
 /**
  * A strategy for loading and applying layout templates.

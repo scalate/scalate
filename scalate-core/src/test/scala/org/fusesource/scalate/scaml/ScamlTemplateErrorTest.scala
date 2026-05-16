@@ -33,7 +33,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   - for (i <- unknown)
     %li= i
 """,
-      "Not found: unknown")
+      "Not found: unknown"
+    )
   } else {
     testCompilerException(
       "Compile Error",
@@ -44,7 +45,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
       - for (i <- unknown)
         %li= i
 """,
-      "not found: value unknown")
+      "not found: value unknown"
+    )
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -60,14 +62,16 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   %two
     %three
   %two
-""", """
+""",
+    """
 <html>
   <two>
     <three></three>
   </two>
   <two></two>
 </html>
-""")
+"""
+  )
 
   testInvalidSyntaxException(
     "Inconsistent indent level detected: indented too shallow",
@@ -77,7 +81,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
    %tooshallow
   %two
 """,
-    "Inconsistent indent level detected: indented too shallow at 3.4")
+    "Inconsistent indent level detected: indented too shallow at 3.4"
+  )
 
   testInvalidSyntaxException(
     "Inconsistent indent level detected: indented too shallow at root",
@@ -87,7 +92,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
  %toodeep
   %two
 """,
-    "Inconsistent indent level detected: indented too shallow at 3.2")
+    "Inconsistent indent level detected: indented too shallow at 3.2"
+  )
 
   testInvalidSyntaxException(
     "Inconsistent indent level detected: indented too deep",
@@ -97,7 +103,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
      %toodeep
   %two
 """,
-    "Inconsistent indent level detected: indented too deep at 3.6")
+    "Inconsistent indent level detected: indented too deep at 3.6"
+  )
 
   testInvalidSyntaxException(
     "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs",
@@ -107,7 +114,8 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
   %spaces
 	%tab
 """,
-    "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3")
+    "Inconsistent indent detected: indented with spaces but previous lines were indented with tabs at 3.3"
+  )
 
   testInvalidSyntaxException(
     "Unexpected comma in html attribute list",
@@ -116,6 +124,7 @@ class ScamlTemplateErrorTest extends ScamlTestSupport {
 %tab(comma="common", error="true")
 %p commas in attribute lists is a common errro
 """,
-    "')' expected but ',' found at 2.20")
+    "')' expected but ',' found at 2.20"
+  )
 
 }

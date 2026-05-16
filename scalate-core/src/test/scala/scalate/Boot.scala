@@ -18,7 +18,8 @@
 package scalate
 
 import org.fusesource.scalate.util.Log
-import org.fusesource.scalate.{ MockBootstrap, TemplateEngine }
+import org.fusesource.scalate.MockBootstrap
+import org.fusesource.scalate.TemplateEngine
 
 /**
  * A simple boot strap mechanism to act as a simple place to host initialisation code which can then be shared across
@@ -26,7 +27,7 @@ import org.fusesource.scalate.{ MockBootstrap, TemplateEngine }
  */
 object Boot extends Log
 class Boot(engine: TemplateEngine) {
-  import Boot._
+  import Boot.*
 
   def run(): Unit = {
     info("scalate bootstrap starting with template engine: %s", engine)

@@ -23,19 +23,25 @@ class CommentTest extends TemplateTestSupport {
   showOutput = true
 
   test("<%-- ... --%> ssp comments") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   Copyright  MyCompany
-""", """
+""",
+      """
   Copyright <%-- year --%> MyCompany
-""")
+"""
+    )
   }
 
   test("<%# ... %> ssp comments") {
-    assertSspOutput("""
+    assertSspOutput(
+      """
   Copyright  MyCompany
-""", """
+""",
+      """
   Copyright <%#=year%> MyCompany
-""")
+"""
+    )
   }
 
 }

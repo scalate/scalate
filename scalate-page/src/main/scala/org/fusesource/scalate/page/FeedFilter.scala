@@ -17,7 +17,7 @@
  */
 package org.fusesource.scalate.page
 
-import org.fusesource.scalate._
+import org.fusesource.scalate.*
 import org.fusesource.scalate.filter.Filter
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,21 +45,21 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
 
       val xml = <rss version="2.0">
                   <channel>
-                    <title>{ attr("title") }</title>
-                    <link>{ link }</link>
-                    <description>{ attr("description") }</description>
-                    <pubDate>{ date }</pubDate>
-                    <lastBuildDate>{ date }</lastBuildDate>
+                    <title>{attr("title")}</title>
+                    <link>{link}</link>
+                    <description>{attr("description")}</description>
+                    <pubDate>{date}</pubDate>
+                    <lastBuildDate>{date}</lastBuildDate>
                     <generator>Scalate - http://scalate.fusesource.org/</generator>
                     {
-                      posts.map { post =>
-                        <item>
-                          <title>{ post.title }</title>
-                          <link>{ link + post.link }</link>
-                          <description>{ post.render() }</description>
+        posts.map { post =>
+          <item>
+                          <title>{post.title}</title>
+                          <link>{link + post.link}</link>
+                          <description>{post.render()}</description>
                         </item>
-                      }
-                    }
+        }
+      }
                   </channel>
                 </rss>
 
@@ -75,4 +75,3 @@ object FeedFilter extends Filter with TemplateEngineAddOn {
   def format(date: Date) = dateFormat.format(date)
 
 }
-

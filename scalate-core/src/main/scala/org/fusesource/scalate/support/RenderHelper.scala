@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 /*
-  * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
+ * Copyright (c) 2009 Matthew Hildebrand <matt.hildebrand@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -109,19 +109,18 @@ object RenderHelper {
     entries_rest.foreach { me => map += me._1 -> me._2 }
 
     if (!map.isEmpty) {
-      map.foreach {
-        case (name, value) =>
-          if (isEnabled(value)) {
-            context << " "
+      map.foreach { case (name, value) =>
+        if (isEnabled(value)) {
+          context << " "
+          context << name
+          context << "=\""
+          if (value.isInstanceOf[Boolean]) {
             context << name
-            context << "=\""
-            if (value.isInstanceOf[Boolean]) {
-              context << name
-            } else {
-              context.escape(value)
-            }
-            context << "\""
+          } else {
+            context.escape(value)
           }
+          context << "\""
+        }
       }
     }
 
@@ -143,6 +142,6 @@ object RenderHelper {
       case _ =>
         sanitize(context.value(value, false))
     }
-*/
+     */
   }
 }

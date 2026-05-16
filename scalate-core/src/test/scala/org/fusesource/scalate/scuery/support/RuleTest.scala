@@ -18,14 +18,26 @@
 package org.fusesource.scalate.scuery.support
 
 import _root_.org.fusesource.scalate.FunSuiteSupport
-import xml.{ Text, Node, NodeSeq }
+import xml.Text
+import xml.Node
+import xml.NodeSeq
+
 class RuleTest extends FunSuiteSupport {
 
   def fn1(node: Node): NodeSeq = Text("f1")
   def fn2(node: Node): String = "f2"
 
   test("rules are sorted in order when combined") {
-    val rule = Rule(List(ReplaceContentRule(fn1), ReplaceRule(fn1), SetAttributeRule("foo", fn2), ReplaceContentRule(fn1), SetAttributeRule("bar", fn2), ReplaceRule(fn1)))
+    val rule = Rule(
+      List(
+        ReplaceContentRule(fn1),
+        ReplaceRule(fn1),
+        SetAttributeRule("foo", fn2),
+        ReplaceContentRule(fn1),
+        SetAttributeRule("bar", fn2),
+        ReplaceRule(fn1)
+      )
+    )
 
     assert(rule.isInstanceOf[CompositeRule])
 
@@ -35,7 +47,10 @@ class RuleTest extends FunSuiteSupport {
     val replaceContentType = classOf[ReplaceContentRule]
     val replaceType = classOf[ReplaceRule]
 
-    assertTypes(rules, List(setAttributeType, setAttributeType, replaceContentType, replaceContentType, replaceType, replaceType))
+    assertTypes(
+      rules,
+      List(setAttributeType, setAttributeType, replaceContentType, replaceContentType, replaceType, replaceType)
+    )
   }
 
   def assertTypes(list: List[AnyRef], types: List[Class[?]]): Unit = {
