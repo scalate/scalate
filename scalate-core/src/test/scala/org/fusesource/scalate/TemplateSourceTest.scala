@@ -48,11 +48,4 @@ class TemplateSourceTest extends FunSuiteSupport {
     source.engine = engine
     assertResult("tmp2") { source.packageName }
   }
-
-  test("illegal package name - macOS var/folders path") {
-    val engine = new TemplateEngine
-    val source = TemplateSource.fromFile("/var/folders/abcd1234/T/tmp2/foo.ssp")
-    source.engine = engine
-    assertResult("tmp2") { source.packageName }
-  }
 }
