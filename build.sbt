@@ -1,6 +1,5 @@
 import Dependencies._
 import ScalateBuild._
-import MimaSettings.mimaSettings
 
 // -----------------------------------------------------------------------------------
 // README:
@@ -34,7 +33,6 @@ lazy val scalateUtil = scalateProject("util")
   .scalateSettings
   .published
   .settings(
-    mimaSettings,
     libraryDependencies ++= Seq(
       junit % Test,
       logbackClassic % Test,
@@ -46,13 +44,11 @@ lazy val scalateUtil = scalateProject("util")
     libraryDependencies ++= scalaTest.value.map(_ % Test),
     Test / parallelExecution := false,
   )
-  .enablePlugins(MimaPlugin)
 
 lazy val scalateCore = scalateProject("core")
   .scalateSettings
   .published
   .settings(
-    mimaSettings,
     libraryDependencies ++= Seq(
       javaxServlet % Optional,
       logbackClassic % "runtime,optional",
@@ -68,7 +64,6 @@ lazy val scalateCore = scalateProject("core")
     buildInfoPackage := "org.fusesource.scalate.buildinfo"
   )
   .dependsOn(scalateUtil)
-  .enablePlugins(MimaPlugin)
 
 // -----------------------------------------------------------------------------------
 
@@ -87,8 +82,6 @@ lazy val scalateTest = scalateProject("test")
     ), 
     libraryDependencies ++= scalaTest.value,
     description := "Scalate Test Support Classes.")
-  .settings(mimaSettings)
-  .enablePlugins(MimaPlugin)
 
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings
