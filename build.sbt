@@ -96,7 +96,6 @@ lazy val scalateTest = scalateProject("test")
   .settings(mimaSettings)
   .enablePlugins(MimaPlugin)
 
-// TODO: Fail to compile with Scala 2.13.0-RC1
 lazy val scalateGuice = scalateProject("guice")
   .scalateSettings
   .published
