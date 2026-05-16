@@ -12,7 +12,7 @@ import scala.language.reflectiveCalls
  */
 object Boots {
 
-  def invokeBoot(clazz: Class[_], injectionParameters: List[AnyRef]): Unit = {
+  def invokeBoot(clazz: Class[?], injectionParameters: List[AnyRef]): Unit = {
     // Structural Typing to make Reflection easier.
     type Boot = {
       def run(): Unit

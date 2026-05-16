@@ -63,7 +63,7 @@ class IntrospectorTest extends FunSuiteSupport {
       assertProperties(properties, 3)
       assertProperty(properties(0), "age", "age", classOf[Int])
       assertProperty(properties(1), "name", "name", classOf[String])
-      assertProperty(properties(2), "productElementNames", "productElementNames", classOf[Iterator[_]])
+      assertProperty(properties(2), "productElementNames", "productElementNames", classOf[Iterator[?]])
     } else {
       assertProperties(properties, 2)
       assertProperty(properties(0), "age", "age", classOf[Int])
@@ -137,8 +137,8 @@ class IntrospectorTest extends FunSuiteSupport {
 
   def assertStringFunctor[T](introspector: Introspector[T], instance: T, name: String, arg: String, expected: Any): Unit = {
     introspector.get(name, instance) match {
-      case Some(f: Function1[_, _]) =>
-        val _f = f.asInstanceOf[Function1[String, _]]
+      case Some(f: Function1[?, ?]) =>
+        val _f = f.asInstanceOf[Function1[String, ?]]
         debug("calling function %s named %s on %s = %s", _f, name, instance, _f(arg))
         assertResult(expected) { _f(arg) }
       case Some(v) =>
@@ -148,13 +148,13 @@ class IntrospectorTest extends FunSuiteSupport {
     }
   }
 
-  def assertProperty(property: Property[_], name: String, label: String, propertyType: Class[_]) = {
+  def assertProperty(property: Property[?], name: String, label: String, propertyType: Class[?]) = {
     assertResult(name) { property.name }
     assertResult(label) { property.label }
     assertResult(propertyType) { property.propertyType }
   }
 
-  def assertProperties(properties: collection.Seq[Property[_]], expectedSize: Int) = {
+  def assertProperties(properties: collection.Seq[Property[?]], expectedSize: Int) = {
     for (property <- properties) {
       debug("Property: %s", property)
     }

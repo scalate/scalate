@@ -218,7 +218,7 @@ trait RenderContext {
       case None => sanitize(noneString)
       case Some(a) => value(a, shouldSanitize)
       case Unescaped(text) => text
-      case f: Function0[_] => value(f(), shouldSanitize)
+      case f: Function0[?] => value(f(), shouldSanitize)
       case v: String => sanitize(v)
       case v: Date => sanitize(dateFormat.format(v))
       case n: Double if n.isNaN => "NaN"
@@ -321,9 +321,9 @@ trait RenderContext {
       throw new NullPointerException("No model object given!")
     }
 
-    val classSearchList = new ListBuffer[Class[_]]()
+    val classSearchList = new ListBuffer[Class[?]]()
 
-    def buildClassList(clazz: Class[_]): Unit = {
+    def buildClassList(clazz: Class[?]): Unit = {
       if (clazz != null && clazz != classOf[Object] && !classSearchList.contains(clazz)) {
         classSearchList.append(clazz)
         buildClassList(clazz.getSuperclass)
@@ -333,7 +333,7 @@ trait RenderContext {
       }
     }
 
-    def viewForClass(clazz: Class[_]): String = {
+    def viewForClass(clazz: Class[?]): String = {
       viewPrefixes.flatMap { prefix =>
         viewPostfixes.flatMap { postfix =>
           val path = clazz.getName.replace('.', '/') + "." + viewName + postfix
@@ -506,7 +506,7 @@ trait RenderContext {
   // introspection for dynamic templates or for archetype templates
   //
   /////////////////////////////////////////////////////////////////////
-  def introspect(aType: Class[_]) = Introspector(aType)
+  def introspect(aType: Class[?]) = Introspector(aType)
 
   /////////////////////////////////////////////////////////////////////
   //

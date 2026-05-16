@@ -85,7 +85,7 @@ class ClassPathBuilder {
     this
   }
 
-  def addPathFrom(clazz: Class[_]): ClassPathBuilder = {
+  def addPathFrom(clazz: Class[?]): ClassPathBuilder = {
     if (clazz != null)
       addPathFrom(clazz.getClassLoader)
     this

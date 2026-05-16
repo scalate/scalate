@@ -35,7 +35,7 @@ class ClassPathBuilderTest extends FunSuiteSupport {
     builder.addClassesDir(null)
       .addLibDir(null)
       .addJar(null)
-      .addPathFrom(null: Class[_])
+      .addPathFrom(null: Class[?])
       .addPathFrom(null: ClassLoader)
 
     assert(builder.classPath === "")

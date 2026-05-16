@@ -46,7 +46,7 @@ abstract class FunSuiteSupport extends AnyFunSuite with Log with BeforeAndAfterA
     debug("using basedir: %s", _basedir)
   }
 
-  def assertType(anyRef: AnyRef, expectedClass: Class[_]): Unit = {
+  def assertType(anyRef: AnyRef, expectedClass: Class[?]): Unit = {
     assert(anyRef != null, "expected instance of " + expectedClass.getName)
     assertResult(expectedClass) { anyRef.getClass }
   }

@@ -28,8 +28,8 @@ abstract class ParserTestSupport extends FunSuiteSupport {
 
   implicit def stringToText(x: String): Text = Text(x)
 
-  def countTypes(lines: List[PageFragment]): HashMap[Class[_], Int] = {
-    val map = new HashMap[Class[_], Int]
+  def countTypes(lines: List[PageFragment]): HashMap[Class[?], Int] = {
+    val map = new HashMap[Class[?], Int]
     for (line <- lines) {
       val key = line.getClass
       map(key) = map.getOrElse(key, 0) + 1

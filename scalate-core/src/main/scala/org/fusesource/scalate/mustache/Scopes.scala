@@ -87,7 +87,7 @@ abstract class ChildScope(parentScope: Scope) extends Scope {
 class MapScope(
   parent: Scope,
   name: String,
-  map: collection.Map[String, _]) extends ChildScope(parent) {
+  map: collection.Map[String, ?]) extends ChildScope(parent) {
 
   def localVariable(name: String): Option[Any] = map.get(name)
 

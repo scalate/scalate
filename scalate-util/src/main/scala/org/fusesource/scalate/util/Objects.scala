@@ -60,10 +60,10 @@ object Objects {
    * Attempts to inject the given class if a constructor can be found
    */
   def tryInstantiate[T](clazz: Class[T], injectionValues: List[AnyRef] = Nil): Option[T] = {
-    def argumentValue(paramType: Class[_]): Option[AnyRef] =
+    def argumentValue(paramType: Class[?]): Option[AnyRef] =
       injectionValues.find(paramType.isInstance(_))
 
-    def create(c: Constructor[_], args: Array[AnyRef]): T = {
+    def create(c: Constructor[?], args: Array[AnyRef]): T = {
       val answer = if (args.isEmpty) {
         clazz.getConstructor().newInstance()
       } else {
@@ -73,7 +73,7 @@ object Objects {
       answer.asInstanceOf[T]
     }
 
-    def tryCreate(c: Constructor[_]): Option[T] = {
+    def tryCreate(c: Constructor[?]): Option[T] = {
       val options = c.getParameterTypes.map(argumentValue(_))
       if (options.forall(_.isDefined)) {
         val args = options.map(_.get)

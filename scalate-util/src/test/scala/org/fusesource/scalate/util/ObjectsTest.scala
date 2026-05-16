@@ -38,7 +38,7 @@ class ObjectsTest extends FunSuiteSupport {
 
   }
 
-  protected def testInject(expected: AnyRef, clazz: Class[_], injectValues: List[AnyRef] = List()): Unit = {
+  protected def testInject(expected: AnyRef, clazz: Class[?], injectValues: List[AnyRef] = List()): Unit = {
     test("inject " + clazz.getName + " with " + injectValues) {
       assertResult(expected) { assertInstantiate(clazz, injectValues) }
     }

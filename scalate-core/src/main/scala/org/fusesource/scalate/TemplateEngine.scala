@@ -938,7 +938,7 @@ class TemplateEngine(
   /**
    * Figures out the modification time of the class.
    */
-  private def lastModified(clazz: Class[_]): Long = {
+  private def lastModified(clazz: Class[?]): Long = {
     val codeSource = clazz.getProtectionDomain.getCodeSource
     if (codeSource != null && codeSource.getLocation.getProtocol == "file") {
       val location = new File(codeSource.getLocation.getPath)

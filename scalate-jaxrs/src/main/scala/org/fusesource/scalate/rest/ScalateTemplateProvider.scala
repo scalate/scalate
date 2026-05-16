@@ -50,7 +50,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
   @Context
   var uriInfo: UriInfo = _
 
-  def resolve(engine: ServletTemplateEngine, argType: Class[_]): String = {
+  def resolve(engine: ServletTemplateEngine, argType: Class[?]): String = {
     val argBase = argType.getName.replace('.', '/')
 
     engine.extensions.map { ext => "/" + argBase + "." + ext }.find { path =>
@@ -64,7 +64,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     }.orNull
   }
 
-  def isWriteable(argType: Class[_], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
+  def isWriteable(argType: Class[?], genericType: Type, annotations: Array[Annotation], mediaType: MediaType) = {
     var answer = false
     if (mediaType.getType == "text" && mediaType.getSubtype == "html") {
       val engine = ServletTemplateEngine(servletContext)
@@ -76,7 +76,7 @@ class ScalateTemplateProvider extends MessageBodyWriter[AnyRef] {
     answer
   }
 
-  def writeTo(arg: AnyRef, argType: Class[_], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
+  def writeTo(arg: AnyRef, argType: Class[?], genericType: Type, annotations: Array[Annotation], media: MediaType, headers: MultivaluedMap[String, AnyRef], out: OutputStream) = {
     // Ensure headers are committed
     out.flush()
 

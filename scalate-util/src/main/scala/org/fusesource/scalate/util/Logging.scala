@@ -29,8 +29,8 @@ object Log {
   def apply(name: String): Log = new Log {
     override lazy val log = LoggerFactory.getLogger(name)
   }
-  def apply(clazz: Class[_]): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#"))
-  def apply(clazz: Class[_], suffix: String): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#") + "." + suffix)
+  def apply(clazz: Class[?]): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#"))
+  def apply(clazz: Class[?], suffix: String): Log = apply(clazz.getName.replace("$", "#").stripSuffix("#") + "." + suffix)
 
   val exception_id_generator = new AtomicLong(System.currentTimeMillis)
   def next_exception_id = exception_id_generator.incrementAndGet.toHexString
