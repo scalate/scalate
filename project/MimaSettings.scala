@@ -1,9 +1,5 @@
 import sbt._
 import Keys._
-import com.typesafe.tools.mima.core.ProblemFilters
-import com.typesafe.tools.mima.core.IncompatibleSignatureProblem
-import com.typesafe.tools.mima.core.ReversedMissingMethodProblem
-import com.typesafe.tools.mima.plugin.MimaPlugin
 import com.typesafe.tools.mima.plugin.MimaPlugin.autoImport._
 import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaReportBinaryIssues}
 
