@@ -13,9 +13,9 @@ object ScalateBuild {
 
   implicit final class ScalateProjectSyntax(val u: Project) extends AnyVal {
 
-    def scalateBaseSettings = u.settings(projectOpts)
+    def scalateBaseSettings: Project = u.settings(projectOpts)
 
-    def scalateSettings = scalateBaseSettings
+    def scalateSettings: Project = scalateBaseSettings
       .enablePlugins(BuildInfoPlugin)
       .settings(
         compileOpts,
@@ -24,9 +24,9 @@ object ScalateBuild {
         testOpts,
       )
 
-    def published = u.settings(publishOpts)
+    def published: Project = u.settings(publishOpts)
 
-    def notPublished = u.settings(ScalateBuild.notPublished)
+    def notPublished: Project = u.settings(ScalateBuild.notPublished)
 
   }
 
