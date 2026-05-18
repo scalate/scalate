@@ -17,6 +17,8 @@ jobs:
       matrix:
         java: [17, 25]
         scala: ['2_12', '2_13', '3']
+    env:
+      JAVA_OPTS: '-Xmx5G -Xss8M'
 
     steps:
     - uses: actions/checkout@v6
