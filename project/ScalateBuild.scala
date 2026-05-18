@@ -1,4 +1,5 @@
 import com.jsuereth.sbtpgp.SbtPgp.autoImport.PgpKeys
+import com.typesafe.tools.mima.plugin.MimaPlugin.autoImport.*
 import sbt.Keys.*
 import sbt.*
 import sbtbuildinfo.BuildInfoPlugin.autoImport.BuildInfoKey
@@ -33,6 +34,7 @@ object ScalateBuild {
     Project(s"scalate-$id", base.getOrElse(file(s"scalate-$id")))
 
   def notPublished = Seq(
+    mimaFailOnNoPrevious := false,
     publish / skip := true,
     publishArtifact := false,
     publish := {},
@@ -102,6 +104,10 @@ object ScalateBuild {
   )
 
   private def publishOpts = Seq(
+    mimaPreviousArtifacts := Set(
+      organization.value %% moduleName.value % "1.11.0",
+    ),
+    mimaReportSignatureProblems := true,
     publishTo := (if (isSnapshot.value) None else localStaging.value),
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
