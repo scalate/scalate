@@ -113,7 +113,7 @@ object ScalateBuild {
     publishTo := (if (isSnapshot.value) None else localStaging.value),
     pomExtra := developersPomExtra :+ issuesPomExtra,
     pomIncludeRepository := (_ => false),
-    publish := PgpKeys.publishSigned.value,
+    publish := Def.uncached(PgpKeys.publishSigned.value),
   )
 
   private def buildInfoOpts = Seq(
