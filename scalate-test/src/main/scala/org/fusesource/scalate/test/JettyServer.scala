@@ -21,8 +21,8 @@ import org.apache.commons.logging.LogFactory
 import org.eclipse.jetty.server.Connector
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
-import org.eclipse.jetty.webapp.WebAppContext
-import org.eclipse.jetty.util.resource.ResourceCollection
+import org.eclipse.jetty.ee11.webapp.WebAppContext
+import org.eclipse.jetty.util.resource.ResourceFactory
 import org.fusesource.scalate.util.IOUtil
 import java.io.File
 import java.io.FileInputStream
@@ -91,10 +91,10 @@ class JettyServer {
       def toUriString(name: String) = new File(name).getCanonicalFile.toURI.toURL.toString
       val array: Array[String] = Array(toUriString(webAppDir), toUriString(overlayWebAppDir))
       println("Using base resource URIs: " + array.mkString(" | "))
-      context.setBaseResource(new ResourceCollection(array))
+      context.setBaseResource(ResourceFactory.combine(array.map(ResourceFactory.root().newResource)*))
       context.setExtractWAR(true)
     } else {
-      context.setResourceBase(webAppDir)
+      context.setBaseResource(ResourceFactory.root().newResource(webAppDir))
     }
     context.setServer(server)
     server.setHandler(context)
