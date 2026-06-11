@@ -68,9 +68,20 @@ object ScalateBuild {
   )
 
   val scalacOptionsOpts = Def.settings(
-    scalacOptions ++= Seq(
-      "-release:8",
-    ),
+    scalacOptions ++= {
+      if (scalaVersion.value.startsWith("3.3.")) {
+        Seq(
+          "-Yfuture-lazy-vals",
+          "-release:11",
+        )
+      } else if (scalaBinaryVersion.value == "3") {
+        Nil
+      } else {
+        Seq(
+          "-release:8",
+        )
+      }
+    },
     scalacOptions ++= {
       scalaBinaryVersion.value match {
         case "2.12" =>
