@@ -18,7 +18,6 @@ import org.fusesource.scalate.RenderContext
  * limitations under the License.
  */
 package
-
 /**
  * <p>
  * </p>
@@ -27,47 +26,48 @@ package
  */
 object Website {
 
-  val project_name= "Scalate"
-  val project_slogan= "Scala Template Engine: like JSP without the crap but with added Scala coolness"
-  val project_id= "scalate"
-  val project_jira_key= "SCALATE"
-  val project_issue_url= "http://scalate.assembla.com/spaces/scalate/support/tickets"
-  val project_forums_url= "http://scalate.fusesource.org/community.html"
-  val project_wiki_url= "http://wiki.github.com/scalate/scalate/"
-  val project_logo= "/images/project-logo.png"
-  val project_version= "1.6.1"
-  val project_snapshot_version= "1.7.0-SNAPSHOT"
+  val project_name = "Scalate"
+  val project_slogan = "Scala Template Engine: like JSP without the crap but with added Scala coolness"
+  val project_id = "scalate"
+  val project_jira_key = "SCALATE"
+  val project_issue_url = "http://scalate.assembla.com/spaces/scalate/support/tickets"
+  val project_forums_url = "http://scalate.fusesource.org/community.html"
+  val project_wiki_url = "http://wiki.github.com/scalate/scalate/"
+  val project_logo = "/images/project-logo.png"
+  val project_version = "1.6.1"
+  val project_snapshot_version = "1.7.0-SNAPSHOT"
   val project_versions = List(
-        project_version,
-        "1.5.3",
-        "1.5.2",
-        "1.5.1",
-        "1.5.0",
-        "1.4.1",
-        "1.4.0",
-        "1.3.2", 
-        "1.3.1", 
-        "1.3", 
-        "1.2", 
-        "1.1", 
-        "1.0")  
-        
-  val non_tagged_versions = Set("1.5.3","1.5.2","1.5.1","1.5.0","1.4.1",
-        "1.4.0","1.3.2","1.3.1","1.3","1.2","1.1","1.0")  
+    project_version,
+    "1.5.3",
+    "1.5.2",
+    "1.5.1",
+    "1.5.0",
+    "1.4.1",
+    "1.4.0",
+    "1.3.2",
+    "1.3.1",
+    "1.3",
+    "1.2",
+    "1.1",
+    "1.0"
+  )
 
-  val github_page= "https://github.com/scalate/scalate"
-  val git_user_url= "git://github.com/scalate/scalate.git"
-  val git_commiter_url= "git@github.com:scalate/scalate.git"
-  val git_branch= "master"
-  val git_edit_page_base = github_page+"/edit/"+git_branch+"/scalate-website/src"
+  val non_tagged_versions =
+    Set("1.5.3", "1.5.2", "1.5.1", "1.5.0", "1.4.1", "1.4.0", "1.3.2", "1.3.1", "1.3", "1.2", "1.1", "1.0")
+
+  val github_page = "https://github.com/scalate/scalate"
+  val git_user_url = "git://github.com/scalate/scalate.git"
+  val git_commiter_url = "git@github.com:scalate/scalate.git"
+  val git_branch = "master"
+  val git_edit_page_base = github_page + "/edit/" + git_branch + "/scalate-website/src"
   val disqus_shortname = project_id
   val scala_compat_tag = "2.10"
 
   // -------------------------------------------------------------------
-  val project_svn_url= "http://fusesource.com/forge/svn/%s/trunk".format(project_id)
-  val project_svn_branches_url= "http://fusesource.com/forge/svn/%s/branches".format(project_id)
-  val project_svn_tags_url= "http://fusesource.com/forge/svn/%s/tags".format(project_id)
-  val project_maven_groupId= "org.fusesource.%s".format(project_id)
-  val project_maven_artifactId= "scalate-core"
+  val project_svn_url = "http://fusesource.com/forge/svn/%s/trunk".format(project_id)
+  val project_svn_branches_url = "http://fusesource.com/forge/svn/%s/branches".format(project_id)
+  val project_svn_tags_url = "http://fusesource.com/forge/svn/%s/tags".format(project_id)
+  val project_maven_groupId = "org.fusesource.%s".format(project_id)
+  val project_maven_artifactId = "scalate-core"
 
 }

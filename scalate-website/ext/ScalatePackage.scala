@@ -17,8 +17,8 @@
  */
 
 import org.fusesource.scalate.support.TemplatePackage
-import org.fusesource.scalate.{Binding, TemplateSource}
-
+import org.fusesource.scalate.Binding
+import org.fusesource.scalate.TemplateSource
 
 /**
  * Defines the template package of reusable imports, attributes and methods across templates
