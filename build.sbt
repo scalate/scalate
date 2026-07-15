@@ -15,15 +15,15 @@ val scalateRoot = rootProject.autoAggregate
     javacOptions ++= Seq("-source", "1.8"),
     scalacOptionsOpts,
     startYear := Some(2010),
-    licenses += "The Apache Software License, Version 2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"),
+    licenses += "The Apache Software License, Version 2.0" -> uri("https://www.apache.org/licenses/LICENSE-2.0"),
     scmInfo := Some(
       ScmInfo(
-        url("https://github.com/scalate/scalate"),
+        uri("https://github.com/scalate/scalate"),
         "scm:git:git://github.com/scalate/scalate.git",
         Some("scm:git:ssh://git@github.com:scalate/scalate.git")
       )
     ),
-    homepage := Some(url("https://scalate.github.io/scalate")),
+    homepage := Some(uri("https://scalate.github.io/scalate")),
     unidocOpts(scalateWeb),
     notPublished,
     releaseProcess := Seq[ReleaseStep](

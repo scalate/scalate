@@ -48,7 +48,7 @@ object ScalateBuild {
       (ThisBuild / scalacOptions) ++= Seq("-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath),
       (ThisBuild / apiMappings) ++= Def.uncached(scalaInstance.value.libraryJars.collect {
         case file if file.getName.startsWith("scala-library") && file.getName.endsWith(".jar") =>
-          fileConverter.value.toVirtualFile(file.toPath) -> url(
+          fileConverter.value.toVirtualFile(file.toPath) -> uri(
             s"https://www.scala-lang.org/api/${scalaVersion.value}/"
           )
       }.toMap),
