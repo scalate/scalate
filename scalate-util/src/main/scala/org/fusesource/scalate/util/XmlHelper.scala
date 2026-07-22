@@ -43,7 +43,7 @@ object XmlHelper {
       override def replacementText(entityName: String): scala.io.Source = {
         entityName match {
           /// case "nbsp" => io.Source.fromString("\u0160");
-          case "nbsp" => io.Source.fromString("<![CDATA[&nbsp;]]>");
+          case "nbsp" => Source.fromString("<![CDATA[&nbsp;]]>");
           case _ => super.replacementText(entityName);
         }
       }
