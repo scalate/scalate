@@ -71,7 +71,7 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       .addEntry(classpath)
       .addPathFromContextClassLoader()
       .addPathFrom(classOf[Product])
-      .addPathFrom(classOf[Settings])
+      .addPathFrom(classOf[dotty.tools.dotc.Main.type])
       .addPathFrom(classOf[ByteRef])
       .addPathFrom(getClass)
       .addPathFromSystemClassLoader()
@@ -84,10 +84,10 @@ class ScalaCompiler(bytecodeDirectory: File, classpath: String, combineClasspath
       classPathFromClassLoader
     }
 
-    debug("using classpath: " + useCP)
-    debug("system class loader: " + ClassLoader.getSystemClassLoader)
-    debug("context class loader: " + Thread.currentThread.getContextClassLoader)
-    debug("scalate class loader: " + getClass.getClassLoader)
+    ScalaCompiler.debug("using classpath: " + useCP)
+    ScalaCompiler.debug("system class loader: " + ClassLoader.getSystemClassLoader)
+    ScalaCompiler.debug("context class loader: " + Thread.currentThread.getContextClassLoader)
+    ScalaCompiler.debug("scalate class loader: " + getClass.getClassLoader)
 
     val args = Seq("-classpath", useCP, "-d", bytecodeDirectory.toString)
 
