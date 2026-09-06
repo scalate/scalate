@@ -123,7 +123,7 @@ class CssParser extends CssScanner {
     val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidCssSelectorException(message, next.pos);
+      case NoSuccess.I(message, next) => throw new InvalidCssSelectorException(message, next.pos);
     }
   }
 

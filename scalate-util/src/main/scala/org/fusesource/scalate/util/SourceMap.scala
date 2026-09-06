@@ -395,7 +395,7 @@ object SourceMap {
       val x = phrase(smap)(new CharSequenceReader(content))
       x match {
         case Success(result, _) => result
-        case NoSuccess(message, next) => null
+        case NoSuccess.I(_, _) => null
       }
     }
 

@@ -161,7 +161,7 @@ class SspParser extends ScalaParseSupport {
     val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
+      case NoSuccess.I(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
