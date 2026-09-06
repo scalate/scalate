@@ -394,7 +394,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     val x = phrase(parser)(new CharSequenceReader(content))
     x match {
       case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
+      case NoSuccess.I(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
@@ -402,7 +402,7 @@ class ScamlParser(val upto_type: String = UPTO_TYPE_SINGLE_LINE) extends Indente
     val x = phrase(p)(new CharSequenceReader(in))
     x match {
       case Success(result, _) => result
-      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
+      case NoSuccess.I(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 

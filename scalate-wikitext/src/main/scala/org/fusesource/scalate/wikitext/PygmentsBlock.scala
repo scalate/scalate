@@ -132,7 +132,7 @@ object Pygmentize extends Log with Filter with TemplateEngineAddOn {
       (phrase(opt(whiteSpace) ~> option_line)(new CharSequenceReader(in))) match {
         case Success(result, _) => Some(result)
         //        case NoSuccess(message, next) => throw new Exception(message+" at "+next.pos)
-        case NoSuccess(message, next) => None
+        case NoSuccess.I(_, _) => None
       }
     }
   }

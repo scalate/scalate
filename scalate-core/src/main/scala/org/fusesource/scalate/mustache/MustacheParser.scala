@@ -68,7 +68,7 @@ class MustacheParser extends RegexParsers {
   def parse(in: String) = {
     phrase(mustache)(new CharSequenceReader(in)) match {
       case Success(s, _) => s
-      case NoSuccess(message, next) => throw new InvalidSyntaxException(message, next.pos);
+      case NoSuccess.I(message, next) => throw new InvalidSyntaxException(message, next.pos);
     }
   }
 
