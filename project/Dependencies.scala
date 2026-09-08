@@ -5,7 +5,7 @@ import sbt.*
 object Dependencies {
 
   val scalaParserCombinators = Def.setting(
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.4.0"
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.5.0"
   )
 
   val scalaXml = Def.setting(
