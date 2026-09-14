@@ -23,7 +23,7 @@ object Dependencies {
 
   val scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "2.14.0"
 
-  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.8.7"
+  val atmosphereJersey = "org.atmosphere" % "atmosphere-jersey" % "0.9.7"
   val javaxServlet = "javax.servlet" % "servlet-api" % "2.5"
   val jaxrsApi = "jakarta.ws.rs" % "jakarta.ws.rs-api" % "2.1.6"
   val jerseyCore = "com.sun.jersey" % "jersey-core" % "1.19.4"
