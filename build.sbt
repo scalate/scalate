@@ -4,7 +4,7 @@ import ReleaseTransformations._
 
 def Scala212 = "2.12.21"
 def Scala213 = "2.13.18"
-def Scala3 = "3.3.8"
+def Scala3 = "3.9.0"
 
 val scalateRoot = rootProject.autoAggregate
   .settings(
