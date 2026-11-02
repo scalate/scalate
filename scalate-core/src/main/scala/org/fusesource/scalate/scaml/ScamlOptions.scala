@@ -29,6 +29,7 @@ object ScamlOptions {
 
   val DEFAULT_FORMAT = Format.xhtml
   val DEFAULT_AUTOCLOSE = List("meta", "img", "link", "br", "hr", "input")
+  val DEFAULT_PRESERVE = List("textarea", "pre")
 
   val DEFAULT_INDENT = "  "
   val DEFAULT_NL = "\n"
@@ -40,6 +41,12 @@ object ScamlOptions {
    * If this is set to null, then all elements is be autoclosed.
    */
   var autoclose = DEFAULT_AUTOCLOSE
+
+  /**
+   * Elements whose whitespace is significant. Indenting their content would add
+   * extra spaces to e.g. the initial value of a textarea.
+   */
+  var preserve = DEFAULT_PRESERVE
 
   /**
    * The indent type used in Scaml markup output.  Defaults
