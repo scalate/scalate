@@ -294,7 +294,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
       write_nl()
     }
 
-    def generateTextExpression(statement: TextExpression, is_line: Boolean): Unit = {
+    def generateTextExpression(statement: TextExpression, is_line: Boolean, keep_whitespace: Boolean = false): Unit = {
       statement match {
         case s: LiteralText => {
           if (is_line) {
@@ -335,7 +335,7 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
               prefix += " $_scalate_$_preserve ("
               suffix = ") " + suffix
             }
-          } else {
+          } else if (!keep_whitespace) {
             prefix += " $_scalate_$_indent ( " + asString(indent_string()) + ","
             suffix = ") " + suffix
           }
@@ -533,7 +533,11 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
       statement match {
         case Element(_, _, text, List(), _, _) => {
-          generateTextExpression(text.getOrElse(LiteralText(List(Text("")), Some(false))), false)
+          generateTextExpression(
+            text.getOrElse(LiteralText(List(Text("")), Some(false))),
+            false,
+            ScamlOptions.preserve != null && statement.tag.exists(t => ScamlOptions.preserve.contains(t.value))
+          )
           write_end_tag
           write_nl()
           outer_trim
