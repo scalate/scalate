@@ -50,20 +50,32 @@ abstract class AbstractCodeGenerator[T] extends CodeGenerator {
       this
     }
 
+    // Writes the values on a single line, writing the indentation only once.
+    // Positional values used to be written via <<(line: String), which indented them a second time and appended
+    // an extra newline. Scala 3 then warned "Line is indented too far to the left" for code following a doubly
+    // indented first statement of a block, e.g. `- val ...` right after `- for(...)`.
     def <<[T](list: List[T]): this.type = {
-      val functionStart = list.lastOption.contains("{")
       for (i <- 0 until indentLevel) {
         code += "  "
       }
       for (value <- list) value match {
         case text: Positional =>
-          this << text.pos << text.toString; if (functionStart) { code = code.trim }
+          markPosition(text.pos)
+          code += text.toString
         case pos: Position =>
-          this << pos; if (functionStart) { code = code.trim }
-        case _ => code += value.toString; if (functionStart) { code = code.trim }
+          markPosition(pos)
+        case _ => code += value.toString
       }
       code += "\n"
       this
+    }
+
+    // Records the position after the indentation has been written
+    // (current_position assumes the indentation is still to be written, so it can't be used here).
+    private def markPosition(pos: Position): Unit = pos match {
+      case p: OffsetPosition =>
+        generatedPositions = generatedPositions + (p -> code.length)
+      case _ =>
     }
 
     def <<(pos: Position): this.type = {
