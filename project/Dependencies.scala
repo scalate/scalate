@@ -36,7 +36,7 @@ object Dependencies {
 
   val jRubyComplete = "org.jruby" % "jruby-complete" % "10.1.3.0"
   val junit = "junit" % "junit" % "4.13.2"
-  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.12"
+  val karafShell = "org.apache.karaf.shell" % "org.apache.karaf.shell.console" % "4.4.13"
   val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.6.8"
   val osgiCore = "org.osgi" % "org.osgi.core" % "6.0.0"
   val rhinoCoffeeScript = "tv.cntt" % "rhinocoffeescript" % "1.12.7"
