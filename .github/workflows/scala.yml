@@ -27,7 +27,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
     - name: Set up JDK
-      uses: actions/setup-java@v6.2.0
+      uses: actions/setup-java@v6.3.0
       with:
         java-version: ${{ matrix.java }}
         distribution: temurin
