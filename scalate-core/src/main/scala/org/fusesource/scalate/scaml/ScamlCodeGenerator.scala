@@ -381,6 +381,17 @@ class ScamlCodeGenerator extends AbstractCodeGenerator[Statement] {
 
     def generate(statement: Executed): Unit = {
       flush_text()
+      // A `- { x =>` line after the body of e.g. `- opt.fold` continues the previous expression as its second
+      // argument list in Scala 2. Scala 3 only treats a line starting with `{` as a continuation when it is
+      // indented deeper than the previous line, so write it one level deeper.
+      if (statement.code.headOption.exists(_.value.trim.startsWith("{"))) {
+        indent(generateExecuted(statement))
+      } else {
+        generateExecuted(statement)
+      }
+    }
+
+    private def generateExecuted(statement: Executed): Unit = {
       if (statement.body.isEmpty) {
         statement.code.foreach { (line) =>
           this << line :: Nil
